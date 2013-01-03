@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=1024, user-scalable=no">
+
+	<title>Metaprogramming in Ruby</title>
+	
+	<!-- Required stylesheet -->
+	<link rel="stylesheet" href="support/core/deck.core.css">
+	
+	<!-- Extension CSS files go here. Remove or add as needed. -->
+	<link rel="stylesheet" href="support/extensions/goto/deck.goto.css">
+	<link rel="stylesheet" href="support/extensions/menu/deck.menu.css">
+	<link rel="stylesheet" href="support/extensions/navigation/deck.navigation.css">
+	<link rel="stylesheet" href="support/extensions/status/deck.status.css">
+	<link rel="stylesheet" href="support/extensions/hash/deck.hash.css">
+	<link rel="stylesheet" href="support/extensions/scale/deck.scale.css">
+	
+	<!-- Style theme. More available in /themes/style/ or create your own. -->
+	<link rel="stylesheet" href="support/themes/style/mnml.css">
+	<link rel="stylesheet" href="support/themes/style/custom.css">
+	
+	<!-- Transition theme. More available in /themes/transition/ or create your own. -->
+	<link rel="stylesheet" href="support/themes/transition/vertical-slide.css">
+	
+	<!-- Required Modernizr file -->
+	<script src="support/javascripts/modernizr.custom.js"></script>
+</head>
+<body class="deck-container">
+
+<!-- Begin slides. Just make elements with a class of slide. -->
+
+<section class="slide" id="title">
+	<h2>Metaprogramming in Ruby</h2>
+	<img src="support/themes/style/images/mtp.png" alt="Metaprogramming Ruby">
+</section>
+
+<section class="slide" id="open-classes">
+	<h2>Open Classes</h2>
+	<div>
+		In Ruby, classes are never closed: you can always add methods to an existing class. This applies to the classes you write as well as the standard, built-in classes. All you have to do is open up a class definition for an existing class, and the new contents you specify will be added to whatever's there.
+	</div>
+	<pre>
+class D
+    def x
+        'X'
+    end
+end
+
+class D
+    def y
+        'Y'
+    end
+end
+
+d = D.new
+d.x 	# => 'X'
+d.y 	# => 'Y'
+	</pre>
+</section>
+
+<section class="slide" id="monkey-patch">
+	<h2>Monkey See, Monkey Patch</h2>
+  <div>
+  In Ruby, the term <i>monkey patch</i> means any dynamic modification to a class.
+  </div>
+	<pre>
+# evil example
+class FixNum
+    def +(adder)
+        self - adder
+    end
+end
+
+## that's correct, I just turned addition into subtraction
+	</pre>
+	<div>
+	Monkey patching is a practice which involves substituting the pillars of an house: if you're not very careful in what you substitute, the whole building will collapse over your remains. Moreover, you may take down some underground stations full of people as well as a side-effect.
+	</div>
+</section>	
+
+<section class="slide" id="self">
+	<h2>Discovering self</h2>
+	<div>
+	Every line of Ruby code is executed inside an object—the so–called current object. The <i>current object</i> is also known as <strong>self</strong>, because you can access it with the <strong>self</strong> keyword.
+	</div>
+	<pre>
+class MyClass
+  def testing_self
+    @var = 10     # An instance variable of self
+    
+    my_method()
+      self        # Same as self.my_method()
+    end
+
+    def my_method
+      @var = @var + 1
+    end
+  end
+
+obj = MyClass.new
+obj.testing_self  # => #&lt;MyClass:0x510b44 @var=11&gt;
+	</pre>
+</section>
+
+<section class="slide" id="calling-methods-dynamically">
+	<h2>Calling methods dynamically</h2>
+	<div>The most common way for dynamic method calling is to send a message to object.</div>
+	<pre>"hi there".send(:length)  #=> 8</pre>
+  
+  <div>A Method object represents a chunk of code and a context in which it executes. Once we have our Method object, we can execute it sometime later by sending it the message call.</div>
+  <pre>
+method_object = "hi there".method(:length) 
+method_object.call  #=> 8  </pre>
+  
+  <div>Or just eval</div>
+  <pre>eval "'hi there'.length"  #=> 8  </pre>
+  <div>Instantiating a method object is the fastest dynamic way in calling a method, eval is the slowest one. Also when sending a message to an object, or when instantiating a method object, you can call private methods of that object.</div>
+</section>
+
+<section class="slide" id="defining-methods-dynamically">
+	<h2>Defining methods dynamically</h2>
+  <div>You can define a method on the spot with <i>define_method()</i>. You just need to provide a method name and a block, which becomes the method body.</div>
+  
+  <pre>
+class MyClass
+
+  define_method :triple do |my_arg|
+    my_arg * 3
+  end
+
+end
+
+obj = MyClass.new
+obj.triple(2) 
+# => 6
+
+  </pre>
+</section>
+
+<section class="slide" id="constant-lookup-order">
+  <h2>Constant lookup order</h2>
+  <div>The list of modules searched, in the order searched<br/>
+  [Enclosing::Local, Enclosing, Included, Super, Object, Kernel]</div>
+
+<pre class="column left"><br>
+module Kernel
+  A = B = C = D = E = F = "defined in kernel"
+end
+
+A = B = C = D = E = "defined at toplevel"
+
+class Super
+  A = B = C = D = "defined in superclass"
+end
+
+module Included
+  A = B = C = "defined in included module"
+end
+<br></pre>
+<pre class="column left">
+module Enclosing
+  A = B = "defined in enclosing module"
+
+  class Local  Super
+    include Included
+
+    A = "defined locally"
+
+    puts A  # "defined locally"
+    puts B  # "defined in enclosing module"
+    puts C  # "defined in included module"
+    puts D  # "defined in superclass"
+    puts E  # "defined at toplevel"
+    puts F  # "defined in kernel"
+  end
+end
+</pre>
+</section>
+
+<section class="slide" id="method-lookup-order">
+	<h2>Method lookup order</h2>
+	<div>There are three different kinds of methods containers in Ruby, Classes, Modules and Singleton Classes. When a method is invoked all of them are searched for the first matching method to execute.</div>
+	<br>
+	<div>Method lookup order:</div>
+	<ul>
+	  <li>object's singleton class</li>
+	  <li class="slide">object's class</li>
+	  <li class="slide">modules mixed into its class, in reverse order of inclusion</li>
+	  <li class="slide">the class's superclass</li>
+	  <li class="slide">modules mixed into the superclass, in reverse order of inclusion</li>
+	  <li class="slide">likewise, up to Object (and it's mix-in Kernel) and BasicObject</li>
+	</ul>
+</section>
+
+<section class="slide" id="method-missing">
+	<h2>Method missing</h2>
+	<div>When you send a message to an object, the object executes the first method it finds on its method lookup path with the same name as the message. If it fails to find any such method, it end up with <strong>method_missing</strong> method, where a NoMethodError exception is raised unless you have provided other behavior for it. The method_missing method is passed the symbol of the non-existent method, an array of the arguments that were passed in the original call and any block passed to the original method.</div>
+	
+	<pre>
+class Person
+  def method_missing (meth, *args, &block)
+    if met.to_s =~ /^find_all_by_(\w+)$/
+      "Looking for the Person"
+    else
+      super
+    end
+  end
+end
+</pre>
+</section>
+
+<section class="slide" id="instance-variables">
+	<h2>Class and Instance variables</h2>
+	<pre class="column left">
+
+class Polygon
+  @@sides = 10
+  def self.sides
+    @@sides
+  end
+end
+
+puts Polygon.sides # => 10
+	</pre>
+	<pre class="column right">
+class Polygon
+  attr_reader :sides
+
+  def initialize(sides)
+    @sides = sides
+  end
+end
+
+puts Polygon.sides # => NoMethodError
+puts Polygon.new(10).sides # => 10</pre>
+	
+</section>
+
+<section class="slide" id="scope">
+	<h2>Scope</h2>
+	<div>Scope defines where in a program a variable is accessible. Scope changes whenever the program enters (or exits) a class or module definition or a method. These three borders are marked by the keywords <strong>class, module,</strong> and <strong>def</strong>, respectively. Each of these keywords acts like a Scope&nbsp;Gate.</div>
+	<pre>v1 = 1
+
+class MyClass
+  v2 = 2
+  local_variables   # => [:v2]
+  
+  def my_method
+    v3 = 3
+    local_variables
+  end
+  
+  local_variables   # => [:v2]
+end
+
+obj = MyClass.new
+obj.my_method       # => [:v3]
+local_variables     # => [:v1, :obj]</pre>	
+</section>
+
+<section class="slide" id="instance-eval">
+	<h2>Instance eval</h2>
+	<div><strong>instance_eval</strong> method evaluates a string containing Ruby source code, or the given block, within the context of the receiver (obj).</div>
+	<pre>class MyClass
+  def initialize
+    @v = 1
+  end
+end
+
+obj = MyClass.new
+obj.instance_eval do
+  self    # => #<MyClass:0x3340dc @v=1>
+  @v      # => 1
+end
+</pre>
+</section>
+
+<section class="slide" id="class-eval">
+	<h2>Class eval</h2>
+	<div><strong>class_eval</strong> (also known by its alternate name, <strong>module_eval</strong>) evaluates a block in the context of an existing class.
+
+	<pre>
+def add_method_to(a_class)
+  a_class.class_eval do
+    def m; 'Hello!' ; end
+  end
+end
+
+add_method_to String
+"abc".m   # => "Hello!"
+</pre>
+</section>
+
+
+
+<!-- End slides. -->
+
+
+<!-- Begin extension snippets. Add or remove as needed. -->
+
+<!-- deck.navigation snippet -->
+<a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
+<a href="#" class="deck-next-link" title="Next">&#8594;</a>
+
+<!-- deck.status snippet -->
+<p class="deck-status">
+	<span class="deck-status-current"></span>
+	/
+	<span class="deck-status-total"></span>
+</p>
+
+<!-- deck.goto snippet -->
+<form action="." method="get" class="goto-form">
+	<label for="goto-slide">Go to slide:</label>
+	<input type="text" name="slidenum" id="goto-slide" list="goto-datalist">
+	<datalist id="goto-datalist"></datalist>
+	<input type="submit" value="Go">
+</form>
+
+<!-- deck.hash snippet -->
+<a href="." title="Permalink to this slide" class="deck-permalink">#</a>
+
+<!-- End extension snippets. -->
+
+
+<!-- Required JS files. -->
+<script src="support/javascripts/jquery-1.7.2.min.js"></script>
+<script src="support/core/deck.core.js"></script>
+
+<!-- Extension JS files. Add or remove as needed. -->
+<script src="support/core/deck.core.js"></script>
+<script src="support/extensions/hash/deck.hash.js"></script>
+<script src="support/extensions/menu/deck.menu.js"></script>
+<script src="support/extensions/goto/deck.goto.js"></script>
+<script src="support/extensions/status/deck.status.js"></script>
+<script src="support/extensions/navigation/deck.navigation.js"></script>
+<script src="support/extensions/scale/deck.scale.js"></script>
+
+<!-- Initialize the deck. You can put this in an external file if desired. -->
+<script>
+	$(function() {
+		$.deck('.slide');
+	});
+</script>
+</body>
+</html>

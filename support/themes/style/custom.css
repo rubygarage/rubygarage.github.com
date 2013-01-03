@@ -1,0 +1,14 @@
+pre.column {
+  width: 45%;
+}
+pre.column.left {
+  float: left;
+  margin-right: 5px;
+}
+pre.column.right {
+  float: right;
+  margin-left: 5px;
+}
+.deck-container .slide .not-capitalized {
+  text-transform: none;
+}
