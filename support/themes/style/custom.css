@@ -1,14 +1,25 @@
-pre.column {
+.column {
   width: 45%;
 }
-pre.column.left {
+.column.left {
   float: left;
   margin-right: 5px;
 }
-pre.column.right {
+.column.right {
   float: right;
   margin-left: 5px;
 }
 .deck-container .slide .not-capitalized {
   text-transform: none;
+}
+
+.deck-container .syntaxhighlighter {
+  padding: 5px 0;
+}
+.deck-container .syntaxhighlighter .toolbar {
+  display: none;
+}
+
+.deck-container .row {
+  margin-bottom: 1em;
 }

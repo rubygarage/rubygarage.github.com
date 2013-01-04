@@ -25,6 +25,11 @@
 	<!-- Transition theme. More available in /themes/transition/ or create your own. -->
 	<link rel="stylesheet" href="support/themes/transition/vertical-slide.css">
 	
+  <!-- Syntax highlighter -->
+  <link rel="stylesheet" href="support/extensions/syntax-highlighter/shCore.css">
+  <link rel="stylesheet" href="support/extensions/syntax-highlighter/shThemeDefault.css">
+  <link rel="stylesheet" href="support/extensions/syntax-highlighter/shThemeRDark.css">
+
 	<!-- Required Modernizr file -->
 	<script src="support/javascripts/modernizr.custom.js"></script>
 </head>
@@ -45,52 +50,66 @@
 
 <section class="slide" id="rvm-install">
   <h2 class="not-capitalized">RVM - install and use</h2>
-  <pre>
-~  curl -L https://get.rvm.io | bash -s stable --ruby
-
-~  rvm install 1.9.3
-~  rvm use 1.9.3
-
-~  rvm gemset create my_project
-~  rvm gemset use my_project
-
-# .rvmrc file
-rvm use ruby-1.9.3-head@my_project
-  </pre>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: bash">
+      <![CDATA[
+      curl -L https://get.rvm.io | bash -s stable --ruby
+      rvm install 1.9.3
+      rvm use 1.9.3
+      rvm gemset create my_project
+      rvm gemset use my_project]]>
+    </script>
+  </div>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+      # .rvmrc file
+      rvm use ruby-1.9.3-head@my_project]]>
+    </script>
+  </div>
 </section>
 
 <section class="slide" id="hello-world">
 	<h2>Hello world</h2>
-  <div>
-    <pre>
-puts "Hello World"
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+      puts "Hello World"]]>
+    </script>
+  </div>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: bash">
+      <![CDATA[
+      ruby ./test.rb]]>
+    </script>
+  </div>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+      #!/usr/bin/ruby
 
-~ ruby .test.rb
-    </pre>
-
-    <pre>
-#!/usr/bin/ruby
-
-puts "Hello World"
-
-
-~  ./test.rb
-    </pre>
+      puts "Hello World"]]>
+    </script>
+  </div>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: bash">
+      <![CDATA[
+      ./test.rb
+      ]]>
+    </script>
   </div>
 </section>	
 
 <section class="slide" id="irb">
 	<h2>Interactive Ruby</h2>
-	<div>
-	  <pre>
-~  irb
-
-1.9.3-p125 :001 > puts "Hello World!"
-
-Hello World!
-
- => nil 
-    </pre>
+	<div class="row">
+    <script type="syntaxhighlighter" class="brush: bash">
+      <![CDATA[
+      irb
+      1.9.3-p125 :001 > puts "Hello World!"
+      Hello World!
+      => nil]]>
+    </script>
 	</div>
 </section>
 
@@ -108,36 +127,47 @@ Hello World!
 When an operation between two Fixnum objects creates an overflow, Ruby will automatically convert the numbers to a Bignums, perform the operation again and store the result in a Bignum. The Bignum is returned from the operator and stored in the variable just like a Fixnum would be. The programmer doesn't have to know the Bignum even exists.</p>
 </div>
   
-  <pre>
-num = 81
-
-6.times do
-  puts "#{num.class}: #{num}"
-  num *= num
-end
-
-
-Fixnum: 81
-Fixnum: 6561
-Fixnum: 43046721
-Fixnum: 1853020188851841
-Bignum: 3433683820292512484657849089281
-Bignum: 11790184577738583171520872861412518665678211592275841109096961
-  </pre>
+<div class="row">
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    num = 81
+    6.times do
+      puts "#{num.class}: #{num}"
+      num *= num
+    end]]>
+  </script>
+</div>
+<div class="row">
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    Fixnum: 81
+    Fixnum: 6561
+    Fixnum: 43046721
+    Fixnum: 1853020188851841
+    Bignum: 3433683820292512484657849089281
+    Bignum: 11790184577738583171520872861412518665678211592275841109096961]]>
+  </script>
+</div>
 </section>
 
 <section class="slide" id="conversion">
   <h2>implicit Numbers conversion</h2>
-
-<pre>
-1 + 2       # => 3
-1 + 2.0     # => 3.0
-1.0 + 2     # => 3.0
-
-1.0 / 2     # => 0.5
-1 / 2.0     # => 0.5
-1 / 2       # => 0
-</pre>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+      1 + 2       # => 3
+      1 + 2.0     # => 3.0
+      1.0 + 2     # => 3.0]]>
+    </script>
+  </div>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+      1.0 / 2     # => 0.5
+      1 / 2.0     # => 0.5
+      1 / 2       # => 0]]>
+    </script>
+  </div>
 </section>
 
 <section class="slide" id="arithmetic">
@@ -166,270 +196,327 @@ Bignum: 11790184577738583171520872861412518665678211592275841109096961
 
 <section class="slide" id="string">
 	<h2>String</h2>
-	<pre class="column left">
-"New string"                 # => New string
 
-"Tro #{Lo * 3} !!"           # => Tro Lo Lo Lo !!
+  <div class="column left">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+      "New string"
+      # => New string
+      "Tro #{"Lo" * 3} !!"
+      # => Tro Lo Lo Lo !!
+      "now is #{def the(a)
+                  'the' + a
+                end
+                the('time') } 
+      for all good coders.."  
+      # => now is the time for all good coders..]]>
+    </script>
+  </div>
+  <div class="column right">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+      "Seconds/day: #{24*60*60}"    
+      # => Seconds/day: 86400
 
-"now is #{def the(a)
-            'the' + a
-          end
-          the('time') } for all good coders.."
-                               
-# => now is the time for all good coders..
-	</pre>
-	<pre class="column right">
-"Seconds/day: #{24*60*60}"    
-                 # => Seconds/day: 86400
-
-%{Seconds/day: #{24*60*60}}   
-                 # => Seconds/day: 86400
-
-'{Seconds/day: #{24*60*60}'   
-                 # => Seconds/day: #{24*60*60}
-
-%q{Seconds/day: #{24*60*60}}  
-                 # => Seconds/day: #{24*60*60}
-
-'con' "cat" 'en' "ate"
-                 # => concatenate
-
-"Ukraine on Rails".split(' ') 
-                 # => ["Ukraine", "on", "Rails"]
-</pre>
-	
+      %{Seconds/day: #{24*60*60}}   
+      # => Seconds/day: 86400
+      
+      '{Seconds/day: #{24*60*60}'   
+      # => Seconds/day: #{24*60*60}
+      
+      %q{Seconds/day: #{24*60*60}}  
+      # => Seconds/day: #{24*60*60}
+      
+      'con' "cat" 'en' "ate"
+      # => concatenate
+      
+      "Ukraine on Rails".split(' ') 
+      # => ["Ukraine", "on", "Rails"]]]>
+    </script>
+  </div>
 </section>
 
 <section class="slide" id="multiline-string">
 	<h2>String</h2>
-	<pre>
-print <<-eos                      
-Double  quoted \ here document.   
-It is #{Time.now}                 
-eos
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+      print <<-eos                      
+      Double  quoted \ here document.   
+      It is #{Time.now}                 
+      eos
 
-# => Double  quoted  here document.
-# => It is 2012-10-11 22:53:35 +0300 
+      # => Double  quoted  here document.
+      # => It is 2012-10-11 22:53:35 +0300]]>
+    </script>
+  </div>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+      print <<-'eos'
+      Double  quoted here document.       
+      It is #{Time.now}                   
+      eos
 
-
-print <<-'eos'
-Double  quoted here document.       
-It is #{Time.now}                   
-eos
-
-# => Double  quoted  here document.
-# => It is #{Time.now} 
-  </pre>	
+      # => Double  quoted  here document.
+      # => It is #{Time.now}]]>
+    </script>
+  </div>
 
 <h3 class="not-capitalized"> String <a href="http://www.ruby-doc.org/core-1.9.3/String.html" target="_blank">http://www.ruby-doc.org/core-1.9.3/String.html</a></h3>
 </section>
 
 <section class="slide" id="arrays">
 	<h2>Arrays</h2>
-<pre>
-['this', :is, 1, "Array", [1,2,3], barney("pebbles")]
-
-#=> ['this', :is, 1, "Array", [1,2,3], "pebbles result"] 
-
-
-%w(monkey fish lion dog cat -#{Time.now}-)
-
-# => ["monkey", "fish", "lion", "dog", "cat", "-#{Time.now}-"] 
-
-
-%W(monkey fish lion dog cat -#{Time.now}-)
-
-#=> ["monkey", "fish", "lion", "dog", "cat", "-2012-10-11 23:03:18-"]
-
-
-Array.new(4, "mac")          # => ["mac", "mac", "mac", "mac"] 
-
-Array.new(10){|e| e=e*2 }    # => [0, 2, 4, 6, 8, 10, 12, 14, 16, 18] 
-
-Array(0..9)                  # => [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-</pre>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+      ['this', :is, 1, "Array", [1,2,3], barney("pebbles")]
+      #=> ['this', :is, 1, "Array", [1,2,3], "pebbles result"] ]]>
+    </script>
+  </div>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+      %w(monkey fish lion dog cat -#{Time.now}-)
+      # => ["monkey", "fish", "lion", "dog", "cat", "-#{Time.now}-"] ]]>
+    </script>
+  </div>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+      %W(monkey fish lion dog cat -#{Time.now}-)
+      #=> ["monkey", "fish", "lion", "dog", "cat", "-2012-10-11 23:03:18-"] ]]>
+    </script>
+  </div>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+      Array.new(4, "mac")          # => ["mac", "mac", "mac", "mac"] ]]>
+    </script>
+  </div>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+      Array.new(10){|e| e=e*2 }    # => [0, 2, 4, 6, 8, 10, 12, 14, 16, 18]  ]]>
+    </script>
+  </div>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+      Array(0..9)                  # => [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] ]]>
+    </script>
+  </div>
 </section>
 
 <section class="slide" id="array-methods">
   <h2>Arrays</h2>
-<pre>
-languages = 'Ruby', 'Java', 'C#', 'PHP' 
-# => ["Ruby", "Java", "C#", "PHP"] 
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+      languages = 'Ruby', 'Java', 'C#', 'PHP' 
+      # => ["Ruby", "Java", "C#", "PHP"]
 
+      languages[0]            # => "Ruby" 
+      languages[1]            # => "Java" 
+      languages[4]            # => nil 
+      languages[2..3]         # => ["C#", "PHP"] 
+      languages[-2]           # => "C#" 
+      languages.sort          # => ["C#", "Java", "PHP", "Ruby"] 
+      languages.length        # => 4 
+      languages.first         # => "Ruby" 
+      languages.last          # => "PHP"]]>
+    </script>
+  </div>
 
-languages[0]            # => "Ruby" 
-languages[1]            # => "Java" 
-languages[4]            # => nil 
-languages[2..3]         # => ["C#", "PHP"] 
-languages[-2]           # => "C#" 
-languages.sort          # => ["C#", "Java", "PHP", "Ruby"] 
-languages.length        # => 4 
-languages.first         # => "Ruby" 
-languages.last          # => "PHP" 
-</pre>
 </section>
 
 <section class="slide" id="concatenating-arrays">
   <h2>Arrays</h2>
-<pre>
-days1 = ['Mon', 'Tue', 'Wed']
-days2 = ['Thu', 'Fri', 'Sat', 'Sun']
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    days1 = ['Mon', 'Tue', 'Wed']
+    days2 = ['Thu', 'Fri', 'Sat', 'Sun']
 
+    days1 + days2
+    # => ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"] 
 
-days1 + days2
-# => ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"] 
+    days1.concat(days2)
+    # => ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"] 
 
-days1.concat(days2)
-# => ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"] 
-
-days1 << 'Thu' << 'Fri' << 'Sat' << 'Sun'
-# => ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"] 
-</pre>
+    days1 << 'Thu' << 'Fri' << 'Sat' << 'Sun'
+    # => ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]]]>
+  </script>
 </section>
 
 <section class="slide" id="arrays-other-meths">
   <h2>Arrays</h2>
-<pre>
-operating_systems = ['Fedora', 'SuSE', 'RHEL', 'Windows', 'MacOS']
-linux_systems = ['RHEL', 'SuSE', 'PCLinuxOS', 'Ubuntu', 'Fedora']
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    operating_systems = ['Fedora', 'SuSE', 'RHEL', 'Windows', 'MacOS']
+    linux_systems = ['RHEL', 'SuSE', 'PCLinuxOS', 'Ubuntu', 'Fedora']
 
+    # Union
+    operating_systems | linux_systems
+    # => ["Fedora", "SuSE", "RHEL", "Windows", "MacOS", "PCLinuxOS", "Ubuntu"] 
 
-# Union
-operating_systems | linux_systems
-# => ["Fedora", "SuSE", "RHEL", "Windows", "MacOS", "PCLinuxOS", "Ubuntu"] 
+    # Intersection
+    operating_systems & linux_systems      # => ["Fedora", "SuSE", "RHEL"] 
 
-# Intersection
-operating_systems & linux_systems      # => ["Fedora", "SuSE", "RHEL"] 
+    # Difference
+    operating_systems - linux_systems      # => ["Windows", "MacOS"] 
+    linux_systems - operating_systems      # => ["PCLinuxOS", "Ubuntu"] 
 
-# Difference
-operating_systems - linux_systems      # => ["Windows", "MacOS"] 
-linux_systems - operating_systems      # => ["PCLinuxOS", "Ubuntu"] 
-
-# Uniq
-operating_systems = ['Fedora', 'SuSE', 'MacOS', 'RHEL', 'SuSE', 'Fedora']
-operating_systems.uniq           # => ["Fedora", "SuSE", "MacOS", "RHEL"] 
-</pre>
+    # Uniq
+    operating_systems = ['Fedora', 'SuSE', 'MacOS', 'RHEL', 'SuSE', 'Fedora']
+    operating_systems.uniq                 # => ["Fedora", "SuSE", "MacOS", "RHEL"] ]]>
+  </script>
 </section>
 
 <section class="slide" id="push-pop">
   <h2>Arrays</h2>
-<pre>
-colors = ['red', 'green', 'blue']
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    colors = ['red', 'green', 'blue']
 
-colors.push 'indigo'    # => ["red", "green", "blue", "indigo"] 
-colors.push 'violet'    # => ["red","green","blue","indigo","violet"] 
-colors.pop              # => "violet"
-colors.pop              # => "indigo"
+    colors.push 'indigo'    # => ["red", "green", "blue", "indigo"] 
+    colors.push 'violet'    # => ["red","green","blue","indigo","violet"] 
+    colors.pop              # => "violet"
+    colors.pop              # => "indigo"]]>
+    </script>
+  </div>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    colors = ['red', 'green', 'blue']
 
+    colors[1..2] = 'orange', 'pink'   # => colors: ["red", "orange", "pink"] ]]>
+    </script>
+  </div>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    colors = ['red', 'green', 'blue']
 
-
-colors = ['red', 'green', 'blue']
-
-colors[1..2] = 'orange', 'pink'   # colors: ["red", "orange", "pink"] 
-
-
-
-colors = ['red', 'green', 'blue']
-
-colors.delete_at(1)     # colors: ['red', 'blue']
-colors.delete("blue")   # colors: ['green']
-</pre>
+    colors.delete_at(1)     # colors: ['red', 'blue']
+    colors.delete("blue")   # colors: ['green'] ]]>
+    </script>
+  </div>
 
 <h3 class="not-capitalized"> Array <a href="http://www.ruby-doc.org/core-1.9.3/Array.html" target="_blank">http://www.ruby-doc.org/core-1.9.3/Array.html</a></h3>
 </section>
 
 <section class="slide" id="hash">
   <h2>Hashes</h2>
-<pre>
-h = {
-  'dog' => 'canine',
-  'cat' => 'feline',
-  'donkey' => 'asinine',
-  :bird => 'papuga',
-  12 => 'dodecine'
-}
-<span style="font-size: 18px"># => {"dog"=>"canine", "cat"=>"feline", "donkey"=>"asinine", :bird=>"papuga", 12=>"dodecine"} </span>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    h = {
+      'dog' => 'canine',
+      'cat' => 'feline',
+      'donkey' => 'asinine',
+      :bird => 'papuga',
+      12 => 'dodecine'
+    }
+    # => {"dog"=>"canine", "cat"=>"feline", "donkey"=>"asinine", :bird=>"papuga", 12=>"dodecine"}
 
+    h.length          # => 5
+    h['dog']          # => "canine"
+    h[:bird]          # => "papuga"
+    h[12]             # => "dodecine" ]]>
+    </script>
+  </div>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+      {hashes: 1, are: 'unordered'}  # => {:hashes => 1, :are => 'unordered'} ]]>
+    </script> 
+  </div>
 
-h.length          # => 5
-h['dog']          # => "canine"
-h[:bird]          # => "papuga"
-h[12]             # => "dodecine"
-
-
-{hashes: 1, are: 'unordered'}  # => {:hashes => 1, :are => 'unordered'}
-</pre>
-
-<h3 class="not-capitalized"> Hash <a href="http://www.ruby-doc.org/core-1.9.3/Hash.html" target="_blank">http://www.ruby-doc.org/core-1.9.3/Hash.html</a></h3>
+  <h3 class="not-capitalized"> Hash <a href="http://www.ruby-doc.org/core-1.9.3/Hash.html" target="_blank">http://www.ruby-doc.org/core-1.9.3/Hash.html</a></h3>
 </section>
 
 <section class="slide" id="symbol">
   <h2>Symbols</h2>
-<pre>
-:my_variable                  # => :my_variable
-:"Ruby rules"                 # => :"Ruby rules"
-</pre>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      :my_variable                  # => :my_variable
+      :"Ruby rules"                 # => :"Ruby rules"]]>
+    </script>
+  </div>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      a = "cat"
+      :"#{a}sup"                    # => :catsup
+      :'#{a}sup'                    # => :'\#{a}sup']]>
+    </script>
+  </div>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      %s{symbol}                    # => :symbol
+      %s{ symbol with spaces}       # => :" symbol with spaces"]]>
+    </script>
+  </div>
 
-<pre>
-a = "cat"
-
-:"#{a}sup"                    # => :catsup
-:'#{a}sup'                    # => :'\#{a}sup'
-</pre>
-
-<pre>
-%s{symbol}                    # => :symbol
-%s{ symbol with spaces}       # => :" symbol with spaces"
-</pre>
-
-<h3 class="not-capitalized"> Symbol <a href="http://www.ruby-doc.org/core-1.9.3/Symbol.html" target="_blank">http://www.ruby-doc.org/core-1.9.3/Symbol.html</a></h3>
+  <h3 class="not-capitalized"> Symbol <a href="http://www.ruby-doc.org/core-1.9.3/Symbol.html" target="_blank">http://www.ruby-doc.org/core-1.9.3/Symbol.html</a></h3>
 </section>
 
 <section class="slide" id="ranges">
   <h2>Ranges</h2>
-<pre>
-1..10        # creates a range from 1 to 10 inclusive
-1...10       # creates a range from 1 to 10
-</pre>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      1..10        # creates a range from 1 to 10 inclusive
+      1...10       # creates a range from 1 to 10]]>
+    </script>
+  </div>
 
-<pre>
-(1..10).to_a        # => [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] 
-(1...10).to_a       # => [1, 2, 3, 4, 5, 6, 7, 8, 9] 
-</pre>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      (1..10).to_a        # => [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] 
+      (1...10).to_a       # => [1, 2, 3, 4, 5, 6, 7, 8, 9] ]]>
+    </script>
+  </div>
 
-<pre>
-('a'..'l').to_a         
-# => ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l"]
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      ('a'..'l').to_a         
+      # => ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l"]
 
-('cab'...'car').to_a       
-# => ["cab", "cac", "cad", "cae", "caf", "cag", "cah", "cai", "caj", 
-#     "cak", "cal", "cam", "can", "cao", "cap", "caq"] 
-</pre>
-
+      ('cab'...'car').to_a       
+      # => ["cab", "cac", "cad", "cae", "caf", "cag", "cah", "cai", "caj", 
+      #     "cak", "cal", "cam", "can", "cao", "cap", "caq"] ]]>
+    </script>
+  </div>
 </section>
 
 <section class="slide" id="ranges-methods">
   <h2>Ranges</h2>
-<pre>
-words = 'cab'..'car'
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      words = 'cab'..'car'
 
-words.min                 # => 'cab'
-words.max                 # => 'car'
-words.include?('can')     # => true
-</pre>
+      words.min                 # => 'cab'
+      words.max                 # => 'car'
+      words.include?('can')     # => true
 
-<pre>
-words.reject {|subrange| subrange > 'caf' }
-# => ["cab", "cac", "cad", "cae", "caf"] 
-</pre>
+      words.reject {|subrange| subrange > 'caf' }
+      # => ["cab", "cac", "cad", "cae", "caf"]
 
-<pre>
-words.each {|word| puts 'Hello ' + word }  # iterate through each value and perform a task
-
-# => Hello cab
-# => Hello cac
-# ...
-# => Hello car</pre>
+      words.each {|word| puts 'Hello ' + word }  # iterate through each value and perform a task
+      # => Hello cab
+      # => Hello cac
+      # ...
+      # => Hello car ]]>
+    </script>
+  </div>
 
 <h3 class="not-capitalized"> Range <a href="http://www.ruby-doc.org/core-1.9.3/Range.html" target="_blank">http://www.ruby-doc.org/core-1.9.3/Range.html</a></h3>
 </section>
@@ -440,213 +527,255 @@ words.each {|word| puts 'Hello ' + word }  # iterate through each value and perf
     <div>When we talk about <strong>dynamic typing</strong>, we talk about a mechanism where <strong>the type of a variable can change</strong> and be resolved on the fly at the exact moment it gets parsed by the interpreter.
     </div>
 
-    <pre>
-x = 3
-x = "Transformers seems to be a boring movie"
-x = :why_are_we_here
-x = /is this a reg ex/
-x = "enough already... I think we understand"
-    </pre>
+    <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      x = 3
+      x = "Transformers seems to be a boring movie"
+      x = :why_are_we_here
+      x = /is this a reg ex/
+      x = "enough already... I think we understand"
+    ]]>
+    </script>
+    </div>
 
     <div>A <strong>strongly typed</strong> language is a language that is being strict about what you can do with your typed variables.</div>
 
-    <pre>
-x = "3"
-y = x + "ho!" #result : "3ho!"
+    <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      x = "3"
+      y = x + "ho!" #result : "3ho!"
 
-x = "3"
-y = x + 3 #Wooo! Ruby won't like that
-    </pre>
+      x = "3"
+      y = x + 3 #Wooo! Ruby wont like that]]>
+    </script>
+    </div>
 </section>
 
 
 <section class="slide" id="variables">
   <h2>Variables</h2>
-<pre>
-a = 10
-b = 20
-c = 30
-a, b, c = 10, 20, 30
-</pre>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    a = 10
+    b = 20
+    c = 30
+    a, b, c = 10, 20, 30]]>
+    </script>
+  </div>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    y = 'hello'
+    y.class                 # => String
+    y = 20 
+    y.kind_of? Integer      # => true
+    y.class                 # => Fixnum
+    y.to_f                  # => 20.0
+    y.to_s                  # => "20"
+    defined? y              # "local-variable"
 
-<pre>
-y = 'hello'
-y.class                 # => String
-y = 20 
-y.kind_of? Integer      # => true
-y.class                 # => Fixnum
-y.to_f                  # => 20.0
-y.to_s                  # => "20"
-defined? y              # "local-variable"
-
-$x = 10
-defined? x              # "global-variable"
-</pre>
-
+    $x = 10
+    defined? x              # "global-variable"]]>
+    </script>
+  </div>
 </section>
 
 <section class="slide" id="methods">
   <h2>Methods</h2>
-<pre>
-def my_new_method(arg1, arg2, arg3)
-  # code goes here
-end
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    def my_new_method(arg1, arg2, arg3)
+      # code goes here
+    end
 
-def my_new_method
-  # code goes here
-end
-</pre>
-<pre>
-def cool_dude(arg1="Miles", arg2="Coltrane", arg3="Roach")
-  "#{arg1}, #{arg2}, #{arg3}."
-end
+    def my_new_method
+      # code goes here
+    end]]>
+    </script>
+  </div>
 
-cool_dude                            # => "Miles, Coltrane, Roach."
-cool_dude('Bart')                    # => "Bart, Coltrane, Roach."
-cool_dude('Bart', 'Elwood')          # => "Bart, Elwood, Roach."
-cool_dude 'Bart', 'Elwood', 'Linus'  # => "Bart, Elwood, Linus."
-</pre>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    def cool_dude(arg1="Miles", arg2="Coltrane", arg3="Roach")
+      "#{arg1}, #{arg2}, #{arg3}."
+    end
 
-<pre>
-def surround(word, pad_width=word.length/2)
-  "[" * pad_width + word = "]" * pad_width
-end
-</pre>
+    cool_dude                            # => "Miles, Coltrane, Roach."
+    cool_dude('Bart')                    # => "Bart, Coltrane, Roach."
+    cool_dude('Bart', 'Elwood')          # => "Bart, Elwood, Roach."
+    cool_dude 'Bart', 'Elwood', 'Linus'  # => "Bart, Elwood, Linus."]]>
+    </script>
+  </div>
 
-<pre>
-surround 'elephant'             # => "[[[[elephant]]]]"
-surround 'fox'                  # => "[fox]"
-surround 'fox', 10              # => "[[[[[[[[[[fox]]]]]]]]]]"
-</pre>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    def surround(word, pad_width=word.length/2)
+      "[" * pad_width + word = "]" * pad_width
+    end]]>
+    </script>
+  </div>
+
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    surround 'elephant'             # => "[[[[elephant]]]]"
+    surround 'fox'                  # => "[fox]"
+    surround 'fox', 10              # => "[[[[[[[[[[fox]]]]]]]]]]"]]>
+    </script>
+  </div>
 </section>
 
 <section class="slide" id="varargs">
   <h2>Methods</h2>
-<pre>
-def varrargs(arg1, *rest)
-  "arg1=#{arg1}. rest=#{rest.inspect}"
-end
-</pre>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    def varrargs(arg1, *rest)
+      "arg1=#{arg1}. rest=#{rest.inspect}"
+    end]]>
+    </script>
+  </div>
 
-<pre >
-varrargs 'one'                 # => "arg1=one. rest=[]"
-varrargs 'one', 'two'          # => "arg1=one. rest=['two']"
-varrargs 'one', 'two', 'three' # => "arg1=one. rest=['two', 'three']"
-</pre>
-<pre>
-def split_apart(first, *splat, last)
-  "first=#{first.inspect} splat=#{splat.inspect} last=#{last.inspect}"
-end
-</pre>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    varrargs 'one'                 # => "arg1=one. rest=[]"
+    varrargs 'one', 'two'          # => "arg1=one. rest=['two']"
+    varrargs 'one', 'two', 'three' # => "arg1=one. rest=['two', 'three']"]]>
+    </script>
+  </div>
 
-<pre>
-split_apart 1, 2                  # => "first=1 splat=[] last=2"
-split_apart 1, 2, 3               # => "first=1 splat=[2] last=3"
-split_apart 1, 2, 3, 4            # => "first=1 splat=[2, 3] last=4"
-</pre>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    def split_apart(first, *splat, last)
+      "first=#{first.inspect} splat=#{splat.inspect} last=#{last.inspect}"
+    end]]>
+    </script>
+  </div>
 
-<pre>
-def split_apart(first, *, last)
-  # ...
-end
-</pre>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    split_apart 1, 2                  # => "first=1 splat=[] last=2"
+    split_apart 1, 2, 3               # => "first=1 splat=[2] last=3"
+    split_apart 1, 2, 3, 4            # => "first=1 splat=[2, 3] last=4"]]>
+    </script>
+  </div>
+
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    def split_apart(first, *, last)
+      # ...
+    end]]>
+    </script>
+  </div>
 </section>
 
 <section class="slide" id="methods-and-blocks">
   <h2>Methods and Blocks</h2>
-<pre>
-def double(p1)
-  yield(p1*2)
-end
-</pre>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+      def double(p1)
+        yield(p1*2)
+      end
 
-<pre>
-double(3) {|val| "I got #{val}" }        # => "I got 6"
-</pre>
+      double(3) {|val| "I got #{val}" }        # => "I got 6"
+      
+      double("tom") do |val|
+        "Then I got #{val}" 
+      end                                      # => "Then I got tomtom"]]>
+    </script>
+  </div>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+      def try
+        if block_given?
+          yield
+        else
+          'no block'
+        end
+      end
 
-
-<pre>
-double("tom") do |val|
-  "Then I got #{val}" 
-end                                      # => "Then I got tomtom"
-</pre>
-
-<pre>
-def try
-  if block_given?
-    yield
-  else
-    'no block'
-  end
-end
-</pre>
-
-<pre>
-try                     # => "no block"
-try { 'hello' }         # => "hello"
-try do 'hello' end      # => "hello"
-</pre>
+      try                     # => "no block"
+      try { 'hello' }         # => "hello"
+      try do 'hello' end      # => "hello"]]>
+    </script>
+  </div>
 </section>
 
 <section class="slide" id="anonymous-method">
   <h2>Anonymous Method</h2>
-<pre>
-bo = lambda { |param|  puts "You called me with #{param}" }
-</pre>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    bo = lambda { |param|  puts "You called me with #{param}" }
 
-<pre>
-bo.call 99            # => "You called me with 99" 
-bo.call 'cat'         # => "You called me with cat"
-</pre>
+    bo.call 99            # => "You called me with 99" 
+    bo.call 'cat'         # => "You called me with cat"]]>
+    </script>
+  </div>
 </section>
 
 <section class="slide" id="return-values">
   <h2>methods return values</h2>
-  <pre>
-def meth_one
-  "one"
-end
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    def meth_one
+      "one"
+    end
 
-meth_one        # => "one"
-</pre>
+    meth_one        # => "one"]]>
+    </script>
+  </div>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    def meth_two(arg)
+      if arg > 0  
+        "positive"
+      elsif arg < 0 
+        "negative"
+      else
+        "zero"
+      end
+    end
 
-<pre>
-def meth_two(arg)
-  if arg > 0  
-    "positive"
-  elsif arg < 0 
-    "negative"
-  else
-    "zero"
-  end
-end
-
-meth_two(23)       # => "positive"
-meth_two(0)        # => "zero"
-</pre>
+    meth_two(23)       # => "positive"
+    meth_two(0)        # => "zero"]]>
+    </script>
+  </div>
 </section>
 
 <section class="slide" id="return-values2">
   <h2>methods return values</h2>
-  <pre>
-def meth_three
-  100.times do |num|
-    square = num * num
-    return num, square if square > 100
-  end
-end
-</pre>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    def meth_three
+      100.times do |num|
+        square = num * num
+        return num, square if square > 100
+      end
+    end
+    
+    meth_three        # => [32, 1024]
 
-<pre>
-meth_three        # => [32, 1024]
-</pre>
-
-<pre>
-num, square = meth_three
-
-num              # => 32
-square           # => 1024
-</pre>
+    num, square = meth_three
+    num              # => 32
+    square           # => 1024]]>
+    </script>
+  </div>
 </section>
 
 <section class="slide" id="if">
@@ -1219,10 +1348,17 @@ puts "Price in cents: #{smart_home.price_in_cents}"  # => 3500
 <script src="support/extensions/navigation/deck.navigation.js"></script>
 <script src="support/extensions/scale/deck.scale.js"></script>
 
+<!-- Syntax highlighter -->
+<script src="support/extensions/syntax-highlighter/XRegExp.js"></script>
+<script src="support/extensions/syntax-highlighter/shCore.js"></script>
+<script src="support/extensions/syntax-highlighter/shBrushRuby.js"></script>
+<script src="support/extensions/syntax-highlighter/shBrushBash.js"></script>
+
 <!-- Initialize the deck. You can put this in an external file if desired. -->
 <script>
 	$(function() {
 		$.deck('.slide');
+    SyntaxHighlighter.all();
 	});
 </script>
 </body>
