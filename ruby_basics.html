@@ -6,10 +6,10 @@
 	<meta name="viewport" content="width=1024, user-scalable=no">
 
 	<title>Ruby Basics</title>
-	
+
 	<!-- Required stylesheet -->
 	<link rel="stylesheet" href="support/core/deck.core.css">
-	
+
 	<!-- Extension CSS files go here. Remove or add as needed. -->
 	<link rel="stylesheet" href="support/extensions/goto/deck.goto.css">
 	<link rel="stylesheet" href="support/extensions/menu/deck.menu.css">
@@ -17,14 +17,14 @@
 	<link rel="stylesheet" href="support/extensions/status/deck.status.css">
 	<link rel="stylesheet" href="support/extensions/hash/deck.hash.css">
 	<link rel="stylesheet" href="support/extensions/scale/deck.scale.css">
-	
+
 	<!-- Style theme. More available in /themes/style/ or create your own. -->
 	<link rel="stylesheet" href="support/themes/style/mnml.css">
 	<link rel="stylesheet" href="support/themes/style/custom.css">
-	
+
 	<!-- Transition theme. More available in /themes/transition/ or create your own. -->
 	<link rel="stylesheet" href="support/themes/transition/vertical-slide.css">
-	
+
   <!-- Syntax highlighter -->
   <link rel="stylesheet" href="support/extensions/syntax-highlighter/shCore.css">
   <link rel="stylesheet" href="support/extensions/syntax-highlighter/shThemeDefault.css">
@@ -98,7 +98,7 @@
       ]]>
     </script>
   </div>
-</section>	
+</section>
 
 <section class="slide" id="irb">
 	<h2>Interactive Ruby</h2>
@@ -126,7 +126,7 @@
 </p><p>
 When an operation between two Fixnum objects creates an overflow, Ruby will automatically convert the numbers to a Bignums, perform the operation again and store the result in a Bignum. The Bignum is returned from the operator and stored in the variable just like a Fixnum would be. The programmer doesn't have to know the Bignum even exists.</p>
 </div>
-  
+
 <div class="row">
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
@@ -207,30 +207,30 @@ When an operation between two Fixnum objects creates an overflow, Ruby will auto
       "now is #{def the(a)
                   'the' + a
                 end
-                the('time') } 
-      for all good coders.."  
+                the('time') }
+      for all good coders.."
       # => now is the time for all good coders..]]>
     </script>
   </div>
   <div class="column right">
     <script type="syntaxhighlighter" class="brush: ruby">
       <![CDATA[
-      "Seconds/day: #{24*60*60}"    
+      "Seconds/day: #{24*60*60}"
       # => Seconds/day: 86400
 
-      %{Seconds/day: #{24*60*60}}   
+      %{Seconds/day: #{24*60*60}}
       # => Seconds/day: 86400
-      
-      '{Seconds/day: #{24*60*60}'   
+
+      '{Seconds/day: #{24*60*60}'
       # => Seconds/day: #{24*60*60}
-      
-      %q{Seconds/day: #{24*60*60}}  
+
+      %q{Seconds/day: #{24*60*60}}
       # => Seconds/day: #{24*60*60}
-      
+
       'con' "cat" 'en' "ate"
       # => concatenate
-      
-      "Ukraine on Rails".split(' ') 
+
+      "Ukraine on Rails".split(' ')
       # => ["Ukraine", "on", "Rails"]]]>
     </script>
   </div>
@@ -241,9 +241,9 @@ When an operation between two Fixnum objects creates an overflow, Ruby will auto
   <div class="row">
     <script type="syntaxhighlighter" class="brush: ruby">
       <![CDATA[
-      print <<-eos                      
-      Double  quoted \ here document.   
-      It is #{Time.now}                 
+      print <<-eos
+      Double  quoted \ here document.
+      It is #{Time.now}
       eos
 
       # => Double  quoted  here document.
@@ -254,8 +254,8 @@ When an operation between two Fixnum objects creates an overflow, Ruby will auto
     <script type="syntaxhighlighter" class="brush: ruby">
       <![CDATA[
       print <<-'eos'
-      Double  quoted here document.       
-      It is #{Time.now}                   
+      Double  quoted here document.
+      It is #{Time.now}
       eos
 
       # => Double  quoted  here document.
@@ -314,17 +314,17 @@ When an operation between two Fixnum objects creates an overflow, Ruby will auto
   <div class="row">
     <script type="syntaxhighlighter" class="brush: ruby">
       <![CDATA[
-      languages = 'Ruby', 'Java', 'C#', 'PHP' 
+      languages = 'Ruby', 'Java', 'C#', 'PHP'
       # => ["Ruby", "Java", "C#", "PHP"]
 
-      languages[0]            # => "Ruby" 
-      languages[1]            # => "Java" 
-      languages[4]            # => nil 
-      languages[2..3]         # => ["C#", "PHP"] 
-      languages[-2]           # => "C#" 
-      languages.sort          # => ["C#", "Java", "PHP", "Ruby"] 
-      languages.length        # => 4 
-      languages.first         # => "Ruby" 
+      languages[0]            # => "Ruby"
+      languages[1]            # => "Java"
+      languages[4]            # => nil
+      languages[2..3]         # => ["C#", "PHP"]
+      languages[-2]           # => "C#"
+      languages.sort          # => ["C#", "Java", "PHP", "Ruby"]
+      languages.length        # => 4
+      languages.first         # => "Ruby"
       languages.last          # => "PHP"]]>
     </script>
   </div>
@@ -339,10 +339,10 @@ When an operation between two Fixnum objects creates an overflow, Ruby will auto
     days2 = ['Thu', 'Fri', 'Sat', 'Sun']
 
     days1 + days2
-    # => ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"] 
+    # => ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 
     days1.concat(days2)
-    # => ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"] 
+    # => ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 
     days1 << 'Thu' << 'Fri' << 'Sat' << 'Sun'
     # => ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]]]>
@@ -358,14 +358,14 @@ When an operation between two Fixnum objects creates an overflow, Ruby will auto
 
     # Union
     operating_systems | linux_systems
-    # => ["Fedora", "SuSE", "RHEL", "Windows", "MacOS", "PCLinuxOS", "Ubuntu"] 
+    # => ["Fedora", "SuSE", "RHEL", "Windows", "MacOS", "PCLinuxOS", "Ubuntu"]
 
     # Intersection
-    operating_systems & linux_systems      # => ["Fedora", "SuSE", "RHEL"] 
+    operating_systems & linux_systems      # => ["Fedora", "SuSE", "RHEL"]
 
     # Difference
-    operating_systems - linux_systems      # => ["Windows", "MacOS"] 
-    linux_systems - operating_systems      # => ["PCLinuxOS", "Ubuntu"] 
+    operating_systems - linux_systems      # => ["Windows", "MacOS"]
+    linux_systems - operating_systems      # => ["PCLinuxOS", "Ubuntu"]
 
     # Uniq
     operating_systems = ['Fedora', 'SuSE', 'MacOS', 'RHEL', 'SuSE', 'Fedora']
@@ -380,8 +380,8 @@ When an operation between two Fixnum objects creates an overflow, Ruby will auto
     <![CDATA[
     colors = ['red', 'green', 'blue']
 
-    colors.push 'indigo'    # => ["red", "green", "blue", "indigo"] 
-    colors.push 'violet'    # => ["red","green","blue","indigo","violet"] 
+    colors.push 'indigo'    # => ["red", "green", "blue", "indigo"]
+    colors.push 'violet'    # => ["red","green","blue","indigo","violet"]
     colors.pop              # => "violet"
     colors.pop              # => "indigo"]]>
     </script>
@@ -431,7 +431,7 @@ When an operation between two Fixnum objects creates an overflow, Ruby will auto
     <script type="syntaxhighlighter" class="brush: ruby">
       <![CDATA[
       {hashes: 1, are: 'unordered'}  # => {:hashes => 1, :are => 'unordered'} ]]>
-    </script> 
+    </script>
   </div>
 
   <h3 class="not-capitalized"> Hash <a href="http://www.ruby-doc.org/core-1.9.3/Hash.html" target="_blank">http://www.ruby-doc.org/core-1.9.3/Hash.html</a></h3>
@@ -478,7 +478,7 @@ When an operation between two Fixnum objects creates an overflow, Ruby will auto
   <div class="row">
     <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
-      (1..10).to_a        # => [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] 
+      (1..10).to_a        # => [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
       (1...10).to_a       # => [1, 2, 3, 4, 5, 6, 7, 8, 9] ]]>
     </script>
   </div>
@@ -486,11 +486,11 @@ When an operation between two Fixnum objects creates an overflow, Ruby will auto
   <div class="row">
     <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
-      ('a'..'l').to_a         
+      ('a'..'l').to_a
       # => ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l"]
 
-      ('cab'...'car').to_a       
-      # => ["cab", "cac", "cad", "cae", "caf", "cag", "cah", "cai", "caj", 
+      ('cab'...'car').to_a
+      # => ["cab", "cac", "cad", "cae", "caf", "cag", "cah", "cai", "caj",
       #     "cak", "cal", "cam", "can", "cao", "cap", "caq"] ]]>
     </script>
   </div>
@@ -570,7 +570,7 @@ When an operation between two Fixnum objects creates an overflow, Ruby will auto
     <![CDATA[
     y = 'hello'
     y.class                 # => String
-    y = 20 
+    y = 20
     y.kind_of? Integer      # => true
     y.class                 # => Fixnum
     y.to_f                  # => 20.0
@@ -689,9 +689,9 @@ When an operation between two Fixnum objects creates an overflow, Ruby will auto
       end
 
       double(3) {|val| "I got #{val}" }        # => "I got 6"
-      
+
       double("tom") do |val|
-        "Then I got #{val}" 
+        "Then I got #{val}"
       end                                      # => "Then I got tomtom"]]>
     </script>
   </div>
@@ -720,7 +720,7 @@ When an operation between two Fixnum objects creates an overflow, Ruby will auto
     <![CDATA[
     bo = lambda { |param|  puts "You called me with #{param}" }
 
-    bo.call 99            # => "You called me with 99" 
+    bo.call 99            # => "You called me with 99"
     bo.call 'cat'         # => "You called me with cat"]]>
     </script>
   </div>
@@ -742,9 +742,9 @@ When an operation between two Fixnum objects creates an overflow, Ruby will auto
     <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
     def meth_two(arg)
-      if arg > 0  
+      if arg > 0
         "positive"
-      elsif arg < 0 
+      elsif arg < 0
         "negative"
       else
         "zero"
@@ -768,7 +768,7 @@ When an operation between two Fixnum objects creates an overflow, Ruby will auto
         return num, square if square > 100
       end
     end
-    
+
     meth_three        # => [32, 1024]
 
     num, square = meth_three
@@ -781,8 +781,8 @@ When an operation between two Fixnum objects creates an overflow, Ruby will auto
 <section class="slide" id="if">
   <h2>if expression</h2>
   <pre>
-a = 5 
-if a == 4 
+a = 5
+if a == 4
   a = 7
 end
 </pre>
@@ -809,11 +809,11 @@ a # => 7
 <section class="slide" id="ifelse">
   <h2>if-elsif-else expression</h2>
   <pre>
-if expression 
+if expression
   # code goes here
-elsif another expression 
+elsif another expression
   # code goes here
-elsif another expression 
+elsif another expression
   # code goes here
 else
   # code goes here
@@ -946,7 +946,7 @@ end
   <pre>
 time = Time.new
 
-time            # => 2012-10-15 18:09:32 +0300 
+time            # => 2012-10-15 18:09:32 +0300
 time.year       # => 2012
 time.month      # => 10
 time.day        # => 15
@@ -967,9 +967,9 @@ time.strftime("%Y-%m-%d %H:%M:%S")  # => "2012-10-15 18:09:32"
 <section class="slide" id="file">
   <h2>File</h2>
   <pre>
-File.new("temp.txt", "w")          # => #&lt;File:temp.txt> 
+File.new("temp.txt", "w")          # => #&lt;File:temp.txt>
 
-file = File.open("temp.txt", "r")  # => #&lt;File:temp.txt> 
+file = File.open("temp.txt", "r")  # => #&lt;File:temp.txt>
 file.closed?                          # => false
 file.closed?                          # => nil
 File.rename("tempf.txt", "newf.txt")  # => 0
@@ -994,10 +994,10 @@ my_file.each {|line| print line}</pre>
   <pre>
 Dir.entries "."
 
-# => [".", "..", ".git", ".gitignore", ".rvmrc", "app", "config", 
-# "config.ru", "db", "doc", "Gemfile", "Gemfile.lock", "lib", 
-# "log", "public", "Rakefile", "README.textile", "script", 
-# "test", "tmp", "vendor"] 
+# => [".", "..", ".git", ".gitignore", ".rvmrc", "app", "config",
+# "config.ru", "db", "doc", "Gemfile", "Gemfile.lock", "lib",
+# "log", "public", "Rakefile", "README.textile", "script",
+# "test", "tmp", "vendor"]
 
 Dir.foreach('.') {|file| puts file}
 </pre>
@@ -1086,7 +1086,7 @@ class BookInStock
     @author = author
     @price = Float(price)
   end
- 
+
 end
 </pre>
 </section>

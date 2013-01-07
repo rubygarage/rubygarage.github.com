@@ -6,10 +6,10 @@
 	<meta name="viewport" content="width=1024, user-scalable=no">
 
 	<title>Metaprogramming in Ruby</title>
-	
+
 	<!-- Required stylesheet -->
 	<link rel="stylesheet" href="support/core/deck.core.css">
-	
+
 	<!-- Extension CSS files go here. Remove or add as needed. -->
 	<link rel="stylesheet" href="support/extensions/goto/deck.goto.css">
 	<link rel="stylesheet" href="support/extensions/menu/deck.menu.css">
@@ -17,14 +17,19 @@
 	<link rel="stylesheet" href="support/extensions/status/deck.status.css">
 	<link rel="stylesheet" href="support/extensions/hash/deck.hash.css">
 	<link rel="stylesheet" href="support/extensions/scale/deck.scale.css">
-	
+
 	<!-- Style theme. More available in /themes/style/ or create your own. -->
 	<link rel="stylesheet" href="support/themes/style/mnml.css">
 	<link rel="stylesheet" href="support/themes/style/custom.css">
-	
+
 	<!-- Transition theme. More available in /themes/transition/ or create your own. -->
 	<link rel="stylesheet" href="support/themes/transition/vertical-slide.css">
-	
+
+	<!-- Syntax highlighter -->
+	<link rel="stylesheet" href="support/extensions/syntax-highlighter/shCore.css">
+	<link rel="stylesheet" href="support/extensions/syntax-highlighter/shThemeDefault.css">
+	<link rel="stylesheet" href="support/extensions/syntax-highlighter/shThemeRDark.css">
+
 	<!-- Required Modernizr file -->
 	<script src="support/javascripts/modernizr.custom.js"></script>
 </head>
@@ -42,23 +47,43 @@
 	<div>
 		In Ruby, classes are never closed: you can always add methods to an existing class. This applies to the classes you write as well as the standard, built-in classes. All you have to do is open up a class definition for an existing class, and the new contents you specify will be added to whatever's there.
 	</div>
-	<pre>
-class D
-    def x
-        'X'
-    end
-end
+    <div class="column left">
+      <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+		class D
+		    def x
+		        'X'
+		    end
+		end
 
-class D
-    def y
-        'Y'
-    end
-end
+		class D
+		    def y
+		        'Y'
+		    end
+		end
 
-d = D.new
-d.x 	# => 'X'
-d.y 	# => 'Y'
-	</pre>
+		d = D.new
+		d.x 	# => 'X'
+		d.y 	# => 'Y']]>
+	</script>
+  </div>
+    <div class="column right">
+      <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+		3.times do
+          class C
+            puts "hello"
+          end
+        end]]>
+	  </script>
+
+	  <script type="syntaxhighlighter" class="brush: bash">
+      <![CDATA[
+		# => Hello
+		# => Hello
+		# => Hello]]>
+	  </script>
+  </div>
 </section>
 
 <section class="slide" id="monkey-patch">
@@ -66,7 +91,9 @@ d.y 	# => 'Y'
   <div>
   In Ruby, the term <i>monkey patch</i> means any dynamic modification to a class.
   </div>
-	<pre>
+    <div class="row">
+      <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
 # evil example
 class FixNum
     def +(adder)
@@ -75,22 +102,185 @@ class FixNum
 end
 
 ## that's correct, I just turned addition into subtraction
-	</pre>
+	</script>
+  </div>
 	<div>
 	Monkey patching is a practice which involves substituting the pillars of an house: if you're not very careful in what you substitute, the whole building will collapse over your remains. Moreover, you may take down some underground stations full of people as well as a side-effect.
 	</div>
-</section>	
+</section>
+
+<section class="slide" id="classes">
+	<h2>Classes</h2>
+	<div>
+		Classes themselves are nothing but objects.
+	</div>
+    <div class="row">
+      <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+"hello".class            # => String
+String.class             # => Class
+
+String.superclass        # => Object
+Object.superclass        # => BasicObject
+BasicObject.superclass   # => nil
+
+Class.superclass         # => Module
+Module.superclass        # => Object]]>
+	</script>
+  </div>
+</section>
+
+
+<section class="slide" id="constants">
+	<h2>Constants</h2>
+	<div>
+		Constants’ paths use a double colon as a separator. If you’re sitting deep inside the tree of constants, you can provide the absolute path to an outer constant by using a leading double colon as root.
+	</div>
+    <div class="row">
+      <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+module M
+  class C
+    X = 'a constant'
+  end
+  C::X    # => 'a constant'
+end
+
+M::C::X   # => 'a constant'
+
+module M
+  Y = 'another constant'
+  class C
+    # absolute path
+    ::M::Y   # => 'another constant'
+  end
+end
+]]>
+	</script>
+  </div>
+</section>
+
+<section class="slide" id="constants2">
+	<h2>Constants</h2>
+	<div>
+        The Module class also provides an instance method and a class method that are both called `constants`:   Module#constants( ) returns all constants in the current scope, Module.constants( ) returns all the top-level constants in the current program, including class names.
+	</div>
+    <div class="row">
+      <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+
+M.constants          # => [:C, :Y]
+Module::constants    # => [:Object, :Module, :Class, :BasicObject, :Kernel, :NilClass, :NIL ...
+
+module M
+  class C
+    module M2
+      puts Module.nesting    # => [M::C::M2, M::C, M]
+    end
+  end
+end
+]]>
+	</script>
+  </div>
+</section>
+
+<section class="slide" id="constant-lookup-order">
+  <h2>Constant lookup order</h2>
+  <div>The list of modules searched, in the order searched<br/>
+  [Enclosing::Local, Enclosing, Included, Super, Object, Kernel]</div>
+
+    <div class="column left">
+      <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+module Kernel
+  A = B = C = D = E = F = "from kernel"
+end
+
+A = B = C = D = E = "from toplevel"
+
+class Super
+  A = B = C = D = "from superclass"
+end
+
+module Included
+  A = B = C = "from included module"
+end
+]]>
+	</script>
+  </div>
+    <div class="column right">
+      <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+module Enclosing
+  A = B = "from enclosing module"
+
+  class Local  Super
+    include Included
+
+    A = "defined locally"
+
+    puts A  # "defined locally"
+    puts B  # "from enclosing module"
+    puts C  # "from included module"
+    puts D  # "from superclass"
+    puts E  # "from toplevel"
+    puts F  # "from kernel"
+  end
+end
+]]>
+	</script>
+  </div>
+</section>
+
+<section class="slide" id="inheritance">
+	<h2>Inheritance</h2>
+	<div>
+        One of the most important concepts in object-oriented programming is that of inheritance. Ruby does not support Multiple level of inheritances but Ruby supports mixins. A mixin is like a specialized implementation of multiple inheritance in which only the interface portion is inherited.
+	</div>
+    <div class="row">
+      <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+
+class MyClass
+  def my_method
+    'my_method ()'
+  end
+end
+
+class MySubClass &lt; MyClass
+end
+
+
+obj = MySubClass.new
+obj.my_method()       # => 'my_method ()'
+
+
+MySubClass.ancestors
+# => [MySubClass, MyClass, Object, Kernel, BasicObject]
+]]>
+	</script>
+  </div>
+</section>
+
+<section class="slide" id="inheritance-scheme">
+	<h2>Inheritance</h2>
+    <div class="row">
+      <img src="support/themes/style/images/basic_object.png" alt="Inheritance scheme">
+  </div>
+</section>
 
 <section class="slide" id="self">
 	<h2>Discovering self</h2>
 	<div>
 	Every line of Ruby code is executed inside an object—the so–called current object. The <i>current object</i> is also known as <strong>self</strong>, because you can access it with the <strong>self</strong> keyword.
 	</div>
-	<pre>
+    <div class="row">
+      <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
 class MyClass
   def testing_self
     @var = 10     # An instance variable of self
-    
+
     my_method()
       self        # Same as self.my_method()
     end
@@ -102,29 +292,155 @@ class MyClass
 
 obj = MyClass.new
 obj.testing_self  # => #&lt;MyClass:0x510b44 @var=11&gt;
-	</pre>
+]]>
+	</script>
+  </div>
+</section>
+
+<section class="slide" id="self-contexts">
+	<h2>self in different contexts</h2>
+    <div class="row">
+      <img src="support/themes/style/images/self.png" alt="self">
+  </div>
+</section>
+
+<section class="slide" id="self-access">
+	<h2>Access modifiers and self</h2>
+	<div>
+	When calling methods accessing <strong>self</strong>, the object is accessed from kind of outside, and only public and protected methods are available.
+	</div>
+    <div class="row">
+      <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+class C
+  def public_method
+    self.private_method
+  end
+
+  private
+
+  def private_method
+  end
+end
+]]>
+	</script>
+      <script type="syntaxhighlighter" class="brush: bash">
+      <![CDATA[
+C.new.public_method
+# => NoMethodError: private method `private_method` called for #&lt;C:0x00..>
+]]>
+	</script>
+  </div>
+</section>
+
+<section class="slide" id="methods-lookup-order">
+	<h2>The rules of method lookup</h2>
+	<div>
+        There are three different kinds of methods containers in Ruby: Classes, Modules and Singleton Classes. When a method is invoked all of them are searched for the first matching method to execute. When the objects gets a message, it looks for a corresponding method in the following order:
+	</div>
+    <div class="row">
+    <ul>
+      <li>In singleton class</li>
+      <li>Its class</li>
+      <li>Modules mixed into its class, in reverse order of inclusion</li>
+      <li>The class's superclass</li>
+      <li>Modules mixed into the superclass, in reverse order of inclusion</li>
+      <li>Likewise, up to Object (and its mix-in Kernel) and BasicObject</li>
+    </ul>
+  </div>
+</section>
+
+<section class="slide" id="method-lookup-chain">
+	<h2>Method lookup chain example</h2>
+    <div class="column left">
+      <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+module Printable
+  def print
+    puts "Printable::print"
+  end
+  def prepare_cover
+    puts "Printable::prepare_cover"
+  end
+end
+
+module Document
+  def print_to_screen
+    puts "Document::print_to_screen"
+    prepare_cover
+    format_for_screen
+    print
+  end
+  def format_for_screen
+    puts "Document::format_for_screen"
+  end
+  def print
+    puts "Document::print"
+  end
+end
+]]>
+	</script>
+  </div>
+     <div class="column right">
+      <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+class Book
+  include Document
+  include Printable
+end
+
+
+b = Book.new
+b.print_to_screen
+]]>
+	</script>
+	<script type="syntaxhighlighter" class="brush: bash">
+      <![CDATA[
+# => Document::print_to_screen
+# => Printable::prepare_cover
+# => Document::format_for_screen
+# => Printable::print
+]]>
+	</script>
+</section>
+
+<section class="slide" id="meth-lookup">
+	<h2>Method lookup chain example</h2>
+    <div class="row">
+      <img src="support/themes/style/images/basic_object_loockup.png" alt="self">
+  </div>
 </section>
 
 <section class="slide" id="calling-methods-dynamically">
 	<h2>Calling methods dynamically</h2>
-	<div>The most common way for dynamic method calling is to send a message to object.</div>
-	<pre>"hi there".send(:length)  #=> 8</pre>
-  
+	<div>The most common way for dynamic method calling is to send   a message to object.</div><br/><br/>
+	<script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA["hi there".send(:length)  #=> 8]]>
+	</script>
+  <br/>
   <div>A Method object represents a chunk of code and a context in which it executes. Once we have our Method object, we can execute it sometime later by sending it the message call.</div>
-  <pre>
-method_object = "hi there".method(:length) 
-method_object.call  #=> 8  </pre>
-  
+  <br/>
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+method_object = "hi there".method(:length)
+method_object.call  #=> 8  ]]>
+  </script>
+  <br/>
   <div>Or just eval</div>
-  <pre>eval "'hi there'.length"  #=> 8  </pre>
+  <br/>
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[eval "'hi there'.length"  #=> 8]]>
+  </script>
+  <br/>
   <div>Instantiating a method object is the fastest dynamic way in calling a method, eval is the slowest one. Also when sending a message to an object, or when instantiating a method object, you can call private methods of that object.</div>
 </section>
 
 <section class="slide" id="defining-methods-dynamically">
 	<h2>Defining methods dynamically</h2>
   <div>You can define a method on the spot with <i>define_method()</i>. You just need to provide a method name and a block, which becomes the method body.</div>
-  
-  <pre>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
 class MyClass
 
   define_method :triple do |my_arg|
@@ -134,72 +450,63 @@ class MyClass
 end
 
 obj = MyClass.new
-obj.triple(2) 
+obj.triple(2)
 # => 6
 
-  </pre>
+  ]]>
+  </script>
 </section>
 
-<section class="slide" id="constant-lookup-order">
-  <h2>Constant lookup order</h2>
-  <div>The list of modules searched, in the order searched<br/>
-  [Enclosing::Local, Enclosing, Included, Super, Object, Kernel]</div>
+<section class="slide" id="undefining-methods">
+	<h2>Unefining methods</h2>
+  <div>A method can be undefined any time, as well as defined.</div>
 
-<pre class="column left"><br>
-module Kernel
-  A = B = C = D = E = F = "defined in kernel"
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+class MyClass
+  def meth1; "meth1 called"; end
+  def meth2; "meth2 called"; end
+  def meth3; "meth3 called"; end
 end
 
-A = B = C = D = E = "defined at toplevel"
-
-class Super
-  A = B = C = D = "defined in superclass"
+obj = MyClass.new      # => #&lt;MyClass:0x9170850>
+obj.meth1              # => "meth1 called"
+  ]]>
+  </script>
+  <br/>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+class MyClass
+  undef meth1
+  remove_method :meth2
+  undef_method :meth3
 end
 
-module Included
-  A = B = C = "defined in included module"
-end
-<br></pre>
-<pre class="column left">
-module Enclosing
-  A = B = "defined in enclosing module"
-
-  class Local  Super
-    include Included
-
-    A = "defined locally"
-
-    puts A  # "defined locally"
-    puts B  # "defined in enclosing module"
-    puts C  # "defined in included module"
-    puts D  # "defined in superclass"
-    puts E  # "defined at toplevel"
-    puts F  # "defined in kernel"
-  end
-end
-</pre>
+obj.meth1              # => NoMethodError
+obj.meth2              # => NoMethodError
+obj.meth3              # => NoMethodError
+  ]]>
+  </script>
 </section>
 
-<section class="slide" id="method-lookup-order">
-	<h2>Method lookup order</h2>
-	<div>There are three different kinds of methods containers in Ruby, Classes, Modules and Singleton Classes. When a method is invoked all of them are searched for the first matching method to execute.</div>
-	<br>
-	<div>Method lookup order:</div>
-	<ul>
-	  <li>object's singleton class</li>
-	  <li class="slide">object's class</li>
-	  <li class="slide">modules mixed into its class, in reverse order of inclusion</li>
-	  <li class="slide">the class's superclass</li>
-	  <li class="slide">modules mixed into the superclass, in reverse order of inclusion</li>
-	  <li class="slide">likewise, up to Object (and it's mix-in Kernel) and BasicObject</li>
-	</ul>
+<section class="slide" id="undefining-class">
+	<h2>Undefining class</h2>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+Object.send(:remove_const, :MyClass)
+
+obj = MyClass.new    # => NameError: unitialized constant
+  ]]>
+  </script>
 </section>
 
 <section class="slide" id="method-missing">
 	<h2>Method missing</h2>
 	<div>When you send a message to an object, the object executes the first method it finds on its method lookup path with the same name as the message. If it fails to find any such method, it end up with <strong>method_missing</strong> method, where a NoMethodError exception is raised unless you have provided other behavior for it. The method_missing method is passed the symbol of the non-existent method, an array of the arguments that were passed in the original call and any block passed to the original method.</div>
-	
-	<pre>
+
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
 class Person
   def method_missing (meth, *args, &block)
     if met.to_s =~ /^find_all_by_(\w+)$/
@@ -209,13 +516,47 @@ class Person
     end
   end
 end
-</pre>
+  ]]>
+  </script>
+</section>
+
+
+<section class="slide" id="respond-to">
+	<h2>Method missing</h2>
+	<div>When defining dynamic methods with <strong>method_missing</strong>, the good practice is to add the same behavior to <strong>respond_to?</strong></div>
+
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+class Person
+  def method_missing(meth, *args, &block)
+    if meth.to_s =~ /^find_by_(.+)$/
+      'looking for the Person'
+    else
+      super
+    end
+  end
+
+  def respond_to?(meth)
+    if meth.to_s =~ /^find_by_.*$/ then true else super end
+  end
+end
+  ]]>
+  </script>
+  <br>
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+#   -> person.find_by_name
+#   -> person.find_by_age
+#   -> person.find_by_id
+  ]]>
+  </script>
 </section>
 
 <section class="slide" id="instance-variables">
 	<h2>Class and Instance variables</h2>
-	<pre class="column left">
-
+	<div class="column left">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
 class Polygon
   @@sides = 10
   def self.sides
@@ -224,8 +565,12 @@ class Polygon
 end
 
 puts Polygon.sides # => 10
-	</pre>
-	<pre class="column right">
+  ]]>
+  </script>
+</div>
+	<div class="column right">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
 class Polygon
   attr_reader :sides
 
@@ -235,31 +580,138 @@ class Polygon
 end
 
 puts Polygon.sides # => NoMethodError
-puts Polygon.new(10).sides # => 10</pre>
-	
+puts Polygon.new(10).sides # => 10  ]]>
+  </script>
+</div>
+</section>
+
+<section class="slide" id="instance-variable-meths">
+	<h2 class="not-capitalized">instance_variable_get(), instance_variable_set(),
+instance_variable_defined?()
+</h2>
+	<div class="row">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+class MyClass
+  def initialize(p1, p2)
+    @a, @b = p1, p2
+  end
+end
+
+c = MyClass.new('aaa', 'bbb')
+puts c.instance_variable_get(:@a)			# => "aaa"
+puts c.instance_variable_set(:@a, "dog")	# => "dog"
+puts c.instance_variable_get(:@a)			# => "dog"
+puts c.instance_variable_set(:@c, "cat")	# => "cat"
+puts c.instance_variable_defined?(:@c)		# => true
+puts c.instance_variable_get(:@c)			# => "cat"
+  ]]>
+  </script>
+</div>
 </section>
 
 <section class="slide" id="scope">
 	<h2>Scope</h2>
 	<div>Scope defines where in a program a variable is accessible. Scope changes whenever the program enters (or exits) a class or module definition or a method. These three borders are marked by the keywords <strong>class, module,</strong> and <strong>def</strong>, respectively. Each of these keywords acts like a Scope&nbsp;Gate.</div>
-	<pre>v1 = 1
+	<div class="row">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[v1 = 1
 
 class MyClass
   v2 = 2
   local_variables   # => [:v2]
-  
+
   def my_method
     v3 = 3
     local_variables
   end
-  
+
   local_variables   # => [:v2]
 end
 
 obj = MyClass.new
 obj.my_method       # => [:v3]
-local_variables     # => [:v1, :obj]</pre>	
+local_variables     # => [:v1, :obj]  ]]>
+  </script>
+</div>
 </section>
+
+<section class="slide" id="blocks-locals">
+	<h2>Blocks and local variables</h2>
+	<div>Blocks behave are closures, they capture the scope they are defined at.</div>
+	<div class="row">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+      	def my_method
+      	  yield
+      	end
+
+      	top_level_variable = 1
+
+      	my_method do
+      	  top_level_variable += 1
+      	  local_to_block = 1
+      	end
+
+      	top_level_variable		# => 2
+      	local_to_block 			# => Error!
+]]>
+  </script>
+</div>
+</section>
+
+<section class="slide" id="scope-gate">
+	<h2>Blocks and local variables</h2>
+	<div class="column left">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+        my_var = 'Success!'
+
+      	class MyClass
+      	  puts "#{my_var} in class definition"
+
+      	  def my_method
+      	    puts "#{my_var} in the method"
+      	  end
+      	end
+
+      	MyClass.new.my_method
+]]>
+  </script>
+<br/>
+  <script type="syntaxhighlighter" class="brush: bash">
+      <![CDATA[
+      undefined local variable or method 
+      `my_var` for MyClass::Class (NameError)]]>
+  </script>
+</div>
+
+<div class="column right slide">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+        my_var = 'Success'
+
+      	MyClass = Class.new do
+      	  puts "#{my_var} in class definition"
+
+      	  define_method :my_method do
+      	    puts "#{my_var} in the method"
+      	  end
+      	end
+
+      	MyClass.new.my_method
+]]>
+  </script>
+<br/>
+  <script type="syntaxhighlighter" class="brush: bash">
+      <![CDATA[
+      Success in class definition
+      Success in the method
+      ]]>
+  </script>
+</div>
+</section>
+
 
 <section class="slide" id="instance-eval">
 	<h2>Instance eval</h2>
@@ -339,10 +791,17 @@ add_method_to String
 <script src="support/extensions/navigation/deck.navigation.js"></script>
 <script src="support/extensions/scale/deck.scale.js"></script>
 
+<!-- Syntax highlighter -->
+<script src="support/extensions/syntax-highlighter/XRegExp.js"></script>
+<script src="support/extensions/syntax-highlighter/shCore.js"></script>
+<script src="support/extensions/syntax-highlighter/shBrushRuby.js"></script>
+<script src="support/extensions/syntax-highlighter/shBrushBash.js"></script>
+
 <!-- Initialize the deck. You can put this in an external file if desired. -->
 <script>
 	$(function() {
 		$.deck('.slide');
+		SyntaxHighlighter.all();
 	});
 </script>
 </body>
