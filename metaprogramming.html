@@ -247,7 +247,7 @@ class MyClass
   end
 end
 
-class MySubClass &lt; MyClass
+class MySubClass < MyClass
 end
 
 
@@ -282,13 +282,13 @@ class MyClass
     @var = 10     # An instance variable of self
 
     my_method()
-      self        # Same as self.my_method()
-    end
-
-    def my_method
-      @var = @var + 1
-    end
+    self        # Same as self.my_method()
   end
+
+  def my_method
+    @var = @var + 1
+  end
+end
 
 obj = MyClass.new
 obj.testing_self  # => #&lt;MyClass:0x510b44 @var=11&gt;
