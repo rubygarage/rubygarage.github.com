@@ -458,7 +458,7 @@ obj.triple(2)
 </section>
 
 <section class="slide" id="undefining-methods">
-	<h2>Unefining methods</h2>
+	<h2>Undefining methods</h2>
   <div>A method can be undefined any time, as well as defined.</div>
 
   <script type="syntaxhighlighter" class="brush: ruby">
@@ -712,11 +712,62 @@ local_variables     # => [:v1, :obj]  ]]>
 </div>
 </section>
 
+<section class="slide" id="define-methods">
+	<h2>Methods with shared variable</h2>
+	<div class="row">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[class MyClass
+def define_methods
+  shared = 0
+
+  Kernel.send :define_method, :counter do
+    shared
+  end
+
+  Kernel.send :define_method, :inc do |x|
+    shared += x
+  end
+end
+
+define_methods
+puts counter 		# => 0
+inc(4)
+puts counter 		# => 4
+      ]]>
+  </script>
+</div>
+</section>
+
+<section class="slide" id="binding">
+	<h2>Binding</h2>
+	<div>In Ruby current binding can be captured, and any code can be evaluated in that captured scope, any time.</div>
+	<div class="row">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+def local_with_binding(bind)
+  bind.eval("local")
+end
+
+def my_meth
+  local = "local from the inside"
+  local_with_binding(binding)
+end
+
+local = "top level local"
+
+puts local_with_binding(binding)			# => "top level local"
+puts my_meth 								# => "local from the inside"
+      ]]>
+  </script>
+</div>
+</section>
 
 <section class="slide" id="instance-eval">
-	<h2>Instance eval</h2>
+	<h2 class="not-capitalized">instance_eval and instance_exec</h2>
 	<div><strong>instance_eval</strong> method evaluates a string containing Ruby source code, or the given block, within the context of the receiver (obj).</div>
-	<pre>class MyClass
+	<div class="row">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[class MyClass
   def initialize
     @v = 1
   end
@@ -727,14 +778,29 @@ obj.instance_eval do
   self    # => #<MyClass:0x3340dc @v=1>
   @v      # => 1
 end
-</pre>
+      ]]>
+  </script>
+<br/>
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[class MyClass
+v=2
+obj.instance_eval { @v = v }
+obj.instance_eval { @v }		# => 2
+
+obj.instance_exec(3) { |multiplier| @v * multiplier } # => 6
+
+      ]]>
+  </script>
+</div>
 </section>
 
 <section class="slide" id="class-eval">
 	<h2>Class eval</h2>
 	<div><strong>class_eval</strong> (also known by its alternate name, <strong>module_eval</strong>) evaluates a block in the context of an existing class.
 
-	<pre>
+	<div class="row">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
 def add_method_to(a_class)
   a_class.class_eval do
     def m; 'Hello!' ; end
@@ -743,7 +809,9 @@ end
 
 add_method_to String
 "abc".m   # => "Hello!"
-</pre>
+      ]]>
+  </script>
+</div>
 </section>
 
 
