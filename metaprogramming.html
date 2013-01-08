@@ -638,7 +638,7 @@ local_variables     # => [:v1, :obj]  ]]>
 
 <section class="slide" id="blocks-locals">
 	<h2>Blocks and local variables</h2>
-	<div>Blocks behave are closures, they capture the scope they are defined at.</div>
+	<div>Blocks behave like closures, they capture the scope they are defined at.</div>
 	<div class="row">
   <script type="syntaxhighlighter" class="brush: ruby">
       <![CDATA[
@@ -681,7 +681,7 @@ local_variables     # => [:v1, :obj]  ]]>
 <br/>
   <script type="syntaxhighlighter" class="brush: bash">
       <![CDATA[
-      undefined local variable or method 
+      undefined local variable or method
       `my_var` for MyClass::Class (NameError)]]>
   </script>
 </div>
@@ -716,7 +716,7 @@ local_variables     # => [:v1, :obj]  ]]>
 	<h2>Methods with shared variable</h2>
 	<div class="row">
   <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[class MyClass
+      <![CDATA[
 def define_methods
   shared = 0
 
@@ -782,7 +782,7 @@ end
   </script>
 <br/>
   <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[class MyClass
+      <![CDATA[
 v=2
 obj.instance_eval { @v = v }
 obj.instance_eval { @v }		# => 2
