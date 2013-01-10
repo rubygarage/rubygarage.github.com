@@ -796,7 +796,7 @@ obj.instance_exec(3) { |multiplier| @v * multiplier } # => 6
 
 <section class="slide" id="class-eval">
 	<h2>Class eval</h2>
-	<div><strong>class_eval</strong> (also known by its alternate name, <strong>module_eval</strong>) evaluates a block in the context of an existing class.
+	<div><strong>class_eval</strong> (also known by its alternate name, <strong>module_eval</strong>) evaluates a block in the context of an existing class.<.div>
 
 	<div class="row">
   <script type="syntaxhighlighter" class="brush: ruby">
@@ -809,6 +809,760 @@ end
 
 add_method_to String
 "abc".m   # => "Hello!"
+      ]]>
+  </script>
+</div>
+</section>
+
+<section class="slide" id="blocks">
+  <h2 class="not-capitalized">Understanding Ruby Blocs, Procs, Lambdas, Methods</h2>
+  <img src="support/themes/style/images/surprise.png" alt="What do you know about procs?">
+</section>
+
+<section class="slide" id="blocks1">
+  <h2 class="not-capitalized">So, what is going on here?</h2>
+
+  <div class="row">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+array = [1, 2, 3, 4]
+
+array.collect! do |n|
+  n ** 2
+end
+
+puts array.inspect
+
+# => [1, 4, 9, 16]
+      ]]>
+  </script>
+</div>
+
+<ol>
+  <li>First, we send the collect! method to an Array with a block of code.</li>
+  <li>The code block interacts with a variable used within the collect! method (n in this case) and squares it.</li>
+  <li>Each element inside the array is now squared.</li>
+</ol>
+</section>
+
+<section class="slide" id="blocks2">
+  <h2>Block</h2>
+
+  <div class="row">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+class Array
+  def iterate!
+    self.each_with_index do |n, i|
+      self[i] = yield(n)
+    end
+  end
+end
+
+array = [1, 2, 3, 4]
+
+array.iterate! do |n|
+  n ** 2
+end
+
+puts array.inspect
+
+# => [1, 4, 9, 16]
+      ]]>
+</script>
+</div>
+</section>
+
+<section class="slide" id="to-proc">
+  <h2 class="not-capitalized">Convert the block to a Proc</h2>
+
+  <div class="column left">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+class Array
+  def iterate!(&code)
+    self.each_with_index do |n, i|
+      self[i] = code.call(n)
+    end
+  end
+end
+
+array = [1, 2, 3, 4]
+
+array.iterate! do |n|
+  n ** 2
+end
+
+puts array.inspect
+
+# => [1, 4, 9, 16]
+      ]]>
+  </script>
+</div>
+
+  <div class="column right">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+def what_am_i(&block)
+  block.class
+end
+
+puts what_am_i {}
+
+# => Proc
+      ]]>
+  </script>
+</div>
+</section>
+
+<section class="slide" id="procs">
+  <h2 class="not-capitalized">Procedures, AKA, Procs</h2>
+  <div>The only difference between blocks and Procs is that a block is a Proc that cannot be saved, and as such, is a one time use solution.</div>
+
+  <div class="column left">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+class Array
+  def iterate!(code)
+    self.each_with_index do |n, i|
+      self[i] = code.call(n)
+    end
+  end
+end
+
+array_1 = [1, 2, 3, 4]
+array_2 = [2, 3, 4, 5]
+
+square = Proc.new do |n|
+  n ** 2
+end
+
+      ]]>
+  </script>
+</div>
+
+  <div class="column right">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+
+array_1.iterate!(square)
+array_2.iterate!(square)
+
+puts array_1.inspect
+puts array_2.inspect
+
+# => [1, 4, 9, 16]
+# => [4, 9, 16, 25]
+  </script>
+</div>
+</section>
+
+<section class="slide" id="callbacks">
+  <h2>callbacks</h2>
+
+  <div class="row">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+def callbacks(procs)
+  procs[:starting].call
+
+  puts "Still going"
+
+  procs[:finishing].call
+end
+
+callbacks(:starting => Proc.new { puts "Starting" },
+          :finishing => Proc.new { puts "Finishing" })
+
+# => Starting
+# => Still going
+# => Finishing
+      ]]>
+</script>
+</div>
+</section>
+
+<section class="slide" id="bloc-proc">
+  <h2 class="not-capitalized">So, when should you use blocks over Procs?</h2>
+
+<ul>
+  <li>Block: Your method is breaking an object down into smaller pieces, and you want to let your users interact with these pieces.</li>
+  <li>Block: You want to run multiple expressions atomically, like a database migration.</li>
+  <li>Proc: You want to reuse a block of code multiple times.</li>
+  <li>Proc: Your method will have one or more callbacks.</li>
+</ul>
+</section>
+
+<section class="slide" id="lambdas">
+  <h2>Lambdas</h2>
+
+  <div class="row">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+class Array
+  def iterate!(code)
+    self.each_with_index do |n, i|
+      self[i] = code.call(n)
+    end
+  end
+end
+
+array = [1, 2, 3, 4]
+
+array.iterate!(lambda { |n| n ** 2 })
+
+puts array.inspect
+
+# => [1, 4, 9, 16]
+      ]]>
+</script>
+</div>
+</section>
+
+<section class="slide" id="lambdas-args">
+  <h2 class="not-capitalized">Lambdas check the number of arguments</h2>
+
+  <div class="row">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+def args(code)
+  one, two = 1, 2
+  code.call(one, two)
+end
+
+args(Proc.new{|a, b, c| puts "Give me a #{a} and a #{b} and a #{c.class}"})
+
+args(lambda{|a, b, c| puts "Give me a #{a} and a #{b} and a #{c.class}"})
+
+# => Give me a 1 and a 2 and a NilClass
+# *.rb:8: ArgumentError: wrong number of arguments (2 for 3) (ArgumentError)
+      ]]>
+</script>
+</div>
+</section>
+
+<section class="slide" id="lambdas-returns">
+  <h2 class="not-capitalized">Lambdas have lesser returns</h2>
+
+  <div class="row">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+def proc_return
+  Proc.new { return "Proc.new"}.call
+  return "proc_return method finished"
+end
+
+def lambda_return
+  lambda { return "lambda" }.call
+  return "lambda_return method finished"
+end
+
+puts proc_return
+puts lambda_return
+
+# => Proc.new
+# => lambda_return method finished
+      ]]>
+</script>
+</div>
+</section>
+
+<section class="slide" id="lambdas-returns2">
+  <h2 class="not-capitalized">Lambdas have lesser returns</h2>
+  <div class="row">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+def generic_return(code)
+  code.call
+  return "generic_return method finished"
+end
+
+puts generic_return(Proc.new { return "Proc.new" })
+puts generic_return(lambda { return "lambda" })
+
+# => *.rb:6: unexpected return (LocalJumpError)
+# => generic_return method finished
+      ]]>
+</script>
+</div>
+</section>
+
+<section class="slide" id="generic-return">
+  <h2 class="not-capitalized">Lambdas have lesser returns</h2>
+  <div class="row">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+def generic_return(code)
+  one, two    = 1, 2
+  three, four = code.call(one, two)
+  return "Give me a #{three} and a #{four}"
+end
+
+puts generic_return(lambda { |x, y| return x + 2, y + 2 })
+
+puts generic_return(Proc.new { |x, y| return x + 2, y + 2 })
+
+puts generic_return(Proc.new { |x, y| x + 2; y + 2 })
+
+puts generic_return(Proc.new { |x, y| [x + 2, y + 2] })
+
+# => Give me a 3 and a 4
+# => *.rb:9: unexpected return (LocalJumpError)
+# => Give me a 4 and a 
+# => Give me a 3 and a 4
+      ]]>
+</script>
+</div>
+</section>
+
+<section class="slide" id="methods">
+  <h2 class="not-capitalized">Method Objects</h2>
+  <div class="column left">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+class Array
+  def iterate!(code)
+    self.each_with_index do |n, i|
+      self[i] = code.call(n)
+    end
+  end
+end
+
+def square(n)
+  n ** 2
+end
+
+array = [1, 2, 3, 4]
+
+array.iterate!(method(:square))
+
+puts array.inspect
+
+# => [1, 4, 9, 16]
+      ]]>
+</script>
+</div>
+
+<div class="column right">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+def square(n)
+  n ** 2
+end
+
+puts method(:square).class
+
+# => Method
+      ]]>
+</script>
+</div>
+</section>
+
+<section class="slide" id="methods-binding">
+  <h2 class="not-capitalized">Method Objects binding</h2>
+  <div class="row">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+class MyClass
+  def initialize(value)
+    @x = value
+  end
+
+  def my_method
+    @x
+  end
+end
+
+object = MyClass.new(1)
+m = object.method(:my_method)
+m.call                    # => 1
+
+unbound = m.unbind
+another_object = MyClass.new(2)
+m = unbound.bind(another_object)
+m.call                    # => 2
+      ]]>
+</script>
+</div>
+</section>
+
+<section class="slide" id="conclusion">
+  <h2>Conclusion</h2>
+
+<ul>
+  <li>blocks and Procs act like code snippets</li>
+  <li>lambdas and Methods act like methods</li>
+</ul>
+</section>
+
+<section class="slide" id="singleton">
+  <h2>Singleton Methods</h2>
+  <div>A Singleton method is a method which belongs to a single object rather than to an entire class and other objects.</div>
+  <div class="row">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+str = "Just a regular string"
+
+def str.title?
+  self.upcase == self
+end
+
+str.title?                 # => false
+str.methods.grep /title?/  # => ["title?"]
+str.singleton_methods      # => ["title?"]
+      ]]>
+</script>
+</div>
+</section>
+
+<section class="slide" id="eigenclass">
+  <h2>Anonymous class or Eigenclass</h2>
+
+  <div class="column left">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+rocky = Dog.new
+snoopy = Dog.new
+def snoopy.alter_ego
+  "Red Baron"
+end
+
+snoopy.alter_ego      # => "Red Baron"
+rocky.alter_ego
+# => NoMethodError: undefined method 
+# `alter_ego` for #<Dog:0x000000190ce0>
+      ]]>
+</script>
+</div>
+
+<div class="column right">
+  <img src="support/themes/style/images/eigenclass_method_lookup.gif" alt="metakoans.rb">
+</div>
+</section>
+
+<section class="slide" id="runtime">
+  <h2 class="not-capitalized">Runtime introspection</h2>
+  <div class="column left">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+class MyClass
+  def my_method
+    @v = 1
+    my_private
+  end
+
+  private
+  def my_private
+    caller
+  end
+end
+
+obj = MyClass.new
+def obj.singleton; "i'm singleton"; end
+      ]]>
+</script>
+</div>
+
+<div class="column right" style="width: 55%; margin-left: -5px">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+obj.my_method # => ["test.rb:4:in `my_method`",
+              # "test.rb:16:in `<top>`", ... ]
+
+obj.class     # => MyClass
+obj.methods.grep /my/  # => [:my_method]
+obj.private_methods    # => [:my_private, :irb...]
+obj.instance_variables # => [:@v]
+obj.singleton_methods  # => [:singleton]
+
+MyClass.instance_methods(false) # => [:my_method]
+local_variables                 # => [:obj]
+
+MyClass.instance_methods == obj.methods # => true
+MyClass.methods == obj.Methods          # => false
+      ]]>
+</script>
+</div>
+</section>
+
+<section class="slide" id="class-macros">
+  <h2>class macros</h2>
+  <div class="row">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+class MyClass
+  attr_accessor :my_attribute
+end
+
+class MyClass
+  def my_attribute
+    @my_attribute
+  end
+
+  def my_attribute= val
+    @my_attribute = val
+  end
+end
+
+obj = MyClass.new
+obj.my_attribute = 5
+obj.my_attribute    # => 5
+      ]]>
+</script>
+</div>
+</section>
+
+<section class="slide" id="class-syntax">
+  <h2>class methods syntax</h2>
+  <div class="row">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+class MyClass
+  def self.my_method; end
+end
+      ]]>
+  </script>
+  <br/>
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+class MyClass.my_other_method; end
+      ]]>
+  </script>
+  <br/>
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+class MyClass
+  class << self
+    def my_method; end
+  end
+end
+      ]]>
+  </script>
+</div>
+</section>
+
+<section class="slide" id="class-attrs">
+  <h2>class attributes</h2>
+  <div class="column left">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+class MyClass; end
+class Class
+  attr_accessor :c
+end
+
+MyClass.c = 'It works!'
+MyClass.c               # => 'It works!'
+      ]]>
+</script>
+<br/>
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+class MyClass
+  class << self
+    attr_accessor :c
+  end
+end
+
+MyClass.c = 'It works!'
+MyClass.c               # => 'It works!'
+      ]]>
+</script>
+</div>
+
+<div class="column right">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+class MyClass; end
+
+def MyClass.c= val
+  @c = val
+end
+
+def MyClass.c
+  @c
+end
+
+MyClass.c = 'It works!'
+MyClass.c             # => 'It works!'
+      ]]>
+</script>
+</div>
+</section>
+
+<section class="slide" id="module">
+  <h2>module trouble</h2>
+  <div class="row">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+module MyModule
+  def self.my_method; 'hello'; end
+end
+
+class MyClass
+  include MyModule
+end
+
+MyClass.my_method      # => NoMethodError!
+      ]]>
+  </script>
+</div>
+<div class="row slide">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+module MyModule
+  def self.my_method; 'hello'; end
+end
+
+class MyClass
+  class << seld
+    include MyModule
+  end
+end
+
+MyClass.my_method      # => 'hello'
+MyClass.singleton_methods # => [:my_method]
+      ]]>
+  </script>
+</div>
+</section>
+
+<section class="slide" id="extend">
+  <h2 class="not-capitalized">Object#extend</h2>
+  <div class="row">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+module MyModule
+  def self.my_method; 'hello'; end
+end
+
+obj = Object.new
+obj.extend Module
+obj.my_method     # => 'hello'
+
+class MyClass
+  extend MyModule
+end
+
+MyClass.my_method      # => 'hello'
+      ]]>
+  </script>
+</div>
+</section>
+
+<section class="slide" id="alias">
+  <h2>Method aliases</h2>
+  <div class="row">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+class MyClass
+  def my_method; 'my_method'; end
+  alias :m :my_method
+end
+
+obj = MyClass.new
+obj.my_method     # => 'my_method'
+obj.m             # => 'my_method'
+
+class MyClass
+  alias_method :m2, :m
+end
+obj.m2            # => 'my_method'
+      ]]>
+  </script>
+</div>
+</section>
+
+<section class="slide" id="refefine-aliased">
+  <h2 class="not-capitalized">What happens if you alias a method and then redefine it?</h2>
+  <div class="row">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+class String
+  alias :real_length :length
+
+  def length
+    real_length > 5 ? 'long' : 'short'
+  end
+end
+
+"War and Peace".real_length   # => 13
+"War and Peace".length        # => 'long'
+      ]]>
+  </script>
+</div>
+</section>
+
+<section class="slide" id="hooks">
+  <h2>Hook methods</h2>
+  <div class="column left" style="width: 55%">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+class String
+  def self.inherited(subclass)
+    puts "#{self} was inherited by #{subclass}"
+  end
+end
+
+class MyStrin < String; end
+
+module M
+  def self.included(othermod)
+    puts "M was mixed in #{othermod}"
+  end
+
+  def self.method_added(method)
+    puts "New method: M##{method}"
+  end
+
+  def my_method; end
+end
+
+class C; include M; end
+      ]]>
+  </script>
+</div>
+
+<div class="column right" style="width: 40%">
+  <script type="syntaxhighlighter" class="brush: bash">
+      <![CDATA[
+>> ruby test.rb
+
+String was inherited by MyString
+New method: M#my_method
+M was mixed into C
+      ]]>
+  </script>
+</div>
+</section>
+
+<section class="slide" id="class-instance">
+  <h2 class="not-capitalized">Class plus instance methods</h2>
+  <div class="row">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+module MyMixin
+
+  def self.included(base)
+    base.extend ClassMethods
+  end
+
+  def x
+    "x()"
+  end
+
+  module ClassMethods
+    def y
+      "y()"
+    end
+  end
+  
+end
+
+class C; include MyMixin; end
+
+C.new.x         # => x()
+C.y             # => y()
       ]]>
   </script>
 </div>
