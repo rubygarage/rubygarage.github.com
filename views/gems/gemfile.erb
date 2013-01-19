@@ -1,0 +1,31 @@
+<section id="gemfile" class="slide">
+  <h2>Gemfile</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    source "http://rubygems.org"
+    # Gemfiles require at least one gem source
+    
+    gem "nokogiri"
+
+    gem "rack", "~>1.1"
+    # "~>1.1" is identical to ">=1.1" and "<1.2"
+
+    gem "rspec", :require => "spec"
+    # If a gem main file is different than the gem name, specify how to require it
+
+    gem "sinatra", :git => "git://github.com/sinatra/sinatra.git"
+    # Git repositories are also valid gem sources]]>
+  </script>
+  <div id="bundle-install" class="slide">
+    <h3>Bundle install</h3>
+    <script type="syntaxhighlighter" class="brush: bash">
+      <![CDATA[bundle install]]>
+    </script>
+  </div>
+  <div id="bundle-update" class="slide">
+    <h3>Bundle update</h3>
+    <script type="syntaxhighlighter" class="brush: bash">
+      <![CDATA[bundle update]]>
+    </script>
+  </div>
+</section>

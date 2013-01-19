@@ -1,0 +1,21 @@
+<section id="how-expectations-work" class="slide">
+  <h2>How Expectations work</h2>
+  <p>
+    Spec::Expectations adds two methods to Object:
+  </p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      should(matcher = nil)
+      should_not(matcher = nil)
+    ]]>
+  </script>
+  <p>
+    Both methods take an optional Expression Matcher.
+  </p>
+  <p>
+    When should receives an Expression Matcher, it calls <i>matches?(self)</i>. If it returns true, the spec passes and execution continues. If it returns false, then the spec fails with the message returned by matcher.failure_message.
+  </p>
+  <p>
+    Similarly, when should_not receives a matcher, it calls <i>matches?(self)</i>. If it returns false, the spec passes and execution continues. If it returns true, then the spec fails with the message returned by matcher.negative_failure_message.
+  </p>
+</section>

@@ -1,0 +1,50 @@
+<section id="before-each" class="slide">
+  <h2>before(:each)</h2>
+  <p>Run before each example</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+  # file spec/array_spec.rb
+  
+  describe Array, "before each" do
+    context "#size" do
+      before(:each) do
+        @array = Array.new  # We can share object variables (started with '@') between tests
+      end
+
+      context "when empty" do
+        it "should return zero" do
+          @array.size.should == 0
+        end
+
+        it "should return one" do
+          @array.push 100
+          @array.size.should == 1
+        end
+      end
+
+      context "when full" do
+        before(:each) do
+          (0...10).each { |n| @array.push n }
+        end
+
+        it "should return zero" do
+          @array = []
+          @array.size.should == 0
+        end
+
+        it "should return ten" do
+          @array.size.should == 10
+        end
+      end
+    end
+  end]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+  rspec spec/array_spec.rb 
+  ....
+
+  Finished in 0.01025 seconds
+  4 examples, 0 failures]]>
+  </script>
+</section>

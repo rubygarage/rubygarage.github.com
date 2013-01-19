@@ -1,0 +1,32 @@
+<section id="creating-gem" class="slide">
+  <h2>Creating gem</h2>
+  <h3>Preparing environment</h3>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    rvm use 1.9.3-head@create-gem --create
+    Using /Users/sparrow/.rvm/gems/ruby-1.9.3-head with gemset create-gem]]>
+  </script>
+  <div id="creating-gem-installing-bundler" class="slide">
+    <h3>Installing bundler</h3>
+    <script type="syntaxhighlighter" class="brush: bash">
+      <![CDATA[
+      gem install bundler]]>
+    </script>
+  </div>
+  <div id="creating-gem-with-bundler" class="slide">
+    <h3>Creating gem with bundler</h3>
+    <script type="syntaxhighlighter" class="brush: bash">
+      <![CDATA[
+      bundle gem new_gem
+      create  new_gem/Gemfile
+      create  new_gem/Rakefile
+      create  new_gem/LICENSE
+      create  new_gem/README.md
+      create  new_gem/.gitignore
+      create  new_gem/new_gem.gemspec
+      create  new_gem/lib/new_gem.rb
+      create  new_gem/lib/new_gem/version.rb
+      Initializating git repo in /Users/sparrow/Www/new_gem]]>
+    </script>
+  </div>
+</section>

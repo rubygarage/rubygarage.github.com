@@ -1,0 +1,83 @@
+<section id="hooks-run-in-order" class="slide">
+  <h2>Hooks run in order</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+  # file spec/callbacks_spec.rb
+
+  describe "before and after callbacks" do
+    before(:all) do
+      puts "global before all"
+    end
+
+    before(:each) do
+      puts "global before each"
+    end
+
+    after(:each) do
+      puts "global after each"
+    end
+
+    after(:all) do
+      puts "global after all"
+    end
+
+    it "gets run in order" do
+      puts "global test 1"
+    end
+
+    it "gets run in order" do
+      puts "global test 2"
+    end
+
+    describe "in group" do
+      before(:all) do
+        puts "group before all"
+      end
+
+      before(:each) do
+        puts "group before each"
+      end
+
+      after(:each) do
+        puts "group after each"
+      end
+
+      after(:all) do
+        puts "group after all"
+      end
+
+      it "gets run in order" do
+        puts "group test 1"
+      end
+
+      it "gets run in order" do
+        puts "group test 2"
+      end
+    end
+  end]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+  rspec spec/callbacks_spec.rb 
+  global before all
+  global before each
+  global test 1
+  global after each
+  global before each
+  global test 2
+  global after each
+  group before all
+  global before each
+  group before each
+  group test 1
+  group after each
+  global after each
+  global before each
+  group before each
+  group test 2
+  group after each
+  global after each
+  group after all
+  global after all]]>
+  </script>
+</section>

@@ -1,0 +1,14 @@
+<section id="described-class" class="slide">
+  <h2>Described class</h2>
+  <p>
+    If the first argument to the outermost example group is a class, the class is exposed to each example via the described_class() method.
+  </p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    describe Fixnum do
+      it "is available as described_class" do
+        described_class.should == Fixnum
+      end
+    end]]>
+  </script>
+</section>

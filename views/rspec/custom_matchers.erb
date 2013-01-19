@@ -1,0 +1,48 @@
+<section id="custom-matchers" class="slide">
+  <h2>Spec::Matchers</h2>
+  <h3>Custom matchers</h3>
+  <p>
+    When you find that none of the stock Expectation Matchers provide a natural feeling expectation, you can very easily write your own using RSpec’s matcher DSL or writing one from scratch.
+  </p>
+  <p>
+    Imagine that you are writing a game in which players can be in various zones on a virtual board. To specify that bob should be in zone 4, you could say:
+  </p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[bob.current_zone.should eql(Zone.new("4"))]]>
+  </script>
+
+  <p>But you might find it more expressive to say:</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[bob.should be_in_zone("4")]]>
+  </script>
+
+  <p>You can create such a matcher like so:</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    RSpec::Matchers.define :be_in_zone do |zone|
+      match do |player|
+        player.in_zone?(zone)
+      end
+    end]]>
+  </script>
+
+  <p>Also you can override the failure messages and the generated description:</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      RSpec::Matchers.define :be_in_zone do |zone|
+        match do |player|
+          player.in_zone?(zone)
+        end
+        failure_message_for_should do |player|
+          # generate and return the appropriate string.
+        end
+        failure_message_for_should_not do |player|
+          # generate and return the appropriate string.
+        end
+        description do
+          # generate and return the appropriate string.
+        end
+      end
+    ]]>
+  </script>
+</section>

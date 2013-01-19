@@ -1,0 +1,28 @@
+<section id="tdd" class="slide">
+  <h2>TDD</h2>
+  <p>Test Driven Development (TDD) is not about writing tests. TDD is more than that, it’s a methodology. The main idea of TDD is to write tests before code.</p>
+  <div id="red" class="slide">
+    <h3 class="red">‘Red’ – write failing test</h3>
+    <p>
+      This means that you have to have a failing test first. You can’t write any production code before ‘red’. Why? Because you have to know this test could fail in some circumstances and you have to know which change makes it pass.
+    </p>
+  </div>
+  <div id="green" class="slide">
+    <h3 class="green">‘Green’ – make the test pass</h3>
+    <p>
+      Write code that is only needed to make the test pass. Now, try to run the test again. WOW, passed! Do you think this is a bad solution? Doesn’t work fine? Sure it works fine, because the test passed. There is YAGNI principal (YAGNI stands for You Ain’t Gonna Need It) which says ‘don’t write more than you need at this moment’. If you are sure you need more, write test for it and then implement this functionality.
+    </p>
+  </div>
+  <div id="refactor" class="slide">
+    <h3>‘Refactor’ – clean up your code</h3>
+    <p>
+      Look at your code. Do you like it? Do you want to eat it? Do you want to f... it? If your answer to any of these questions was ‘no’, you should do something about that. Refactoring is changing code without changing its functionality.
+    </p>
+  </div>
+  <div id="colorful-iteration" class="slide">
+    <h3>The colorful iteration</h3>
+    <p>
+      Whole ‘red, green, refactor’ thing is about iteration, little programming cycles and fast feedback. When we write failing test we say ‘hey, my app should do that!’ Then we make it come true as fast as we can. It’s like in this game where you have to pass the ball to the next player before it ‘burns’ you. When you make a test pass, then you can relax and do refactoring. Change implementation, introduce design pattern and extract class or whatever you want. You have confidence that your code works all the time and that you didn’t break anything. This is the smallest programing cycle; this is exactly what TDD is about.
+    </p>
+  </div>
+</section>

@@ -1,0 +1,50 @@
+<section id="shared-examples" class="slide">
+  <h2>Shared Examples</h2>
+  <p>
+    Shared examples let you describe behaviour of types or modules. When declared, a shared group's content is stored. It is only realized in the context of another example group, which provides any context the shared group needs to run.
+  </p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+  require "set"
+
+  shared_examples "a collection object" do
+    describe "<<" do
+      it "adds objects to the end of the collection" do
+        collection << 1
+        collection << 2
+        collection.to_a.should eq([1,2])
+      end
+    end
+  end
+
+  describe Array do
+    it_behaves_like "a collection object" do
+      let(:collection) { Array.new }
+    end
+  end
+
+  describe Set do
+    it_behaves_like "a collection object" do
+      let(:collection) { Set.new }
+    end
+  end]]>
+  </script>
+  <h3>Including helper to each test</h3>
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+  rspec spec/collection_spec.rb --format documentation
+  
+  Array
+    behaves like a collection object
+      <<
+        adds objects to the end of the collection
+
+  Set
+    behaves like a collection object
+      <<
+        adds objects to the end of the collection
+
+  Finished in 0.00443 seconds
+  2 examples, 0 failures]]>
+  </script>
+</section>

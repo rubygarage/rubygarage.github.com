@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>RSpec</title>
+  <link href="assets/rspec.css" rel="stylesheet">
+  <script src="assets/rspec.js"></script>
+</head>
+
+<body class="deck-container">
+
+<!-- Begin slides. Just make elements with a class of slide. -->
+<section id="topic" class="slide">
+  <div class="vcenter">
+    <h1>RSpec</h1>
+  </div>
+</section><section id="value-tests" class="slide">
+  <h2>The value of tests</h2>
+  <p>
+    One of the most valuable benefits of tests is that they give you confidence that your code works as you expect it to work. Tests give you the confidence to do long-term development because with tests in place, you know that your foundation code is dependable. Tests give you the confidence to refactor your code to make it cleaner and more efficient.
+  </p>
+  <p>
+    Tests also save you time because tests help prevent regressions from being introduced and released. Once a bug is found, you can write a test for it, you can fix the bug, and the bug can never make it to production again because the tests will catch it in the future.
+  </p>
+  <p>
+    Another advantage is that tests provide excellent implicit documentation because they show exactly how the code is designed to be used.
+  </p>
+</section><section id="writing-tests" class="slide">
+  <h2>Writing tests</h2>
+  <p>
+    Let’s take a look at how tests are best structured. All tests should follow the same basic structure.
+  </p>
+  <div id="set-up-environment" class="slide">
+    <h3>1. Set up environment for testing</h3>
+    <p>
+      Typically, methods perform some sort of operation upon data. So in order to test your methods, you’ll need to set up the data required by the method. This might be as simple as declaring a few variables, or as complex as creating a number of records in database.
+    </p>
+    <p>
+      Your tests should always create their own test data to execute against. That way, you can be confident that your tests aren’t dependent upon the state of a particular environment and will be repeatable even if they are executed in a different environment from which they were written.
+    </p>
+    <p>
+      If you find that many of your tests require very similar setup code, be sure to properly decompose the setup code so that you don’t repeat yourself.
+    </p>
+  </div>
+  <div id="call-method" class="slide">
+    <h3>2. Call the method being tested</h3>
+    <p>
+      Once you have set up the appropriate input data, you still need to execute your code. If you are testing a method, then you will call the method directly.
+    </p>
+  </div>
+  <div id="verify-results" class="slide">
+    <h3>3. Verify that the results are correct</h3>
+    <p>
+      Verifying that your code works as you expect it to work is the most important part of testing. Tests that do not verify the results of the code aren’t true tests. They are commonly referred to as smoke tests, which aren’t nearly as effective or informative as true tests.
+    </p>
+  </div>
+  <div id="clean-up-environment" class="slide">
+    <h3>4. Clean up environment</h3>
+    <p>
+      Environment always should be cleaned after a test running. That way, you can be confident that your next tests are not dependent upon the state of previous tests executing.
+    </p>
+  </div>
+</section><section id="tdd" class="slide">
+  <h2>TDD</h2>
+  <p>Test Driven Development (TDD) is not about writing tests. TDD is more than that, it’s a methodology. The main idea of TDD is to write tests before code.</p>
+  <div id="red" class="slide">
+    <h3 class="red">‘Red’ – write failing test</h3>
+    <p>
+      This means that you have to have a failing test first. You can’t write any production code before ‘red’. Why? Because you have to know this test could fail in some circumstances and you have to know which change makes it pass.
+    </p>
+  </div>
+  <div id="green" class="slide">
+    <h3 class="green">‘Green’ – make the test pass</h3>
+    <p>
+      Write code that is only needed to make the test pass. Now, try to run the test again. WOW, passed! Do you think this is a bad solution? Doesn’t work fine? Sure it works fine, because the test passed. There is YAGNI principal (YAGNI stands for You Ain’t Gonna Need It) which says ‘don’t write more than you need at this moment’. If you are sure you need more, write test for it and then implement this functionality.
+    </p>
+  </div>
+  <div id="refactor" class="slide">
+    <h3>‘Refactor’ – clean up your code</h3>
+    <p>
+      Look at your code. Do you like it? Do you want to eat it? Do you want to f... it? If your answer to any of these questions was ‘no’, you should do something about that. Refactoring is changing code without changing its functionality.
+    </p>
+  </div>
+  <div id="colorful-iteration" class="slide">
+    <h3>The colorful iteration</h3>
+    <p>
+      Whole ‘red, green, refactor’ thing is about iteration, little programming cycles and fast feedback. When we write failing test we say ‘hey, my app should do that!’ Then we make it come true as fast as we can. It’s like in this game where you have to pass the ball to the next player before it ‘burns’ you. When you make a test pass, then you can relax and do refactoring. Change implementation, introduce design pattern and extract class or whatever you want. You have confidence that your code works all the time and that you didn’t break anything. This is the smallest programing cycle; this is exactly what TDD is about.
+    </p>
+  </div>
+</section><section id="installation" class="slide">
+  <h2>Installation</h2>
+  <h3>Setup envirepment</h3>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    rvm use 1.9.3-head@hello-rspec --create
+    Using /Users/sparrow/.rvm/gems/ruby-1.9.3-head with gemset hello-rspec]]>
+  </script>
+  <h3>Install rspec</h3>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    gem install rspec]]>
+  </script>
+</section><section id="first-test" class="slide">
+  <h2>First test</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    # file spec/burger_spec.rb
+
+    describe Burger do
+      it "should be with ketchup" do
+        burger = Burger.new(:ketchup => true)
+        burger.should be_with_ketchup
+      end
+
+      it "should be without ketchup" do
+        burger = Burger.new(:ketchup => false)
+        burger.should_not be_with_ketchup
+      end
+    end]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    rspec spec/burger_spec.rb 
+    spec/burger_spec.rb:1:in '<top (required)>': uninitialized constant Object::Burger (NameError)]]>
+  </script>
+</section><section id="first-implementation" class="slide">
+  <h2>First implementation</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    # file spec/burger_spec.rb
+    
+    class Burger
+      def initialize ingredients = {}
+        @ingredients = ingredients
+      end
+
+      def with_ketchup?
+        @ingredients.has_key?(:ketchup) && !!@ingredients[:ketchup]
+      end
+    end
+
+    describe Burger do
+      it "should be with ketchup" do
+        burger = Burger.new(:ketchup => true)
+        burger.should be_with_ketchup
+      end
+
+      it "should be without ketchup" do
+        burger = Burger.new(:ketchup => false)
+        burger.should_not be_with_ketchup
+      end
+    end]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    rspec spec/burger_spec.rb 
+    ..
+
+    Finished in 0.0114 seconds
+    2 examples, 0 failures]]>
+  </script>
+</section><section id="describe" class="slide">
+  <h2>Describe</h2>
+  <p>
+    We use the describe() method to define an example group.
+  </p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    describe "A User" do
+    end
+    # => A User 
+
+    describe User do
+    end
+    # => User 
+
+    describe User, "with no roles assigned" do
+    end
+    # => User with no roles assigned]]>
+  </script>
+  <p>
+    The describe() method takes an arbitrary number of arguments and an optional block, and returns a subclass of RSpec::Core::ExampleGroup.
+  </p>
+</section><section id="nested-groups" class="slide">
+  <h2>Nested groups</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    describe User
+      describe "with no roles assigned" do
+        it "is not allowed to view protected content" do
+        end  
+      end
+    end
+
+    # =>  User 
+    # =>    with no roles assigned
+    # =>      is not allowed to view protected content]]>
+  </script>
+</section><section id="context" class="slide">
+  <h2>Context</h2>
+  <p>The context() method is an alias for describe().</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    describe User
+      context "with no roles assigned" do
+        it "is not allowed to view protected content" do
+        end  
+      end
+    end
+
+    # =>  User 
+    # =>    with no roles assigned
+    # =>      is not allowed to view protected content]]>
+  </script>
+</section><section id="it" class="slide">
+  <h2>What’s it() All About?</h2>
+  <p>The it() method takes a single String, an optional Hash and an optional block.</p>
+  <p>String with 'it' represents the detail that will be expressed in code within the block.</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    # file spec/array_spec.rb
+
+    describe Array do
+      context "#last" do
+        it "should return the last element" do
+          array = [:first, :second, :third]
+          array.last.should == :third
+        end
+
+        it "should not remove the last element" do
+          array = [:first, :second, :third]
+          array.last
+          array.size.should == 3
+        end
+      end
+
+      context "#pop" do
+        it "should return the last element" do
+          array = [:first, :second, :third]
+          array.pop.should == :third
+        end
+
+        it "should remove the last element" do
+          array = [:first, :second, :third]
+          array.pop
+          array.size.should == 2
+        end
+      end
+    end]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+    rspec spec/array_spec.rb 
+    ....
+
+    Finished in 0.00759 seconds
+    4 examples, 0 failures]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+    rspec spec/array_spec.rb --format documentation
+
+    Array
+      #last
+        should return the last element
+        should not remove the last element
+      #pop
+        should return the last element
+        should remove the last element
+
+    Finished in 0.00212 seconds
+    4 examples, 0 failures]]>
+  </script>
+</section><section id="pending" class="slide">
+  <h2>Pending</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+  # file spec/array_spec.rb
+  
+  describe Array do
+    context "#last" do
+      it "should return the last element" do
+        array = [:first, :second, :third]
+        pending "bug report #85346"
+        array.last.should == :third
+      end
+
+      xit "should not remove the last element" do
+        array = [:first, :second, :third]
+        array.last
+        array.size.should == 3
+      end
+    end
+  end]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+    rspec spec/array_spec.rb --format documentation
+
+    Array
+      #last
+        should return the last element (PENDING: bug report #85346)
+        should not remove the last element (PENDING: Temporarily disabled with xit)
+
+    Pending:
+      Array#last should return the last element
+        # bug report #85346
+        # ./spec/array_spec.rb:42
+      Array#last should not remove the last element
+        # Temporarily disabled with xit
+        # ./spec/array_spec.rb:47
+
+    Finished in 0.0007 seconds
+    2 examples, 0 failures, 2 pending]]>
+  </script>
+</section><section id="hooks" class="slide">
+  <h2>Before and after hooks</h2>
+  <p>
+    Use before and after hooks to execute arbitrary code before and/or after the body of an example is run
+  </p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+  before(:all)  # run one time only, before all of the examples in a group
+  before(:each) # run before each example
+
+  after(:each)  # run after each example
+  after(:all)   # run one time only, after all of the examples in a group]]>
+  </script>
+</section><section id="before-each" class="slide">
+  <h2>before(:each)</h2>
+  <p>Run before each example</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+  # file spec/array_spec.rb
+  
+  describe Array, "before each" do
+    context "#size" do
+      before(:each) do
+        @array = Array.new  # We can share object variables (started with '@') between tests
+      end
+
+      context "when empty" do
+        it "should return zero" do
+          @array.size.should == 0
+        end
+
+        it "should return one" do
+          @array.push 100
+          @array.size.should == 1
+        end
+      end
+
+      context "when full" do
+        before(:each) do
+          (0...10).each { |n| @array.push n }
+        end
+
+        it "should return zero" do
+          @array = []
+          @array.size.should == 0
+        end
+
+        it "should return ten" do
+          @array.size.should == 10
+        end
+      end
+    end
+  end]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+  rspec spec/array_spec.rb 
+  ....
+
+  Finished in 0.01025 seconds
+  4 examples, 0 failures]]>
+  </script>
+</section><section id="before-all" class="slide">
+  <h2>before(:all)</h2>
+  <p>Run one time only, before all of the examples in a group</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+  # file spec/array_spec.rb
+  
+  describe Array, "before all" do
+    context "#size" do
+      context "when empty" do
+        before(:all) do
+          @array = Array.new
+        end
+
+        it "should return one" do
+          @array.push 100
+          @array.size.should == 1
+        end
+
+        it "should return one again" do
+          @array.size.should == 1
+        end
+      end
+
+      context "when full" do
+        before(:all) do
+          @array = Array.new
+          (0...10).each { |n| @array.push n }
+        end
+
+        it "should return nine" do
+          @array.pop
+          @array.size.should == 9
+        end
+
+        it "should return nine again" do
+          @array.size.should == 9
+        end
+      end
+    end
+  end]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+  rspec spec/array_spec.rb 
+  ....
+
+  Finished in 0.01025 seconds
+  4 examples, 0 failures]]>
+  </script>
+</section><section id="hooks-run-in-order" class="slide">
+  <h2>Hooks run in order</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+  # file spec/callbacks_spec.rb
+
+  describe "before and after callbacks" do
+    before(:all) do
+      puts "global before all"
+    end
+
+    before(:each) do
+      puts "global before each"
+    end
+
+    after(:each) do
+      puts "global after each"
+    end
+
+    after(:all) do
+      puts "global after all"
+    end
+
+    it "gets run in order" do
+      puts "global test 1"
+    end
+
+    it "gets run in order" do
+      puts "global test 2"
+    end
+
+    describe "in group" do
+      before(:all) do
+        puts "group before all"
+      end
+
+      before(:each) do
+        puts "group before each"
+      end
+
+      after(:each) do
+        puts "group after each"
+      end
+
+      after(:all) do
+        puts "group after all"
+      end
+
+      it "gets run in order" do
+        puts "group test 1"
+      end
+
+      it "gets run in order" do
+        puts "group test 2"
+      end
+    end
+  end]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+  rspec spec/callbacks_spec.rb 
+  global before all
+  global before each
+  global test 1
+  global after each
+  global before each
+  global test 2
+  global after each
+  group before all
+  global before each
+  group before each
+  group test 1
+  group after each
+  global after each
+  global before each
+  group before each
+  group test 2
+  group after each
+  global after each
+  group after all
+  global after all]]>
+  </script>
+</section><section id="hooks-in-configuration" class="slide">
+  <h2>Define hooks in configuration</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+  # file spec/callbacks_spec.rb
+
+  RSpec.configure do |config|
+    config.before(:suite) do
+      puts "before suite"
+    end
+
+    config.before(:all) do
+      puts "before all"
+    end
+
+    config.before(:each) do
+      puts "before each"
+    end
+
+    config.after(:each) do
+      puts "after each"
+    end
+
+    config.after(:all) do
+      puts "after all"
+    end
+
+    config.after(:suite) do
+      puts "after suite"
+    end
+  end
+
+  describe "before and after callbacks in config" do
+    it "run" do
+      puts "test 1"
+    end
+
+    it "run" do
+      puts "test 2"
+    end
+  end]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+  rspec spec/callbacks_spec.rb 
+  before suite
+  before all
+  before each
+  test 1
+  after each
+  before each
+  test 2
+  after each
+  after all
+  after suite]]>
+  </script>
+</section><section id="let" class="slide">
+  <h2>Let</h2>
+  <p>
+    Use <i>let</i> to define a memoized helper method. The value will be cached across multiple calls in the same example but not across examples.
+  </p>
+  <h3>Use before</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+  before do
+    @empty_array = Array.new
+  end
+
+  it "should be empty" do
+    @empty_array.should be_empty
+  end]]>
+  </script>
+  <h3>Use let</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+  let(:empty_array) { Array.new }
+
+  it "should be empty" do
+    empty_array.should be_empty
+  end]]>
+  </script>
+  <p>
+    Note that <i>let</i> is lazy-evaluated: it is not evaluated until the first time the method it defines is invoked. You can use <i>let!</i> to force the method's invocation before each example.
+  </p>
+</section><section id="subject" class="slide">
+  <h2>Subject</h2>
+  <p>
+    Use subject in the group scope to explicitly define the value that is returned by the subject method in the example scope.
+  </p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+  # file spec/array_spec.rb
+
+  describe Array, "with some elements" do
+    subject { [1,2,3] }
+
+    it { should_not be_empty }
+
+    it "should have the prescribed elements" do
+      subject.should == [1,2,3]
+    end
+  end]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+  rspec spec/array_spec.rb --format documentation
+
+  Array with some elements
+    should not be empty
+    should have the prescribed elements
+
+  Finished in 0.03275 seconds
+  2 examples, 0 failures]]>
+  </script>
+</section><section id="helper-methods" class="slide">
+  <h2>Sharing helper methods</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+  module UserHelpers
+    def valid_user
+      User.new(:email => 'email@example.com', :password => 'shhhhh')
+    end
+
+    def invalid_user
+      User.new(:password => 'shhhhh')
+    end
+  end
+
+  describe User do
+    include UserHelpers
+
+    it "does something when it is valid" do
+      user = valid_user
+      # do stuff
+    end
+
+    it "does something when it is not valid" do
+      user = invalid_user
+      # do stuff
+    end
+  end]]>
+  </script>
+  <h3>Including helper to each test</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+  RSpec.configure do |config|
+    config.include(UserHelpers)
+  end]]>
+  </script>
+</section><section id="described-class" class="slide">
+  <h2>Described class</h2>
+  <p>
+    If the first argument to the outermost example group is a class, the class is exposed to each example via the described_class() method.
+  </p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    describe Fixnum do
+      it "is available as described_class" do
+        described_class.should == Fixnum
+      end
+    end]]>
+  </script>
+</section><section id="shared-examples" class="slide">
+  <h2>Shared Examples</h2>
+  <p>
+    Shared examples let you describe behaviour of types or modules. When declared, a shared group's content is stored. It is only realized in the context of another example group, which provides any context the shared group needs to run.
+  </p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+  require "set"
+
+  shared_examples "a collection object" do
+    describe "<<" do
+      it "adds objects to the end of the collection" do
+        collection << 1
+        collection << 2
+        collection.to_a.should eq([1,2])
+      end
+    end
+  end
+
+  describe Array do
+    it_behaves_like "a collection object" do
+      let(:collection) { Array.new }
+    end
+  end
+
+  describe Set do
+    it_behaves_like "a collection object" do
+      let(:collection) { Set.new }
+    end
+  end]]>
+  </script>
+  <h3>Including helper to each test</h3>
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+  rspec spec/collection_spec.rb --format documentation
+  
+  Array
+    behaves like a collection object
+      <<
+        adds objects to the end of the collection
+
+  Set
+    behaves like a collection object
+      <<
+        adds objects to the end of the collection
+
+  Finished in 0.00443 seconds
+  2 examples, 0 failures]]>
+  </script>
+</section><section id="shared-context" class="slide">
+  <h2>Shared context</h2>
+  <p>
+    Use shared_context to define a block that will be evaluated in the context of example groups either explicitly, using include_context, or implicitly by matching metadata.
+  </p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+  shared_context "shared stuff" do
+    before { @some_var = :some_value }
+
+    def shared_method
+      "it works"
+    end
+    
+    let(:shared_let) { {'arbitrary' => 'object'} }
+    
+    subject do
+      'this is the subject'
+    end
+  end
+
+  describe "group that includes a shared context using 'include_context'" do
+    include_context "shared stuff"
+
+    it "has access to methods defined in shared context" do
+      shared_method.should == "it works"
+    end
+
+    it "has access to methods defined with let in shared context" do
+      shared_let['arbitrary'].should == "object"
+    end
+
+    it "runs the before hooks defined in the shared context" do
+      @some_var.should == :some_value
+    end
+
+    it "accesses the subject defined in the shared context" do
+      should == "this is the subject"
+    end
+  end]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+  rspec spec/shared_stuff_spec.rb 
+  ....
+
+  Finished in 0.00758 seconds
+  4 examples, 0 failures]]>
+  </script>
+</section><section id="expectations" class="slide">
+  <h2>Expectations</h2>
+  <p>
+    For checking the expectations, <strong>should()</strong> and <strong>should_not()</strong> methods are used.
+  </p>
+  <h3>Checking equality and identity</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    cow.should == twin_cow
+    cow.should eql(cow)
+
+    cow.should === twin_cow
+    cow.should equal(cow)
+  ]]>
+  </script>
+  <p>
+    The <strong>==</strong> and <strong>eql</strong> methods are used to express values equivalence, and <strong>===</strong> and <strong>equal</strong> are used when you want the receiver and the argument to be the same object.
+  </p>
+  <p>
+    Note: Instead of using <strong>!=</strong>, you should use the <strong>should_not()</strong> method!
+  </p>
+</section><section id="how-expectations-work" class="slide">
+  <h2>How Expectations work</h2>
+  <p>
+    Spec::Expectations adds two methods to Object:
+  </p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      should(matcher = nil)
+      should_not(matcher = nil)
+    ]]>
+  </script>
+  <p>
+    Both methods take an optional Expression Matcher.
+  </p>
+  <p>
+    When should receives an Expression Matcher, it calls <i>matches?(self)</i>. If it returns true, the spec passes and execution continues. If it returns false, then the spec fails with the message returned by matcher.failure_message.
+  </p>
+  <p>
+    Similarly, when should_not receives a matcher, it calls <i>matches?(self)</i>. If it returns false, the spec passes and execution continues. If it returns true, then the spec fails with the message returned by matcher.negative_failure_message.
+  </p>
+</section><section id="matchers" class="slide">
+  <h2>Matchers</h2>
+  <p>
+    RSpec ships with a number of useful Expression Matchers. An Expression Matcher is any object that responds to the following methods:
+  </p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      matches?(actual)
+      failure_message
+      negative_failure_message  # optional
+      description               # optional
+    ]]>
+  </script>
+</section><section id="eql" class="slide">
+  <h2>Spec::Matchers</h2>
+  <h3>Eql matcher</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      should eql(expected)
+      should_not eql(expected)
+    ]]>
+  </script>
+  <p>
+    Passes if given and expected are of equal value, but not necessarily the same object.
+  </p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      describe "a string" do
+        context "#eq" do
+          it "is equal to another string of the same value" do
+            "this string".should eq("this string")
+          end
+        end
+        context "#==" do
+          it "is equal to another string of the same value" do
+            "this string".should == "this string"
+          end
+        end
+      end
+    ]]>
+  </script>
+  <div id="equal" class="slide">
+    <h3>Equal matcher</h3>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+        should equal(expected)
+        should_not equal(expected)
+      ]]>
+    </script>
+    <p>
+      Passes if given and expected are the same object (object identity).
+    </p>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+        describe "a string" do
+          context "#equal" do
+            it "is equal to itself" do
+              string = "this string"
+              string.should equal(string)
+            end
+          end
+          context "#===" do
+            it "is equal to itself" do
+              string = "this string"
+              string.should === string
+            end
+          end
+        end
+      ]]>
+    </script>
+  </div>
+</section><section id="floating-point" class="slide">
+  <h2>Spec::Matchers</h2>
+  <h3>Floating point numbers</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      should be_close(expected, delta)
+      should_not be_close(expected, delta)
+    ]]>
+  </script>
+  <p>Passes if given == expected +/- delta</p>
+  <p>When dealing with floating points, it's convenient to use matcher be_close(), which takes two arguments: the floating point number you are expecting and the precision you require.</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      result.should be_close(3.14, 0.005)
+    ]]>
+  </script>
+</section><section id="regexps" class="slide">
+  <h2>Spec::Matchers</h2>
+  <h3>Regular Expressions</h3>
+  <p>For checking strings to match regular expressions, the <strong>match</strong> or <strong>=~</strong> is used. This can be very useful when dealing with multiple-line expectations.</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+   result.should match(/this regexp/)
+   result.should =~ /this regexp/
+  ]]>
+  </script>
+</section><section id="predicate_matchers" class="slide">
+  <h2>Spec::Matchers</h2>
+  <h3>Predicate Matchers</h3>
+  <p>A Ruby predicate method is a method that ends with a “?” and returns a boolean value, like <strong>string.empty?</strong> or <strong>regexp.match?</strong> methods. For these cases Rspec allows us to describe expectations with <strong>be_something</strong> matcher. When using a be_something matcher, RSpec removes the “be_”, appends a “?” and calls the resulting method in the receiver.</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+   # instead of writing
+   "".empty?.should == true
+
+   # RSpec allows to use predicate expectation
+   "".should be_empty
+  ]]>
+  </script>
+
+  <h6>How it works</h6>
+  <ul>
+    <li>"be_"        ->      "?"</li>
+    <li>"be_zero"    ->      "zero?"</li>
+    <li>"be_nil"     ->      "nil?"</li>
+    <li>"be_empty"   ->      "empty?"</li>
+  </ul>
+
+  <p>
+    Alternately, for a predicate method that begins with "has" like Hash#has_key?, RSpec allows you to use an alternate form since "be_has_key" makes no sense.
+  </p>
+  <ul>
+    <li>hash.should have_key(:foo)       ->    calls hash.has_key?(:foo)</li>
+    <li>array.should_not have_odd_values   ->    calls array.has_odd_values?</li>
+  </ul>
+
+</section><section id="include" class="slide">
+  <h2>Spec::Matchers</h2>
+  <h3>Include</h3>
+  <p>
+    Passes if given includes expected. This works for collections and Strings. You can also pass in multiple args and it will only pass if all args are found in collection.
+  </p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      [1,2,3].should include(3)
+      [1,2,3].should include(2,3)
+      "spread".should include("read")
+      "spread".should_not include("red")
+    ]]>
+  </script>
+  <div id="exist" class="slide">
+    <h3>Exist</h3>
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      should exist
+      should_not exist
+    ]]>
+    </script>  
+    <p>Passes if given.exist?</p>
+  </div>
+</section><section id="changes" class="slide">
+  <h2>Spec::Matchers</h2>
+  <h3>Changes</h3>
+  <p>Sometimens you expect some code (wrapped in a proc) to change the state of some object. There is a convenient way to check it with rspec:</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+   it "should remove the last element" do
+     lambda {
+       @array.pop
+     }.should change{ @array.size }
+   end
+  ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+   it "should remove the last element" do
+     expect { @array.pop }.to change{ @array.size }
+   end
+  ]]>
+  </script>
+  <div id="by-to-from" class="slide">
+    <h6>by(), to(), from()</h6>
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+     it "should remove the last element" do
+       expect { @array.pop }.to change{ @array.size }.by(1)
+     end
+
+    it "should remove the last element" do
+       expect { @array.pop }.to change{ @array.size }.to(2)
+     end
+
+    it "should remove the last element" do
+       expect { @array.pop }.to change{ @array.size }.from(3).to(2)
+     end
+    ]]>
+    </script>
+  </div>
+</section><section id="have" class="slide">
+  <h2>Spec::Matchers</h2>
+  <h3>Have</h3>
+  <p>
+    RSpec provides several matchers that make it easy to set expectations about the size of a collection. There are three basic forms:
+  </p>
+  <ul>
+    <li>collection.should have(x).items</li>
+    <li>collection.should haveatleast(x).items</li>
+    <li>collection.should haveatmost(x).items</li>
+  </ul>
+  <p>
+    These work on any collection-like object--the object just needs to respond to #size or #length (or both). When the matcher is called directly on a collection object, the #items call is pure syntactic sugar. You can use anything you want here. These are equivalent:
+  </p>
+  <ul>
+    <li>collection.should have(x).items</li>
+    <li>collection.should have(x).things</li>
+  </ul>
+  <p>
+    You can also use this matcher on a non-collection object that returns a collection from one of its methods. For example, Dir#entries returns an array, so you could set an expectation using the following:
+  </p>
+  <p>Dir.new("my/directory").should have(7).entries</p>
+  <h4>A receiver IS a collection </h4>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    describe [1, 2, 3, 4, 5, 6, 7, 8, 9, 0] do
+      it { should have(10).items }
+
+      it { should_not have(2).items }
+
+      it { should have_exactly(10).items }
+      it { should have_at_least(5).items }
+      it { should have_at_most(15).items }
+    end
+  ]]>
+  </script>
+  <h4>A receiver OWNS a collection </h4>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    class String
+      def words
+        self.split(' ')
+      end
+    end
+
+    describe "a sentence with some words" do
+      it { should have(5).words }
+      it { should_not have(4).words }
+
+      it { should have_exactly(5).words }
+      it { should_not have_exactly(10).words }
+
+      it { should have_at_least(4).words }
+      it { should have_at_most(6).words }
+    end
+  ]]>
+  </script>
+</section><section id="custom-matchers" class="slide">
+  <h2>Spec::Matchers</h2>
+  <h3>Custom matchers</h3>
+  <p>
+    When you find that none of the stock Expectation Matchers provide a natural feeling expectation, you can very easily write your own using RSpec’s matcher DSL or writing one from scratch.
+  </p>
+  <p>
+    Imagine that you are writing a game in which players can be in various zones on a virtual board. To specify that bob should be in zone 4, you could say:
+  </p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[bob.current_zone.should eql(Zone.new("4"))]]>
+  </script>
+
+  <p>But you might find it more expressive to say:</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[bob.should be_in_zone("4")]]>
+  </script>
+
+  <p>You can create such a matcher like so:</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    RSpec::Matchers.define :be_in_zone do |zone|
+      match do |player|
+        player.in_zone?(zone)
+      end
+    end]]>
+  </script>
+
+  <p>Also you can override the failure messages and the generated description:</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      RSpec::Matchers.define :be_in_zone do |zone|
+        match do |player|
+          player.in_zone?(zone)
+        end
+        failure_message_for_should do |player|
+          # generate and return the appropriate string.
+        end
+        failure_message_for_should_not do |player|
+          # generate and return the appropriate string.
+        end
+        description do
+          # generate and return the appropriate string.
+        end
+      end
+    ]]>
+  </script>
+</section><section id="chaining" class="slide">
+  <h2>Spec::Matchers</h2>
+  <h3>Chaining custom mathcers</h3>
+  <p>You can also create matchers that obey a fluent interface using the chain method:</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      RSpec::Matchers.define :tip do |expected_tip|
+        chain :on do |bill|
+          @bill = bill
+        end
+
+        match do |person|
+          person.tip_for(@bill) == expected_tip
+        end
+      end
+    ]]>
+  </script>
+
+  <p>And now it can be used as follows:</p>
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      describe Customer do
+        it { should tip(10).on(50) }
+      end
+    ]]>
+  </script>
+</section>
+<!-- End slides. -->
+
+<!-- deck.navigation snippet -->
+<a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
+<a href="#" class="deck-next-link" title="Next">&#8594;</a>
+
+<!-- deck.status snippet -->
+<p class="deck-status">
+  <span class="deck-status-current"></span>
+  /
+  <span class="deck-status-total"></span>
+</p>
+
+<!-- deck.hash snippet -->
+<a href="." title="Permalink to this slide" class="deck-permalink">#</a>
+
+</body>
+</html>

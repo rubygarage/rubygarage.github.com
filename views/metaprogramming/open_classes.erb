@@ -1,0 +1,22 @@
+<section class="slide" id="open-classes">
+  <h2>Open Classes</h2>
+    <p>In Ruby, classes are never closed: you can always add methods to an existing class. This applies to the classes you write as well as the standard, built-in classes. All you have to do is open up a class definition for an existing class, and the new contents you specify will be added to whatever's there.</p>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+      class D
+        def x
+          'X'
+        end
+      end
+
+      class D
+        def y
+          'Y'
+        end
+      end
+
+      d = D.new
+      d.x   # => 'X'
+      d.y   # => 'Y']]>
+    </script>
+</section>

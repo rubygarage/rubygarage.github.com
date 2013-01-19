@@ -1,0 +1,16 @@
+<section id="nested-groups" class="slide">
+  <h2>Nested groups</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    describe User
+      describe "with no roles assigned" do
+        it "is not allowed to view protected content" do
+        end  
+      end
+    end
+
+    # =>  User 
+    # =>    with no roles assigned
+    # =>      is not allowed to view protected content]]>
+  </script>
+</section>

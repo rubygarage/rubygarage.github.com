@@ -1,0 +1,28 @@
+<section id="chaining" class="slide">
+  <h2>Spec::Matchers</h2>
+  <h3>Chaining custom mathcers</h3>
+  <p>You can also create matchers that obey a fluent interface using the chain method:</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      RSpec::Matchers.define :tip do |expected_tip|
+        chain :on do |bill|
+          @bill = bill
+        end
+
+        match do |person|
+          person.tip_for(@bill) == expected_tip
+        end
+      end
+    ]]>
+  </script>
+
+  <p>And now it can be used as follows:</p>
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      describe Customer do
+        it { should tip(10).on(50) }
+      end
+    ]]>
+  </script>
+</section>

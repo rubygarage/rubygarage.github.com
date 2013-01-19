@@ -1,0 +1,25 @@
+<section class="slide" id="self">
+  <h2>Discovering self</h2>
+  <p>
+    Every line of Ruby code is executed inside an object—the so–called current object. The <i>current object</i> is also known as <strong>self</strong>, because you can access it with the <strong>self</strong> keyword.
+  </p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    class MyClass
+      def testing_self
+        @var = 10       # An instance variable of self
+
+        my_method()
+        self            # Same as self.my_method()
+      end
+
+      def my_method
+        @var = @var + 1
+      end
+    end
+
+    obj = MyClass.new
+    obj.testing_self    # => #<MyClass:0x510b44 @var=11>]]>
+  </script>
+  
+</section>

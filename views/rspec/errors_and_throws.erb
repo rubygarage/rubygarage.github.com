@@ -1,0 +1,32 @@
+<section id="errors" class="slide">
+
+  <h4>Errors</h4>
+   <p>When it is needed to check for Exceptions, the matcher <strong>raise_error</strong> is used, which takes an ExceptionObject and/or a String/Regexp.</p>
+   <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+     it "should not allow to remove too many players" do
+       field = SoccerField.new(:players => 20)
+
+       expect { field.remove(:players, 25) }.to
+         raise_error(NotEnoughPlayers,“attempted to remove more players than there is on field”)
+     end
+    ]]>
+   </script>
+
+  <div id="throw" class="slide">
+    <h4>Throw</h4>
+    <p>When dealing with “errors that are not really exceptions”, you use catch and throw. Rspec can check if a throw has been called by using the <strong>throw_symbol</strong> matcher.</p>
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+     it "should throw :speech_full if last seat occupied" do
+       speech = Speech.new(:seats => 100)
+
+       100.times { speech.register Person.new }
+       lambda {
+         speech.register Person.new
+       }.should throw_symbol(:speech_full, 100)
+     end
+    ]]>
+    </script>
+  </div>
+</section>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Ruby gems</title>
+  <link href="assets/metaprogramming.css" rel="stylesheet">
+  <script src="assets/metaprogramming.js"></script>
+</head>
+
+<body class="deck-container">
+  
+<!-- Begin slides. Just make elements with a class of slide. -->
+<section id="topic" class="slide">
+  <div class="vcenter">
+    <h1>Metaprogramming in Ruby</h1>
+  </div>
+</section><section class="slide" id="open-classes">
+  <h2>Open Classes</h2>
+    <p>In Ruby, classes are never closed: you can always add methods to an existing class. This applies to the classes you write as well as the standard, built-in classes. All you have to do is open up a class definition for an existing class, and the new contents you specify will be added to whatever's there.</p>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+      class D
+        def x
+          'X'
+        end
+      end
+
+      class D
+        def y
+          'Y'
+        end
+      end
+
+      d = D.new
+      d.x   # => 'X'
+      d.y   # => 'Y']]>
+    </script>
+</section><section class="slide" id="monkey-patch">
+  <h2>Monkey See, Monkey Patch</h2>
+  <p>In Ruby, the term <i>monkey patch</i> means any dynamic modification to a class.</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    # Evil example
+    class Fixnum
+      def +(adder)
+        self - adder
+      end
+    end
+
+    1 + 2 # => -1
+    # That is correct, I just turned addition into subtraction
+  </script>
+  <p>
+    Monkey patching is a practice which involves substituting the pillars of an house: if you're not very careful in what you substitute, the whole building will collapse over your remains. Moreover, you may take down some underground stations full of people as well as a side-effect.
+  </p>
+</section><section class="slide" id="classes">
+  <h2>Classes</h2>
+  <p>Classes themselves are nothing but objects.</p>  
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    "hello".class             # => String
+    String.class              # => Class
+
+    Class.class               # => Class
+    Module.class              # => Class
+    Object.class              # => Class
+    BasicObject.class         # => Class
+
+    Class.superclass          # => Module
+    Module.superclass         # => Object
+
+    String.superclass         # => Object
+    Object.superclass         # => BasicObject
+    BasicObject.superclass    # => nil
+
+    nil.class                 # => NilClass
+    NilClass.class            # => Class
+    NilClass.superclass       # => Object]]>
+  </script>
+</section><section class="slide" id="inheritance">
+  <h2>Inheritance</h2>
+  <p>
+    One of the most important concepts in object-oriented programming is that of inheritance. Ruby does not support Multiple level of inheritances but Ruby supports mixins. A mixin is like a specialized implementation of multiple inheritance in which only the interface portion is inherited.
+  </p>
+    
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    class MyClass
+      def my_method
+        'my_method ()'
+      end
+    end
+
+    module MyModule1
+      def my_module_method1
+        'my_module_method1 ()'
+      end
+    end
+
+    module MyModule2
+      def my_module_method2
+        'my_module_method2 ()'
+      end
+    end
+
+    class MySubClass < MyClass
+      include MyModule1
+      include MyModule2
+    end
+
+    obj = MySubClass.new
+    obj.my_method()           # => 'my_method ()'
+    obj.my_module_method1()   # => 'my_module_method1 ()'
+    obj.my_module_method2()   # => 'my_module_method2 ()'
+
+    MySubClass.ancestors      
+    # => [MySubClass, MyModule2, MyModule1, MyClass, Object, PP::ObjectMixin, Kernel, BasicObject]]]>
+  </script>
+</section><section class="slide" id="self">
+  <h2>Discovering self</h2>
+  <p>
+    Every line of Ruby code is executed inside an object—the so–called current object. The <i>current object</i> is also known as <strong>self</strong>, because you can access it with the <strong>self</strong> keyword.
+  </p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    class MyClass
+      def testing_self
+        @var = 10       # An instance variable of self
+
+        my_method()
+        self            # Same as self.my_method()
+      end
+
+      def my_method
+        @var = @var + 1
+      end
+    end
+
+    obj = MyClass.new
+    obj.testing_self    # => #<MyClass:0x510b44 @var=11>]]>
+  </script>
+  
+</section><!-- End slides. -->
+
+<!-- deck.navigation snippet -->
+<a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
+<a href="#" class="deck-next-link" title="Next">&#8594;</a>
+
+<!-- deck.status snippet -->
+<p class="deck-status">
+  <span class="deck-status-current"></span>
+  /
+  <span class="deck-status-total"></span>
+</p>
+
+<!-- deck.hash snippet -->
+<a href="." title="Permalink to this slide" class="deck-permalink">#</a>
+
+</body>
+</html>

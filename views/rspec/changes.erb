@@ -1,0 +1,39 @@
+<section id="changes" class="slide">
+  <h2>Spec::Matchers</h2>
+  <h3>Changes</h3>
+  <p>Sometimens you expect some code (wrapped in a proc) to change the state of some object. There is a convenient way to check it with rspec:</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+   it "should remove the last element" do
+     lambda {
+       @array.pop
+     }.should change{ @array.size }
+   end
+  ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+   it "should remove the last element" do
+     expect { @array.pop }.to change{ @array.size }
+   end
+  ]]>
+  </script>
+  <div id="by-to-from" class="slide">
+    <h6>by(), to(), from()</h6>
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+     it "should remove the last element" do
+       expect { @array.pop }.to change{ @array.size }.by(1)
+     end
+
+    it "should remove the last element" do
+       expect { @array.pop }.to change{ @array.size }.to(2)
+     end
+
+    it "should remove the last element" do
+       expect { @array.pop }.to change{ @array.size }.from(3).to(2)
+     end
+    ]]>
+    </script>
+  </div>
+</section>

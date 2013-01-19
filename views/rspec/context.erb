@@ -1,0 +1,17 @@
+<section id="context" class="slide">
+  <h2>Context</h2>
+  <p>The context() method is an alias for describe().</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    describe User
+      context "with no roles assigned" do
+        it "is not allowed to view protected content" do
+        end  
+      end
+    end
+
+    # =>  User 
+    # =>    with no roles assigned
+    # =>      is not allowed to view protected content]]>
+  </script>
+</section>

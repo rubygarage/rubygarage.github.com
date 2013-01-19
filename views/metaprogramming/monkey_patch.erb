@@ -1,0 +1,19 @@
+<section class="slide" id="monkey-patch">
+  <h2>Monkey See, Monkey Patch</h2>
+  <p>In Ruby, the term <i>monkey patch</i> means any dynamic modification to a class.</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    # Evil example
+    class Fixnum
+      def +(adder)
+        self - adder
+      end
+    end
+
+    1 + 2 # => -1
+    # That is correct, I just turned addition into subtraction
+  </script>
+  <p>
+    Monkey patching is a practice which involves substituting the pillars of an house: if you're not very careful in what you substitute, the whole building will collapse over your remains. Moreover, you may take down some underground stations full of people as well as a side-effect.
+  </p>
+</section>

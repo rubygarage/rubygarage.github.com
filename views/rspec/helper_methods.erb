@@ -1,0 +1,36 @@
+<section id="helper-methods" class="slide">
+  <h2>Sharing helper methods</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+  module UserHelpers
+    def valid_user
+      User.new(:email => 'email@example.com', :password => 'shhhhh')
+    end
+
+    def invalid_user
+      User.new(:password => 'shhhhh')
+    end
+  end
+
+  describe User do
+    include UserHelpers
+
+    it "does something when it is valid" do
+      user = valid_user
+      # do stuff
+    end
+
+    it "does something when it is not valid" do
+      user = invalid_user
+      # do stuff
+    end
+  end]]>
+  </script>
+  <h3>Including helper to each test</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+  RSpec.configure do |config|
+    config.include(UserHelpers)
+  end]]>
+  </script>
+</section>
