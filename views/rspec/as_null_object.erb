@@ -1,0 +1,19 @@
+<section id="as_null_object" class="slide">
+  <h2>Mocks, Stubs snd doubles</h2>
+
+  <p>Use the as_null_object method to ignore any messages that aren't explicitly set as stubs or message expectations.</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      describe 'null object' do
+        specify {
+          null_object = double('null object').as_null_object
+          other_null = mock('other null', null_object: true)
+
+          null_object.should respond_to(:any_undefined_method)
+          other_null.should respond_to(:any_undefined_method)
+        }
+      end
+    ]]>
+  </script>
+</section>

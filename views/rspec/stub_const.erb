@@ -1,0 +1,27 @@
+<section id="stub-const" class="slide">
+  <h2>Stubbing constants</h2>
+
+  <p>Support is provided for stubbing constants. Stubbed constant names must be fully qualified; the current module nesting is not considered.</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      module MyGem
+        class SomeClass; end
+      end
+
+      module MyGem
+        describe "Something" do
+          it "accidentally stubs the wrong constant" do
+            # this stubs ::SomeClass (in the top-level namespace),
+            # not MyGem::SomeClass like you probably mean.
+            stub_const("SomeClass", Class.new)
+          end
+
+          it "stubs the right constant" do
+            stub_const("MyGem::SomeClass", Class.new)
+          end
+        end
+      end
+    ]]>
+  </script>
+</section>

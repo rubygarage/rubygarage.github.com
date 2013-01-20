@@ -1,0 +1,31 @@
+<section id="stub-chain" class="slide">
+  <h2>Stub a chain of methods</h2>
+
+  <p>The <strong>stub_chain</strong> method lets you to stub a chain of methods in one statement - and there is no need to stub each method in the dependency chain represented by a chain of messages to different objects.</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      Article.recent.published.authored_by(params[:author_id])
+    ]]>
+  </script>
+  <br/>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      recent = double()
+      published = double()
+      authored_by = double()
+      article = double()
+
+      Article.stub(:recent).and_return(recent)
+      recent.stub(:published).and_return(published)
+      published.stub(:authored_by).and_return(article)
+    ]]>
+  </script>
+  <br/>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      article = double()
+      Article.stub_chain(:recent, :published, :authored_by).and_return(article)
+    ]]>
+  </script>
+</section>

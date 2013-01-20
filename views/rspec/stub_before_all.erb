@@ -1,0 +1,31 @@
+<section id="stub_before_all" class="slide">
+  <h2>Stubs and before(:all)</h2>
+
+  <h3>Use before(:each), not before(:all)</h3>
+
+  <p>Stubs in before(:all) are not supported. The reason is that all stubs and mocks get cleared out after each example, so any stub that is set in before(:all) would work in the first example that happens to run in that group, but not for any others.</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    module RSpec
+      module Mocks
+        ...
+        def teardown
+          space.reset_all
+        end
+        ...
+      end
+    end
+
+    class Space
+      def reset_all
+        receivers.each do |mock|
+          mock.rspec_reset
+        end
+        receivers.clear
+        expectation_ordering.clear
+      end
+    end
+  ]]>
+</script>
+</section>
