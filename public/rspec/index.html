@@ -1129,8 +1129,853 @@
       end
     ]]>
   </script>
+</section><section id="mocks-and-stubs" class="slide">
+  <h2>Mocks, Stubs and doubles</h2>
+
+  <p>A <strong>test double</strong> is an object that stands in for another object in an example.</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      thingamajig_double = double('thing-a-ma-jig')
+      stub_thingamajig = stub('thing-a-ma-jig')
+      mock_thingamajig = mock('thing-a-ma-jig')
+    ]]>
+  </script>
+
+  <p>The argument is a name, used for failure reporting, so you should use the role that the double is playing in the example.</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      def double(*args)
+        __declare_double('Double', *args)
+      end
+
+      def stub(*args)
+        __declare_double('Stub', *args)
+      end
+
+      def mock(*args)
+        __declare_double('Mock', *args)
+      end
+    ]]>
+  </script>
+
+ <p>Mocks are objects that allow you to set and verify expectations that they will receive specific messages during run time. Stubs provide canned responses to messages they <strong>might</strong> receive in a test, while mocks allow you to specify and, subsquently, verify that certain messages <strong>should</strong> be received during the execution of a test.</p>
+</section><section id="as_null_object" class="slide">
+  <h2>Mocks, Stubs snd doubles</h2>
+
+  <p>Use the as_null_object method to ignore any messages that aren't explicitly set as stubs or message expectations.</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      describe 'null object' do
+        specify {
+          null_object = double('null object').as_null_object
+          other_null = mock('other null', null_object: true)
+
+          null_object.should respond_to(:any_undefined_method)
+          other_null.should respond_to(:any_undefined_method)
+        }
+      end
+    ]]>
+  </script>
+</section><section id="method_stubs" class="slide">
+  <h2>Method stubs</h2>
+
+  <p>A <strong>method stub</strong> is a method that we can program to return predefined responses during the execution of a code example.</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      describe Statement do
+        it "uses the customer's name in the header" do
+          customer = double('customer')
+          customer.stub(:name).and_return('Aslak')
+          statement = Statement.new(customer)
+          statement.generate.should =~ /^Statement for Aslak/
+        end
+      end
+    ]]>
+  </script>
+
+  <p>Method stubs can return different values on different calls: this will return 5.5% when a message for interest_rate is received <strong>for the first time</strong>, but will return 3% for subsequent calls/messages.</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      HomeLoan.stub(interest_rate).and_return('5.5%', '3%')
+    ]]>
+  </script>
+
+  <p>The mock object can be created with stubbed methods at once.</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      customer = double('customer', name: 'Aslak')
+      obj = mock('object', created_at: { Time.now })
+    ]]>
+  </script>
+
+  <p>Stub methods can return values depending on the arguments.</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      ages = double('ages')
+      ages.stub(:age_for) do |what|
+        if what == 'drinking'
+          21
+        elsif what == 'voting'
+          18
+        end
+      end
+    ]]>
+  </script>
 </section>
-<!-- End slides. -->
+
+<section id="stub-returns" class="slide">
+  <h2>Method stubs</h2>
+
+  <p>Besides returning a value, method stub can yield a block, raise an exception, or throw the message.</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class Triviality
+        def one_two_three
+          yield self
+        end
+      end
+
+      triviality.stub(:one_two_three).and_yield(triviality)
+      triviality.one_two_three { }
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      double.stub(:msg).and_raise(NoMethodError)
+
+      double.stub(:msg).and_throw(:msg)
+    ]]>
+  </script>
+
+</section><section id="unstub" class="slide">
+  <h2>unstub (or unstub!)</h2>
+
+  <p>Removes a stub. On a double, the object will no longer respond to message. On a real object, the original method (if it exists) is restored.</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      describe String do
+        before(:each) { String.stub(:new).and_return("hello") }
+
+        it "can restore it's own behavior" do
+          String.new("initial string").should == "hello"
+          String.unstub(:new)
+
+          String.new("initial string").should == "initial string"
+        end
+      end
+    ]]>
+  </script>
+
+</section><section id="stub-const" class="slide">
+  <h2>Stubbing constants</h2>
+
+  <p>Support is provided for stubbing constants. Stubbed constant names must be fully qualified; the current module nesting is not considered.</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      module MyGem
+        class SomeClass; end
+      end
+
+      module MyGem
+        describe "Something" do
+          it "accidentally stubs the wrong constant" do
+            # this stubs ::SomeClass (in the top-level namespace),
+            # not MyGem::SomeClass like you probably mean.
+            stub_const("SomeClass", Class.new)
+          end
+
+          it "stubs the right constant" do
+            stub_const("MyGem::SomeClass", Class.new)
+          end
+        end
+      end
+    ]]>
+  </script>
+</section><section id="any-instance" class="slide">
+  <h2>Stub on any instance of a class</h2>
+
+  <p>Use any_instance.stub on a class to tell any instance of that class to
+return a value (or values) in response to a given message. If no instance
+receives the message, nothing happens.</p>
+
+  <p>Messages can be stubbed on any class, including those in Ruby's core library.</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      describe "any_instance.stub" do
+        it "returns the specified value on any instance of the class" do
+          String.any_instance.stub(:foo).and_return(:return_value)
+
+          str = "sample string"
+          str.foo.should eq(:return_value)
+        end
+      end
+    ]]>
+  </script>
+
+</section><section id="stub-chain" class="slide">
+  <h2>Stub a chain of methods</h2>
+
+  <p>The <strong>stub_chain</strong> method lets you to stub a chain of methods in one statement - and there is no need to stub each method in the dependency chain represented by a chain of messages to different objects.</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      Article.recent.published.authored_by(params[:author_id])
+    ]]>
+  </script>
+  <br/>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      recent = double()
+      published = double()
+      authored_by = double()
+      article = double()
+
+      Article.stub(:recent).and_return(recent)
+      recent.stub(:published).and_return(published)
+      published.stub(:authored_by).and_return(article)
+    ]]>
+  </script>
+  <br/>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      article = double()
+      Article.stub_chain(:recent, :published, :authored_by).and_return(article)
+    ]]>
+  </script>
+</section><section id="stub_before_all" class="slide">
+  <h2>Stubs and before(:all)</h2>
+
+  <h3>Use before(:each), not before(:all)</h3>
+
+  <p>Stubs in before(:all) are not supported. The reason is that all stubs and mocks get cleared out after each example, so any stub that is set in before(:all) would work in the first example that happens to run in that group, but not for any others.</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    module RSpec
+      module Mocks
+        ...
+        def teardown
+          space.reset_all
+        end
+        ...
+      end
+    end
+
+    class Space
+      def reset_all
+        receivers.each do |mock|
+          mock.rspec_reset
+        end
+        receivers.clear
+        expectation_ordering.clear
+      end
+    end
+  ]]>
+</script>
+</section><section id="should-receive" class="slide">
+  <h2>Message expectations</h2>
+
+  <p>A message expectation is an expectation that the test double will receive a message some time before the example ends. If the message is received, the expectation is satisfied. If not, the example fails.</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      describe Zipcode do
+        context "when created" do
+          it "validates a record with provided validator" do
+            validator = double("validator")
+            validator.should_receive(:validate)
+
+            zipcode = Zipcode.new("02134", validator)
+            zipcode.valid?
+          end
+        end
+      end
+    ]]>
+  </script>
+
+  <p>For a negative expectation, the <strong>should_not_receive</strong> method is provided</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      network_double.stub(:ping).and_return(false)
+      network_double.should_not_receive(:open_connection)
+    ]]>
+  </script>
+</section><section id="with" class="slide">
+  <h2>Message expectations</h2>
+  <h3>Expecting Arguments</h3>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      double.should_receive(:msg).with(*args)
+      double.should_not_receive(:msg).with(*args)
+    ]]>
+  </script>
+
+  <p>Arguments that are passed to with are compared with actual arguments received using ==. In cases in which you want to specify things about the arguments rather than the arguments themselves, you can use any of the matchers that ship with rspec-expectations.</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      double.should_receive(:msg).with(no_args())
+      double.should_receive(:msg).with(any_args())
+      double.should_receive(:msg).with(1, kind_of(Numeric), "b") #2nd argument can be any kind of Numeric
+      double.should_receive(:msg).with(1, boolean(), "b") #2nd argument can be true or false
+      double.should_receive(:msg).with(1, /abc/, "b") #2nd argument can be any String matching the submitted Regexp
+      double.should_receive(:msg).with(1, anything(), "b") #2nd argument can be anything at all
+      double.should_receive(:msg).with(1, duck_type(:abs, :div), "b")
+                          #2nd argument can be object that responds to #abs and #div
+    ]]>
+  </script>
+</section><section id="receive-counts" class="slide">
+  <h2>Message expectations</h2>
+  <h3>Receive Counts</h3>
+
+  <p>The implicit expectation is that the message passed to should_receive will be called once. You can make the expected counts explicit using the following</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      double.should_receive(:msg).once
+      double.should_receive(:msg).twice
+      double.should_receive(:msg).exactly(n).times
+      double.should_receive(:msg).at_least(:once)
+      double.should_receive(:msg).at_least(:twice)
+      double.should_receive(:msg).at_least(n).times
+      double.should_receive(:msg).at_most(:once)
+      double.should_receive(:msg).at_most(:twice)
+      double.should_receive(:msg).at_most(n).times
+      double.should_receive(:msg).any_number_of_times
+      double.should_receive(:msg).never
+    ]]>
+  </script>
+</section><section id="ordering" class="slide">
+  <h2>Message expectations</h2>
+  <h3>Ordering</h3>
+
+  <p>When specifying interactions with a test double, the order of the calls is rarely important. In fact, the ideal situation is to specify only a single call. But sometimes, we need to specify that messages are sent in a specific order.</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      describe Roster do
+        it "asks database for count before adding" do
+          database = double()
+          student = double()
+
+          database.should_receive(:count).with('Roster', :course_id => 37).ordered
+          database.should_receive(:add).with(student).ordered
+
+          roster = Roster.new(37, database)
+          roster.register(student)
+        end
+      end
+    ]]>
+  </script>
+
+  <p>This example will pass only if the <strong>count( )</strong> and <strong>add( )</strong> messages are sent with the correct arguments and in the same order.</p>
+</section><section id="responses" class="slide">
+  <h2>Message expectations</h2>
+  <h3>Setting responses</h3>
+
+  <p>Whether you are setting a message expectation or a method stub, you can tell the object precisely how to respond. The most generic way is to pass a block to stub or should_receive:</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      double.should_receive(:msg) { value }
+    ]]>
+  </script>
+
+  <p>When the double receives the msg message, it evaluates the block and returns the result.</p>
+
+  <p>The same responses are available, as for stub method:</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      double.should_receive(:msg).and_return(value)
+      double.should_receive(:msg).exactly(3).times.and_return(value1, value2, value3)
+        # returns value1 the first time, value2 the second, etc
+      double.should_receive(:msg).and_raise(error)
+        #error can be an instantiated object or a class
+        #if it is a class, it must be instantiable with no args
+      double.should_receive(:msg).and_throw(:msg)
+      double.should_receive(:msg).and_yield(values,to,yield)
+      double.should_receive(:msg).and_yield(values,to,yield).and_yield(some,other,values,this,time)
+        # for methods that yield to a block multiple times
+    ]]>
+  </script>
+
+  <p>When working with a partial mock object, you may occasionally want to set a message expecation without interfering with how the object responds to the message. </p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      Person.should_receive(:find).and_call_original
+      Person.find # => executes the original find method and returns the result
+    ]]>
+  </script>
+</section><section id="example" class="slide">
+  <h2>So, let's create an application</h2>
+  <h3>Introducing Codebreaker</h3>
+  <p>
+    Codebreaker is a logic game in which a code-breaker tries to break a secret code created by a code-maker. The code-maker, which will be played by the application we’re going to write, creates a secret code of four numbers between 1 and 6.
+  </p>
+
+  <p>
+    The code-breaker then gets some number of chances to break the code. In each turn, the code-breaker makes a guess of four numbers. The code-maker then marks the guess with up to four + and - signs.
+  </p>
+
+  <p>
+    A + indicates an exact match: one of the numbers in the guess is the same as one of the numbers in the secret code and in the same position.
+  </p>
+
+  <p>
+    A - indicates a number match: one of the numbers in the guess is the same as one of the numbers in the secret code but in a different position.
+  </p>
+</section><section id="selecting-stories" class="slide">
+  <h2>Selecting Stories</h2>
+
+  <p>
+    A great way to get started gathering user stories is to do a high-level brain dump of the sorts of things we might like to do. Here are some titles to get started:
+  </p>
+
+  <ul>
+    <li><strong>Code-breaker starts game</strong>
+      <p>The code-breaker opens a shell, types a command, and sees a welcome message and a prompt to enter
+the first guess.</p>
+    </li>
+    <li><strong>Code-breaker submits guess</strong>
+      <p>The code-breaker enters a guess, and the system replies by marking the guess according to the marking algorithm.
+      </p></li>
+    <li><strong>Code-breaker wins game</strong>
+      <p>
+       The code-breaker enters a guess that matches the secret code exactly. The system responds by marking the guess with four + signs and a message congratulating the code-breaker on breaking the code in however many guesses it took.
+      </p></li>
+    <li><strong>Code-breaker loses game</strong>
+      <p>
+        After some number of turns, the game tells the code-breaker that the game is over (need to decide how many turns and whether to reveal the code).
+      </p></li>
+    <li><strong>Code-breaker plays again</strong>
+      <p>
+        After the game is won or lost, the system prompts the code-breaker to play again. If the code-breaker indicates yes, a new game begins. If the code-breaker indicates no, the system shuts down.
+      </p></li>
+    <li><strong>Code-breaker requests hint</strong>
+      <p>
+        At any time during a game, the code-breaker can request a hint, at which point the system reveals one of the numbers in the secret code.
+      </p></li>
+    <li><strong>Code-breaker saves score</strong>
+      <p>
+        After the game is won or lost, the code-breaker can opt to save information about the game: who (initials?), how many turns, and so on.
+      </p></li>
+  </ul>
+</section><section id="codebreaker-gem" class="slide">
+  <h2>Creating codebreaker gem</h2>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    rvm use 1.9.3-head@codebreaker --create
+    Using /Users/sparrow/.rvm/gems/ruby-1.9.3-head with gemset codebreaker]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    gem install bundler]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    bundle gem codebreaker]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    # file codebreaker.gemspec
+
+    # ...
+    Gem::Specification.new do |gem|
+      # ...
+    
+      gem.add_development_dependency "rspec"
+    end]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    bundle install]]>
+  </script>
+</section><section id="first-spec" class="slide">
+  <h2>Describing Code with RSpec</h2>
+
+  <p>Now we're going to describe the expected behavior of instances of the Game class.</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    # file spec/spec_helper.rb
+
+    require 'bundler/setup'
+    require 'codebreaker'
+  ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    # file spec/codebreaker/game_spec.rb
+
+    require 'spec_helper'
+
+    module Codebreaker
+      describe Game do
+        describe "#start" do
+          it "sends a welcome message"
+          it "prompts for the first guess"
+        end
+      end
+    end]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+    rspec spec/codebreaker/game_spec.rb --format doc
+
+    /home/alony/projects/rspec-example/spec/codebreaker/game_spec.rb:4:in '<module:Codebreaker>': 
+      uninitialized constant Codebreaker::Game (NameError)
+    from /home/alony/projects/rspec-example/spec/codebreaker/game_spec.rb:3:in '<top (required)>'
+    from /home/alony/.rvm/gems/ruby-1.9.2-p320/gems/rspec-core-2.11.1/lib/rspec/core/configuration.rb:780:in 'load'
+    ...]]>
+  </script>
+</section><section id="addig-code" class="slide">
+  <h2>Describing Code with RSpec</h2>
+
+  <p>So let's add some code structure</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    # file lib/codebreaker.rb
+
+    require 'codebreaker/game']]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    # file lib/codebreaker/game.rb
+
+    module Codebreaker
+      class Game
+        def start
+        end
+      end
+    end
+  ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+    rspec spec/codebreaker/game_spec.rb --format doc
+
+    Codebreaker::Game
+      #start
+        sends a welcome message (PENDING: Not yet implemented)
+        prompts for the first guess (PENDING: Not yet implemented)
+
+    Pending:
+      Codebreaker::Game#start sends a welcome message
+        # Not yet implemented
+        # ./spec/codebreaker/game_spec.rb:6
+      Codebreaker::Game#start prompts for the first guess
+        # Not yet implemented
+        # ./spec/codebreaker/game_spec.rb:7
+
+  ]]>
+  </script>
+</section><section id="failing-spec" class="slide">
+  <h2>Red: Start with a Failing Code Example</h2>
+
+  <p>In game_spec.rb, we want to specify that when we start the game, it sends the right messages to the output.</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    # file spec/codebreaker/game_spec.rb
+
+    require 'spec_helper'
+
+    module Codebreaker
+      describe Game do
+        describe "#start" do
+          it "sends a welcome message" do
+            output = double('output')
+            game = Game.new(output)
+            output.should_receive(:puts).with('Welcome to Codebreaker!')
+            game.start
+          end
+          it "prompts for the first guess"
+        end
+      end
+    end]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+    rspec spec/codebreaker/game_spec.rb --format doc
+
+    Codebreaker::Game
+      #start
+        sends a welcome message (FAILED - 1)
+        prompts for the first guess (PENDING: Not yet implemented)
+
+    Pending:
+      Codebreaker::Game#start prompts for the first guess
+        # Not yet implemented
+        # ./spec/codebreaker/game_spec.rb:12
+
+    Failures:
+
+      1) Codebreaker::Game#start sends a welcome message
+         Failure/Error: output.should_receive(:puts).with('Welcome to Codebreaker!')
+           (Double "output").puts("Welcome to Codebreaker!")
+               expected: 1 time
+               received: 0 times
+         # ./spec/codebreaker/game_spec.rb:9:in 'block (3 levels) in <module:Codebreaker>'
+  ]]>
+  </script>
+</section><section id="passing-spec" class="slide">
+  <h2>Green: Get the Example to Pass</h2>
+
+  <p>The failure message tells us that output never received puts. Here’s what we need to do to get this example to pass:</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    # file lib/codebreaker/game.rb
+
+    module Codebreaker
+      class Game
+        def initialize(output)
+          @output = output
+        end
+
+        def start
+          @output.puts 'Welcome to Codebreaker!'
+        end
+      end
+    end
+  ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+    rspec spec/codebreaker/game_spec.rb --format doc
+
+    Codebreaker::Game
+      #start
+        sends a welcome message
+        prompts for the first guess (PENDING: Not yet implemented)
+
+    Pending:
+      Codebreaker::Game#start prompts for the first guess
+        # Not yet implemented
+        # ./spec/codebreaker/game_spec.rb:12
+
+    Finished in 0.00071 seconds
+    2 examples, 0 failures, 1 pending
+
+  ]]>
+  </script>
+</section><section id="next-step" class="slide">
+  <h2>Next step</h2>
+
+  <p>The following failing step is the next thing to work on: <strong>And I should see "Enter guess:"</strong>.</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    # file spec/codebreaker/game_spec.rb
+
+    require 'spec_helper'
+
+    module Codebreaker
+      describe Game do
+        describe "#start" do
+          it "sends a welcome message" do
+            ...
+          end
+
+          it "prompts for the first guess" do
+            output = double('output')
+            game = Game.new(output)
+            output.should_receive(:puts).with('Enter guess:')
+            game.start
+          end
+        end
+      end
+    end
+  ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+    rspec spec/codebreaker/game_spec.rb --format doc
+
+    Codebreaker::Game
+      #start
+        sends a welcome message
+        prompts for the first guess (FAILED - 1)
+
+    Failures:
+
+      1) Codebreaker::Game#start prompts for the first guess
+         Failure/Error: game.start
+           Double "output" received :puts with unexpected arguments
+             expected: ("Enter guess:")
+                  got: ("Welcome to Codebreaker!")
+         # ./lib/codebreaker/game.rb:8:in 'start'
+         # ./spec/codebreaker/game_spec.rb:16:in 'block (3 levels) in <module:Codebreaker>'
+
+   Finished in 0.00126 seconds
+   2 examples, 1 failure]]>
+  </script>
+</section><section id="resolve-step" class="slide">
+  <h2>Trying to get green again</h2>
+
+  <p>This time, the output didn’t receive puts('Enter guess:'). Resolve that as follows:</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    # file lib/codebreaker/game.rb
+
+    module Codebreaker
+      class Game
+        def initialize(output)
+          @output = output
+        end
+
+        def start
+          @output.puts 'Welcome to Codebreaker!'
+          @output.puts 'Enter guess:'
+        end
+      end
+    end
+  ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+    rspec spec/codebreaker/game_spec.rb --format doc
+
+    Codebreaker::Game
+      #start
+        sends a welcome message (FAILED - 1)
+        prompts for the first guess (FAILED - 2)
+
+    Failures:
+
+      1) Codebreaker::Game#start sends a welcome message
+         Failure/Error: game.start
+           Double "output" received :puts with unexpected arguments
+             expected: ("Welcome to Codebreaker!")
+                  got: ("Enter guess:")
+         # ./lib/codebreaker/game.rb:9:in `start'
+         # ./spec/codebreaker/game_spec.rb:10:in `block (3 levels) in <module:Codebreaker>'
+
+      2) Codebreaker::Game#start prompts for the first guess
+         Failure/Error: game.start
+           Double "output" received :puts with unexpected arguments
+             expected: ("Enter guess:")
+                  got: ("Welcome to Codebreaker!")
+         # ./lib/codebreaker/game.rb:8:in `start'
+         # ./spec/codebreaker/game_spec.rb:16:in `block (3 levels) in <module:Codebreaker>'
+
+    Finished in 0.00136 seconds
+    2 examples, 2 failures
+  ]]>
+  </script>
+</section><section id="fix-step" class="slide">
+  <h2>Fix things up</h2>
+
+  <p>We’ve told the double in the first example to expect puts( ) with “Welcome to Codebreaker!” and we’ve satisfied that requirement, but we’ve only
+told it to expect “Welcome to Codebreaker!” It doesn’t know anything about “Enter guess:”</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    # file spec/codebreaker/game_spec.rb
+
+	module Codebreaker
+	  describe Game do
+	    describe "#start" do
+	      it "sends a welcome message" do
+	        output = double('output').as_null_object
+	        game = Game.new(output)
+	        output.should_receive(:puts).with('Welcome to Codebreaker!')
+	        game.start
+	      end
+
+	      it "prompts for the first guess" do
+			output = double('output').as_null_object
+			game = Game.new(output)
+			output.should_receive(:puts).with('Enter guess:')
+			game.start
+	      end
+	    end
+	  end
+	end
+  ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+    rspec spec/codebreaker/game_spec.rb --format doc
+
+	Codebreaker::Game
+	  #start
+	    sends a welcome message
+	    prompts for the first guess
+
+	Finished in 0.00103 seconds
+	2 examples, 0 failures
+
+  ]]>
+  </script>
+</section><section id="refactor" class="slide">
+  <h2>Refactor</h2>
+
+  <p>"Refactoring is the process of changing a software system in such a way that it does not alter the external behavior of the code yet improves its internal structure."</p>
+
+  <p>In this case, we have a very clear break between what is context and what is behavior, so let’s take advantage of that and move the context to a block that is executed before each of the examples.</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    # file spec/codebreaker/game_spec.rb
+
+    module Codebreaker
+      describe Game do
+        describe "#start" do
+          let(:output) { double('output').as_null_object }
+          let(:game)   { Game.new(output) }
+
+          it "sends a welcome message" do
+            output.should_receive(:puts).with('Welcome to Codebreaker!')
+            game.start
+          end
+
+          it "prompts for the first guess" do
+            output.should_receive(:puts).with('Enter guess:')
+            game.start
+          end
+        end
+      end
+    end
+  ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+    rspec spec/codebreaker/game_spec.rb --format doc
+
+    Codebreaker::Game
+      #start
+        sends a welcome message
+        prompts for the first guess
+
+    Finished in 0.00105 seconds
+    2 examples, 0 failures
+  ]]>
+  </script>
+</section><!-- End slides. -->
 
 <!-- deck.navigation snippet -->
 <a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
@@ -1148,3 +1993,4 @@
 
 </body>
 </html>
+

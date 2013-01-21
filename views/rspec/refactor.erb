@@ -1,13 +1,13 @@
 <section id="refactor" class="slide">
   <h2>Refactor</h2>
 
-  <p>“Refactoring is the process of changing a software system in such a way that it does not alter the external behavior of the code yet improves its internal structure.”</p>
+  <p>"Refactoring is the process of changing a software system in such a way that it does not alter the external behavior of the code yet improves its internal structure."</p>
 
   <p>In this case, we have a very clear break between what is context and what is behavior, so let’s take advantage of that and move the context to a block that is executed before each of the examples.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
   <![CDATA[
-    # spec/codebreaker/game_spec.rb
+    # file spec/codebreaker/game_spec.rb
 
     module Codebreaker
       describe Game do

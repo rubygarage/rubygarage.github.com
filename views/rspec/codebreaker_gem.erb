@@ -1,0 +1,31 @@
+<section id="codebreaker-gem" class="slide">
+  <h2>Creating codebreaker gem</h2>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    rvm use 1.9.3-head@codebreaker --create
+    Using /Users/sparrow/.rvm/gems/ruby-1.9.3-head with gemset codebreaker]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    gem install bundler]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    bundle gem codebreaker]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    # file codebreaker.gemspec
+
+    # ...
+    Gem::Specification.new do |gem|
+      # ...
+    
+      gem.add_development_dependency "rspec"
+    end]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    bundle install]]>
+  </script>
+</section>

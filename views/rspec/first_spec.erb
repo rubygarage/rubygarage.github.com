@@ -5,7 +5,16 @@
 
   <script type="syntaxhighlighter" class="brush: ruby">
   <![CDATA[
-    # spec/codebreaker/game_spec.rb
+    # file spec/spec_helper.rb
+
+    require 'bundler/setup'
+    require 'codebreaker'
+  ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    # file spec/codebreaker/game_spec.rb
 
     require 'spec_helper'
 
@@ -16,12 +25,7 @@
           it "prompts for the first guess"
         end
       end
-    end
-
-    # spec/spec_helper.rb
-
-    require 'codebreaker'
-  ]]>
+    end]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
@@ -32,7 +36,6 @@
       uninitialized constant Codebreaker::Game (NameError)
     from /home/alony/projects/rspec-example/spec/codebreaker/game_spec.rb:3:in '<top (required)>'
     from /home/alony/.rvm/gems/ruby-1.9.2-p320/gems/rspec-core-2.11.1/lib/rspec/core/configuration.rb:780:in 'load'
-...
-  ]]>
+    ...]]>
   </script>
 </section>

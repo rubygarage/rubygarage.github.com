@@ -1,17 +1,17 @@
-/* line 1, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 1, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 html, body {
   height: 100%;
   padding: 0;
   margin: 0;
 }
 
-/* line 7, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 7, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 body.deck-container {
   overflow-y: auto;
   position: static;
 }
 
-/* line 12, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 12, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-container {
   position: relative;
   min-height: 100%;
@@ -22,61 +22,61 @@ body.deck-container {
   overflow: hidden;
   /* End HTML5 Boilerplate adaptations */
 }
-/* line 21, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 21, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .js .deck-container {
   visibility: hidden;
 }
-/* line 25, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 25, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .ready .deck-container {
   visibility: visible;
 }
-/* line 29, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 29, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .touch .deck-container {
   -webkit-text-size-adjust: none;
   -moz-text-size-adjust: none;
 }
-/* line 35, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 35, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-container article, .deck-container aside, .deck-container details, .deck-container figcaption, .deck-container figure,
 .deck-container footer, .deck-container header, .deck-container hgroup, .deck-container menu, .deck-container nav, .deck-container section {
   display: block;
 }
-/* line 39, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 39, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-container blockquote, .deck-container q {
   quotes: none;
 }
-/* line 42, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 42, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-container blockquote:before, .deck-container blockquote:after, .deck-container q:before, .deck-container q:after {
   content: "";
   content: none;
 }
-/* line 48, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 48, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-container ins {
   background-color: #ff9;
   color: #000;
   text-decoration: none;
 }
-/* line 54, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 54, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-container mark {
   background-color: #ff9;
   color: #000;
   font-style: italic;
   font-weight: bold;
 }
-/* line 61, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 61, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-container del {
   text-decoration: line-through;
 }
-/* line 65, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 65, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-container abbr[title], .deck-container dfn[title] {
   border-bottom: 1px dotted;
   cursor: help;
 }
-/* line 70, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 70, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-container table {
   border-collapse: collapse;
   border-spacing: 0;
 }
-/* line 75, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 75, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-container hr {
   display: block;
   height: 1px;
@@ -85,158 +85,158 @@ body.deck-container {
   margin: 1em 0;
   padding: 0;
 }
-/* line 84, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 84, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-container input, .deck-container select {
   vertical-align: middle;
 }
-/* line 88, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 88, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-container select, .deck-container input, .deck-container textarea, .deck-container button {
   font: 99% sans-serif;
 }
-/* line 92, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 92, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-container pre, .deck-container code, .deck-container kbd, .deck-container samp {
   font-family: monospace, sans-serif;
 }
-/* line 96, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 96, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-container a {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
-/* line 99, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 99, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-container a:hover, .deck-container a:active {
   outline: none;
 }
-/* line 104, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 104, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-container ul, .deck-container ol {
   margin-left: 2em;
   vertical-align: top;
 }
-/* line 109, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 109, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-container ol {
   list-style-type: decimal;
 }
-/* line 114, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 114, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-container nav ul, .deck-container nav li {
   margin: 0;
   list-style: none;
   list-style-image: none;
 }
-/* line 121, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 121, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-container small {
   font-size: 85%;
 }
-/* line 125, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 125, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-container strong, .deck-container th {
   font-weight: bold;
 }
-/* line 129, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 129, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-container td {
   vertical-align: top;
 }
-/* line 133, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 133, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-container sub, .deck-container sup {
   font-size: 75%;
   line-height: 0;
   position: relative;
 }
-/* line 139, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 139, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-container sup {
   top: -0.5em;
 }
-/* line 143, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 143, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-container sub {
   bottom: -0.25em;
 }
-/* line 145, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 145, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-container textarea {
   overflow: auto;
 }
-/* line 150, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 150, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .ie6 .deck-container legend, .ie7 .deck-container legend {
   margin-left: -7px;
 }
-/* line 155, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 155, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-container input[type="radio"] {
   vertical-align: text-bottom;
 }
-/* line 159, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 159, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-container input[type="checkbox"] {
   vertical-align: bottom;
 }
-/* line 163, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 163, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .ie7 .deck-container input[type="checkbox"] {
   vertical-align: baseline;
 }
-/* line 167, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 167, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .ie6 .deck-container input {
   vertical-align: text-bottom;
 }
-/* line 171, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 171, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-container label, .deck-container input[type="button"], .deck-container input[type="submit"], .deck-container input[type="image"], .deck-container button {
   cursor: pointer;
 }
-/* line 175, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 175, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-container button, .deck-container input, .deck-container select, .deck-container textarea {
   margin: 0;
 }
-/* line 180, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 180, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-container input:invalid, .deck-container textarea:invalid {
   border-radius: 1px;
   -moz-box-shadow: 0px 0px 5px red;
   -webkit-box-shadow: 0px 0px 5px red;
   box-shadow: 0px 0px 5px red;
 }
-/* line 186, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 186, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-container input:invalid .no-boxshadow, .deck-container textarea:invalid .no-boxshadow {
   background-color: #f0dddd;
 }
-/* line 192, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 192, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-container button {
   width: auto;
   overflow: visible;
 }
-/* line 197, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 197, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .ie7 .deck-container img {
   -ms-interpolation-mode: bicubic;
 }
-/* line 200, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 200, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-container, .deck-container select, .deck-container input, .deck-container textarea {
   color: #444;
 }
-/* line 204, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 204, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-container a {
   color: #607890;
 }
-/* line 207, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 207, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-container a:hover, .deck-container a:focus {
   color: #036;
 }
-/* line 211, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 211, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-container a:link {
   -webkit-tap-highlight-color: #fff;
 }
-/* line 217, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 217, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-container.deck-loading {
   display: none;
 }
 
-/* line 222, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 222, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .slide {
   width: auto;
   min-height: 100%;
   position: relative;
 }
-/* line 227, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 227, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .slide h1 {
   font-size: 4.5em;
 }
-/* line 231, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 231, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .slide h1, .slide .vcenter {
   font-weight: bold;
   text-align: center;
   padding-top: 1em;
   max-height: 100%;
 }
-/* line 237, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 237, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .csstransforms .slide h1, .csstransforms .slide .vcenter {
   padding: 0 48px;
   position: absolute;
@@ -249,7 +249,7 @@ body.deck-container {
   -o-transform: translate(0, -50%);
   transform: translate(0, -50%);
 }
-/* line 251, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 251, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .slide .vcenter h1 {
   position: relative;
   top: auto;
@@ -260,7 +260,7 @@ body.deck-container {
   -o-transform: none;
   transform: none;
 }
-/* line 262, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 262, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .slide h2 {
   font-size: 2.25em;
   font-weight: bold;
@@ -268,44 +268,44 @@ body.deck-container {
   margin: 0 0 0.66666em 0;
   border-bottom: 3px solid #888888;
 }
-/* line 270, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 270, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .slide h3 {
   font-size: 1.4375em;
   font-weight: bold;
   margin-bottom: .30435em;
 }
-/* line 276, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 276, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .slide h4 {
   font-size: 1.25em;
   font-weight: bold;
   margin-bottom: .25em;
 }
-/* line 282, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 282, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .slide h5 {
   font-size: 1.125em;
   font-weight: bold;
   margin-bottom: .2222em;
 }
-/* line 288, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 288, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .slide h6 {
   font-size: 1em;
   font-weight: bold;
 }
-/* line 293, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 293, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .slide img, .slide iframe, .slide video {
   display: block;
   max-width: 100%;
 }
-/* line 298, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 298, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .slide video, .slide iframe, .slide img {
   display: block;
   margin: 0 auto;
 }
-/* line 303, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 303, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .slide p, .slide blockquote, .slide iframe, .slide img, .slide ul, .slide ol, .slide pre, .slide video {
   margin-bottom: 1em;
 }
-/* line 307, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 307, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .slide pre {
   white-space: pre;
   white-space: pre-wrap;
@@ -313,45 +313,45 @@ body.deck-container {
   padding: 1em;
   border: 1px solid #888888;
 }
-/* line 315, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 315, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .slide em {
   font-style: italic;
 }
-/* line 319, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 319, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .slide li {
   padding: 0.25em 0;
   vertical-align: middle;
 }
 
-/* line 325, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 325, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-before, .deck-previous, .deck-next, .deck-after {
   position: absolute;
   left: -999em;
   top: -999em;
 }
 
-/* line 331, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 331, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-current {
   z-index: 2;
 }
 
-/* line 335, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 335, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .slide .slide {
   visibility: hidden;
   position: static;
   min-height: 0;
 }
 
-/* line 341, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 341, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-child-current {
   position: static;
   z-index: 2;
 }
-/* line 345, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 345, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-child-current .slide {
   visibility: hidden;
 }
-/* line 349, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+/* line 349, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
 .deck-child-current .deck-previous, .deck-child-current .deck-before, .deck-child-current .deck-current {
   visibility: visible;
 }
@@ -360,7 +360,7 @@ body.deck-container {
   /* html { -webkit-text-size-adjust:none; -ms-text-size-adjust:none; } */
 }
 @media print {
-  /* line 369, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+  /* line 369, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
   * {
     background: transparent !important;
     color: black !important;
@@ -373,44 +373,44 @@ body.deck-container {
     -moz-box-shadow: none !important;
     box-shadow: none !important;
   }
-  /* line 381, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+  /* line 381, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
   * :before, * :after {
     display: none !important;
   }
 
-  /* line 385, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+  /* line 385, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
   a, a:visited {
     color: #444444 !important;
     text-decoration: underline;
   }
 
-  /* line 386, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+  /* line 386, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
   a[href]:after {
     content: " (" attr(href) ")";
   }
 
-  /* line 387, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+  /* line 387, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
   abbr[title]:after {
     content: " (" attr(title) ")";
   }
 
-  /* line 388, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+  /* line 388, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
   .ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after {
     content: "";
   }
 
-  /* line 389, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+  /* line 389, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
   pre, blockquote {
     border: 1px solid #999999;
     page-break-inside: avoid;
   }
 
-  /* line 390, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+  /* line 390, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
   thead {
     display: table-header-group;
   }
 
-  /* line 391, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+  /* line 391, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
   tr, img {
     page-break-inside: avoid;
   }
@@ -419,18 +419,18 @@ body.deck-container {
     margin: 0.5cm;
 }
 
-  /* line 393, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+  /* line 393, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
   p, h2, h3 {
     orphans: 3;
     widows: 3;
   }
 
-  /* line 394, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+  /* line 394, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
   h2, h3 {
     page-break-after: avoid;
   }
 
-  /* line 396, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+  /* line 396, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
   .slide {
     position: static !important;
     visibility: visible !important;
@@ -443,7 +443,7 @@ body.deck-container {
     opacity: 1 !important;
   }
 
-  /* line 408, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+  /* line 408, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
   h1, .vcenter {
     -webkit-transform: none !important;
     -moz-transform: none !important;
@@ -454,12 +454,12 @@ body.deck-container {
     position: static !important;
   }
 
-  /* line 418, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+  /* line 418, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
   .deck-container > .slide {
     page-break-after: always;
   }
 
-  /* line 422, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+  /* line 422, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
   .deck-container {
     width: 100% !important;
     height: auto !important;
@@ -467,12 +467,12 @@ body.deck-container {
     display: block !important;
   }
 
-  /* line 429, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/deck.core.scss */
+  /* line 429, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/deck.core.scss */
   script {
     display: none;
   }
 }
-/* line 2, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/extensions/deck.hash.scss */
+/* line 2, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/extensions/deck.hash.scss */
 .deck-container .deck-permalink {
   display: none;
   position: absolute;
@@ -483,11 +483,11 @@ body.deck-container {
   text-align: center;
 }
 
-/* line 13, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/extensions/deck.hash.scss */
+/* line 13, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/extensions/deck.hash.scss */
 .no-history .deck-container:hover .deck-permalink {
   display: block;
 }
-/* line 8, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/extensions/deck.navigation.scss */
+/* line 8, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/extensions/deck.navigation.scss */
 .deck-container .deck-prev-link, .deck-container .deck-next-link {
   display: none;
   position: absolute;
@@ -505,40 +505,40 @@ body.deck-container {
   color: #fff;
   background: #888;
 }
-/* line 25, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/extensions/deck.navigation.scss */
+/* line 25, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/extensions/deck.navigation.scss */
 .borderradius .deck-container .deck-prev-link, .borderradius .deck-container .deck-next-link {
   -webkit-border-radius: 16px;
   -moz-border-radius: 16px;
   border-radius: 16px;
 }
-/* line 29, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/extensions/deck.navigation.scss */
+/* line 29, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/extensions/deck.navigation.scss */
 .deck-container .deck-prev-link:hover, .deck-container .deck-prev-link:focus, .deck-container .deck-prev-link:active, .deck-container .deck-prev-link:visited, .deck-container .deck-next-link:hover, .deck-container .deck-next-link:focus, .deck-container .deck-next-link:active, .deck-container .deck-next-link:visited {
   color: #fff;
 }
-/* line 34, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/extensions/deck.navigation.scss */
+/* line 34, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/extensions/deck.navigation.scss */
 .deck-container .deck-prev-link {
   left: 8px;
 }
-/* line 38, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/extensions/deck.navigation.scss */
+/* line 38, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/extensions/deck.navigation.scss */
 .deck-container .deck-next-link {
   right: 8px;
 }
-/* line 42, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/extensions/deck.navigation.scss */
+/* line 42, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/extensions/deck.navigation.scss */
 .deck-container:hover .deck-prev-link, .deck-container:hover .deck-next-link {
   display: block;
 }
-/* line 45, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/extensions/deck.navigation.scss */
+/* line 45, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/extensions/deck.navigation.scss */
 .deck-container:hover .deck-prev-link.deck-nav-disabled, .touch .deck-container:hover .deck-prev-link, .deck-container:hover .deck-next-link.deck-nav-disabled, .touch .deck-container:hover .deck-next-link {
   display: none;
 }
 
 @media print {
-  /* line 53, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/extensions/deck.navigation.scss */
+  /* line 53, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/extensions/deck.navigation.scss */
   .deck-prev-link, .deck-next-link {
     display: none !important;
   }
 }
-/* line 2, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/extensions/deck.status.scss */
+/* line 2, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/extensions/deck.status.scss */
 .deck-container .deck-status {
   position: absolute;
   bottom: 10px;
@@ -548,18 +548,18 @@ body.deck-container {
   margin: 0;
 }
 
-/* line 13, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/extensions/deck.status.scss */
+/* line 13, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/extensions/deck.status.scss */
 body.deck-container .deck-status {
   position: fixed;
 }
 
 @media print {
-  /* line 19, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/extensions/deck.status.scss */
+  /* line 19, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/extensions/deck.status.scss */
   .deck-status {
     display: none;
   }
 }
-/* line 18, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/transition/fade.scss */
+/* line 18, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/transition/fade.scss */
 .csstransitions.csstransforms .deck-container .slide {
   -webkit-transition: opacity 500ms ease-in-out 0ms;
   -moz-transition: opacity 500ms ease-in-out 0ms;
@@ -567,7 +567,7 @@ body.deck-container .deck-status {
   -o-transition: opacity 500ms ease-in-out 0ms;
   transition: opacity 500ms ease-in-out 0ms;
 }
-/* line 23, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/transition/fade.scss */
+/* line 23, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/transition/fade.scss */
 .csstransitions.csstransforms .deck-container:not(.deck-menu) > .slide {
   position: absolute;
   top: 0;
@@ -578,36 +578,36 @@ body.deck-container .deck-status {
   width: 100%;
   padding: 0 48px;
 }
-/* line 33, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/transition/fade.scss */
+/* line 33, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/transition/fade.scss */
 .csstransitions.csstransforms .deck-container:not(.deck-menu) > .slide .slide {
   position: relative;
   left: 0;
   top: 0;
 }
-/* line 39, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/transition/fade.scss */
+/* line 39, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/transition/fade.scss */
 .csstransitions.csstransforms .deck-container:not(.deck-menu) > .slide .deck-next, .csstransitions.csstransforms .deck-container:not(.deck-menu) > .slide .deck-after {
   opacity: 0;
 }
-/* line 43, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/transition/fade.scss */
+/* line 43, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/transition/fade.scss */
 .csstransitions.csstransforms .deck-container:not(.deck-menu) > .slide .deck-current {
   opacity: 1;
 }
-/* line 48, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/transition/fade.scss */
+/* line 48, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/transition/fade.scss */
 .csstransitions.csstransforms .deck-container:not(.deck-menu) > .deck-previous, .csstransitions.csstransforms .deck-container:not(.deck-menu) > .deck-before, .csstransitions.csstransforms .deck-container:not(.deck-menu) > .deck-next, .csstransitions.csstransforms .deck-container:not(.deck-menu) > .deck-after {
   opacity: 0;
   pointer-events: none;
 }
-/* line 54, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/transition/fade.scss */
+/* line 54, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/transition/fade.scss */
 .csstransitions.csstransforms .deck-container:not(.deck-menu) > .deck-before .slide, .csstransitions.csstransforms .deck-container:not(.deck-menu) > .deck-previous .slide {
   visibility: visible;
 }
-/* line 59, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/transition/fade.scss */
+/* line 59, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/transition/fade.scss */
 .csstransitions.csstransforms .deck-container:not(.deck-menu) > .deck-child-current {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
 }
-/* line 64, /Users/sparrow/Www/ruby-presentations/vendor/assets/stylesheets/deck/transition/fade.scss */
+/* line 64, /Users/sparrow/Www/rubygarage.github.com/vendor/assets/stylesheets/deck/transition/fade.scss */
 .csstransitions.csstransforms .deck-container:not(.deck-menu) > .deck-child-current .deck-next, .csstransitions.csstransforms .deck-container:not(.deck-menu) > .deck-child-current .deck-after {
   visibility: hidden;
 }
@@ -7713,14 +7713,14 @@ a.label:hover, a.badge:hover {
   box-sizing: border-box;
 }
 
-/* line 1, /Users/sparrow/Www/ruby-presentations/assets/stylesheets/main.css.scss */
+/* line 1, /Users/sparrow/Www/rubygarage.github.com/assets/stylesheets/main.css.scss */
 .deck-container {
   font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
   line-height: 1.25;
   color: #444;
   background: url("data:image/png;base64,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") repeat fixed 0 0 white;
 }
-/* line 7, /Users/sparrow/Www/ruby-presentations/assets/stylesheets/main.css.scss */
+/* line 7, /Users/sparrow/Www/rubygarage.github.com/assets/stylesheets/main.css.scss */
 .deck-container .syntaxhighlighter {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -7733,11 +7733,11 @@ a.label:hover, a.badge:hover {
   background: #fff;
   margin-bottom: 1em;
 }
-/* line 14, /Users/sparrow/Www/ruby-presentations/assets/stylesheets/main.css.scss */
+/* line 14, /Users/sparrow/Www/rubygarage.github.com/assets/stylesheets/main.css.scss */
 .deck-container .syntaxhighlighter .toolbar {
   display: none;
 }
-/* line 19, /Users/sparrow/Www/ruby-presentations/assets/stylesheets/main.css.scss */
+/* line 19, /Users/sparrow/Www/rubygarage.github.com/assets/stylesheets/main.css.scss */
 .deck-container h2 {
   font-family: Georgia, serif;
   font-weight: normal;
@@ -7747,13 +7747,13 @@ a.label:hover, a.badge:hover {
   color: #000;
   text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
 }
-/* line 29, /Users/sparrow/Www/ruby-presentations/assets/stylesheets/main.css.scss */
+/* line 29, /Users/sparrow/Www/rubygarage.github.com/assets/stylesheets/main.css.scss */
 .deck-container h3 {
   font-family: Georgia, serif;
   font-weight: normal;
   text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
 }
-/* line 36, /Users/sparrow/Www/ruby-presentations/assets/stylesheets/main.css.scss */
+/* line 36, /Users/sparrow/Www/rubygarage.github.com/assets/stylesheets/main.css.scss */
 .deck-container .slide p {
   font-size: 18px;
 }
@@ -14453,14 +14453,14 @@ a.label:hover, a.badge:hover {
   box-sizing: border-box;
 }
 
-/* line 1, /Users/sparrow/Www/ruby-presentations/assets/stylesheets/main.css.scss */
+/* line 1, /Users/sparrow/Www/rubygarage.github.com/assets/stylesheets/main.css.scss */
 .deck-container {
   font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
   line-height: 1.25;
   color: #444;
   background: url("data:image/png;base64,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") repeat fixed 0 0 white;
 }
-/* line 7, /Users/sparrow/Www/ruby-presentations/assets/stylesheets/main.css.scss */
+/* line 7, /Users/sparrow/Www/rubygarage.github.com/assets/stylesheets/main.css.scss */
 .deck-container .syntaxhighlighter {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -14473,11 +14473,11 @@ a.label:hover, a.badge:hover {
   background: #fff;
   margin-bottom: 1em;
 }
-/* line 14, /Users/sparrow/Www/ruby-presentations/assets/stylesheets/main.css.scss */
+/* line 14, /Users/sparrow/Www/rubygarage.github.com/assets/stylesheets/main.css.scss */
 .deck-container .syntaxhighlighter .toolbar {
   display: none;
 }
-/* line 19, /Users/sparrow/Www/ruby-presentations/assets/stylesheets/main.css.scss */
+/* line 19, /Users/sparrow/Www/rubygarage.github.com/assets/stylesheets/main.css.scss */
 .deck-container h2 {
   font-family: Georgia, serif;
   font-weight: normal;
@@ -14487,23 +14487,23 @@ a.label:hover, a.badge:hover {
   color: #000;
   text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
 }
-/* line 29, /Users/sparrow/Www/ruby-presentations/assets/stylesheets/main.css.scss */
+/* line 29, /Users/sparrow/Www/rubygarage.github.com/assets/stylesheets/main.css.scss */
 .deck-container h3 {
   font-family: Georgia, serif;
   font-weight: normal;
   text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
 }
-/* line 36, /Users/sparrow/Www/ruby-presentations/assets/stylesheets/main.css.scss */
+/* line 36, /Users/sparrow/Www/rubygarage.github.com/assets/stylesheets/main.css.scss */
 .deck-container .slide p {
   font-size: 18px;
 }
 
-/* line 3, /Users/sparrow/Www/ruby-presentations/assets/stylesheets/rspec.css.scss */
+/* line 3, /Users/sparrow/Www/rubygarage.github.com/assets/stylesheets/rspec.css.scss */
 .red {
   color: red;
 }
 
-/* line 7, /Users/sparrow/Www/ruby-presentations/assets/stylesheets/rspec.css.scss */
+/* line 7, /Users/sparrow/Www/rubygarage.github.com/assets/stylesheets/rspec.css.scss */
 .green {
   color: green;
 }
