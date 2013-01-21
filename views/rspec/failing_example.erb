@@ -1,0 +1,53 @@
+<section id="failing-spec" class="slide">
+  <h2>Red: Start with a Failing Code Example</h2>
+
+  <p>In game_spec.rb, we want to specify that when we start the game, it sends the right messages to the output.</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    # spec/codebreaker/game_spec.rb
+
+    require 'spec_helper'
+
+    module Codebreaker
+      describe Game do
+        describe "#start" do
+          it "sends a welcome message" do
+            output = double('output')
+            game = Game.new(output)
+            output.should_receive(:puts).with('Welcome to Codebreaker!')
+            game.start
+          end
+          it "prompts for the first guess"
+        end
+      end
+    end
+
+  ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+    rspec spec/codebreaker/game_spec.rb --format doc
+
+    Codebreaker::Game
+      #start
+        sends a welcome message (FAILED - 1)
+        prompts for the first guess (PENDING: Not yet implemented)
+
+    Pending:
+      Codebreaker::Game#start prompts for the first guess
+        # Not yet implemented
+        # ./spec/codebreaker/game_spec.rb:12
+
+    Failures:
+
+      1) Codebreaker::Game#start sends a welcome message
+         Failure/Error: output.should_receive(:puts).with('Welcome to Codebreaker!')
+           (Double "output").puts("Welcome to Codebreaker!")
+               expected: 1 time
+               received: 0 times
+         # ./spec/codebreaker/game_spec.rb:9:in 'block (3 levels) in <module:Codebreaker>'
+  ]]>
+  </script>
+</section>

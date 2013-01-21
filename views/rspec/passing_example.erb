@@ -1,0 +1,43 @@
+<section id="passing-spec" class="slide">
+  <h2>Green: Get the Example to Pass</h2>
+
+  <p>The failure message tells us that output never received puts. Here’s what we need to do to get this example to pass:</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    # lib/codebreaker/game.rb
+
+    module Codebreaker
+      class Game
+        def initialize(output)
+          @output = output
+        end
+
+        def start
+          @output.puts 'Welcome to Codebreaker!'
+        end
+      end
+    end
+  ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+    rspec spec/codebreaker/game_spec.rb --format doc
+
+    Codebreaker::Game
+      #start
+        sends a welcome message
+        prompts for the first guess (PENDING: Not yet implemented)
+
+    Pending:
+      Codebreaker::Game#start prompts for the first guess
+        # Not yet implemented
+        # ./spec/codebreaker/game_spec.rb:12
+
+    Finished in 0.00071 seconds
+    2 examples, 0 failures, 1 pending
+
+  ]]>
+  </script>
+</section>

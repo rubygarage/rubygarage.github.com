@@ -1,0 +1,55 @@
+<section id="next-step" class="slide">
+  <h2>Next step</h2>
+
+  <p>The following failing step is the next thing to work on: <strong>And I should see “Enter guess:”</strong>.</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    # spec/codebreaker/game_spec.rb
+
+    require 'spec_helper'
+
+    module Codebreaker
+      describe Game do
+        describe "#start" do
+          it "sends a welcome message" do
+            ...
+          end
+
+          it "prompts for the first guess" do
+            output = double('output')
+            game = Game.new(output)
+            output.should_receive(:puts).with('Enter guess:')
+            game.start
+          end
+        end
+      end
+    end
+  ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+    rspec spec/codebreaker/game_spec.rb --format doc
+
+    Codebreaker::Game
+      #start
+        sends a welcome message
+        prompts for the first guess (FAILED - 1)
+
+    Failures:
+
+      1) Codebreaker::Game#start prompts for the first guess
+         Failure/Error: game.start
+           Double "output" received :puts with unexpected arguments
+             expected: ("Enter guess:")
+                  got: ("Welcome to Codebreaker!")
+         # ./lib/codebreaker/game.rb:8:in 'start'
+         # ./spec/codebreaker/game_spec.rb:16:in 'block (3 levels) in <module:Codebreaker>'
+
+   Finished in 0.00126 seconds
+   2 examples, 1 failure
+
+  ]]>
+  </script>
+</section>

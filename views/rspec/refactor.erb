@@ -1,0 +1,46 @@
+<section id="refactor" class="slide">
+  <h2>Refactor</h2>
+
+  <p>“Refactoring is the process of changing a software system in such a way that it does not alter the external behavior of the code yet improves its internal structure.”</p>
+
+  <p>In this case, we have a very clear break between what is context and what is behavior, so let’s take advantage of that and move the context to a block that is executed before each of the examples.</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    # spec/codebreaker/game_spec.rb
+
+    module Codebreaker
+      describe Game do
+        describe "#start" do
+          let(:output) { double('output').as_null_object }
+          let(:game)   { Game.new(output) }
+
+          it "sends a welcome message" do
+            output.should_receive(:puts).with('Welcome to Codebreaker!')
+            game.start
+          end
+
+          it "prompts for the first guess" do
+            output.should_receive(:puts).with('Enter guess:')
+            game.start
+          end
+        end
+      end
+    end
+  ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+    rspec spec/codebreaker/game_spec.rb --format doc
+
+    Codebreaker::Game
+      #start
+        sends a welcome message
+        prompts for the first guess
+
+    Finished in 0.00105 seconds
+    2 examples, 0 failures
+  ]]>
+  </script>
+</section>

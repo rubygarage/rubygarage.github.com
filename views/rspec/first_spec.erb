@@ -1,0 +1,38 @@
+<section id="first-spec" class="slide">
+  <h2>Describing Code with RSpec</h2>
+
+  <p>Now we're going to describe the expected behavior of instances of the Game class.</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    # spec/codebreaker/game_spec.rb
+
+    require 'spec_helper'
+
+    module Codebreaker
+      describe Game do
+        describe "#start" do
+          it "sends a welcome message"
+          it "prompts for the first guess"
+        end
+      end
+    end
+
+    # spec/spec_helper.rb
+
+    require 'codebreaker'
+  ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+    rspec spec/codebreaker/game_spec.rb --format doc
+
+    /home/alony/projects/rspec-example/spec/codebreaker/game_spec.rb:4:in '<module:Codebreaker>': 
+      uninitialized constant Codebreaker::Game (NameError)
+    from /home/alony/projects/rspec-example/spec/codebreaker/game_spec.rb:3:in '<top (required)>'
+    from /home/alony/.rvm/gems/ruby-1.9.2-p320/gems/rspec-core-2.11.1/lib/rspec/core/configuration.rb:780:in 'load'
+...
+  ]]>
+  </script>
+</section>

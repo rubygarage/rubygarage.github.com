@@ -1,0 +1,42 @@
+<section id="addig-code" class="slide">
+  <h2>Describing Code with RSpec</h2>
+
+  <p>So let's add some code structure</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    # lib/codebreaker.rb
+
+    require 'codebreaker/game'
+
+    # lib/codebreaker/game.rb
+
+    module Codebreaker
+      class Game
+        def start
+        end
+      end
+    end
+  ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+    rspec spec/codebreaker/game_spec.rb --format doc
+
+    Codebreaker::Game
+      #start
+        sends a welcome message (PENDING: Not yet implemented)
+        prompts for the first guess (PENDING: Not yet implemented)
+
+    Pending:
+      Codebreaker::Game#start sends a welcome message
+        # Not yet implemented
+        # ./spec/codebreaker/game_spec.rb:6
+      Codebreaker::Game#start prompts for the first guess
+        # Not yet implemented
+        # ./spec/codebreaker/game_spec.rb:7
+
+  ]]>
+  </script>
+</section>

@@ -1,0 +1,56 @@
+<section id="resolve-step" class="slide">
+  <h2>Trying to get green again</h2>
+
+  <p>This time, the output didn’t receive puts('Enter guess:'). Resolve that as follows:</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    # lib/codebreaker/game.rb
+
+    module Codebreaker
+      class Game
+        def initialize(output)
+          @output = output
+        end
+
+        def start
+          @output.puts 'Welcome to Codebreaker!'
+          @output.puts 'Enter guess:'
+        end
+      end
+    end
+  ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+    rspec spec/codebreaker/game_spec.rb --format doc
+
+    Codebreaker::Game
+      #start
+        sends a welcome message (FAILED - 1)
+        prompts for the first guess (FAILED - 2)
+
+    Failures:
+
+      1) Codebreaker::Game#start sends a welcome message
+         Failure/Error: game.start
+           Double "output" received :puts with unexpected arguments
+             expected: ("Welcome to Codebreaker!")
+                  got: ("Enter guess:")
+         # ./lib/codebreaker/game.rb:9:in `start'
+         # ./spec/codebreaker/game_spec.rb:10:in `block (3 levels) in <module:Codebreaker>'
+
+      2) Codebreaker::Game#start prompts for the first guess
+         Failure/Error: game.start
+           Double "output" received :puts with unexpected arguments
+             expected: ("Enter guess:")
+                  got: ("Welcome to Codebreaker!")
+         # ./lib/codebreaker/game.rb:8:in `start'
+         # ./spec/codebreaker/game_spec.rb:16:in `block (3 levels) in <module:Codebreaker>'
+
+    Finished in 0.00136 seconds
+    2 examples, 2 failures
+  ]]>
+  </script>
+</section>
