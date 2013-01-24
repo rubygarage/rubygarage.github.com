@@ -1,0 +1,23 @@
+<section id="using-arguments" class="slide">
+  <h2>Passing parameters to tasks</h2>
+  <h3>Using arguments</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    # file Rakefile
+    namespace :morning do
+      ...
+      desc "Make coffee"
+      task :make_coffee, :cups do |t, args|
+        cups = args.cups
+        puts "Made #{cups} cups of coffee. Shakes are gone."
+      end
+      ...
+    end
+    ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    rake morning:make_coffee[2]
+    Made 2 cups of coffee. Shakes are gone.]]>
+  </script>
+</section>

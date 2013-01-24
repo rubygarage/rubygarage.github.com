@@ -1,0 +1,52 @@
+<section id="testing" class="slide">
+  <h2>How to test it</h2>
+  <h3>Write a test</h3>
+  <p>Some notable aspects of testing Rake tasks:</p>
+  <ul>
+    <li>Rake has to be required</li>
+    <li>The Rake file under test has to be manually loaded</li>
+  </ul>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    # file spec/morning_rake_spec.rb
+
+    require 'rake'
+
+    describe 'morning namespace rake task' do
+      before :all do
+        load File.expand_path("../../Rakefile", __FILE__)
+        Rake::Task.define_task(:environment)
+      end
+
+      describe 'morning:make_coffee' do
+        before do
+          Rake::Task["morning:make_coffee"].reenable
+        end
+
+        context "one cup" do
+          it "should make cup of coffee" do
+            Coffee.should_receive(:new).with(1)
+            Rake::Task["morning:make_coffee"].invoke
+          end
+
+          it "should say 'Made 1 cups of coffee'" do
+            $stdout.should_receive(:puts).with("Made 1 cups of coffee. Shakes are gone.")
+            Rake::Task["morning:make_coffee"].invoke
+          end
+        end
+
+        context "two cups" do
+          it "should make two cups of coffee" do
+            Coffee.should_receive(:new).with(2)
+            Rake::Task["morning:make_coffee"].invoke(2)
+          end
+
+          it "should say 'Made 2 cups of coffee'" do
+            $stdout.should_receive(:puts).with("Made 2 cups of coffee. Shakes are gone.")
+            Rake::Task["morning:make_coffee"].invoke(2)
+          end
+        end
+      end
+    end]]>
+  </script>
+</section>

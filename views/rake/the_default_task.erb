@@ -1,0 +1,17 @@
+<section id="the-default-task" class="slide">
+  <h2>The Default Task</h2>
+  <p>
+    Rake has the concept of a default task. This is essentially the task that will be run if you type rake without any arguments. If we wanted our default task to be turning off the alarm from the example above, we'd do this:
+  </p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    # file Rakefile
+    task :default => 'morning:turn_off_alarm'
+    ...]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    rake
+    Turned off alarm. Would have liked 5 more minutes, though.]]>
+  </script>
+</section>

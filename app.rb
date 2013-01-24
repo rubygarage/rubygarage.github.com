@@ -41,6 +41,10 @@ class App < Sinatra::Base
     erb :rspec
   end
 
+  get "/rake" do
+    erb :rake
+  end
+
   helpers do
     include Sprockets::Helpers
   end

@@ -1,0 +1,21 @@
+<section id="describing-tasks" class="slide">
+  <h2>Describing tasks</h2>
+  <p>
+    You can use the desc method to describe your tasks. This is done on the line right above the task definition. It’s also what gives you that nice output when you run <strong>rake -T</strong> to get a list of tasks. Tasks are displayed in alphabetical order.
+  </p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    # file Rakefile
+    ...
+    desc "Make coffee"
+    task :make_coffee do
+      puts "Made a cup of coffee. Shakes are gone."
+    end
+    ...]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    rake -T 
+    rake morning:make_coffee  # Make coffee]]>
+  </script>
+</section>

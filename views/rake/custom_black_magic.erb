@@ -1,0 +1,33 @@
+<section id="custom-black-magic" class="slide">
+  <h2>Passing parameters to tasks</h2>
+  <h3>Custom black magic</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    # file Rakefile
+    namespace :morning do
+      ...
+      desc "Make coffee"
+      task :make_coffee, :cups do |t, args|
+        cups = ARGV.last
+        puts "Made #{cups} cups of coffee. Shakes are gone."
+        task cups.to_sym do ; end
+      end
+      ...
+    end
+    ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    rake morning:make_coffee 2
+    Made 2 cups of coffee. Shakes are gone.]]>
+  </script>
+  <p>A few things are happening here that are worth an explanation:</p>
+  <ol>
+    <li>
+      We are using the ARGV collection of command line arguments to grab the value for our argument. Standard Ruby stuff. Beware though, that this collection will contain all the arguments for Rake, not our task. That’s why we grab the last element in the collection because the first element is the name of our rake task.
+    </li>
+    <li>
+      We have to define a new rake task on the fly with the same name as the value of our argument. If we don’t do this, rake will attempt to invoke a task for each command line argument.
+    </li>  
+  </p>
+</section>

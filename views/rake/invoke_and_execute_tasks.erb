@@ -1,0 +1,28 @@
+<section id="invoking-and-executing" class="slide">
+  <h2>Invoking and executing</h2>
+  <h3>Invoke</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    Rake::Task["morning:make_coffee"].invoke]]>
+  </script>
+  <p>
+    This one executes the dependencies, but it only executes the task if it has not already been invoked.
+  </p>
+  <h3>Reenable</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    Rake::Task["morning:make_coffee"].reenable
+    Rake::Task["morning:make_coffee"].invoke]]>
+  </script>
+  <p>
+    This first resets the task's already_invoked state, allowing the task to then be executed again, dependencies and all.
+  </p>
+  <h3>Execute</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    Rake::Task["morning:make_coffee"].execute]]>
+  </script>
+  <p>
+    This always executes the task, but it doesn't execute its dependencies.
+  </p>
+</section>

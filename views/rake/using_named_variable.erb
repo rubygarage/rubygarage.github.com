@@ -1,0 +1,23 @@
+<section id="using-named-variable" class="slide">
+  <h2>Passing parameters to tasks</h2>
+  <h3>Using a named variable</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    # file Rakefile
+    namespace :morning do
+      ...
+      desc "Make coffee"
+      task :make_coffee do
+        cups = ENV['cups']
+        puts "Made #{cups} cups of coffee. Shakes are gone."
+      end
+      ...
+    end
+    ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    rake morning:make_coffee cups=2
+    Made 2 cups of coffee. Shakes are gone.]]>
+  </script>
+</section>
