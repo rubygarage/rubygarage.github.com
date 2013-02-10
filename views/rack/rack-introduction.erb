@@ -1,0 +1,70 @@
+<section id="lets-code" class="slide">
+  <div class="vcenter">
+    <h1>Enough talks! Lets code!!!</h1>
+  </div>
+</section>
+
+<section id="config.ru-int" class="slide">
+  <h4>Introducing config.ru</h4>
+
+  <p>
+    A file, containing DSL to build Rack environment.<br />
+    It must contain <code>run</code> or <code>map</code> call to
+    specify the class or classes to run as app.
+  </p>
+
+  <p>
+    config.ru is Configuration [of] Rack Up (I think so ;) )
+  </p>
+</section>
+
+<section id="config-ru-example" class="slide">
+  <h4>Example</h4>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+#\ -w -p 8765
+
+# The line above containg options
+# passed to rackup utility.
+# (Ruby warnings enabled, request port 8765)
+
+# Middlewares below will be added
+# to stack of middlewares
+use Rack::Reloader, 0
+use Rack::ConentLength
+
+# app can be Class, Instance, or block
+app = proc do |env|
+  [ 200,
+    {'Content-Type' => 'text/plain'},
+    ["Hello"]
+  ]
+end
+
+# finalize configuration by 'running' our app
+run app
+    ]]>
+  </script>
+</section>
+
+<section id="rackup-try" class="slide">
+  <h4>Try to run</h4>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+      <![CDATA[
+$ rackup
+[2013-02-10 23:57:52] INFO  WEBrick 1.3.1
+[2013-02-10 23:57:52] INFO  ruby 1.9.3 (2012-11-10) [x86_64-darwin11.4.2]
+[2013-02-10 23:57:52] INFO  WEBrick::HTTPServer#start: pid=65529 port=8765
+]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+      <![CDATA[
+$ curl http://127.0.0.1:8765
+Hello
+$
+]]>
+  </script>
+</section>
