@@ -11,5 +11,5 @@ gem 'sprockets-sass'
 gem 'sprockets-helpers'
 
 gem 'compass'
-gem 'bootstrap-sass'
+gem 'bootstrap-sass', require: false
 gem 'coffee-script'
