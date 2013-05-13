@@ -1,0 +1,29 @@
+<section id="struct" class="slide">
+  <h2>Struct</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    Customer = Struct.new(:name, :address, :zip)
+    => Customer
+    
+    joe = Customer.new("Joe Smith", "123 Maple, Anytown NC", 12345)
+    => #<struct Customer name="Joe Smith", address="123 Maple, Anytown NC", zip=12345>
+
+    joe.name
+    joe["name"]
+    joe[:name]
+    joe[0]
+    => "Joe Smith"
+  ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    Customer = Struct.new(:name, :address) do
+      def greeting
+        "Hello #{name}!"
+      end
+    end
+    Customer.new("Dave", "123 Main").greeting 
+    => "Hello Dave!"
+  ]]>
+  </script>
+</section>

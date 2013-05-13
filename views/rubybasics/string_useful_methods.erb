@@ -1,0 +1,64 @@
+<section id="string-useful-methods" class="slide">
+  <h2>String</h2>
+  <h3>Useful methods</h3>
+  <p>
+    Follow by <a href="http://ruby-doc.org/core-2.0/String.html" target="_blank">http://ruby-doc.org/core-2.0/String.html</a> for more information
+  </p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    "pROgraMMing".capitalize
+    => "Programming"
+  ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    "Programming".downcase   
+    => "programming"
+  ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    "Programming".chars
+    => #<Enumerator: "Programming":chars>
+  ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    "Programming".index("gra")
+    => 3
+  ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    "Programming".insert(0, "Extreme ")
+    => "Extreme Programming"
+  ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    "Programming".match(/(.)\1/)
+    => #<MatchData "mm" 1:"m">
+  ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    "Programming".partition("gra")
+    => ["Pro", "gra", "mming"]
+  ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    "Programming".reverse
+    => "gnimmargorP"
+  ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    "Programming, Motherfucker. Do you speak it?".split
+    => ["Programming,", "Motherfucker.", "Do", "you", "speak", "it?"]
+
+    "Programming,_Motherfucker._Do you speakit?".split('_')
+    => ["Programming,", "Motherfucker.", "Do you speakit?"]
+  ]]>
+  </script>
+</section>

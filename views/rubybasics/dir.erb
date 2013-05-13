@@ -1,0 +1,35 @@
+<section id="dir" class="slide">
+  <h2>Dir</h2>
+  <p>Follow by <a href="http://ruby-doc.org/core-2.0/Dir.html" target="_blank">http://ruby-doc.org/core-2.0/Dir.html</a> for more information.</p>
+  entries
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    Dir.entries("testdir")
+    => [".", "..", "config.h", "main.rb"]
+  ]]>
+  </script>
+  glob
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    Dir.glob("*.[a-z][a-z]")
+    => ["main.rb"]
+  ]]>
+  </script>
+  foreach
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    Dir.foreach("testdir") {|x| puts "Got #{x}" }
+
+    Got .
+    Got ..
+    Got config.h
+    Got main.rb
+  ]]>
+  </script>
+  mkdir
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    Dir.mkdir(File.join(Dir.home, ".foo"), 0700)
+  ]]>
+  </script>
+</section>

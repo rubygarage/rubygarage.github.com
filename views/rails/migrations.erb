@@ -1,0 +1,21 @@
+<section id="migrations" class="slide">
+  <h2>Migrations</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class CreatePosts < ActiveRecord::Migration
+      def change
+        create_table :posts do |t|
+          t.string :title
+          t.text :text
+
+          t.timestamps
+        end
+      end
+    end]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    rake db:migrate]]>
+  </script>
+  <h4>Read <a href="http://guides.rubyonrails.org/migrations.html" target="_blank">a Guide to Active Record Migrations</a></h4>
+</section>

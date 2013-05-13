@@ -1,0 +1,39 @@
+<section id="file-useful-methods" class="slide">
+  <h2>File</h2>
+  delete
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    File.delete("file.txt")
+  ]]>
+  </script>
+  rename
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    File.rename("old_name.txt", "new_name.txt")
+  ]]>
+  </script>
+  ftype
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    File.ftype("file.txt")
+    => "file"
+
+    File.ftype(".")
+    => "directory"
+  ]]>
+  </script>
+  join
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    File.join("usr", "mail", "gumby")
+    => "usr/mail/gumby"
+  ]]>
+  </script>
+  expand_path
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    File.expand_path(__FILE__)
+    => "/home/oracle/bin"
+  ]]>
+  </script>
+</section>

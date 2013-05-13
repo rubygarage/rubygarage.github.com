@@ -45,6 +45,18 @@ class App < Sinatra::Base
     erb :rake
   end
 
+  get "/rake" do
+    erb :rake
+  end
+
+  get "/rails" do
+    erb :rails
+  end
+
+  get "/rubybasics" do
+    erb :'rubybasics'
+  end
+
   helpers do
     include Sprockets::Helpers
   end

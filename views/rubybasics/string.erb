@@ -1,0 +1,45 @@
+<section id="string" class="slide">
+  <h2>String</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    > "New string"
+    => New string
+  ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    > String.new
+    => ""
+  ]]>
+  </script>
+  <h3>Interpolation</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    > "Seconds/day: #{24 * 60 * 60}"
+    => Seconds/day: 86400 
+  ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    > 'Seconds/day: #{24 * 60 * 60}'
+    => Seconds/day: #{24 * 60 * 60}
+  ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    > "Tro #{'Lo ' * 3}!!!1"
+    => Tro Lo Lo Lo !!!1
+  ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    > "Now is #{
+                def the(a)
+                  'the ' + a
+                end
+                the('time')
+              } for all good coders ..."
+    => Now is the time for all good coders ...
+  ]]>
+  </script>
+</section>

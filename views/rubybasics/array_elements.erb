@@ -1,0 +1,33 @@
+<section id="array-accessing-elements" class="slide">
+  <h2>Array</h2>
+  <h3>Accessing elements</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    > languages = 'Ruby', 'JavaScript', 'Python', 'PHP'
+    => ["Ruby", "JavaScript", "Python", "PHP"]
+
+    > languages[0]
+    => "Ruby"
+
+    > languages.at(0)
+    => "Ruby"
+
+    > languages[1]
+    => "JavaScript"
+
+    > languages[4]
+    => nil
+
+    > languages[2..3]
+    => ["Python", "PHP"]
+
+    > languages.take(3)
+    => ["Ruby", "JavaScript", "Python"]
+
+    > languages[1] = "CoffeeScript"
+    => "CoffeeScript"
+    > languages
+    => ["Ruby", "CoffeeScript", "Python", "PHP"]
+  ]]>
+  </script>
+</section>

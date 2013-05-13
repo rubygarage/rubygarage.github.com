@@ -1,0 +1,36 @@
+<section id="array-operations" class="slide">
+  <h2>Array</h2>
+  <h3>Operations</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    > os = ["Fedora", "SUSE", "Red Hat", "MacOS", "Windows"]
+    > linux_os = ["SUSE", "Red Hat", "Ubuntu", "Fedora"]
+
+    > # Union
+    > os | linux_os
+    => ["Fedora", "SUSE", "Red Hat", "MacOS", "Windows", "Ubuntu"]
+
+    > # Intersection
+    > os & linux_os
+    => ["Fedora", "SUSE", "Red Hat"]
+
+    > # Difference
+    > os - linux_os
+    => ["MacOS", "Windows"]
+
+    > linux_os - os
+    => ["Ubuntu"]
+
+    > # Addition
+    > linux_os + ["Debian", "Gentoo"]
+    => ["SUSE", "Red Hat", "Ubuntu", "Fedora", "Debian", "Gentoo"]
+
+    > # Multiplication
+    > linux_os * 2
+    => ["SUSE", "Red Hat", "Ubuntu", "Fedora", "SUSE", "Red Hat", "Ubuntu", "Fedora"] 
+
+    > linux_os * ", "
+    => "SUSE, Red Hat, Ubuntu, Fedora"
+  ]]>
+  </script>
+</section>

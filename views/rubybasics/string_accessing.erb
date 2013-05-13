@@ -1,0 +1,29 @@
+<section id="string-concatenation" class="slide">
+  <h2>String</h2>
+  <h3>Accessing</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    str = "Programming, Motherfucker. Do you speak it?"
+    => "Programming, Motherfucker. Do you speak it?"
+
+    str[13]
+    => "M"
+    str.slice(13)
+    => "M"
+
+    str[13, 12]
+    => "Motherfucker"
+    str.slice(13, 12)
+    => "Motherfucker"
+
+    str[13..-19]
+    => "Motherfucker"
+
+    str["Motherfucker"]
+    => "Motherfucker"
+
+    str[/[abc](.)\1/]
+    => "amm"
+  ]]>
+  </script>
+</section>

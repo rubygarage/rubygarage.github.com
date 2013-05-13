@@ -1,0 +1,25 @@
+<section id="file" class="slide">
+  <h2>File</h2>
+  new
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    File.new("tmp.txt", "w")
+    => #<File:tmp.txt>
+  ]]>
+  </script>
+  open, close
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    f = File.open("tmp.txt", "r")
+    => #<File:tmp.txt>
+
+    f.closed?
+    => false
+
+    f.close
+    
+    f.closed?
+    => true
+  ]]>
+  </script>
+</section>

@@ -1,0 +1,28 @@
+<section id="associations" class="slide">
+  <h2>Active Record Associations</h2>
+  <h4>Read <a href="http://guides.rubyonrails.org/association_basics.html" target="_blank">a Guide to Active Record Associations</a> and <a href="http://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html" target="_blank">Ruby on Rails API doc <i>ActiveRecord::Associations::ClassMethods</i></a></h4>
+  <div id="belongs-to" class="slide">
+    <h3>The belongs_to association</h3>
+    Singular associations (one-to-one)
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class Post < ActiveRecord::Base
+        belongs_to :blog
+      end
+    ]]>
+    </script>
+    <h4>Read <a href="http://guides.rubyonrails.org/association_basics.html#the-belongs_to-association" target="_blank">a Guide to the belongs_to association</a></h4>
+  </div>
+  <div id="has-many" class="slide">
+    <h3>The has_many association</h3>
+    Collection associations (one-to-many)
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class Blog < ActiveRecord::Base
+        has_many :posts
+      end
+    ]]>
+    </script>
+    <h4>Read <a href="http://guides.rubyonrails.org/association_basics.html#the-has_many-association" target="_blank">a Guide to the has_many association</a></h4>
+  </div>
+</section>
