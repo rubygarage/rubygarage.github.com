@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Rack</title>
+  <link href="assets/rack.css" rel="stylesheet">
+  <script src="assets/rack.js"></script>
+</head>
+
+<body class="deck-container">
+
+<!-- Begin slides. Just make elements with a class of slide. -->
+<section id="topic" class="slide">
+  <div class="vcenter">
+    <h1>Rack</h1>
+  </div>
+</section>
+<section id="what_is_it" class="slide">
+  <div class="vcenter">
+    <h1>What is it?</h1>
+  </div>
+</section>
+
+<section id="what_is_it-1" class="slide">
+  <div class="vcenter">
+    <h1>What is it?</h1>
+    <p>...</p>
+    <h2>shelfs?<h2>
+  </div>
+</section>
+
+<section id="what_is_it-2" class="slide">
+  <div class="vcenter">
+    <h1>What is it?</h1>
+    <p>...</p>
+    <h2>frame?<h2>
+  </div>
+</section>
+
+<section id="what_is_it-3" class="slide">
+  <div class="vcenter">
+    <h1>What is it?</h1>
+    <p>...</p>
+    <h2>torture device? oO<h2>
+  </div>
+</section>
+
+<section id="rack-is" class="slide">
+  <div class="vcenter">
+    <img width="200" src="assets/rack-logo.png" />
+    <h2>
+      a Ruby Webserver Interface
+    </h2>
+    <h4>Rack provides a minimal interface between webservers supporting Ruby and Ruby frameworks.<h4>
+  </div>
+</section>
+
+<section id="rack-minute-of-fame" class="slide">
+  <div class="vcenter">
+    <h3>
+      <strong>March 3rd, 2007</strong>: First public release 0.1.<br />
+      ... 1000+ of commits, <br />540 forks, 505 closed issues and merged enhancements ...<br />
+      <strong>February 7th, 2013</strong>: Thirty fifth public release 1.5.2
+    </h3>
+    <br />
+    <h4>just <a href="https://github.com/rack/rack">github: rack/rack</a></h4>
+  </div>
+</section>
+<section id="what-is-it-about" class="slide">
+  <div class="vcenter">
+    <h1>How it all works in general?</h1>
+  </div>
+</section>
+
+<section id="usual-cgi-flow" class="slide">
+  <h4>Usual boring picture</h4>
+  <img src="assets/CGI-server-request.png" />
+</section>
+
+<section id="cgi-flow-with-rack" class="slide">
+  <h4>And here comes Rack</h4>
+  <img src="assets/CGI-server-with-Rack.png" />
+</section>
+
+<section id="servers-aware-of-rack" class="slide">
+  <h4>If server supports Rack</h4>
+  <img src="assets/No-CGI-with-servers-aware-of-Rack.png" />
+</section>
+
+
+
+
+
+
+
+
+<section id="popular-servers-with-rack" class="slide">
+  <div class="vcenter">
+    <h1>The most popular servers</h1>
+  </div>
+</section>
+
+<section id="thin" class="slide">
+  <div class="vcenter">
+    <img src="assets/logo-thin.gif" />
+    <h2><a href="http://code.macournoyer.com/thin/">Thin</a></h2>
+    <br />
+    <h4>Power of EventMachine with multiple concurrent requests</h4>
+  </div>
+</section>
+
+<section id="unicorn" class="slide">
+  <div class="vcenter">
+    <img src="assets/logo-github-unicorn.png" />
+    <h2><a href="http://unicorn.bogomips.org/">Unicorn</a></h2>
+    <br />
+    <h4>True UNIX way. Follow Github with Cargo Cult.</h4>
+  </div>
+</section>
+
+<section id="phusionpassenger" class="slide">
+  <div class="vcenter">
+    <img src="assets/logo-phusionpassenger.png" width="200" />
+    <h2><a href="https://www.phusionpassenger.com/">Phusion Passenger</a></h2>
+    <br />
+    <h4>Runs Python too and <i>much</i> more.</h4>
+  </div>
+</section>
+
+<section id="pow" class="slide">
+  <div class="vcenter">
+    <img src="assets/logo-pow.png" width="200" />
+    <h2><a href="http://pow.cx/">Pow</a></h2>
+    <br />
+    <h4>For OS X only. By 37signals.</h4>
+  </div>
+</section>
+
+<section id="webrick" class="slide">
+  <div class="vcenter">
+    <img src="assets/logo-webrick.jpg" width="200" />
+    <h2><a href="http://www.ruby-doc.org/stdlib-1.9.3/libdoc/webrick/rdoc/WEBrick.html">WEBrick</a></h2>
+    <br />
+    <h4>Out of box!</h4>
+  </div>
+</section>
+<section id="lets-code" class="slide">
+  <div class="vcenter">
+    <h1>Enough talks! Lets code!!!</h1>
+  </div>
+</section>
+
+<section id="config.ru-int" class="slide">
+  <h4>Introducing config.ru</h4>
+
+  <p>
+    A file, containing DSL to build Rack environment.<br />
+    It must contain <code>run</code> or <code>map</code> call to
+    specify the class or classes to run as app.
+  </p>
+
+  <p>
+    config.ru is Configuration [of] Rack Up (I think so ;) )
+  </p>
+</section>
+
+<section id="config-ru-example" class="slide">
+  <h4>Example</h4>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+#\ -w -p 8765
+
+# The line above containg options
+# passed to rackup utility.
+# (Ruby warnings enabled, request port 8765)
+
+# Middlewares below will be added
+# to stack of middlewares
+use Rack::Reloader, 0
+use Rack::ConentLength
+
+# app can be Class, Instance, or block
+app = proc do |env|
+  [ 200,
+    {'Content-Type' => 'text/plain'},
+    ["Hello"]
+  ]
+end
+
+# finalize configuration by 'running' our app
+run app
+    ]]>
+  </script>
+</section>
+
+<section id="rackup-try" class="slide">
+  <h4>Try to run</h4>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+      <![CDATA[
+$ rackup
+[2013-02-10 23:57:52] INFO  WEBrick 1.3.1
+[2013-02-10 23:57:52] INFO  ruby 1.9.3 (2012-11-10) [x86_64-darwin11.4.2]
+[2013-02-10 23:57:52] INFO  WEBrick::HTTPServer#start: pid=65529 port=8765
+]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+      <![CDATA[
+$ curl http://127.0.0.1:8765
+Hello
+$
+]]>
+  </script>
+</section>
+<section id="how-rack-works" class="slide">
+  <div class="vcenter">
+    <h1>How it works?</h1>
+  </div>
+</section>
+
+<section id="rack-stack" class="slide">
+  <h4>Stack of middlewares</h4>
+  <p>
+    Variable with request goes trough stack of middleares, unless one of them will return array. (Instead of claiing another).<br />
+    We will check last middleware. It's our app.
+  </p>
+  <p>
+    They are pushed during configuration phase
+  </p>
+  <img src="assets/middlewares-stack.png" />
+
+  <p>
+    And request goes troug each one
+  </p>
+  <img src="assets/middlewares-call.png" />
+</section>
+
+<section id="rack-response" class="slide">
+  <h4>What should we respond?</h4>
+
+  <p>
+    An Array containing:
+    <ol>
+      <li>HTTP status code</li>
+      <li>Hash of headers</li>
+      <li>Array with responce body</li>
+    </ol>
+  </p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+# Block, we pass env variable to
+proc do |env|
+  [ 200,
+    {'Content-Type' => 'text/plain'},
+    ["Hello"]
+  ]
+end
+
+# Class with method #call
+class MyApp
+  def call(env)
+    [ 200,
+      {'Content-Type' => 'text/plain'},
+      ["Hello"]
+    ]
+  end
+end
+    ]]>
+  </script>
+
+</section>
+
+<section id="helper-classes" class="slide">
+  <h4>Array?! It's Ruby. It's can't be so borring!</h4>
+
+  <p>
+    There are classes <code>Rack::Request</code> and <code>Rack::Response</code>.<br />
+    <strong>Rack::Request</strong> provides a convenient interface to a Rack environment.
+    It is stateless, the environment "env" passed to the constructor will be directly modified.<br />
+    <strong>Rack::Response</strong> provides a convenient interface to create a Rack response.
+    It allows setting of headers and cookies, and provides useful defaults (a OK response containing HTML).
+    Your application's "call" should end returning Response#finish.
+  </p>
+</section>
+
+<section id="helper-example" class="slide">
+  <h4>Let's try it.</h4>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+app = proc do |env|
+  req = Rack::Request.new(env)
+  res = Rack::Response.new
+
+  res.write("You GET me!") if req.get?
+  res['Content-Type'] = 'text/plain'
+
+  res.finish
+end
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+      <![CDATA[
+$ curl http://127.0.0.1:8765
+You GET me!
+$
+]]>
+  </script>
+</section>
+
+<section id="write-middleware" class="slide">
+  <h4>Try to create own middleware</h4>
+
+  <p>
+    In this example we will try to do authentication middleware.
+  </p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+class Authenticator
+  def initialize(app, options={})
+    @app = app # save app somewhere, so we can chain call
+    self
+  end
+
+  def call(env)
+    if (env['HTTP_AUTH'] || "").strip == "secret"
+      @app.call(env)
+    else
+      Rack::Response.new("Unauthenticated", 401).finish
+    end
+  end
+end
+
+use Authenticator
+
+app = proc do |env|
+  Rack::Response.new("Passed", 200).finish
+end
+
+run app
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+      <![CDATA[
+$ curl http://127.0.0.1:9292
+Unauthenticated
+$ curl -H "Auth: secret" http://127.0.0.1:9292
+Passed
+$
+    ]]>
+  </script>
+
+</section>
+<section id="start-from-beginning" class="slide">
+  <div class="vcenter">
+    <h1>Hmm... Is there any magic?</h1>
+  </div>
+</section>
+
+<section id="go-deeper-0" class="slide">
+  <div class="vcenter">
+    <img src="assets/go-deeper.png" />
+  </div>
+</section>
+
+<section id="go-deeper-1" class="slide">
+  <div class="vcenter">
+    <h1>WE HAVE TO GO DEEPER!</h1>
+  </div>
+</section>
+
+<section id="level-0" class="slide">
+  <h4>Prepare yourself</h4>
+  <script type="syntaxhighlighter" class="brush: bash">
+      <![CDATA[
+    mkdir follow-the-rack && cd follow-the-rack
+    rvm --create --rvmrc 1.9.3@follow-the-rack
+    cd .
+  ]]>
+    </script>
+
+  <p>
+    Gemfile
+  </p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+  source :rubygems
+
+  gem "rack"
+  gem "debugger"
+  ]]>
+    </script>
+
+  <p>
+    Install
+  </p>
+  <script type="syntaxhighlighter" class="brush: bash">
+      <![CDATA[
+  bundle
+  ]]>
+    </script>
+
+  <p>
+    config.ru
+  </p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+require 'bundler/setup'
+
+app = lambda do |env|
+          Rack::Response.new('Hello').finish
+        end
+run app
+  ]]>
+</script>
+
+<p>
+  Start app with "rackup"
+</p>
+  <script type="syntaxhighlighter" class="brush: bash">
+      <![CDATA[
+$ rackup
+[2013-02-10 22:03:22] INFO  WEBrick 1.3.1
+[2013-02-10 22:03:22] INFO  ruby 1.9.3 (2012-11-10) [x86_64-darwin11.4.2]
+[2013-02-10 22:03:22] INFO  WEBrick::HTTPServer#start: pid=64350 port=9292
+  ]]>
+</script>
+
+<p>
+  Open Rack gem sources
+</p>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+      <![CDATA[
+$ EDITOR=mvim bundle open rack
+  ]]>
+</script>
+</section>
+
+<section id="level-1" class="slide">
+  <h4>What happened, when we started this command?</h4>
+  <br />
+  <p>
+    <strong>1.</strong> Invoke of <code>Rack::Server.start</code> <a href="https://github.com/rack/rack/blob/7b535cd7ce78eaaaec99cd2677ad8dd5962019a4/bin/rackup#L4">bin/rackup#L4</a>
+  </p>
+  <p>
+    <strong>2.</strong> Create new instance of <code>Rack::Server</code> and send "start" <a href="https://github.com/rack/rack/blob/7b535cd7ce78eaaaec99cd2677ad8dd5962019a4/lib/rack/server.rb#L141">lib/rack/server.rb#L141</a>
+  </p>
+  <p>
+    <strong>3.</strong> Start will do many things. But we are interested in <a href="https://github.com/rack/rack/blob/7b535cd7ce78eaaaec99cd2677ad8dd5962019a4/lib/rack/server.rb#L250">creating app</a> and <a href="https://github.com/rack/rack/blob/7b535cd7ce78eaaaec99cd2677ad8dd5962019a4/lib/rack/server.rb#L264">starting a server</a>. <a href="https://github.com/rack/rack/blob/7b535cd7ce78eaaaec99cd2677ad8dd5962019a4/lib/rack/server.rb#L225">lib/rack/server.rb#L225</a>
+  </p>
+  <p>
+    <strong>4.1.</strong> Build app and options from config. Use <code>Rack::Builder</code> to parse "config.ru" <a href="https://github.com/rack/rack/blob/7b535cd7ce78eaaaec99cd2677ad8dd5962019a4/lib/rack/server.rb#L277">lib/rack/server.rb#L277</a><br />
+    <strong>4.2.</strong> Finalize build by chaining middlewares <a href="https://github.com/rack/rack/blob/7b535cd7ce78eaaaec99cd2677ad8dd5962019a4/lib/rack/server.rb#L304">lib/rack/server.rb#L304</a>
+  </p>
+  <p>
+    <strong>5.</strong> Find supported server to run application. It uses <code>Rack::Handler</code> <a href="https://github.com/rack/rack/blob/7b535cd7ce78eaaaec99cd2677ad8dd5962019a4/lib/rack/server.rb#L268">lib/rack/server.rb#L268</a>
+  </p>
+</section>
+
+<section id="level-2" class="slide">
+  <h4>Where can I find a server?</h4>
+  <br />
+  <p>
+    <strong>1.</strong> <code>Rack::Handler</code> will try to guess best server to start our app. <a href="https://github.com/rack/rack/blob/7b535cd7ce78eaaaec99cd2677ad8dd5962019a4/lib/rack/handler.rb#L46">lib/rack/handler.rb#L46</a><br />
+    <strong>2.</strong> It will try to pick any of Thin, Puma, WEBrick. In our example, we have WEBrick. <a href="https://github.com/rack/rack/blob/7b535cd7ce78eaaaec99cd2677ad8dd5962019a4/lib/rack/handler.rb#L34">lib/rack/handler.rb#L34</a>
+  </p>
+  <p>
+    <strong>3.</strong> After server is picked, it will receive <code>run</code> <a href="https://github.com/rack/rack/blob/7b535cd7ce78eaaaec99cd2677ad8dd5962019a4/lib/rack/handler/webrick.rb#L8">lib/rack/handler/webrick.rb#L8</a><br />
+    There is a manual on WEBrick: <a href="http://www.ruby-doc.org/stdlib-1.9.3/libdoc/webrick/rdoc/WEBrick.html">stdlib-1.9.3/libdoc/webrick/rdoc/WEBrick</a>
+  </p>
+</section>
+
+<section id="going-to-request" class="slide">
+  <h4>Wooh! We made it. Now we see in console...</h4>
+  <br />
+  <script type="syntaxhighlighter" class="brush: bash">
+      <![CDATA[
+[2013-02-10 22:03:22] INFO  WEBrick 1.3.1
+[2013-02-10 22:03:22] INFO  ruby 1.9.3 (2012-11-10) [x86_64-darwin11.4.2]
+[2013-02-10 22:03:22] INFO  WEBrick::HTTPServer#start: pid=64350 port=9292
+  ]]>
+</script>
+</section>
+
+<section id="http-request" class="slide">
+  <h4>The HTTP request</h4>
+  <p>
+    Let's request a URL by curl... What will it send?
+  </p>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+      <![CDATA[
+$ curl -iv http://127.0.0.1:9999/
+  * About to connect() to 127.0.0.1 port 9999 (#0)
+  *   Trying 127.0.0.1... connected
+  * Connected to 127.0.0.1 (127.0.0.1) port 9999 (#0)
+  > GET / HTTP/1.1
+  > User-Agent: curl/7.21.4 (universal-apple-darwin11.0) ↩
+      libcurl/7.21.4 OpenSSL/0.9.8r zlib/1.2.5
+  > Host: 127.0.0.1:9292
+  > Accept: */*
+  ]]>
+    </script>
+
+</section>
+
+<section id="webrick-level" class="slide">
+  <h4>What will happen, after WEBrick receives data trough TCP socket?</h4>
+  <br />
+  <p>
+    At the end, it will call <code>service</code> method.<br />
+    The handler we used, was inherited from <a href="http://www.ruby-doc.org/stdlib-1.9.3/libdoc/webrick/rdoc/WEBrick/HTTPServlet/AbstractServlet.html">WEBrick::HTTPServlet::AbstractServlet</a><br />
+    But "service" method was re-defined in Rack handler <a href="https://github.com/rack/rack/blob/7b535cd7ce78eaaaec99cd2677ad8dd5962019a4/lib/rack/handler/webrick.rb#L34">lib/rack/handler/webrick.rb#L34</a>
+  </p>
+  <p>
+    It receives two params of classes <code>WEBrick::HTTPRequest</code> and <code>WEBrick::HTTPResponse</code> passed to the method.<br />
+    The magic is done by <code>WEBrick::HTTPRequest.meta_vars</code>. This method provides hash with variables defined by the revision 3 of “The WWW Common Gateway Interface Version 1.1”
+  </p>
+  <p>
+    App is called in <a href="https://github.com/rack/rack/blob/7b535cd7ce78eaaaec99cd2677ad8dd5962019a4/lib/rack/handler/webrick.rb#L60">60th line</a>.
+    And we get response, that is written to <code>res</code> parameter.
+  </p>
+</section>
+
+<section id="thats-all-folks" class="slide">
+  <div class="vcenter">
+    <img src="assets/thatsallfolks.png" />
+  </div>
+</section>
+
+<section id="sources" class="slide">
+  <h4>List of sites, I took knowlage from:</h4>
+  <ul>
+    <li><a href="http://rack.github.com/">Rack from Github</a></li>
+    <li><a href="http://en.wikipedia.org/wiki/Common_Gateway_Interface">Wikipedia: CGI and fiends</a></li>
+  </ul>
+</section>
+<!-- End slides. -->
+
+<!-- deck.navigation snippet -->
+<a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
+<a href="#" class="deck-next-link" title="Next">&#8594;</a>
+
+<!-- deck.status snippet -->
+<p class="deck-status">
+  <span class="deck-status-current"></span>
+  /
+  <span class="deck-status-total"></span>
+</p>
+
+<!-- deck.hash snippet -->
+<a href="." title="Permalink to this slide" class="deck-permalink">#</a>
+
+</body>
+</html>
+

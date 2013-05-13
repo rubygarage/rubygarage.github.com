@@ -12,12 +12,12 @@ class App < Sinatra::Base
   set :assets_prefix, '/assets'
   set :digest_assets, false
   set :partial_template_engine, :erb
-  
+
   configure do
     %w(stylesheets javascripts images).each do |type|
       sprockets.append_path(File.join(root, 'assets', type))
       sprockets.append_path(File.join(root, 'vendor', 'assets', type))
-      sprockets.append_path(File.join(Gem.loaded_specs['bootstrap-sass'].full_gem_path, 'vendor', 'assets', type))  
+      sprockets.append_path(File.join(Gem.loaded_specs['bootstrap-sass'].full_gem_path, 'vendor', 'assets', type))
     end
 
     Sprockets::Helpers.configure do |config|
@@ -28,7 +28,7 @@ class App < Sinatra::Base
     end
     Sprockets::Sass.add_sass_functions = false
   end
-  
+
   get "/gems" do
     erb :gems
   end
@@ -45,16 +45,11 @@ class App < Sinatra::Base
     erb :rake
   end
 
-  get "/rake" do
-    erb :rake
-  end
-
-  get "/rails" do
-    erb :rails
-  end
-
   get "/rubybasics" do
     erb :'rubybasics'
+
+  get "/rack" do
+    erb :rack
   end
 
   helpers do
