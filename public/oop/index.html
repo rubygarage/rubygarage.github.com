@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>OOP</title>
+  <link href="assets/oop.css" rel="stylesheet">
+  <script src="assets/oop.js"></script>
+</head>
+
+<body class="deck-container">
+
+<!-- Begin slides. Just make elements with a class of slide. -->
+<section id="defining-simple-class" class="slide">
+  <h2>Defining a simple class</h2>
+  <h3>Creating the class</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class BookInStock
+    end]]>
+  </script>
+  <div class="slide">
+    <h3>Define ruby objects</h3>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+      book = BookInStock.new
+      book.class # => Point
+      book.is_a? BookInStock # => true
+      ]]>
+    </script>
+  </div>
+  <div class="slide">
+    <h3>Initializing the class</h3>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+      class BookInStock
+        def initialize(title, author, price)
+          @title = title
+          @author = author
+          @price = Float(price)
+        end
+      end
+      
+      BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99)
+      ]]>
+    </script>
+  </div>
+</section>
+<section id="to_s-method" class="slide">
+  <h2>Defining a to_s method</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class BookInStock
+      def initialize(title, author, price)
+        @title = title
+        @author = author
+        @price = Float(price)
+      end
+
+      def to_s
+        "Book: #{@title} / #{@author}, #{@price}"
+      end
+    end
+
+    book = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99)
+    book.to_s # => Book: The Great Gatsby / F. Scott Fitzgerald, 8.99]]>
+  </script>
+</section>
+<section id="set-and-get-attributes" class="slide">
+  <h2>Creating methods for set and get attributes</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class BookInStock
+      def initialize(title, author, price)
+        @title = title
+        @author = author
+        @price = Float(price)
+      end
+
+      def title
+        @title
+      end
+
+      def title=(value)
+        @title = value
+      end
+    end
+
+    book = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99)
+
+    book.title # => The Great Gatsby
+    book.title = "This Side of Paradise"
+    book.title # => This Side of Paradise
+
+    book.price      # => NoMethodError: undefined method `price'
+    book.price = 10 # => NoMethodError: undefined method `price='
+    ]]>
+  </script>
+</section>
+<section id="accessor-and-attributes" class="slide">
+  <h2>Accessor and attributes</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class BookInStock
+      attr_accessor :title
+      attr_writer :author
+      attr_reader :price
+
+      def initialize(title, author, price)
+        @title = title
+        @author = author
+        @price = Float(price)
+      end
+    end
+
+    book = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99)
+
+    book.title = "This Side of Paradise"
+    book.title # => This Side of Paradise
+
+    book.author = "Fitzgerald"
+    book.author # => NoMethodError: undefined method 'author'
+
+    book.price      # => 8.99
+    book.price = 10 # => NoMethodError: undefined method 'price=']]>
+  </script>
+</section>
+<section id="defining-operators" class="slide">
+  <h2>Defining operators</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class BookInStock
+      attr_reader :title, :author, :price
+
+      def initialize(title, author, price)
+        @title = title
+        @author = author
+        @price = Float(price)
+      end
+
+      def +(other)
+        BookInStock.new("#{@title}, #{other.title}", "#{@author} and #{other.author}", @price+other.price)
+      end
+    end
+
+    fitzgerald_book  = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99)
+    hemigway_book    = BookInStock.new("The Old Man and the Sea ", "Ernest Hemingway", 7.6)
+    books_collection = fitzgerald_book + hemigway_book
+
+    books_collection.title  # => The Great Gatsby, The Old Man and the Sea
+    books_collection.author # => F. Scott Fitzgerald and Ernest Hemingway
+    books_collection.price  # => 16.59
+    ]]>
+  </script>
+</section>
+<section id="objects-comparasions" class="slide">
+  <h2>Objects comparasion</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      book1 = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99) # => BookInStock:0x00000000e71cb0
+      book2 = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99) # => BookInStock:0x00000000e553f8
+      book1 == book2 # => false
+    ]]>
+  </script>
+  <div class="slide">
+    <h3>Define equality method</h3>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+        class BookInStock
+          attr_reader :title, :author, :price
+
+          def initialize(title, author, price)
+            @title = title
+            @author = author
+            @price = Float(price)
+          end
+
+          def ==(other)
+            if other.is_a? BookInStock
+              @title == other.title && @author == other.author && @price == other.price
+            else
+              false
+            end
+          end
+        end
+
+        book1 == book2 # => true
+      ]]>
+    </script>
+  </div>
+</section>
+
+<section id="objects-comparasions" class="slide">
+  <h2>Class method</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class BookInStock
+        attr_reader :title, :author, :price
+
+        def initialize(title, author, price)
+          @title = title
+          @author = author
+          @price = Float(price)
+        end
+
+        def BookInStock.total_amount(*books) # self.total_amount(*books)
+          books.map(&:price).inject(0, &:+)
+        end
+      end
+
+      book1 = BookInStock.new("t1", "a1", 10)
+      book2 = BookInStock.new("t2", "a2", 20)
+      BookInStock.total_amount(book1, book2) # => 30.0
+    ]]>
+  </script>
+  <div class="slide">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+      class BookInStock
+        class << self # class << BookInStock
+          def total_amount(*books)
+            #code
+          end
+
+          def another
+            #code
+          end
+      end
+      ]]>
+    </script>
+  </div>
+</section>
+<section id="class-variables" class="slide">
+  <h2>Class variables</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class BookInStock
+      attr_reader :title, :author, :price
+
+      @@count = 0
+
+      def initialize(title, author, price)
+        @title, @author, @price = title, author, Float(price)
+        @@count += 1
+      end
+
+      def self.statistics
+        "Count of books: " + @@count.to_s
+      end
+    end
+
+    5.times{ BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99) }
+    BookInStock.statistics # => Count of books: 5
+
+    book = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99)
+    book.count # => NoMethodError: undefined method 'count'
+  </script>
+</section>
+<section id="class-instance-variables" class="slide">
+  <h2>Class instance variables</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class BookInStock
+      attr_reader :title, :author, :price
+
+      @count = 0
+
+      def initialize(title, author, price)
+        @title, @author, @price = title, author, Float(price)
+        # @count += 1  NoMethodError: undefined method '+' for nil:NilClass
+      end
+
+      def self.new(title, author, price)
+        @count += 1
+        super
+      end
+
+      def self.statistics
+        "Count of books: " + @count.to_s
+      end
+    end
+
+    5.times{ BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99) }
+    BookInStock.statistics # => Count of books: 5
+  </script>
+</section>
+<section id="constants" class="slide">
+  <h2>Class constants</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class BookInStock
+      PUBLISHING = "Book House"
+    end
+
+    BookInStock::PUBLISHING # => Books House
+
+    BookInStock::MIN_PRICE = 10
+    BookInStock::MIN_PRICE # => 10
+
+    BookInStock::MIN_PRICE = 20 # => warning: already initialized constant BookInStock::MIN_PRICE
+    BookInStock::MIN_PRICE # => 20
+  </script>
+</section>
+<section id="publci-private-protected" class="slide">
+  <h2>Method visibility: public, protected, private</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class BookInStock
+      attr_reader :title, :author, :price
+
+      def initialize(title, author, price)
+        @title, @author, @price = title, author, Float(price)
+      end
+
+      def buy_with(other)
+        self.discount + other.discount
+      end
+
+      def full_cost
+        @price + tax
+      end
+
+      def tax_for_two(other) # error
+        tax + other.tax      # you can user private method only for self
+      end
+
+      protected
+        def discount
+          @price * 0.9
+        end
+
+      private
+        def tax
+          @price * 0.2
+        end 
+    end
+
+    fitzgerald_book  = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99)
+    hemigway_book    = BookInStock.new("The Old Man and the Sea ", "Ernest Hemingway", 7.6)
+
+    fitzgerald_book.buy_with hemigway_book    # => 14.93
+    fitzgerald_book.full_cost                 # => 10.78
+
+    fitzgerald_book.discount                  # => NoMethodError: protected method 'discount' called
+    fitzgerald_book.tax_for_two hemigway_book # => NoMethodError: private method 'tax' called
+  </script>
+</section>
+<section id="inheritance" class="slide">
+  <h2>Inheritance</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    ﻿class PrintPublication
+      def initialize(title, author)
+        @title, @author = title, author
+      end
+      
+      def cover
+        "#{@title}, #{@author}"
+      end
+    end
+
+    class BookInStock < PrintPublication
+      def initialize(title, author, price)
+        @price = price
+        super(title, author)
+      end
+    end
+
+    book = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99)
+    book.cover # => "The Great Gatsby, F. Scott Fitzgerald"
+
+    class BookInStock < PrintPublication
+      …
+      def  cover
+        "#{@title.upcase}, #{@author}"
+      end
+    end
+
+    book.cover # => "THE GREAT GATSBY, F. Scott Fitzgerald"
+  </script>
+</section>
+<section id="inheritance-class-variables" class="slide">
+  <h2>Inheritance class variables</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class A
+      @@value = 1
+      def A.value
+        @@value
+      end
+    end
+    A.value # => 1
+
+    class B < A
+      @@value = 2
+    end
+
+    class C < A 
+      @@value = 3
+    end
+
+    B.value # => 3
+  </script>
+</section>
+<section id="class-constants-inheritance" class="slide">
+  <h2>Class constants inheritance</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class A 
+      NUM = 2
+    end
+
+    class B  < A
+    end
+
+    A::NUM # => 2
+    B::NUM # => 2
+
+    B::NUM = 3
+
+    A::NUM # => 2
+    B::NUM # => 2
+  </script>
+</section>
+<section id="module" class="slide">
+  <h2>Module</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    module AudioConverter
+      class Decorder
+      
+      end
+      
+      class Encoder
+      
+      end
+
+      def AudioConverter.get_format file
+
+      end
+    end
+  </script>
+</section>
+<section id="mixins" class="slide">
+  <h2>Mixins</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class AudioUpload
+      include AudioConverter
+
+      def initialze(file, name) 
+        name, file, format = name, file, AudioConverter.get_format file   
+      end
+    end
+  </script>
+
+  <div class="slide">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      class AudioUpload
+        require 'audio_converter'
+
+        def initialze(file, name) 
+          name, file, format = name, file, AudioConverter.get_format file   
+        end  
+      end
+    </script>
+  </div>
+</section>
+<section id="singleton" class="slide">
+  <h2>Singleton</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      require 'singleton'
+
+      class BookStats
+        include Singleton 
+
+        def initialize
+          @count, @titles = 0, []
+        end
+
+        def add(book)
+          @count += 1
+          @titles << book.title
+        end
+
+        def report
+          puts "Number of books: #{@count}"
+          puts "Titles: #{@titles.join(', ')}"
+        end
+      end
+ 
+      class BookInStock
+        attr_reader :title, :author, :price
+
+        def initialize(title, author, price)
+          @title, @author, @price = title, author, Float(price)
+          BookStats.instance.add(self)
+        end
+      end
+
+      fitzgerald_book  = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99)
+      hemigway_book    = BookInStock.new("The Old Man and the Sea ", "Ernest Hemingway", 7.6)
+
+      BookStats.instance.report # => Number of books: 2
+                                # => Titles: The Great Gatsby, The Old Man and the Sea 
+
+    ]]>
+  </script>
+</section>
+<section id="method-lookup" class="slide">
+  <h2>Method lookup</h2>
+  <ul>
+    <li>Сhecks the eigenclass of o for singleton methods named m.</li>
+    <li>If no method m is found in the eigenclass, Ruby searches the class of o for an instance method named m.</li>
+    <li>If no method m is found in the class, Ruby searches the instance methods of any modules included by the class of o. If that class includes more than one module, then they are searched in the reverse of the order in which they were included. That is, the most recently included module is searched first. </li>
+    <li>If no instance method m is found in the class of o or in its modules, then the search
+moves up the inheritance hierarchy to the superclass. Steps 2 and 3 are repeated for each class in the inheritance hierarchy until each ancestor class and its included modules have been searched.</li>
+    <li>If no method named m is found after completing the search, then a method named method_missing is invoked instead.</li>
+  </ul>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      foo = "some string"
+      foo.bar # singleton: no -> String class: no -> modules Comparable, Enumerable: no ->  
+              # Kernel module: no -> method_missing: no -> raise an exception
+    ]]>
+  </script>
+</section>
+<section id="tasks" class="slide">
+  <h2>Tasks</h2>
+  <ul>
+    <li>In library each book order includes information about reader: name, order date, issue date. Write program that determines: 
+      1) the smallest period for which library found a book 
+      2) how many orders were not satisfied 
+      3) who often takes the book 
+      4) what is the most popular book
+      5) how many people ordered one of the three most popular books.</li><br/>
+    <li>Describe the mail sorting (city, street, house, apartment, destination, value). Write a program that determines: 
+      1) the number of parcels sent to some city 
+      2) how many parcels with value higher than 10  were sent 
+      3) what is the most popular address</li>
+  </ul>
+</section>
+
+<!-- End slides. -->
+
+<!-- deck.navigation snippet -->
+<a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
+<a href="#" class="deck-next-link" title="Next">&#8594;</a>
+
+<!-- deck.status snippet -->
+<p class="deck-status">
+  <span class="deck-status-current"></span>
+  /
+  <span class="deck-status-total"></span>
+</p>
+
+<!-- deck.hash snippet -->
+<a href="." title="Permalink to this slide" class="deck-permalink">#</a>
+
+</body>
+</html>

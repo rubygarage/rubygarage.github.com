@@ -1,0 +1,28 @@
+<section id="defining-operators" class="slide">
+  <h2>Defining operators</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class BookInStock
+      attr_reader :title, :author, :price
+
+      def initialize(title, author, price)
+        @title = title
+        @author = author
+        @price = Float(price)
+      end
+
+      def +(other)
+        BookInStock.new("#{@title}, #{other.title}", "#{@author} and #{other.author}", @price+other.price)
+      end
+    end
+
+    fitzgerald_book  = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99)
+    hemigway_book    = BookInStock.new("The Old Man and the Sea ", "Ernest Hemingway", 7.6)
+    books_collection = fitzgerald_book + hemigway_book
+
+    books_collection.title  # => The Great Gatsby, The Old Man and the Sea
+    books_collection.author # => F. Scott Fitzgerald and Ernest Hemingway
+    books_collection.price  # => 16.59
+    ]]>
+  </script>
+</section>

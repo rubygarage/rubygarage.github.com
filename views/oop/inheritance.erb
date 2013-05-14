@@ -1,0 +1,33 @@
+<section id="inheritance" class="slide">
+  <h2>Inheritance</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    ﻿class PrintPublication
+      def initialize(title, author)
+        @title, @author = title, author
+      end
+      
+      def cover
+        "#{@title}, #{@author}"
+      end
+    end
+
+    class BookInStock < PrintPublication
+      def initialize(title, author, price)
+        @price = price
+        super(title, author)
+      end
+    end
+
+    book = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99)
+    book.cover # => "The Great Gatsby, F. Scott Fitzgerald"
+
+    class BookInStock < PrintPublication
+      …
+      def  cover
+        "#{@title.upcase}, #{@author}"
+      end
+    end
+
+    book.cover # => "THE GREAT GATSBY, F. Scott Fitzgerald"
+  </script>
+</section>

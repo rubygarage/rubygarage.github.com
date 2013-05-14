@@ -53,6 +53,10 @@ class App < Sinatra::Base
     erb :rack
   end
 
+  get "/oop" do
+    erb :oop
+  end
+
   helpers do
     include Sprockets::Helpers
   end
