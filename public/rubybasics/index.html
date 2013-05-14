@@ -1374,54 +1374,6 @@
     end
   ]]>
   </script>
-</section><section id="method-blocks" class="slide">
-  <h2>Methods</h2>
-  <h3>Blocks</h3>
-  <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
-    def double(p1)
-      yield(p1*2)
-    end
-
-    double(3) { |val| "I got #{val}" }
-    => "I got 6"
-
-    double("tom") do |val|
-      "Then I got #{val}"
-    end
-    => "Then I got tomtom"
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
-    def try
-      if block_given?
-        yield
-      else
-        "no block"
-      end
-    end
-
-    try
-    => "no block"
-
-    try { "hello" }
-    => "hello"
-
-    try do "hello" end
-    => "hello"
-  ]]>
-  </script>
-</section><section id="method-anonymous" class="slide">
-  <h2>Methods</h2>
-  <h3>Anonymous</h3>
-  <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
-    bo = lambda {|param| "You called me with #{param}"}
-    bo.call 99
-    => "You called me with 99"
-  ]]>
-  </script>
 </section><section id="method-return-values" class="slide">
   <h2>Methods</h2>
   <h3>Return values</h3>
@@ -1465,6 +1417,187 @@
 
     meth_three
     => 32
+  ]]>
+  </script>
+</section><section id="method-blocks" class="slide">
+  <h2>Methods</h2>
+  <h3>Blocks</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    def double(p1)
+      yield(p1*2)
+    end
+
+    double(3) { |val| "I got #{val}" }
+    => "I got 6"
+
+    double("tom") do |val|
+      "Then I got #{val}"
+    end
+    => "Then I got tomtom"
+  ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    def try
+      if block_given?
+        yield
+      else
+        "no block"
+      end
+    end
+
+    try
+    => "no block"
+
+    try { "hello" }
+    => "hello"
+
+    try do "hello" end
+    => "hello"
+  ]]>
+  </script>
+</section><section id="method-closures" class="slide">
+  <h2>Methods</h2>
+  <h3>Closures</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    def thrice
+      yield
+      yield
+      yield
+    end
+ 
+    x = 5
+    puts "value of x before: #{x}"
+    value of x before: 5
+ 
+    thrice { x += 1 }
+
+    puts "value of x after: #{x}"
+    value of x after: 8
+  ]]>
+  </script>
+</section><section id="method-block-to-proc" class="slide">
+  <h2>Methods</h2>
+  <h3>Convert the block to a Proc</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    def thrice
+      yield
+      yield
+      yield
+    end
+ 
+    def seven_times(&block)
+      block.call
+      thrice(&block)
+      thrice(&block)
+    end
+
+    x = 4
+
+    seven_times { x += 10 }
+    => 74
+  ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    def what_am_i(&block)
+      block.class
+    end
+
+    what_am_i {}
+    => Proc
+  ]]>
+  </script>
+</section><section id="method-proc" class="slide">
+  <h2>Methods</h2>
+  <h3>Proc aka procedure</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    square = Proc.new do |n|
+      n ** 2
+    end
+
+    square.call(2)
+    => 4
+
+    square.call(4)
+    => 16
+  ]]>
+  </script>
+</section><section id="method-anonymous" class="slide">
+  <h2>Methods</h2>
+  <h3>Anonymous</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    bo = lambda {|param| "You called me with #{param}"}
+    bo.call 99
+    => "You called me with 99"
+  ]]>
+  </script>
+</section><section id="proc-vs-lambda" class="slide">
+  <h2>Proc vs lambda</h2>
+  <h3>Lambdas check the number of arguments</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    def args(code)
+      one, two = 1, 2
+      code.call(one, two)
+    end
+
+    args(Proc.new{|a, b, c| puts "Give me a #{a} and b #{b} and c #{c}"})
+    args(lambda{|a, b, c| puts "Give me a #{a} and b #{b} and c #{c}"})
+
+    Give me a 1 and b 2 and c
+    ArgumentError: wrong number of arguments (2 for 3)
+  ]]>
+  </script>
+</section><section id="proc-vs-lambda-2" class="slide">
+  <h2>Proc vs lambda</h2>
+  <h3>Lambdas have lesser returns</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    def proc_return
+      Proc.new { return "Proc.new" }.call
+      return "proc_return return"
+    end
+
+    def lambda_return
+      lambda { return "lambda" }.call
+      return "lambda_return return"
+    end
+
+    proc_return
+    => "Proc.new"
+
+    lambda_return
+    => "lambda_return return"   
+  ]]>
+  </script>
+</section><section id="proc-vs-lambda-conclusion" class="slide">
+  <h2>Proc vs lambda</h2>
+  <h3>Conclusion</h3>
+  <ul>
+    <li>blocks and Procs act like code snippets</li>
+    <li>lambdas and Methods act like methods</li>
+  </ul>
+</section><section id="method-method" class="slide">
+  <h2>Method to object</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    def square(n)
+      n ** 2
+    end
+
+    square_obj = method(:square)
+
+    square_obj.class
+    => Method
+
+    square_obj.call(4)
+    => 16
   ]]>
   </script>
 </section><section id="method-naming" class="slide">

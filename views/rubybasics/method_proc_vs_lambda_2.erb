@@ -1,0 +1,23 @@
+<section id="proc-vs-lambda-2" class="slide">
+  <h2>Proc vs lambda</h2>
+  <h3>Lambdas have lesser returns</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    def proc_return
+      Proc.new { return "Proc.new" }.call
+      return "proc_return return"
+    end
+
+    def lambda_return
+      lambda { return "lambda" }.call
+      return "lambda_return return"
+    end
+
+    proc_return
+    => "Proc.new"
+
+    lambda_return
+    => "lambda_return return"   
+  ]]>
+  </script>
+</section>

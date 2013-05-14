@@ -46,7 +46,8 @@ class App < Sinatra::Base
   end
 
   get "/rubybasics" do
-    erb :'rubybasics'
+    erb :rubybasics
+  end
 
   get "/rack" do
     erb :rack
