@@ -11,9 +11,9 @@
 <body class="deck-container">
 
 <!-- Begin slides. Just make elements with a class of slide. -->
-<section id="class-hierarchy" class="slide">
-  <h2>Class hierarchy</h2>
-  <img src="/assets/class_hierarchy.png" />
+<section id="object-oriented-programming" class="slide">
+  <h2>Object-oriented programming</h2>
+  <img src="/assets/player_class.png" />
 </section>
 <section id="defining-simple-class" class="slide">
   <h2>Defining a simple class</h2>
@@ -33,7 +33,7 @@
       ]]>
     </script>
   </div>
-  <div class="slide">
+  <div class="slide" id="initializing-class" >
     <h3>Initializing the class</h3>
     <script type="syntaxhighlighter" class="brush: ruby">
       <![CDATA[
@@ -129,6 +129,34 @@
     book.price = 10 # => NoMethodError: undefined method 'price=']]>
   </script>
 </section>
+<section id="virtual-attributes" class="slide">
+  <h2>Virtual attributes</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class BookInStock
+      attr_reader :title, :author, :price
+
+      def initialize(title, author, price)
+        @title, @author, @price = title, author, Float(price)
+      end
+
+      def price_in_cents
+        Integer(@price * 100 + 0.5)
+      end
+
+      def price_in_cents=(value)
+        @price = value / 100.0
+      end
+    end
+
+    book = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99)
+
+    book.price_in_cents = 100 
+    book.price                # => 1.0
+    book.price_in_cents       # => 100
+    ]]>
+  </script>
+</section>
 <section id="defining-operators" class="slide">
   <h2>Defining operators</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
@@ -166,7 +194,7 @@
       book1 == book2 # => false
     ]]>
   </script>
-  <div class="slide">
+  <div class="slide" id="define-equality-method">
     <h3>Define equality method</h3>
     <script type="syntaxhighlighter" class="brush: ruby">
       <![CDATA[
@@ -239,19 +267,10 @@
           puts self.inspect           # => BookInStock
         end
       end
-
-      book = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99)
-      book.my_object_print
-      book.attribute_print
-      book.variable_and_method
-      book.my_object_as_param
-      book.method_to_class
-
-      BookInStock.my_class_method 
     ]]>
   </script>
 </section>
-<section id="objects-comparasions" class="slide">
+<section id="class-method" class="slide">
   <h2>Class method</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
@@ -272,7 +291,7 @@
       BookInStock.total_amount(book1, book2) # => 30.0
     ]]>
   </script>
-  <div class="slide">
+  <div id="defining-several-self-methods" class="slide">
     <script type="syntaxhighlighter" class="brush: ruby">
       <![CDATA[
       class BookInStock
@@ -284,6 +303,7 @@
           def another
             #code
           end
+        end
       end
       ]]>
     </script>
@@ -357,7 +377,31 @@
     BookInStock::MIN_PRICE # => 20
   </script>
 </section>
-<section id="publci-private-protected" class="slide">
+<section id="scope-local-variables" class="slide">
+  <h2>Scope</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      v1 = 1
+
+      class MyClass
+        v2 = 2
+        local_variables   # => [:v2]
+
+        def my_method
+          v3 = 3
+          local_variables
+        end
+
+        local_variables   # => [:v2]
+      end
+
+      obj = MyClass.new
+      obj.my_method       # => [:v3]
+      local_variables     # => [:v1, :obj]
+    ]]>
+  </script>
+</section>
+<section id="public-private-protected" class="slide">
   <h2>Method visibility: public, protected, private</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
     class BookInStock
@@ -418,20 +462,71 @@
 
     BookInStock.superclass # => PrintPublication
   </script>
-  <div class="slide">
-    <script type="syntaxhighlighter" class="brush: ruby">
-      class BookInStock < PrintPublication
-        def initialize(title, author, price)
-          @price = price
-          super(title, author)
-        end
+</section>
+<section id="methods-inheritance" class="slide">
+  <h2>Methods inheritance</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    ﻿class PrintPublication
+      def initialize(title, author)
+        @title, @author = title, author
       end
 
-      book = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99) 
-      # => #<BookInStock:0x000000024f2408 @price=8.99, @title="The Great Gatsby", @author="F. Scott Fitzgerald">
-    </script>
-  </div>
-  <div class="slide">
+      def public_method
+        "public method called"
+      end
+
+      def call_protected_method
+        my_protected_method
+      end
+
+      def call_private_method
+        my_private_method
+      end
+
+      protected
+        def my_protected_method
+          "protected method called"
+        end
+
+      private
+        def my_private_method
+          "private method called"
+        end
+    end
+
+    class BookInStock < PrintPublication
+      def call_private_and_protected
+        my_protected_method + my_private_method
+      end
+    end
+
+    book = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald") 
+    book.public_method              # => "public method called"
+    book.call_protected_method      # => "protected method called"
+    book.call_private_method        # => "private method called"
+    book.call_private_and_protected # => "protected method calledprivate method called"
+
+  </script>
+</section><section id="super-method" class="slide">
+  <h2>Method super</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class PrintPublication
+      def initialize(title, author)
+        @title, @author = title, author
+      end
+    end
+
+    class BookInStock < PrintPublication
+      def initialize(title, author, price)
+        @price = price
+        super(title, author)
+      end
+    end
+
+    book = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99) 
+    # => #<BookInStock:0x000000024f2408 @price=8.99, @title="The Great Gatsby", @author="F. Scott Fitzgerald">
+  </script>
+  <div class="slide" id="super-method-arguments">
     <script type="syntaxhighlighter" class="brush: ruby">
       class BookInStock < PrintPublication
         def initialize(title, author, price)
@@ -441,7 +536,7 @@
       end
     </script>
   </div>
-  <div class="slide">
+  <div class="slide" id="without-super-method">
     <script type="syntaxhighlighter" class="brush: ruby">
       class BookInStock < PrintPublication
         def initialize(title, author, price)
@@ -495,6 +590,74 @@
     B::NUM # => 3
   </script>
 </section>
+<section id="class-hierarchy" class="slide">
+  <h2>Class hierarchy</h2>
+  <img src="/assets/class_hierarchy.png" />
+</section>
+<section id="class-as-object" class="slide">
+  <h2>Class as object</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      BookInStock = Class.new do
+        def initialize(title, author, price)
+          @title, @author, @price = title, author, Float(price)
+        end
+
+        attr_reader :title, :author, :price
+
+        def cover
+          "#{@title}, #{@author}"
+        end
+      end
+
+      BookInStock       # => BookInStock
+      BookInStock.class # => Class
+
+      book = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99)
+      book.cover        # => "The Great Gatsby, F. Scott Fitzgerald"  
+    ]]>
+  </script>
+  </div>
+</section>
+<section id="singleton-method" class="slide">
+  <h2>Singleton methods and eigenclass</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class BookInStock
+        def BookInStock.sum
+        end
+      end
+
+      class BookInStock
+        class << self
+          def sum
+          end
+        end
+      end
+
+      class << BookInStock
+        def sum
+        end
+      end
+
+      book = BookInStock.new
+      def book.title
+        "Title"
+      end
+      book.title # => Title
+
+      class << book
+        def book.title
+          "Title"
+        end
+      end
+      book.title # => Title
+
+      another = BookInStock.new
+      another.title # => NoMethodError: undefined method 'title'
+    ]]>
+  </script>
+</section>
 <section id="module" class="slide">
   <h2>Module</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
@@ -521,6 +684,37 @@
     AudioConverter::Decoder.new("music.mp3")
   </script>
 </section>
+<section id="module-constants-paths" class="slide">
+  <h2>Module constants, paths</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      module M 
+        class C 
+          X = 'a constant'
+        end 
+        C::X  # => "a constant"
+      end
+      M::C::X # => "a constant"
+
+      module M
+        Y = 'another constant'
+        class C
+          ::M::Y # => "another constant"
+        end
+      end
+
+      M.constants
+
+      module M
+        class C
+          module M2
+            Module.nesting # => [M::C::M2, M::C, M]
+          end
+        end
+      end
+    ]]>
+  </script>
+</section>
 <section id="mixins" class="slide">
   <h2>Mixins</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
@@ -542,7 +736,7 @@
     audio_upload.compare_formats("video.avi")
   </script>
 
-  <div class="slide">
+  <div class="slide" id="require-mixin">
     <script type="syntaxhighlighter" class="brush: ruby">
       require 'audio_converter'
       class AudioUpload
@@ -587,84 +781,12 @@
     ]]>
   </script>
 </section>
-<section id="singleton-method" class="slide">
-  <h2>Singleton methods and eigenclass</h2>
-  <script type="syntaxhighlighter" class="brush: ruby">
+<section id="class-hierarchy" class="slide">
+  <h2>Class and modules hierarchy, ancestors</h2>
+  <img src="/assets/hierarchy_with_module.png" />
+    <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
-      class BookInStock
-        def BookInStock.sum
-        end
-      end
-
-      class BookInStock
-        class << self
-          def sum
-          end
-        end
-      end
-
-      class << BookInStock
-        def sum
-        end
-      end
-
-      book = BookInStock.new
-      def book.title
-        "Title"
-      end
-      book.title # => Title
-
-      class << book
-        def book.title
-          "Title"
-        end
-      end
-      book.title # => Title
-
-      another = BookInStock.new
-      another.title # => NoMethodError: undefined method 'title'
-    ]]>
-  </script>
-</section>
-<section id="singleton" class="slide">
-  <h2>Singleton pattern</h2>
-  <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      require 'singleton'
-
-      class BookStats
-        include Singleton 
-
-        def initialize
-          @count, @titles = 0, []
-        end
-
-        def add(book)
-          @count += 1
-          @titles << book.title
-        end
-
-        def report
-          puts "Number of books: #{@count}"
-          puts "Titles: #{@titles.join(', ')}"
-        end
-      end
- 
-      class BookInStock
-        attr_reader :title, :author, :price
-
-        def initialize(title, author, price)
-          @title, @author, @price = title, author, Float(price)
-          BookStats.instance.add(self)
-        end
-      end
-
-      fitzgerald_book  = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99)
-      hemigway_book    = BookInStock.new("The Old Man and the Sea ", "Ernest Hemingway", 7.6)
-
-      BookStats.instance.report # => Number of books: 2
-                                # => Titles: The Great Gatsby, The Old Man and the Sea 
-
+      Class.new.ancestors # => [#<Class:0x0000000268a568>, Object, Kernel, BasicObject]
     ]]>
   </script>
 </section>
@@ -686,6 +808,96 @@ moves up the inheritance hierarchy to the superclass. Steps 2 and 3 are repeated
     ]]>
   </script>
 </section>
+<section id="exceptions" class="slide">
+  <h2>Exceptions: begin, rescue, raise</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    begin 
+      puts 'I am before the raise.'
+      raise 'An error has occured.'
+      puts 'I am after the raise.'
+    rescue
+      puts 'I am rescued.'
+    end
+    puts 'I am after the begin block.'
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    I am before the raise.
+    I am rescued.
+    I am after the begin block.
+  </script>
+</section>
+<section id="exceptions-type" class="slide">
+  <h2>Exceptions: Exception type, else, ensure</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    begin
+      raise "A test exception."
+    rescue Exception => e 
+      puts e.message
+      puts e.backtrace.inspect
+    ensure
+      puts "Ensuring execution"
+    end
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    A test exception.
+    ["test.rb:2:in '<main>'"]
+    Ensuring execution
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    begin
+      raise "A test exception."
+    rescue Exception => e 
+      puts e.message
+      puts e.backtrace.inspect
+    else
+      puts "Executes if there is no exeception"
+    ensure
+      puts "Ensuring execution"
+    end
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    A test exception.
+    Executes if there is no exception
+    Ensuring execution
+  </script>
+</section>
+<section id="throw-and-catch" class="slide">
+  <h2>Throw and catch</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    def try_throw_if(act)
+      puts "Try '#{act}'"
+      throw :alarm! if act == "Go! go! go!"
+      act
+    end
+
+    catch :alarm! do
+      puts try_throw_if("Makes one")
+      puts try_throw_if("Makes two")
+      puts try_throw_if("Go! go! go!")
+      puts try_throw_if("Makes three")
+    end
+
+    puts try_throw_if("Makes four")
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    Try 'Makes one'
+    Makes one
+    Try 'Makes two'
+    Makes two
+    Try 'Go! go! go!'
+    Try 'Makes four'
+    Makes four
+  </script>
+</section>
+<section id="exceptions-hierarchy" class="slide">
+  <h2>Exceptions hierarchy</h2>
+  <img src="/assets/hierarchy_exceptions.png" />
+</section>
 <section id="tasks" class="slide">
   <h2>Tasks</h2>
   <ul>
@@ -701,7 +913,6 @@ moves up the inheritance hierarchy to the superclass. Steps 2 and 3 are repeated
       3) what is the most popular address</li>
   </ul>
 </section>
-
 <!-- End slides. -->
 
 <!-- deck.navigation snippet -->

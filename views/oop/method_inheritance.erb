@@ -1,0 +1,45 @@
+<section id="methods-inheritance" class="slide">
+  <h2>Methods inheritance</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    ﻿class PrintPublication
+      def initialize(title, author)
+        @title, @author = title, author
+      end
+
+      def public_method
+        "public method called"
+      end
+
+      def call_protected_method
+        my_protected_method
+      end
+
+      def call_private_method
+        my_private_method
+      end
+
+      protected
+        def my_protected_method
+          "protected method called"
+        end
+
+      private
+        def my_private_method
+          "private method called"
+        end
+    end
+
+    class BookInStock < PrintPublication
+      def call_private_and_protected
+        my_protected_method + my_private_method
+      end
+    end
+
+    book = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald") 
+    book.public_method              # => "public method called"
+    book.call_protected_method      # => "protected method called"
+    book.call_private_method        # => "private method called"
+    book.call_private_and_protected # => "protected method calledprivate method called"
+
+  </script>
+</section>

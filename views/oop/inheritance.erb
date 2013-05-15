@@ -15,39 +15,4 @@
 
     BookInStock.superclass # => PrintPublication
   </script>
-  <div class="slide">
-    <script type="syntaxhighlighter" class="brush: ruby">
-      class BookInStock < PrintPublication
-        def initialize(title, author, price)
-          @price = price
-          super(title, author)
-        end
-      end
-
-      book = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99) 
-      # => #<BookInStock:0x000000024f2408 @price=8.99, @title="The Great Gatsby", @author="F. Scott Fitzgerald">
-    </script>
-  </div>
-  <div class="slide">
-    <script type="syntaxhighlighter" class="brush: ruby">
-      class BookInStock < PrintPublication
-        def initialize(title, author, price)
-          @price = price
-          super # => ArgumentError: wrong number of arguments (3 for 2)
-        end
-      end
-    </script>
-  </div>
-  <div class="slide">
-    <script type="syntaxhighlighter" class="brush: ruby">
-      class BookInStock < PrintPublication
-        def initialize(title, author, price)
-          @price = price
-        end
-      end
-
-      book = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99) 
-      # =>  #<BookInStock:0x000000025404f0 @price=8.99> 
-    </script>
-  </div>
 </section>
