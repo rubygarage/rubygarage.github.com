@@ -1,0 +1,29 @@
+<section id="throw-and-catch" class="slide">
+  <h2>Throw and catch</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    def try_throw_if(act)
+      puts "Try '#{act}'"
+      throw :alarm! if act == "Go! go! go!"
+      act
+    end
+
+    catch :alarm! do
+      puts try_throw_if("Makes one")
+      puts try_throw_if("Makes two")
+      puts try_throw_if("Go! go! go!")
+      puts try_throw_if("Makes three")
+    end
+
+    puts try_throw_if("Makes four")
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    Try 'Makes one'
+    Makes one
+    Try 'Makes two'
+    Makes two
+    Try 'Go! go! go!'
+    Try 'Makes four'
+    Makes four
+  </script>
+</section>

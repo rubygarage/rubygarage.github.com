@@ -1,0 +1,25 @@
+<section id="class-as-object" class="slide">
+  <h2>Class as object</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      BookInStock = Class.new do
+        def initialize(title, author, price)
+          @title, @author, @price = title, author, Float(price)
+        end
+
+        attr_reader :title, :author, :price
+
+        def cover
+          "#{@title}, #{@author}"
+        end
+      end
+
+      BookInStock       # => BookInStock
+      BookInStock.class # => Class
+
+      book = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99)
+      book.cover        # => "The Great Gatsby, F. Scott Fitzgerald"  
+    ]]>
+  </script>
+  </div>
+</section>
