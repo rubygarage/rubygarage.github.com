@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>OOP</title>
+  <link href="assets/oop.css" rel="stylesheet">
+  <script src="assets/oop.js"></script>
+</head>
+
+<body class="deck-container">
+
+<!-- Begin slides. Just make elements with a class of slide. -->
+<%= partial :'oop/class_hierarchy' %>
+<%= partial :'oop/defining_simple_class' %>
+<%= partial :'oop/to_s' %>
+<%= partial :'oop/set_and_get_attributes' %>
+<%= partial :'oop/accessor_and_attributes' %>
+<%= partial :'oop/defining_operators' %>
+<%= partial :'oop/objects_comparasion' %>
+<%= partial :'oop/self' %>
+<%= partial :'oop/class_method' %>
+<%= partial :'oop/class_variables' %>
+<%= partial :'oop/class_instance_variables' %>
+<%= partial :'oop/constants' %>
+<%= partial :'oop/public_private_protected' %>
+<%= partial :'oop/inheritance' %>
+<%= partial :'oop/inheritance_class_variables' %>
+<%= partial :'oop/constant_inheritance' %>
+<%= partial :'oop/module' %>
+<%= partial :'oop/mixins' %>
+<%= partial :'oop/extend' %>
+<%= partial :'oop/singleton_method' %>
+<%= partial :'oop/singleton' %>
+<%= partial :'oop/method_lookup' %>
+<%= partial :'oop/tasks' %>
+
+<!-- End slides. -->
+
+<!-- deck.navigation snippet -->
+<a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
+<a href="#" class="deck-next-link" title="Next">&#8594;</a>
+
+<!-- deck.status snippet -->
+<p class="deck-status">
+  <span class="deck-status-current"></span>
+  /
+  <span class="deck-status-total"></span>
+</p>
+
+<!-- deck.hash snippet -->
+<a href="." title="Permalink to this slide" class="deck-permalink">#</a>
+
+</body>
+</html>

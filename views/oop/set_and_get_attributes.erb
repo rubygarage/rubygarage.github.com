@@ -1,0 +1,31 @@
+<section id="set-and-get-attributes" class="slide">
+  <h2>Creating methods for set and get attributes</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class BookInStock
+      def initialize(title, author, price)
+        @title = title
+        @author = author
+        @price = Float(price)
+      end
+
+      def title
+        @title
+      end
+
+      def title=(value)
+        @title = value
+      end
+    end
+
+    book = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99)
+
+    book.title # => The Great Gatsby
+    book.title = "This Side of Paradise"
+    book.title # => This Side of Paradise
+
+    book.price      # => NoMethodError: undefined method `price'
+    book.price = 10 # => NoMethodError: undefined method `price='
+    ]]>
+  </script>
+</section>
