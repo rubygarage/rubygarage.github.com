@@ -1,0 +1,28 @@
+<section id="accessor-and-attributes" class="slide">
+  <h2>Accessor and attributes</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class BookInStock
+      attr_accessor :title
+      attr_writer :author
+      attr_reader :price
+
+      def initialize(title, author, price)
+        @title = title
+        @author = author
+        @price = Float(price)
+      end
+    end
+
+    book = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99)
+
+    book.title = "This Side of Paradise"
+    book.title # => This Side of Paradise
+
+    book.author = "Fitzgerald"
+    book.author # => NoMethodError: undefined method 'author'
+
+    book.price      # => 8.99
+    book.price = 10 # => NoMethodError: undefined method 'price=']]>
+  </script>
+</section>

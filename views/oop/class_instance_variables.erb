@@ -1,0 +1,27 @@
+<section id="class-instance-variables" class="slide">
+  <h2>Class instance variables</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class BookInStock
+      attr_reader :title, :author, :price
+
+      @count = 0
+
+      def initialize(title, author, price)
+        @title, @author, @price = title, author, Float(price)
+        # @count += 1  NoMethodError: undefined method '+' for nil:NilClass
+      end
+
+      def self.add
+        @count += 1
+      end
+
+      def self.statistics
+        "Count of add method call: " + @count.to_s
+      end
+    end
+
+    BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99)
+    5.times{ BookInStock.add }
+    BookInStock.statistics # => Count of add method call: 5
+  </script>
+</section>

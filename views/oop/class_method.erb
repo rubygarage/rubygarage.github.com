@@ -1,0 +1,38 @@
+<section id="objects-comparasions" class="slide">
+  <h2>Class method</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class BookInStock
+        attr_reader :title, :author, :price
+
+        def initialize(title, author, price)
+          @title, @author, @price = title, author, Float(price)
+        end
+
+        def self.total_amount(*books)
+          books.map(&:price).inject(0, &:+)
+        end
+      end
+
+      book1 = BookInStock.new("t1", "a1", 10)
+      book2 = BookInStock.new("t2", "a2", 20)
+      BookInStock.total_amount(book1, book2) # => 30.0
+    ]]>
+  </script>
+  <div class="slide">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+      class BookInStock
+        class << self
+          def total_amount(*books)
+            #code
+          end
+
+          def another
+            #code
+          end
+      end
+      ]]>
+    </script>
+  </div>
+</section>

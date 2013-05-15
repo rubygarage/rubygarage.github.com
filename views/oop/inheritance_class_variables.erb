@@ -1,0 +1,22 @@
+<section id="inheritance-class-variables" class="slide">
+  <h2>Inheritance class variables</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class A
+      @@value = 1
+      def A.value
+        @@value
+      end
+    end
+    A.value # => 1
+
+    class B < A
+      @@value = 2
+    end
+
+    class C < A 
+      @@value = 3
+    end
+
+    B.value # => 3
+  </script>
+</section>
