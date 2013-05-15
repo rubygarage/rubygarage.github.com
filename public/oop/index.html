@@ -11,6 +11,10 @@
 <body class="deck-container">
 
 <!-- Begin slides. Just make elements with a class of slide. -->
+<section id="class-hierarchy" class="slide">
+  <h2>Class hierarchy</h2>
+  <img src="/assets/class_hierarchy.png" />
+</section>
 <section id="defining-simple-class" class="slide">
   <h2>Defining a simple class</h2>
   <h3>Creating the class</h3>
@@ -24,7 +28,7 @@
     <script type="syntaxhighlighter" class="brush: ruby">
       <![CDATA[
       book = BookInStock.new
-      book.class # => Point
+      book.class # => BookInStock
       book.is_a? BookInStock # => true
       ]]>
     </script>
@@ -189,7 +193,64 @@
     </script>
   </div>
 </section>
+<section id="self" class="slide">
+  <h2>Self</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class BookInStock
+        attr_reader :title, :author, :price
 
+        def initialize(title, author, price)
+          @title, @author, @price = title, author, Float(price)
+        end
+
+        def title
+          "Author: #{@author}"
+        end
+
+        def my_object_print
+          puts self.inspect  # => <BookInStock:0x000000010aaef0 @title="t1", @author="a1", @price=10.0>
+        end
+
+        def attribute_print
+          puts self.author   # => The Great Gatsby
+          puts @author       # => The Great Gatsby
+        end
+
+        def variable_and_method
+          puts title         # => Author: F. Scott Fitzgerald
+          title = 'My best title'
+          puts title         # => My best title
+          puts self.title    # => Author: F. Scott Fitzgerald
+        end
+
+        def my_object_as_param
+          str = "my string"
+          puts str.eql? self # => false
+        end
+
+        def method_to_class
+          # puts class - error it try to create new class
+          puts self.class.inspect     # => BookInStock
+          self.class.my_class_method  # => BookInStock
+        end
+
+        def self.my_class_print
+          puts self.inspect           # => BookInStock
+        end
+      end
+
+      book = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99)
+      book.my_object_print
+      book.attribute_print
+      book.variable_and_method
+      book.my_object_as_param
+      book.method_to_class
+
+      BookInStock.my_class_method 
+    ]]>
+  </script>
+</section>
 <section id="objects-comparasions" class="slide">
   <h2>Class method</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
@@ -198,12 +259,10 @@
         attr_reader :title, :author, :price
 
         def initialize(title, author, price)
-          @title = title
-          @author = author
-          @price = Float(price)
+          @title, @author, @price = title, author, Float(price)
         end
 
-        def BookInStock.total_amount(*books) # self.total_amount(*books)
+        def self.total_amount(*books)
           books.map(&:price).inject(0, &:+)
         end
       end
@@ -217,7 +276,7 @@
     <script type="syntaxhighlighter" class="brush: ruby">
       <![CDATA[
       class BookInStock
-        class << self # class << BookInStock
+        class << self
           def total_amount(*books)
             #code
           end
@@ -268,18 +327,18 @@
         # @count += 1  NoMethodError: undefined method '+' for nil:NilClass
       end
 
-      def self.new(title, author, price)
+      def self.add
         @count += 1
-        super
       end
 
       def self.statistics
-        "Count of books: " + @count.to_s
+        "Count of add method call: " + @count.to_s
       end
     end
 
-    5.times{ BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99) }
-    BookInStock.statistics # => Count of books: 5
+    BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99)
+    5.times{ BookInStock.add }
+    BookInStock.statistics # => Count of add method call: 5
   </script>
 </section>
 <section id="constants" class="slide">
@@ -309,11 +368,12 @@
       end
 
       def buy_with(other)
-        self.discount + other.discount
+        discount + other.discount # self.discount + other.discount
       end
 
       def full_cost
         @price + tax
+        # self.tax  # => NoMethodError: private method 'tax' called
       end
 
       def tax_for_two(other) # error
@@ -348,31 +408,51 @@
       def initialize(title, author)
         @title, @author = title, author
       end
-      
-      def cover
-        "#{@title}, #{@author}"
-      end
     end
 
     class BookInStock < PrintPublication
-      def initialize(title, author, price)
-        @price = price
-        super(title, author)
-      end
     end
 
-    book = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99)
-    book.cover # => "The Great Gatsby, F. Scott Fitzgerald"
+    book = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald") 
+    # => <BookInStock:0x00000000f2c538 @title="The Great Gatsby", @author="F. Scott Fitzgerald">
 
-    class BookInStock < PrintPublication
-      …
-      def  cover
-        "#{@title.upcase}, #{@author}"
-      end
-    end
-
-    book.cover # => "THE GREAT GATSBY, F. Scott Fitzgerald"
+    BookInStock.superclass # => PrintPublication
   </script>
+  <div class="slide">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      class BookInStock < PrintPublication
+        def initialize(title, author, price)
+          @price = price
+          super(title, author)
+        end
+      end
+
+      book = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99) 
+      # => #<BookInStock:0x000000024f2408 @price=8.99, @title="The Great Gatsby", @author="F. Scott Fitzgerald">
+    </script>
+  </div>
+  <div class="slide">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      class BookInStock < PrintPublication
+        def initialize(title, author, price)
+          @price = price
+          super # => ArgumentError: wrong number of arguments (3 for 2)
+        end
+      end
+    </script>
+  </div>
+  <div class="slide">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      class BookInStock < PrintPublication
+        def initialize(title, author, price)
+          @price = price
+        end
+      end
+
+      book = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99) 
+      # =>  #<BookInStock:0x000000025404f0 @price=8.99> 
+    </script>
+  </div>
 </section>
 <section id="inheritance-class-variables" class="slide">
   <h2>Inheritance class variables</h2>
@@ -412,53 +492,110 @@
     B::NUM = 3
 
     A::NUM # => 2
-    B::NUM # => 2
+    B::NUM # => 3
   </script>
 </section>
 <section id="module" class="slide">
   <h2>Module</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
     module AudioConverter
-      class Decorder
-      
+      class Decoder
+        def initialize file
+          @file, @format = @file, AudioHelpers.get_format(file)
+        end
       end
       
       class Encoder
-      
+        def initialize file
+          @file, @format = @file, AudioHelpers.get_format(file)
+        end      
       end
 
-      def AudioConverter.get_format file
-
+      class AudioHelpers 
+        def self.get_format file
+          File.extname(file)
+        end
       end
     end
+
+    AudioConverter::Decoder.new("music.mp3")
   </script>
 </section>
 <section id="mixins" class="slide">
   <h2>Mixins</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
+    module AudioConverter
+      def compare_formats another_file
+        File.extname(@file) == File.extname(another_file)
+      end
+    end
+
     class AudioUpload
       include AudioConverter
 
-      def initialze(file, name) 
-        name, file, format = name, file, AudioConverter.get_format file   
+      def initialize(file) 
+        @file = file
       end
     end
+
+    audio_upload = AudioUpload.new("music.mp3")
+    audio_upload.compare_formats("video.avi")
   </script>
 
   <div class="slide">
     <script type="syntaxhighlighter" class="brush: ruby">
+      require 'audio_converter'
       class AudioUpload
-        require 'audio_converter'
+        include AudioConverter  
 
-        def initialze(file, name) 
-          name, file, format = name, file, AudioConverter.get_format file   
-        end  
+        def initialize(file) 
+          @file = file
+        end
       end
     </script>
   </div>
 </section>
+<section id="singleton-method" class="slide">
+  <h2>Singleton methods and eigenclass</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class BookInStock
+        def BookInStock.sum
+        end
+      end
+
+      class BookInStock
+        class << self
+          def sum
+          end
+        end
+      end
+
+      class << BookInStock
+        def sum
+        end
+      end
+
+      book = BookInStock.new
+      def book.title
+        "Title"
+      end
+      book.title # => Title
+
+      class << book
+        def book.title
+          "Title"
+        end
+      end
+      book.title # => Title
+
+      another = BookInStock.new
+      another.title # => NoMethodError: undefined method 'title'
+    ]]>
+  </script>
+</section>
 <section id="singleton" class="slide">
-  <h2>Singleton</h2>
+  <h2>Singleton pattern</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
       require 'singleton'

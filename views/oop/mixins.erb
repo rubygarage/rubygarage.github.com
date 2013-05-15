@@ -1,23 +1,33 @@
 <section id="mixins" class="slide">
   <h2>Mixins</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
+    module AudioConverter
+      def compare_formats another_file
+        File.extname(@file) == File.extname(another_file)
+      end
+    end
+
     class AudioUpload
       include AudioConverter
 
-      def initialze(file, name) 
-        name, file, format = name, file, AudioConverter.get_format file   
+      def initialize(file) 
+        @file = file
       end
     end
+
+    audio_upload = AudioUpload.new("music.mp3")
+    audio_upload.compare_formats("video.avi")
   </script>
 
   <div class="slide">
     <script type="syntaxhighlighter" class="brush: ruby">
+      require 'audio_converter'
       class AudioUpload
-        require 'audio_converter'
+        include AudioConverter  
 
-        def initialze(file, name) 
-          name, file, format = name, file, AudioConverter.get_format file   
-        end  
+        def initialize(file) 
+          @file = file
+        end
       end
     </script>
   </div>

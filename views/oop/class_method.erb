@@ -6,12 +6,10 @@
         attr_reader :title, :author, :price
 
         def initialize(title, author, price)
-          @title = title
-          @author = author
-          @price = Float(price)
+          @title, @author, @price = title, author, Float(price)
         end
 
-        def BookInStock.total_amount(*books) # self.total_amount(*books)
+        def self.total_amount(*books)
           books.map(&:price).inject(0, &:+)
         end
       end
@@ -25,7 +23,7 @@
     <script type="syntaxhighlighter" class="brush: ruby">
       <![CDATA[
       class BookInStock
-        class << self # class << BookInStock
+        class << self
           def total_amount(*books)
             #code
           end

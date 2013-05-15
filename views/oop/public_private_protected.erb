@@ -9,11 +9,12 @@
       end
 
       def buy_with(other)
-        self.discount + other.discount
+        discount + other.discount # self.discount + other.discount
       end
 
       def full_cost
         @price + tax
+        # self.tax  # => NoMethodError: private method 'tax' called
       end
 
       def tax_for_two(other) # error
