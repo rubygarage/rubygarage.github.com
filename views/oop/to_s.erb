@@ -1,0 +1,20 @@
+<section id="to_s-method" class="slide">
+  <h2>Defining a to_s method</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class BookInStock
+      def initialize(title, author, price)
+        @title = title
+        @author = author
+        @price = Float(price)
+      end
+
+      def to_s
+        "Book: #{@title} / #{@author}, #{@price}"
+      end
+    end
+
+    book = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99)
+    book.to_s # => Book: The Great Gatsby / F. Scott Fitzgerald, 8.99]]>
+  </script>
+</section>

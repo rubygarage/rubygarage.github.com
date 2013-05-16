@@ -1,0 +1,38 @@
+<section id="hash-methods-3" class="slide">
+  <h2>Hash</h2>
+  <h3>Useful methods</h3>
+  length
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    h = { "d" => 100, "a" => 200, "v" => 300, "e" => 400 }
+
+    h.length
+    => 4
+
+    h.delete("a")
+    => 200
+    
+    h.length
+    => 3
+  ]]>
+  </script>
+  merge
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    h1 = { "a" => 100, "b" => 200 }
+    h2 = { "b" => 254, "c" => 300 }
+    
+    h1.merge(h2)
+    => {"a"=>100, "b"=>254, "c"=>300}
+  ]]>
+  </script>
+  select
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    h = { "a" => 100, "b" => 200, "c" => 300 }
+
+    h.select {|key, value| value > 100}
+    => {"b" => 200, "c" => 300}
+  ]]>
+  </script>
+</section>

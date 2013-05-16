@@ -1,0 +1,29 @@
+<section id="array-adding-items" class="slide">
+  <h2>Array</h2>
+  <h3>Adding items</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    > languages = "Ruby", "JavaScript", "Python", "PHP"
+    => ["Ruby", "JavaScript", "Python", "PHP"]
+
+    > # Push
+    > languages.push("Closure")
+    => ["Ruby", "JavaScript", "Python", "PHP", "Closure"]
+
+    > # Push operator
+    > languages << "Haskell"
+    => ["Ruby", "JavaScript", "Python", "PHP", "Closure", "Haskell"]
+
+    > # Unshift
+    > languages.unshift("C++")
+    => ["C++", "Ruby", "JavaScript", "Python", "PHP", "Closure", "Haskell"]
+
+    > # Insert
+    > languages.insert(3, "CoffeeScript")
+    => ["C++", "Ruby", "JavaScript", "CoffeeScript", "Python", "PHP", "Closure", "Haskell"]
+
+    > languages.insert(4, "Haml", "Sass")
+    => ["C++", "Ruby", "JavaScript", "CoffeeScript", "Haml", "Sass", "Python", "PHP", "Closure", "Haskell"]
+  ]]>
+  </script>
+</section>

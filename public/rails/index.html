@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Ruby on Rails</title>
+  <link href="assets/rails.css" rel="stylesheet">
+  <script src="assets/rails.js"></script>
+</head>
+
+<body class="deck-container">
+  
+<!-- Begin slides. Just make elements with a class of slide. -->
+<section id="topic" class="slide">
+  <div class="vcenter">
+    <h1>Rails</h1>
+  </div>
+</section><section id="creating-community" class="slide">
+  <h2>Creating Community app</h2>
+  <h3>Preparing environment</h3>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    rvm use 1.9.3-head@community --create
+    Using /Users/sparrow/.rvm/gems/ruby-1.9.3-head with gemset community]]>
+  </script>
+  <div id="community-installing-bundler" class="slide">
+    <h3>Installing bundler</h3>
+    <script type="syntaxhighlighter" class="brush: bash">
+      <![CDATA[
+      gem install bundler]]>
+    </script>
+  </div>
+  <div id="community-installing-rails" class="slide">
+    <h3>Installing Rails</h3>
+    <script type="syntaxhighlighter" class="brush: bash">
+      <![CDATA[
+      gem install rails]]>
+    </script>
+  </div>
+  <div id="community-creating-app" class="slide">
+    <h3>Creating rails app</h3>
+    <script type="syntaxhighlighter" class="brush: bash">
+      <![CDATA[
+      rails new community]]>
+    </script>
+  </div>
+  <div id="community-goto-working-dir" class="slide">
+    <h3>Goto working directory</h3>
+    <script type="syntaxhighlighter" class="brush: bash">
+      <![CDATA[
+      cd community]]>
+    </script>
+  </div>
+  <div id="community-goto-working-dir" class="slide">
+    <h3>Add .rvmrc</h3>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+      # file community/.rvmrc
+
+      rvm use 1.9.3-head@community --create]]>
+    </script>
+  </div>
+</section><section id="generate-post-scaffold" class="slide">
+  <h2>Generate scaffold</h2>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    rails generate scaffold Post title:string text:text 
+      invoke  active_record
+      create    db/migrate/20130204151754_create_posts.rb
+      create    app/models/post.rb
+      invoke    test_unit
+      create      test/unit/post_test.rb
+      create      test/fixtures/posts.yml
+      invoke  resource_route
+       route    resources :posts
+      invoke  scaffold_controller
+      create    app/controllers/posts_controller.rb
+      invoke    erb
+      create      app/views/posts
+      create      app/views/posts/index.html.erb
+      create      app/views/posts/edit.html.erb
+      create      app/views/posts/show.html.erb
+      create      app/views/posts/new.html.erb
+      create      app/views/posts/_form.html.erb
+      invoke    test_unit
+      create      test/functional/posts_controller_test.rb
+      invoke    helper
+      create      app/helpers/posts_helper.rb
+      invoke      test_unit
+      create        test/unit/helpers/posts_helper_test.rb
+      invoke  assets
+      invoke    coffee
+      create      app/assets/javascripts/posts.js.coffee
+      invoke    scss
+      create      app/assets/stylesheets/posts.css.scss
+      invoke  scss
+      create    app/assets/stylesheets/scaffolds.css.scss]]>
+  </script>
+</section><section id="migrations" class="slide">
+  <h2>Migrations</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class CreatePosts < ActiveRecord::Migration
+      def change
+        create_table :posts do |t|
+          t.string :title
+          t.text :text
+
+          t.timestamps
+        end
+      end
+    end]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    rake db:migrate]]>
+  </script>
+  <h4>Read <a href="http://guides.rubyonrails.org/migrations.html" target="_blank">a Guide to Active Record Migrations</a></h4>
+</section><section id="generate-blog-scaffold" class="slide">
+  <h3>Generate Blog scaffold</h3>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    rails generate scaffold Blog title:string description:text]]>
+  </script>
+  <div id="add-blog-id-to-post" class="slide">
+    <h3>Add blog_id field to posts</h3>
+    <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+      rails generate migration add_blog_id_to_posts blog_id:integer
+        invoke  active_record
+        create    db/migrate/20130204155420_add_blog_id_to_posts.rb]]>
+    </script>
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      #file db/migrate/20130204155420_add_blog_id_to_posts.rb
+
+      class AddBlogIdToPosts < ActiveRecord::Migration
+        def change
+          add_column :posts, :blog_id, :integer
+        end
+      end]]>
+    </script>
+  </div>
+  <div id="add-blog-id-to-post-run-migrations" class="slide">
+    Don't forget to run migrations
+    <script type="syntaxhighlighter" class="brush: bash">
+      <![CDATA[
+      rake db:migrate]]>
+    </script>
+  </div>
+</section><section id="associations" class="slide">
+  <h2>Active Record Associations</h2>
+  <h4>Read <a href="http://guides.rubyonrails.org/association_basics.html" target="_blank">a Guide to Active Record Associations</a> and <a href="http://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html" target="_blank">Ruby on Rails API doc <i>ActiveRecord::Associations::ClassMethods</i></a></h4>
+  <div id="belongs-to" class="slide">
+    <h3>The belongs_to association</h3>
+    Singular associations (one-to-one)
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class Post < ActiveRecord::Base
+        belongs_to :blog
+      end
+    ]]>
+    </script>
+    <h4>Read <a href="http://guides.rubyonrails.org/association_basics.html#the-belongs_to-association" target="_blank">a Guide to the belongs_to association</a></h4>
+  </div>
+  <div id="has-many" class="slide">
+    <h3>The has_many association</h3>
+    Collection associations (one-to-many)
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class Blog < ActiveRecord::Base
+        has_many :posts
+      end
+    ]]>
+    </script>
+    <h4>Read <a href="http://guides.rubyonrails.org/association_basics.html#the-has_many-association" target="_blank">a Guide to the has_many association</a></h4>
+  </div>
+</section><section id="associations-console-example" class="slide">
+  <h2>Active Record belongs_to and has_many associations</h2>
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+    blog = Blog.create(title: 'Ruby programming')
+    post = Post.create(blog_id: blog.id, title: 'Variables and oblects')
+  ]]>
+  </script>
+  <h4>Get blog object use <i>'belongs_to :blog'</i> association in Post model</h4>
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+    post.blog
+    Blog Load (0.6ms)  SELECT "blogs".* FROM "blogs" WHERE "blogs"."id" = 1 LIMIT 1
+    #<Blog id: 1, title: "Ruby programming", description: nil, created_at: "2013-02-10 10:19:14", updated_at: "2013-02-10 10:19:14">
+  ]]>
+  </script>
+  <h4>Get posts collection use <i>'has_many :posts'</i> association in Blog model</h4>
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+    blog.posts
+    Post Load (0.4ms)  SELECT "posts".* FROM "posts" WHERE "posts"."blog_id" = 1
+    [#<Post id: 1, title: "Variables and oblects", text: nil, created_at: "2013-02-10 10:22:29", updated_at: "2013-02-10 10:22:29", blog_id: 1>]
+  ]]>
+  </script>
+</section><section id="associations-auto-generated-methods-for-belongs-to" class="slide">
+  <h2>Auto-generated methods for belongs_to association</h2>
+  <h4>Read <a href="http://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html#label-Auto-generated+methods" target="_blank">Ruby on Rails API doc <i>ActiveRecord::Associations::ClassMethods</i></a> 'Auto-generated methods' section</h4>
+
+  <h4>Assign blog use <i>'belongs_to :blog'</i> association in Post model</h4>
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+    post.blog = blog
+    post.save
+    (0.3ms)  BEGIN
+    (0.7ms)  UPDATE "posts" SET "blog_id" = 1, "updated_at" = '2013-02-10 11:17:47.647136' WHERE "posts"."id" = 1
+    (0.7ms)  COMMIT
+    => true
+  ]]>
+  </script>
+
+  <h4>Build blog use <i>'belongs_to :blog'</i> association in Post model</h4>
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+    post.build_blog(title: 'Ruby on Rails')
+    => #<Blog id: nil, title: "Ruby on Rails", description: nil, created_at: nil, updated_at: nil>
+    post.save
+    (0.2ms)  BEGIN
+    SQL (0.6ms)  INSERT INTO "blogs" ("created_at", "description", "title", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["created_at", Sun, 10 Feb 2013 11:19:16 UTC +00:00], ["description", nil], ["title", "Ruby on Rails"], ["updated_at", Sun, 10 Feb 2013 11:19:16 UTC +00:00]]
+    (0.5ms)  UPDATE "posts" SET "blog_id" = 2, "updated_at" = '2013-02-10 11:19:16.754270' WHERE "posts"."id" = 1
+    (58.5ms)  COMMIT
+    => true
+  ]]>
+  </script>
+
+  <h4>Create blog use <i>'belongs_to :blog'</i> association in Post model</h4>
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+    post.create_blog(title: 'Sinatra')
+    (0.2ms)  BEGIN
+    SQL (0.5ms)  INSERT INTO "blogs" ("created_at", "description", "title", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["created_at", Sun, 10 Feb 2013 11:47:46 UTC +00:00], ["description", nil], ["title", "Sinatra"], ["updated_at", Sun, 10 Feb 2013 11:47:46 UTC +00:00]]
+    (57.3ms)  COMMIT
+    => #<Blog id: 3, title: "Sinatra", description: nil, created_at: "2013-02-10 11:47:46", updated_at: "2013-02-10 11:47:46">
+  ]]>
+  </script>
+</section><section id="associations-auto-generated-methods-for-has-many" class="slide">
+  <h2>Auto-generated methods for has_many association</h2>
+
+  <h4>Build post use <i>'has_many :posts'</i> association in Blog model</h4>
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+    blog.posts.build(title: 'Ruby classes')
+    => #<Post id: nil, title: "Ruby classes", text: nil, created_at: nil, updated_at: nil, blog_id: 1> 
+    blog.save
+    (0.2ms)  BEGIN
+    SQL (0.6ms)  INSERT INTO "posts" ("blog_id", "created_at", "text", "title", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["blog_id", 1], ["created_at", Sun, 10 Feb 2013 12:06:24 UTC +00:00], ["text", nil], ["title", "Ruby classes"], ["updated_at", Sun, 10 Feb 2013 12:06:24 UTC +00:00]]
+    (52.6ms)  COMMIT
+    => true
+  ]]>
+  </script>
+
+  <h4>Create post use <i>'has_many :posts'</i> association in Blog model</h4>
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+    blog.posts.create(title: 'Modules in Ruby')
+    (0.2ms)  BEGIN
+    SQL (0.5ms)  INSERT INTO "posts" ("blog_id", "created_at", "text", "title", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["blog_id", 1], ["created_at", Sun, 10 Feb 2013 19:44:53 UTC +00:00], ["text", nil], ["title", "Modules in Ruby"], ["updated_at", Sun, 10 Feb 2013 19:44:53 UTC +00:00]]
+    (51.8ms)  COMMIT
+    => #<Post id: 3, title: "Modules in Ruby", text: nil, created_at: "2013-02-10 19:44:53", updated_at: "2013-02-10 19:44:53", blog_id: 1>
+  ]]>
+  </script>
+</section><!-- End slides. -->
+
+<!-- deck.navigation snippet -->
+<a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
+<a href="#" class="deck-next-link" title="Next">&#8594;</a>
+
+<!-- deck.status snippet -->
+<p class="deck-status">
+  <span class="deck-status-current"></span>
+  /
+  <span class="deck-status-total"></span>
+</p>
+
+<!-- deck.hash snippet -->
+<a href="." title="Permalink to this slide" class="deck-permalink">#</a>
+
+</body>
+</html>

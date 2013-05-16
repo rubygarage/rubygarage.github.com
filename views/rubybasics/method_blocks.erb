@@ -1,0 +1,39 @@
+<section id="method-blocks" class="slide">
+  <h2>Methods</h2>
+  <h3>Blocks</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    def double(p1)
+      yield(p1*2)
+    end
+
+    double(3) { |val| "I got #{val}" }
+    => "I got 6"
+
+    double("tom") do |val|
+      "Then I got #{val}"
+    end
+    => "Then I got tomtom"
+  ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    def try
+      if block_given?
+        yield
+      else
+        "no block"
+      end
+    end
+
+    try
+    => "no block"
+
+    try { "hello" }
+    => "hello"
+
+    try do "hello" end
+    => "hello"
+  ]]>
+  </script>
+</section>

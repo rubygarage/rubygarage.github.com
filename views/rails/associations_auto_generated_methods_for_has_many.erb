@@ -1,0 +1,27 @@
+<section id="associations-auto-generated-methods-for-has-many" class="slide">
+  <h2>Auto-generated methods for has_many association</h2>
+
+  <h4>Build post use <i>'has_many :posts'</i> association in Blog model</h4>
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+    blog.posts.build(title: 'Ruby classes')
+    => #<Post id: nil, title: "Ruby classes", text: nil, created_at: nil, updated_at: nil, blog_id: 1> 
+    blog.save
+    (0.2ms)  BEGIN
+    SQL (0.6ms)  INSERT INTO "posts" ("blog_id", "created_at", "text", "title", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["blog_id", 1], ["created_at", Sun, 10 Feb 2013 12:06:24 UTC +00:00], ["text", nil], ["title", "Ruby classes"], ["updated_at", Sun, 10 Feb 2013 12:06:24 UTC +00:00]]
+    (52.6ms)  COMMIT
+    => true
+  ]]>
+  </script>
+
+  <h4>Create post use <i>'has_many :posts'</i> association in Blog model</h4>
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+    blog.posts.create(title: 'Modules in Ruby')
+    (0.2ms)  BEGIN
+    SQL (0.5ms)  INSERT INTO "posts" ("blog_id", "created_at", "text", "title", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["blog_id", 1], ["created_at", Sun, 10 Feb 2013 19:44:53 UTC +00:00], ["text", nil], ["title", "Modules in Ruby"], ["updated_at", Sun, 10 Feb 2013 19:44:53 UTC +00:00]]
+    (51.8ms)  COMMIT
+    => #<Post id: 3, title: "Modules in Ruby", text: nil, created_at: "2013-02-10 19:44:53", updated_at: "2013-02-10 19:44:53", blog_id: 1>
+  ]]>
+  </script>
+</section>

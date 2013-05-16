@@ -1,0 +1,49 @@
+<section id="variables" class="slide">
+  <h2>Variables</h2>
+  <h3>Local</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    v = "Ruby"
+    => "Ruby"
+
+    v.class
+    => String
+
+    v.kind_of? String
+    => true
+
+    defined? v
+    => "local-variable"
+  ]]>
+  </script>
+  <h3>Instance</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    @i = "Ruby"
+    => "Ruby"
+
+    defined? @i
+    => "instance-variable"
+  ]]>
+  </script>
+  <h3>Global</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    $g = "Ruby"
+    => "Ruby"
+
+    defined? $g
+    => "global-variable"
+  ]]>
+  </script>
+  <h3>Constant</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    C = "Ruby"
+    => "Ruby"
+
+    defined? C
+    => "constant"
+  ]]>
+  </script>
+</section>

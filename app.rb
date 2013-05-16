@@ -45,8 +45,16 @@ class App < Sinatra::Base
     erb :rake
   end
 
+  get "/rubybasics" do
+    erb :rubybasics
+  end
+
   get "/rack" do
     erb :rack
+  end
+
+  get "/oop" do
+    erb :oop
   end
 
   helpers do

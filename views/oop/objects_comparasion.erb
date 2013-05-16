@@ -1,0 +1,36 @@
+<section id="objects-comparasions" class="slide">
+  <h2>Objects comparasion</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      book1 = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99) # => BookInStock:0x00000000e71cb0
+      book2 = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99) # => BookInStock:0x00000000e553f8
+      book1 == book2 # => false
+    ]]>
+  </script>
+  <div class="slide" id="define-equality-method">
+    <h3>Define equality method</h3>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+        class BookInStock
+          attr_reader :title, :author, :price
+
+          def initialize(title, author, price)
+            @title = title
+            @author = author
+            @price = Float(price)
+          end
+
+          def ==(other)
+            if other.is_a? BookInStock
+              @title == other.title && @author == other.author && @price == other.price
+            else
+              false
+            end
+          end
+        end
+
+        book1 == book2 # => true
+      ]]>
+    </script>
+  </div>
+</section>

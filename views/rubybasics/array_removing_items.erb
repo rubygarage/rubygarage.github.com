@@ -1,0 +1,45 @@
+<section id="array-removing-items" class="slide">
+  <h2>Array</h2>
+  <h3>Removing items</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    > languages = "C++", "Ruby", "JavaScript", "CoffeeScript", "Haml", "Sass", "Python", "PHP", "Closure", "Haskell"
+    => ["C++", "Ruby", "JavaScript", "CoffeeScript", "Haml", "Sass", "Python", "PHP", "Closure", "Haskell"]
+
+    > # Pop
+    > languages.pop
+    => "Haskell"
+    > languages
+    => ["C++", "Ruby", "JavaScript", "CoffeeScript", "Haml", "Sass", "Python", "PHP", "Closure"]
+
+    > # Shift
+    > languages.shift
+    => "C++"
+    > languages
+    => ["Ruby", "JavaScript", "CoffeeScript", "Haml", "Sass", "Python", "PHP", "Closure"]
+
+    > # Delete at
+    > languages.delete_at(2)
+    => "CoffeeScript"
+    > languages
+    => ["Ruby", "JavaScript", "Haml", "Sass", "Python", "PHP", "Closure"]
+
+    > # Delete
+    > languages.delete("PHP")
+    => "PHP"
+    > languages
+    => ["Ruby", "JavaScript", "Haml", "Sass", "Python", "Closure"]
+
+    > # Compact
+    > languages = "Ruby", "JavaScript", nil, 0, "Python", nil
+    => ["Ruby", "JavaScript", nil, 0, "Python", nil]
+    > languages.compact
+    => ["Ruby", "JavaScript", 0, "Python"]
+
+    > # Uniq
+    > languages = "Ruby", "JavaScript", "PHP", "Python", "PHP"
+    > languages.uniq
+    => ["Ruby", "JavaScript", "PHP", "Python"]
+  ]]>
+  </script>
+</section>

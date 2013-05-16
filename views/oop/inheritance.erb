@@ -1,0 +1,18 @@
+<section id="inheritance" class="slide">
+  <h2>Inheritance</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    ﻿class PrintPublication
+      def initialize(title, author)
+        @title, @author = title, author
+      end
+    end
+
+    class BookInStock < PrintPublication
+    end
+
+    book = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald") 
+    # => <BookInStock:0x00000000f2c538 @title="The Great Gatsby", @author="F. Scott Fitzgerald">
+
+    BookInStock.superclass # => PrintPublication
+  </script>
+</section>

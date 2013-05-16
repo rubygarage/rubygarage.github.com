@@ -1,0 +1,25 @@
+<section id="associations-console-example" class="slide">
+  <h2>Active Record belongs_to and has_many associations</h2>
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+    blog = Blog.create(title: 'Ruby programming')
+    post = Post.create(blog_id: blog.id, title: 'Variables and oblects')
+  ]]>
+  </script>
+  <h4>Get blog object use <i>'belongs_to :blog'</i> association in Post model</h4>
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+    post.blog
+    Blog Load (0.6ms)  SELECT "blogs".* FROM "blogs" WHERE "blogs"."id" = 1 LIMIT 1
+    #<Blog id: 1, title: "Ruby programming", description: nil, created_at: "2013-02-10 10:19:14", updated_at: "2013-02-10 10:19:14">
+  ]]>
+  </script>
+  <h4>Get posts collection use <i>'has_many :posts'</i> association in Blog model</h4>
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+    blog.posts
+    Post Load (0.4ms)  SELECT "posts".* FROM "posts" WHERE "posts"."blog_id" = 1
+    [#<Post id: 1, title: "Variables and oblects", text: nil, created_at: "2013-02-10 10:22:29", updated_at: "2013-02-10 10:22:29", blog_id: 1>]
+  ]]>
+  </script>
+</section>

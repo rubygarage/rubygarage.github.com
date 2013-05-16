@@ -1,0 +1,34 @@
+<section id="hash-methods" class="slide">
+  <h2>Hash</h2>
+  <h3>Useful methods</h3>
+  each
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    h = { "a" => 100, "b" => 200 }
+    h.each {|key, value| puts "#{key} is #{value}" }
+    a is 100
+    b is 200
+    => {"a"=>100, "b"=>200}
+  ]]>
+  </script>
+  each_key
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    h = { "a" => 100, "b" => 200 }
+    h.each_key {|key| puts key }
+    a
+    b
+    => {"a"=>100, "b"=>200}
+  ]]>
+  </script>
+  each_value
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    h = { "a" => 100, "b" => 200 }
+    h.each_value {|value| puts value }
+    100
+    200
+    => {"a"=>100, "b"=>200}
+  ]]>
+  </script>
+</section>

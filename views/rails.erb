@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Ruby on Rails</title>
+  <link href="assets/rails.css" rel="stylesheet">
+  <script src="assets/rails.js"></script>
+</head>
+
+<body class="deck-container">
+  
+<!-- Begin slides. Just make elements with a class of slide. -->
+<%= partial :'rails/topic' %>
+<%= partial :'rails/create_community' %>
+<%= partial :'rails/generate_post_scaffold' %>
+<%= partial :'rails/migrations' %>
+<%= partial :'rails/generate_blog_scaffold' %>
+<%= partial :'rails/associations' %>
+<%= partial :'rails/associations_console' %>
+<%= partial :'rails/associations_auto_generated_methods_for_belongs_to' %>
+<%= partial :'rails/associations_auto_generated_methods_for_has_many' %>
+<!-- End slides. -->
+
+<!-- deck.navigation snippet -->
+<a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
+<a href="#" class="deck-next-link" title="Next">&#8594;</a>
+
+<!-- deck.status snippet -->
+<p class="deck-status">
+  <span class="deck-status-current"></span>
+  /
+  <span class="deck-status-total"></span>
+</p>
+
+<!-- deck.hash snippet -->
+<a href="." title="Permalink to this slide" class="deck-permalink">#</a>
+
+</body>
+</html>

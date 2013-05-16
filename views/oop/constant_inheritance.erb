@@ -1,0 +1,19 @@
+<section id="class-constants-inheritance" class="slide">
+  <h2>Class constants inheritance</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class A 
+      NUM = 2
+    end
+
+    class B  < A
+    end
+
+    A::NUM # => 2
+    B::NUM # => 2
+
+    B::NUM = 3
+
+    A::NUM # => 2
+    B::NUM # => 3
+  </script>
+</section>

@@ -1,0 +1,38 @@
+<section id="exceptions-type" class="slide">
+  <h2>Exceptions: Exception type, else, ensure</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    begin
+      raise "A test exception."
+    rescue Exception => e 
+      puts e.message
+      puts e.backtrace.inspect
+    ensure
+      puts "Ensuring execution"
+    end
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    A test exception.
+    ["test.rb:2:in '<main>'"]
+    Ensuring execution
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    begin
+      raise "A test exception."
+    rescue Exception => e 
+      puts e.message
+      puts e.backtrace.inspect
+    else
+      puts "Executes if there is no exeception"
+    ensure
+      puts "Ensuring execution"
+    end
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    A test exception.
+    Executes if there is no exception
+    Ensuring execution
+  </script>
+</section>
