@@ -1,0 +1,38 @@
+<section class="slide" id="procs">
+  <h2 class="not-capitalized">Procedures, AKA, Procs</h2>
+  <p>The only difference between blocks and Procs is that a block is a Proc that cannot be saved, and as such, is a one time use solution.</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+class Array
+  def iterate!(code)
+    self.each_with_index do |n, i|
+      self[i] = code.call(n)
+    end
+  end
+end
+
+array_1 = [1, 2, 3, 4]
+array_2 = [2, 3, 4, 5]
+
+square = Proc.new do |n|
+  n ** 2
+end
+
+      ]]>
+  </script>
+
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+
+array_1.iterate!(square)
+array_2.iterate!(square)
+
+puts array_1.inspect
+puts array_2.inspect
+
+# => [1, 4, 9, 16]
+# => [4, 9, 16, 25]
+  </script>
+</section>

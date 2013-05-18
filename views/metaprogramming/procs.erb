@@ -1,0 +1,29 @@
+<section class="slide" id="blocks">
+  <h2 class="not-capitalized">Understanding Ruby Blocs, Procs, Lambdas, Methods</h2>
+  <img src="/assets/surprise.png" />
+</section>
+
+<section class="slide" id="blocks1">
+  <h2 class="not-capitalized">So, what is going on here?</h2>
+
+  <div class="row">
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+array = [1, 2, 3, 4]
+
+array.collect! do |n|
+  n ** 2
+end
+
+puts array.inspect
+
+# => [1, 4, 9, 16]
+      ]]>
+  </script>
+</div>
+<ol>
+  <li>First, we send the collect! method to an Array with a block of code.</li>
+  <li>The code block interacts with a variable used within the collect! method (n in this case) and squares it.</li>
+  <li>Each element inside the array is now squared.</li>
+</ol>
+</section>

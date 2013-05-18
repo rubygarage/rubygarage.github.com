@@ -1,0 +1,38 @@
+<section class="slide" id="hooks">
+  <h2>Hook methods</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+class String
+  def self.inherited(subclass)
+    puts "#{self} was inherited by #{subclass}"
+  end
+end
+
+class MyStrin < String; end
+
+module M
+  def self.included(othermod)
+    puts "M was mixed in #{othermod}"
+  end
+
+  def self.method_added(method)
+    puts "New method: M##{method}"
+  end
+
+  def my_method; end
+end
+
+class C; include M; end
+      ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+      <![CDATA[
+>> ruby test.rb
+
+String was inherited by MyString
+New method: M#my_method
+M was mixed into C
+      ]]>
+  </script>
+</section>
