@@ -1,0 +1,31 @@
+<section class="slide" id="dynamic_undef">
+  <h2>Undefining methods</h2>
+  <p>A method can be undefined any time, as well as defined.</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+class MyClass
+  def meth1; "meth1 called"; end
+  def meth2; "meth2 called"; end
+  def meth3; "meth3 called"; end
+end
+
+obj = MyClass.new      # => #&lt;MyClass:0x9170850>
+obj.meth1              # => "meth1 called"
+  ]]>
+  </script>
+  <br/>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+class MyClass
+  undef meth1
+  remove_method :meth2
+  undef_method :meth3
+end
+
+obj.meth1              # => NoMethodError
+obj.meth2              # => NoMethodError
+obj.meth3              # => NoMethodError
+  ]]>
+  </script>
+</section>
