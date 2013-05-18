@@ -3,23 +3,14 @@
   <p>Classes themselves are nothing but objects.</p>  
   <script type="syntaxhighlighter" class="brush: ruby">
   <![CDATA[
-    "hello".class             # => String
-    String.class              # => Class
+    "hello".class            # => String
+    String.class             # => Class
 
-    Class.class               # => Class
-    Module.class              # => Class
-    Object.class              # => Class
-    BasicObject.class         # => Class
+    String.superclass        # => Object
+    Object.superclass        # => BasicObject
+    BasicObject.superclass   # => nil
 
-    Class.superclass          # => Module
-    Module.superclass         # => Object
-
-    String.superclass         # => Object
-    Object.superclass         # => BasicObject
-    BasicObject.superclass    # => nil
-
-    nil.class                 # => NilClass
-    NilClass.class            # => Class
-    NilClass.superclass       # => Object]]>
+    Class.superclass         # => Module
+    Module.superclass        # => Object]]>
   </script>
 </section>
