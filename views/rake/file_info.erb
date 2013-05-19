@@ -1,0 +1,46 @@
+<section id="file-info" class="slide">
+  <h2>File</h2>
+  <p>
+    Universal way to work with files in ruby - is using of class 'File'.
+  </p>
+  <p>
+    Class 'File' has many instance methods, which can give you all information you need. 
+  </p>
+  <div id= "file-instance-methods" class="slide">
+    <p> Some of them:  </p>
+    <ul>
+      <li id="basename" class="slide">basename
+        <script type="syntaxhighlighter" class="brush: ruby">
+          <![CDATA[
+            File.basename "/projects/cool_project/explode_all.rb" #=>"explode_all.rb"
+            File.basename "/projects/cool_project/explode_all.rb", ".rb" #=>"explode_all"]]>
+        </script>
+      </li>
+      <li id="split" class="slide">split
+        <script type="syntaxhighlighter" class="brush: ruby">
+          <![CDATA[
+          File.split("/projects/cool_project/explode_all.rb")   #=> ["/projects/cool_project", "explode_all.rb"]]]>
+        </script>
+      </li>
+      <li id="ftype" class="slide">ftype
+        <script type="syntaxhighlighter" class="brush: ruby">
+          <![CDATA[
+            File.ftype("some_file") #=> "file"
+            File.ftype("some_directory") #=> "directive"]]>
+        </script>
+      </li>
+      <li id="new" class="slide">new
+        <script type="syntaxhighlighter" class="brush: ruby">
+        <![CDATA[
+          f = File.new("newfile", "w+", 0644)]]>
+        </script>
+      </li>
+      <li id="chmod" class="slide">chmod
+        <script type="syntaxhighlighter" class="brush: ruby">
+          <![CDATA[
+          File.chmod(0777, "file")]]>
+        </script>
+      </li>
+    </ul>
+  </div>    
+</section>
