@@ -15,12 +15,10 @@ class MyClass
 end
 
 obj = MyClass.new
-def obj.singleton; "i'm singleton"; end
-      ]]>
-</script>
-
-  <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[
+def obj.singleton 
+  "i'm singleton"
+end
+      
 obj.my_method # => ["test.rb:4:in `my_method`",
               # "test.rb:16:in `<top>`", ... ]
 
