@@ -237,7 +237,7 @@ end
 module Enclosing
   A = B = "from enclosing module"
 
-  class Local  Super
+  class Local < Super
     include Included
 
     A = "defined locally"
@@ -532,7 +532,7 @@ MyClass.instance_methods(false) # => [:my_method]
 local_variables                 # => [:obj]
 
 MyClass.instance_methods == obj.methods # => true
-MyClass.methods == obj.Methods          # => false
+MyClass.methods == obj.methods          # => false
       ]]>
 </script>
 </section><section class="slide" id="hooks">
