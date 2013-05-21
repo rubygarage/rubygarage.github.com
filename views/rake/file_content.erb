@@ -1,0 +1,30 @@
+<section id="file-content" class="slide">
+  <h2>File content</h2>
+  <p>
+    Any work with files content consist of three steps:
+    <ul>
+      <li>Getting the reference on file</li>
+      <li>Operations with file content</li>
+      <li>Closing file</li>
+    </ul>
+  </p>
+  <div id="file-example" class="slide">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+      file = File.open "file.txt", "r"
+      puts file.readline
+      file.close]]>
+    </script>
+  </div>
+  <div id = "modes" class = "slide">
+    <p>
+      "r" - is mode. Can be:
+      <ul>
+        <li>"r" - only reading</li>
+        <li>"w" - only for writing</li>
+        <li>"a" - writing without rewrite</li>
+        <li>"w+", "a+"  - adding read option to writing modes</li>
+      </ul>
+    </p>
+  </div>
+</section>

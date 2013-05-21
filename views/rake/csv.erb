@@ -1,0 +1,48 @@
+<section id="csv" class="slide">
+  <h2>Work with CSV files</h2>
+  <p>
+    CSV - format of data, where every string is row in table and colums are separeted by ','.
+  </p>
+  <div id="csv-example" class="slide">
+    <p>
+      Table:
+    </p>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+      #id,country_id,city,state
+      1,1,Москва,
+      2,1,Санкт-Петербург,
+      5,1,Отрадное,"Кировский район"
+      49,1,Екатеринбург,"Свердловская область"
+      ]]>
+    </script>
+  </div>
+  <div id="csv-solution" class= "slide">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+        filename = 'info.csv'
+        result_filename= 'cities.csv' 
+        file = File.new(filename, 'r')
+        result_file = File.new(result_filename, 'a')
+        file.each_line("\n") do |row|
+          columns = row.split(",")
+          result_file.puts columns[2]
+        end
+        result_file.close
+        ]]>
+    </script>
+  </div>
+  <div id="csv-library" class= "slide">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+      require 'csv'
+      result_file = File.new(result_filename, 'a')
+      CSV.foreach('info.csv') do |row|
+        result_filename row[2]
+      end
+      result_filename.close
+      ]]>
+    </script>
+  </div>
+  
+</section>

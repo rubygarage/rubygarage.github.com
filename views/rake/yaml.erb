@@ -1,0 +1,59 @@
+<section id="yaml-file" class="slide">
+  <h2>Yaml</h2>
+  <p>
+    Yaml - is a human-readable data serialization format.
+  </p>
+
+  <div>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+        ---
+        defaults: &defaults
+          default_password: 'secret-password'
+          special_records:
+            - record_id: 1
+              title: first record
+              quantity: 3
+            - record_id: 2
+              title: second record
+              quantiny: 22        
+
+        development:
+          <<: *defaults
+          global_param: "asdklm9823no1m89m"        
+
+        test:
+          <<: *defaults
+          global_param: "llok20e2pomlsdi20"
+        ]]>
+    </script>
+  </div>
+
+  <div id="parsing-file" class="slide">
+    <script type="syntaxhighlighter" class="brush: bash"> 
+      <![CDATA[
+        require 'yaml'
+        File.open("config.yml", 'r') do |configs|
+          YAML.load_documents(configs) do |config|
+          puts config['development']
+          end
+        end
+      ]]>
+    </script>
+  </div>
+
+  <div id="result" class-"slide">
+    <script type="syntaxhighlighter" class="brush: ruby"> 
+      <![CDATA[
+        # => { "default_password" => "secret-password", 
+        #      "special_records" => [
+        #                             {"record_id" => 1, "title" => "first record", "quantity" => 3},
+        #                             {"record_id" => 2, "title" => "second record", "quantity" => 22}
+        #                           ],
+        #      "global_param" => "asdklm9823no1m89m"
+        #     }
+        ]]>
+    </script>
+  </div> 
+
+</section>
