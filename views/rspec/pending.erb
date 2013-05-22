@@ -18,6 +18,10 @@
         array.size.should == 3
       end
     end
+
+    context "#first" do 
+      it "return the first element"
+    end
   end]]>
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
@@ -28,16 +32,22 @@
       #last
         should return the last element (PENDING: bug report #85346)
         should not remove the last element (PENDING: Temporarily disabled with xit)
+      #first
+        return the first element (PENDING: Not yet implemented)
 
     Pending:
       Array#last should return the last element
         # bug report #85346
-        # ./spec/array_spec.rb:42
+        # ./spec/test_spec.rb:5
       Array#last should not remove the last element
         # Temporarily disabled with xit
-        # ./spec/array_spec.rb:47
+        # ./spec/test_spec.rb:11
+      Array#first return the first element
+        # Not yet implemented
+        # ./spec/test_spec.rb:19
 
-    Finished in 0.0007 seconds
-    2 examples, 0 failures, 2 pending]]>
+    Finished in 1.23 seconds
+    3 examples, 0 failures, 3 pending
+  ]]>
   </script>
 </section>
