@@ -1,0 +1,62 @@
+<section id="filters" class="slide">
+  <h2>Filters</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    describe Actor do
+      let(:name) { "Ivan" }
+
+      context "with subject redefinition", focus: true do 
+        let(:actor) {  Actor.new(name) } 
+        subject { actor }
+         
+        it "has name", slow: true do
+          subject.name.should == name
+        end
+
+      end
+    end]]>
+  </script>
+
+   <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+    rspec spec/subject_spec.rb --tag focus --format documentation
+
+    Actor
+      with subject redefinition
+        has name
+
+    Finished in 1.22 seconds
+    1 example, 0 failures
+  ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    # in file spec/spec_helper.rb
+    Rspec.configure do |config|
+      config.filter_run focus: true
+      config.run_all_with_everything_filtered = true
+    end
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+    rspec spec/subject_spec.rb --tag ~slow --format documentation
+
+    Finished in 1.39 seconds
+    0 example, 0 failures
+  ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    # in file spec/spec_helper.rb
+    Rspec.configure do |config|
+      config.filter_run_excluding slow: true
+      config.run_all_with_everything_filtered = true
+    end
+    ]]>
+  </script>  
+
+</section>

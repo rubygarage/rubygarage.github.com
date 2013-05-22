@@ -37,14 +37,32 @@
     it "accesses the subject defined in the shared context" do
       should == "this is the subject"
     end
+  end
+
+  describe "group that includes a shared context using metadata", :a => :b do
+    it "has access to methods defined in shared context" do
+      shared_method.should eq("it works")
+    end
+
+    it "has access to methods defined with let in shared context" do
+      shared_let['arbitrary'].should eq('object')
+    end
+
+    it "runs the before hooks defined in the shared context" do
+      @some_var.should be(:some_value)
+    end
+
+    it "accesses the subject defined in the shared context" do
+      subject.should eq('this is the subject')
+    end
   end]]>
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
   <![CDATA[
   rspec spec/shared_stuff_spec.rb 
-  ....
+  ........
 
   Finished in 0.00758 seconds
-  4 examples, 0 failures]]>
+  8 examples, 0 failures]]>
   </script>
 </section>
