@@ -1,5 +1,5 @@
 <section id="filters" class="slide">
-  <h2>Filters and Methadata</h2>
+  <h2>Filters</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
   <![CDATA[
     describe Actor do
@@ -34,8 +34,9 @@
   <![CDATA[
     # in file spec/spec_helper.rb
     Rspec.configure do |config|
-    config.filter_run focus: true
-    config.run_all_with_everything_filtered = true
+      config.filter_run focus: true
+      config.run_all_with_everything_filtered = true
+    end
     ]]>
   </script>
 
@@ -52,8 +53,9 @@
   <![CDATA[
     # in file spec/spec_helper.rb
     Rspec.configure do |config|
-    config.filter_run_excluding slow: true
-    config.run_all_with_everything_filtered = true
+      config.filter_run_excluding slow: true
+      config.run_all_with_everything_filtered = true
+    end
     ]]>
   </script>  
 
