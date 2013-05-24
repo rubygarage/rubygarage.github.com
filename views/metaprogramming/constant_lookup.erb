@@ -25,7 +25,7 @@ end
 module Enclosing
   A = B = "from enclosing module"
 
-  class Local  Super
+  class Local < Super
     include Included
 
     A = "defined locally"
