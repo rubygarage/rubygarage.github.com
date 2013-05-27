@@ -122,7 +122,7 @@
   <p>Specific line in spec</p>
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[
-    rspec spec/arrays/push_spec.rb:4]]>
+    rspec spec/arrays/push_spec.rb:5]]>
   </script>
   <h3>Formating</h3>
   <p>Colorization</p>
@@ -908,7 +908,7 @@
   </p>
   <script type="syntaxhighlighter" class="brush: ruby">
   <![CDATA[
-  shared_context "shared stuff" do
+  shared_context "shared stuff", :a => :b do
     before { @some_var = :some_value }
 
     def shared_method
@@ -1304,18 +1304,26 @@
   </script>
 </section><section id="chaining" class="slide">
   <h2>Spec::Matchers</h2>
-  <h3>Chaining custom mathcers</h3>
+  <h3>Chaining custom matchers</h3>
   <p>You can also create matchers that obey a fluent interface using the chain method:</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
-      RSpec::Matchers.define :tip do |expected_tip|
-        chain :on do |bill|
-          @bill = bill
+      RSpec::Matchers.define :have_errors_on do |attribute|
+        chain :with_message do |message|
+          @message = message
         end
-
-        match do |person|
-          person.tip_for(@bill) == expected_tip
+       
+        match do |model|
+          model.valid?
+       
+          @has_errors = model.errors.key?(attribute)
+       
+          if @message
+            @has_errors && model.errors[attribute].include?(@message)
+          else
+            @has_errors
+          end
         end
       end
     ]]>
@@ -1324,8 +1332,10 @@
   <p>And now it can be used as follows:</p>
     <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
-      describe Customer do
-        it { should tip(10).on(50) }
+      describe User do
+        before { subject.email = "foobar" }
+       
+        it { should have_errors_on(:email).with_message("Email has an invalid format") }
       end
     ]]>
   </script>
