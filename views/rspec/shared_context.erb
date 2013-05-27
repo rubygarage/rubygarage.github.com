@@ -5,7 +5,7 @@
   </p>
   <script type="syntaxhighlighter" class="brush: ruby">
   <![CDATA[
-  shared_context "shared stuff" do
+  shared_context "shared stuff", :a => :b do
     before { @some_var = :some_value }
 
     def shared_method
