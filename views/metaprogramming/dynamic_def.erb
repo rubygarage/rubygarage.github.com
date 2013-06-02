@@ -1,0 +1,21 @@
+<section class="slide" id="dynamic_def">
+  <h2>Defining methods dynamically</h2>
+  <p>You can define a method on the spot with <i>define_method()</i>. You just need to provide a method name and a block, which becomes the method body.</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+class MyClass
+
+  define_method :triple do |my_arg|
+    my_arg * 3
+  end
+
+end
+
+obj = MyClass.new
+obj.triple(2)
+# => 6
+
+  ]]>
+  </script>
+</section>

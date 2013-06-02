@@ -1,0 +1,38 @@
+<section class="slide" id="runtime">
+  <h2 class="not-capitalized">Runtime introspection</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+class MyClass
+  def my_method
+    @v = 1
+    my_private
+  end
+
+  private
+  def my_private
+    caller
+  end
+end
+
+obj = MyClass.new
+def obj.singleton 
+  "i'm singleton"
+end
+      
+obj.my_method # => ["test.rb:4:in `my_method`",
+              # "test.rb:16:in `<top>`", ... ]
+
+obj.class     # => MyClass
+obj.methods.grep /my/  # => [:my_method]
+obj.private_methods    # => [:my_private, :irb...]
+obj.instance_variables # => [:@v]
+obj.singleton_methods  # => [:singleton]
+
+MyClass.instance_methods(false) # => [:my_method]
+local_variables                 # => [:obj]
+
+MyClass.instance_methods == obj.methods # => true
+MyClass.methods == obj.methods          # => false
+      ]]>
+</script>
+</section>
