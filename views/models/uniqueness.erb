@@ -1,0 +1,31 @@
+<section id="uniqueness" class="slide">
+  <h2>Uniqueness</h2>
+<script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class User < ActiveRecord::Base
+      ... 
+      validates :email, uniqueness: true
+    end
+    
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[  
+    class User < ActiveRecord::Base
+      ...  
+      validates :first_name, uniqueness: { scope: :year,  message: "should happen once per year" }
+    end
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[  
+    class User < ActiveRecord::Base
+      ...  
+      validates :name, uniqueness: { case_sensitive:  false }
+    end
+    ]]>
+  </script>
+
+</section>

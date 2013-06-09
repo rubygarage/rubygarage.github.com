@@ -1,0 +1,24 @@
+<section id="change-table" class="slide">
+  <h2>Change Table</h2>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+      change_table :products do |t|
+        t.remove :description, :name
+        t.string :part_number
+        t.index  :part_number
+      end
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+      remove_column :products, :description
+      remove_column :products, :description
+      add_column :products, :part_number, :string
+      add_index :products, :part_number
+      rename_column :products, :upccode, :upc_code
+    ]]>
+  </script>
+ 
+</section>

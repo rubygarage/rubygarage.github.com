@@ -61,6 +61,10 @@ class App < Sinatra::Base
     erb :rails
   end
 
+  get "/models" do
+    erb :models
+  end
+
   helpers do
     include Sprockets::Helpers
   end

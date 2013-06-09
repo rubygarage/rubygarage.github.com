@@ -1,0 +1,19 @@
+<section id="habtm-in-model" class="slide">
+  <h2>has_and_belongs_to_many</h2>
+<script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class Assembly < ActiveRecord::Base
+      has_and_belongs_to_many :parts
+    end      
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class Part < ActiveRecord::Base
+      has_and_belongs_to_many :assemblies
+    end      
+    ]]>
+  </script>
+
+</section>

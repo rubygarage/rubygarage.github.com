@@ -1,0 +1,15 @@
+<section id="errors" class="slide">
+  <h2>errors[]</h2>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    2.0.0-p0 :019 > User.new.errors[:email].any?
+     => false 
+    2.0.0-p0 :020 > User.create.errors[:email].any?
+       (0.1ms)  begin transaction
+       (0.1ms)  rollback transaction
+     => true 
+    ]]>
+  </script>
+ 
+</section>
