@@ -2,16 +2,17 @@
   <h2>Generate scaffold</h2>
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[
-    rails generate scaffold Post title:string text:text 
+    rails generate scaffold Post title:string text:text
+    
       invoke  active_record
-      create    db/migrate/20130204151754_create_posts.rb
+      create    db/migrate/20130609121432_create_posts.rb
       create    app/models/post.rb
       invoke    test_unit
-      create      test/unit/post_test.rb
+      create      test/models/post_test.rb
       create      test/fixtures/posts.yml
       invoke  resource_route
        route    resources :posts
-      invoke  scaffold_controller
+      invoke  jbuilder_scaffold_controller
       create    app/controllers/posts_controller.rb
       invoke    erb
       create      app/views/posts
@@ -21,17 +22,22 @@
       create      app/views/posts/new.html.erb
       create      app/views/posts/_form.html.erb
       invoke    test_unit
-      create      test/functional/posts_controller_test.rb
+      create      test/controllers/posts_controller_test.rb
       invoke    helper
       create      app/helpers/posts_helper.rb
       invoke      test_unit
-      create        test/unit/helpers/posts_helper_test.rb
+      create        test/helpers/posts_helper_test.rb
+      invoke    jbuilder
+       exist      app/views/posts
+      create      app/views/posts/index.json.jbuilder
+      create      app/views/posts/show.json.jbuilder
       invoke  assets
       invoke    coffee
       create      app/assets/javascripts/posts.js.coffee
       invoke    scss
       create      app/assets/stylesheets/posts.css.scss
       invoke  scss
-      create    app/assets/stylesheets/scaffolds.css.scss]]>
+      create    app/assets/stylesheets/scaffolds.css.scss  
+    ]]>
   </script>
 </section>

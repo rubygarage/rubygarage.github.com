@@ -1,0 +1,93 @@
+<section id="listing-posts" class="slide">
+  <h2>Listing posts</h2>
+
+  GET localhost:3000/posts
+  <div class="html-example">
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Text</th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr>
+            <td>Facebook’s New Colocation And Image Recognition Patents Tease The Future Of Sharing </td>
+            <td>Facebook’s empire was built on photo tags and sharing, but it’s a grueling process many neglect. Luckily, new Facebook patents give it tech to continuously capture video whenever your camera is open, rank and surface the best images, and auto-tag them with people, places, and businesses. They tease a future where pattern, facial, and audio recognition identify what you’re seeing for easy sharing.</td>
+            <td><a href="/posts/1">Show</a></td>
+            <td><a href="/posts/1/edit">Edit</a></td>
+            <td><a data-confirm="Are you sure?" data-method="delete" href="/posts/1" rel="nofollow">Destroy</a></td>
+          </tr>
+      </tbody>
+    </table>
+    <br>
+    <a href="/posts/new">New Post</a>
+  </div>
+
+  GET localhost:3000/posts.json
+  <script type="syntaxhighlighter" class="brush: javascript">
+    <![CDATA[
+    [{"title":"Facebook’s New Colocation And Image Recognition Patents Tease The Future Of Sharing ","text":"Facebook’s empire was built on photo tags and sharing, but it’s a grueling process many neglect. Luckily, new Facebook patents give it tech to continuously capture video whenever your camera is open, rank and surface the best images, and auto-tag them with people, places, and businesses. They tease a future where pattern, facial, and audio recognition identify what you’re seeing for easy sharing.","url":"http://localhost:3000/posts/1.json"}]
+    ]]>
+  </script>
+
+  app/controllers/posts_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class PostsController < ApplicationController
+      ...
+      # GET /posts
+      # GET /posts.json
+      def index
+        @posts = Post.all
+      end
+      ...
+    ]]>
+  </script>
+
+  app/views/posts/index.html.erb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    <h1>Listing posts</h1>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Text</th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        &lt;% @posts.each do |post| %>
+          <tr>
+            <td>&lt;%= post.title %&gt;</td>
+            <td>&lt;%= post.text %&gt;</td>
+            <td>&lt;%= link_to 'Show', post %&gt;</td>
+            <td>&lt;%= link_to 'Edit', edit_post_path(post) %&gt;</td>
+            <td>&lt;%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %&gt;</td>
+          </tr>
+        &lt;% end %&gt;
+      </tbody>
+    </table>
+
+    <br>
+
+    &lt;%= link_to 'New Post', new_post_path %&gt;
+    ]]>
+  </script>
+
+  app/views/posts/index.json.jbuilder
+  <script type="syntaxhighlighter" class="brush: ruby">
+    json.array!(@posts) do |post|
+      json.extract! post, :title, :text
+      json.url post_url(post, format: :json)
+    end
+  </script>
+</section>

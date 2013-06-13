@@ -1,0 +1,27 @@
+<section id="create-post" class="slide">
+  <h2>Create post</h2>
+  app/controllers/posts_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class PostsController < ApplicationController
+      ...
+      # POST /posts
+      # POST /posts.json
+      def create
+        @post = Post.new(post_params)
+
+        respond_to do |format|
+          if @post.save
+            format.html { redirect_to @post, notice: 'Post was successfully created.' }
+            format.json { render action: 'show', status: :created, location: @post }
+          else
+            format.html { render action: 'new' }
+            format.json { render json: @post.errors, status: :unprocessable_entity }
+          end
+        end
+      end
+      ...
+    end
+    ]]>
+  </script>
+</section>

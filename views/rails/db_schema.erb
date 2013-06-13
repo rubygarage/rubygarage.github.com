@@ -1,0 +1,18 @@
+<section id="db-schema" class="slide">
+  <h2>DB schema</h2>
+  db/schema.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    ActiveRecord::Schema.define(version: 20130609121432) do
+
+      create_table "posts", force: true do |t|
+        t.string   "title"
+        t.text     "text"
+        t.datetime "created_at"
+        t.datetime "updated_at"
+      end
+
+    end
+    ]]>
+  </script>
+</section>

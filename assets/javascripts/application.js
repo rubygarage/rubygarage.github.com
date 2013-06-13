@@ -8,6 +8,7 @@
 //= require syntax-highlighter/shCore.js
 //= require syntax-highlighter/shBrushRuby.js
 //= require syntax-highlighter/shBrushBash.js
+//= require syntax-highlighter/shBrushJScript.js
 //= require_self
 
 $(function() {  

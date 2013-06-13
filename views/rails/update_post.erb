@@ -1,0 +1,40 @@
+<section id="update-post" class="slide">
+  <h2>Update post</h2>
+  app/controllers/posts_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class PostsController < ApplicationController
+      ...
+      # PATCH/PUT /posts/1
+      # PATCH/PUT /posts/1.json
+      def update
+        respond_to do |format|
+          if @post.update(post_params)
+            format.html { redirect_to @post, notice: 'Post was successfully updated.' }
+            format.json { head :no_content }
+          else
+            format.html { render action: 'edit' }
+            format.json { render json: @post.errors, status: :unprocessable_entity }
+          end
+        end
+      end
+      ...
+    end
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    <form accept-charset="UTF-8" 
+      action="/posts/1" class="edit_post" id="edit_post_1" 
+      method="post">
+
+      <div style="margin:0;padding:0;display:inline">
+        <input name="utf8" type="hidden" value="&#x2713;" />
+        <input name="_method" type="hidden" value="patch" />
+        <input name="authenticity_token" type="hidden" value="n4Djzu/hPGSd5oMdGdfJ3sqePMR+E/1fs2679AMHLE0=" />
+      </div>
+    ]]>
+  </script>
+
+</section>

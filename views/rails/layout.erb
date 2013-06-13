@@ -1,0 +1,22 @@
+<section id="layout" class="slide">
+  <h2>Layout</h2>
+  app/views/layouts/application.html.erb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Community</title>
+      &lt;%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %&gt;
+      &lt;%= javascript_include_tag "application", "data-turbolinks-track" => true %&gt;
+      &lt;%= csrf_meta_tags %&gt;
+    </head>
+    <body>
+
+      &lt;%= yield %&gt;
+
+    </body>
+    </html>
+    ]]>
+  </script>
+</section>

@@ -14,66 +14,273 @@
 <section id="topic" class="slide">
   <div class="vcenter">
     <h1>Rails</h1>
+    <div class="principles">
+      <h3>The Rails philosophy includes two major guiding principles</h3>
+      <p>DRY - "Don't Repeat Yourself" - suggests that writing the same code over and over again is a bad thing.</p>
+      <p>Convention Over Configuration - means that Rails makes assumptions about what you want to do and how you're going to do it, rather than requiring you to specify every little thing through endless configuration files.</p>
+    </div>  
   </div>
-</section><section id="creating-community" class="slide">
-  <h2>Creating Community app</h2>
+</section><section id="installing-rails" class="slide">
+  <h2>Instaling Rails</h2>
   <h3>Preparing environment</h3>
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[
-    rvm use 1.9.3-head@community --create
-    Using /Users/sparrow/.rvm/gems/ruby-1.9.3-head with gemset community]]>
+    rvm use 2.0.0-p195@community --create
+    Using /Users/sparrow/.rvm/gems/ruby-2.0.0-p195 with gemset community]]>
+  </script>  
+  <h3>Installing Rails</h3>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    gem install rails --version 4.0.0.rc1]]>
   </script>
-  <div id="community-installing-bundler" class="slide">
-    <h3>Installing bundler</h3>
-    <script type="syntaxhighlighter" class="brush: bash">
-      <![CDATA[
-      gem install bundler]]>
-    </script>
-  </div>
-  <div id="community-installing-rails" class="slide">
-    <h3>Installing Rails</h3>
-    <script type="syntaxhighlighter" class="brush: bash">
-      <![CDATA[
-      gem install rails]]>
-    </script>
-  </div>
-  <div id="community-creating-app" class="slide">
-    <h3>Creating rails app</h3>
-    <script type="syntaxhighlighter" class="brush: bash">
-      <![CDATA[
-      rails new community]]>
-    </script>
-  </div>
-  <div id="community-goto-working-dir" class="slide">
-    <h3>Goto working directory</h3>
-    <script type="syntaxhighlighter" class="brush: bash">
-      <![CDATA[
-      cd community]]>
-    </script>
-  </div>
-  <div id="community-goto-working-dir" class="slide">
-    <h3>Add .rvmrc</h3>
-    <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[
-      # file community/.rvmrc
+</section><section id="creating-application" class="slide">
+  <h2>Creating rails application</h2>
+  <h3>Rails new</h3>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    rails new community
+    create  
+    create README.rdoc
+    create Rakefile
+    create config.ru
+    create .gitignore
+    create Gemfile
+    create app
+    create app/assets/javascripts/application.js
+    create app/assets/stylesheets/application.css
+    create app/controllers/application_controller.rb
+    ...
+    create vendor/assets/stylesheets
+    create vendor/assets/stylesheets/.keep
+    run bundle install
+    ]]>
+  </script>
+  <h3>Goto directory</h3>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    cd community
+    ]]>
+  </script>
+  <h3>Add .rvmrc</h3>
+  .rvmrc
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    rvm use 2.0.0-p195@community --create
+    ]]>
+  </script>
+</section><section id="directories-structure" class="slide">
+  <h2>Directories structure</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>File/Folder</th>
+        <th>Purpose</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>app/</td>
+        <td>Contains the controllers, models, views, helpers, mailers and assets for your application. You'll focus on this folder for the remainder of this guide.</td>
+      </tr>
+      <tr>
+        <td>bin/</td>
+        <td>Contains the rails script that starts your app and can contain other scripts you use to deploy or run your application.</td>
+      </tr>
+      <tr>
+        <td>config/</td>
+        <td>Configure your application's runtime rules, routes, database, and more.  This is covered in more detail in <a href="configuring.html">Configuring Rails Applications</a>
+        </td>
+      </tr>
+      <tr>
+        <td>config.ru</td>
+        <td>Rack configuration for Rack based servers used to start the application.</td>
+      </tr>
+      <tr>
+        <td>db/</td>
+        <td>Contains your current database schema, as well as the database migrations.</td>
+      </tr>
+      <tr>
+        <td>Gemfile<br>Gemfile.lock</td>
+        <td>These files allow you to specify what gem dependencies are needed for your Rails application. These files are used by the Bundler gem. For more information about Bundler, see <a href="http://gembundler.com">the Bundler website</a></td>
+      </tr>
+      <tr>
+        <td>lib/</td>
+        <td>Extended modules for your application.</td>
+      </tr>
+      <tr>
+        <td>log/</td>
+        <td>Application log files.</td>
+      </tr>
+      <tr>
+        <td>public/</td>
+        <td>The only folder seen to the world as-is. Contains the static files and compiled assets.</td>
+      </tr>
+      <tr>
+        <td>Rakefile</td>
+        <td>This file locates and loads tasks that can be run from the command line. The task definitions are defined throughout the components of Rails. Rather than changing Rakefile, you should add your own tasks by adding files to the lib/tasks directory of your application.</td>
+      </tr>
+      <tr>
+        <td>README.rdoc</td>
+        <td>This is a brief instruction manual for your application. You should edit this file to tell others what your application does, how to set it up, and so on.</td>
+      </tr>
+      <tr>
+        <td>test/</td>
+        <td>Unit tests, fixtures, and other test apparatus. These are covered in <a href="testing.html">Testing Rails Applications</a></td>
+      </tr>
+      <tr>
+        <td>tmp/</td>
+        <td>Temporary files (like cache, pid and session files)</td>
+      </tr>
+      <tr>
+        <td>vendor/</td>
+        <td>A place for all third-party code. In a typical Rails application, this includes Ruby Gems and the Rails source code (if you optionally install it into your project).</td>
+      </tr>
+    </tbody>
+  </table>
+</section><section id="gemfile" class="slide">
+  <h2>Gemfile</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    source 'https://rubygems.org'
 
-      rvm use 1.9.3-head@community --create]]>
-    </script>
+    # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+    gem 'rails', '4.0.0.rc1'
+
+    # Use sqlite3 as the database for Active Record
+    gem 'sqlite3'
+
+    # Use SCSS for stylesheets
+    gem 'sass-rails', '~> 4.0.0.rc1'
+
+    # Use Uglifier as compressor for JavaScript assets
+    gem 'uglifier', '>= 1.3.0'
+
+    # Use CoffeeScript for .js.coffee assets and views
+    gem 'coffee-rails', '~> 4.0.0'
+
+    # See https://github.com/sstephenson/execjs#readme for more supported runtimes
+    # gem 'therubyracer', platforms: :ruby
+
+    # Use jquery as the JavaScript library
+    gem 'jquery-rails'
+
+    # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
+    gem 'turbolinks'
+
+    # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
+    gem 'jbuilder', '~> 1.0.1'
+
+    group :doc do
+      # bundle exec rake doc:rails generates the API under doc/api.
+      gem 'sdoc', require: false
+    end
+
+    # Use ActiveModel has_secure_password
+    # gem 'bcrypt-ruby', '~> 3.0.0'
+
+    # Use unicorn as the app server
+    # gem 'unicorn'
+
+    # Use Capistrano for deployment
+    # gem 'capistrano', group: :development
+
+    # Use debugger
+    # gem 'debugger', group: [:development, :test]
+    ]]>
+  </script>
+</section><section id="database-config" class="slide">
+  <h2>Database config</h2>
+  config/database.yml
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    # SQLite version 3.x
+    #   gem install sqlite3
+    #
+    #   Ensure the SQLite 3 gem is defined in your Gemfile
+    #   gem 'sqlite3'
+    development:
+      adapter: sqlite3
+      database: db/development.sqlite3
+      pool: 5
+      timeout: 5000
+
+    # Warning: The database defined as "test" will be erased and
+    # re-generated from your development database when you run "rake".
+    # Do not set this db to the same as development or production.
+    test:
+      adapter: sqlite3
+      database: db/test.sqlite3
+      pool: 5
+      timeout: 5000
+
+    production:
+      adapter: sqlite3
+      database: db/production.sqlite3
+      pool: 5
+      timeout: 5000
+    ]]>
+  </script>
+  MySQL
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    development:
+      adapter: mysql2
+      encoding: utf8
+      database: community_development
+      username: root
+      password:
+      socket: /tmp/mysql.sock
+    ]]>
+  </script>
+  Postgresql
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    development:
+      adapter: postgresql
+      encoding: unicode
+      database: community_development
+      username: root
+      password:
+    ]]>
+  </script>
+</section><section id="creating-database" class="slide">
+  <h2>Creating the Database</h2>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+      rake db:create
+    ]]>
+  </script>
+  <div id="starting-up-web-server" class="slide">
+    <h2>Starting up the Web Server</h2>
+    <script type="syntaxhighlighter" class="brush: bash">
+      <![CDATA[
+        rails server
+        
+        => Booting WEBrick
+        => Rails 4.0.0.rc1 application starting in development on http://0.0.0.0:3000
+        => Run `rails server -h` for more startup options
+        => Ctrl-C to shutdown server
+        [2013-06-09 15:07:13] INFO  WEBrick 1.3.1
+        [2013-06-09 15:07:13] INFO  ruby 2.0.0 (2013-05-14) [x86_64-darwin11.4.2]
+        [2013-06-09 15:07:13] INFO  WEBrick::HTTPServer#start: pid=71367 port=3000
+      ]]>
+    </script>  
   </div>
 </section><section id="generate-post-scaffold" class="slide">
   <h2>Generate scaffold</h2>
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[
-    rails generate scaffold Post title:string text:text 
+    rails generate scaffold Post title:string text:text
+    
       invoke  active_record
-      create    db/migrate/20130204151754_create_posts.rb
+      create    db/migrate/20130609121432_create_posts.rb
       create    app/models/post.rb
       invoke    test_unit
-      create      test/unit/post_test.rb
+      create      test/models/post_test.rb
       create      test/fixtures/posts.yml
       invoke  resource_route
        route    resources :posts
-      invoke  scaffold_controller
+      invoke  jbuilder_scaffold_controller
       create    app/controllers/posts_controller.rb
       invoke    erb
       create      app/views/posts
@@ -83,21 +290,27 @@
       create      app/views/posts/new.html.erb
       create      app/views/posts/_form.html.erb
       invoke    test_unit
-      create      test/functional/posts_controller_test.rb
+      create      test/controllers/posts_controller_test.rb
       invoke    helper
       create      app/helpers/posts_helper.rb
       invoke      test_unit
-      create        test/unit/helpers/posts_helper_test.rb
+      create        test/helpers/posts_helper_test.rb
+      invoke    jbuilder
+       exist      app/views/posts
+      create      app/views/posts/index.json.jbuilder
+      create      app/views/posts/show.json.jbuilder
       invoke  assets
       invoke    coffee
       create      app/assets/javascripts/posts.js.coffee
       invoke    scss
       create      app/assets/stylesheets/posts.css.scss
       invoke  scss
-      create    app/assets/stylesheets/scaffolds.css.scss]]>
+      create    app/assets/stylesheets/scaffolds.css.scss  
+    ]]>
   </script>
 </section><section id="migrations" class="slide">
   <h2>Migrations</h2>
+  db/migrate/20130609121432_create_posts.rb
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
     class CreatePosts < ActiveRecord::Migration
@@ -109,161 +322,637 @@
           t.timestamps
         end
       end
-    end]]>
+    end
+    ]]>
   </script>
-  <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
-    rake db:migrate]]>
-  </script>
-  <h4>Read <a href="http://guides.rubyonrails.org/migrations.html" target="_blank">a Guide to Active Record Migrations</a></h4>
-</section><section id="generate-blog-scaffold" class="slide">
-  <h3>Generate Blog scaffold</h3>
-  <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
-    rails generate scaffold Blog title:string description:text]]>
-  </script>
-  <div id="add-blog-id-to-post" class="slide">
-    <h3>Add blog_id field to posts</h3>
-    <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
-      rails generate migration add_blog_id_to_posts blog_id:integer
-        invoke  active_record
-        create    db/migrate/20130204155420_add_blog_id_to_posts.rb]]>
-    </script>
-    <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      #file db/migrate/20130204155420_add_blog_id_to_posts.rb
-
-      class AddBlogIdToPosts < ActiveRecord::Migration
-        def change
-          add_column :posts, :blog_id, :integer
-        end
-      end]]>
-    </script>
-  </div>
-  <div id="add-blog-id-to-post-run-migrations" class="slide">
-    Don't forget to run migrations
+  <div id="run-migrations" class="slide">
+    <h3>Run migration</h3>
     <script type="syntaxhighlighter" class="brush: bash">
       <![CDATA[
-      rake db:migrate]]>
+      rake db:migrate
+
+      == CreatePosts: migrating ====================================================
+      -- create_table(:posts)
+         -> 0.0020s
+      == CreatePosts: migrated (0.0021s) ===========================================
+      ]]>
     </script>
   </div>
-</section><section id="associations" class="slide">
-  <h2>Active Record Associations</h2>
-  <h4>Read <a href="http://guides.rubyonrails.org/association_basics.html" target="_blank">a Guide to Active Record Associations</a> and <a href="http://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html" target="_blank">Ruby on Rails API doc <i>ActiveRecord::Associations::ClassMethods</i></a></h4>
-  <div id="belongs-to" class="slide">
-    <h3>The belongs_to association</h3>
-    Singular associations (one-to-one)
-    <script type="syntaxhighlighter" class="brush: ruby">
+</section><section id="db-schema" class="slide">
+  <h2>DB schema</h2>
+  db/schema.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
-      class Post < ActiveRecord::Base
-        belongs_to :blog
+    ActiveRecord::Schema.define(version: 20130609121432) do
+
+      create_table "posts", force: true do |t|
+        t.string   "title"
+        t.text     "text"
+        t.datetime "created_at"
+        t.datetime "updated_at"
       end
+
+    end
     ]]>
-    </script>
-    <h4>Read <a href="http://guides.rubyonrails.org/association_basics.html#the-belongs_to-association" target="_blank">a Guide to the belongs_to association</a></h4>
-  </div>
-  <div id="has-many" class="slide">
-    <h3>The has_many association</h3>
-    Collection associations (one-to-many)
-    <script type="syntaxhighlighter" class="brush: ruby">
+  </script>
+</section><section id="routes" class="slide">
+  <h2>Routes</h2>
+  config/routes.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
-      class Blog < ActiveRecord::Base
-        has_many :posts
-      end
+    Community::Application.routes.draw do
+      resources :posts
+    end
     ]]>
-    </script>
-    <h4>Read <a href="http://guides.rubyonrails.org/association_basics.html#the-has_many-association" target="_blank">a Guide to the has_many association</a></h4>
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    rake routes
+
+        Prefix  Verb   URI Pattern               Controller#Action
+        posts   GET    /posts(.:format)          posts#index
+                POST   /posts(.:format)          posts#create
+     new_post   GET    /posts/new(.:format)      posts#new
+    edit_post   GET    /posts/:id/edit(.:format) posts#edit
+         post   GET    /posts/:id(.:format)      posts#show
+                PATCH  /posts/:id(.:format)      posts#update
+                PUT    /posts/:id(.:format)      posts#update
+                DELETE /posts/:id(.:format)      posts#destroy
+    ]]>
+  </script>
+</section><section id="models" class="slide">
+  <h2>Models</h2>
+  app/models/post.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class Post < ActiveRecord::Base
+    end
+    ]]>
+  </script>
+</section><section id="controllers" class="slide">
+  <h2>Controllers</h2>
+  app/controllers/posts_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class PostsController < ApplicationController
+      before_action :set_post, only: [:show, :edit, :update, :destroy]
+
+      # GET /posts
+      # GET /posts.json
+      def index
+        @posts = Post.all
+      end
+
+      # GET /posts/1
+      # GET /posts/1.json
+      def show
+      end
+
+      # GET /posts/new
+      def new
+        @post = Post.new
+      end
+
+      # GET /posts/1/edit
+      def edit
+      end
+
+      # POST /posts
+      # POST /posts.json
+      def create
+        @post = Post.new(post_params)
+
+        respond_to do |format|
+          if @post.save
+            format.html { redirect_to @post, notice: 'Post was successfully created.' }
+            format.json { render action: 'show', status: :created, location: @post }
+          else
+            format.html { render action: 'new' }
+            format.json { render json: @post.errors, status: :unprocessable_entity }
+          end
+        end
+      end
+
+      # PATCH/PUT /posts/1
+      # PATCH/PUT /posts/1.json
+      def update
+        respond_to do |format|
+          if @post.update(post_params)
+            format.html { redirect_to @post, notice: 'Post was successfully updated.' }
+            format.json { head :no_content }
+          else
+            format.html { render action: 'edit' }
+            format.json { render json: @post.errors, status: :unprocessable_entity }
+          end
+        end
+      end
+
+      # DELETE /posts/1
+      # DELETE /posts/1.json
+      def destroy
+        @post.destroy
+        respond_to do |format|
+          format.html { redirect_to posts_url }
+          format.json { head :no_content }
+        end
+      end
+
+      private
+        # Use callbacks to share common setup or constraints between actions.
+        def set_post
+          @post = Post.find(params[:id])
+        end
+
+        # Never trust parameters from the scary internet, only allow the white list through.
+        def post_params
+          params.require(:post).permit(:title, :text)
+        end
+    end
+    ]]>
+  </script>
+</section><section id="listing-posts" class="slide">
+  <h2>Listing posts</h2>
+
+  GET localhost:3000/posts
+  <div class="html-example">
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Text</th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr>
+            <td>Facebook’s New Colocation And Image Recognition Patents Tease The Future Of Sharing </td>
+            <td>Facebook’s empire was built on photo tags and sharing, but it’s a grueling process many neglect. Luckily, new Facebook patents give it tech to continuously capture video whenever your camera is open, rank and surface the best images, and auto-tag them with people, places, and businesses. They tease a future where pattern, facial, and audio recognition identify what you’re seeing for easy sharing.</td>
+            <td><a href="/posts/1">Show</a></td>
+            <td><a href="/posts/1/edit">Edit</a></td>
+            <td><a data-confirm="Are you sure?" data-method="delete" href="/posts/1" rel="nofollow">Destroy</a></td>
+          </tr>
+      </tbody>
+    </table>
+    <br>
+    <a href="/posts/new">New Post</a>
   </div>
-</section><section id="associations-console-example" class="slide">
-  <h2>Active Record belongs_to and has_many associations</h2>
-  <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
-    blog = Blog.create(title: 'Ruby programming')
-    post = Post.create(blog_id: blog.id, title: 'Variables and oblects')
-  ]]>
-  </script>
-  <h4>Get blog object use <i>'belongs_to :blog'</i> association in Post model</h4>
-  <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
-    post.blog
-    Blog Load (0.6ms)  SELECT "blogs".* FROM "blogs" WHERE "blogs"."id" = 1 LIMIT 1
-    #<Blog id: 1, title: "Ruby programming", description: nil, created_at: "2013-02-10 10:19:14", updated_at: "2013-02-10 10:19:14">
-  ]]>
-  </script>
-  <h4>Get posts collection use <i>'has_many :posts'</i> association in Blog model</h4>
-  <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
-    blog.posts
-    Post Load (0.4ms)  SELECT "posts".* FROM "posts" WHERE "posts"."blog_id" = 1
-    [#<Post id: 1, title: "Variables and oblects", text: nil, created_at: "2013-02-10 10:22:29", updated_at: "2013-02-10 10:22:29", blog_id: 1>]
-  ]]>
-  </script>
-</section><section id="associations-auto-generated-methods-for-belongs-to" class="slide">
-  <h2>Auto-generated methods for belongs_to association</h2>
-  <h4>Read <a href="http://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html#label-Auto-generated+methods" target="_blank">Ruby on Rails API doc <i>ActiveRecord::Associations::ClassMethods</i></a> 'Auto-generated methods' section</h4>
 
-  <h4>Assign blog use <i>'belongs_to :blog'</i> association in Post model</h4>
-  <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
-    post.blog = blog
-    post.save
-    (0.3ms)  BEGIN
-    (0.7ms)  UPDATE "posts" SET "blog_id" = 1, "updated_at" = '2013-02-10 11:17:47.647136' WHERE "posts"."id" = 1
-    (0.7ms)  COMMIT
-    => true
-  ]]>
+  GET localhost:3000/posts.json
+  <script type="syntaxhighlighter" class="brush: javascript">
+    <![CDATA[
+    [{"title":"Facebook’s New Colocation And Image Recognition Patents Tease The Future Of Sharing ","text":"Facebook’s empire was built on photo tags and sharing, but it’s a grueling process many neglect. Luckily, new Facebook patents give it tech to continuously capture video whenever your camera is open, rank and surface the best images, and auto-tag them with people, places, and businesses. They tease a future where pattern, facial, and audio recognition identify what you’re seeing for easy sharing.","url":"http://localhost:3000/posts/1.json"}]
+    ]]>
   </script>
 
-  <h4>Build blog use <i>'belongs_to :blog'</i> association in Post model</h4>
-  <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
-    post.build_blog(title: 'Ruby on Rails')
-    => #<Blog id: nil, title: "Ruby on Rails", description: nil, created_at: nil, updated_at: nil>
-    post.save
-    (0.2ms)  BEGIN
-    SQL (0.6ms)  INSERT INTO "blogs" ("created_at", "description", "title", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["created_at", Sun, 10 Feb 2013 11:19:16 UTC +00:00], ["description", nil], ["title", "Ruby on Rails"], ["updated_at", Sun, 10 Feb 2013 11:19:16 UTC +00:00]]
-    (0.5ms)  UPDATE "posts" SET "blog_id" = 2, "updated_at" = '2013-02-10 11:19:16.754270' WHERE "posts"."id" = 1
-    (58.5ms)  COMMIT
-    => true
-  ]]>
+  app/controllers/posts_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class PostsController < ApplicationController
+      ...
+      # GET /posts
+      # GET /posts.json
+      def index
+        @posts = Post.all
+      end
+      ...
+    ]]>
   </script>
 
-  <h4>Create blog use <i>'belongs_to :blog'</i> association in Post model</h4>
-  <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
-    post.create_blog(title: 'Sinatra')
-    (0.2ms)  BEGIN
-    SQL (0.5ms)  INSERT INTO "blogs" ("created_at", "description", "title", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["created_at", Sun, 10 Feb 2013 11:47:46 UTC +00:00], ["description", nil], ["title", "Sinatra"], ["updated_at", Sun, 10 Feb 2013 11:47:46 UTC +00:00]]
-    (57.3ms)  COMMIT
-    => #<Blog id: 3, title: "Sinatra", description: nil, created_at: "2013-02-10 11:47:46", updated_at: "2013-02-10 11:47:46">
-  ]]>
-  </script>
-</section><section id="associations-auto-generated-methods-for-has-many" class="slide">
-  <h2>Auto-generated methods for has_many association</h2>
+  app/views/posts/index.html.erb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    <h1>Listing posts</h1>
 
-  <h4>Build post use <i>'has_many :posts'</i> association in Blog model</h4>
-  <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
-    blog.posts.build(title: 'Ruby classes')
-    => #<Post id: nil, title: "Ruby classes", text: nil, created_at: nil, updated_at: nil, blog_id: 1> 
-    blog.save
-    (0.2ms)  BEGIN
-    SQL (0.6ms)  INSERT INTO "posts" ("blog_id", "created_at", "text", "title", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["blog_id", 1], ["created_at", Sun, 10 Feb 2013 12:06:24 UTC +00:00], ["text", nil], ["title", "Ruby classes"], ["updated_at", Sun, 10 Feb 2013 12:06:24 UTC +00:00]]
-    (52.6ms)  COMMIT
-    => true
-  ]]>
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Text</th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        &lt;% @posts.each do |post| %>
+          <tr>
+            <td>&lt;%= post.title %&gt;</td>
+            <td>&lt;%= post.text %&gt;</td>
+            <td>&lt;%= link_to 'Show', post %&gt;</td>
+            <td>&lt;%= link_to 'Edit', edit_post_path(post) %&gt;</td>
+            <td>&lt;%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %&gt;</td>
+          </tr>
+        &lt;% end %&gt;
+      </tbody>
+    </table>
+
+    <br>
+
+    &lt;%= link_to 'New Post', new_post_path %&gt;
+    ]]>
   </script>
 
-  <h4>Create post use <i>'has_many :posts'</i> association in Blog model</h4>
-  <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
-    blog.posts.create(title: 'Modules in Ruby')
-    (0.2ms)  BEGIN
-    SQL (0.5ms)  INSERT INTO "posts" ("blog_id", "created_at", "text", "title", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["blog_id", 1], ["created_at", Sun, 10 Feb 2013 19:44:53 UTC +00:00], ["text", nil], ["title", "Modules in Ruby"], ["updated_at", Sun, 10 Feb 2013 19:44:53 UTC +00:00]]
-    (51.8ms)  COMMIT
-    => #<Post id: 3, title: "Modules in Ruby", text: nil, created_at: "2013-02-10 19:44:53", updated_at: "2013-02-10 19:44:53", blog_id: 1>
-  ]]>
+  app/views/posts/index.json.jbuilder
+  <script type="syntaxhighlighter" class="brush: ruby">
+    json.array!(@posts) do |post|
+      json.extract! post, :title, :text
+      json.url post_url(post, format: :json)
+    end
+  </script>
+</section><section id="new-post" class="slide">
+  <h2>New post</h2>
+
+  GET localhost:3000/posts/new
+  <div class="html-example">
+    <form accept-charset="UTF-8" action="/posts" class="new_post" id="new_post" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="n4Djzu/hPGSd5oMdGdfJ3sqePMR+E/1fs2679AMHLE0=" /></div>
+      <div class="field">
+        <label for="post_title">Title</label>
+        <input id="post_title" name="post[title]" type="text" />
+      </div>
+      <div class="field">
+        <label for="post_text">Text</label>
+        <textarea id="post_text" name="post[text]"></textarea>
+      </div>
+      <div class="actions">
+        <input name="commit" type="submit" value="Create Post" />
+      </div>
+    </form>
+    <a href="/posts">Back</a>
+  </div>
+
+  app/controllers/posts_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class PostsController < ApplicationController
+      ...
+      # GET /posts/new
+      def new
+        @post = Post.new
+      end
+      ...
+    ]]>
+  </script>
+
+  app/views/posts/index.html.erb 
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    <h1>New post</h1>
+
+    &lt;%= render 'form' %&gt;
+
+    &lt;%= link_to 'Back', posts_path %&gt;
+    ]]>
+  </script>
+
+  app/views/posts/_form.html.erb 
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    &lt;%= form_for(@post) do |f| %&gt;
+      &lt;% if @post.errors.any? %&gt;
+        <div id="error_explanation">
+          <h2>&lt;%= pluralize(@post.errors.count, "error") %&gt; prohibited this post from being saved:</h2>
+          <ul>
+          &lt;% @post.errors.full_messages.each do |msg| %&gt;
+            <li>&lt;%= msg %&gt;</li>
+          &lt;% end %&gt;
+          </ul>
+        </div>
+      &lt;% end %&gt;
+
+      <div class="field">
+        &lt;%= f.label :title %&gt;<br>
+        &lt;%= f.text_field :title %&gt;
+      </div>
+      <div class="field">
+        &lt;%= f.label :text %&gt;<br>
+        &lt;%= f.text_area :text %&gt;
+      </div>
+      <div class="actions">
+        &lt;%= f.submit %&gt;
+      </div>
+    &lt;% end %&gt;
+    ]]>
+  </script>
+</section><section id="create-post" class="slide">
+  <h2>Create post</h2>
+  app/controllers/posts_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class PostsController < ApplicationController
+      ...
+      # POST /posts
+      # POST /posts.json
+      def create
+        @post = Post.new(post_params)
+
+        respond_to do |format|
+          if @post.save
+            format.html { redirect_to @post, notice: 'Post was successfully created.' }
+            format.json { render action: 'show', status: :created, location: @post }
+          else
+            format.html { render action: 'new' }
+            format.json { render json: @post.errors, status: :unprocessable_entity }
+          end
+        end
+      end
+      ...
+    end
+    ]]>
+  </script>
+</section><section id="show-post" class="slide">
+  <h2>Show post</h2>
+
+  GET localhost:3000/posts/1
+  <div class="html-example">
+    <p id="notice">Post was successfully created.</p>
+    <p>
+      <strong>Title:</strong>
+      Facebook’s New Colocation And Image Recognition Patents Tease The Future Of Sharing 
+    </p>
+    <p>
+      <strong>Text:</strong>
+      Facebook’s empire was built on photo tags and sharing, but it’s a grueling process many neglect. Luckily, new Facebook patents give it tech to continuously capture video whenever your camera is open, rank and surface the best images, and auto-tag them with people, places, and businesses. They tease a future where pattern, facial, and audio recognition identify what you’re seeing for easy sharing.
+    </p>
+    <a href="/posts/1/edit">Edit</a> |
+    <a href="/posts">Back</a>
+  </div>
+
+  GET localhost:3000/posts/1.json
+  <div class="html-example">
+    {"title":"Facebook’s New Colocation And Image Recognition Patents Tease The Future Of Sharing ","text":"Facebook’s empire was built on photo tags and sharing, but it’s a grueling process many neglect. Luckily, new Facebook patents give it tech to continuously capture video whenever your camera is open, rank and surface the best images, and auto-tag them with people, places, and businesses. They tease a future where pattern, facial, and audio recognition identify what you’re seeing for easy sharing.","created_at":"2013-06-09T17:07:29.179Z","updated_at":"2013-06-09T17:07:29.179Z"}
+  </div>
+
+  app/controllers/posts_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class PostsController < ApplicationController
+      ...
+      # GET /posts/1
+      # GET /posts/1.json
+      def show
+      end
+      ...
+    end
+    ]]>
+  </script>
+
+  app/views/posts/show.html.erb 
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    <p id="notice">&lt;%= notice %&gt;</p>
+
+    <p>
+      <strong>Title:</strong>
+      &lt;%= @post.title %&gt;
+    </p>
+
+    <p>
+      <strong>Text:</strong>
+      &lt;%= @post.text %&gt;
+    </p>
+
+    &lt;%= link_to 'Edit', edit_post_path(@post) %&gt; |
+    &lt;%= link_to 'Back', posts_path %&gt;
+    ]]>
+  </script>
+
+  app/views/posts/show.json.jbuilder
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    json.extract! @post, :title, :text, :created_at, :updated_at
+    ]]>
+  </script>
+</section><section id="edit-post" class="slide">
+  <h2>Edit post</h2>
+  GET localhost:3000/posts/1/edit
+  <div class="html-example">
+    <form accept-charset="UTF-8" action="/posts/1" class="edit_post" id="edit_post_1" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="_method" type="hidden" value="patch" /><input name="authenticity_token" type="hidden" value="n4Djzu/hPGSd5oMdGdfJ3sqePMR+E/1fs2679AMHLE0=" /></div>
+      <div class="field">
+        <label for="post_title">Title</label>
+        <input id="post_title" name="post[title]" type="text" value="Facebook’s New Colocation And Image Recognition Patents Tease The Future Of Sharing " />
+      </div>
+      <div class="field">
+        <label for="post_text">Text</label>
+        <textarea id="post_text" name="post[text]">Facebook’s empire was built on photo tags and sharing, but it’s a grueling process many neglect. Luckily, new Facebook patents give it tech to continuously capture video whenever your camera is open, rank and surface the best images, and auto-tag them with people, places, and businesses. They tease a future where pattern, facial, and audio recognition identify what you’re seeing for easy sharing.</textarea>
+      </div>
+      <div class="actions">
+        <input name="commit" type="submit" value="Update Post" />
+      </div>
+    </form>
+    <a href="/posts/1">Show</a> |
+    <a href="/posts">Back</a>
+  </div>
+
+  app/controllers/posts_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class PostsController < ApplicationController
+      ...
+      # GET /posts/1/edit
+      def edit
+      end
+      ...
+    end
+    ]]>
+  </script>
+
+  app/views/posts/edit.html.erb 
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    &lt;%= render 'form' %&gt;
+    &lt;%= link_to 'Show', @post %&gt; |
+    &lt;%= link_to 'Back', posts_path %&gt;
+    ]]>
+  </script>
+
+  app/views/posts/_form.html.erb 
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    &lt;%= form_for(@post) do |f| %&gt;
+      &lt;% if @post.errors.any? %&gt;
+        <div id="error_explanation">
+          <h2>&lt;%= pluralize(@post.errors.count, "error") %&gt; prohibited this post from being saved:</h2>
+          <ul>
+          &lt;% @post.errors.full_messages.each do |msg| %&gt;
+            <li>&lt;%= msg %&gt;</li>
+          &lt;% end %&gt;
+          </ul>
+        </div>
+      &lt;% end %&gt;
+      <div class="field">
+        &lt;%= f.label :title %&gt;<br>
+        &lt;%= f.text_field :title %&gt;
+      </div>
+      <div class="field">
+        &lt;%= f.label :text %&gt;<br>
+        &lt;%= f.text_area :text %&gt;
+      </div>
+      <div class="actions">
+        &lt;%= f.submit %&gt;
+      </div>
+    &lt;% end %&gt;
+    ]]>
+  </script>
+</section><section id="update-post" class="slide">
+  <h2>Update post</h2>
+  app/controllers/posts_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class PostsController < ApplicationController
+      ...
+      # PATCH/PUT /posts/1
+      # PATCH/PUT /posts/1.json
+      def update
+        respond_to do |format|
+          if @post.update(post_params)
+            format.html { redirect_to @post, notice: 'Post was successfully updated.' }
+            format.json { head :no_content }
+          else
+            format.html { render action: 'edit' }
+            format.json { render json: @post.errors, status: :unprocessable_entity }
+          end
+        end
+      end
+      ...
+    end
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    <form accept-charset="UTF-8" 
+      action="/posts/1" class="edit_post" id="edit_post_1" 
+      method="post">
+
+      <div style="margin:0;padding:0;display:inline">
+        <input name="utf8" type="hidden" value="&#x2713;" />
+        <input name="_method" type="hidden" value="patch" />
+        <input name="authenticity_token" type="hidden" value="n4Djzu/hPGSd5oMdGdfJ3sqePMR+E/1fs2679AMHLE0=" />
+      </div>
+    ]]>
+  </script>
+
+</section><section id="delete-post" class="slide">
+  <h2>Delete post</h2>
+  app/controllers/posts_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class PostsController < ApplicationController
+      ...
+      # DELETE /posts/1
+      # DELETE /posts/1.json
+      def destroy
+        @post.destroy
+        respond_to do |format|
+          format.html { redirect_to posts_url }
+          format.json { head :no_content }
+        end
+      end
+      ...
+    end
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    <form accept-charset="UTF-8" 
+      action="/posts/1" class="edit_post" id="edit_post_1" 
+      method="post">
+      
+      <input name="_method" type="hidden" value="delete" />
+    ]]>
+  </script>
+
+</section><section id="layout" class="slide">
+  <h2>Layout</h2>
+  app/views/layouts/application.html.erb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Community</title>
+      &lt;%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %&gt;
+      &lt;%= javascript_include_tag "application", "data-turbolinks-track" => true %&gt;
+      &lt;%= csrf_meta_tags %&gt;
+    </head>
+    <body>
+
+      &lt;%= yield %&gt;
+
+    </body>
+    </html>
+    ]]>
+  </script>
+</section><section id="application-controller" class="slide">
+  <h2>ApplicationController</h2>
+  app/controllers/application_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class ApplicationController < ActionController::Base
+      # Prevent CSRF attacks by raising an exception.
+      # For APIs, you may want to use :null_session instead.
+      protect_from_forgery with: :exception
+    end
+    ]]>
+  </script>
+</section><section id="helpers" class="slide">
+  <h2>Helpers</h2>
+  app/helpers/posts_helper.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    module PostsHelper
+      def post_short_description(post)
+        if post.text.length > 10 
+          post.text.slice(0, 7).concat("...")
+        end
+      end
+    end
+    ]]>
+  </script>
+</section><section id="assets" class="slide">
+  <h2>Assets</h2>
+  app/assets/javascripts/application.js
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    //= require jquery
+    //= require jquery_ujs
+    //= require turbolinks
+    //= require_tree .
+    ]]>
+  </script>
+  app/assets/stylesheets/application.css
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    /*
+     *= require_self
+     *= require_tree .
+     */
+    ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Community</title>
+          <link data-turbolinks-track="true" href="/assets/application.css?body=1" media="all" rel="stylesheet" />
+          <link data-turbolinks-track="true" href="/assets/posts.css?body=1" media="all" rel="stylesheet" />
+          <link data-turbolinks-track="true" href="/assets/scaffolds.css?body=1" media="all" rel="stylesheet" />
+          &lt;script data-turbolinks-track="true" src="/assets/jquery.js?body=1"&gt;&lt;/script&gt;
+          &lt;script data-turbolinks-track="true" src="/assets/jquery_ujs.js?body=1"&gt;&lt;/script&gt;
+          &lt;script data-turbolinks-track="true" src="/assets/turbolinks.js?body=1"&gt;&lt;/script&gt;
+          &lt;script data-turbolinks-track="true" src="/assets/posts.js?body=1"&gt;&lt;/script&gt;
+          &lt;script data-turbolinks-track="true" src="/assets/application.js?body=1"&gt;&lt;/script&gt;
+          <meta content="authenticity_token" name="csrf-param" />
+          <meta content="n4Djzu/hPGSd5oMdGdfJ3sqePMR+E/1fs2679AMHLE0=" name="csrf-token" />
+        </head>
+        <body>
+        ...
+    ]]>
   </script>
 </section><!-- End slides. -->
 

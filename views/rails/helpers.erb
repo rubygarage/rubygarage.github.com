@@ -1,0 +1,15 @@
+<section id="helpers" class="slide">
+  <h2>Helpers</h2>
+  app/helpers/posts_helper.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    module PostsHelper
+      def post_short_description(post)
+        if post.text.length > 10 
+          post.text.slice(0, 7).concat("...")
+        end
+      end
+    end
+    ]]>
+  </script>
+</section>
