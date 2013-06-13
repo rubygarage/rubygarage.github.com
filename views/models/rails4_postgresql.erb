@@ -3,10 +3,10 @@
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[    
       class AddEmailsToUser < ActiveRecord::Migration
-  def change
-    add_column :users, :emails, :string, array: true, default: '{}'
-  end
-end
+        def change
+          add_column :users, :emails, :string, array: true, default: '{}'
+        end
+      end
     ]]>
   </script>
 
@@ -19,28 +19,28 @@ end
     <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[    
       class AddHstoreExtension < ActiveRecord::Migration
-  def up
-    execute 'CREATE EXTENSION hstore'
-  end
+        def up
+          execute 'CREATE EXTENSION hstore'
+        end
 
-  def down
-    execute 'DROP EXTENSION hstore'
-  end
-end
+        def down
+          execute 'DROP EXTENSION hstore'
+        end
+      end
     ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[    
       class AddPreferencesToUsers < ActiveRecord::Migration
-  def up
-    add_column :users, :preferences, :hstore
-  end
+        def up
+          add_column :users, :preferences, :hstore
+        end
 
-  def down
-    remove_column :users, :preferences
-  end
-end
+        def down
+          remove_column :users, :preferences
+        end
+      end
     ]]>
   </script>
 
