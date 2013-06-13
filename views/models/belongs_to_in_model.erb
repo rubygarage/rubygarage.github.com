@@ -2,7 +2,7 @@
   <h2>belongs_to</h2>
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[      
-      rails g model Post text:text user_id:integer
+      rails g model Post title:string text:text title:string user_id:integer
       invoke  active_record
       create    db/migrate/20130602183603_create_posts.rb
       create    app/models/post.rb
@@ -21,7 +21,7 @@
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[      
     class Post < ActiveRecord::Base
-      attr_accessible :text, :user_id
+      attr_accessible :text, :user_id, :title
 
       belongs_to :user
     end    
@@ -30,19 +30,19 @@
 
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[      
-2.0.0-p0 :003 >user = User.first
-  User Load (0.4ms)  SELECT "users".* FROM "users" LIMIT 1
- => #<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false> 
+    2.0.0-p0 :003 >user = User.first
+      User Load (0.4ms)  SELECT "users".* FROM "users" LIMIT 1
+     => #<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false> 
     ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[    
-    2.0.0-p0 :004 > post = Post.create(text: "I'm so happy today", user_id: user.id) 
-       (0.1ms)  begin transaction
-      SQL (29.2ms)  INSERT INTO "posts" ("created_at", "text", "updated_at", "user_id") VALUES (?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 18:43:10 UTC +00:00], ["text", "I'm so happy today"], ["updated_at", Sun, 02 Jun 2013 18:43:10 UTC +00:00], ["user_id", 1]]
+    2.0.0-p0 :004 > post = Post.create(text: "I'm so happy today", title: "So happy", user_id: user.id) 
+      (0.1ms)  begin transaction
+      SQL (29.2ms)  INSERT INTO "posts" ("created_at", "text", "title", "updated_at", "user_id") VALUES (?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 18:43:10 UTC +00:00], ["text", "I'm so happy today"], "So happy", ["updated_at", Sun, 02 Jun 2013 18:43:10 UTC +00:00], ["user_id", 1]]
        (126.0ms)  commit transaction
-     => #<Post id: 1, text: "I'm so happy today", user_id: 1, created_at: "2013-06-02 18:43:10", updated_at: "2013-06-02 18:43:10"> 
+     => #<Post id: 1, text: "I'm so happy today", title: "So happy", user_id: 1, created_at: "2013-06-02 18:43:10", updated_at: "2013-06-02 18:43:10"> 
         ]]>
   </script>
 

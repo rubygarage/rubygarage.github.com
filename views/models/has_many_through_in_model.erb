@@ -2,27 +2,27 @@
   <h2>has_many :through</h2>
 <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[    
-    class Physician < ActiveRecord::Base
-      has_many :appointments
-      has_many :patients, through: :appointments
+    class User < ActiveRecord::Base
+      has_many :memberships
+      has_many :groups, through: :memberships
     end      
     ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[    
-    class Appointment < ActiveRecord::Base
-      belongs_to :physician
-      belongs_to :patient
+    class Membership < ActiveRecord::Base
+      belongs_to :users
+      belongs_to :groups
     end      
     ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[    
-    class Patient < ActiveRecord::Base
-      has_many :appointments
-      has_many :physicians, through: :appointments
+    class Group < ActiveRecord::Base
+      has_many :memberships
+      has_many :users, through: :memberships
     end    
     ]]>
   </script>

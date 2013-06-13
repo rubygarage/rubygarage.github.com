@@ -39,6 +39,19 @@
 
     <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
+    class AddReceiveNewsToUsers < ActiveRecord::Migration
+      def up
+        change_table :users do |t|
+          t.boolean  :receive_news, default: true
+        end
+
+        User.update_all ["receive_news = ?", true]
+      end
+
+      def down
+        remove_column :users, :receive_news
+      end
+    end
     
   ]]>
   </script>

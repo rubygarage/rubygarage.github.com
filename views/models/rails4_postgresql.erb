@@ -16,20 +16,6 @@
     ]]>
   </script>
 
-    <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[    
-      class AddHstoreExtension < ActiveRecord::Migration
-        def up
-          execute 'CREATE EXTENSION hstore'
-        end
-
-        def down
-          execute 'DROP EXTENSION hstore'
-        end
-      end
-    ]]>
-  </script>
-
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[    
       class AddPreferencesToUsers < ActiveRecord::Migration
@@ -39,6 +25,20 @@
 
         def down
           remove_column :users, :preferences
+        end
+      end
+    ]]>
+  </script>
+
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+      class AddHstoreExtension < ActiveRecord::Migration
+        def up
+          execute 'CREATE EXTENSION hstore'
+        end
+
+        def down
+          execute 'DROP EXTENSION hstore'
         end
       end
     ]]>

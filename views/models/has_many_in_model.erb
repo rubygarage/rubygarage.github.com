@@ -13,8 +13,8 @@
    <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[    
     2.0.0-p0 :001 > user.posts
-    Post Load (0.2ms)  SELECT "posts".* FROM "posts" WHERE "posts"."user_id" = 1
-    => [#<Post id: 1, text: "I'm so happy today", user_id: 1, created_at: "2013-06-02 18:43:10", updated_at: "2013-06-02 18:43:10">] 
+      Post Load (0.2ms)  SELECT "posts".* FROM "posts" WHERE "posts"."user_id" = 1
+     => [#<Post id: 1, text: "I'm so happy today", title: "So happy", user_id: 1, created_at: "2013-06-02 18:43:10", updated_at: "2013-06-02 18:43:10">] 
     ]]>
   </script>
 
@@ -22,17 +22,17 @@
     <![CDATA[    
     2.0.0-p0 :001 > user.posts
     2.0.0-p0 :003 > user.posts << Post.new(text: "I'm waiting")
-   (0.2ms)  begin transaction
-  SQL (32.4ms)  INSERT INTO "posts" ("created_at", "text", "updated_at", "user_id") VALUES (?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 19:01:45 UTC +00:00], ["text", "I'm waiting"], ["updated_at", Sun, 02 Jun 2013 19:01:45 UTC +00:00], ["user_id", 1]]
-   (203.0ms)  commit transaction
- => [#<Post id: 1, text: "I'm so happy today", user_id: 1, created_at: "2013-06-02 18:43:10", updated_at: "2013-06-02 18:43:10">, #<Post id: 2, text: "I'm waiting", user_id: 1, created_at: "2013-06-02 19:01:45", updated_at: "2013-06-02 19:01:45">] 
+     (0.2ms)  begin transaction
+     SQL (32.4ms)  INSERT INTO "posts" ("created_at", "text",  "updated_at", "user_id") VALUES (?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 19:01:45 UTC +00:00], ["text", "I'm waiting"], ["updated_at", Sun, 02 Jun 2013 19:01:45 UTC +00:00], ["user_id", 1]]
+     (203.0ms)  commit transaction
+     => [#<Post id: 1, text: "I'm so happy today", title: "So happy", user_id: 1, created_at: "2013-06-02 18:43:10", updated_at: "2013-06-02 18:43:10">, #<Post id: 2, text: "I'm waiting", title: nil, user_id: 1, created_at: "2013-06-02 19:01:45", updated_at: "2013-06-02 19:01:45">] 
     ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[    
     2.0.0-p0 :005 > user.posts
- => [#<Post id: 1, text: "I'm so happy today", user_id: 1, created_at: "2013-06-02 18:43:10", updated_at: "2013-06-02 18:43:10">, #<Post id: 2, text: "I'm waiting", user_id: 1, created_at: "2013-06-02 19:01:45", updated_at: "2013-06-02 19:01:45">] 
+     => [#<Post id: 1, text: "I'm so happy today", title: "So happy", user_id: 1, created_at: "2013-06-02 18:43:10", updated_at: "2013-06-02 18:43:10">, #<Post id: 2, text: "I'm waiting", title: nil, user_id: 1, created_at: "2013-06-02 19:01:45", updated_at: "2013-06-02 19:01:45">] 
 
     ]]>
   </script>
@@ -40,26 +40,18 @@
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[    
     2.0.0-p0 :006 > user.posts.count
-   (0.2ms)  SELECT COUNT(*) FROM "posts" WHERE "posts"."user_id" = 1
-   => 2 
+      (0.2ms)  SELECT COUNT(*) FROM "posts" WHERE "posts"."user_id" = 1
+     => 2 
     ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[    
-    2.0.0-p0 :006 > user.posts.count
-   (0.2ms)  SELECT COUNT(*) FROM "posts" WHERE "posts"."user_id" = 1
-   => 2 
-    ]]>
-  </script>
-
-  <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[    
-    user.posts.create(text: "New post")
-   (0.2ms)  begin transaction
-  SQL (0.8ms)  INSERT INTO "posts" ("created_at", "text", "updated_at", "user_id") VALUES (?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 19:06:35 UTC +00:00], ["text", "New post"], ["updated_at", Sun, 02 Jun 2013 19:06:35 UTC +00:00], ["user_id", 1]]
-   (140.8ms)  commit transaction
- => #<Post id: 3, text: "New post", user_id: 1, created_at: "2013-06-02 19:06:35", updated_at: "2013-06-02 19:06:35"> 
+    2.0.0-p0 :007 > user.posts.create(text: "New post")
+      (0.2ms)  begin transaction
+      SQL (0.8ms)  INSERT INTO "posts" ("created_at", "text","updated_at", "user_id") VALUES (?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 19:06:35 UTC +00:00], ["text", "New post"], ["updated_at", Sun, 02 Jun 2013 19:06:35 UTC +00:00], ["user_id", 1]]
+      (140.8ms)  commit transaction
+     => #<Post id: 3, text: "New post", title: nil, user_id: 1, created_at: "2013-06-02 19:06:35", updated_at: "2013-06-02 19:06:35"> 
     ]]>
   </script>
 
