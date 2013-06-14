@@ -1,0 +1,19 @@
+<section id="habtm-in-model" class="slide">
+  <h2>has_and_belongs_to_many</h2>
+   <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class User < ActiveRecord::Base
+      has_and_belongs_to_many :categories
+    end      
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[    
+    class Category < ActiveRecord::Base
+      has_and_belongs_to_many :users
+    end    
+    ]]>
+  </script>
+
+</section>

@@ -1,0 +1,13 @@
+<section id="exclusion" class="slide">
+  <h2>Exclusion</h2>
+<script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class User < ActiveRecord::Base
+      ...
+      validates :first_name, exclusion: { in:  %w(Admin BadDog),  message:  "First name %{value} is invalid." }
+    end
+    
+    ]]>
+  </script>
+
+</section>

@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/> 
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <title>Models</title>
+  <link href="assets/models.css" rel="stylesheet" />
+  <script src="assets/models.js"></script>
+</head>
+
+<body class="deck-container">
+
+<!-- Begin slides. Just make elements with a class of slide. -->
+<section id="topic" class="slide">
+  <div class="vcenter">
+    <h1>Models</h1>
+  </div>
+</section>
+<section id="models-generation" class="slide">
+  <h2>Models generation</h2>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+     rails generate model User first_name:string email:string password:string
+      invoke  active_record
+      create    db/migrate/20130602143931_create_users.rb
+      create    app/models/user.rb
+      invoke    test_unit
+      create      test/unit/user_test.rb
+      create      test/fixtures/users.yml
+
+    ]]>
+  </script>
+</section><section id="migrations" class="slide">
+  <h2>Migrations</h2>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class CreateUsers < ActiveRecord::Migration
+        def change
+          create_table :users do |t|
+            t.string :first_name
+            t.string :email
+            t.string :password
+
+            t.timestamps
+          end
+        end
+      end
+    ]]>
+  </script>
+  
+</section><section id="add-migrations" class="slide">
+  <h2>Add Migrations</h2>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+    rails g migration AddLastNameToUsers last_name:string
+      invoke  active_record
+      create    db/migrate/20130602150030_add_last_name_to_users.rb
+
+  ]]>
+  </script>
+
+   <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      YYYYMMDDHHMMSS UTC timestamp
+      20130602150030_add_last_name_to_users.rb
+  ]]>
+  </script>
+
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    # in file /db/migrate/20130602150030_add_last_name_to_users.rb 
+     class AddLastNameToUsers < ActiveRecord::Migration
+      def change
+        add_column :users, :last_name, :string
+      end
+    end
+  ]]>
+  </script>
+
+    <script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+    rails g migration AddReceiveNewsToUsers receive_news:boolean
+      invoke  active_record
+      create    db/migrate/20130602151002_add_receive_news_to_users.rb
+  ]]>
+  </script>
+
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class AddReceiveNewsToUsers < ActiveRecord::Migration
+      def up
+        change_table :users do |t|
+          t.boolean  :receive_news, default: true
+        end
+
+        User.update_all ["receive_news = ?", true]
+      end
+
+      def down
+        remove_column :users, :receive_news
+      end
+    end
+    
+  ]]>
+  </script>
+
+  
+</section><section id="column-types" class="slide">
+  <h2>Column Types</h2>
+ 
+</section><section id="db-changing-methods" class="slide">
+  <h2>Methods for db structure changing</h2>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    create_table
+    change_table
+    drop_table
+    add_column
+    change_column
+    rename_column
+    remove_column
+    add_index
+    remove_index      
+    ]]>
+  </script>
+
+</section>
+ 
+<section id="column-types" class="slide">
+  <h2>Column Types</h2>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    :binary
+    :boolean
+    :date
+    :datetime
+    :decimal
+    :float
+    :integer
+    :primary_key
+    :string
+    :text
+    :time
+    :timestamp
+    :references     
+    ]]>
+  </script>
+ 
+</section><section id="rails4-and-postgreql" class="slide">
+  <h2>Rails 4 and PostgresSQL</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+      class AddEmailsToUser < ActiveRecord::Migration
+        def change
+          add_column :users, :emails, :string, array: true, default: '{}'
+        end
+      end
+    ]]>
+  </script>
+
+   <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[    
+     rails g migration AddPreferencesToUsers preferences:hstore
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+      class AddPreferencesToUsers < ActiveRecord::Migration
+        def up
+          add_column :users, :preferences, :hstore
+        end
+
+        def down
+          remove_column :users, :preferences
+        end
+      end
+    ]]>
+  </script>
+
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+      class AddHstoreExtension < ActiveRecord::Migration
+        def up
+          execute 'CREATE EXTENSION hstore'
+        end
+
+        def down
+          execute 'DROP EXTENSION hstore'
+        end
+      end
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+      :inet
+      :cidr
+      :macaddr
+      :int4range
+      :int8range
+      :json
+    ]]>
+  </script>
+
+  
+</section><section id="change-table" class="slide">
+  <h2>Change Table</h2>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+      change_table :users do |t|
+        t.remove :last_name, :first_name
+        t.string :phone_number
+        t.index  :phone_number
+      end
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+      remove_column :users, :last_name
+      remove_column :users, :first_name
+      add_column :users, :phone_number, :string
+      add_index :users, :phone_number
+      rename_column :users, :last_name, :surname
+    ]]>
+  </script>
+ 
+</section><section id="example-migration" class="slide">
+  <h2>Example Migration</h2>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class ExampleMigration < ActiveRecord::Migration
+      def up
+        create_table :users do |t|
+          t.references :group
+        end
+        #add a foreign key
+        execute <<-SQL
+          ALTER TABLE products
+            ADD CONSTRAINT fk_users_groups
+            FOREIGN KEY (group_id)
+            REFERENCES groups(id)
+        SQL
+        add_column :users, :home_page_url, :string
+        rename_column :users, :email, :email_address
+      end
+     
+      def down
+        rename_column :users, :email_address, :email
+        remove_column :users, :home_page_url
+        execute <<-SQL
+          ALTER TABLE users
+            DROP FOREIGN KEY fk_users_groups
+        SQL
+        drop_table :users
+      end
+    end
+    ]]>
+  </script>
+ 
+</section><section id="running-migrations" class="slide">
+  <h2>Migrations</h2>
+  <h3>Running Migrations</h3>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[    
+        rake db:migrate     
+    ]]>
+  </script>
+
+  <h3>Rollback Migrations</h3>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[    
+        rake db:rollback
+        rake db:rollback STEP=3
+        rake db:migrate:down VERSION=20111214211749  
+        rake db:migrate:up VERSION=20111214211749
+        rake db:migrate:redo STEP=3
+           
+    ]]>
+  </script>
+
+ 
+</section><section id="topic-active-recors-objects" class="slide">
+  <div class="vcenter">
+    <h1>Models</h1>
+    <h2>ActiveRecord Objects</h2>
+  </div>
+</section>
+<section id="activerecord-functions" class="slide">
+  <h2>ActiveRecord functions</h2>
+  <h3>new, all, save</h3>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[    
+    rails c  # rails console 
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[    
+    2.0.0-p0 :003 > user = User.new
+     => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false >]   
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[    
+    2.0.0-p0 :001 > user.first_name = "Anna"
+     => "Anna" 
+    2.0.0-p0 :003 > user.email = "happy_ann@gmail.com"
+     => "happy_ann@gmail.com" 
+    2.0.0-p0 :004 > user.save
+      (0.2ms)  begin transaction
+      SQL (29.9ms)  INSERT INTO "users" ("created_at", "email", "first_name", "last_name", "password", "receive_news", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 17:23:02 UTC +00:00], ["email", "happy_ann@gmail.com"], ["first_name", "Anna"], ["last_name", nil], ["password", nil], ["receive_news", false], ["updated_at", Sun, 02 Jun 2013 17:23:02 UTC +00:00]]
+       (125.5ms)  commit transaction
+     => true 
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[    
+    2.0.0-p0 :005 > User.all
+      User Load (0.4ms)  SELECT "users".* FROM "users" 
+     => [#<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>]  
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[    
+    2.0.0-p0 :006 > User.all.class
+      User Load (0.6ms)  SELECT "users".* FROM "users" 
+     => Array 
+    
+    ]]>
+  </script>
+  <h3>Rails 4</h3>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[    
+    2.0.0-p0 :007 > User.all.class
+      User Load (0.6ms)  SELECT "users".* FROM "users" 
+     => ActiveRecord::Relation     
+    ]]>
+  </script>
+ 
+</section><section id="activerecord-functions-part2" class="slide">
+  <h2>ActiveRecord Functions</h2>
+  <h3>Acreate, count, update_attributes</h3>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[  
+    2.0.0-p0 :001 > new_user = User.create(first_name: "Ivan", email: "ivan.melechov@gmail.com")
+      (0.1ms)  begin transaction
+      SQL (3.0ms)  INSERT INTO "users" ("created_at", "email", "first_name", "last_name", "password", "receive_news", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 18:18:40 UTC +00:00], ["email", "ivan.melechov@gmail.com"], ["first_name", "Ivan"], ["last_name", nil], ["password", nil], ["receive_news", false], ["updated_at", Sun, 02 Jun 2013 18:18:40 UTC +00:00]]
+      (125.0ms)  commit transaction
+     => #<User id: 2, first_name: "Ivan", email: "ivan.melechov@gmail.com", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:18:40", last_name: nil, receive_news: false> 
+  ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+   <![CDATA[  
+   2.0.0-p0 :002 > User.count
+     (0.2ms)  SELECT COUNT(*) FROM "users" 
+    => 2      
+   ]]>
+  </script>
+
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[  
+    2.0.0-p0 :003 > new_user.update_attributes(first_name: "Van'ka", email: "vanka@yandex.ru")
+     (0.2ms)  begin transaction
+     (0.5ms)  UPDATE "users" SET "first_name" = 'Van''ka', "email" = 'vanka@yandex.ru', "updated_at" = '2013-06-02 18:20:00.982364' WHERE "users"."id" = 2
+     (124.8ms)  commit transaction
+     => true 
+        
+    ]]>
+  </script> 
+</section><section id="topic-associations" class="slide">
+  <div class="vcenter">
+    <h1>Models</h1>
+    <h2>Associations</h2>
+  </div>
+</section>
+<section id="belongs-to" class="slide">
+  <h2>belongs_to</h2>
+  <img src="/assets/belongs_to.png" />
+</section>
+<section id="belongs-to-in-model" class="slide">
+  <h2>belongs_to</h2>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[      
+      rails g model Post title:string text:text title:string user_id:integer
+      invoke  active_record
+      create    db/migrate/20130602183603_create_posts.rb
+      create    app/models/post.rb
+      invoke    test_unit
+      create      test/unit/post_test.rb
+      create      test/fixtures/posts.yml  
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[      
+      rake db:migrate 
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[      
+    class Post < ActiveRecord::Base
+      attr_accessible :text, :user_id, :title
+
+      belongs_to :user
+    end    
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[      
+    2.0.0-p0 :003 >user = User.first
+      User Load (0.4ms)  SELECT "users".* FROM "users" LIMIT 1
+     => #<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false> 
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[    
+    2.0.0-p0 :004 > post = Post.create(text: "I'm so happy today", title: "So happy", user_id: user.id) 
+      (0.1ms)  begin transaction
+      SQL (29.2ms)  INSERT INTO "posts" ("created_at", "text", "title", "updated_at", "user_id") VALUES (?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 18:43:10 UTC +00:00], ["text", "I'm so happy today"], "So happy", ["updated_at", Sun, 02 Jun 2013 18:43:10 UTC +00:00], ["user_id", 1]]
+       (126.0ms)  commit transaction
+     => #<Post id: 1, text: "I'm so happy today", title: "So happy", user_id: 1, created_at: "2013-06-02 18:43:10", updated_at: "2013-06-02 18:43:10"> 
+        ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[   
+    2.0.0-p0 :005 > post.user
+      User Load (0.4ms)  SELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1
+     => #<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>  
+    ]]>
+  </script>
+</section>
+<section id="has-many" class="slide">
+  <h2>has_many</h2>
+  <img src="/assets/has_many.png" />
+</section>
+<section id="has_many_in_model" class="slide">
+  <h2>has_many</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class User < ActiveRecord::Base
+      attr_accessible :email, :first_name, :password
+
+      has_many :posts
+    end     
+    ]]>
+  </script>
+
+   <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[    
+    2.0.0-p0 :001 > user.posts
+      Post Load (0.2ms)  SELECT "posts".* FROM "posts" WHERE "posts"."user_id" = 1
+     => [#<Post id: 1, text: "I'm so happy today", title: "So happy", user_id: 1, created_at: "2013-06-02 18:43:10", updated_at: "2013-06-02 18:43:10">] 
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[    
+    2.0.0-p0 :001 > user.posts
+    2.0.0-p0 :003 > user.posts << Post.new(text: "I'm waiting")
+     (0.2ms)  begin transaction
+     SQL (32.4ms)  INSERT INTO "posts" ("created_at", "text",  "updated_at", "user_id") VALUES (?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 19:01:45 UTC +00:00], ["text", "I'm waiting"], ["updated_at", Sun, 02 Jun 2013 19:01:45 UTC +00:00], ["user_id", 1]]
+     (203.0ms)  commit transaction
+     => [#<Post id: 1, text: "I'm so happy today", title: "So happy", user_id: 1, created_at: "2013-06-02 18:43:10", updated_at: "2013-06-02 18:43:10">, #<Post id: 2, text: "I'm waiting", title: nil, user_id: 1, created_at: "2013-06-02 19:01:45", updated_at: "2013-06-02 19:01:45">] 
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[    
+    2.0.0-p0 :005 > user.posts
+     => [#<Post id: 1, text: "I'm so happy today", title: "So happy", user_id: 1, created_at: "2013-06-02 18:43:10", updated_at: "2013-06-02 18:43:10">, #<Post id: 2, text: "I'm waiting", title: nil, user_id: 1, created_at: "2013-06-02 19:01:45", updated_at: "2013-06-02 19:01:45">] 
+
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[    
+    2.0.0-p0 :006 > user.posts.count
+      (0.2ms)  SELECT COUNT(*) FROM "posts" WHERE "posts"."user_id" = 1
+     => 2 
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[    
+    2.0.0-p0 :007 > user.posts.create(text: "New post")
+      (0.2ms)  begin transaction
+      SQL (0.8ms)  INSERT INTO "posts" ("created_at", "text","updated_at", "user_id") VALUES (?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 19:06:35 UTC +00:00], ["text", "New post"], ["updated_at", Sun, 02 Jun 2013 19:06:35 UTC +00:00], ["user_id", 1]]
+      (140.8ms)  commit transaction
+     => #<Post id: 3, text: "New post", title: nil, user_id: 1, created_at: "2013-06-02 19:06:35", updated_at: "2013-06-02 19:06:35"> 
+    ]]>
+  </script>
+
+</section><section id="has-one" class="slide">
+  <h2>has_one</h2>
+  <img src="/assets/has_one.png" />
+</section>
+<section id="has-one-in-model" class="slide">
+  <h2>has_one</h2>
+
+<script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[      
+    rails g model PostInfo post_id:integer views:integer likes:integer rating:integer
+    ]]>
+  </script>
+
+
+ <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[      
+    class PostInfo < ActiveRecord::Base
+      belongs_to :post
+    end
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[      
+    class Post < ActiveRecord::Base
+      belongs_to :user
+      has_one :post_info
+    end
+    ]]>
+  </script>
+
+   <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[      
+    2.0.0-p0 :001 > post = Post.first
+      Post Load (0.1ms)  SELECT "posts".* FROM "posts" LIMIT 1
+     => #<Post id: 1, text: "I'm so happy today", user_id: 1, created_at: "2013-06-02 18:43:10", updated_at: "2013-06-02 18:43:10"> 
+
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[      
+    2.0.0-p0 :002 > PostInfo.create(post_id: post.id, views: 40, likes: 5, rating: 10)
+      (0.1ms)  begin transaction
+      SQL (5.1ms)  INSERT INTO "post_infos" ("created_at", "likes", "post_id", "rating", "updated_at", "views") VALUES (?, ?, ?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 19:37:08 UTC +00:00], ["likes", 5], ["post_id", 1], ["rating", 10], ["updated_at", Sun, 02 Jun 2013 19:37:08 UTC +00:00], ["views", 40]]
+      (116.2ms)  commit transaction
+     => #<PostInfo id: 2, post_id: 1, views: 40, likes: 5, rating: 10, created_at: "2013-06-02 19:37:08", updated_at: "2013-06-02 19:37:08"> 
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[      
+    2.0.0-p0 :003 > post.post_info
+      PostInfo Load (0.2ms)  SELECT "post_infos".* FROM "post_infos" WHERE "post_infos"."post_id" = 1 LIMIT 1
+     => #<PostInfo id: 1, post_id: 1, views: 40, likes: 5, rating: 10, created_at: "2013-06-02 19:34:38", updated_at: "2013-06-02 19:34:38"> 
+    ]]>
+  </script>
+</section>
+<section id="has-many-through" class="slide">
+  <h2>has_many :through</h2>
+  <img src="/assets/has_many_through.png" />
+</section>
+<section id="has-many-through-in-model" class="slide">
+  <h2>has_many :through</h2>
+<script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class User < ActiveRecord::Base
+      has_many :memberships
+      has_many :groups, through: :memberships
+    end      
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class Membership < ActiveRecord::Base
+      belongs_to :users
+      belongs_to :groups
+    end      
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class Group < ActiveRecord::Base
+      has_many :memberships
+      has_many :users, through: :memberships
+    end    
+    ]]>
+  </script>
+</section><section id="has-one-through" class="slide">
+  <h2>has_one :through</h2>
+  <img src="/assets/has_one_through.png" />
+</section>
+<section id="has-one-through-in-model" class="slide">
+  <h2>has_one :through</h2>
+<script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class User < ActiveRecord::Base
+      has_one :account
+      has_one :account_history, through:  :account
+    end      
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class Account < ActiveRecord::Base
+      belongs_to :user
+      has_one :account_history
+    end      
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[    
+    class AccountHistory < ActiveRecord::Base
+      belongs_to :account
+    end    
+    ]]>
+  </script>
+</section><section id="has_and_belongs_to_many" class="slide">
+  <h2>has_and_belongs_to_many</h2>
+  <img src="/assets/has_and_belongs_to_many.png" />
+</section>
+<section id="habtm-in-model" class="slide">
+  <h2>has_and_belongs_to_many</h2>
+   <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class User < ActiveRecord::Base
+      has_and_belongs_to_many :categories
+    end      
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[    
+    class Category < ActiveRecord::Base
+      has_and_belongs_to_many :users
+    end    
+    ]]>
+  </script>
+
+</section><section id="polymorphic" class="slide">
+  <h2>Polymorphic Associations</h2>
+  <img src="/assets/polymorphic.png" />
+</section>
+<section id="polymorphic-in-model" class="slide">
+  <h2>Polymorphic Assosiations</h2>
+<script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class Picture < ActiveRecord::Base
+      belongs_to :imageable, polymorphic: true
+    end      
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class User < ActiveRecord::Base
+      has_many :pictures, as: imageable
+    end     
+    ]]>
+  </script>
+
+ <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class Post < ActiveRecord::Base
+      has_many :pictures, as: imageable
+    end     
+    ]]>
+  </script>
+
+</section><section id="topic-custom-validations" class="slide">
+  <div class="vcenter">
+    <h1>Models</h1>
+    <h2>Validation Helpers</h2>
+  </div>
+</section>
+<section id="when-does-validation-happen" class="slide">
+  <h2>When Does Validations Happen?</h2>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    :create
+    :create!
+    :save
+    :save!
+    :update
+    :update_attributes
+    :update_attributes!
+    ]]>
+  </script>
+ 
+</section><section id="skipping-validations" class="slide">
+  <h2>Skiping Validations</h2>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[      
+    decrement!
+    decrement_counter
+    increment!
+    increment_counter
+    toggle!
+    touch
+    update_all
+    update_column
+    update_counters
+    save(validate: false)
+    ]]>
+  </script>
+ 
+</section><section id="valid-invalid" class="slide">
+  <h2>valid? and invalid?</h2>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[      
+    class User < ActiveRecord::Base
+      attr_accessible :email, :first_name, :password
+
+      has_many :posts
+      validates :email, presence: true
+    end
+    ]]>
+  </script>
+
+   <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[      
+    2.0.0-p0 :001 > User.new(email: "thebestemail@ua.fm").valid?
+     => true 
+    2.0.0-p0 :002 > User.new().valid?
+     => false 
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[      
+    2.0.0-p0 :007 > u = User.new
+     => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false> 
+    2.0.0-p0 :008 > u.errors
+     => #<ActiveModel::Errors:0x00000003001970 @base=#<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>, @messages={}> 
+    2.0.0-p0 :009 > u.valid?
+     => false 
+    2.0.0-p0 :010 > u.errors
+     => #<ActiveModel::Errors:0x00000003001970 @base=#<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>, @messages={:email=>["can't be blank"]}> 
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[      
+    2.0.0-p0 :011 > u = User.create
+       (0.2ms)  begin transaction
+       (0.1ms)  rollback transaction
+     => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false> 
+    2.0.0-p0 :012 > u.errors
+     => #<ActiveModel::Errors:0x00000003172db8 @base=#<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>, @messages={:email=>["can't be blank"]}> 
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[      
+    2.0.0-p0 :013 > u = User.new
+     => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false> 
+    2.0.0-p0 :014 > u.save
+       (0.2ms)  begin transaction
+       (0.1ms)  rollback transaction
+     => false 
+    2.0.0-p0 :015 > u.save!
+       (0.1ms)  begin transaction
+       (0.1ms)  rollback transaction
+    ActiveRecord::RecordInvalid: Validation failed: Email cant be blank
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[      
+    User.create
+   (0.1ms)  begin transaction
+   (0.1ms)  rollback transaction
+     => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false> 
+    2.0.0-p0 :018 > User.create!
+       (0.1ms)  begin transaction
+       (0.1ms)  rollback transaction
+    ActiveRecord::RecordInvalid: Validation failed: Email cant be blank
+    ]]>
+  </script>
+
+
+ 
+</section><section id="errors" class="slide">
+  <h2>errors[]</h2>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    2.0.0-p0 :019 > User.new.errors[:email].any?
+     => false 
+    2.0.0-p0 :020 > User.create.errors[:email].any?
+       (0.1ms)  begin transaction
+       (0.1ms)  rollback transaction
+     => true 
+    ]]>
+  </script>
+ 
+</section><section id="topic-validation-helpers" class="slide">
+  <div class="vcenter">
+    <h1>Models</h1>
+    <h2>Validation Helpers</h2>
+  </div>
+</section>
+<section id="presence" class="slide">
+  <h2>Presence</h2>
+<script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class User < ActiveRecord::Base
+      attr_accessible :email, :first_name, :password
+
+      has_many :posts
+      validates :email, :first_name, presence: true
+    end     
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    validates :field_name, :inclusion => { :in => [true, false] }. # for fields with boolean type
+    ]]>
+  </script>
+
+</section><section id="acceptance" class="slide">
+  <h2>Acceptance</h2>
+<script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[       
+    class User < ActiveRecord::Base  
+      ... 
+      validates :terms_of_service, acceptance: true  # get accept: 1
+    end   
+    ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[     
+    class User < ActiveRecord::Base   
+      ...
+      validates :terms_of_service, acceptance: { accept: 'yes' }  
+    end
+    ]]>
+  </script>
+  <p>Do not this validation on the both sides of the association it causes endless cycle.</p>
+
+</section><section id="confirmation" class="slide">
+  <h2>Confirmation</h2>
+<script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[       
+    class User < ActiveRecord::Base
+      ...
+      validates :email, :first_name, presence: true
+      validates :email, confirmation: true
+    end 
+    ]]>
+  </script>
+
+</section><section id="exclusion" class="slide">
+  <h2>Exclusion</h2>
+<script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class User < ActiveRecord::Base
+      ...
+      validates :first_name, exclusion: { in:  %w(Admin BadDog),  message:  "First name %{value} is invalid." }
+    end
+    
+    ]]>
+  </script>
+
+</section><section id="format" class="slide">
+  <h2>Format</h2>
+<script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class User < ActiveRecord::Base
+      ...
+      validates :email, :first_name, presence: true
+      validates :email, confirmation: true
+      validates :email, format: { with: /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/, :message => "Only emails allowed" }
+    end    
+    ]]>
+  </script>
+
+</section><section id="inclusion" class="slide">
+  <h2>Inclusion</h2>
+<script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class User < ActiveRecord::Base
+      ...
+      validates :interests, inclusion: { in: %w(reading cooking programming), message: "%{value} is not a valid value" }
+    end   
+    ]]>
+  </script>
+
+</section><section id="elength" class="slide">
+  <h2>Length</h2>
+<script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class User < ActiveRecord::Base
+      validates :first_name, length: { minimum: 2 }
+      validates :bio, length: { maximum: 500 }
+      validates :password, length: { in: 6..20 }
+      validates :registration_number, length:  { is: 6 }
+    end
+    ]]>
+  </script>
+
+<script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    validates :bio, :length => { :maximum => 1000,
+    :too_long => "%{count} characters is the maximum allowed" }
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[ 
+    :minimum – The attribute cannot have less than the specified length.
+    :maximum – The attribute cannot have more than the specified length.
+    :in (or :within) – The attribute length must be included in a given interval. The value for this option must be a range.
+    :is – The attribute length must be equal to the given value.
+    ]]>
+  </script>
+
+
+
+</section><section id="numericality" class="slide">
+  <h2>Numericality</h2>
+<script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class User < ActiveRecord::Base
+      ...
+      validates :points, numericality: true
+      validates :rate, numericality: { only_integer: true, greater_than: 5 }
+    end   
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    :greater_than 
+    :greater_than_or_equal_to 
+    :equal_to 
+    :less_than 
+    :less_than_or_equal_to 
+    :odd 
+    :even 
+    ]]>
+  </script>
+
+</section><section id="uniqueness" class="slide">
+  <h2>Uniqueness</h2>
+<script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class User < ActiveRecord::Base
+      ... 
+      validates :email, uniqueness: true
+    end
+    
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[  
+    class User < ActiveRecord::Base
+      ...  
+      validates :first_name, uniqueness: { scope: :year,  message: "should happen once per year" }
+    end
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[  
+    class User < ActiveRecord::Base
+      ...  
+      validates :name, uniqueness: { case_sensitive:  false }
+    end
+    ]]>
+  </script>
+
+</section><section id="validates-with" class="slide">
+  <h2>validates_with</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[ 
+    class Person < ActiveRecord::Base
+      validates_with GoodnessValidator
+    end
+     
+    class GoodnessValidator < ActiveModel::Validator
+      def validate(record)
+        if record.first_name == "Evil"
+          record.errors[:base] << "This person is evil"
+        end
+      end
+    end
+    ]]>
+  </script>
+
+   <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[ 
+    class User < ActiveRecord::Base
+      validates_with GoodnessValidator, :fields => [:first_name, :last_name]
+    end
+     
+    class GoodnessValidator < ActiveModel::Validator
+      def validate(record)
+        if options[:fields].any?{|field| record.send(field) == "Evil" }
+          record.errors[:base] << "This user is evil"
+        end
+      end
+    end
+    ]]>
+  </script>
+</section><section id="validate-each" class="slide">
+  <h2>validate_each</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[ 
+    class User < ActiveRecord::Base
+      validates_each :first_name, :last_name do |record, attr, value|
+        record.errors.add(attr, 'must start with upper case') if value =~ /\A[a-z]/
+      end
+    end
+    ]]>
+  </script>
+
+</section><section id="general-options" class="slide">
+  <h2>General options</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[ 
+      validates :bio, allow_nil: true
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[ 
+      validates :bio, allow_blank: true
+    ]]>
+  </script>
+
+  <p>:allow_nil and :allow_blank are ignored by :presence</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[ 
+    :message
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[ 
+    class User < ActiveRecord::Base
+      # it will be possible to update email with a duplicated value
+      validates :email, uniqueness: true, on: :create
+     
+      # it will be possible to create the record with a non-numerical age
+      validates :age, numericality: true, on: :update
+     
+      # the default (validates on both create and update)
+      validates :name, presence: true, on: :save
+    end
+    ]]>
+  </script>
+
+</section><section id="conditional-validations" class="slide">
+  <h2>Condional validations</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[ 
+      class User < ActiveRecord::Base
+        validates :card_number, presence: true, if: :paid_with_card?
+       
+        def paid_with_card?
+          payment_type == "card"
+        end
+      end
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[ 
+      validates :last_name, presence: true, if: "first_name.nil?"
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[ 
+      validates :password, confirmation: true, unless: Proc.new { |a| a.password.blank? }
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[ 
+      with_options if: :is_admin? do |admin|
+        admin.validates :password, length: { minimum: 10 }
+        admin.validates :email, presence: true
+      end
+    ]]>
+  </script>
+
+</section><section id="topic-custom-validations" class="slide">
+  <div class="vcenter">
+    <h1>Models</h1>
+    <h2>Validation Helpers</h2>
+  </div>
+</section>
+<section id="custom-validators" class="slide">
+  <h2>Custom Validators</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class MyValidator < ActiveModel::Validator
+      def validate(record)
+        unless record.first_name.starts_with? 'X'
+          record.errors[:first_name] << 'Need a name starting with X please!'
+        end
+      end
+    end
+     
+    class User
+      include ActiveModel::Validations
+      validates_with MyValidator
+    end
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class EmailValidator < ActiveModel::EachValidator
+      def validate_each(record, attribute, value)
+        unless value =~ /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
+          record.errors[attribute] << (options[:message] || "is not an email")
+        end
+      end
+    end
+     
+    class User < ActiveRecord::Base
+      validates :email, presence: true, email: true
+    end
+    ]]>
+  </script>
+
+</section><section id="custom-methods" class="slide">
+  <h2>Custom Methods</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class Invoice < ActiveRecord::Base
+      validate :expiration_date_cannot_be_in_the_past,
+        :discount_cannot_be_greater_than_total_value
+     
+      def expiration_date_cannot_be_in_the_past
+        if !expiration_date.blank? and expiration_date < Date.today
+          errors.add(:expiration_date, "can't be in the past")
+        end
+      end
+     
+      def discount_cannot_be_greater_than_total_value
+        if discount > total_value
+          errors.add(:discount, "can't be greater than total value")
+        end
+      end
+    end
+    ]]>
+  </script>
+
+</section><section id="validation-errors" class="slide">
+  <h2>Validation Errors</h2>
+  <h3>errors.add</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[ 
+    class User < ActiveRecord::Base
+      def a_method_used_for_validation_purposes
+        errors.add(:first_name, "cannot contain the characters !@#%*()_-+=")
+        # errors[:first_name] = "cannot contain the characters !@#%*()_-+="
+      end
+    end
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[ 
+    user = User.create(:first_name => "!@#")     
+    user.errors[:first_name] # => ["cannot contain the characters !@#%*()_-+="]
+    user.errors.full_messages  # => ["Name cannot contain the characters !@#%*()_-+="]
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[ 
+    class User < ActiveRecord::Base
+      def a_method_used_for_validation_purposes
+        errors[:base] << "This user is invalid because ..."
+      end
+    end
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[ 
+      errors.clear
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[ 
+      errors.size
+    ]]>
+  </script>
+
+</section><section id="topic-callbacks" class="slide">
+  <div class="vcenter">
+    <h1>Model</h1>
+    <h2>Callbacks</h2>
+  </div>
+</section>
+<section id="callback-registrations" class="slide">
+  <h2>Callback registrations</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[ 
+    class User < ActiveRecord::Base  
+      ... 
+      validates :login, :email, presence: true
+ 
+      before_validation :ensure_login_has_a_value
+
+      before_create do |user|
+        user.first_name = user.login.capitalize if user.first_name.blank?
+      end
+     
+      protected
+      
+      def ensure_login_has_a_value
+        if login.nil?
+          self.login = email unless email.blank?
+        end
+      end
+    end
+    ]]>
+  </script>
+</section><section id="availiable-callbacks" class="slide">
+  <h2>Availiable Callbacks</h2>
+  <h3>Creating an Object</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[     
+    before_validation
+    after_validation
+    before_save
+    around_save
+    before_create
+    around_create
+    after_create
+    after_save
+    ]]>
+  </script>
+  <h3>Updating an Object</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[      
+    before_validation
+    after_validation
+    before_save
+    around_save
+    before_update
+    around_update
+    after_update
+    after_save
+    ]]>
+  </script>
+  <h3>Destroying an Object</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[     
+    before_destroy
+    around_destroy
+    after_destroy
+    ]]>
+  </script>
+</section><section id="after-callbacks" class="slide">
+  <h2>After_find and after_initialize</h2>
+  <h3>Creating an Object</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[     
+    
+    decrement
+    decrement_counter
+    delete
+    delete_all
+    find_by_sql
+    increment
+    increment_counter
+    toggle
+    touch
+    update_column
+    update_all
+    update_counters
+
+    ]]>
+  </script>
+
+</section><section id="running-callbacks" class="slide">
+  <h2>Running Callbacks</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[         
+    create
+    create!
+    decrement!
+    destroy
+    destroy_all
+    increment!
+    save
+    save!
+    save(:validate => false)
+    toggle!
+    update
+    update_attribute
+    update_attributes
+    update_attributes!
+    valid?
+    ]]>
+  </script>
+  <h2>after_find</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+   <![CDATA[      
+    all
+    first
+    find
+    find_all_by_attribute
+    find_by_attribute
+    find_by_attribute!
+    last
+    ]]>
+  </script>
+</section><section id="skipping-callbacks" class="slide">
+  <h2>Skipping callbacks</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[        
+    decrement
+    decrement_counter
+    delete
+    delete_all
+    find_by_sql
+    increment
+    increment_counter
+    toggle
+    touch
+    update_column
+    update_all
+    update_counters
+    ]]>
+  </script>
+
+</section><section id="relational-callbacks" class="slide">
+  <h2>Realtional Callbacks</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[     
+    class User < ActiveRecord::Base
+      ...
+      has_many :posts, :dependent => :destroy
+    end
+ 
+    class Post < ActiveRecord::Base
+      ...
+      after_destroy :log_destroy_action
+     
+      def log_destroy_action
+        puts 'Post destroyed'
+      end
+    end     
+  ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[     
+    >> user = User.first
+    => #<User id: 1>
+    >> user.posts.create!
+    => #<Post id: 1, user_id: 1>
+    >> user.destroy
+    Post destroyed
+    => #<User id: 1>
+    ]]>
+  </script>
+</section><section id="conditional-callbacks" class="slide">
+  <h2>Conditional Callbacks</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[     
+    before_save :normalize_card_number, if: :paid_with_card?
+    before_save :normalize_card_number, if: "paid_with_card?"
+    before_save :normalize_card_number, if: Proc.new { |order| order.paid_with_card? }
+    after_create :send_email_to_user,   if: :user_wants_emails?, unless: Proc.new { |comment| comment.post.ignore_comments? }
+  ]]>
+  </script>
+</section><section id="callback-classes" class="slide">
+  <h2>Callback Classes</h2>
+  
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[     
+    class PictureFileCallbacks
+      def after_destroy(picture_file)
+        if File.exists?(picture_file.filepath)
+          File.delete(picture_file.filepath)
+        end
+      end
+    end
+  ]]>
+  </script>
+   <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[     
+    class PictureFile < ActiveRecord::Base
+      after_destroy PictureFileCallbacks.new
+    end
+  ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[     
+     class PictureFileCallbacks
+      def self.after_destroy(picture_file)
+        if File.exists?(picture_file.filepath)
+          File.delete(picture_file.filepath)
+        end
+      end
+    end
+  ]]>
+  </script>
+   <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[     
+     class PictureFile < ActiveRecord::Base
+      after_destroy PictureFileCallbacks
+    end
+  ]]>
+  </script>
+</section><section id="observers" class="slide">
+  <h2>Observers</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[ 
+    rails generate observer User
+    ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[ 
+    class UserObserver < ActiveRecord::Observer
+    end
+    ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[ 
+    class UserObserver < ActiveRecord::Observer
+      def after_create(model)
+        # код для рассылки подтверждений email...
+      end
+    end
+    ]]>
+  </script>
+  <h2>Observers Registrations</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[ 
+    config.active_record.observers = :user_observer
+    ]]>
+  </script>
+
+</section><section id="sharing-observers" class="slide">
+  <h2>Sharing Observers</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[ 
+    class MailerObserver < ActiveRecord::Observer
+      observe :registration, :user
+     
+      def after_create(model)
+        # code to send confirmation email...
+      end
+    end   
+    ]]>
+  </script>
+   <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[ 
+    config.active_record.observers = :mailer_observer
+    ]]>
+  </script>
+  
+
+</section>
+
+<!-- End slides. -->
+
+<!-- deck.navigation snippet -->
+<a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
+<a href="#" class="deck-next-link" title="Next">&#8594;</a>
+
+<!-- deck.status snippet -->
+<p class="deck-status">
+  <span class="deck-status-current"></span>
+  /
+  <span class="deck-status-total"></span>
+</p>
+
+<!-- deck.hash snippet -->
+<a href="." title="Permalink to this slide" class="deck-permalink">#</a>
+
+</body>
+</html>
