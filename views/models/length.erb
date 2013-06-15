@@ -1,0 +1,32 @@
+<section id="elength" class="slide">
+  <h2>Length</h2>
+<script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class User < ActiveRecord::Base
+      validates :first_name, length: { minimum: 2 }
+      validates :bio, length: { maximum: 500 }
+      validates :password, length: { in: 6..20 }
+      validates :registration_number, length:  { is: 6 }
+    end
+    ]]>
+  </script>
+
+<script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    validates :bio, :length => { :maximum => 1000,
+    :too_long => "%{count} characters is the maximum allowed" }
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[ 
+    :minimum – The attribute cannot have less than the specified length.
+    :maximum – The attribute cannot have more than the specified length.
+    :in (or :within) – The attribute length must be included in a given interval. The value for this option must be a range.
+    :is – The attribute length must be equal to the given value.
+    ]]>
+  </script>
+
+
+
+</section>

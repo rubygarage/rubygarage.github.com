@@ -1,0 +1,34 @@
+<section id="validates-with" class="slide">
+  <h2>validates_with</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[ 
+    class Person < ActiveRecord::Base
+      validates_with GoodnessValidator
+    end
+     
+    class GoodnessValidator < ActiveModel::Validator
+      def validate(record)
+        if record.first_name == "Evil"
+          record.errors[:base] << "This person is evil"
+        end
+      end
+    end
+    ]]>
+  </script>
+
+   <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[ 
+    class User < ActiveRecord::Base
+      validates_with GoodnessValidator, :fields => [:first_name, :last_name]
+    end
+     
+    class GoodnessValidator < ActiveModel::Validator
+      def validate(record)
+        if options[:fields].any?{|field| record.send(field) == "Evil" }
+          record.errors[:base] << "This user is evil"
+        end
+      end
+    end
+    ]]>
+  </script>
+</section>

@@ -1,0 +1,20 @@
+<section id="presence" class="slide">
+  <h2>Presence</h2>
+<script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class User < ActiveRecord::Base
+      attr_accessible :email, :first_name, :password
+
+      has_many :posts
+      validates :email, :first_name, presence: true
+    end     
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    validates :field_name, :inclusion => { :in => [true, false] }. # for fields with boolean type
+    ]]>
+  </script>
+
+</section>

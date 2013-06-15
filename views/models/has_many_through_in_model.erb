@@ -1,0 +1,29 @@
+<section id="has-many-through-in-model" class="slide">
+  <h2>has_many :through</h2>
+<script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class User < ActiveRecord::Base
+      has_many :memberships
+      has_many :groups, through: :memberships
+    end      
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class Membership < ActiveRecord::Base
+      belongs_to :users
+      belongs_to :groups
+    end      
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class Group < ActiveRecord::Base
+      has_many :memberships
+      has_many :users, through: :memberships
+    end    
+    ]]>
+  </script>
+</section>

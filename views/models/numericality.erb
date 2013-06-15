@@ -1,0 +1,25 @@
+<section id="numericality" class="slide">
+  <h2>Numericality</h2>
+<script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class User < ActiveRecord::Base
+      ...
+      validates :points, numericality: true
+      validates :rate, numericality: { only_integer: true, greater_than: 5 }
+    end   
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    :greater_than 
+    :greater_than_or_equal_to 
+    :equal_to 
+    :less_than 
+    :less_than_or_equal_to 
+    :odd 
+    :even 
+    ]]>
+  </script>
+
+</section>

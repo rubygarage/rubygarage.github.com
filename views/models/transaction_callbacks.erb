@@ -1,0 +1,31 @@
+<section id="transaction-callbacks" class="slide">
+  <h2>Transaction Callbacks</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[ 
+      PictureFile.transaction do
+        picture_file_1.destroy
+        picture_file_2.save!
+      end  
+    ]]>
+  </script>
+   <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[ 
+    class PictureFile < ActiveRecord::Base
+      attr_accessor :delete_file
+     
+      after_destroy do |picture_file|
+        picture_file.delete_file = picture_file.filepath
+      end
+     
+      after_commit do |picture_file|
+        if picture_file.delete_file && File.exist?(picture_file.delete_file)
+          File.delete(picture_file.delete_file)
+          picture_file.delete_file = nil
+        end
+      end
+    end
+    ]]>
+  </script>
+  
+
+</section>

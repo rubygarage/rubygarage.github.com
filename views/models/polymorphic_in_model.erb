@@ -1,0 +1,27 @@
+<section id="polymorphic-in-model" class="slide">
+  <h2>Polymorphic Assosiations</h2>
+<script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class Picture < ActiveRecord::Base
+      belongs_to :imageable, polymorphic: true
+    end      
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class User < ActiveRecord::Base
+      has_many :pictures, as: imageable
+    end     
+    ]]>
+  </script>
+
+ <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class Post < ActiveRecord::Base
+      has_many :pictures, as: imageable
+    end     
+    ]]>
+  </script>
+
+</section>

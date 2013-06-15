@@ -1,0 +1,12 @@
+<section id="inclusion" class="slide">
+  <h2>Inclusion</h2>
+<script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class User < ActiveRecord::Base
+      ...
+      validates :interests, inclusion: { in: %w(reading cooking programming), message: "%{value} is not a valid value" }
+    end   
+    ]]>
+  </script>
+
+</section>
