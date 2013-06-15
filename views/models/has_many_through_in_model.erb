@@ -1,29 +1,90 @@
 <section id="has-many-through-in-model" class="slide">
   <h2>has_many :through</h2>
-<script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[    
-    class User < ActiveRecord::Base
-      has_many :memberships
-      has_many :groups, through: :memberships
-    end      
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+      rails g model Blog title:string description:text
+      invoke  active_record
+      create    db/migrate/20130615195018_create_blogs.rb
+      create    app/models/blog.rb
+      invoke    test_unit
+      create      test/models/blog_test.rb
+      create      test/fixtures/blogs.yml
     ]]>
   </script>
 
-  <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[    
-    class Membership < ActiveRecord::Base
-      belongs_to :users
-      belongs_to :groups
-    end      
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+      rails g model Subscription user:belongs_to blog:belongs_to receive_news:boolean
+      invoke  active_record
+      create    db/migrate/20130615200154_create_subscriptions.rb
+      create    app/models/subscription.rb
+      invoke    test_unit
+      create      test/models/subscription_test.rb
+      create      test/fixtures/subscriptions.yml
     ]]>
   </script>
 
+  db/migrate/20130615195018_create_blogs.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[    
-    class Group < ActiveRecord::Base
-      has_many :memberships
-      has_many :users, through: :memberships
-    end    
+    <![CDATA[
+      class CreateBlogs < ActiveRecord::Migration
+        def change
+          create_table :blogs do |t|
+            t.string :title
+            t.text :description
+
+            t.timestamps
+          end
+        end
+      end
+    ]]>
+  </script>
+
+  db/migrate/20130615200154_create_subscriptions.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class CreateSubscriptions < ActiveRecord::Migration
+        def change
+          create_table :subscriptions do |t|
+            t.belongs_to :user, index: true
+            t.belongs_to :blog, index: true
+            t.boolean :receive_news, default: true
+
+            t.timestamps
+          end
+        end
+      end
+    ]]>
+  </script>
+
+  app/models/user.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class User < ActiveRecord::Base
+        has_many :posts
+        has_many :subscriptions
+        has_many :blogs, through: :subscriptions
+      end
+    ]]>
+  </script>
+
+  app/models/blog.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class Blog < ActiveRecord::Base
+        has_many :subscriptions
+        has_many :users, through: :subscriptions
+      end
+    ]]>
+  </script>
+
+  app/models/subscription.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class Subscription < ActiveRecord::Base
+        belongs_to :user
+        belongs_to :blog
+      end
     ]]>
   </script>
 </section>

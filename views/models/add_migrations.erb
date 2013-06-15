@@ -10,17 +10,16 @@
   ]]>
   </script>
 
-   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      YYYYMMDDHHMMSS UTC timestamp
-      20130602150030_add_last_name_to_users.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    YYYYMMDDHHMMSS UTC timestamp
+    20130602150030_add_last_name_to_users.rb
   ]]>
   </script>
 
-
+  db/migrate/20130602150030_add_last_name_to_users.rb 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-    # in file /db/migrate/20130602150030_add_last_name_to_users.rb 
+  <![CDATA[
      class AddLastNameToUsers < ActiveRecord::Migration
       def change
         add_column :users, :last_name, :string
@@ -29,7 +28,7 @@
   ]]>
   </script>
 
-    <script type="syntaxhighlighter" class="brush: bash">
+  <script type="syntaxhighlighter" class="brush: bash">
   <![CDATA[
     rails g migration AddReceiveNewsToUsers receive_news:boolean
       invoke  active_record
@@ -37,12 +36,25 @@
   ]]>
   </script>
 
-    <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
+  db/migrate/20130602151002_add_receive_news_to_users.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    class AddReceiveNewsToUsers < ActiveRecord::Migration
+      def change
+        add_column :users, :receive_news, :boolean
+      end
+    end
+  ]]>
+  </script>
+
+  db/migrate/20130602151002_add_receive_news_to_users.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
     class AddReceiveNewsToUsers < ActiveRecord::Migration
       def up
         change_table :users do |t|
-          t.boolean  :receive_news, default: true
+          t.boolean :receive_news, default: true
+          t.index :receive_news
         end
 
         User.update_all ["receive_news = ?", true]
@@ -52,9 +64,6 @@
         remove_column :users, :receive_news
       end
     end
-    
   ]]>
   </script>
-
-  
 </section>

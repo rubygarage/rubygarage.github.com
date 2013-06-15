@@ -1,19 +1,71 @@
 <section id="habtm-in-model" class="slide">
   <h2>has_and_belongs_to_many</h2>
-   <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[    
-    class User < ActiveRecord::Base
-      has_and_belongs_to_many :categories
-    end      
+    rails g model Tag name:string
+      invoke  active_record
+      create    db/migrate/20130615203349_create_tags.rb
+      create    app/models/tag.rb
+      invoke    test_unit
+      create      test/models/tag_test.rb
+      create      test/fixtures/tags.yml
     ]]>
   </script>
 
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[    
+    rails g migration create_posts_tags post:references tag:references --no-timestamp
+      invoke  active_record
+      create    db/migrate/20130615205723_create_posts_tags.rb
+    ]]>
+  </script>
+
+  db/migrate/20130615205723_create_posts_tags.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class CreatePostsTags < ActiveRecord::Migration
+      def change
+        create_table :posts_tags do |t|
+          t.references :post, index: true
+          t.references :tag, index: true
+        end
+      end
+    end
+    ]]>
+  </script>
+
+  <h4>Change migration. Add common index and remobe id.</h4>
+  db/migrate/20130615205723_create_posts_tags.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class CreatePostsTags < ActiveRecord::Migration
+      def change
+        create_table :posts_tags, id: false do |t|
+          t.references :post, index: true
+          t.references :tag, index: true
+        end
+        add_index :posts_tags, [:post_id, :tag_id]
+      end
+    end
+    ]]>
+  </script>
+
+  app/models/post.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+      class Post < ActiveRecord::Base
+        belongs_to :user
+        has_and_belongs_to_many :tags
+      end
+    ]]>
+  </script>
+
+  app/models/tag.rb
   <script type="syntaxhighlighter" class="brush: ruby">
   <![CDATA[    
-    class Category < ActiveRecord::Base
-      has_and_belongs_to_many :users
-    end    
-    ]]>
+    class Tag < ActiveRecord::Base
+      has_and_belongs_to_many :posts
+    end  
+  ]]>
   </script>
-
 </section>

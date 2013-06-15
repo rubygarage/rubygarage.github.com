@@ -1,6 +1,5 @@
 <section id="migrations" class="slide">
-  <h2>Migrations</h2>
-
+  <h2>Overview</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
       class CreateUsers < ActiveRecord::Migration
@@ -17,4 +16,15 @@
     ]]>
   </script>
   
+  <h3>Schema Conventions</h3>
+  <ul>
+    <li><strong>Foreign keys</strong> - These fields should be named following the pattern singularized_table_name_id (e.g., item_id, order_id). These are the fields that Active Record will look for when you create associations between your models.</li>
+    <li><strong>Primary keys</strong> - By default, Active Record will use an integer column named id as the table's primary key. When using Rails Migrations to create your tables, this column will be automatically created.</li>
+    <li><strong>created_at</strong> - Automatically gets set to the current date and time when the record is first created.</li>
+    <li><strong>updated_at</strong> - Automatically gets set to the current date and time whenever the record is updated.</li>
+    <li><strong>lock_version</strong> - Adds optimistic locking to a model.</li>
+    <li><strong>type</strong> - Specifies that the model uses Single Table Inheritance.</li>
+    <li><strong>(association_name)_type</strong> - Stores the type for polymorphic associations.</li>
+    <li><strong>(table_name)_count</strong> - Used to cache the number of belonging objects on associations. For example, a comments_count column in a Post class that has many instances of Comment will cache the number of existent comments for each post.</li>
+  </ul>
 </section>

@@ -1,0 +1,26 @@
+@import "application";
+
+#topic, #migrations-topic {
+  .about {
+    text-align: left;
+    padding: 5% 10%;
+    p, li {
+      font-weight:normal;
+    }
+  }
+}
+
+#models-generation {
+  .naming-conventions {
+    th {
+      padding-right: 20px;
+    }
+  }
+}
+
+#db-changing-methods {
+  > code {
+    margin-bottom: 5px;
+    display: inline-block;
+  }
+}
