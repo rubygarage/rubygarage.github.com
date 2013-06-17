@@ -24,6 +24,14 @@
     ]]>
   </script>
 
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+      rails g migration AddBlogRefToPosts blog:references
+      invoke  active_record
+      create    db/migrate/20130616200237_add_blog_ref_to_posts.rb
+    ]]>
+  </script>
+
   db/migrate/20130615195018_create_blogs.rb
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
@@ -57,6 +65,17 @@
     ]]>
   </script>
 
+  db/migrate/20130616200237_add_blog_ref_to_posts.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class AddBlogRefToPosts < ActiveRecord::Migration
+        def change
+          add_reference :posts, :blog, index: true
+        end
+      end
+    ]]>
+  </script>
+
   app/models/user.rb
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
@@ -84,6 +103,18 @@
       class Subscription < ActiveRecord::Base
         belongs_to :user
         belongs_to :blog
+      end
+    ]]>
+  </script>
+
+  app/models/post.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class Post < ActiveRecord::Base
+        belongs_to :user
+        belongs_to :blog
+        has_one :post_info
+        has_and_belongs_to_many :tags
       end
     ]]>
   </script>
