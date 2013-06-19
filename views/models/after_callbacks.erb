@@ -1,21 +1,26 @@
 <section id="after-callbacks" class="slide">
   <h2>After_find and after_initialize</h2>
-  <h3>Creating an Object</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[     
     
-    decrement
-    decrement_counter
-    delete
-    delete_all
-    find_by_sql
-    increment
-    increment_counter
-    toggle
-    touch
-    update_column
-    update_all
-    update_counters
+    class User < ActiveRecord::Base
+      after_initialize do |user|
+        puts "You have initialized an object!"
+      end
+     
+      after_find do |user|
+        puts "You have found an object!"
+      end
+    end
+     
+    >> User.new
+    You have initialized an object!
+    => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>
+     
+    >> User.first
+    You have found an object!
+    You have initialized an object!
+    => #<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>
 
     ]]>
   </script>
