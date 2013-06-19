@@ -1,8 +1,16 @@
 <section id="custom-methods" class="slide">
   <h2>Custom Methods</h2>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[    
+      rails g model Payment discount:decimal{8.2} total_value:decimal{8.2} expiration_date:date
+    ]]>
+  </script>
+
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[    
-    class Invoice < ActiveRecord::Base
+    class Payment < ActiveRecord::Base
+      belongs_to :user_plan
       validate :expiration_date_cannot_be_in_the_past,
         :discount_cannot_be_greater_than_total_value
      

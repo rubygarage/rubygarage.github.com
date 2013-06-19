@@ -20,6 +20,25 @@
     ]]>
   </script>
 
+<h3>Rails 4</h3>
+    <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[    
+    create_join_table :posts, :tags
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[    
+    create_join_table :posts, :tags, table_name: :tags_for_posts
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[    
+      create_join_table :posts, :tags, column_options:  {null:  true}
+    ]]>
+  </script>
+ 
   db/migrate/20130615205723_create_posts_tags.rb
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[    
@@ -68,4 +87,5 @@
     end  
   ]]>
   </script>
+
 </section>

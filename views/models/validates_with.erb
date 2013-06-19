@@ -2,14 +2,14 @@
   <h2>validates_with</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[ 
-    class Person < ActiveRecord::Base
+    class User < ActiveRecord::Base
       validates_with GoodnessValidator
     end
      
     class GoodnessValidator < ActiveModel::Validator
       def validate(record)
         if record.first_name == "Evil"
-          record.errors[:base] << "This person is evil"
+          record.errors[:base] << "This user is evil"
         end
       end
     end
@@ -19,7 +19,7 @@
    <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[ 
     class User < ActiveRecord::Base
-      validates_with GoodnessValidator, :fields => [:first_name, :last_name]
+      validates_with GoodnessValidator, fields: [:first_name, :last_name]
     end
      
     class GoodnessValidator < ActiveModel::Validator

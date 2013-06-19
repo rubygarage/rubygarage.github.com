@@ -1,10 +1,10 @@
 <section id="relational-callbacks" class="slide">
-  <h2>Realtional Callbacks</h2>
+  <h2>Relational Callbacks</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[     
     class User < ActiveRecord::Base
       ...
-      has_many :posts, :dependent => :destroy
+      has_many :posts, dependent: :destroy
     end
  
     class Post < ActiveRecord::Base
