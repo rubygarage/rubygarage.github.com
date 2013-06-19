@@ -1,20 +1,25 @@
-<section id="elength" class="slide">
+<section id="length" class="slide">
   <h2>Length</h2>
+
+<script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[ 
+  rails g migration AddCardNumberToUsers card_number:string
+  ]]>
+</script>
 <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[    
     class User < ActiveRecord::Base
-      validates :first_name, length: { minimum: 2 }
-      validates :bio, length: { maximum: 500 }
+      ...
+      validates :first_name, length: { 
+        minimum: 2, 
+        maximum: 500, 
+        wrong_length: "Invalid length",
+        too_long: "%{count} characters is the maximum allowed" 
+        too_short: "must have at least %{count} characters"
+      }
       validates :password, length: { in: 6..20 }
-      validates :registration_number, length:  { is: 6 }
+      validates :card_number, length:  { is: 14 }
     end
-    ]]>
-  </script>
-
-<script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[    
-    validates :bio, :length => { :maximum => 1000,
-    :too_long => "%{count} characters is the maximum allowed" }
     ]]>
   </script>
 
@@ -26,7 +31,4 @@
     :is – The attribute length must be equal to the given value.
     ]]>
   </script>
-
-
-
 </section>

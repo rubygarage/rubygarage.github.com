@@ -1,5 +1,11 @@
 <section id="acceptance" class="slide">
   <h2>Acceptance</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[       
+    rails g migration AddTermsOfServiceToUsers terms_of_service:boolean
+    ]]>
+  </script>
+
 <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[       
     class User < ActiveRecord::Base  
@@ -8,6 +14,7 @@
     end   
     ]]>
   </script>
+  
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[     
     class User < ActiveRecord::Base   

@@ -13,7 +13,18 @@
 <!-- Begin slides. Just make elements with a class of slide. -->
 <section id="topic" class="slide">
   <div class="vcenter">
-    <h1>Models</h1>
+    <h1>Active Record Models</h1>
+    <div class="about">
+      <p><strong>Active Record</strong> is the <strong>M</strong> in <a href="http://en.wikipedia.org/wiki/Model–view–controller" target="_blank">MVC</a> - the model - which is the layer of the system responsible for representing business data and logic. It is an implementation of <a href="http://en.wikipedia.org/wiki/Active_record_pattern" target="_blank">the Active Record pattern</a> which itself is a description of an <a href="https://en.wikipedia.org/wiki/Object-relational_mapping" target="_blank">Object Relational Mapping</a> (ORM) system.</p>
+      <p>Active Record gives us several mechanisms, the most important being the ability to:</p>
+      <ul>
+        <li>Represent models and their data</li>
+        <li>Represent associations between these models</li>
+        <li>Represent inheritance hierarchies through related models</li>
+        <li>Validate models before they get persisted to the database</li>
+        <li>Perform database operations in an object-oriented fashion</li>
+      </ul>
+    </div>
   </div>
 </section>
 <section id="models-generation" class="slide">
@@ -31,9 +42,52 @@
 
     ]]>
   </script>
-</section><section id="migrations" class="slide">
-  <h2>Migrations</h2>
 
+  <h3>Naming Conventions</h3>
+  <ul>
+    <li>Database Table - Plural with underscores separating words (e.g., book_clubs)</li>
+    <li>Model Class - Singular with the first letter of each word capitalized (e.g., BookClub)</li>
+  </ul>
+  <table class="naming-conventions">
+    <thead>
+      <tr>
+        <th>Model / Class</th>
+        <th>Table / Schema</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>Post</code></td>
+        <td><code>posts</code></td>
+      </tr>
+      <tr>
+        <td><code>LineItem</code></td>
+        <td><code>line_items</code></td>
+      </tr>
+      <tr>
+        <td><code>Deer</code></td>
+        <td><code>deer</code></td>
+      </tr>
+      <tr>
+        <td><code>Mouse</code></td>
+        <td><code>mice</code></td>
+      </tr>
+      <tr>
+        <td><code>Person</code></td>
+        <td><code>people</code></td>
+      </tr>
+    </tbody>
+  </table>
+</section><section id="migrations-topic" class="slide">
+  <div class="vcenter">
+    <h1>Active Record Migrations</h1>
+    <div class="about">
+      <p><strong>Migrations</strong> are a feature of Active Record that allows you to evolve your database schema over time. Rather than write schema modifications in pure SQL, migrations allow you to use an easy Ruby DSL to describe changes to your tables.</p>
+    </div>
+  </div>
+</section>
+<section id="migrations" class="slide">
+  <h2>Overview</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
       class CreateUsers < ActiveRecord::Migration
@@ -50,6 +104,17 @@
     ]]>
   </script>
   
+  <h3>Schema Conventions</h3>
+  <ul>
+    <li><strong>Foreign keys</strong> - These fields should be named following the pattern singularized_table_name_id (e.g., item_id, order_id). These are the fields that Active Record will look for when you create associations between your models.</li>
+    <li><strong>Primary keys</strong> - By default, Active Record will use an integer column named id as the table's primary key. When using Rails Migrations to create your tables, this column will be automatically created.</li>
+    <li><strong>created_at</strong> - Automatically gets set to the current date and time when the record is first created.</li>
+    <li><strong>updated_at</strong> - Automatically gets set to the current date and time whenever the record is updated.</li>
+    <li><strong>lock_version</strong> - Adds optimistic locking to a model.</li>
+    <li><strong>type</strong> - Specifies that the model uses Single Table Inheritance.</li>
+    <li><strong>(association_name)_type</strong> - Stores the type for polymorphic associations.</li>
+    <li><strong>(table_name)_count</strong> - Used to cache the number of belonging objects on associations. For example, a comments_count column in a Post class that has many instances of Comment will cache the number of existent comments for each post.</li>
+  </ul>
 </section><section id="add-migrations" class="slide">
   <h2>Add Migrations</h2>
 
@@ -62,17 +127,16 @@
   ]]>
   </script>
 
-   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      YYYYMMDDHHMMSS UTC timestamp
-      20130602150030_add_last_name_to_users.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    YYYYMMDDHHMMSS UTC timestamp
+    20130602150030_add_last_name_to_users.rb
   ]]>
   </script>
 
-
+  db/migrate/20130602150030_add_last_name_to_users.rb 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-    # in file /db/migrate/20130602150030_add_last_name_to_users.rb 
+  <![CDATA[
      class AddLastNameToUsers < ActiveRecord::Migration
       def change
         add_column :users, :last_name, :string
@@ -81,7 +145,7 @@
   ]]>
   </script>
 
-    <script type="syntaxhighlighter" class="brush: bash">
+  <script type="syntaxhighlighter" class="brush: bash">
   <![CDATA[
     rails g migration AddReceiveNewsToUsers receive_news:boolean
       invoke  active_record
@@ -89,12 +153,25 @@
   ]]>
   </script>
 
-    <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
+  db/migrate/20130602151002_add_receive_news_to_users.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    class AddReceiveNewsToUsers < ActiveRecord::Migration
+      def change
+        add_column :users, :receive_news, :boolean
+      end
+    end
+  ]]>
+  </script>
+
+  db/migrate/20130602151002_add_receive_news_to_users.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
     class AddReceiveNewsToUsers < ActiveRecord::Migration
       def up
         change_table :users do |t|
-          t.boolean  :receive_news, default: true
+          t.boolean :receive_news, default: true
+          t.index :receive_news
         end
 
         User.update_all ["receive_news = ?", true]
@@ -104,135 +181,100 @@
         remove_column :users, :receive_news
       end
     end
-    
   ]]>
   </script>
-
-  
-</section><section id="column-types" class="slide">
-  <h2>Column Types</h2>
- 
 </section><section id="db-changing-methods" class="slide">
   <h2>Methods for db structure changing</h2>
-
-  <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-    create_table
-    change_table
-    drop_table
-    add_column
-    change_column
-    rename_column
-    remove_column
-    add_index
-    remove_index      
-    ]]>
-  </script>
-
-</section>
- 
-<section id="column-types" class="slide">
-  <h2>Column Types</h2>
-
-  <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[    
-    :binary
-    :boolean
-    :date
-    :datetime
-    :decimal
-    :float
-    :integer
-    :primary_key
-    :string
-    :text
-    :time
-    :timestamp
-    :references     
-    ]]>
-  </script>
- 
-</section><section id="rails4-and-postgreql" class="slide">
-  <h2>Rails 4 and PostgresSQL</h2>
-  <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[    
-      class AddEmailsToUser < ActiveRecord::Migration
-        def change
-          add_column :users, :emails, :string, array: true, default: '{}'
-        end
-      end
-    ]]>
-  </script>
-
-   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[    
-     rails g migration AddPreferencesToUsers preferences:hstore
-    ]]>
-  </script>
-
-  <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[    
-      class AddPreferencesToUsers < ActiveRecord::Migration
-        def up
-          add_column :users, :preferences, :hstore
-        end
-
-        def down
-          remove_column :users, :preferences
-        end
-      end
-    ]]>
-  </script>
-
-    <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[    
-      class AddHstoreExtension < ActiveRecord::Migration
-        def up
-          execute 'CREATE EXTENSION hstore'
-        end
-
-        def down
-          execute 'DROP EXTENSION hstore'
-        end
-      end
-    ]]>
-  </script>
-
-  <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[    
-      :inet
-      :cidr
-      :macaddr
-      :int4range
-      :int8range
-      :json
-    ]]>
-  </script>
-
   
-</section><section id="change-table" class="slide">
-  <h2>Change Table</h2>
-
+  <code>create_table</code>
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[    
-      change_table :users do |t|
+      create_table :friends do |t|
+        t.string :first_name
+        t.string :last_name
+        t.string :email
+        t.timestamps
+      end
+    ]]>
+  </script>
+  
+  <code>change_table</code>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+      change_table :friends do |t|
         t.remove :last_name, :first_name
         t.string :phone_number
         t.index  :phone_number
       end
     ]]>
   </script>
-
+  
+  <code>add_column</code>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[    
-      remove_column :users, :last_name
-      remove_column :users, :first_name
-      add_column :users, :phone_number, :string
-      add_index :users, :phone_number
-      rename_column :users, :last_name, :surname
+    <![CDATA[
+      add_column :friends, :first_name, :string
+      add_column :friends, :last_name, :integer
     ]]>
   </script>
- 
+
+  <code>change_column</code>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      change_column :friends, :last_name, :string
+    ]]>
+  </script>
+
+  <code>rename_column</code>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      rename_column :friends, :last_name, :surname
+    ]]>
+  </script>
+
+  <code>remove_column</code>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      remove_column :friends, :surname
+    ]]>
+  </script>
+
+  <code>add_index</code>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      add_index :friends, :email
+    ]]>
+  </script>
+
+  <code>remove_index</code>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      remove_index :friends, :email
+    ]]>
+  </script>
+
+  <code>drop_table</code>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      drop_table :friends
+    ]]>
+  </script>
+</section><section id="column-types" class="slide">
+  <h2>Column Types</h2>
+  <ul>
+    <li><code>:binary</code></li>
+    <li><code>:boolean</code></li>
+    <li><code>:date</code></li>
+    <li><code>:datetime</code></li>
+    <li><code>:decimal</code></li>
+    <li><code>:float</code></li>
+    <li><code>:integer</code></li>
+    <li><code>:primary_key</code></li>
+    <li><code>:string</code></li>
+    <li><code>:text</code></li>
+    <li><code>:time</code></li>
+    <li><code>:timestamp</code></li>
+    <li><code>:references</code></li>
+  </ul>
 </section><section id="example-migration" class="slide">
   <h2>Example Migration</h2>
 
@@ -268,7 +310,7 @@
   </script>
  
 </section><section id="running-migrations" class="slide">
-  <h2>Migrations</h2>
+  <h2>Run run run ruuuuuuuuun</h2>
   <h3>Running Migrations</h3>
 
   <script type="syntaxhighlighter" class="brush: bash">
@@ -290,16 +332,15 @@
   </script>
 
  
-</section><section id="topic-active-recors-objects" class="slide">
+</section><section id="topic-active-record-objects" class="slide">
   <div class="vcenter">
-    <h1>Models</h1>
-    <h2>ActiveRecord Objects</h2>
+    <h1>Active Record Objects</h1>
   </div>
 </section>
 <section id="activerecord-functions" class="slide">
   <h2>ActiveRecord functions</h2>
+  
   <h3>new, all, save</h3>
-
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[    
     rails c  # rails console 
@@ -335,6 +376,7 @@
     ]]>
   </script>
 
+  <h3>Rails 3</h3>
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[    
     2.0.0-p0 :006 > User.all.class
@@ -343,8 +385,8 @@
     
     ]]>
   </script>
-  <h3>Rails 4</h3>
 
+  <h3>Rails 4</h3>
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[    
     2.0.0-p0 :007 > User.all.class
@@ -354,8 +396,8 @@
   </script>
  
 </section><section id="activerecord-functions-part2" class="slide">
-  <h2>ActiveRecord Functions</h2>
-  <h3>Acreate, count, update_attributes</h3>
+  <h2>ActiveRecord functions</h2>
+  <h3>create, count, update_attributes</h3>
 
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[  
@@ -388,8 +430,7 @@
   </script> 
 </section><section id="topic-associations" class="slide">
   <div class="vcenter">
-    <h1>Models</h1>
-    <h2>Associations</h2>
+    <h1>Active Record Associations</h1>
   </div>
 </section>
 <section id="belongs-to" class="slide">
@@ -400,27 +441,37 @@
   <h2>belongs_to</h2>
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[      
-      rails g model Post title:string text:text title:string user_id:integer
+      rails g migration AddUserRefToPosts user:references
       invoke  active_record
-      create    db/migrate/20130602183603_create_posts.rb
-      create    app/models/post.rb
-      invoke    test_unit
-      create      test/unit/post_test.rb
-      create      test/fixtures/posts.yml  
+      create    db/migrate/20130615164224_add_user_ref_to_posts.rb
+    ]]>
+  </script>
+
+  db/migrate/20130615164224_add_user_ref_to_posts.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[      
+      class AddUserRefToPosts < ActiveRecord::Migration
+        def change
+          add_reference :posts, :user, index: true
+        end
+      end
     ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[      
-      rake db:migrate 
+      rake db:migrate
+      ==  AddUserRefToPosts: migrating ==============================================
+      -- add_reference(:posts, :user, {:index=>true})
+         -> 0.0053s
+      ==  AddUserRefToPosts: migrated (0.0054s) =====================================
     ]]>
   </script>
 
+  app/models/post.rb
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[      
     class Post < ActiveRecord::Base
-      attr_accessible :text, :user_id, :title
-
       belongs_to :user
     end    
     ]]>
@@ -428,27 +479,27 @@
 
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[      
-    2.0.0-p0 :003 >user = User.first
+    > user = User.first
       User Load (0.4ms)  SELECT "users".* FROM "users" LIMIT 1
-     => #<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false> 
+      => #<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false> 
     ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[    
-    2.0.0-p0 :004 > post = Post.create(text: "I'm so happy today", title: "So happy", user_id: user.id) 
+    > post = Post.create(text: "I'm so happy today", title: "So happy", user_id: user.id) 
       (0.1ms)  begin transaction
       SQL (29.2ms)  INSERT INTO "posts" ("created_at", "text", "title", "updated_at", "user_id") VALUES (?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 18:43:10 UTC +00:00], ["text", "I'm so happy today"], "So happy", ["updated_at", Sun, 02 Jun 2013 18:43:10 UTC +00:00], ["user_id", 1]]
-       (126.0ms)  commit transaction
-     => #<Post id: 1, text: "I'm so happy today", title: "So happy", user_id: 1, created_at: "2013-06-02 18:43:10", updated_at: "2013-06-02 18:43:10"> 
-        ]]>
+      (126.0ms)  commit transaction
+      => #<Post id: 1, text: "I'm so happy today", title: "So happy", user_id: 1, created_at: "2013-06-02 18:43:10", updated_at: "2013-06-02 18:43:10"> 
+    ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[   
-    2.0.0-p0 :005 > post.user
+    <![CDATA[
+    > post.user
       User Load (0.4ms)  SELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1
-     => #<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>  
+      => #<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>  
     ]]>
   </script>
 </section>
@@ -458,11 +509,11 @@
 </section>
 <section id="has_many_in_model" class="slide">
   <h2>has_many</h2>
+
+  app/models/user.rb
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[    
     class User < ActiveRecord::Base
-      attr_accessible :email, :first_name, :password
-
       has_many :posts
     end     
     ]]>
@@ -470,49 +521,46 @@
 
    <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[    
-    2.0.0-p0 :001 > user.posts
+    > user.posts
       Post Load (0.2ms)  SELECT "posts".* FROM "posts" WHERE "posts"."user_id" = 1
-     => [#<Post id: 1, text: "I'm so happy today", title: "So happy", user_id: 1, created_at: "2013-06-02 18:43:10", updated_at: "2013-06-02 18:43:10">] 
+      => [#<Post id: 1, text: "I'm so happy today", title: "So happy", user_id: 1, created_at: "2013-06-02 18:43:10", updated_at: "2013-06-02 18:43:10">] 
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > user.posts << Post.new(text: "I'm waiting")
+      (0.2ms)  begin transaction
+      SQL (32.4ms)  INSERT INTO "posts" ("created_at", "text",  "updated_at", "user_id") VALUES (?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 19:01:45 UTC +00:00], ["text", "I'm waiting"], ["updated_at", Sun, 02 Jun 2013 19:01:45 UTC +00:00], ["user_id", 1]]
+      (203.0ms)  commit transaction
+      => [#<Post id: 1, text: "I'm so happy today", title: "So happy", user_id: 1, created_at: "2013-06-02 18:43:10", updated_at: "2013-06-02 18:43:10">, #<Post id: 2, text: "I'm waiting", title: nil, user_id: 1, created_at: "2013-06-02 19:01:45", updated_at: "2013-06-02 19:01:45">] 
     ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[    
-    2.0.0-p0 :001 > user.posts
-    2.0.0-p0 :003 > user.posts << Post.new(text: "I'm waiting")
-     (0.2ms)  begin transaction
-     SQL (32.4ms)  INSERT INTO "posts" ("created_at", "text",  "updated_at", "user_id") VALUES (?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 19:01:45 UTC +00:00], ["text", "I'm waiting"], ["updated_at", Sun, 02 Jun 2013 19:01:45 UTC +00:00], ["user_id", 1]]
-     (203.0ms)  commit transaction
-     => [#<Post id: 1, text: "I'm so happy today", title: "So happy", user_id: 1, created_at: "2013-06-02 18:43:10", updated_at: "2013-06-02 18:43:10">, #<Post id: 2, text: "I'm waiting", title: nil, user_id: 1, created_at: "2013-06-02 19:01:45", updated_at: "2013-06-02 19:01:45">] 
+    > user.posts
+      => [#<Post id: 1, text: "I'm so happy today", title: "So happy", user_id: 1, created_at: "2013-06-02 18:43:10", updated_at: "2013-06-02 18:43:10">, #<Post id: 2, text: "I'm waiting", title: nil, user_id: 1, created_at: "2013-06-02 19:01:45", updated_at: "2013-06-02 19:01:45">] 
     ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[    
-    2.0.0-p0 :005 > user.posts
-     => [#<Post id: 1, text: "I'm so happy today", title: "So happy", user_id: 1, created_at: "2013-06-02 18:43:10", updated_at: "2013-06-02 18:43:10">, #<Post id: 2, text: "I'm waiting", title: nil, user_id: 1, created_at: "2013-06-02 19:01:45", updated_at: "2013-06-02 19:01:45">] 
-
-    ]]>
-  </script>
-
-  <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[    
-    2.0.0-p0 :006 > user.posts.count
+    > user.posts.count
       (0.2ms)  SELECT COUNT(*) FROM "posts" WHERE "posts"."user_id" = 1
-     => 2 
+      => 2 
     ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[    
-    2.0.0-p0 :007 > user.posts.create(text: "New post")
+    > user.posts.create(text: "New post")
       (0.2ms)  begin transaction
       SQL (0.8ms)  INSERT INTO "posts" ("created_at", "text","updated_at", "user_id") VALUES (?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 19:06:35 UTC +00:00], ["text", "New post"], ["updated_at", Sun, 02 Jun 2013 19:06:35 UTC +00:00], ["user_id", 1]]
       (140.8ms)  commit transaction
-     => #<Post id: 3, text: "New post", title: nil, user_id: 1, created_at: "2013-06-02 19:06:35", updated_at: "2013-06-02 19:06:35"> 
+      => #<Post id: 3, text: "New post", title: nil, user_id: 1, created_at: "2013-06-02 19:06:35", updated_at: "2013-06-02 19:06:35"> 
     ]]>
   </script>
-
 </section><section id="has-one" class="slide">
   <h2>has_one</h2>
   <img src="/assets/has_one.png" />
@@ -520,14 +568,14 @@
 <section id="has-one-in-model" class="slide">
   <h2>has_one</h2>
 
-<script type="syntaxhighlighter" class="brush: bash">
+  <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[      
     rails g model PostInfo post_id:integer views:integer likes:integer rating:integer
     ]]>
   </script>
 
-
- <script type="syntaxhighlighter" class="brush: ruby">
+  app/models/post_info.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[      
     class PostInfo < ActiveRecord::Base
       belongs_to :post
@@ -535,6 +583,7 @@
     ]]>
   </script>
 
+  app/models/post.rb
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[      
     class Post < ActiveRecord::Base
@@ -544,30 +593,42 @@
     ]]>
   </script>
 
-   <script type="syntaxhighlighter" class="brush: bash">
+  <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[      
-    2.0.0-p0 :001 > post = Post.first
+    > post = Post.first
       Post Load (0.1ms)  SELECT "posts".* FROM "posts" LIMIT 1
-     => #<Post id: 1, text: "I'm so happy today", user_id: 1, created_at: "2013-06-02 18:43:10", updated_at: "2013-06-02 18:43:10"> 
+      => #<Post id: 1, text: "I'm so happy today", user_id: 1, created_at: "2013-06-02 18:43:10", updated_at: "2013-06-02 18:43:10"> 
 
     ]]>
   </script>
 
+  Creation PostInfo
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[      
-    2.0.0-p0 :002 > PostInfo.create(post_id: post.id, views: 40, likes: 5, rating: 10)
+    > PostInfo.create(post_id: post.id, views: 40, likes: 5, rating: 10)
       (0.1ms)  begin transaction
       SQL (5.1ms)  INSERT INTO "post_infos" ("created_at", "likes", "post_id", "rating", "updated_at", "views") VALUES (?, ?, ?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 19:37:08 UTC +00:00], ["likes", 5], ["post_id", 1], ["rating", 10], ["updated_at", Sun, 02 Jun 2013 19:37:08 UTC +00:00], ["views", 40]]
       (116.2ms)  commit transaction
-     => #<PostInfo id: 2, post_id: 1, views: 40, likes: 5, rating: 10, created_at: "2013-06-02 19:37:08", updated_at: "2013-06-02 19:37:08"> 
+      => #<PostInfo id: 2, post_id: 1, views: 40, likes: 5, rating: 10, created_at: "2013-06-02 19:37:08", updated_at: "2013-06-02 19:37:08"> 
+    ]]>
+  </script>
+
+  Creation using the association
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > post.create_post_info(views: 40, likes: 5, rating: 10)
+      (0.2ms)  begin transaction
+      SQL (29.4ms) INSERT INTO "post_infos" ("created_at", "likes", "post_id", "rating", "updated_at", "views") VALUES (?, ?, ?, ?, ?, ?)  [["created_at", Sun, 16 Jun 2013 20:21:58 UTC +00:00], ["likes", 5], ["post_id", 1], ["rating", 10], ["updated_at", Sun, 16 Jun 2013 20:21:58 UTC +00:00], ["views", 40]]
+      (1.5ms)  commit transaction
+      => #<PostInfo id: 1, post_id: 1, views: 40, likes: 5, rating: 10, created_at: "2013-06-16 20:21:58", updated_at: "2013-06-16 20:21:58">
     ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[      
-    2.0.0-p0 :003 > post.post_info
+    > post.post_info
       PostInfo Load (0.2ms)  SELECT "post_infos".* FROM "post_infos" WHERE "post_infos"."post_id" = 1 LIMIT 1
-     => #<PostInfo id: 1, post_id: 1, views: 40, likes: 5, rating: 10, created_at: "2013-06-02 19:34:38", updated_at: "2013-06-02 19:34:38"> 
+      => #<PostInfo id: 1, post_id: 1, views: 40, likes: 5, rating: 10, created_at: "2013-06-02 19:34:38", updated_at: "2013-06-02 19:34:38"> 
     ]]>
   </script>
 </section>
@@ -577,30 +638,122 @@
 </section>
 <section id="has-many-through-in-model" class="slide">
   <h2>has_many :through</h2>
-<script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[    
-    class User < ActiveRecord::Base
-      has_many :memberships
-      has_many :groups, through: :memberships
-    end      
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+      rails g model Blog title:string description:text
+      invoke  active_record
+      create    db/migrate/20130615195018_create_blogs.rb
+      create    app/models/blog.rb
+      invoke    test_unit
+      create      test/models/blog_test.rb
+      create      test/fixtures/blogs.yml
     ]]>
   </script>
 
-  <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[    
-    class Membership < ActiveRecord::Base
-      belongs_to :users
-      belongs_to :groups
-    end      
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+      rails g model Subscription user:belongs_to blog:belongs_to receive_news:boolean
+      invoke  active_record
+      create    db/migrate/20130615200154_create_subscriptions.rb
+      create    app/models/subscription.rb
+      invoke    test_unit
+      create      test/models/subscription_test.rb
+      create      test/fixtures/subscriptions.yml
     ]]>
   </script>
 
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+      rails g migration AddBlogRefToPosts blog:references
+      invoke  active_record
+      create    db/migrate/20130616200237_add_blog_ref_to_posts.rb
+    ]]>
+  </script>
+
+  db/migrate/20130615195018_create_blogs.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[    
-    class Group < ActiveRecord::Base
-      has_many :memberships
-      has_many :users, through: :memberships
-    end    
+    <![CDATA[
+      class CreateBlogs < ActiveRecord::Migration
+        def change
+          create_table :blogs do |t|
+            t.string :title
+            t.text :description
+
+            t.timestamps
+          end
+        end
+      end
+    ]]>
+  </script>
+
+  db/migrate/20130615200154_create_subscriptions.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class CreateSubscriptions < ActiveRecord::Migration
+        def change
+          create_table :subscriptions do |t|
+            t.belongs_to :user, index: true
+            t.belongs_to :blog, index: true
+            t.boolean :receive_news, default: true
+
+            t.timestamps
+          end
+        end
+      end
+    ]]>
+  </script>
+
+  db/migrate/20130616200237_add_blog_ref_to_posts.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class AddBlogRefToPosts < ActiveRecord::Migration
+        def change
+          add_reference :posts, :blog, index: true
+        end
+      end
+    ]]>
+  </script>
+
+  app/models/user.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class User < ActiveRecord::Base
+        has_many :posts
+        has_many :subscriptions
+        has_many :blogs, through: :subscriptions
+      end
+    ]]>
+  </script>
+
+  app/models/blog.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class Blog < ActiveRecord::Base
+        has_many :subscriptions
+        has_many :users, through: :subscriptions
+      end
+    ]]>
+  </script>
+
+  app/models/subscription.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class Subscription < ActiveRecord::Base
+        belongs_to :user
+        belongs_to :blog
+      end
+    ]]>
+  </script>
+
+  app/models/post.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class Post < ActiveRecord::Base
+        belongs_to :user
+        belongs_to :blog
+        has_one :post_info
+        has_and_belongs_to_many :tags
+      end
     ]]>
   </script>
 </section><section id="has-one-through" class="slide">
@@ -609,29 +762,95 @@
 </section>
 <section id="has-one-through-in-model" class="slide">
   <h2>has_one :through</h2>
-<script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[    
-    class User < ActiveRecord::Base
-      has_one :account
-      has_one :account_history, through:  :account
-    end      
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    rails g model Plan name:string description:text price:decimal{8.2}
+      invoke  active_record
+      create    db/migrate/20130616211135_create_plans.rb
+      create    app/models/plan.rb
+      invoke    test_unit
+      create      test/models/plan_test.rb
+      create      test/fixtures/plans.yml
     ]]>
   </script>
 
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    rails g model UserPlan user:belongs_to plan:belongs_to
+      invoke  active_record
+      create    db/migrate/20130616211306_create_user_plans.rb
+      create    app/models/user_plan.rb
+      invoke    test_unit
+      create      test/models/user_plan_test.rb
+      create      test/fixtures/user_plans.yml
+    ]]>
+  </script>
+
+  db/migrate/20130616211135_create_plans.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class CreatePlans < ActiveRecord::Migration
+      def change
+        create_table :plans do |t|
+          t.string :name
+          t.text :description
+          t.decimal :price, precision: 8, scale: 2
+
+          t.timestamps
+        end
+      end
+    end
+    ]]>
+  </script>
+
+
+  db/migrate/20130616211306_create_user_plans.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class CreateUserPlans < ActiveRecord::Migration
+      def change
+        create_table :user_plans do |t|
+          t.belongs_to :user, index: true
+          t.belongs_to :plan, index: true
+
+          t.timestamps
+        end
+      end
+    end
+    ]]>
+  </script>
+
+  app/models/user.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class User < ActiveRecord::Base
+      has_many :posts
+      has_many :subscriptions
+      has_many :blogs, through: :subscriptions
+      has_one :user_plan
+      has_one :plan, through: :user_plan
+    end
+    ]]>
+  </script>
+
+  app/models/user_plan.rb
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[    
-    class Account < ActiveRecord::Base
+    class UserPlan < ActiveRecord::Base
       belongs_to :user
-      has_one :account_history
-    end      
+      belongs_to :plan
+    end
     ]]>
   </script>
 
+  app/models/plan.rb
   <script type="syntaxhighlighter" class="brush: ruby">
   <![CDATA[    
-    class AccountHistory < ActiveRecord::Base
-      belongs_to :account
-    end    
+    class Plan < ActiveRecord::Base
+      has_many :user_plans
+      has_many :users, through: :user_plans
+    end
     ]]>
   </script>
 </section><section id="has_and_belongs_to_many" class="slide">
@@ -640,20 +859,92 @@
 </section>
 <section id="habtm-in-model" class="slide">
   <h2>has_and_belongs_to_many</h2>
-   <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[    
-    class User < ActiveRecord::Base
-      has_and_belongs_to_many :categories
-    end      
+    rails g model Tag name:string
+      invoke  active_record
+      create    db/migrate/20130615203349_create_tags.rb
+      create    app/models/tag.rb
+      invoke    test_unit
+      create      test/models/tag_test.rb
+      create      test/fixtures/tags.yml
     ]]>
   </script>
 
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[    
+    rails g migration create_posts_tags post:references tag:references --no-timestamp
+      invoke  active_record
+      create    db/migrate/20130615205723_create_posts_tags.rb
+    ]]>
+  </script>
+
+<h3>Rails 4</h3>
+    <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[    
+    create_join_table :posts, :tags
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[    
+    create_join_table :posts, :tags, table_name: :tags_for_posts
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[    
+      create_join_table :posts, :tags, column_options:  {null:  true}
+    ]]>
+  </script>
+ 
+  db/migrate/20130615205723_create_posts_tags.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class CreatePostsTags < ActiveRecord::Migration
+      def change
+        create_table :posts_tags do |t|
+          t.references :post, index: true
+          t.references :tag, index: true
+        end
+      end
+    end
+    ]]>
+  </script>
+
+  <h4>Change migration. Add common index and remove id.</h4>
+  db/migrate/20130615205723_create_posts_tags.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+    class CreatePostsTags < ActiveRecord::Migration
+      def change
+        create_table :posts_tags, id: false do |t|
+          t.references :post, index: true
+          t.references :tag, index: true
+        end
+        add_index :posts_tags, [:post_id, :tag_id]
+      end
+    end
+    ]]>
+  </script>
+
+  app/models/post.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+      class Post < ActiveRecord::Base
+        belongs_to :user
+        has_and_belongs_to_many :tags
+      end
+    ]]>
+  </script>
+
+  app/models/tag.rb
   <script type="syntaxhighlighter" class="brush: ruby">
   <![CDATA[    
-    class Category < ActiveRecord::Base
-      has_and_belongs_to_many :users
-    end    
-    ]]>
+    class Tag < ActiveRecord::Base
+      has_and_belongs_to_many :posts
+    end  
+  ]]>
   </script>
 
 </section><section id="polymorphic" class="slide">
@@ -662,30 +953,91 @@
 </section>
 <section id="polymorphic-in-model" class="slide">
   <h2>Polymorphic Assosiations</h2>
-<script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[    
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+      rails g model Picture imageable:references{polymorphic} file:string
+      invoke  active_record
+      create    db/migrate/20130616213914_create_pictures.rb
+      create    app/models/picture.rb
+      invoke    test_unit
+      create      test/models/picture_test.rb
+      create      test/fixtures/pictures.yml
+    ]]>
+  </script>
+
+  db/migrate/20130616213914_create_pictures.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class CreatePictures < ActiveRecord::Migration
+      def change
+        create_table :pictures do |t|
+          t.references :imageable, polymorphic: true, index: true
+          t.string :file
+
+          t.timestamps
+        end
+      end
+    end
+    ]]>
+  </script>
+
+  app/models/picture.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[ 
     class Picture < ActiveRecord::Base
       belongs_to :imageable, polymorphic: true
     end      
     ]]>
   </script>
 
+  app/models/user.rb
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[    
     class User < ActiveRecord::Base
-      has_many :pictures, as: imageable
-    end     
+      has_many :posts
+      has_many :subscriptions
+      has_many :blogs, through: :subscriptions
+      has_one :user_plan
+      has_one :plan, through: :user_plan
+      has_one :picture, as: :imageable
+    end
     ]]>
   </script>
 
- <script type="syntaxhighlighter" class="brush: ruby">
+  app/models/post.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[    
     class Post < ActiveRecord::Base
-      has_many :pictures, as: imageable
-    end     
+      belongs_to :user
+      belongs_to :blog
+      has_one :post_info
+      has_and_belongs_to_many :tags
+      has_many :pictures, as: :imageable
+    end
     ]]>
   </script>
 
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > user.create_picture(file: 'public/picture/photo.png')
+      (0.1ms)  begin transaction
+      SQL (32.7ms)  INSERT INTO "pictures" ("created_at", "file", "imageable_id", "imageable_type", "updated_at") VALUES (?, ?, ?, ?, ?)  [["created_at", Sun, 16 Jun 2013 21:46:37 UTC +00:00], ["file", "public/picture/photo.png"], ["imageable_id", 1], ["imageable_type", "User"], ["updated_at", Sun, 16 Jun 2013 21:46:37 UTC +00:00]]
+      (1.5ms)  commit transaction
+      Picture Load (0.4ms)  SELECT "pictures".* FROM "pictures" WHERE "pictures"."imageable_id" = ? AND "pictures"."imageable_type" = ? ORDER BY "pictures"."id" ASC LIMIT 1  [["imageable_id", 1], ["imageable_type", "User"]]
+      => #<Picture id: 1, imageable_id: 1, imageable_type: "User", file: "public/picture/photo.png", created_at: "2013-06-16 21:46:37", updated_at: "2013-06-16 21:46:37">
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > post.pictures.create(file: 'public/picture/image.png')
+      (0.1ms)  begin transaction
+      SQL (0.6ms)  INSERT INTO "pictures" ("created_at", "file", "imageable_id", "imageable_type", "updated_at") VALUES (?, ?, ?, ?, ?)  [["created_at", Sun, 16 Jun 2013 21:51:25 UTC +00:00], ["file", "public/picture/image.png"], ["imageable_id", 1], ["imageable_type", "Post"], ["updated_at", Sun, 16 Jun 2013 21:51:25 UTC +00:00]]
+      (1.7ms)  commit transaction
+      => #<Picture id: 2, imageable_id: 1, imageable_type: "Post", file: "public/picture/image.png", created_at: "2013-06-16 21:51:25", updated_at: "2013-06-16 21:51:25">
+    ]]>
+  </script>
 </section><section id="topic-custom-validations" class="slide">
   <div class="vcenter">
     <h1>Models</h1>
@@ -697,13 +1049,12 @@
 
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[    
-    :create
-    :create!
-    :save
-    :save!
-    :update
-    :update_attributes
-    :update_attributes!
+    create
+    create!
+    save
+    save!
+    update
+    update!
     ]]>
   </script>
  
@@ -719,7 +1070,9 @@
     toggle!
     touch
     update_all
+    update_attribute
     update_column
+    update_columns
     update_counters
     save(validate: false)
     ]]>
@@ -731,8 +1084,6 @@
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[      
     class User < ActiveRecord::Base
-      attr_accessible :email, :first_name, :password
-
       has_many :posts
       validates :email, presence: true
     end
@@ -837,12 +1188,18 @@
 
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[    
-    validates :field_name, :inclusion => { :in => [true, false] }. # for fields with boolean type
+    validates :field_name, inclusion: { in:  [true, false] }. # for fields with boolean type
     ]]>
   </script>
 
 </section><section id="acceptance" class="slide">
   <h2>Acceptance</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[       
+    rails g migration AddTermsOfServiceToUsers terms_of_service:boolean
+    ]]>
+  </script>
+
 <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[       
     class User < ActiveRecord::Base  
@@ -851,6 +1208,7 @@
     end   
     ]]>
   </script>
+  
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[     
     class User < ActiveRecord::Base   
@@ -861,6 +1219,17 @@
   </script>
   <p>Do not this validation on the both sides of the association it causes endless cycle.</p>
 
+</section><section id="validates-associated" class="slide">
+  <h2>Validates Assosiated</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[ 
+    class User < ActiveRecord::Base  
+      ... 
+      has_many :posts
+      validates_associated :posts
+    end
+    ]]>
+  </script>
 </section><section id="confirmation" class="slide">
   <h2>Confirmation</h2>
 <script type="syntaxhighlighter" class="brush: ruby">
@@ -902,30 +1271,35 @@
   <h2>Inclusion</h2>
 <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[    
-    class User < ActiveRecord::Base
+    class Tag < ActiveRecord::Base
       ...
-      validates :interests, inclusion: { in: %w(reading cooking programming), message: "%{value} is not a valid value" }
+      validates :name, inclusion: { in: %w(reading cooking programming), message: "%{value} is not a valid value" }
     end   
     ]]>
   </script>
 
-</section><section id="elength" class="slide">
+</section><section id="length" class="slide">
   <h2>Length</h2>
+
+<script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[ 
+  rails g migration AddCardNumberToUsers card_number:string
+  ]]>
+</script>
 <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[    
     class User < ActiveRecord::Base
-      validates :first_name, length: { minimum: 2 }
-      validates :bio, length: { maximum: 500 }
+      ...
+      validates :first_name, length: { 
+        minimum: 2, 
+        maximum: 500, 
+        wrong_length: "Invalid length",
+        too_long: "%{count} characters is the maximum allowed" 
+        too_short: "must have at least %{count} characters"
+      }
       validates :password, length: { in: 6..20 }
-      validates :registration_number, length:  { is: 6 }
+      validates :card_number, length:  { is: 14 }
     end
-    ]]>
-  </script>
-
-<script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[    
-    validates :bio, :length => { :maximum => 1000,
-    :too_long => "%{count} characters is the maximum allowed" }
     ]]>
   </script>
 
@@ -937,16 +1311,13 @@
     :is – The attribute length must be equal to the given value.
     ]]>
   </script>
-
-
-
 </section><section id="numericality" class="slide">
   <h2>Numericality</h2>
 <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[    
-    class User < ActiveRecord::Base
+    class PostInfo < ActiveRecord::Base
       ...
-      validates :points, numericality: true
+      validates :views, numericality: true
       validates :rate, numericality: { only_integer: true, greater_than: 5 }
     end   
     ]]>
@@ -966,46 +1337,36 @@
 
 </section><section id="uniqueness" class="slide">
   <h2>Uniqueness</h2>
-<script type="syntaxhighlighter" class="brush: ruby">
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[    
+    rails g AddPageAddressToUsers page_address:string    
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[    
     class User < ActiveRecord::Base
       ... 
       validates :email, uniqueness: true
+      validates :first_name, uniqueness: { scope: :email,  message: "should only one user with name and email" }
+      validates :page_address, uniqueness: { case_sensitive:  false }
     end
     
     ]]>
   </script>
-
-  <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[  
-    class User < ActiveRecord::Base
-      ...  
-      validates :first_name, uniqueness: { scope: :year,  message: "should happen once per year" }
-    end
-    ]]>
-  </script>
-
-  <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[  
-    class User < ActiveRecord::Base
-      ...  
-      validates :name, uniqueness: { case_sensitive:  false }
-    end
-    ]]>
-  </script>
-
 </section><section id="validates-with" class="slide">
   <h2>validates_with</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[ 
-    class Person < ActiveRecord::Base
+    class User < ActiveRecord::Base
       validates_with GoodnessValidator
     end
      
     class GoodnessValidator < ActiveModel::Validator
       def validate(record)
         if record.first_name == "Evil"
-          record.errors[:base] << "This person is evil"
+          record.errors[:base] << "This user is evil"
         end
       end
     end
@@ -1015,7 +1376,7 @@
    <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[ 
     class User < ActiveRecord::Base
-      validates_with GoodnessValidator, :fields => [:first_name, :last_name]
+      validates_with GoodnessValidator, fields: [:first_name, :last_name]
     end
      
     class GoodnessValidator < ActiveModel::Validator
@@ -1043,23 +1404,21 @@
   <h2>General options</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[ 
-      validates :bio, allow_nil: true
+    class Post < ActiveRecord::Base
+      validates :title, allow_nil: true
+    end
     ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[ 
-      validates :bio, allow_blank: true
+    class User < ActiveRecord::Base
+      validates :last_name, allow_blank: true
+    end
     ]]>
   </script>
 
   <p>:allow_nil and :allow_blank are ignored by :presence</p>
-
-  <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[ 
-    :message
-    ]]>
-  </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[ 
@@ -1068,10 +1427,10 @@
       validates :email, uniqueness: true, on: :create
      
       # it will be possible to create the record with a non-numerical age
-      validates :age, numericality: true, on: :update
+      validates :card_number, numericality: true, on: :update
      
       # the default (validates on both create and update)
-      validates :name, presence: true, on: :save
+      validates :first_name, presence: true, on: :save
     end
     ]]>
   </script>
@@ -1154,9 +1513,17 @@
 
 </section><section id="custom-methods" class="slide">
   <h2>Custom Methods</h2>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[    
+      rails g model Payment discount:decimal{8.2} total_value:decimal{8.2} expiration_date:date
+    ]]>
+  </script>
+
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[    
-    class Invoice < ActiveRecord::Base
+    class Payment < ActiveRecord::Base
+      belongs_to :user_plan
       validate :expiration_date_cannot_be_in_the_past,
         :discount_cannot_be_greater_than_total_value
      
@@ -1227,6 +1594,13 @@
 </section>
 <section id="callback-registrations" class="slide">
   <h2>Callback registrations</h2>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[ 
+    rails g migration AddLoginToUsers login:string
+    ]]>
+  </script>
+  
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[ 
     class User < ActiveRecord::Base  
@@ -1360,12 +1734,12 @@
   </script>
 
 </section><section id="relational-callbacks" class="slide">
-  <h2>Realtional Callbacks</h2>
+  <h2>Relational Callbacks</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[     
     class User < ActiveRecord::Base
       ...
-      has_many :posts, :dependent => :destroy
+      has_many :posts, dependent: :destroy
     end
  
     class Post < ActiveRecord::Base
@@ -1439,55 +1813,6 @@
     end
   ]]>
   </script>
-</section><section id="observers" class="slide">
-  <h2>Observers</h2>
-  <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[ 
-    rails generate observer User
-    ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[ 
-    class UserObserver < ActiveRecord::Observer
-    end
-    ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[ 
-    class UserObserver < ActiveRecord::Observer
-      def after_create(model)
-        # код для рассылки подтверждений email...
-      end
-    end
-    ]]>
-  </script>
-  <h2>Observers Registrations</h2>
-  <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[ 
-    config.active_record.observers = :user_observer
-    ]]>
-  </script>
-
-</section><section id="sharing-observers" class="slide">
-  <h2>Sharing Observers</h2>
-  <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[ 
-    class MailerObserver < ActiveRecord::Observer
-      observe :registration, :user
-     
-      def after_create(model)
-        # code to send confirmation email...
-      end
-    end   
-    ]]>
-  </script>
-   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[ 
-    config.active_record.observers = :mailer_observer
-    ]]>
-  </script>
-  
-
 </section>
 
 <!-- End slides. -->
