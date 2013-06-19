@@ -1,12 +1,12 @@
 <section id="length" class="slide">
   <h2>Length</h2>
 
-<script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[ 
-  rails g migration AddCardNumberToUsers card_number:string
-  ]]>
-</script>
-<script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[ 
+    rails g migration AddCardNumberToUsers card_number:string
+    ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[    
     class User < ActiveRecord::Base
       ...
@@ -23,12 +23,10 @@
     ]]>
   </script>
 
-  <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[ 
-    :minimum – The attribute cannot have less than the specified length.
-    :maximum – The attribute cannot have more than the specified length.
-    :in (or :within) – The attribute length must be included in a given interval. The value for this option must be a range.
-    :is – The attribute length must be equal to the given value.
-    ]]>
-  </script>
+  <ul>
+    <li><code>:minimum</code> – The attribute cannot have less than the specified length.</li>
+    <li><code>:maximum</code> – The attribute cannot have more than the specified length.</li>
+    <li><code>:in</code> (or <code>:within</code>) – The attribute length must be included in a given interval. The value for this option must be a range.</li>
+    <li><code>:is</code> – The attribute length must be equal to the given value.</li>
+  </ul>
 </section>

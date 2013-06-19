@@ -10,67 +10,64 @@
     ]]>
   </script>
 
-   <script type="syntaxhighlighter" class="brush: bash">
+  <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[      
-    2.0.0-p0 :001 > User.new(email: "thebestemail@ua.fm").valid?
-     => true 
-    2.0.0-p0 :002 > User.new().valid?
-     => false 
+    > User.new(email: "thebestemail@ua.fm").valid?
+      => true 
+    > User.new().valid?
+      => false 
     ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[      
-    2.0.0-p0 :007 > u = User.new
-     => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false> 
-    2.0.0-p0 :008 > u.errors
-     => #<ActiveModel::Errors:0x00000003001970 @base=#<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>, @messages={}> 
-    2.0.0-p0 :009 > u.valid?
-     => false 
-    2.0.0-p0 :010 > u.errors
-     => #<ActiveModel::Errors:0x00000003001970 @base=#<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>, @messages={:email=>["can't be blank"]}> 
+    > u = User.new
+      => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false> 
+    > u.errors
+      => #<ActiveModel::Errors:0x00000003001970 @base=#<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>, @messages={}> 
+    > u.valid?
+      => false 
+    > u.errors
+      => #<ActiveModel::Errors:0x00000003001970 @base=#<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>, @messages={:email=>["can't be blank"]}> 
     ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[      
-    2.0.0-p0 :011 > u = User.create
-       (0.2ms)  begin transaction
-       (0.1ms)  rollback transaction
-     => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false> 
-    2.0.0-p0 :012 > u.errors
-     => #<ActiveModel::Errors:0x00000003172db8 @base=#<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>, @messages={:email=>["can't be blank"]}> 
+    > u = User.create
+        (0.2ms)  begin transaction
+        (0.1ms)  rollback transaction
+      => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false> 
+    > u.errors
+      => #<ActiveModel::Errors:0x00000003172db8 @base=#<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>, @messages={:email=>["can't be blank"]}> 
     ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[      
-    2.0.0-p0 :013 > u = User.new
-     => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false> 
-    2.0.0-p0 :014 > u.save
-       (0.2ms)  begin transaction
-       (0.1ms)  rollback transaction
-     => false 
-    2.0.0-p0 :015 > u.save!
+    > u = User.new
+      => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false> 
+    > u.save
+        (0.2ms)  begin transaction
+        (0.1ms)  rollback transaction
+      => false 
+    > u.save!
        (0.1ms)  begin transaction
        (0.1ms)  rollback transaction
-    ActiveRecord::RecordInvalid: Validation failed: Email cant be blank
+      ActiveRecord::RecordInvalid: Validation failed: Email cant be blank
     ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[      
-    User.create
-   (0.1ms)  begin transaction
-   (0.1ms)  rollback transaction
-     => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false> 
-    2.0.0-p0 :018 > User.create!
-       (0.1ms)  begin transaction
-       (0.1ms)  rollback transaction
-    ActiveRecord::RecordInvalid: Validation failed: Email cant be blank
+    > User.create
+        (0.1ms)  begin transaction
+        (0.1ms)  rollback transaction
+      => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false> 
+    > User.create!
+        (0.1ms)  begin transaction
+        (0.1ms)  rollback transaction
+      ActiveRecord::RecordInvalid: Validation failed: Email cant be blank
     ]]>
   </script>
-
-
- 
 </section>

@@ -20,13 +20,13 @@
 
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[     
-    >> user = User.first
-    => #<User id: 1>
-    >> user.posts.create!
-    => #<Post id: 1, user_id: 1>
-    >> user.destroy
-    Post destroyed
-    => #<User id: 1>
+    > user = User.first
+      => #<User id: 1>
+    > user.posts.create!
+      => #<Post id: 1, user_id: 1>
+    > user.destroy
+      # Post destroyed
+      => #<User id: 1>
     ]]>
   </script>
 </section>
