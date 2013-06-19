@@ -4,8 +4,6 @@
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[      
     class User < ActiveRecord::Base
-      attr_accessible :email, :first_name, :password
-
       has_many :posts
       validates :email, presence: true
     end

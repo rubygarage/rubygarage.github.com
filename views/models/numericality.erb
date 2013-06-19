@@ -2,9 +2,9 @@
   <h2>Numericality</h2>
 <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[    
-    class User < ActiveRecord::Base
+    class PostInfo < ActiveRecord::Base
       ...
-      validates :points, numericality: true
+      validates :views, numericality: true
       validates :rate, numericality: { only_integer: true, greater_than: 5 }
     end   
     ]]>
