@@ -435,7 +435,7 @@
 </section>
 <section id="belongs-to" class="slide">
   <h2>belongs_to</h2>
-  <img src="/assets/belongs_to.png" />
+  <img src="/assets/images/belongs_to.png" />
 </section>
 <section id="belongs-to-in-model" class="slide">
   <h2>belongs_to</h2>
@@ -505,7 +505,7 @@
 </section>
 <section id="has-many" class="slide">
   <h2>has_many</h2>
-  <img src="/assets/has_many.png" />
+  <img src="/assets/images/has_many.png" />
 </section>
 <section id="has_many_in_model" class="slide">
   <h2>has_many</h2>
@@ -563,7 +563,7 @@
   </script>
 </section><section id="has-one" class="slide">
   <h2>has_one</h2>
-  <img src="/assets/has_one.png" />
+  <img src="/assets/images/has_one.png" />
 </section>
 <section id="has-one-in-model" class="slide">
   <h2>has_one</h2>
@@ -634,7 +634,7 @@
 </section>
 <section id="has-many-through" class="slide">
   <h2>has_many :through</h2>
-  <img src="/assets/has_many_through.png" />
+  <img src="/assets/images/has_many_through.png" />
 </section>
 <section id="has-many-through-in-model" class="slide">
   <h2>has_many :through</h2>
@@ -758,7 +758,7 @@
   </script>
 </section><section id="has-one-through" class="slide">
   <h2>has_one :through</h2>
-  <img src="/assets/has_one_through.png" />
+  <img src="/assets/images/has_one_through.png" />
 </section>
 <section id="has-one-through-in-model" class="slide">
   <h2>has_one :through</h2>
@@ -855,7 +855,7 @@
   </script>
 </section><section id="has_and_belongs_to_many" class="slide">
   <h2>has_and_belongs_to_many</h2>
-  <img src="/assets/has_and_belongs_to_many.png" />
+  <img src="/assets/images/has_and_belongs_to_many.png" />
 </section>
 <section id="habtm-in-model" class="slide">
   <h2>has_and_belongs_to_many</h2>
@@ -949,7 +949,7 @@
 
 </section><section id="polymorphic" class="slide">
   <h2>Polymorphic Associations</h2>
-  <img src="/assets/polymorphic.png" />
+  <img src="/assets/images/polymorphic.png" />
 </section>
 <section id="polymorphic-in-model" class="slide">
   <h2>Polymorphic Assosiations</h2>
@@ -1038,46 +1038,37 @@
       => #<Picture id: 2, imageable_id: 1, imageable_type: "Post", file: "public/picture/image.png", created_at: "2013-06-16 21:51:25", updated_at: "2013-06-16 21:51:25">
     ]]>
   </script>
-</section><section id="topic-custom-validations" class="slide">
+</section><section id="topic-validations" class="slide">
   <div class="vcenter">
-    <h1>Models</h1>
-    <h2>Validation Helpers</h2>
+    <h1>Active Record Validations</h1>
   </div>
 </section>
 <section id="when-does-validation-happen" class="slide">
   <h2>When Does Validations Happen?</h2>
-
-  <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[    
-    create
-    create!
-    save
-    save!
-    update
-    update!
-    ]]>
-  </script>
- 
+  <ul>
+    <li><code>create</code></li>
+    <li><code>create!</code></li>
+    <li><code>save</code></li>
+    <li><code>save!</code></li>
+    <li><code>update</code></li>
+    <li><code>update!</code></li>
+  </ul>
 </section><section id="skipping-validations" class="slide">
   <h2>Skiping Validations</h2>
-
-  <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[      
-    decrement!
-    decrement_counter
-    increment!
-    increment_counter
-    toggle!
-    touch
-    update_all
-    update_attribute
-    update_column
-    update_columns
-    update_counters
-    save(validate: false)
-    ]]>
-  </script>
- 
+  <ul>
+    <li><code>decrement!</code></li>
+    <li><code>decrement_counter</code></li>
+    <li><code>increment!</code></li>
+    <li><code>increment_counter</code></li>
+    <li><code>toggle!</code></li>
+    <li><code>touch</code></li>
+    <li><code>update_all</code></li>
+    <li><code>update_attribute</code></li>
+    <li><code>update_column</code></li>
+    <li><code>update_columns</code></li>
+    <li><code>update_counters</code></li>
+    <li><code>save(validate: false)</code></li>
+  </ul>
 </section><section id="valid-invalid" class="slide">
   <h2>valid? and invalid?</h2>
 
@@ -1090,90 +1081,86 @@
     ]]>
   </script>
 
-   <script type="syntaxhighlighter" class="brush: bash">
+  <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[      
-    2.0.0-p0 :001 > User.new(email: "thebestemail@ua.fm").valid?
-     => true 
-    2.0.0-p0 :002 > User.new().valid?
-     => false 
+    > User.new(email: "thebestemail@ua.fm").valid?
+      => true 
+    > User.new().valid?
+      => false 
     ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[      
-    2.0.0-p0 :007 > u = User.new
-     => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false> 
-    2.0.0-p0 :008 > u.errors
-     => #<ActiveModel::Errors:0x00000003001970 @base=#<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>, @messages={}> 
-    2.0.0-p0 :009 > u.valid?
-     => false 
-    2.0.0-p0 :010 > u.errors
-     => #<ActiveModel::Errors:0x00000003001970 @base=#<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>, @messages={:email=>["can't be blank"]}> 
+    > u = User.new
+      => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false> 
+    > u.errors
+      => #<ActiveModel::Errors:0x00000003001970 @base=#<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>, @messages={}> 
+    > u.valid?
+      => false 
+    > u.errors
+      => #<ActiveModel::Errors:0x00000003001970 @base=#<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>, @messages={:email=>["can't be blank"]}> 
     ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[      
-    2.0.0-p0 :011 > u = User.create
-       (0.2ms)  begin transaction
-       (0.1ms)  rollback transaction
-     => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false> 
-    2.0.0-p0 :012 > u.errors
-     => #<ActiveModel::Errors:0x00000003172db8 @base=#<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>, @messages={:email=>["can't be blank"]}> 
+    > u = User.create
+        (0.2ms)  begin transaction
+        (0.1ms)  rollback transaction
+      => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false> 
+    > u.errors
+      => #<ActiveModel::Errors:0x00000003172db8 @base=#<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>, @messages={:email=>["can't be blank"]}> 
     ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[      
-    2.0.0-p0 :013 > u = User.new
-     => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false> 
-    2.0.0-p0 :014 > u.save
-       (0.2ms)  begin transaction
-       (0.1ms)  rollback transaction
-     => false 
-    2.0.0-p0 :015 > u.save!
+    > u = User.new
+      => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false> 
+    > u.save
+        (0.2ms)  begin transaction
+        (0.1ms)  rollback transaction
+      => false 
+    > u.save!
        (0.1ms)  begin transaction
        (0.1ms)  rollback transaction
-    ActiveRecord::RecordInvalid: Validation failed: Email cant be blank
+      ActiveRecord::RecordInvalid: Validation failed: Email cant be blank
     ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[      
-    User.create
-   (0.1ms)  begin transaction
-   (0.1ms)  rollback transaction
-     => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false> 
-    2.0.0-p0 :018 > User.create!
-       (0.1ms)  begin transaction
-       (0.1ms)  rollback transaction
-    ActiveRecord::RecordInvalid: Validation failed: Email cant be blank
+    > User.create
+        (0.1ms)  begin transaction
+        (0.1ms)  rollback transaction
+      => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false> 
+    > User.create!
+        (0.1ms)  begin transaction
+        (0.1ms)  rollback transaction
+      ActiveRecord::RecordInvalid: Validation failed: Email cant be blank
     ]]>
   </script>
-
-
- 
 </section><section id="errors" class="slide">
   <h2>errors[]</h2>
 
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[    
-    2.0.0-p0 :019 > User.new.errors[:email].any?
-     => false 
-    2.0.0-p0 :020 > User.create.errors[:email].any?
+    > User.new.errors[:email].any?
+      => false 
+    > User.create.errors[:email].any?
        (0.1ms)  begin transaction
        (0.1ms)  rollback transaction
-     => true 
+      => true 
     ]]>
   </script>
  
 </section><section id="topic-validation-helpers" class="slide">
   <div class="vcenter">
-    <h1>Models</h1>
-    <h2>Validation Helpers</h2>
+    <h1>Active Record Validations</h1>
+    <h2>Helpers</h2>
   </div>
-</section>
-<section id="presence" class="slide">
+</section><section id="presence" class="slide">
   <h2>Presence</h2>
 <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[    
@@ -1244,16 +1231,14 @@
 
 </section><section id="exclusion" class="slide">
   <h2>Exclusion</h2>
-<script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[    
     class User < ActiveRecord::Base
       ...
       validates :first_name, exclusion: { in:  %w(Admin BadDog),  message:  "First name %{value} is invalid." }
     end
-    
     ]]>
   </script>
-
 </section><section id="format" class="slide">
   <h2>Format</h2>
 <script type="syntaxhighlighter" class="brush: ruby">
@@ -1281,12 +1266,12 @@
 </section><section id="length" class="slide">
   <h2>Length</h2>
 
-<script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[ 
-  rails g migration AddCardNumberToUsers card_number:string
-  ]]>
-</script>
-<script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[ 
+    rails g migration AddCardNumberToUsers card_number:string
+    ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[    
     class User < ActiveRecord::Base
       ...
@@ -1303,17 +1288,15 @@
     ]]>
   </script>
 
-  <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[ 
-    :minimum – The attribute cannot have less than the specified length.
-    :maximum – The attribute cannot have more than the specified length.
-    :in (or :within) – The attribute length must be included in a given interval. The value for this option must be a range.
-    :is – The attribute length must be equal to the given value.
-    ]]>
-  </script>
+  <ul>
+    <li><code>:minimum</code> – The attribute cannot have less than the specified length.</li>
+    <li><code>:maximum</code> – The attribute cannot have more than the specified length.</li>
+    <li><code>:in</code> (or <code>:within</code>) – The attribute length must be included in a given interval. The value for this option must be a range.</li>
+    <li><code>:is</code> – The attribute length must be equal to the given value.</li>
+  </ul>
 </section><section id="numericality" class="slide">
   <h2>Numericality</h2>
-<script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[    
     class PostInfo < ActiveRecord::Base
       ...
@@ -1323,18 +1306,15 @@
     ]]>
   </script>
 
-  <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[    
-    :greater_than 
-    :greater_than_or_equal_to 
-    :equal_to 
-    :less_than 
-    :less_than_or_equal_to 
-    :odd 
-    :even 
-    ]]>
-  </script>
-
+  <ul>
+    <li><code>:greater_than</code></li>
+    <li><code>:greater_than_or_equal_to</code></li>
+    <li><code>:equal_to</code></li>
+    <li><code>:less_than</code></li>
+    <li><code>:less_than_or_equal_to</code></li>
+    <li><code>:odd</code></li>
+    <li><code>:even</code></li>
+  </ul>
 </section><section id="uniqueness" class="slide">
   <h2>Uniqueness</h2>
 
@@ -1472,8 +1452,8 @@
 
 </section><section id="topic-custom-validations" class="slide">
   <div class="vcenter">
-    <h1>Models</h1>
-    <h2>Validation Helpers</h2>
+    <h1>Active Record Validations</h1>
+    <h2>Custom Validations</h2>
   </div>
 </section>
 <section id="custom-validators" class="slide">
@@ -1588,8 +1568,7 @@
 
 </section><section id="topic-callbacks" class="slide">
   <div class="vcenter">
-    <h1>Model</h1>
-    <h2>Callbacks</h2>
+    <h1>Active Record Callbacks</h1>
   </div>
 </section>
 <section id="callback-registrations" class="slide">
@@ -1626,39 +1605,35 @@
 </section><section id="availiable-callbacks" class="slide">
   <h2>Availiable Callbacks</h2>
   <h3>Creating an Object</h3>
-  <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[     
-    before_validation
-    after_validation
-    before_save
-    around_save
-    before_create
-    around_create
-    after_create
-    after_save
-    ]]>
-  </script>
+  <ol>
+    <li><code>before_validation</code></li>
+    <li><code>after_validation</code></li>
+    <li><code>before_save</code></li>
+    <li><code>around_save</code></li>
+    <li><code>before_create</code></li>
+    <li><code>around_create</code></li>
+    <li><code>after_create</code></li>
+    <li><code>after_save</code></li>
+  </ol>
+  
   <h3>Updating an Object</h3>
-  <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[      
-    before_validation
-    after_validation
-    before_save
-    around_save
-    before_update
-    around_update
-    after_update
-    after_save
-    ]]>
-  </script>
+  <ol>
+    <li><code>before_validation</code></li>
+    <li><code>after_validation</code></li>
+    <li><code>before_save</code></li>
+    <li><code>around_save</code></li>
+    <li><code>before_update</code></li>
+    <li><code>around_update</code></li>
+    <li><code>after_update</code></li>
+    <li><code>after_save</code></li>
+  </ol>
+    
   <h3>Destroying an Object</h3>
-  <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[     
-    before_destroy
-    around_destroy
-    after_destroy
-    ]]>
-  </script>
+  <ol>
+    <li><code>before_destroy</code></li>
+    <li><code>around_destroy</code></li>
+    <li><code>after_destroy</code></li>
+  </ol>
 </section><section id="after-callbacks" class="slide">
   <h2>After_find and after_initialize</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
@@ -1688,56 +1663,49 @@
 
 </section><section id="running-callbacks" class="slide">
   <h2>Running Callbacks</h2>
-  <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[         
-    create
-    create!
-    decrement!
-    destroy
-    destroy_all
-    increment!
-    save
-    save!
-    save(:validate => false)
-    toggle!
-    update
-    update_attribute
-    update_attributes
-    update_attributes!
-    valid?
-    ]]>
-  </script>
+  <ul>
+    <li><code>create</code></li>
+    <li><code>create!</code></li>
+    <li><code>decrement!</code></li>
+    <li><code>destroy</code></li>
+    <li><code>destroy_all</code></li>
+    <li><code>increment!</code></li>
+    <li><code>save</code></li>
+    <li><code>save!</code></li>
+    <li><code>save(:validate => false)</code></li>
+    <li><code>toggle!</code></li>
+    <li><code>update</code></li>
+    <li><code>update_attribute</code></li>
+    <li><code>update_attributes</code></li>
+    <li><code>update_attributes!</code></li>
+    <li><code>valid?</code></li>
+  </ul>
   <h2>after_find</h2>
-  <script type="syntaxhighlighter" class="brush: ruby">
-   <![CDATA[      
-    all
-    first
-    find
-    find_all_by_attribute
-    find_by_attribute
-    find_by_attribute!
-    last
-    ]]>
-  </script>
+  <ul>
+    <li><code>all</code></li>
+    <li><code>first</code></li>
+    <li><code>find</code></li>
+    <li><code>find_all_by_attribute</code></li>
+    <li><code>find_by_attribute</code></li>
+    <li><code>find_by_attribute!</code></li>
+    <li><code>last</code></li>
+  </ul>
 </section><section id="skipping-callbacks" class="slide">
   <h2>Skipping callbacks</h2>
-  <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[        
-    decrement
-    decrement_counter
-    delete
-    delete_all
-    find_by_sql
-    increment
-    increment_counter
-    toggle
-    touch
-    update_column
-    update_all
-    update_counters
-    ]]>
-  </script>
-
+  <ul>
+    <li><code>decrement</code></li>
+    <li><code>decrement_counter</code></li>
+    <li><code>delete</code></li>
+    <li><code>delete_all</code></li>
+    <li><code>find_by_sql</code></li>
+    <li><code>increment</code></li>
+    <li><code>increment_counter</code></li>
+    <li><code>toggle</code></li>
+    <li><code>touch</code></li>
+    <li><code>update_column</code></li>
+    <li><code>update_all</code></li>
+    <li><code>update_counters</code></li>
+  </ul>
 </section><section id="relational-callbacks" class="slide">
   <h2>Relational Callbacks</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
@@ -1760,13 +1728,13 @@
 
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[     
-    >> user = User.first
-    => #<User id: 1>
-    >> user.posts.create!
-    => #<Post id: 1, user_id: 1>
-    >> user.destroy
-    Post destroyed
-    => #<User id: 1>
+    > user = User.first
+      => #<User id: 1>
+    > user.posts.create!
+      => #<Post id: 1, user_id: 1>
+    > user.destroy
+      # Post destroyed
+      => #<User id: 1>
     ]]>
   </script>
 </section><section id="conditional-callbacks" class="slide">
