@@ -1,0 +1,35 @@
+<section id="factory-girl" class="slide">
+  <h2>factory_girl</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      FactoryGirl.define do
+        factory :user do
+          first_name 'John'
+          last_name  'Doe'
+        end
+
+        factory :admin, parent: :user do
+          admin true
+        end
+      end
+    ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      # Saved instance
+      user = FactoryGirl.create(:user)
+
+      # Unsaved instance
+      user = FactoryGirl.build(:user)
+
+      # Attribute hash (ignores associations)
+      user_attributes = FactoryGirl.attributes_for(:user)
+
+      # Stubbed object
+      user_stub = FactoryGirl.stub(:user)
+
+      # Override attributes
+      user = FactoryGirl.create(:user, first_name: "Jack")
+    ]]>
+  </script>
+</section>

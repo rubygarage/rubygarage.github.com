@@ -1,0 +1,72 @@
+<section id="calculations" class="slide">
+  <h2>Calculations</h2>
+  count
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.count
+      (0.4ms)  SELECT COUNT(*) FROM "users" WHERE "users"."state" = 'pending'
+     => 2
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    User.where(:first_name => 'Ryan').count
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    User.includes("posts").where(first_name: 'Ryan', posts: { published: true }).count
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    User.count(:last_name)
+    ]]>
+  </script>
+
+  average
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > PostInfo.average(:views)
+     (0.5ms)  SELECT AVG("post_infos"."views") AS avg_id FROM "post_infos"
+     => #<BigDecimal:537e948,'0.55E1',18(45)>  
+    ]]>
+  </script>
+
+  minimum
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > PostInfo.minimum(:views)
+      (0.4ms)  SELECT MIN("post_infos"."views") AS min_id FROM "post_infos"
+     => 2 
+    ]]>
+  </script>
+
+  maximum
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > PostInfo.maximum(:views)
+      (0.5ms)  SELECT MAX("post_infos"."views") AS max_id FROM "post_infos"
+     => 9 
+    ]]>
+  </script>
+
+  sum
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > PostInfo.sum(:views)
+      (0.4ms)  SELECT SUM("post_infos"."views") AS sum_id FROM "post_infos"
+     => 11 
+    ]]>
+  </script>
+
+
+
+</section>

@@ -435,7 +435,7 @@
 </section>
 <section id="belongs-to" class="slide">
   <h2>belongs_to</h2>
-  <img src="/assets/belongs_to.png" />
+  <img src="assets/belongs_to.png" />
 </section>
 <section id="belongs-to-in-model" class="slide">
   <h2>belongs_to</h2>
@@ -505,7 +505,7 @@
 </section>
 <section id="has-many" class="slide">
   <h2>has_many</h2>
-  <img src="/assets/has_many.png" />
+  <img src="assets/has_many.png" />
 </section>
 <section id="has_many_in_model" class="slide">
   <h2>has_many</h2>
@@ -563,7 +563,7 @@
   </script>
 </section><section id="has-one" class="slide">
   <h2>has_one</h2>
-  <img src="/assets/has_one.png" />
+  <img src="assets/has_one.png" />
 </section>
 <section id="has-one-in-model" class="slide">
   <h2>has_one</h2>
@@ -634,7 +634,7 @@
 </section>
 <section id="has-many-through" class="slide">
   <h2>has_many :through</h2>
-  <img src="/assets/has_many_through.png" />
+  <img src="assets/has_many_through.png" />
 </section>
 <section id="has-many-through-in-model" class="slide">
   <h2>has_many :through</h2>
@@ -758,7 +758,7 @@
   </script>
 </section><section id="has-one-through" class="slide">
   <h2>has_one :through</h2>
-  <img src="/assets/has_one_through.png" />
+  <img src="assets/has_one_through.png" />
 </section>
 <section id="has-one-through-in-model" class="slide">
   <h2>has_one :through</h2>
@@ -855,7 +855,7 @@
   </script>
 </section><section id="has_and_belongs_to_many" class="slide">
   <h2>has_and_belongs_to_many</h2>
-  <img src="/assets/has_and_belongs_to_many.png" />
+  <img src="assets/has_and_belongs_to_many.png" />
 </section>
 <section id="habtm-in-model" class="slide">
   <h2>has_and_belongs_to_many</h2>
@@ -949,7 +949,7 @@
 
 </section><section id="polymorphic" class="slide">
   <h2>Polymorphic Associations</h2>
-  <img src="/assets/polymorphic.png" />
+  <img src="assets/polymorphic.png" />
 </section>
 <section id="polymorphic-in-model" class="slide">
   <h2>Polymorphic Assosiations</h2>
@@ -1038,46 +1038,37 @@
       => #<Picture id: 2, imageable_id: 1, imageable_type: "Post", file: "public/picture/image.png", created_at: "2013-06-16 21:51:25", updated_at: "2013-06-16 21:51:25">
     ]]>
   </script>
-</section><section id="topic-custom-validations" class="slide">
+</section><section id="topic-validations" class="slide">
   <div class="vcenter">
-    <h1>Models</h1>
-    <h2>Validation Helpers</h2>
+    <h1>Active Record Validations</h1>
   </div>
 </section>
 <section id="when-does-validation-happen" class="slide">
   <h2>When Does Validations Happen?</h2>
-
-  <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[    
-    create
-    create!
-    save
-    save!
-    update
-    update!
-    ]]>
-  </script>
- 
+  <ul>
+    <li><code>create</code></li>
+    <li><code>create!</code></li>
+    <li><code>save</code></li>
+    <li><code>save!</code></li>
+    <li><code>update</code></li>
+    <li><code>update!</code></li>
+  </ul>
 </section><section id="skipping-validations" class="slide">
   <h2>Skiping Validations</h2>
-
-  <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[      
-    decrement!
-    decrement_counter
-    increment!
-    increment_counter
-    toggle!
-    touch
-    update_all
-    update_attribute
-    update_column
-    update_columns
-    update_counters
-    save(validate: false)
-    ]]>
-  </script>
- 
+  <ul>
+    <li><code>decrement!</code></li>
+    <li><code>decrement_counter</code></li>
+    <li><code>increment!</code></li>
+    <li><code>increment_counter</code></li>
+    <li><code>toggle!</code></li>
+    <li><code>touch</code></li>
+    <li><code>update_all</code></li>
+    <li><code>update_attribute</code></li>
+    <li><code>update_column</code></li>
+    <li><code>update_columns</code></li>
+    <li><code>update_counters</code></li>
+    <li><code>save(validate: false)</code></li>
+  </ul>
 </section><section id="valid-invalid" class="slide">
   <h2>valid? and invalid?</h2>
 
@@ -1090,90 +1081,86 @@
     ]]>
   </script>
 
-   <script type="syntaxhighlighter" class="brush: bash">
+  <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[      
-    2.0.0-p0 :001 > User.new(email: "thebestemail@ua.fm").valid?
-     => true 
-    2.0.0-p0 :002 > User.new().valid?
-     => false 
+    > User.new(email: "thebestemail@ua.fm").valid?
+      => true 
+    > User.new().valid?
+      => false 
     ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[      
-    2.0.0-p0 :007 > u = User.new
-     => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false> 
-    2.0.0-p0 :008 > u.errors
-     => #<ActiveModel::Errors:0x00000003001970 @base=#<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>, @messages={}> 
-    2.0.0-p0 :009 > u.valid?
-     => false 
-    2.0.0-p0 :010 > u.errors
-     => #<ActiveModel::Errors:0x00000003001970 @base=#<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>, @messages={:email=>["can't be blank"]}> 
+    > u = User.new
+      => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false> 
+    > u.errors
+      => #<ActiveModel::Errors:0x00000003001970 @base=#<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>, @messages={}> 
+    > u.valid?
+      => false 
+    > u.errors
+      => #<ActiveModel::Errors:0x00000003001970 @base=#<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>, @messages={:email=>["can't be blank"]}> 
     ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[      
-    2.0.0-p0 :011 > u = User.create
-       (0.2ms)  begin transaction
-       (0.1ms)  rollback transaction
-     => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false> 
-    2.0.0-p0 :012 > u.errors
-     => #<ActiveModel::Errors:0x00000003172db8 @base=#<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>, @messages={:email=>["can't be blank"]}> 
+    > u = User.create
+        (0.2ms)  begin transaction
+        (0.1ms)  rollback transaction
+      => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false> 
+    > u.errors
+      => #<ActiveModel::Errors:0x00000003172db8 @base=#<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>, @messages={:email=>["can't be blank"]}> 
     ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[      
-    2.0.0-p0 :013 > u = User.new
-     => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false> 
-    2.0.0-p0 :014 > u.save
-       (0.2ms)  begin transaction
-       (0.1ms)  rollback transaction
-     => false 
-    2.0.0-p0 :015 > u.save!
+    > u = User.new
+      => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false> 
+    > u.save
+        (0.2ms)  begin transaction
+        (0.1ms)  rollback transaction
+      => false 
+    > u.save!
        (0.1ms)  begin transaction
        (0.1ms)  rollback transaction
-    ActiveRecord::RecordInvalid: Validation failed: Email cant be blank
+      ActiveRecord::RecordInvalid: Validation failed: Email cant be blank
     ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[      
-    User.create
-   (0.1ms)  begin transaction
-   (0.1ms)  rollback transaction
-     => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false> 
-    2.0.0-p0 :018 > User.create!
-       (0.1ms)  begin transaction
-       (0.1ms)  rollback transaction
-    ActiveRecord::RecordInvalid: Validation failed: Email cant be blank
+    > User.create
+        (0.1ms)  begin transaction
+        (0.1ms)  rollback transaction
+      => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false> 
+    > User.create!
+        (0.1ms)  begin transaction
+        (0.1ms)  rollback transaction
+      ActiveRecord::RecordInvalid: Validation failed: Email cant be blank
     ]]>
   </script>
-
-
- 
 </section><section id="errors" class="slide">
   <h2>errors[]</h2>
 
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[    
-    2.0.0-p0 :019 > User.new.errors[:email].any?
-     => false 
-    2.0.0-p0 :020 > User.create.errors[:email].any?
+    > User.new.errors[:email].any?
+      => false 
+    > User.create.errors[:email].any?
        (0.1ms)  begin transaction
        (0.1ms)  rollback transaction
-     => true 
+      => true 
     ]]>
   </script>
  
 </section><section id="topic-validation-helpers" class="slide">
   <div class="vcenter">
-    <h1>Models</h1>
-    <h2>Validation Helpers</h2>
+    <h1>Active Record Validations</h1>
+    <h2>Helpers</h2>
   </div>
-</section>
-<section id="presence" class="slide">
+</section><section id="presence" class="slide">
   <h2>Presence</h2>
 <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[    
@@ -1244,16 +1231,14 @@
 
 </section><section id="exclusion" class="slide">
   <h2>Exclusion</h2>
-<script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[    
     class User < ActiveRecord::Base
       ...
       validates :first_name, exclusion: { in:  %w(Admin BadDog),  message:  "First name %{value} is invalid." }
     end
-    
     ]]>
   </script>
-
 </section><section id="format" class="slide">
   <h2>Format</h2>
 <script type="syntaxhighlighter" class="brush: ruby">
@@ -1281,12 +1266,12 @@
 </section><section id="length" class="slide">
   <h2>Length</h2>
 
-<script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[ 
-  rails g migration AddCardNumberToUsers card_number:string
-  ]]>
-</script>
-<script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[ 
+    rails g migration AddCardNumberToUsers card_number:string
+    ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[    
     class User < ActiveRecord::Base
       ...
@@ -1303,17 +1288,15 @@
     ]]>
   </script>
 
-  <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[ 
-    :minimum – The attribute cannot have less than the specified length.
-    :maximum – The attribute cannot have more than the specified length.
-    :in (or :within) – The attribute length must be included in a given interval. The value for this option must be a range.
-    :is – The attribute length must be equal to the given value.
-    ]]>
-  </script>
+  <ul>
+    <li><code>:minimum</code> – The attribute cannot have less than the specified length.</li>
+    <li><code>:maximum</code> – The attribute cannot have more than the specified length.</li>
+    <li><code>:in</code> (or <code>:within</code>) – The attribute length must be included in a given interval. The value for this option must be a range.</li>
+    <li><code>:is</code> – The attribute length must be equal to the given value.</li>
+  </ul>
 </section><section id="numericality" class="slide">
   <h2>Numericality</h2>
-<script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[    
     class PostInfo < ActiveRecord::Base
       ...
@@ -1323,18 +1306,15 @@
     ]]>
   </script>
 
-  <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[    
-    :greater_than 
-    :greater_than_or_equal_to 
-    :equal_to 
-    :less_than 
-    :less_than_or_equal_to 
-    :odd 
-    :even 
-    ]]>
-  </script>
-
+  <ul>
+    <li><code>:greater_than</code></li>
+    <li><code>:greater_than_or_equal_to</code></li>
+    <li><code>:equal_to</code></li>
+    <li><code>:less_than</code></li>
+    <li><code>:less_than_or_equal_to</code></li>
+    <li><code>:odd</code></li>
+    <li><code>:even</code></li>
+  </ul>
 </section><section id="uniqueness" class="slide">
   <h2>Uniqueness</h2>
 
@@ -1472,8 +1452,8 @@
 
 </section><section id="topic-custom-validations" class="slide">
   <div class="vcenter">
-    <h1>Models</h1>
-    <h2>Validation Helpers</h2>
+    <h1>Active Record Validations</h1>
+    <h2>Custom Validations</h2>
   </div>
 </section>
 <section id="custom-validators" class="slide">
@@ -1588,8 +1568,7 @@
 
 </section><section id="topic-callbacks" class="slide">
   <div class="vcenter">
-    <h1>Model</h1>
-    <h2>Callbacks</h2>
+    <h1>Active Record Callbacks</h1>
   </div>
 </section>
 <section id="callback-registrations" class="slide">
@@ -1626,39 +1605,35 @@
 </section><section id="availiable-callbacks" class="slide">
   <h2>Availiable Callbacks</h2>
   <h3>Creating an Object</h3>
-  <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[     
-    before_validation
-    after_validation
-    before_save
-    around_save
-    before_create
-    around_create
-    after_create
-    after_save
-    ]]>
-  </script>
+  <ol>
+    <li><code>before_validation</code></li>
+    <li><code>after_validation</code></li>
+    <li><code>before_save</code></li>
+    <li><code>around_save</code></li>
+    <li><code>before_create</code></li>
+    <li><code>around_create</code></li>
+    <li><code>after_create</code></li>
+    <li><code>after_save</code></li>
+  </ol>
+  
   <h3>Updating an Object</h3>
-  <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[      
-    before_validation
-    after_validation
-    before_save
-    around_save
-    before_update
-    around_update
-    after_update
-    after_save
-    ]]>
-  </script>
+  <ol>
+    <li><code>before_validation</code></li>
+    <li><code>after_validation</code></li>
+    <li><code>before_save</code></li>
+    <li><code>around_save</code></li>
+    <li><code>before_update</code></li>
+    <li><code>around_update</code></li>
+    <li><code>after_update</code></li>
+    <li><code>after_save</code></li>
+  </ol>
+    
   <h3>Destroying an Object</h3>
-  <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[     
-    before_destroy
-    around_destroy
-    after_destroy
-    ]]>
-  </script>
+  <ol>
+    <li><code>before_destroy</code></li>
+    <li><code>around_destroy</code></li>
+    <li><code>after_destroy</code></li>
+  </ol>
 </section><section id="after-callbacks" class="slide">
   <h2>After_find and after_initialize</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
@@ -1688,56 +1663,49 @@
 
 </section><section id="running-callbacks" class="slide">
   <h2>Running Callbacks</h2>
-  <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[         
-    create
-    create!
-    decrement!
-    destroy
-    destroy_all
-    increment!
-    save
-    save!
-    save(:validate => false)
-    toggle!
-    update
-    update_attribute
-    update_attributes
-    update_attributes!
-    valid?
-    ]]>
-  </script>
+  <ul>
+    <li><code>create</code></li>
+    <li><code>create!</code></li>
+    <li><code>decrement!</code></li>
+    <li><code>destroy</code></li>
+    <li><code>destroy_all</code></li>
+    <li><code>increment!</code></li>
+    <li><code>save</code></li>
+    <li><code>save!</code></li>
+    <li><code>save(:validate => false)</code></li>
+    <li><code>toggle!</code></li>
+    <li><code>update</code></li>
+    <li><code>update_attribute</code></li>
+    <li><code>update_attributes</code></li>
+    <li><code>update_attributes!</code></li>
+    <li><code>valid?</code></li>
+  </ul>
   <h2>after_find</h2>
-  <script type="syntaxhighlighter" class="brush: ruby">
-   <![CDATA[      
-    all
-    first
-    find
-    find_all_by_attribute
-    find_by_attribute
-    find_by_attribute!
-    last
-    ]]>
-  </script>
+  <ul>
+    <li><code>all</code></li>
+    <li><code>first</code></li>
+    <li><code>find</code></li>
+    <li><code>find_all_by_attribute</code></li>
+    <li><code>find_by_attribute</code></li>
+    <li><code>find_by_attribute!</code></li>
+    <li><code>last</code></li>
+  </ul>
 </section><section id="skipping-callbacks" class="slide">
   <h2>Skipping callbacks</h2>
-  <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[        
-    decrement
-    decrement_counter
-    delete
-    delete_all
-    find_by_sql
-    increment
-    increment_counter
-    toggle
-    touch
-    update_column
-    update_all
-    update_counters
-    ]]>
-  </script>
-
+  <ul>
+    <li><code>decrement</code></li>
+    <li><code>decrement_counter</code></li>
+    <li><code>delete</code></li>
+    <li><code>delete_all</code></li>
+    <li><code>find_by_sql</code></li>
+    <li><code>increment</code></li>
+    <li><code>increment_counter</code></li>
+    <li><code>toggle</code></li>
+    <li><code>touch</code></li>
+    <li><code>update_column</code></li>
+    <li><code>update_all</code></li>
+    <li><code>update_counters</code></li>
+  </ul>
 </section><section id="relational-callbacks" class="slide">
   <h2>Relational Callbacks</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
@@ -1760,13 +1728,13 @@
 
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[     
-    >> user = User.first
-    => #<User id: 1>
-    >> user.posts.create!
-    => #<Post id: 1, user_id: 1>
-    >> user.destroy
-    Post destroyed
-    => #<User id: 1>
+    > user = User.first
+      => #<User id: 1>
+    > user.posts.create!
+      => #<Post id: 1, user_id: 1>
+    > user.destroy
+      # Post destroyed
+      => #<User id: 1>
     ]]>
   </script>
 </section><section id="conditional-callbacks" class="slide">
@@ -1818,7 +1786,1435 @@
     end
   ]]>
   </script>
+</section><section id="topic-query-interface" class="slide">
+  <div class="vcenter">
+    <h1>Query Interface</h1>
+  </div>
 </section>
+<section id="retrieving-methods" class="slide">
+  <h2>Retrieving Objects from the Database</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    bind
+    create_with
+    eager_load
+    extending
+    from
+    group
+    having
+    includes
+    joins
+    limit
+    lock
+    none
+    offset
+    order
+    preload
+    readonly
+    references
+    reorder
+    reverse_order
+    select
+    distinct
+    uniq
+    where 
+    ]]>
+  </script>
+
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      ActiveRecord::Relation 
+    ]]>
+  </script>
+ </section><section id="retrieving-single-object" class="slide">
+  <h2>Retrieving a Single Object</h2>
+  Using a Primary Key
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.find(1)
+      User Load (0.4ms)  SELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT 1  [["id", 1]]
+     => #<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false> 
+    ]]>
+  </script>
+  take
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.take
+      User Load (0.5ms)  SELECT "users".* FROM "users" LIMIT 1
+     => #<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false> 
+    ]]>
+  </script>
+ 
+  first
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.first
+      User Load (0.6ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT 1
+     => #<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false> 
+  </script>
+
+  last
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.last
+      User Load (0.5ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" DESC LIMIT 1
+     => #<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false> 
+  </script>
+  take, first, last, find_by returns nil if no matching record is found and no exception will be raised.
+  take!, first!, last!, find_by! raise ActiveRecord::RecordNotFound if no matching record is found.
+
+  find_by
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.find_by first_name: "Anna"
+      User Load (0.5ms)  SELECT "users".* FROM "users" WHERE "users"."first_name" = 'Anna' LIMIT 1
+     => #<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false> 
+  </script>
+
+    <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.find_by first_name: "Anna", email: "some@ua.fm"
+      User Load (0.5ms)  SELECT "users".* FROM "users" WHERE "users"."first_name" = 'Anna' AND "users"."email" = 'some@ua.fm' LIMIT 1
+     => nil 
+  </script>
+
+
+ </section><section id="retrieving-multiple-objects" class="slide">
+  <h2>Retrieving Multiple Objects</h2>
+  Using Multiple Primary Keys
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.find([1, 2]) # User.find(1, 2)
+      User Load (0.7ms)  SELECT "users".* FROM "users" WHERE "users"."id" IN (1, 2)
+     => [#<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>, #<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>]
+    ]]>
+  </script>
+  take
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.take(2)
+      User Load (0.5ms)  SELECT "users".* FROM "users" LIMIT 2
+     => [#<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>, #<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>] 
+    ]]>
+  </script>
+ 
+  first
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+   > User.first(2)
+      User Load (0.5ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT 2
+     => [#<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>, #<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>] 
+  </script>
+
+  last
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.last(2)
+      User Load (0.6ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" DESC LIMIT 2
+     => [#<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>, #<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>] 
+  </script>
+ </section><section id="retrieving-multiple-in-batches" class="slide">
+  <h2>Retrieving Multiple Objects in Batches</h2>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.all.each do |user|
+        puts user.first_name
+      end
+      User Load (0.5ms)  SELECT "users".* FROM "users"
+      Anna
+      Vanka
+       => [#<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>, #<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>] 
+    ]]>
+  </script>
+
+  find_each
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.find_each do |user|
+        puts user.first_name
+      end
+      User Load (0.7ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT 1000
+      Anna
+      Vanka
+       => nil 
+    ]]>
+  </script>
+
+  :batch_size
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.find_each(batch_size: 1) do |user|
+        puts user.first_name
+      end
+        User Load (0.3ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT 1
+      Anna
+        User Load (0.2ms)  SELECT "users".* FROM "users" WHERE ("users"."id" > 1) ORDER BY "users"."id" ASC LIMIT 1
+      Vanka
+        User Load (0.1ms)  SELECT "users".* FROM "users" WHERE ("users"."id" > 2) ORDER BY "users"."id" ASC LIMIT 1
+       => nil
+    ]]>
+  </script>
+
+  :start
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.find_each(start: 2, batch_size: 1) do |user|
+        puts user.first_name
+      end
+        User Load (0.7ms)  SELECT "users".* FROM "users" WHERE ("users"."id" >= 2) ORDER BY "users"."id" ASC LIMIT 1
+        Vanka
+          User Load (0.6ms)  SELECT "users".* FROM "users" WHERE ("users"."id" > 2) ORDER BY "users"."id" ASC LIMIT 1
+         => nil 
+    ]]>
+  </script>
+
+  find_in_batches
+
+    <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > Post.find_in_batches(include: :tags) do |posts|
+        puts posts.map(&:tags)
+      end
+      Post Load (0.5ms)  SELECT "posts".* FROM "posts" ORDER BY "posts"."id" ASC LIMIT 1000
+      SQL (0.5ms)  SELECT "tags".*, "t0"."post_id" AS ar_association_key_name FROM "tags" INNER JOIN "posts_tags" "t0" ON "tags"."id" = "t0"."tag_id" WHERE "t0"."post_id" IN (1, 2)
+      #<Tag:0x00000004920618>
+    ]]>
+  </script> 
+</section><section id="conditions" class="slide">
+  <h2>Conditions</h2>
+  String conditions
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.where("first_name = 'Anna'")
+    User Load (0.4ms)  SELECT "users".* FROM "users" WHERE (first_name = 'Anna')
+     => #<ActiveRecord::Relation [#<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>]> 
+    
+    ]]>
+  </script>
+
+  Array conditions
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    User.where("email = ?", params[:email])
+    ]]>
+  </script>
+  
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    User.where("last_name = ? AND receive_news = ?", params[:last_name], true)
+    ]]>
+  </script>
+
+  Placeholder conditions
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > Payment.where("created_at >= :start_date", { start_date: 10.days.ago })
+    Payment Load (0.1ms)  SELECT "payments".* FROM "payments" WHERE (created_at >= '2013-06-13 18:56:01.086812')
+      => #<ActiveRecord::Relation []> 
+    ]]>
+  </script>
+
+  Hash conditions
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    User.where(first_name: 'Anna')
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    User.where('first_name' => 'Anna')
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    > Post.where(user: User.first)
+    SELECT "posts".* FROM "posts" WHERE "posts"."user_id" = 1
+      => #<ActiveRecord::Relation []>
+    ]]>
+  </script>
+
+  Range conditions
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+      > User.where(created_at: (Time.now.midnight - 1.day)..Time.now.midnight)
+      User Load (0.5ms)  SELECT "users".* FROM "users" WHERE ("users"."created_at" BETWEEN '2013-06-21 21:00:00.000000' AND '2013-06-22 21:00:00.000000')
+        => #<ActiveRecord::Relation []> 
+    ]]>
+  </script>
+
+  Subset conditions
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+      > Tag.where(name: ['cooking', 'programming'])
+      SELECT "tags".* FROM "tags" WHERE "tags"."name" IN ('cooking', 'programming')
+        => #<ActiveRecord::Relation []>
+    ]]>
+  </script>
+
+  NOT conditions
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+      > Post.where.not(user: User.first)
+      User Load (0.2ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT 1
+      Post Load (0.2ms)  SELECT "posts".* FROM "posts" WHERE ("posts"."user_id" != 1)
+       => #<ActiveRecord::Relation []> 
+    ]]>
+  </script>
+</section><section id="ordering" class="slide">
+  <h2>Ordering</h2>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.order("created_at")
+        SELECT "users".* FROM "users" ORDER BY created_at
+     => #<ActiveRecord::Relation [#<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>, #<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>]>    
+    ]]>
+  </script>
+  ASC, DESC
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      User.order("created_at ASC") 
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      User.order("created_at DESC") 
+    ]]>
+  </script>
+
+  ordering by multiple fields
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      User.order("id ASC,created_at DESC") 
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      User.order("id ASC").order("created_at DESC") 
+    ]]>
+  </script>
+ </section><section id="selecting" class="slide">
+  <h2>Selecting</h2>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    User.select("first_name, email")
+    User Load (0.4ms)  SELECT first_name, email FROM "users"
+     => #<ActiveRecord::Relation [#<User id: nil, first_name: "Anna", email: "happy_ann@gmail.com">, #<User id: nil, first_name: "Van'ka", email: "vanka@yandex.ru">]>      
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+      User.select("status")
+      User Load (0.6ms)  SELECT status FROM "users"
+      SQLite3::SQLException: no such column: status: SELECT status FROM "users"
+      ActiveRecord::StatementInvalid: SQLite3::SQLException: no such column: status: SELECT status FROM "users"
+    ]]>
+  </script>
+
+  distinct
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+      > User.select(:first_name).distinct
+      User Load (0.5ms)  SELECT DISTINCT first_name FROM "users"
+       => #<ActiveRecord::Relation [#<User id: nil, first_name: "Anna">, #<User id: nil, first_name: "Van'ka">]> 
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    query = User.select(:name).distinct
+    query.distinct(false) 
+    ]]>
+  </script>  
+ </section><section id="limit-and-offset" class="slide">
+  <h2>Limit and Offset</h2>
+   limit
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+      > User.limit(5)
+       User Load (0.6ms)  SELECT "users".* FROM "users" LIMIT 5
+       => #<ActiveRecord::Relation [#<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>, #<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>]>
+    ]]>
+  </script>
+
+  offset
+    <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+      > User.limit(5).offset(1)
+      User Load (0.5ms)  SELECT "users".* FROM "users" LIMIT 5 OFFSET 1
+      => #<ActiveRecord::Relation [#<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>]>   
+    ]]>
+  </script>
+</section><section id="group" class="slide">
+  <h2>Group</h2>
+   
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > Post.select("date(created_at), user_id").group("user_id")
+      Post Load (0.6ms)  SELECT date(created_at), user_id FROM "posts" GROUP BY user
+      _id
+     => #<ActiveRecord::Relation [#<Post id: nil, user_id: 1>, #<Post id: nil, user_id: 2>]>
+    ]]>
+  </script>
+
+</section><section id="having" class="slide">
+  <h2>Having</h2>
+   
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > Post.select("date(created_at), user_id").group("user_id").having(title: "First step")
+      Post Load (0.6ms)  SELECT date(created_at), user_id FROM "posts" GROUP BY user_id HAVING "posts"."title" = 'First step'
+     => #<ActiveRecord::Relation [#<Post id: nil, user_id: 2>]> 
+    ]]>
+  </script>
+
+</section><section id="overriding-conditions" class="slide">
+<h2>Overriding Conditions</h2>
+
+except   
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > Post.where('id > 2').limit(2).except(:title)
+      Post Load (0.5ms)  SELECT "posts".* FROM "posts" WHERE (id > 2) LIMIT 2
+     => #<ActiveRecord::Relation [#<Post id: 3, text: "New post", user_id: 1, created_at: "2013-06-02 19:06:35", updated_at: "2013-06-02 19:06:35", title: nil, published: nil>, #<Post id: 4, text: "Some text", user_id: 2, created_at: "2013-06-23 20:18:11", updated_at: "2013-06-23 20:18:11", title: "First step", published: nil>]>       
+    ]]>
+  </script>
+
+  unscope
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[      
+      Post.order('id DESC').limit(20).unscope(:order) = Post.limit(20)
+      Post.order('id DESC').limit(20).unscope(:order, :limit) = Post.all
+    ]]>
+  </script>
+
+  only
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[      
+    > Post.where('id > 2').limit(2).order('id desc')
+     Post Load (0.5ms)  SELECT "posts".* FROM "posts" WHERE (id > 2) ORDER BY id desc LIMIT 2
+      => #<ActiveRecord::Relation [#<Post id: 5, text: "Some another text", user_id: 2, created_at: "2013-06-23 20:18:23", updated_at: "2013-06-23 20:18:23", title: "First step", published: nil>, #<Post id: 4, text: "Some text", user_id: 2, created_at: "2013-06-23 20:18:11", updated_at: "2013-06-23 20:18:11", title: "First step", published: nil>]> 
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[      
+    > Post.where('id > 2').limit(2).order('id desc').only(:order, :where)
+      Post Load (0.5ms)  SELECT "posts".* FROM "posts" WHERE (id > 2) ORDER BY id desc
+      => #<ActiveRecord::Relation [#<Post id: 5, text: "Some another text", user_id: 2, created_at: "2013-06-23 20:18:23", updated_at: "2013-06-23 20:18:23", title: "First step", published: nil>, #<Post id: 4, text: "Some text", user_id: 2, created_at: "2013-06-23 20:18:11", updated_at: "2013-06-23 20:18:11", title: "First step", published: nil>, #<Post id: 3, text: "New post", user_id: 1, created_at: "2013-06-02 19:06:35", updated_at: "2013-06-02 19:06:35", title: nil, published: nil>]>  
+    ]]>
+  </script>
+
+  reorder
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class User <  ActiveRecord::Base  
+      ...
+      has_many :posts, -> { order('created_at DESC') }
+    end       
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.find(2).posts.reorder('title') 
+      User Load (0.3ms)  SELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT 1  [["id", 2]]
+      Post Load (0.6ms)  SELECT "posts".* FROM "posts" WHERE "posts"."user_id" = ? ORDER BY title  [["user_id", 2]]
+     => #<ActiveRecord::Relation [#<Post id: 4, text: "Some text", user_id: 2, created_at: "2013-06-23 20:18:11", updated_at: "2013-06-23 20:18:11", title: "First step", published: nil>, #<Post id: 5, text: "Some another text", user_id: 2, created_at: "2013-06-23 20:18:23", updated_at: "2013-06">]
+    ]]>
+  </script>
+  reverse_order
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.order(:created_at)
+    User Load (0.6ms)  SELECT "users".* FROM "users" ORDER BY "users".created_at ASC
+      => #<ActiveRecord::Relation [#<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>, #<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>]> 
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.order(:created_at).reverse_order
+    User Load (0.6ms)  SELECT "users".* FROM "users" ORDER BY "users".created_at DESC
+      => #<ActiveRecord::Relation [#<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>, #<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>]> 
+    ]]>
+  </script>
+</section><section id="null-relation" class="slide">
+  <h2>Null Relation</h2>
+   
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    Post.none # returns an empty Relation and fires no queries.
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    # The visible_posts method below is expected to return a Relation.
+      @posts = current_user.visible_posts.where(title: params[:title])
+       
+      def visible_posts
+        case role
+        when 'Reviewer'
+          Post.published
+        when 'Bad User'
+          Post.none 
+        end
+      end
+    ]]>
+  </script>
+</section><section id="readonly" class="slide">
+  <h2>Readonly</h2>
+   
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    user  = User.readonly.first
+    user.first_name = "Anny"
+    user.save
+
+    ActiveRecord::ReadOnlyRecord: ActiveRecord::ReadOnlyRecord    
+    ]]>
+  </script>
+
+</section><section id="locking" class="slide">
+  <h2>Locking Records for Update</h2>
+
+  Optimistic locking
+   
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    lock_version Integer
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    u1 = User.find(1)
+    u2 = User.find(1)
+ 
+    u1.first_name = "Michael"
+    u1.save
+ 
+    u2.first_name = "should fail"
+    u2.save # Raises an ActiveRecord::StaleObjectError
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    ActiveRecord::Base.lock_optimistically = false
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class User < ActiveRecord::Base
+      self.locking_column = :lock_user_column
+end
+    ]]>
+  </script>
+
+  Pessimistic locking
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    User.transaction do
+      user = User.lock.first
+      user.first_name = 'Marta'
+      user.save
+    end    
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    User Load (0.5ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT 1
+    SQL (2.6ms)  UPDATE "users" SET "first_name" = ?, "updated_at" = ? WHERE "users"."id" = 1  [["first_name", "Marta"], ["updated_at", Sun, 23 Jun 2013 21:02:23 UTC +00:00]]
+     (119.9ms)  commit transaction
+   => true     
+    ]]>
+  </script>
+
+</section><section id="joining-tables" class="slide">
+  <h2>Joining Tables</h2>
+
+  Using a String SQL Fragmen
+   
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > users = User.joins('LEFT OUTER JOIN posts ON posts.user_id = users.id')
+        User Load (0.3ms)  SELECT "users".* FROM "users" LEFT OUTER JOIN posts ON posts.user_id = users.id
+     => #<ActiveRecord::Relation [#<User id: 1, first_name: "Marta", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-23 21:02:23", last_name: nil, receive_news: false>, #<User id: 1, first_name: "Marta", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-23 21:02:23", last_name: nil, receive_news: false>, #<User id: 1, first_name: "Marta", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-23 21:02:23", last_name: nil, receive_news: false>, #<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>, #<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>]>
+
+    > users.length
+      User Load (0.7ms)  SELECT "users".* FROM "users" LEFT OUTER JOIN posts ON posts.user_id = users.id
+     => 5 
+
+    > Post.all.length
+      Post Load (0.5ms)  SELECT "posts".* FROM "posts"
+     => 5 
+    ]]>
+  </script>
+
+  Joining a Single Association
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.joins(:posts)
+    User Load (0.5ms)  SELECT "users".* FROM "users" INNER JOIN "posts" ON "posts"."user_id" = "users"."id"
+    ]]>
+  </script>
+
+  Joining Multiple Associations
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > Post.joins(:tags, :blog)
+      Post Load (0.6ms)  SELECT "posts".* FROM "posts" INNER JOIN "posts_tags" ON "posts_tags"."post_id" = "posts"."id" INNER JOIN "tags" ON "tags"."id" = "posts_tags"."tag_id" INNER JOIN "blogs" ON "blogs"."id" = "posts"."blog_id"
+     => #<ActiveRecord::Relation [#<Post id: 5, text: "Some another text", user_id: 2, created_at: "2013-06-23 20:18:23", updated_at: "2013-06-23 21:24:37", title: "First step", published: nil, blog_id: 1>]> 
+        ]]>
+  </script>
+
+  Joining Nested Associations (Single Level)
+
+   <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+       > Post.joins(blog: :users)
+        Post Load (0.2ms)  SELECT "posts".* FROM "posts" INNER JOIN "blogs" ON "blogs"."id" = "posts"."blog_id" INNER JOIN "subscriptions" ON "subscriptions"."blog_id" = "blogs"."id" INNER JOIN "users" ON "users"."id" = "subscriptions"."user_id" 
+    ]]>
+  </script>
+
+  Joining Nested Associations (Multiple Level)
+
+   <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+       > User.joins(posts: [{blog: :subscriptions}, :tags])
+        User Load (0.8ms)  SELECT "users".* FROM "users" INNER JOIN "posts" ON "posts"."user_id" = "users"."id" INNER JOIN "blogs" ON "blogs"."id" = "posts"."blog_id" INNER JOIN "subscriptions" ON "subscriptions"."blog_id" = "blogs"."id" INNER JOIN "posts_tags" ON "posts_tags"."post_id" = "posts"."id" INNER JOIN "tags" ON "tags"."id" = "posts_tags"."tag_id" WHERE "users"."state" = 'pending'
+    ]]>
+  </script>
+
+  Specifying Conditions on the Joined Tables
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.joins(:posts).where('posts.created_at' => (Time.now.midnight - 1.day)..Time.now.midnight)
+      User Load (0.5ms)  SELECT "users".* FROM "users" INNER JOIN "posts" ON "posts"."user_id" = "users"."id" WHERE ("posts"."created_at" BETWEEN '2013-06-22 21:00:00.000000' AND '2013-06-23 21:00:00.000000')
+     => #<ActiveRecord::Relation [#<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>, #<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>]>    
+        ]]>
+  </script>
+
+
+
+
+</section><section id="eager-loading-associations" class="slide">
+  <h2>Eager Loading Associations</h2>
+   
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    users = User.limit(10)
+    
+    users.each do |user|
+      puts user.posts.map(&:title)
+    end
+
+    User Load (0.6ms)  SELECT "users".* FROM "users" LIMIT 10
+      => #<ActiveRecord::Relation [#<User id: 1, first_name: "Marta", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-23 21:02:23", last_name: nil, receive_news: false>, #<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>]> 
+    Post Load (0.6ms)  SELECT "posts".* FROM "posts" WHERE "posts"."user_id" = ?  [["user_id", 1]]
+    =>
+    Post Load (0.3ms)  SELECT "posts".* FROM "posts" WHERE "posts"."user_id" = ?  [["user_id", 2]]
+
+    => First step
+       First step   
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    users = User.includes(:posts).limit(10)
+ 
+    users.each do |user|
+      puts user.posts.map(&:title)
+    end
+    
+    User Load (0.6ms)  SELECT "users".* FROM "users" LIMIT 10
+    Post Load (0.3ms)  SELECT "posts".* FROM "posts" WHERE "posts"."user_id" IN (1, 2)
+      => #<ActiveRecord::Relation [#<User id: 1, first_name: "Marta", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-23 21:02:23", last_name: nil, receive_news: false>, #<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>]> 
+      =>
+      =>  First step
+          First step
+      => [#<User id: 1, first_name: "Marta", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-23 21:02:23", last_name: nil, receive_news: false>, #<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>] 
+    ]]>
+  </script>
+  Array of Multiple Associations
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    >p =  Post.includes(:blog, :tags)
+      Post Load (0.5ms)  SELECT "posts".* FROM "posts"
+      Blog Load (0.3ms)  SELECT "blogs".* FROM "blogs" WHERE "blogs"."id" IN (1)
+      SQL (0.3ms)  SELECT "tags".*, "t0"."post_id" AS ar_association_key_name FROM "tags" INNER JOIN "posts_tags" "t0" ON "tags"."id" = "t0"."tag_id" WHERE "t0"."post_id" IN (1, 2, 3, 4, 5)  
+       => #<ActiveRecord::Relation [#<Post id: 1, text: "I'm so happy today", user_id: 1, created_at: "2013-06-02 18:43:10", updated_at: "2013-06-02 18:43:10", title: nil, published: nil, blog_id: nil>, #<Post id: 2, text: "I'm waiting", user_id: 1, created_at: "2013-06-02 19:01:45", updated_at: "2013-06-02 19:01:45", title: nil, published: nil, blog_id: nil>, #<Post id: 3, text: "New post", user_id: 1, created_at: "2013-06-02 19:06:35", updated_at: "2013-06-02 19:06:35", title: nil, published: nil, blog_id: nil>, #<Post id: 4, text: "Some text", user_id: 2, created_at: "2013-06-23 20:18:11", updated_at: "2013-06-23 20:18:11", title: "First step", published: nil, blog_id: nil>, #<Post id: 5, text: "Some another text", user_id: 2, created_at: "2013-06-23 20:18:23", updated_at: "2013-06-23 21:24:37", title: "First step", published: nil, blog_id: 1>]> 
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > p.first.tags
+     => #<ActiveRecord::Associations::CollectionProxy []> 
+    ]]>
+  </script>
+
+  Nested Associations Hash
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.includes([:subscriptions, {:posts => [:tags]}]).find(1)
+      User Load (1.9ms)  SELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT 1  [["id", 1]]
+      Subscription Load (0.1ms)  SELECT "subscriptions".* FROM "subscriptions" WHERE "subscriptions"."user_id" IN (1)
+      Post Load (0.2ms)  SELECT "posts".* FROM "posts" WHERE "posts"."user_id" IN (1)
+      SQL (0.2ms)  SELECT "tags".*, "t0"."post_id" AS ar_association_key_name FROM "tags" INNER JOIN "posts_tags" "t0" ON "tags"."id" = "t0"."tag_id" WHERE "t0"."post_id" IN (1, 2, 3)
+     => #<User id: 1, first_name: "Marta", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-23 21:02:23", last_name: nil, receive_news: false>
+    ]]>
+  </script>
+
+  Specifying Conditions on Eager Loaded Associations
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > p = Post.includes(:tags).where("tags.name != 'nil'")
+      SQL (0.7ms)  SELECT "posts"."id" AS t0_r0, "posts"."text" AS t0_r1, "posts"."user_id" AS t0_r2, "posts"."created_at" AS t0_r3, "posts"."updated_at" AS t0_r4, "posts"."title" AS t0_r5, "posts"."published" AS t0_r6, "posts"."blog_id" AS t0_r7, "tags"."id" AS t1_r0, "tags"."name" AS t1_r1, "tags"."created_at" AS t1_r2, "tags"."updated_at" AS t1_r3 FROM "posts" LEFT OUTER JOIN "posts_tags" ON "posts_tags"."post_id" = "posts"."id" LEFT OUTER JOIN "tags" ON "tags"."id" = "posts_tags"."tag_id" WHERE (tags.name != 'nil')
+      => #<ActiveRecord::Relation [#<Post id: 5, text: "Some another text", user_id: 2, created_at: "2013-06-23 20:18:23", updated_at: "2013-06-23 21:24:37", title: "First step", published: nil, blog_id: 1>]> 
+    > p.first.tags
+    => #<ActiveRecord::Associations::CollectionProxy [#<Tag id: 1, name: "good", created_at: "2013-06-23 21:25:07", updated_at: "2013-06-23 21:25:07">]> 
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > p = Post.includes(:tags).where("tags.name != 'nil'").references(:tags)
+    SQL (0.7ms)  SELECT "posts"."id" AS t0_r0, "posts"."text" AS t0_r1, "posts"."user_id" AS t0_r2, "posts"."created_at" AS t0_r3, "posts"."updated_at" AS t0_r4, "posts"."title" AS t0_r5, "posts"."published" AS t0_r6, "posts"."blog_id" AS t0_r7, "tags"."id" AS t1_r0, "tags"."name" AS t1_r1, "tags"."created_at" AS t1_r2, "tags"."updated_at" AS t1_r3 FROM "posts" LEFT OUTER JOIN "posts_tags" ON "posts_tags"."post_id" = "posts"."id" LEFT OUTER JOIN "tags" ON "tags"."id" = "posts_tags"."tag_id" WHERE (tags.name != 'nil')
+    ]]>
+  </script>
+</section><section id="scopes" class="slide">
+  <h2>Scopes</h2>
+   
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class Post < ActiveRecord::Base
+      ...
+      scope :published, -> { where(published: true) }
+    end    
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    class Post < ActiveRecord::Base
+      ...
+      def self.published
+        where(published: true)
+      end
+    end    
+    ]]>
+  </script>
+
+   <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class Post < ActiveRecord::Base
+      scope :published,               -> { where(published: true) }
+      scope :published_with_tags, -> { published.where("tags_count > 0") }
+    end  
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      Post.published
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      Tags.first.posts.published
+    ]]>
+  </script>
+
+  Passing in arguments
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class Post < ActiveRecord::Base
+      ...
+      scope :created_before, ->(time) { where("created_at < ?", time) }
+    end    
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+     Post.created_before(Time.now)
+    ]]>
+  </script>
+
+  Merging of scopes
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    rails g migration AddStateToUser state:string
+    ]]>
+  </script>
+
+   <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    class User < ActiveRecord::Base
+      scope :active, -> { where state: 'active' }
+      scope :inactive, -> { where state: 'inactive' }
+    end
+    ]]>
+  </script>
+
+ <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.active.inactive
+      User Load (0.2ms)  SELECT "users".* FROM "users" WHERE "users"."state" = 'active' AND "users"."state" = 'inactive'
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.active.where(state: 'finished')
+      User Load (0.5ms)  SELECT "users".* FROM "users" WHERE "users"."state" = 'active' AND "users"."state" = 'finished'  
+    ]]>
+  </script>
+
+If we do want the last where clause to win
+<script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.active.merge(User.inactive)
+      User Load (0.6ms)  SELECT "users".* FROM "users" WHERE "users"."state" = 'inactive'
+    ]]>
+  </script>
+
+default_scope
+- will be applied across all queries
+- will be overridden by scope and where conditions
+<script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+  class User < ActiveRecord::Base
+    default_scope { where state: 'pending' }
+    scope :active, -> { where state: 'active' }
+    scope :inactive, -> { where state: 'inactive' }
+  end
+  ]]>
+</script>
+
+<script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+  > User.all
+    User Load (0.2ms)  SELECT "users".* FROM "users" WHERE "users"."state" = 'pending'
+  ]]>
+</script>
+
+<script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+  > User.active 
+    User Load (0.6ms)  SELECT "users".* FROM "users" WHERE "users"."state" = 'active'
+  ]]>
+</script>
+
+<script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+  > User.where(state: 'inactive')
+    User Load (0.6ms)  SELECT "users".* FROM "users" WHERE "users"."state" = 'inactive'    
+  ]]>
+</script>
+
+Removing All Scoping
+
+<script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+  > User.unscoped.all
+    SELECT "users".* FROM "users"      
+  ]]>
+</script>
+
+<script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+  > User.unscoped.load
+    User Load (0.5ms)  SELECT "users".* FROM "users"
+   => #<ActiveRecord::Relation [#<User id: 1, first_name: "Anna", email: "ann@ua.fm", password: "111111", created_at: "2013-06-24 08:52:36", updated_at: "2013-06-24 08:52:36", last_name: nil, receive_news: true, state: "active">, #<User id: 2, first_name: "Gregory", email: "greg@ua.fm", password: "111111", created_at: "2013-06-24 08:53:24", updated_at: "2013-06-24 08:53:24", last_name: "Taunsend", receive_news: false, state: "inactive">]>      
+  ]]>
+</script>
+
+<script type="syntaxhighlighter" class="brush: bash">
+  <![CDATA[
+  > User.unscoped.to_a
+    User Load (0.5ms)  SELECT "users".* FROM "users"
+   => [#<User id: 1, first_name: "Anna", email: "ann@ua.fm", password: "111111", created_at: "2013-06-24 08:52:36", updated_at: "2013-06-24 08:52:36", last_name: nil, receive_news: true, state: "active">, #<User id: 2, first_name: "Gregory", email: "greg@ua.fm", password: "111111", created_at: "2013-06-24 08:53:24", updated_at: "2013-06-24 08:53:24", last_name: "Taunsend", receive_news: false, state: "inactive">]         
+  ]]>
+</script>
+</section><section id="find-or-build" class="slide">
+  <h2>Find or Build a New Object</h2>
+
+  find_or_create_by
+   
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.find_or_create_by(first_name: 'Mark')
+      User Load (0.5ms)  SELECT "users".* FROM "users" WHERE "users"."state" = 'pending' AND "users"."first_name" = 'Mark' LIMIT 1
+       (0.3ms)  begin transaction
+      SQL (3.8ms)  INSERT INTO "users" ("created_at", "first_name", "state", "updated_at") VALUES (?, ?, ?, ?)  [["created_at", Mon, 24 Jun 2013 09:26:43 UTC +00:00], ["first_name", "Mark"], ["state", "pending"], ["updated_at", Mon, 24 Jun 2013 09:26:43 UTC +00:00]]
+       (134.1ms)  commit transaction
+     => #<User id: 3, first_name: "Mark", email: nil, password: nil, created_at: "2013-06-24 09:26:43", updated_at: "2013-06-24 09:26:43", last_name: nil, receive_news: false, state: "pending"> 
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    >  User.find_or_create_by(first_name: 'Mark')
+      User Load (0.6ms)  SELECT "users".* FROM "users" WHERE "users"."state" = 'pending' AND "users"."first_name" = 'Mark' LIMIT 1
+     => #<User id: 3, first_name: "Mark", email: nil, password: nil, created_at: "2013-06-24 09:26:43", updated_at: "2013-06-24 09:26:43", last_name: nil, receive_news: false, state: "pending"> 
+    ]]>
+  </script>
+
+  find_or_create_by! raises an exception if the new record is invalid
+
+  create_with
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    User.create_with(locked: false).find_or_create_by(first_name: 'Alice')    
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    User.find_or_create_by(first_name: 'Andy') do |c|
+      c.locked = false
+    end  
+    ]]>
+  </script>
+
+  find_or_initialize_by
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > clark = User.find_or_initialize_by(first_name: 'Clark')
+      User Load (0.5ms)  SELECT "users".* FROM "users" WHERE "users"."state" = 'pending' AND "users"."first_name" = 'Clark' LIMIT 1
+     => #<User id: nil, first_name: "Clark", email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false, state: "pending">     
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > clark.persisted?
+     => false   
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > clark.new_record?
+     => true  
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > clark.save
+    ]]>
+  </script>
+</section><section id="finding-by-sql" class="slide">
+  <h2>Finding by SQL</h2>
+
+  find_by_sql 
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    >   User.find_by_sql("SELECT * FROM users INNER JOIN posts ON users.id = posts.user_id")
+      User Load (0.7ms)  SELECT * FROM users INNER JOIN posts ON users.id = posts.user_id
+     => [#<User id: 1, first_name: "Anna", email: "ann@ua.fm", password: "111111", created_at: "2013-06-24 08:54:47", updated_at: "2013-06-24 08:54:47", last_name: nil, receive_news: true, state: "active">, #<User id: 2, first_name: "Gregory", email: "greg@ua.fm", password: "111111", created_at: "2013-06-24 08:55:25", updated_at: "2013-06-24 08:55:25", last_name: "Taunsend", receive_news: false, state: "inactive">] 
+    ]]>
+  </script>
+
+  select_all
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > Post.connection.select_all("SELECT * FROM posts WHERE id = '1'")
+       (0.5ms)  SELECT * FROM posts WHERE id = '1'
+     => #<ActiveRecord::Result:0x0000000398efb0 @columns=["id", "text", "user_id", "created_at", "updated_at", "title", "published", "blog_id"], @rows=[[1, "Every trip begins with the first step", 1, "2013-06-24 08:54:47.619258", "2013-06-24 08:54:47.619258", "1000 miles", nil, nil]], @hash_rows=nil, @column_types={}>     
+    ]]>
+  </script>
+
+  pluck
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+      > User.where(state: "active").pluck(:id)
+        (0.5ms)  SELECT "users"."id" FROM "users" WHERE "users"."state" = 'active'
+       => [1]       
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.distinct.pluck(:first_name)
+      (0.5ms)  SELECT DISTINCT "users"."first_name" FROM "users" WHERE "users"."state" = 'pending'
+     => ["Mark", "Alice"]               
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.pluck(:id,:first_name)
+      (0.4ms)  SELECT "users"."id", "users"."first_name" FROM "users" WHERE "users"."state" = 'pending'
+     => [[3, "Mark"], [4, "Alice"]] 
+          
+    ]]>
+  </script>
+  
+  pluck allows to replace code
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    User.select(:id).map { |u| u.id }
+    # or
+    User.select(:id).map(&:id)
+    # or
+    User.select(:id, :first_name).map { |u| [u.id, u.first_name] }          
+    ]]>
+  </script>
+
+  with
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+      User.pluck(:id)
+      # or
+      User.pluck(:id, :first_name)      
+    ]]>
+  </script>
+
+  ids
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.ids   
+      (0.5ms)  SELECT id FROM "users" WHERE "users"."state" = 'pending'
+      => [3, 4] 
+   
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class User < ActiveRecord::Base
+      self.primary_key = "user_id"
+    end       
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+      > User.ids 
+      (0.2ms)  SELECT user_id FROM "users" WHERE "users"."state" = 'pending'   
+    ]]>
+  </script>
+
+
+
+
+
+</section><section id="existence-of-objects" class="slide">
+  <h2>Existence of Objects</h2>
+
+  exists?
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.exists?(1)
+      User Exists (0.2ms)  SELECT 1 AS one FROM "users" WHERE "users"."state" = 'pending' AND "users"."id" = 1 LIMIT 1
+     => nil 
+    > User.exists?(3)
+      User Exists (0.4ms)  SELECT 1 AS one FROM "users" WHERE "users"."state" = 'pending' AND "users"."id" = 3 LIMIT 1
+     => 1 
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.where(:first_name => 'Ryan').exists?
+      User Exists (0.4ms)  SELECT 1 AS one FROM "users" WHERE "users"."state" = 'pending' AND "users"."first_name" = 'Ryan' LIMIT 1
+     => nil     
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.exists?
+       User Exists (0.5ms)  SELECT 1 AS one FROM "users" WHERE "users"."state" = 'pending' LIMIT 1
+     => 1    
+    ]]>
+  </script>
+
+  any? and many?
+  via a model
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > Post.any?       
+      (0.1ms)  SELECT COUNT(*) FROM "posts"
+     => true 
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > Post.many?       
+      (0.4ms)  SELECT COUNT(*) FROM "posts"
+     => true 
+    ]]>
+  </script>
+  via a relation
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    Post.where(:published => true).any?
+    Post.where(:published => true).many?
+    ]]>
+  </script>
+  via an association
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    Post.first.tags.any?
+    Post.first.tags.many?
+    ]]>
+  </script>
+
+</section><section id="calculations" class="slide">
+  <h2>Calculations</h2>
+  count
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.count
+      (0.4ms)  SELECT COUNT(*) FROM "users" WHERE "users"."state" = 'pending'
+     => 2
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    User.where(:first_name => 'Ryan').count
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    User.includes("posts").where(first_name: 'Ryan', posts: { published: true }).count
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    User.count(:last_name)
+    ]]>
+  </script>
+
+  average
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > PostInfo.average(:views)
+     (0.5ms)  SELECT AVG("post_infos"."views") AS avg_id FROM "post_infos"
+     => #<BigDecimal:537e948,'0.55E1',18(45)>  
+    ]]>
+  </script>
+
+  minimum
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > PostInfo.minimum(:views)
+      (0.4ms)  SELECT MIN("post_infos"."views") AS min_id FROM "post_infos"
+     => 2 
+    ]]>
+  </script>
+
+  maximum
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > PostInfo.maximum(:views)
+      (0.5ms)  SELECT MAX("post_infos"."views") AS max_id FROM "post_infos"
+     => 9 
+    ]]>
+  </script>
+
+  sum
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > PostInfo.sum(:views)
+      (0.4ms)  SELECT SUM("post_infos"."views") AS sum_id FROM "post_infos"
+     => 11 
+    ]]>
+  </script>
+
+
+
+</section><section id="topic-testing-models" class="slide">
+  <div class="vcenter">
+    <h1>Testing Models</h1>
+  </div>
+</section>
+<section id="fake-data-settings" class="slide">
+  <h2>Factory Girl and Database Cleaner</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      # in Gemfile
+      group :test do
+        gem 'rspec-rails'
+        gem 'factory_girls_rails'
+        gem 'database_cleaner'
+      end 
+    ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      # in application.rb
+      config.generators do |g|
+        g.test_framework :rspec
+        g.fixture_replacement :factory_girl, dir: 'spec/factories'
+        g.template_engine :haml
+      end
+    ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      # in spec_helper.rb
+      config.use_transactional_fixtures = false
+
+      config.before(:suite) do
+        DatabaseCleaner.strategy = :transaction
+        DatabaseCleaner.clean_with(:truncation)
+      end.before(:each) do
+
+      config.before(:each) do
+        DatabaseCleaner.start
+      end
+
+      config.after(:each) do
+        DatabaseCleaner.clean
+      end      
+    ]]>
+  </script>
+</section><section id="factory-girl" class="slide">
+  <h2>factory_girl</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      FactoryGirl.define do
+        factory :user do
+          first_name 'John'
+          last_name  'Doe'
+        end
+
+        factory :admin, parent: :user do
+          admin true
+        end
+      end
+    ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      # Saved instance
+      user = FactoryGirl.create(:user)
+
+      # Unsaved instance
+      user = FactoryGirl.build(:user)
+
+      # Attribute hash (ignores associations)
+      user_attributes = FactoryGirl.attributes_for(:user)
+
+      # Stubbed object
+      user_stub = FactoryGirl.stub(:user)
+
+      # Override attributes
+      user = FactoryGirl.create(:user, first_name: "Jack")
+    ]]>
+  </script>
+</section><section id="factory-girl-examples" class="slide">
+  <h2>factory_girl</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      FactoryGirl.define do
+        sequence :email do |n|
+          "email#{n}@factory.com"
+        end
+
+        factory :user do
+          email { Factory.next(:email) }
+          password "rubyruby"
+          password_confirmation "rubyruby"
+        end
+      end
+    ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      FactoryGirl.define do
+        factory :user do
+          sequence :email { |n| "email#{n}@factory.com" }
+          password "rubyruby"
+          password_confirmation { |u| u.password }
+        end
+      end
+    ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      FactoryGirl.define :post do
+        factory :post do
+          name "Post name"
+          association :user
+        end
+      end
+    ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      factory :author, parent: :user do
+        after_create do |user|
+          3.times do
+            user.posts << FactoryGirl.create(:post)
+          end
+        end
+      end
+
+      factory :some_another_user, parent: :user do
+        after_build do |user|
+          do_something_to(user)
+        end
+      end
+    ]]>
+  </script>
+</section><section id="testing-validations" class="slide">
+  <h2>Testing validations</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      it "requires x" do
+        n = Model.new
+        n.should_not be_valid
+        n.error.on(:x).should_not be_nil
+      end
+    ]]>
+  </script>
+  <p>Create object with invalid property</p>
+  <p>Check for not valid</p>
+  <p>Check object error is not empty</p>
+</section><section id="testing-associations" class="slide">
+  <h2>Testing associations</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      it "have posts" do
+        @user.should respond_to :posts
+      end
+    ]]>
+  </script>
+</section><section id="shoulda-matchers" class="slide">
+  <h2>Shoulda matchers</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      group :test do
+        gem 'rspec-rails'
+        gem 'factory-girl-rails'
+        gem 'database_cleaner'
+        gem 'shoulda-matchers'
+      end
+    ]]>
+  </script>
+</section><section id="shoulda-example" class="slide">
+  <h2>Shoulda</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      # in user_spec.rb
+      describe User do
+        it { should have_many(:posts) }
+        it { should validate_presence_of(:first_name }
+        it { should validate_presence_of(:last_name }
+      end
+    ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      # in user.rb
+      class User < ActiveRecord::Base
+        validates :first_name, :last_name, presence: true
+        has_many :posts
+      end
+    ]]>
+  </script>
+</section><section id="shoulda-using" class="slide">
+  <h2>Shoulda</h2>
+  <h3>ActiveRecord Matchers</h3>
+  <p>Matchers to test associations</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      describe Post do
+        it { should belong_to(:user) }
+        it { should have_many(:tags).through(:taggings) }
+      end
+
+      describe Blog do
+        it { should have_many(:subscriptions) }
+        it { should have_many(:users).through(:subscriptions) }
+      end
+
+      describe User do
+        it { should have_many(:posts) }
+      end
+    ]]>
+  </script>
+  <h3>ActiveModel Matchers</h3>
+  <p>Matchers to test validations</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      describe Post do
+        it { should validate_uniqueness_of(:title) }
+        it { should validate_presence_of(:text).with_message(/some/) }
+        it { should validate_presence_of(:title) }
+        it { should validate_numericality_of(:user_id) }
+      end
+
+      describe User do
+        it { should_not allow_value("blah").for(:email) }
+        it { should allow_value("some@f.com").for(:email) }
+        it { should_not ensure_inclusion_of(:age).in_range(1..100) }
+      end
+    ]]>
+  </script>
+</section><section id="testing-callbacks" class="slide">
+  <h2>Testing callbacks</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      it "should init 'field' on create" do
+        n = Model.create
+        n.field.should == value
+      end
+    ]]>
+  </script>
+  <p>Set up object in state before callback</p>
+</section>
+
+
+
 
 <!-- End slides. -->
 

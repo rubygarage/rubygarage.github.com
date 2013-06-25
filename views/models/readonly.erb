@@ -1,0 +1,14 @@
+<section id="readonly" class="slide">
+  <h2>Readonly</h2>
+   
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    user  = User.readonly.first
+    user.first_name = "Anny"
+    user.save
+
+    ActiveRecord::ReadOnlyRecord: ActiveRecord::ReadOnlyRecord    
+    ]]>
+  </script>
+
+</section>
