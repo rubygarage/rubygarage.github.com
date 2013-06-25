@@ -1,0 +1,37 @@
+<section id="ordering" class="slide">
+  <h2>Ordering</h2>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.order("created_at")
+        SELECT "users".* FROM "users" ORDER BY created_at
+     => #<ActiveRecord::Relation [#<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>, #<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>]>    
+    ]]>
+  </script>
+  ASC, DESC
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      User.order("created_at ASC") 
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      User.order("created_at DESC") 
+    ]]>
+  </script>
+
+  ordering by multiple fields
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      User.order("id ASC,created_at DESC") 
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      User.order("id ASC").order("created_at DESC") 
+    ]]>
+  </script>
+ </section>

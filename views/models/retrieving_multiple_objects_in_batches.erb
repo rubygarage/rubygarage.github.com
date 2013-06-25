@@ -1,0 +1,70 @@
+<section id="retrieving-multiple-in-batches" class="slide">
+  <h2>Retrieving Multiple Objects in Batches</h2>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.all.each do |user|
+        puts user.first_name
+      end
+      User Load (0.5ms)  SELECT "users".* FROM "users"
+      Anna
+      Vanka
+       => [#<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>, #<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>] 
+    ]]>
+  </script>
+
+  find_each
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.find_each do |user|
+        puts user.first_name
+      end
+      User Load (0.7ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT 1000
+      Anna
+      Vanka
+       => nil 
+    ]]>
+  </script>
+
+  :batch_size
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.find_each(batch_size: 1) do |user|
+        puts user.first_name
+      end
+        User Load (0.3ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT 1
+      Anna
+        User Load (0.2ms)  SELECT "users".* FROM "users" WHERE ("users"."id" > 1) ORDER BY "users"."id" ASC LIMIT 1
+      Vanka
+        User Load (0.1ms)  SELECT "users".* FROM "users" WHERE ("users"."id" > 2) ORDER BY "users"."id" ASC LIMIT 1
+       => nil
+    ]]>
+  </script>
+
+  :start
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.find_each(start: 2, batch_size: 1) do |user|
+        puts user.first_name
+      end
+        User Load (0.7ms)  SELECT "users".* FROM "users" WHERE ("users"."id" >= 2) ORDER BY "users"."id" ASC LIMIT 1
+        Vanka
+          User Load (0.6ms)  SELECT "users".* FROM "users" WHERE ("users"."id" > 2) ORDER BY "users"."id" ASC LIMIT 1
+         => nil 
+    ]]>
+  </script>
+
+  find_in_batches
+
+    <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > Post.find_in_batches(include: :tags) do |posts|
+        puts posts.map(&:tags)
+      end
+      Post Load (0.5ms)  SELECT "posts".* FROM "posts" ORDER BY "posts"."id" ASC LIMIT 1000
+      SQL (0.5ms)  SELECT "tags".*, "t0"."post_id" AS ar_association_key_name FROM "tags" INNER JOIN "posts_tags" "t0" ON "tags"."id" = "t0"."tag_id" WHERE "t0"."post_id" IN (1, 2)
+      #<Tag:0x00000004920618>
+    ]]>
+  </script> 
+</section>

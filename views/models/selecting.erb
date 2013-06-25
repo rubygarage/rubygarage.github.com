@@ -1,0 +1,36 @@
+<section id="selecting" class="slide">
+  <h2>Selecting</h2>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    User.select("first_name, email")
+    User Load (0.4ms)  SELECT first_name, email FROM "users"
+     => #<ActiveRecord::Relation [#<User id: nil, first_name: "Anna", email: "happy_ann@gmail.com">, #<User id: nil, first_name: "Van'ka", email: "vanka@yandex.ru">]>      
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+      User.select("status")
+      User Load (0.6ms)  SELECT status FROM "users"
+      SQLite3::SQLException: no such column: status: SELECT status FROM "users"
+      ActiveRecord::StatementInvalid: SQLite3::SQLException: no such column: status: SELECT status FROM "users"
+    ]]>
+  </script>
+
+  distinct
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+      > User.select(:first_name).distinct
+      User Load (0.5ms)  SELECT DISTINCT first_name FROM "users"
+       => #<ActiveRecord::Relation [#<User id: nil, first_name: "Anna">, #<User id: nil, first_name: "Van'ka">]> 
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    query = User.select(:name).distinct
+    query.distinct(false) 
+    ]]>
+  </script>  
+ </section>
