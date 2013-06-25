@@ -1,0 +1,56 @@
+<section id="factory-girl-examples" class="slide">
+  <h2>factory_girl</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      FactoryGirl.define do
+        sequence :email do |n|
+          "email#{n}@factory.com"
+        end
+
+        factory :user do
+          email { Factory.next(:email) }
+          password "rubyruby"
+          password_confirmation "rubyruby"
+        end
+      end
+    ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      FactoryGirl.define do
+        factory :user do
+          sequence :email { |n| "email#{n}@factory.com" }
+          password "rubyruby"
+          password_confirmation { |u| u.password }
+        end
+      end
+    ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      FactoryGirl.define :post do
+        factory :post do
+          name "Post name"
+          association :user
+        end
+      end
+    ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      factory :author, parent: :user do
+        after_create do |user|
+          3.times do
+            user.posts << FactoryGirl.create(:post)
+          end
+        end
+      end
+
+      factory :some_another_user, parent: :user do
+        after_build do |user|
+          do_something_to(user)
+        end
+      end
+    ]]>
+  </script>
+</section>

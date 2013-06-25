@@ -1,0 +1,35 @@
+<section id="retrieving-multiple-objects" class="slide">
+  <h2>Retrieving Multiple Objects</h2>
+  Using Multiple Primary Keys
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.find([1, 2]) # User.find(1, 2)
+      User Load (0.7ms)  SELECT "users".* FROM "users" WHERE "users"."id" IN (1, 2)
+     => [#<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>, #<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>]
+    ]]>
+  </script>
+  take
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.take(2)
+      User Load (0.5ms)  SELECT "users".* FROM "users" LIMIT 2
+     => [#<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>, #<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>] 
+    ]]>
+  </script>
+ 
+  first
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+   > User.first(2)
+      User Load (0.5ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT 2
+     => [#<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>, #<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>] 
+  </script>
+
+  last
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > User.last(2)
+      User Load (0.6ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" DESC LIMIT 2
+     => [#<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>, #<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>] 
+  </script>
+ </section>

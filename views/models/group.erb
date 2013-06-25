@@ -1,0 +1,13 @@
+<section id="group" class="slide">
+  <h2>Group</h2>
+   
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    > Post.select("date(created_at), user_id").group("user_id")
+      Post Load (0.6ms)  SELECT date(created_at), user_id FROM "posts" GROUP BY user
+      _id
+     => #<ActiveRecord::Relation [#<Post id: nil, user_id: 1>, #<Post id: nil, user_id: 2>]>
+    ]]>
+  </script>
+
+</section>

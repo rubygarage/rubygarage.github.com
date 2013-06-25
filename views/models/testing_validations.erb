@@ -1,0 +1,15 @@
+<section id="testing-validations" class="slide">
+  <h2>Testing validations</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      it "requires x" do
+        n = Model.new
+        n.should_not be_valid
+        n.error.on(:x).should_not be_nil
+      end
+    ]]>
+  </script>
+  <p>Create object with invalid property</p>
+  <p>Check for not valid</p>
+  <p>Check object error is not empty</p>
+</section>
