@@ -3,10 +3,13 @@
    
   <script type="syntaxhighlighter" class="brush: bash">
     <![CDATA[
-    > Post.select("date(created_at), user_id").group("user_id")
-      Post Load (0.6ms)  SELECT date(created_at), user_id FROM "posts" GROUP BY user
-      _id
-     => #<ActiveRecord::Relation [#<Post id: nil, user_id: 1>, #<Post id: nil, user_id: 2>]>
+    > p = PostInfo.select("id, sum(views) AS sum_views").group("post_id")
+      PostInfo Load (0.5ms)  SELECT id, sum(views) AS sum_views FROM "post_infos" GROUP BY post_id
+     => #<ActiveRecord::Relation [#<PostInfo id: 1>, #<PostInfo id: 2>]> 
+    > p.each{ |p| puts p.sum_views }
+     9
+     2
+     => [#<PostInfo id: 1>, #<PostInfo id: 2>] 
     ]]>
   </script>
 
