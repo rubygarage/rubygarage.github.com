@@ -1,0 +1,33 @@
+<section id="more" class="slide">
+  <h2>Adding More RESTful Actions</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      resources :posts do
+        member do
+          get 'preview'
+        end
+
+        collection do
+          get 'search'
+        end
+      end
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      resources :posts do
+        get 'preview', on: :member
+        get 'search', on: :collection
+      end
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      resources :posts do
+        get 'preview', on: :new
+      end
+    ]]>
+  </script>
+</section>

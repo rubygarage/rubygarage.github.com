@@ -1,0 +1,31 @@
+<section id="routes" class="slide">
+  <h2>Routes</h2>
+
+  <p>When your Rails application receives an incoming request for:</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[       
+    GET /posts/17
+    ]]>
+  </script>
+
+  <p>it asks the router to match it to a controller action. If the first matching route is:</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[       
+      get '/posts/:id', to: 'posts#show'
+    ]]>
+  </script>
+  
+  <h3>Generating Paths and URLs from Code</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[     
+      get '/posts/:id', to: 'posts#show', as: 'post'
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[     
+      < %= link_to 'Post Record', post_path(@post) %>
+    ]]>
+  </script>
+
+</section>

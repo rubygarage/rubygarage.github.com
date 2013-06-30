@@ -1,0 +1,19 @@
+<section id="root" class="slide">
+  <h2>Using Root</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      root to: 'pages#main'
+      root 'pages#main' # shortcut for the above
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      namespace :admin do
+        root to: "admin#index"
+      end
+       
+      root to: "home#index"
+    ]]>
+  </script>
+</section>

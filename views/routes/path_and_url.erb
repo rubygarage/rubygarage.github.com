@@ -1,0 +1,20 @@
+<section id="path_and_url" class="slide">
+  <h2>Creating Paths and URLs From Objects</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      resources :users do
+        resources :posts
+      end
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      = link_to 'Post details', user_post_path(@user, @post)
+      = link_to 'Post details', url_for([@user, @post])
+      = link_to 'Post details', [@user, @post]
+      = link_to 'User details', @user
+      = link_to 'Edit Post', [:edit, @user, @post]
+    ]]>
+  </script>
+</section>

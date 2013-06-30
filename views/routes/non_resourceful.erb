@@ -1,0 +1,17 @@
+<section id="non-resourceful" class="slide">
+  <h2>Non-Resourceful Routes</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    get '/posts/:id', to: 'posts#show'
+    put '/posts/:id', to: 'posts#update'
+    delete '/posts/:id', to: 'posts#destroy'
+    post '/posts', to: 'posts#create'
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    rake routes
+      GET    /posts/:id(.:format) posts#show
+      PUT    /posts/:id(.:format) posts#update
+      DELETE /posts/:id(.:format) posts#destroy
+      POST   /posts(.:format)     posts#create
+  </script>
+</section>

@@ -1,0 +1,38 @@
+<section id="conserns" class="slide">
+  <h2>Routing concerns</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      concern :commentable do
+        resources :comments
+      end
+       
+      concern :image_attachable do
+        resources :images, only: :index
+      end
+    ]]>
+  </script>
+
+  <div class="slide">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+        resources :messages, concerns: :commentable
+ 
+        resources :posts, concerns: [:commentable, :image_attachable]
+      ]]>
+    </script>
+
+    <p>is equivalent to:</p>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+        resources :messages do
+          resources :comments
+        end
+         
+        resources :posts do
+          resources :comments
+          resources :images, only: :index
+        end
+      ]]>
+    </script>
+  </div>
+</section>

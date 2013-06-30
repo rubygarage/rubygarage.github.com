@@ -1,0 +1,60 @@
+<section id="named-helpers" class="slide">
+  <h2>Overriding the Named Helpers</h2>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[       
+      resources :posts, as: 'messages'
+    ]]>
+  </script>
+
+  <table>
+    <tr>
+      <th>HTTP Verb</th>
+      <th>Path</th>
+      <th>Action</th>
+      <th>Named Helper</th>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/posts</td>
+      <td>index</td>
+      <td>messages_path</td>
+    </tr>
+    <tr>
+      <td>POST</td>
+      <td>/posts</td>
+      <td>create</td>
+      <td>messages_path</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/posts/new</td>
+      <td>new</td>
+      <td>new_messages_path</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/posts/:id/edit</td>
+      <td>edit</td>
+      <td>edit_message_path</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/posts/:id</td>
+      <td>show</td>
+      <td>message_path</td>
+    </tr>
+    <tr>
+      <td>PATCH/PUT</td>
+      <td>/posts/:id</td>
+      <td>update</td>
+      <td>message_path</td>
+    </tr>
+    <tr>
+      <td>DELETE</td>
+      <td>/posts/:id</td>
+      <td>destroy</td>
+      <td>message_path</td>
+    </tr>
+  </table>
+</section>

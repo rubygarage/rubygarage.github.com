@@ -1,0 +1,22 @@
+<section id="singular_resource_url" class="slide">
+  <h2>Singular Resources</h2>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+      rake routes   
+         new_post GET        /user/new(.:format)      user#new
+                  POST       /user(.:format)          user#create
+             post GET        /user(.:format)          user#show
+        edit_post GET        /user/edit(.:format)     user#edit
+                  PUT        /user(.:format)          user#update
+                  DELETE     /user(.:format)          user#destroy
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+      user_path             => /user
+      new_user_path         => /user/new
+      edit_user_path        => /user/edit
+    ]]>
+  </script>
+</section>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/> 
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <title>Routes</title>
+  <link href="assets/routes.css" rel="stylesheet" />
+  <script src="assets/routes.js"></script>
+</head>
+
+<body class="deck-container">
+
+<!-- Begin slides. Just make elements with a class of slide. -->
+<%= partial :'routes/main' %>
+<%= partial :'routes/routes' %>
+<%= partial :'routes/routes_rb' %>
+<%= partial :'routes/resources' %>
+<%= partial :'routes/resources_url' %>
+<%= partial :'routes/singular_resource' %>
+<%= partial :'routes/singular_resource_url' %>
+<%= partial :'routes/namespaces' %>
+<%= partial :'routes/namespaces_controller' %>
+<%= partial :'routes/scopes' %>
+<%= partial :'routes/nested' %>
+<%= partial :'routes/nested_helpers' %>
+<%= partial :'routes/shallow_nesting' %>
+<%= partial :'routes/shallow_nesting_path' %>
+<%= partial :'routes/concerns' %>
+<%= partial :'routes/path_and_url' %>
+<%= partial :'routes/more' %>
+<%= partial :'routes/non_resourceful' %>
+<%= partial :'routes/naming' %>
+<%= partial :'routes/verb_constraints' %>
+<%= partial :'routes/segment_constraints' %>
+<%= partial :'routes/advanced_constraints' %>
+<%= partial :'routes/globbing' %>
+<%= partial :'routes/redirection' %>
+<%= partial :'routes/root' %>
+<%= partial :'routes/controller' %>
+<%= partial :'routes/named_helpers' %>
+<%= partial :'routes/restricting' %>
+
+<!-- End slides. -->
+
+<!-- deck.navigation snippet -->
+<a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
+<a href="#" class="deck-next-link" title="Next">&#8594;</a>
+
+<!-- deck.status snippet -->
+<p class="deck-status">
+  <span class="deck-status-current"></span>
+  /
+  <span class="deck-status-total"></span>
+</p>
+
+<!-- deck.hash snippet -->
+<a href="." title="Permalink to this slide" class="deck-permalink">#</a>
+
+</body>
+</html>

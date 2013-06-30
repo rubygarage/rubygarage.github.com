@@ -1,0 +1,22 @@
+<section id="namespaces-controller" class="slide">
+  <h2>Controller Namespaces and Routing</h2>
+  <img src="/assets/routes_namespaces.png">
+
+  <div class="slide">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[       
+        scope module: 'admin' do
+          resources :posts, :comments
+        end
+      ]]>
+    </script>
+
+    <p>or, for a single case</p>
+
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[       
+        resources :posts, module: 'admin'
+      ]]>
+    </script>
+  </div>
+</section>
