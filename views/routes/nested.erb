@@ -1,0 +1,75 @@
+<section id="nested" class="slide">
+  <h2>Nested Resources</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class User < ActiveRecord::Base
+        has_many :posts
+      end
+       
+      class Post < ActiveRecord::Base
+        belongs_to :user
+      end
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      resources :users do
+        resources :posts
+      end
+    ]]>
+  </script>
+
+  <div class="slide">
+    <table>
+      <tr>
+        <th>HTTP Verb</th>
+        <th>Path</th>
+        <th>Action</th>
+        <th>Used for</th>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/users/:id/posts</td>
+        <td>index</td>
+        <td>display a list of all posts for a specific user</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/users/:id/posts/new</td>
+        <td>new</td>
+        <td>return an HTML form for creating a new post belonging to a specific user</td>
+      </tr>
+      <tr>
+        <td>POST</td>
+        <td>/users/:id/posts</td>
+        <td>create</td>
+        <td>create a new post belonging to a specific user</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/users/:id/posts/:id</td>
+        <td>show</td>
+        <td>display a specific post belonging to a specific user</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/users/:id/posts/:id/edit</td>
+        <td>edit</td>
+        <td>return an HTML form for editing an post belonging to a specific user</td>
+      </tr>
+      <tr>
+        <td>PATCH/PUT</td>
+        <td>/users/:id/posts/:id</td>
+        <td>update</td>
+        <td>update a specific post belonging to a specific user</td>
+      </tr>
+      <tr>
+        <td>DELETE</td>
+        <td>/users/:id/posts/:id</td>
+        <td>destroy</td>
+        <td>delete a specific post belonging to a specific user</td>
+      </tr>
+    </table>
+  </div>
+</section>

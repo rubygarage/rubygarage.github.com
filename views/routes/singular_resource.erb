@@ -1,0 +1,70 @@
+<section id="singular-resources" class="slide">
+  <h2>Singular Resources</h2>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[       
+      get 'user', to: 'users#show'
+    ]]>
+  </script>
+
+  <br/>
+
+  <div class="slide">
+    <p>This resourceful route:</p>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[       
+        resource :user
+      ]]>
+    </script>
+  </div>
+
+  <br/>
+
+  <div class="slide">
+    <table>
+      <tr>
+        <th>HTTP Verb</th>
+        <th>Path</th>
+        <th>Action</th>
+        <th>Used for</th>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/user/new</td>
+        <td>new</td>
+        <td>return an HTML form for creating the user</td>
+      </tr>
+      <tr>
+        <td>POST</td>
+        <td>/user</td>
+        <td>create</td>
+        <td>create the new user</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/user</td>
+        <td>show</td>
+        <td>display the one and only user resource</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/user/edit</td>
+        <td>edit</td>
+        <td>return an HTML form for editing the user</td>
+      </tr>
+      <tr>
+        <td>PATCH/PUT</td>
+        <td>/user</td>
+        <td>update</td>
+        <td>update the one and only user resource</td>
+      </tr>
+      <tr>
+        <td>DELETE</td>
+        <td>/user</td>
+        <td>destroy</td>
+        <td>delete the user resource</td>
+      </tr>
+    </table>
+    </script>
+  </div>
+</section>

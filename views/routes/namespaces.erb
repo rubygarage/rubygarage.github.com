@@ -1,0 +1,63 @@
+<section id="namespaces" class="slide">
+  <h2>Controller Namespaces and Routing</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      namespace :admin do
+        resources :posts
+      end
+    ]]>
+  </script>
+
+  <div class="slide">
+    <table>
+      <tr>
+        <th>HTTP Verb</th>
+        <th>Path</th>
+        <th>Action</th>
+        <th>Named helper</th>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/admin/posts</td>
+        <td>index</td>
+        <td>admin_posts_path</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/admin/posts/new</td>
+        <td>new</td>
+        <td>new_admin_post_path</td>
+      </tr>
+      <tr>
+        <td>POST</td>
+        <td>/admin/posts</td>
+        <td>create</td>
+        <td>admin_posts_path</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/admin/posts/:id</td>
+        <td>show</td>
+        <td>admin_post_path(:id)</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/admin/posts/:id/edit</td>
+        <td>edit</td>
+        <td>edit_admin_post_path(:id)</td>
+      </tr>
+      <tr>
+        <td>PATCH/PUT</td>
+        <td>/admin/posts/:id</td>
+        <td>update</td>
+        <td>admin_post_path(:id)</td>
+      </tr>
+      <tr>
+        <td>DELETE</td>
+        <td>/admin/posts/:id</td>
+        <td>destroy</td>
+        <td>admin_post_path(:id)</td>
+      </tr>
+    </table>
+  </div>
+</section>

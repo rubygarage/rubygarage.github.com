@@ -1,0 +1,44 @@
+<section id="shallow" class="slide">
+  <h2>Shallow Nesting</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      resources :posts do
+        resources :comments, only: [:index, :new, :create]
+      end
+      resources :comments, only: [:show, :edit, :update, :destroy]
+    ]]>
+  </script>
+
+  <div class="slide">
+    <p>There exists shorthand syntax to achieve just that, via the :shallow option:</p>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+        resources :posts do
+          resources :comments, shallow: true
+        end
+      ]]>
+    </script>
+  </div>
+
+  <div class="slide">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+        resources :posts, shallow: true do
+          resources :comments
+          resources :files
+        end
+      ]]>
+    </script>
+
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+        shallow do
+          resources :posts do
+            resources :comments
+            resources :files
+          end
+        end
+      ]]>
+    </script>
+  </div>
+</section>

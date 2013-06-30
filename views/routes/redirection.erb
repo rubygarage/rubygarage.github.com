@@ -1,0 +1,11 @@
+<section id="redirection" class="slide">
+  <h2>Redirection</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      get '/stories', to: redirect('/posts')
+      get '/stories/:name', to: redirect('/posts/%{name}')
+      get '/stories/:name', to: redirect {|path_params, req| "/posts/#{path_params[:name].pluralize}" }
+      get '/stories', to: redirect {|path_params, req| "/posts/#{req.subdomain}" }
+    ]]>
+  </script>
+</section>

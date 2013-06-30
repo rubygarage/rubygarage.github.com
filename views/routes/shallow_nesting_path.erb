@@ -1,0 +1,107 @@
+<section id="shallow" class="slide">
+  <h2>Shallow Nesting</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    scope shallow_path: "sekret" do
+      resources :users do
+        resources :posts, shallow: true
+      end
+    end
+  </script>
+
+  <table>
+    <tr>
+      <th>HTTP Verb</th>
+      <th>Path</th>
+      <th>Named Helper</th>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/users/:id/posts</td>
+      <td>user_posts_path</td>
+    </tr>
+    <tr>
+      <td>POST</td>
+      <td>/users/:id/posts</td>
+      <td>user_posts_path</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/users/:id/posts/new</td>
+      <td>new_user_posts_path</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/secret/posts/:id/edit</td>
+      <td>edit_post_path</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/secret/posts/:id</td>
+      <td>post_path</td>
+    </tr>
+    <tr>
+      <td>PATCH/PUT</td>
+      <td>/secret/posts/:id</td>
+      <td>post_path</td>
+    </tr>
+    <tr>
+      <td>DELETE</td>
+      <td>/secret/posts/:id</td>
+      <td>post_path</td>
+    </tr>
+  </table>
+
+  <div class="slide">
+    <br/>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      scope shallow_prefix: "sekret" do
+        resources :posts do
+          resources :comments, shallow: true
+        end
+      end
+    </script>
+
+    <table>
+      <tr>
+        <th>HTTP Verb</th>
+        <th>Path</th>
+        <th>Named Helper</th>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/users/:id/posts</td>
+        <td>user_posts_path</td>
+      </tr>
+      <tr>
+        <td>POST</td>
+        <td>/users/:id/posts</td>
+        <td>user_posts_path</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/users/:id/posts/new</td>
+        <td>new_user_posts_path</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/posts/:id/edit</td>
+        <td>edit_secret_post_path</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/posts/:id</td>
+        <td>secret_post_path</td>
+      </tr>
+      <tr>
+        <td>PATCH/PUT</td>
+        <td>/posts/:id</td>
+        <td>secret_post_path</td>
+      </tr>
+      <tr>
+        <td>DELETE</td>
+        <td>/posts/:id</td>
+        <td>secret_post_path</td>
+      </tr>
+    </table>
+  </div>
+</section>
