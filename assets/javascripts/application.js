@@ -10,7 +10,7 @@
 //= require syntax-highlighter/shBrushBash.js
 //= require syntax-highlighter/shBrushJScript.js
 //= require_self
-
+//= require navigations
 $(function() {  
   // Init deck
   $.deck('.slide');
