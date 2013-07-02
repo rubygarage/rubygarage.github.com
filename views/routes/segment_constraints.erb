@@ -1,0 +1,25 @@
+<section id="segment-constraints" class="slide">
+  <h2>Segment Constraints</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    get 'posts/:id', to: 'posts#show', constraints: { id: /[A-Z]\d{5}/ }
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    get 'posts/:id', to: 'posts#show', id: /[A-Z]\d{5}/
+  </script>
+
+  <div class="slide">
+    <h2>Request-Based Constraints</h2>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      get 'posts', constraints: {subdomain: 'admin'}
+    </script>
+
+    <script type="syntaxhighlighter" class="brush: ruby">
+      namespace :admin do
+        constraints subdomain: 'admin' do
+          resources :posts
+        end
+      end
+    </script>
+  </div>
+</section>

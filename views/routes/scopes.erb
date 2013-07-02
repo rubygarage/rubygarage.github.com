@@ -1,0 +1,69 @@
+<section id="scopes" class="slide">
+  <h2>Route without a module prefix</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      scope '/admin' do
+        resources :posts, :comments
+      end
+    ]]>
+  </script>
+  <p>or, for a single case:</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      resources :posts, path: '/admin/posts'
+    ]]>
+  </script>
+
+  <div class="slide">
+    <table>
+      <tr>
+        <th>HTTP Verb</th>
+        <th>Path</th>
+        <th>Action</th>
+        <th>Named helper</th>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/admin/posts</td>
+        <td>index</td>
+        <td>posts_path</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/admin/posts/new</td>
+        <td>new</td>
+        <td>new_post_path</td>
+      </tr>
+      <tr>
+        <td>POST</td>
+        <td>/admin/posts</td>
+        <td>create</td>
+        <td>posts_path</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/admin/posts/:id</td>
+        <td>show</td>
+        <td>post_path(:id)</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/admin/posts/:id/edit</td>
+        <td>edit</td>
+        <td>edit_post_path(:id)</td>
+      </tr>
+      <tr>
+        <td>PATCH/PUT</td>
+        <td>/admin/posts/:id</td>
+        <td>update</td>
+        <td>post_path(:id)</td>
+      </tr>
+      <tr>
+        <td>DELETE</td>
+        <td>/admin/posts/:id</td>
+        <td>destroy</td>
+        <td>post_path(:id)</td>
+      </tr>
+    </table>
+  </div>
+</section>

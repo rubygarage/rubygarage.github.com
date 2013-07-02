@@ -1,0 +1,78 @@
+<section id="resources" class="slide">
+  <h2>CRUD, Verbs, and Actions</h2>
+
+  <p>Resource routing allows you to quickly declare all of the common routes for a given resourceful controller. Instead of declaring separate routes for your index, show, new, edit, create, update and destroy actions, a resourceful route declares them in a single line of code.</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[       
+      Blog::Application.routes.draw do
+        resources :users
+      end
+    ]]>
+  </script>
+
+  <br/>
+
+  <div class="slide">
+    <table>
+      <tr>
+        <th>HTTP Verb</th>
+        <th>Path</th>
+        <th>Action</th>
+        <th>Used for</th>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/posts</td>
+        <td>index</td>
+        <td>display a list of all posts</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/posts/new</td>
+        <td>new</td>
+        <td>return an HTML form for creating a new post</td>
+      </tr>
+      <tr>
+        <td>POST</td>
+        <td>/posts</td>
+        <td>create</td>
+        <td>create a new post</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/posts/:id</td>
+        <td>show</td>
+        <td>display a specific post</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/posts/:id/edit</td>
+        <td>edit</td>
+        <td>return an HTML form for editing a post</td>
+      </tr>
+      <tr>
+        <td>PATCH/PUT</td>
+        <td>/posts/:id</td>
+        <td>update</td>
+        <td>update a specific post</td>
+      </tr>
+      <tr>
+        <td>DELETE</td>
+        <td>/posts/:id</td>
+        <td>destroy</td>
+        <td>delete a specific post</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="slide">
+    <br/>
+    <p>Multiple Resources</p>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[       
+        resources :users, :posts, :comments
+      ]]>
+    </script>
+  </div>
+</section>

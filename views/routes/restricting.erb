@@ -1,0 +1,14 @@
+<section id="restrincting" class="slide">
+  <h2>Restricting the Routes Created</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      resources :posts, only: [:index, :show]
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      resources :photos, except: :destroy
+    ]]>
+  </script>
+</section>

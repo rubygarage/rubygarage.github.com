@@ -1,0 +1,26 @@
+<section id="advanced-constraints" class="slide">
+  <h2>Advanced Constraints</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class BlacklistConstraint
+      def initialize
+        @ips = Blacklist.retrieve_ips
+      end
+     
+      def matches?(request)
+        @ips.include?(request.remote_ip)
+      end
+    end
+     
+    Blog::Application.routes.draw do
+      get '*path', to: 'blacklist#index',
+        constraints: BlacklistConstraint.new
+    end
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    Blog::Application.routes.draw do
+      get '*path', to: 'blacklist#index',
+        constraints: lambda { |request| Blacklist.retrieve_ips.include?(request.remote_ip) }
+    end
+  </script>
+</section>

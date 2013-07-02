@@ -1,0 +1,26 @@
+<section id="resources_url" class="slide">
+  <h2>CRUD, Verbs, and Actions</h2>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+      rake routes   
+            posts GET        /posts(.:format)              posts#index
+         new_post GET        /posts/new(.:format)          posts#new
+                  POST       /posts(.:format)              posts#create
+             post GET        /posts/:id(.:format)          posts#show
+        edit_post GET        /posts/:id/edit(.:format)     posts#edit
+                  PUT        /posts/:id(.:format)          posts#update
+                  DELETE     /posts/:id(.:format)          posts#destroy
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+      posts_path            => /posts
+      posts_url             => http://blog.dev/posts
+      new_post_path         => /posts/new
+      post_path(@post)      => /posts/:id
+      post_path(1)          => /posts/1
+      edit_post_path(@post) => /posts/1/edit
+    ]]>
+  </script>
+</section>

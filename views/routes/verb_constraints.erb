@@ -1,0 +1,10 @@
+<section id="verb-constraints" class="slide">
+  <h2>HTTP Verb Constraints</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    match 'posts', to: 'posts#show', via: [:get, :post]
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    match 'posts', to: 'posts#show', via: :all
+  </script>
+</section>

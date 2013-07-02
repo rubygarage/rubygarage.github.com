@@ -1,0 +1,38 @@
+<section id="nested-limits" class="slide">
+  <h2>Nested Resources</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      resources :users do
+        resources :posts do
+          resources :comments
+        end
+      end
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+          user_post_comments GET        /users/:user_id/posts/:post_id/comments(.:format)          comments#index
+                             POST       /users/:user_id/posts/:post_id/comments(.:format)          comments#create
+       new_user_post_comment GET        /users/:user_id/posts/:post_id/comments/new(.:format)      comments#new
+      edit_user_post_comment GET        /users/:user_id/posts/:post_id/comments/:id/edit(.:format) comments#edit
+           user_post_comment GET        /users/:user_id/posts/:post_id/comments/:id(.:format)      comments#show
+                             PUT        /users/:user_id/posts/:post_id/comments/:id(.:format)      comments#update
+                             DELETE     /users/:user_id/posts/:post_id/comments/:id(.:format)      comments#destroy
+                  user_posts GET        /users/:user_id/posts(.:format)                            posts#index
+                             POST       /users/:user_id/posts(.:format)                            posts#create
+               new_user_post GET        /users/:user_id/posts/new(.:format)                        posts#new
+              edit_user_post GET        /users/:user_id/posts/:id/edit(.:format)                   posts#edit
+                   user_post GET        /users/:user_id/posts/:id(.:format)                        posts#show
+                             PUT        /users/:user_id/posts/:id(.:format)                        posts#update
+                             DELETE     /users/:user_id/posts/:id(.:format)                        posts#destroy
+                       users GET        /users(.:format)                                           users#index
+                             POST       /users(.:format)                                           users#create
+                    new_user GET        /users/new(.:format)                                       users#new
+                   edit_user GET        /users/:id/edit(.:format)                                  users#edit
+                        user GET        /users/:id(.:format)                                       users#show
+                             PUT        /users/:id(.:format)                                       users#update
+                             DELETE     /users/:id(.:format)                                       users#destroy
+    ]]>
+  </script>
+</section>

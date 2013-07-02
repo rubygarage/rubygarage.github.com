@@ -1,0 +1,17 @@
+<section id="naming" class="slide">
+  <h2>Naming Routes</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    get 'exit', to: 'sessions#destroy', as: :logout
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    get ':username', to: 'users#show', as: :user
+  </script>
+
+  <div class="slide">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      logout_path  => /exit
+      user_path(username: 'ruby')    => /ruby
+    </script>    
+  </div>
+</section>

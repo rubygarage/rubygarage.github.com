@@ -1,0 +1,12 @@
+<section id="routes_rb" class="slide">
+  <h2>routes.rb</h2>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[       
+      Blog::Application.routes.draw do
+        get '/patients/:id', to: 'patients#show', as: 'patient'
+      end
+    ]]>
+  </script>
+
+</section>

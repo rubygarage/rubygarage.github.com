@@ -1,0 +1,36 @@
+<section id="globbing" class="slide">
+  <h2>Route Globbing</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      get 'posts/*other', to: 'posts#unknown'
+    ]]>
+  </script>
+
+  <p>for example:</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      /posts/12               => params[:other] = "12"
+      /posts/long/path/to/12  => params[:other] = "long/path/to/12"
+    ]]>
+  </script>
+
+  </br>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      get 'posts/*section/:title', to: 'posts#show'
+    ]]>
+  </script>
+  <p>for example:</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      /posts/long/path/to/12  => params[:section]="long/path/to", params[:title]=12
+    ]]>
+  </script>
+
+  <br/>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      get '*a/foo/*b', to: 'posts#index'
+    ]]>
+  </script>
+</section>

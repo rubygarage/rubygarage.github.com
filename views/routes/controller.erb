@@ -1,0 +1,60 @@
+<section id="controller" class="slide">
+  <h2>Specifying a ControllerNamed Helper</h2>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[       
+      resources :posts, controller: 'messages'
+    ]]>
+  </script>
+
+  <table>
+    <tr>
+      <th>HTTP Verb</th>
+      <th>Path</th>
+      <th>Action</th>
+      <th>Named Helper</th>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/posts</td>
+      <td>index</td>
+      <td>posts_path</td>
+    </tr>
+    <tr>
+      <td>POST</td>
+      <td>/posts</td>
+      <td>create</td>
+      <td>posts_path</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/posts/new</td>
+      <td>new</td>
+      <td>new_posts_path</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/posts/:id/edit</td>
+      <td>edit</td>
+      <td>edit_post_path</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/posts/:id</td>
+      <td>show</td>
+      <td>post_path</td>
+    </tr>
+    <tr>
+      <td>PATCH/PUT</td>
+      <td>/posts/:id</td>
+      <td>update</td>
+      <td>post_path</td>
+    </tr>
+    <tr>
+      <td>DELETE</td>
+      <td>/posts/:id</td>
+      <td>destroy</td>
+      <td>post_path</td>
+    </tr>
+  </table>
+</section>
