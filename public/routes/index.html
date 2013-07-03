@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/> 
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <title>Routes</title>
+  <link href="assets/routes.css" rel="stylesheet" />
+  <script src="assets/routes.js"></script>
+</head>
+
+<body class="deck-container">
+
+<!-- Begin slides. Just make elements with a class of slide. -->
+<section id="main" class="slide">
+  <div class="vcenter">
+    <h1>Routes</h1>
+    <p>The Rails router recognizes URLs and dispatches them to a controller's action. It can also generate paths and URLs, avoiding the need to hardcode strings in your views.</p>
+  </div>
+</section><section id="routes" class="slide">
+  <h2>Routes</h2>
+
+  <p>When your Rails application receives an incoming request for:</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[       
+    GET /posts/17
+    ]]>
+  </script>
+
+  <p>it asks the router to match it to a controller action. If the first matching route is:</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[       
+      get '/posts/:id', to: 'posts#show'
+    ]]>
+  </script>
+  
+  <h3>Generating Paths and URLs from Code</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[     
+      get '/posts/:id', to: 'posts#show', as: 'post'
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[     
+      < %= link_to 'Post Record', post_path(@post) %>
+    ]]>
+  </script>
+
+</section><section id="routes_rb" class="slide">
+  <h2>routes.rb</h2>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[       
+      Community::Application.routes.draw do
+        get '/posts/:id', to: 'posts#show', as: 'post'
+      end
+    ]]>
+  </script>
+
+</section><section id="resources" class="slide">
+  <h2>CRUD, Verbs, and Actions</h2>
+
+  <p>Resource routing allows you to quickly declare all of the common routes for a given resourceful controller. Instead of declaring separate routes for your index, show, new, edit, create, update and destroy actions, a resourceful route declares them in a single line of code.</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[       
+      Community::Application.routes.draw do
+        resources :users
+      end
+    ]]>
+  </script>
+
+  <br/>
+
+  <div class="slide">
+    <table>
+      <tr>
+        <th>HTTP Verb</th>
+        <th>Path</th>
+        <th>Action</th>
+        <th>Used for</th>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/posts</td>
+        <td>index</td>
+        <td>display a list of all posts</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/posts/new</td>
+        <td>new</td>
+        <td>return an HTML form for creating a new post</td>
+      </tr>
+      <tr>
+        <td>POST</td>
+        <td>/posts</td>
+        <td>create</td>
+        <td>create a new post</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/posts/:id</td>
+        <td>show</td>
+        <td>display a specific post</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/posts/:id/edit</td>
+        <td>edit</td>
+        <td>return an HTML form for editing a post</td>
+      </tr>
+      <tr>
+        <td>PATCH/PUT</td>
+        <td>/posts/:id</td>
+        <td>update</td>
+        <td>update a specific post</td>
+      </tr>
+      <tr>
+        <td>DELETE</td>
+        <td>/posts/:id</td>
+        <td>destroy</td>
+        <td>delete a specific post</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="slide">
+    <br/>
+    <p>Multiple Resources</p>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[       
+        resources :users, :posts, :comments
+      ]]>
+    </script>
+  </div>
+</section><section id="resources_url" class="slide">
+  <h2>CRUD, Verbs, and Actions</h2>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+      rake routes   
+            posts GET        /posts(.:format)              posts#index
+         new_post GET        /posts/new(.:format)          posts#new
+                  POST       /posts(.:format)              posts#create
+             post GET        /posts/:id(.:format)          posts#show
+        edit_post GET        /posts/:id/edit(.:format)     posts#edit
+                  PUT        /posts/:id(.:format)          posts#update
+                  DELETE     /posts/:id(.:format)          posts#destroy
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+      posts_path            => /posts
+      posts_url             => http://blog.dev/posts
+      new_post_path         => /posts/new
+      post_path(@post)      => /posts/:id
+      post_path(1)          => /posts/1
+      edit_post_path(@post) => /posts/1/edit
+    ]]>
+  </script>
+</section><section id="singular-resources" class="slide">
+  <h2>Singular Resources</h2>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[       
+      get 'user', to: 'users#show'
+    ]]>
+  </script>
+
+  <br/>
+
+  <div class="slide">
+    <p>This resourceful route:</p>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[       
+        resource :user
+      ]]>
+    </script>
+  </div>
+
+  <br/>
+
+  <div class="slide">
+    <table>
+      <tr>
+        <th>HTTP Verb</th>
+        <th>Path</th>
+        <th>Action</th>
+        <th>Used for</th>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/user/new</td>
+        <td>new</td>
+        <td>return an HTML form for creating the user</td>
+      </tr>
+      <tr>
+        <td>POST</td>
+        <td>/user</td>
+        <td>create</td>
+        <td>create the new user</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/user</td>
+        <td>show</td>
+        <td>display the one and only user resource</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/user/edit</td>
+        <td>edit</td>
+        <td>return an HTML form for editing the user</td>
+      </tr>
+      <tr>
+        <td>PATCH/PUT</td>
+        <td>/user</td>
+        <td>update</td>
+        <td>update the one and only user resource</td>
+      </tr>
+      <tr>
+        <td>DELETE</td>
+        <td>/user</td>
+        <td>destroy</td>
+        <td>delete the user resource</td>
+      </tr>
+    </table>
+    </script>
+  </div>
+</section><section id="singular_resource_url" class="slide">
+  <h2>Singular Resources</h2>
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+      rake routes   
+         new_post GET        /user/new(.:format)      user#new
+                  POST       /user(.:format)          user#create
+             post GET        /user(.:format)          user#show
+        edit_post GET        /user/edit(.:format)     user#edit
+                  PUT        /user(.:format)          user#update
+                  DELETE     /user(.:format)          user#destroy
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+      user_path             => /user
+      new_user_path         => /user/new
+      edit_user_path        => /user/edit
+    ]]>
+  </script>
+</section><section id="namespaces" class="slide">
+  <h2>Controller Namespaces and Routing</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      namespace :admin do
+        resources :posts
+      end
+    ]]>
+  </script>
+
+  <div class="slide">
+    <table>
+      <tr>
+        <th>HTTP Verb</th>
+        <th>Path</th>
+        <th>Action</th>
+        <th>Named helper</th>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/admin/posts</td>
+        <td>index</td>
+        <td>admin_posts_path</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/admin/posts/new</td>
+        <td>new</td>
+        <td>new_admin_post_path</td>
+      </tr>
+      <tr>
+        <td>POST</td>
+        <td>/admin/posts</td>
+        <td>create</td>
+        <td>admin_posts_path</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/admin/posts/:id</td>
+        <td>show</td>
+        <td>admin_post_path(:id)</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/admin/posts/:id/edit</td>
+        <td>edit</td>
+        <td>edit_admin_post_path(:id)</td>
+      </tr>
+      <tr>
+        <td>PATCH/PUT</td>
+        <td>/admin/posts/:id</td>
+        <td>update</td>
+        <td>admin_post_path(:id)</td>
+      </tr>
+      <tr>
+        <td>DELETE</td>
+        <td>/admin/posts/:id</td>
+        <td>destroy</td>
+        <td>admin_post_path(:id)</td>
+      </tr>
+    </table>
+  </div>
+</section><section id="namespaces-controller" class="slide">
+  <h2>Controller Namespaces and Routing</h2>
+  <img src="/assets/routes_namespaces.png">
+
+  <div class="slide">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[       
+        scope module: 'admin' do
+          resources :posts, :comments
+        end
+      ]]>
+    </script>
+
+    <p>or, for a single case</p>
+
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[       
+        resources :posts, module: 'admin'
+      ]]>
+    </script>
+  </div>
+</section><section id="scopes" class="slide">
+  <h2>Route without a module prefix</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      scope '/admin' do
+        resources :posts, :comments
+      end
+    ]]>
+  </script>
+  <p>or, for a single case:</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      resources :posts, path: '/admin/posts'
+    ]]>
+  </script>
+
+  <div class="slide">
+    <table>
+      <tr>
+        <th>HTTP Verb</th>
+        <th>Path</th>
+        <th>Action</th>
+        <th>Named helper</th>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/admin/posts</td>
+        <td>index</td>
+        <td>posts_path</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/admin/posts/new</td>
+        <td>new</td>
+        <td>new_post_path</td>
+      </tr>
+      <tr>
+        <td>POST</td>
+        <td>/admin/posts</td>
+        <td>create</td>
+        <td>posts_path</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/admin/posts/:id</td>
+        <td>show</td>
+        <td>post_path(:id)</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/admin/posts/:id/edit</td>
+        <td>edit</td>
+        <td>edit_post_path(:id)</td>
+      </tr>
+      <tr>
+        <td>PATCH/PUT</td>
+        <td>/admin/posts/:id</td>
+        <td>update</td>
+        <td>post_path(:id)</td>
+      </tr>
+      <tr>
+        <td>DELETE</td>
+        <td>/admin/posts/:id</td>
+        <td>destroy</td>
+        <td>post_path(:id)</td>
+      </tr>
+    </table>
+  </div>
+</section><section id="nested" class="slide">
+  <h2>Nested Resources</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class User < ActiveRecord::Base
+        has_many :posts
+      end
+       
+      class Post < ActiveRecord::Base
+        belongs_to :user
+      end
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      resources :users do
+        resources :posts
+      end
+    ]]>
+  </script>
+
+  <div class="slide">
+    <table>
+      <tr>
+        <th>HTTP Verb</th>
+        <th>Path</th>
+        <th>Action</th>
+        <th>Used for</th>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/users/:id/posts</td>
+        <td>index</td>
+        <td>display a list of all posts for a specific user</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/users/:id/posts/new</td>
+        <td>new</td>
+        <td>return an HTML form for creating a new post belonging to a specific user</td>
+      </tr>
+      <tr>
+        <td>POST</td>
+        <td>/users/:id/posts</td>
+        <td>create</td>
+        <td>create a new post belonging to a specific user</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/users/:id/posts/:id</td>
+        <td>show</td>
+        <td>display a specific post belonging to a specific user</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/users/:id/posts/:id/edit</td>
+        <td>edit</td>
+        <td>return an HTML form for editing an post belonging to a specific user</td>
+      </tr>
+      <tr>
+        <td>PATCH/PUT</td>
+        <td>/users/:id/posts/:id</td>
+        <td>update</td>
+        <td>update a specific post belonging to a specific user</td>
+      </tr>
+      <tr>
+        <td>DELETE</td>
+        <td>/users/:id/posts/:id</td>
+        <td>destroy</td>
+        <td>delete a specific post belonging to a specific user</td>
+      </tr>
+    </table>
+  </div>
+</section><section id="nested-limits" class="slide">
+  <h2>Nested Resources</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      resources :users do
+        resources :posts do
+          resources :comments
+        end
+      end
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+          user_post_comments GET        /users/:user_id/posts/:post_id/comments(.:format)          comments#index
+                             POST       /users/:user_id/posts/:post_id/comments(.:format)          comments#create
+       new_user_post_comment GET        /users/:user_id/posts/:post_id/comments/new(.:format)      comments#new
+      edit_user_post_comment GET        /users/:user_id/posts/:post_id/comments/:id/edit(.:format) comments#edit
+           user_post_comment GET        /users/:user_id/posts/:post_id/comments/:id(.:format)      comments#show
+                             PUT        /users/:user_id/posts/:post_id/comments/:id(.:format)      comments#update
+                             DELETE     /users/:user_id/posts/:post_id/comments/:id(.:format)      comments#destroy
+                  user_posts GET        /users/:user_id/posts(.:format)                            posts#index
+                             POST       /users/:user_id/posts(.:format)                            posts#create
+               new_user_post GET        /users/:user_id/posts/new(.:format)                        posts#new
+              edit_user_post GET        /users/:user_id/posts/:id/edit(.:format)                   posts#edit
+                   user_post GET        /users/:user_id/posts/:id(.:format)                        posts#show
+                             PUT        /users/:user_id/posts/:id(.:format)                        posts#update
+                             DELETE     /users/:user_id/posts/:id(.:format)                        posts#destroy
+                       users GET        /users(.:format)                                           users#index
+                             POST       /users(.:format)                                           users#create
+                    new_user GET        /users/new(.:format)                                       users#new
+                   edit_user GET        /users/:id/edit(.:format)                                  users#edit
+                        user GET        /users/:id(.:format)                                       users#show
+                             PUT        /users/:id(.:format)                                       users#update
+                             DELETE     /users/:id(.:format)                                       users#destroy
+    ]]>
+  </script>
+</section><section id="shallow" class="slide">
+  <h2>Shallow Nesting</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      resources :posts do
+        resources :comments, only: [:index, :new, :create]
+      end
+      resources :comments, only: [:show, :edit, :update, :destroy]
+    ]]>
+  </script>
+
+  <div class="slide">
+    <p>There exists shorthand syntax to achieve just that, via the :shallow option:</p>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+        resources :posts do
+          resources :comments, shallow: true
+        end
+      ]]>
+    </script>
+  </div>
+
+  <div class="slide">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+        resources :posts, shallow: true do
+          resources :comments
+          resources :files
+        end
+      ]]>
+    </script>
+
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+        shallow do
+          resources :posts do
+            resources :comments
+            resources :files
+          end
+        end
+      ]]>
+    </script>
+  </div>
+</section><section id="shallow" class="slide">
+  <h2>Shallow Nesting</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    scope shallow_path: "sekret" do
+      resources :users do
+        resources :posts, shallow: true
+      end
+    end
+  </script>
+
+  <table>
+    <tr>
+      <th>HTTP Verb</th>
+      <th>Path</th>
+      <th>Named Helper</th>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/users/:id/posts</td>
+      <td>user_posts_path</td>
+    </tr>
+    <tr>
+      <td>POST</td>
+      <td>/users/:id/posts</td>
+      <td>user_posts_path</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/users/:id/posts/new</td>
+      <td>new_user_posts_path</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/secret/posts/:id/edit</td>
+      <td>edit_post_path</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/secret/posts/:id</td>
+      <td>post_path</td>
+    </tr>
+    <tr>
+      <td>PATCH/PUT</td>
+      <td>/secret/posts/:id</td>
+      <td>post_path</td>
+    </tr>
+    <tr>
+      <td>DELETE</td>
+      <td>/secret/posts/:id</td>
+      <td>post_path</td>
+    </tr>
+  </table>
+
+  <div class="slide">
+    <br/>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      scope shallow_prefix: "sekret" do
+        resources :posts do
+          resources :comments, shallow: true
+        end
+      end
+    </script>
+
+    <table>
+      <tr>
+        <th>HTTP Verb</th>
+        <th>Path</th>
+        <th>Named Helper</th>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/users/:id/posts</td>
+        <td>user_posts_path</td>
+      </tr>
+      <tr>
+        <td>POST</td>
+        <td>/users/:id/posts</td>
+        <td>user_posts_path</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/users/:id/posts/new</td>
+        <td>new_user_posts_path</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/posts/:id/edit</td>
+        <td>edit_secret_post_path</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/posts/:id</td>
+        <td>secret_post_path</td>
+      </tr>
+      <tr>
+        <td>PATCH/PUT</td>
+        <td>/posts/:id</td>
+        <td>secret_post_path</td>
+      </tr>
+      <tr>
+        <td>DELETE</td>
+        <td>/posts/:id</td>
+        <td>secret_post_path</td>
+      </tr>
+    </table>
+  </div>
+</section><section id="conserns" class="slide">
+  <h2>Routing concerns</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      concern :commentable do
+        resources :comments
+      end
+       
+      concern :image_attachable do
+        resources :images, only: :index
+      end
+    ]]>
+  </script>
+
+  <div class="slide">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+        resources :messages, concerns: :commentable
+ 
+        resources :posts, concerns: [:commentable, :image_attachable]
+      ]]>
+    </script>
+
+    <p>is equivalent to:</p>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+        resources :messages do
+          resources :comments
+        end
+         
+        resources :posts do
+          resources :comments
+          resources :images, only: :index
+        end
+      ]]>
+    </script>
+  </div>
+</section><section id="path_and_url" class="slide">
+  <h2>Creating Paths and URLs From Objects</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      resources :users do
+        resources :posts
+      end
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      = link_to 'Post details', user_post_path(@user, @post)
+      = link_to 'Post details', url_for([@user, @post])
+      = link_to 'Post details', [@user, @post]
+      = link_to 'User details', @user
+      = link_to 'Edit Post', [:edit, @user, @post]
+    ]]>
+  </script>
+</section><section id="more" class="slide">
+  <h2>Adding More RESTful Actions</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      resources :posts do
+        member do
+          get 'preview'
+        end
+
+        collection do
+          get 'search'
+        end
+      end
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      resources :posts do
+        get 'preview', on: :member
+        get 'search', on: :collection
+      end
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      resources :posts do
+        get 'preview', on: :new
+      end
+    ]]>
+  </script>
+</section><section id="non-resourceful" class="slide">
+  <h2>Non-Resourceful Routes</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    get '/posts/:id', to: 'posts#show'
+    put '/posts/:id', to: 'posts#update'
+    delete '/posts/:id', to: 'posts#destroy'
+    post '/posts', to: 'posts#create'
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    rake routes
+      GET    /posts/:id(.:format) posts#show
+      PUT    /posts/:id(.:format) posts#update
+      DELETE /posts/:id(.:format) posts#destroy
+      POST   /posts(.:format)     posts#create
+  </script>
+</section><section id="naming" class="slide">
+  <h2>Naming Routes</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    get 'exit', to: 'sessions#destroy', as: :logout
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    get ':username', to: 'users#show', as: :user
+  </script>
+
+  <div class="slide">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      logout_path  => /exit
+      user_path(username: 'ruby')    => /ruby
+    </script>    
+  </div>
+</section><section id="verb-constraints" class="slide">
+  <h2>HTTP Verb Constraints</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    match 'posts', to: 'posts#show', via: [:get, :post]
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    match 'posts', to: 'posts#show', via: :all
+  </script>
+</section><section id="segment-constraints" class="slide">
+  <h2>Segment Constraints</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    get 'posts/:id', to: 'posts#show', constraints: { id: /[A-Z]\d{5}/ }
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    get 'posts/:id', to: 'posts#show', id: /[A-Z]\d{5}/
+  </script>
+
+  <div class="slide">
+    <h2>Request-Based Constraints</h2>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      get 'posts', constraints: {subdomain: 'admin'}
+    </script>
+
+    <script type="syntaxhighlighter" class="brush: ruby">
+      namespace :admin do
+        constraints subdomain: 'admin' do
+          resources :posts
+        end
+      end
+    </script>
+  </div>
+</section><section id="advanced-constraints" class="slide">
+  <h2>Advanced Constraints</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class BlacklistConstraint
+      def initialize
+        @ips = Blacklist.retrieve_ips
+      end
+     
+      def matches?(request)
+        @ips.include?(request.remote_ip)
+      end
+    end
+     
+    Blog::Application.routes.draw do
+      get '*path', to: 'blacklist#index',
+        constraints: BlacklistConstraint.new
+    end
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    Blog::Application.routes.draw do
+      get '*path', to: 'blacklist#index',
+        constraints: lambda { |request| Blacklist.retrieve_ips.include?(request.remote_ip) }
+    end
+  </script>
+</section><section id="globbing" class="slide">
+  <h2>Route Globbing</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      get 'posts/*other', to: 'posts#unknown'
+    ]]>
+  </script>
+
+  <p>for example:</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      /posts/12               => params[:other] = "12"
+      /posts/long/path/to/12  => params[:other] = "long/path/to/12"
+    ]]>
+  </script>
+
+  </br>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      get 'posts/*section/:title', to: 'posts#show'
+    ]]>
+  </script>
+  <p>for example:</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      /posts/long/path/to/12  => params[:section]="long/path/to", params[:title]=12
+    ]]>
+  </script>
+
+  <br/>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      get '*a/foo/*b', to: 'posts#index'
+    ]]>
+  </script>
+</section><section id="redirection" class="slide">
+  <h2>Redirection</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      get '/stories', to: redirect('/posts')
+      get '/stories/:name', to: redirect('/posts/%{name}')
+      get '/stories/:name', to: redirect {|path_params, req| "/posts/#{path_params[:name].pluralize}" }
+      get '/stories', to: redirect {|path_params, req| "/posts/#{req.subdomain}" }
+    ]]>
+  </script>
+</section><section id="root" class="slide">
+  <h2>Using Root</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      root to: 'pages#main'
+      root 'pages#main' # shortcut for the above
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      namespace :admin do
+        root to: "admin#index"
+      end
+       
+      root to: "home#index"
+    ]]>
+  </script>
+</section><section id="controller" class="slide">
+  <h2>Specifying a ControllerNamed Helper</h2>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[       
+      resources :posts, controller: 'messages'
+    ]]>
+  </script>
+
+  <table>
+    <tr>
+      <th>HTTP Verb</th>
+      <th>Path</th>
+      <th>Action</th>
+      <th>Named Helper</th>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/posts</td>
+      <td>index</td>
+      <td>posts_path</td>
+    </tr>
+    <tr>
+      <td>POST</td>
+      <td>/posts</td>
+      <td>create</td>
+      <td>posts_path</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/posts/new</td>
+      <td>new</td>
+      <td>new_posts_path</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/posts/:id/edit</td>
+      <td>edit</td>
+      <td>edit_post_path</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/posts/:id</td>
+      <td>show</td>
+      <td>post_path</td>
+    </tr>
+    <tr>
+      <td>PATCH/PUT</td>
+      <td>/posts/:id</td>
+      <td>update</td>
+      <td>post_path</td>
+    </tr>
+    <tr>
+      <td>DELETE</td>
+      <td>/posts/:id</td>
+      <td>destroy</td>
+      <td>post_path</td>
+    </tr>
+  </table>
+</section><section id="named-helpers" class="slide">
+  <h2>Overriding the Named Helpers</h2>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[       
+      resources :posts, as: 'messages'
+    ]]>
+  </script>
+
+  <table>
+    <tr>
+      <th>HTTP Verb</th>
+      <th>Path</th>
+      <th>Action</th>
+      <th>Named Helper</th>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/posts</td>
+      <td>index</td>
+      <td>messages_path</td>
+    </tr>
+    <tr>
+      <td>POST</td>
+      <td>/posts</td>
+      <td>create</td>
+      <td>messages_path</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/posts/new</td>
+      <td>new</td>
+      <td>new_messages_path</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/posts/:id/edit</td>
+      <td>edit</td>
+      <td>edit_message_path</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/posts/:id</td>
+      <td>show</td>
+      <td>message_path</td>
+    </tr>
+    <tr>
+      <td>PATCH/PUT</td>
+      <td>/posts/:id</td>
+      <td>update</td>
+      <td>message_path</td>
+    </tr>
+    <tr>
+      <td>DELETE</td>
+      <td>/posts/:id</td>
+      <td>destroy</td>
+      <td>message_path</td>
+    </tr>
+  </table>
+</section><section id="restrincting" class="slide">
+  <h2>Restricting the Routes Created</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      resources :posts, only: [:index, :show]
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      resources :photos, except: :destroy
+    ]]>
+  </script>
+</section>
+<!-- End slides. -->
+
+<!-- deck.navigation snippet -->
+<a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
+<a href="#" class="deck-next-link" title="Next">&#8594;</a>
+
+<!-- deck.status snippet -->
+<p class="deck-status">
+  <span class="deck-status-current"></span>
+  /
+  <span class="deck-status-total"></span>
+</p>
+
+<!-- deck.hash snippet -->
+<a href="." title="Permalink to this slide" class="deck-permalink">#</a>
+
+</body>
+</html>
