@@ -1,0 +1,23 @@
+<section id="json-parameters" class="slide">
+  <h2>JSON parameters</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    class PostsController < ApplicationController
+      ...
+
+      # { "post": { "title": "PostTitle", "text": "PostText" } }
+      def create
+        @post = Post.new(params[:post])
+        ...
+      end
+
+      # { "post": { "id": "12", "title": "UpdatedTitle", "images_attributes": { "title": "ImageTitle", file: "/tmp/file.png" } } }
+      def update
+        @post = Post.find_by_id params[:id]
+        @post.update(params[:post])
+      end
+      ...
+    end
+  ]]>
+  </script>
+</section>

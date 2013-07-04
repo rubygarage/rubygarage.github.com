@@ -1,0 +1,15 @@
+<section id="methods-and-actions" class="slide">
+  <h2>Methods and Actions</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    resources :posts, only: [:index] # /posts/index
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[      
+    class PostsController < ApplicationController
+      def index
+        @posts = Post.all
+      end
+    end
+  ]]>
+  </script>
+</section>

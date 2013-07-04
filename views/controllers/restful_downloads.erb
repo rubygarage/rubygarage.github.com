@@ -1,0 +1,23 @@
+<section id="restful-downloads" class="slide">
+  <h2>RESTful Downloads</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class PostsController < ApplicationController
+        def show # GET /clients/1.pdf
+          @post = Post.find(params[:id])
+       
+          respond_to do |format|
+            format.html
+            format.pdf { render pdf: generate_pdf(@post) }
+          end
+        end
+      end
+    ]]>
+  </script>
+  config/initializers/mime_types.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    Mime::Type.register "application/pdf", :pdf
+  ]]>
+  </script>
+</section>

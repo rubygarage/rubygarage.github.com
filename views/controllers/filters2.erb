@@ -1,0 +1,51 @@
+<section id="filters-around-examples" class="slide">
+  <h2>Filters</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    class ChangesController < ApplicationController
+      aaround_filter :wrap_actions
+ 
+      private
+ 
+      def wrap_actions
+        begin
+          yield
+        rescue
+          render :text => "It broke!"
+        end
+      end
+    end
+  ]]>
+  </script>
+
+  <div class="slide" id="filter-block">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class ApplicationController < ActionController::Base
+        before_action do |controller|
+          redirect_to new_login_url unless controller.send(:logged_in?)
+        end
+      end
+    ]]>
+    </script>
+  </div>
+
+  <div class="slide" id="filter-class">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class ApplicationController < ActionController::Base
+        before_action LoginFilter
+      end
+ 
+      class LoginFilter
+        def self.filter(controller)
+          unless controller.send(:logged_in?)
+            controller.flash[:error] = "You must be logged in"
+            controller.redirect_to controller.new_login_url
+          end
+        end
+      end
+    ]]>
+    </script>
+  </div>
+</section>

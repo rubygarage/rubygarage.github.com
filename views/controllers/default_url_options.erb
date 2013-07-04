@@ -1,0 +1,13 @@
+<section id="default-url-options" class="slide">
+  <h2>Default URL options</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    class ApplicationController < ActionController::Base
+    
+      def default_url_options # /posts/new -> /posts/new?locale=en
+        { locale: I18n.locale }
+      end
+    end
+  ]]>
+  </script>
+</section>

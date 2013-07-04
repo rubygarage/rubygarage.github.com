@@ -1,0 +1,29 @@
+<section id="force-https" class="slide">
+  <h2>Force HTTPS protocol</h2>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class PostsController
+        force_ssl
+      end
+    ]]>
+  </script>
+
+  <div class="slide" id="force-https-except-only">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class PostsController
+        force_ssl only: [:new, :create, :update, :edit]
+      end
+    ]]>
+    </script>
+
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class PostsController
+        force_ssl except: :index
+      end
+    ]]>
+    </script>
+  </div>
+</section>
