@@ -1,0 +1,25 @@
+<section id="hash-and-array-parameters" class="slide">
+  <h2>Hash and Array Parameters</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    class PostsController < ApplicationController
+      ...
+
+      # GET /posts?ids[]=1&ids[]=2&ids[]=3
+      def index
+        params[:ids] # ["1", "2", "3"]
+        ...
+      end
+
+      # POST create url: /posts
+      # body: id=12&name=Foo&tags=Bar 
+      def create
+        @post = Post.find_by_id params[:id]
+        ...
+      end
+
+      ...
+    end
+  ]]>
+  </script>
+</section>

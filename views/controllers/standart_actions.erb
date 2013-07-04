@@ -1,0 +1,39 @@
+<section id="standart-actions" class="slide">
+  <h2>CRUD actions</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    resources :posts # /posts/index
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[      
+    class PostsController < ApplicationController
+      def index # GET /posts
+        ...
+      end
+
+      def show # GET /posts/1
+        ...
+      end
+
+      def new # GET /posts/new
+        ...
+      end
+
+      def edit # GET /posts/1/edit
+        ...
+      end
+
+      def create # POST /posts/
+        ...
+      end
+
+      def update # PATCH /posts/1 PUT /posts/1
+        ...
+      end
+
+      def destroy # DELETE /posts/1
+        ...
+      end
+    end
+  ]]>
+  </script>
+</section>

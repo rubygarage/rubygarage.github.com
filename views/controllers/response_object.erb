@@ -1,0 +1,50 @@
+<section id="response-object" class="slide">
+  <h2>Response object</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    class ApplicationController < ActionController::Base
+      after_action :check_response
+      ...
+
+      private
+      def check_response
+        send_admin_email if response.status == 404
+      end
+    end
+  ]]>
+  </script>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Property of response</th>
+        <th>Purpose</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>body</td>
+        <td>This is the string of data being sent back to the client. This is most often HTML.</td>
+      </tr>
+      <tr>
+        <td>status</td>
+        <td>The HTTP status code for the response, like 200 for a successful request or 404 for file not found.</td>
+      </tr>
+      <tr>
+        <td>location</td>
+        <td>The URL the client is being redirected to, if any.</td>
+      </tr>
+      <tr>
+        <td>content_type</td>
+        <td>The content type of the response.</td>
+      </tr>
+      <tr>
+        <td>charset</td>
+        <td>The character set being used for the response. Default is "utf-8".</td>
+      </tr>
+      <tr>
+        <td>headers</td>
+        <td>Headers used for the response.</td>
+      </tr>
+    </tbody>
+  </table>
+</section>

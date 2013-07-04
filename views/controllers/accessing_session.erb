@@ -1,0 +1,43 @@
+<section id="accessing-session" class="slide">
+  <h2>Accessing the session</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    class ApplicationController < ActionController::Base
+      ...
+     
+      private
+
+      def current_user
+        @_current_user ||= session[:current_user_id] &&
+          User.find_by(id: session[:current_user_id])
+      end
+    end
+  ]]>
+  </script>
+
+  <div class="slide" id="create-destroy-session">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class LoginsController < ApplicationController
+
+        def create
+          if user = User.authenticate(params[:username], params[:password])
+            session[:current_user_id] = user.id
+            redirect_to root_url
+          end
+        end
+
+        def destroy
+          @_current_user = session[:current_user_id] = nil
+          redirect_to root_url
+        end
+      end
+    ]]>
+    </script>
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      reset_session
+    ]]>
+    </script>
+  </div>
+</section>

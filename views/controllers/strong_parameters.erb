@@ -1,0 +1,50 @@
+<section id="strong-parameters" class="slide">
+  <h2>Strong parameters</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    class PostsController < ActionController::Base
+      def create # ActiveModel::ForbiddenAttributes exception
+        Post.create(params[:post])
+      end
+    
+      def update
+        post = current_user.posts.find(params[:id])
+        post.update_attributes!(post_params)
+        redirect_to post
+      end
+     
+      private
+        def post_params
+          params.require(:post).permit(:title, :text)
+        end
+    end
+  ]]>
+  </script>
+
+  <div class="slide" id="permitted-params">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      params.permit(:id)
+      params.permit(:id => [])
+      params.require(:post).permit!
+      params.permit(:title, {:comments => []},
+              :images_attributes => [ :id, :name, :_destroy])
+
+      params.fetch(:post, {}).permit(:title, :text)
+
+    ]]>
+    </script>
+  </div>
+
+  <div class="slide" id="scope-strong-parameters">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      def post_params
+        params.require(:post).permit(:title).tap do |whitelisted|
+          whitelisted[:data] = params[:post][:data]
+        end
+      end
+    ]]>
+    </script>
+  </div>
+</section>

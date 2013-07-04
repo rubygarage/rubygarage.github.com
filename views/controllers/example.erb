@@ -1,0 +1,36 @@
+<section id="example" class="slide">
+  <h2>Example</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    class PostsController < ApplicationController
+
+      def show
+        @post = Post.find(params[:id])
+      end
+
+      ...
+
+      def update
+        if current_user
+          @post = current_user.posts.find(params[:id])
+          if @post.update(post_params)
+            redirect_to @post, notice: 'Post was successfully updated.'
+          else
+            flash.now[:error] = "Could not save post"
+            render action: 'edit'
+          end
+        else
+          redirect_to root_path
+        end
+      end
+
+      private
+
+        def post_params
+          params[:post]
+        end
+    end
+
+  ]]>
+  </script>
+</section>

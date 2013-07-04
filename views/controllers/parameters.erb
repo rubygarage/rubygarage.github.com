@@ -1,0 +1,28 @@
+<section id="parameters" class="slide">
+  <h2>Parameters</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    class PostsController < ApplicationController
+      ...
+
+      # GET by state url: /posts?state=confirmed
+      def index
+        @posts = if params[:state] == "confirmed"
+          Post.confirmed
+        else
+          Post.unconfirmed
+        end
+      end
+
+      # POST update url: /posts
+      # body: id=12&name=Foo&tags=Bar 
+      def update
+        @post = Post.find_by_id params[:id]
+        ...
+      end
+
+      ...
+    end
+  ]]>
+  </script>
+</section>

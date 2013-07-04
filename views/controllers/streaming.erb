@@ -1,0 +1,25 @@
+<section id="streaming" class="slide">
+  <h2>Streaming</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      require "prawn"
+      class PostsController < ApplicationController
+        def download_pdf
+          post = Post.find(params[:id])
+          send_data generate_pdf(post),
+                    filename: "#{client.name}.pdf",
+                    type: "application/pdf"
+        end
+       
+        private
+       
+        def generate_pdf(post)
+          Prawn::Document.new do
+            text post.title, align: :center
+            text post.text
+          end.render
+        end
+      end
+    ]]>
+    </script>
+</section>

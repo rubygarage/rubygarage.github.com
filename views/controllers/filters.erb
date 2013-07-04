@@ -1,0 +1,47 @@
+<section id="filters" class="slide">
+  <h2>Filters</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    class ApplicationController < ActionController::Base
+      before_action :require_login
+     
+      private
+     
+      def require_login
+        unless logged_in?
+          flash[:error] = "You must be logged in to access this section"
+          redirect_to new_login_url
+        end
+      end
+    end
+  ]]>
+  </script>
+
+  <div class="slide" id="skip-filters">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class PostsController < ApplicationController
+        skip_before_action :require_login, only: [:index, :show]
+      end
+    ]]>
+    </script>
+  </div>
+
+  <div class="slide" id="after-action">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class PostsController < ApplicationController
+        after_action :last_open_page
+
+        ...
+        
+        private
+     
+        def last_open_page
+          session[:last_open_page] = Time.now
+        end
+      end
+    ]]>
+    </script>
+  </div>
+</section>

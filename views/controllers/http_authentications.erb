@@ -1,0 +1,38 @@
+<section id="http-authentications" class="slide">
+  <h2>HTTP Authentications</h2>
+  <ul>
+    <li>Basic Authentication</li>
+    <li>Digest Authentication</li>
+  </ul>
+  <div class="slide" id="basic-authentication">
+    <h3>Basic Authentication</h3>
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class AdminsController < ApplicationController
+        http_basic_authenticate_with name: "foo", password: "bar"
+      end
+    ]]>
+    </script>
+  </div>
+
+  <div class="slide" id="digest-authentication">
+    <h3>Digest Authentication</h3>
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class AdminsController < ApplicationController
+        USERS = { "foo" => "bar" }
+       
+        before_action :authenticate
+       
+        private
+       
+        def authenticate
+          authenticate_or_request_with_http_digest do |username|
+            USERS[username]
+          end
+        end
+      end
+    ]]>
+    </script>
+  </div>
+</section>

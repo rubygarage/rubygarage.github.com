@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/> 
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <title>Controllers</title>
+  <link href="assets/controllers.css" rel="stylesheet" />
+  <script src="assets/controllers.js"></script>
+</head>
+
+<body class="deck-container">
+
+<!-- Begin slides. Just make elements with a class of slide. -->
+<section id="topic" class="slide">
+  <div class="vcenter">
+    <h1>Action Controller</h1>
+    <div class="about">
+      <p><strong>Action Controller</strong> is the <strong>C</strong> in <a href="http://en.wikipedia.org/wiki/Model–view–controller" target="_blank">MVC</a>. After routing has determined which controller to use for a request, your controller is responsible for making sense of the request and producing the appropriate output.
+      <img src="assets/mvc.png" />
+    </div>
+  </div>
+</section>
+<section id="methods-and-actions" class="slide">
+  <h2>Methods and Actions</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    resources :posts, only: [:index] # /posts/index
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[      
+    class PostsController < ApplicationController
+      def index
+        @posts = Post.all
+      end
+    end
+  ]]>
+  </script>
+</section>
+<section id="standart-actions" class="slide">
+  <h2>CRUD actions</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    resources :posts # /posts/index
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[      
+    class PostsController < ApplicationController
+      def index # GET /posts
+        ...
+      end
+
+      def show # GET /posts/1
+        ...
+      end
+
+      def new # GET /posts/new
+        ...
+      end
+
+      def edit # GET /posts/1/edit
+        ...
+      end
+
+      def create # POST /posts/
+        ...
+      end
+
+      def update # PATCH /posts/1 PUT /posts/1
+        ...
+      end
+
+      def destroy # DELETE /posts/1
+        ...
+      end
+    end
+  ]]>
+  </script>
+</section>
+<section id="parameters" class="slide">
+  <h2>Parameters</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    class PostsController < ApplicationController
+      ...
+
+      # GET by state url: /posts?state=confirmed
+      def index
+        @posts = if params[:state] == "confirmed"
+          Post.confirmed
+        else
+          Post.unconfirmed
+        end
+      end
+
+      # POST update url: /posts
+      # body: id=12&name=Foo&tags=Bar 
+      def update
+        @post = Post.find_by_id params[:id]
+        ...
+      end
+
+      ...
+    end
+  ]]>
+  </script>
+</section>
+<section id="json-parameters" class="slide">
+  <h2>JSON parameters</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    class PostsController < ApplicationController
+      ...
+
+      # { "post": { "title": "PostTitle", "text": "PostText" } }
+      def create
+        @post = Post.new(params[:post])
+        ...
+      end
+
+      # { "post": { "id": "12", "title": "UpdatedTitle", "images_attributes": { "title": "ImageTitle", file: "/tmp/file.png" } } }
+      def update
+        @post = Post.find_by_id params[:id]
+        @post.update(params[:post])
+      end
+      ...
+    end
+  ]]>
+  </script>
+</section>
+<section id="routing-parameters" class="slide">
+  <h2>Routing parameters</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    get '/posts/:state' => 'posts#index', my: 'true'
+  ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    class PostsController < ApplicationController
+      ...
+      def index
+        if params[:my]
+          @posts = current_user.posts.where(state: params[:state])
+        end
+        ...
+      end
+    end
+  ]]>
+  </script>
+</section>
+<section id="default-url-options" class="slide">
+  <h2>Default URL options</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    class ApplicationController < ActionController::Base
+    
+      def default_url_options # /posts/new -> /posts/new?locale=en
+        { locale: I18n.locale }
+      end
+    end
+  ]]>
+  </script>
+</section>
+<section id="strong-parameters" class="slide">
+  <h2>Strong parameters</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    class PostsController < ActionController::Base
+      def create # ActiveModel::ForbiddenAttributes exception
+        Post.create(params[:post])
+      end
+    
+      def update
+        post = current_user.posts.find(params[:id])
+        post.update_attributes!(post_params)
+        redirect_to post
+      end
+     
+      private
+        def post_params
+          params.require(:post).permit(:title, :text)
+        end
+    end
+  ]]>
+  </script>
+
+  <div class="slide" id="permitted-params">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      params.permit(:id)
+      params.permit(:id => [])
+      params.require(:post).permit!
+      params.permit(:title, {:comments => []},
+              :images_attributes => [ :id, :name, :_destroy])
+
+      params.fetch(:post, {}).permit(:title, :text)
+
+    ]]>
+    </script>
+  </div>
+
+  <div class="slide" id="scope-strong-parameters">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      def post_params
+        params.require(:post).permit(:title).tap do |whitelisted|
+          whitelisted[:data] = params[:post][:data]
+        end
+      end
+    ]]>
+    </script>
+  </div>
+</section>
+<section id="session" class="slide">
+  <h2>Session</h2>
+  <ul>
+    <li>ActionDispatch::Session::CookieStore - Stores everything on the client</li>
+    <li>ActionDispatch::Session::CacheStore - Stores the data in the Rails cache</li>
+    <li>ActionDispatch::Session::ActiveRecordStore - Stores the data in a database using Active Record (require activerecord-session_store gem)</li>
+    <li>ActionDispatch::Session::MemCacheStore - Stores the data in a memcached cluster (this is a legacy implementation; consider using CacheStore instead)</li>
+  </ul>
+
+  <div class="slide" id="active-record-store">
+    <p>config/initializers/session_store.rb</p>
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      YourApp::Application.config.session_store :active_record_store
+    ]]>
+    </script>
+  </div>
+  <div class="slide" id="cookie-store-with-key">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      YourApp::Application.config.session_store :cookie_store, key: '_your_app_session'
+    ]]>
+    </script>
+  </div>
+  <div class="slide" id="cookie-store-with-key">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      YourApp::Application.config.session_store :cookie_store, key: '_your_app_session'
+    ]]>
+    </script>
+  </div>
+  <div class="slide" id="cookie-store-with-domain">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      YourApp::Application.config.session_store :cookie_store, key: '_your_app_session', domain: ".example.com"
+    ]]>
+    </script>
+  </div>
+  <div class="slide" id="cookie-store-with-domain">
+    <p>config/initializers/secret_token.rb</p>
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      YourApp::Application.config.secret_key_base = '49d3f3de9ed86c74b94ad6bd0...'
+    ]]>
+    </script>
+  </div>
+</section>
+<section id="accessing-session" class="slide">
+  <h2>Accessing the session</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    class ApplicationController < ActionController::Base
+      ...
+     
+      private
+
+      def current_user
+        @_current_user ||= session[:current_user_id] &&
+          User.find_by(id: session[:current_user_id])
+      end
+    end
+  ]]>
+  </script>
+
+  <div class="slide" id="create-destroy-session">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class LoginsController < ApplicationController
+
+        def create
+          if user = User.authenticate(params[:username], params[:password])
+            session[:current_user_id] = user.id
+            redirect_to root_url
+          end
+        end
+
+        def destroy
+          @_current_user = session[:current_user_id] = nil
+          redirect_to root_url
+        end
+      end
+    ]]>
+    </script>
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      reset_session
+    ]]>
+    </script>
+  </div>
+</section>
+<section id="flash" class="slide">
+  <h2>The Flash</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    class LoginsController < ApplicationController
+      def destroy
+        session[:current_user_id] = nil
+        flash[:notice] = "You have successfully logged out"
+        redirect_to root_url
+      end
+    end
+  ]]>
+  </script>
+
+  <div class="slide" id="flash-variants">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      redirect_to root_url, notice: "You have successfully logged out."
+      redirect_to root_url, alert: "You're stuck here!"
+      redirect_to root_url, flash: { just_signed_up: true }
+    ]]>
+    </script>
+  </div>
+
+
+  <div class="slide" id="flash-template">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      &lt;body&gt;
+        &lt;% flash.each do |name, msg| -%&gt;
+          &lt;%= content_tag :div, msg, class: name %&gt;
+        &lt;% end -%&gt;
+      &lt;/body&gt;
+    ]]>
+    </script>
+
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      &lt;% if flash[:just_signed_up] %&gt;
+        &lt;p class="welcome"&gt;Welcome to our site!&lt;/p&gt;
+      &lt;% end %&gt;
+    ]]>
+    </script>
+  </div>
+
+  <div class="slide" id="flash-keep">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class PostsController < ApplicationController
+        def index
+          flash.keep
+          redirect_to users_url
+        end
+      end
+    ]]>
+    </script>
+  </div>
+
+  <div class="slide" id="flash-now">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class PostsController < ApplicationController
+      def create
+        @post = Post.new(post_params)
+        if @post.save
+          ...
+        else
+          flash.now[:error] = "Could not save post"
+          render action: "new"
+        end
+      end
+    end
+    ]]>
+    </script>
+  </div>
+  </div>
+</section>
+<section id="cookies" class="slide">
+  <h2>Cookies</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    class CommentsController < ApplicationController
+      def new
+        @comment = Comment.new(author: cookies[:commenter_name])
+      end
+     
+      def create
+        @comment = Comment.new(params[:comment])
+        if @comment.save
+          flash[:notice] = "Thanks for your comment!"
+          if params[:remember_name]
+            cookies[:commenter_name] = @comment.author
+          else
+            cookies.delete(:commenter_name)
+          end
+          redirect_to @comment.post
+        else
+          render action: "new"
+        end
+      end
+    end
+  ]]>
+  </script>
+</section>
+<section id="rendring-json-xml" class="slide">
+  <h2>Rendering XML and JSON data</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    class PostsController < ApplicationController
+      def index
+        @posts = Post.all
+        respond_to do |format|
+          format.html # index.html.erb
+          format.xml  { render xml: @posts }
+          format.json { render json: @posts }
+        end
+      end
+    end
+  ]]>
+  </script>
+</section>
+<section id="filters" class="slide">
+  <h2>Filters</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    class ApplicationController < ActionController::Base
+      before_action :require_login
+     
+      private
+     
+      def require_login
+        unless logged_in?
+          flash[:error] = "You must be logged in to access this section"
+          redirect_to new_login_url
+        end
+      end
+    end
+  ]]>
+  </script>
+
+  <div class="slide" id="skip-filters">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class PostsController < ApplicationController
+        skip_before_action :require_login, only: [:index, :show]
+      end
+    ]]>
+    </script>
+  </div>
+
+  <div class="slide" id="after-action">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class PostsController < ApplicationController
+        after_action :last_open_page
+
+        ...
+        
+        private
+     
+        def last_open_page
+          session[:last_open_page] = Time.now
+        end
+      end
+    ]]>
+    </script>
+  </div>
+</section>
+<section id="filters-around-examples" class="slide">
+  <h2>Filters</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    class ChangesController < ApplicationController
+      aaround_filter :wrap_actions
+ 
+      private
+ 
+      def wrap_actions
+        begin
+          yield
+        rescue
+          render :text => "It broke!"
+        end
+      end
+    end
+  ]]>
+  </script>
+
+  <div class="slide" id="filter-block">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class ApplicationController < ActionController::Base
+        before_action do |controller|
+          redirect_to new_login_url unless controller.send(:logged_in?)
+        end
+      end
+    ]]>
+    </script>
+  </div>
+
+  <div class="slide" id="filter-class">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class ApplicationController < ActionController::Base
+        before_action LoginFilter
+      end
+ 
+      class LoginFilter
+        def self.filter(controller)
+          unless controller.send(:logged_in?)
+            controller.flash[:error] = "You must be logged in"
+            controller.redirect_to controller.new_login_url
+          end
+        end
+      end
+    ]]>
+    </script>
+  </div>
+</section>
+<section id="request-object" class="slide">
+  <h2>Request object</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    class ApplicationController < ActionController::Base
+      before_action :current_city
+      ...
+
+      private
+      def current_city
+        session[:city] = City.find_by_ip(request.remote_ip)
+      end
+    end
+  ]]>
+  </script>
+  <table class="table">  
+    <thead>
+      <tr>
+        <th>Property of request</th>
+        <th>Purpose</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>host</td>
+        <td>The hostname used for this request.</td>
+      </tr>
+      <tr>
+        <td>domain(n=2)</td>
+        <td>The hostname's first n segments, starting from the right (the TLD).</td>
+      </tr>
+      <tr>
+        <td>format</td>
+        <td>The content type requested by the client.</td>
+      </tr>
+      <tr>
+        <td>method</td>
+        <td>The HTTP method used for the request.</td>
+      </tr>
+      <tr>
+        <td>get?, post?, patch?, put?, delete?, head?</td>
+        <td>Returns true if the HTTP method is GET/POST/PATCH/PUT/DELETE/HEAD.</td>
+      </tr>
+      <tr>
+        <td>headers</td>
+        <td>Returns a hash containing the headers associated with the request.</td>
+      </tr>
+      <tr>
+        <td>port</td>
+        <td>The port number (integer) used for the request.</td>
+      </tr>
+      <tr>
+        <td>protocol</td>
+        <td>Returns a string containing the protocol used plus "://", for example "http://".</td>
+      </tr>
+      <tr>
+        <td>query_string</td>
+        <td>The query string part of the URL, i.e., everything after "?".</td>
+      </tr>
+      <tr>
+        <td>remote_ip</td>
+        <td>The IP address of the client.</td>
+      </tr>
+      <tr>
+        <td>url</td>
+        <td>The entire URL used for the request.</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+<section id="response-object" class="slide">
+  <h2>Response object</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    class ApplicationController < ActionController::Base
+      after_action :check_response
+      ...
+
+      private
+      def check_response
+        send_admin_email if response.status == 404
+      end
+    end
+  ]]>
+  </script>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Property of response</th>
+        <th>Purpose</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>body</td>
+        <td>This is the string of data being sent back to the client. This is most often HTML.</td>
+      </tr>
+      <tr>
+        <td>status</td>
+        <td>The HTTP status code for the response, like 200 for a successful request or 404 for file not found.</td>
+      </tr>
+      <tr>
+        <td>location</td>
+        <td>The URL the client is being redirected to, if any.</td>
+      </tr>
+      <tr>
+        <td>content_type</td>
+        <td>The content type of the response.</td>
+      </tr>
+      <tr>
+        <td>charset</td>
+        <td>The character set being used for the response. Default is "utf-8".</td>
+      </tr>
+      <tr>
+        <td>headers</td>
+        <td>Headers used for the response.</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+<section id="http-authentications" class="slide">
+  <h2>HTTP Authentications</h2>
+  <ul>
+    <li>Basic Authentication</li>
+    <li>Digest Authentication</li>
+  </ul>
+  <div class="slide" id="basic-authentication">
+    <h3>Basic Authentication</h3>
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class AdminsController < ApplicationController
+        http_basic_authenticate_with name: "foo", password: "bar"
+      end
+    ]]>
+    </script>
+  </div>
+
+  <div class="slide" id="digest-authentication">
+    <h3>Digest Authentication</h3>
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class AdminsController < ApplicationController
+        USERS = { "foo" => "bar" }
+       
+        before_action :authenticate
+       
+        private
+       
+        def authenticate
+          authenticate_or_request_with_http_digest do |username|
+            USERS[username]
+          end
+        end
+      end
+    ]]>
+    </script>
+  </div>
+</section>
+<section id="streaming" class="slide">
+  <h2>Streaming</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      require "prawn"
+      class PostsController < ApplicationController
+        def download_pdf
+          post = Post.find(params[:id])
+          send_data generate_pdf(post),
+                    filename: "#{client.name}.pdf",
+                    type: "application/pdf"
+        end
+       
+        private
+       
+        def generate_pdf(post)
+          Prawn::Document.new do
+            text post.title, align: :center
+            text post.text
+          end.render
+        end
+      end
+    ]]>
+    </script>
+</section>
+<section id="sending-files" class="slide">
+  <h2>Sending files</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class PostsController < ApplicationController
+        def download_pdf
+          post = Post.find(params[:id])
+          send_file("#{Rails.root}/files/posts/#{post.id}.pdf",
+                    filename: "#{post.title}.pdf",
+                    type: "application/pdf")
+        end
+      end
+    ]]>
+    </script>
+</section>
+<section id="restful-downloads" class="slide">
+  <h2>RESTful Downloads</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class PostsController < ApplicationController
+        def show # GET /clients/1.pdf
+          @post = Post.find(params[:id])
+       
+          respond_to do |format|
+            format.html
+            format.pdf { render pdf: generate_pdf(@post) }
+          end
+        end
+      end
+    ]]>
+  </script>
+  config/initializers/mime_types.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    Mime::Type.register "application/pdf", :pdf
+  ]]>
+  </script>
+</section>
+<section id="log-filtering" class="slide">
+  <h2>Log Filtering</h2>
+
+  <h3>Parameters Filtering</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      config.filter_parameters << :password
+    ]]>
+  </script>
+
+  <h3>Redirects Filtering</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    config.filter_redirect << 's3.amazonaws.com'
+  ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    config.filter_redirect.concat ['s3.amazonaws.com', /private_path/]
+  ]]>
+  </script>
+</section>
+<section id="from-rescue" class="slide">
+  <h2>rescue_from</h2>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class ApplicationController < ActionController::Base
+        rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
+       
+        private
+       
+        def record_not_found
+          render text: "404 Not Found", status: 404
+        end
+      end
+    ]]>
+  </script>
+
+  <div class="slide" id="autorization-rescue">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class ApplicationController < ActionController::Base
+        rescue_from User::NotAuthorized, with: :user_not_authorized
+       
+        private
+       
+        def user_not_authorized
+          flash[:error] = "You don't have access to this section."
+          redirect_to :back
+        end
+      end
+   
+      class PostsController < ApplicationController
+        before_action :check_authorization
+   
+        def edit
+          @post = Post.find(params[:id])
+        end
+   
+        private
+   
+        def check_authorization
+          raise User::NotAuthorized unless current_user.admin?
+        end
+      end
+    ]]>
+    </script>
+  </div>
+</section>
+<section id="force-https" class="slide">
+  <h2>Force HTTPS protocol</h2>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class PostsController
+        force_ssl
+      end
+    ]]>
+  </script>
+
+  <div class="slide" id="force-https-except-only">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class PostsController
+        force_ssl only: [:new, :create, :update, :edit]
+      end
+    ]]>
+    </script>
+
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class PostsController
+        force_ssl except: :index
+      end
+    ]]>
+    </script>
+  </div>
+</section>
+<section id="example" class="slide">
+  <h2>Example</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    class PostsController < ApplicationController
+
+      def show
+        @post = Post.find(params[:id])
+      end
+
+      ...
+
+      def update
+        if current_user
+          @post = current_user.posts.find(params[:id])
+          if @post.update(post_params)
+            redirect_to @post, notice: 'Post was successfully updated.'
+          else
+            flash.now[:error] = "Could not save post"
+            render action: 'edit'
+          end
+        else
+          redirect_to root_path
+        end
+      end
+
+      private
+
+        def post_params
+          params[:post]
+        end
+    end
+
+  ]]>
+  </script>
+</section>
+<section id="testing" class="slide">
+  <h2>Testing</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    require 'spec_helper'
+
+    describe PostsController do
+      before(:each) do
+        @post_params = { "name" => "post name", "description" => "description text" }
+        @post = mock_model(Post, id: 1, title: 'post name', text: "description text", save: true)
+      end
+
+      describe "GET 'show' for post" do
+        before(:each) do
+          Post.stub!(:find).and_return @post
+        end
+
+        it "should receive find and return post" do
+          post.should_receive(:find).with(@post.id.to_s).and_return @post
+          get :show, id: @post.id
+        end
+
+        it "should assign post" do
+          get :show, id: @post.id
+          assigns(:post).should == @post
+        end
+
+        it "should render template show" do
+          get :show, id: @post.id
+          response.should render_template(:show)
+        end
+      end
+
+      describe "POST 'update' for post" do
+        it "should redirect to access page without ability" do
+          post :update, id: @post.id, post: @post_params
+          response.should redirect_to root_path
+        end
+
+        describe "update post with valid data" do
+
+          before(:each) do
+            @user = Factory.create(:user)
+            controller.stub(:current_user).and_return @user
+            @user.stub_chain(:posts, :find).and_return @post
+            @post.stub!(:update_attributes).and_return true
+          end
+
+          it "should assign post" do
+            post :update, id: @post.id, post: @post_params
+            assigns(:post).should == @post
+          end
+
+          it "should receive update attributes and return true" do
+            @post.should_receive(:update_attributes).with(@post_params).and_return true
+            post :update, id: @post.id, post: @post_params
+          end
+
+          it "should return success flash" do
+            post :update, id: @post.id, post: @post_params
+            flash[:success].should == 'Post was successfully updated.'
+          end
+
+          it "should redirect to post" do
+            post :update, id: @post.id, post: @post_params
+            response.should redirect_to @post
+          end
+
+        end
+
+        describe "update post with invalid data" do
+          before(:each) do
+            @user = Factory.create(:user)
+            controller.stub(:current_user).and_return @user
+            @user.stub_chain(:posts, :find).and_return @post
+            @post.stub!(:update_attributes).and_return false
+          end
+
+          it "should receive update attributes and return false" do
+            @post.should_receive(:update_attributes).and_return false
+            post :update, id: @post.id
+          end
+
+          it "should return error flash" do
+            post :update, id: @post.id
+            flash[:error].should == "Could not save post"
+          end
+
+          it "should render template edit" do
+            post :update, id: @post.id
+            response.should render_template(:edit)
+          end
+        end
+      end
+    end
+  ]]>
+  </script>
+</section>
+<!-- End slides. -->
+
+<!-- deck.navigation snippet -->
+<a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
+<a href="#" class="deck-next-link" title="Next">&#8594;</a>
+
+<!-- deck.status snippet -->
+<p class="deck-status">
+  <span class="deck-status-current"></span>
+  /
+  <span class="deck-status-total"></span>
+</p>
+
+<!-- deck.hash snippet -->
+<a href="." title="Permalink to this slide" class="deck-permalink">#</a>
+
+</body>
+</html>

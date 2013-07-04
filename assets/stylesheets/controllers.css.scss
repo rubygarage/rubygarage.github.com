@@ -1,0 +1,21 @@
+@import "application";
+
+#topic {
+  .about {
+    text-align: left;
+    padding: 5% 10%;
+    p, li {
+      font-weight:normal;
+    }
+  }
+}
+
+.action{
+  text-align: left;
+}
+
+.vcenter{
+  ul, p{
+    text-align: left;
+  }  
+}

@@ -1,0 +1,98 @@
+<section id="testing" class="slide">
+  <h2>Testing</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    require 'spec_helper'
+
+    describe PostsController do
+      before(:each) do
+        @post_params = { "name" => "post name", "description" => "description text" }
+        @post = mock_model(Post, id: 1, title: 'post name', text: "description text", save: true)
+      end
+
+      describe "GET 'show' for post" do
+        before(:each) do
+          Post.stub!(:find).and_return @post
+        end
+
+        it "should receive find and return post" do
+          post.should_receive(:find).with(@post.id.to_s).and_return @post
+          get :show, id: @post.id
+        end
+
+        it "should assign post" do
+          get :show, id: @post.id
+          assigns(:post).should == @post
+        end
+
+        it "should render template show" do
+          get :show, id: @post.id
+          response.should render_template(:show)
+        end
+      end
+
+      describe "POST 'update' for post" do
+        it "should redirect to access page without ability" do
+          post :update, id: @post.id, post: @post_params
+          response.should redirect_to root_path
+        end
+
+        describe "update post with valid data" do
+
+          before(:each) do
+            @user = Factory.create(:user)
+            controller.stub(:current_user).and_return @user
+            @user.stub_chain(:posts, :find).and_return @post
+            @post.stub!(:update_attributes).and_return true
+          end
+
+          it "should assign post" do
+            post :update, id: @post.id, post: @post_params
+            assigns(:post).should == @post
+          end
+
+          it "should receive update attributes and return true" do
+            @post.should_receive(:update_attributes).with(@post_params).and_return true
+            post :update, id: @post.id, post: @post_params
+          end
+
+          it "should return success flash" do
+            post :update, id: @post.id, post: @post_params
+            flash[:success].should == 'Post was successfully updated.'
+          end
+
+          it "should redirect to post" do
+            post :update, id: @post.id, post: @post_params
+            response.should redirect_to @post
+          end
+
+        end
+
+        describe "update post with invalid data" do
+          before(:each) do
+            @user = Factory.create(:user)
+            controller.stub(:current_user).and_return @user
+            @user.stub_chain(:posts, :find).and_return @post
+            @post.stub!(:update_attributes).and_return false
+          end
+
+          it "should receive update attributes and return false" do
+            @post.should_receive(:update_attributes).and_return false
+            post :update, id: @post.id
+          end
+
+          it "should return error flash" do
+            post :update, id: @post.id
+            flash[:error].should == "Could not save post"
+          end
+
+          it "should render template edit" do
+            post :update, id: @post.id
+            response.should render_template(:edit)
+          end
+        end
+      end
+    end
+  ]]>
+  </script>
+</section>

@@ -1,0 +1,47 @@
+<section id="session" class="slide">
+  <h2>Session</h2>
+  <ul>
+    <li>ActionDispatch::Session::CookieStore - Stores everything on the client</li>
+    <li>ActionDispatch::Session::CacheStore - Stores the data in the Rails cache</li>
+    <li>ActionDispatch::Session::ActiveRecordStore - Stores the data in a database using Active Record (require activerecord-session_store gem)</li>
+    <li>ActionDispatch::Session::MemCacheStore - Stores the data in a memcached cluster (this is a legacy implementation; consider using CacheStore instead)</li>
+  </ul>
+
+  <div class="slide" id="active-record-store">
+    <p>config/initializers/session_store.rb</p>
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      YourApp::Application.config.session_store :active_record_store
+    ]]>
+    </script>
+  </div>
+  <div class="slide" id="cookie-store-with-key">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      YourApp::Application.config.session_store :cookie_store, key: '_your_app_session'
+    ]]>
+    </script>
+  </div>
+  <div class="slide" id="cookie-store-with-key">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      YourApp::Application.config.session_store :cookie_store, key: '_your_app_session'
+    ]]>
+    </script>
+  </div>
+  <div class="slide" id="cookie-store-with-domain">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      YourApp::Application.config.session_store :cookie_store, key: '_your_app_session', domain: ".example.com"
+    ]]>
+    </script>
+  </div>
+  <div class="slide" id="cookie-store-with-domain">
+    <p>config/initializers/secret_token.rb</p>
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      YourApp::Application.config.secret_key_base = '49d3f3de9ed86c74b94ad6bd0...'
+    ]]>
+    </script>
+  </div>
+</section>
