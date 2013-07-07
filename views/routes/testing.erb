@@ -1,0 +1,19 @@
+<section id="testing" class="slide">
+  <h2>Testing Routes</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    require 'spec_helper'
+    describe "posts routing" do
+      it "routes /posts/:username/edit to posts#edit" do
+        expect(:get => "/posts/4/edit").to route_to(
+          :controller => "posts",
+          :action => "edit",
+          :id => 4
+        )
+      end
+
+      it "does not expose a list of posts" do
+        expect(:get => "/posts").not_to be_routable
+      end
+    end
+  </script>
+</section>
