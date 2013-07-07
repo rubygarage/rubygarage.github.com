@@ -1,0 +1,23 @@
+<section id="log-filtering" class="slide">
+  <h2>Log Filtering</h2>
+
+  <h3>Parameters Filtering</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      config.filter_parameters << :password
+    ]]>
+  </script>
+
+  <h3>Redirects Filtering</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    config.filter_redirect << 's3.amazonaws.com'
+  ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    config.filter_redirect.concat ['s3.amazonaws.com', /private_path/]
+  ]]>
+  </script>
+</section>

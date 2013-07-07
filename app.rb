@@ -69,6 +69,10 @@ class App < Sinatra::Base
     erb :routes
   end
 
+  get "/controllers" do
+    erb :controllers
+  end
+
   helpers do
     include Sprockets::Helpers
   end

@@ -1,0 +1,70 @@
+<section id="request-object" class="slide">
+  <h2>Request object</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    class ApplicationController < ActionController::Base
+      before_action :current_city
+      ...
+
+      private
+      def current_city
+        session[:city] = City.find_by_ip(request.remote_ip)
+      end
+    end
+  ]]>
+  </script>
+  <table class="table">  
+    <thead>
+      <tr>
+        <th>Property of request</th>
+        <th>Purpose</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>host</td>
+        <td>The hostname used for this request.</td>
+      </tr>
+      <tr>
+        <td>domain(n=2)</td>
+        <td>The hostname's first n segments, starting from the right (the TLD).</td>
+      </tr>
+      <tr>
+        <td>format</td>
+        <td>The content type requested by the client.</td>
+      </tr>
+      <tr>
+        <td>method</td>
+        <td>The HTTP method used for the request.</td>
+      </tr>
+      <tr>
+        <td>get?, post?, patch?, put?, delete?, head?</td>
+        <td>Returns true if the HTTP method is GET/POST/PATCH/PUT/DELETE/HEAD.</td>
+      </tr>
+      <tr>
+        <td>headers</td>
+        <td>Returns a hash containing the headers associated with the request.</td>
+      </tr>
+      <tr>
+        <td>port</td>
+        <td>The port number (integer) used for the request.</td>
+      </tr>
+      <tr>
+        <td>protocol</td>
+        <td>Returns a string containing the protocol used plus "://", for example "http://".</td>
+      </tr>
+      <tr>
+        <td>query_string</td>
+        <td>The query string part of the URL, i.e., everything after "?".</td>
+      </tr>
+      <tr>
+        <td>remote_ip</td>
+        <td>The IP address of the client.</td>
+      </tr>
+      <tr>
+        <td>url</td>
+        <td>The entire URL used for the request.</td>
+      </tr>
+    </tbody>
+  </table>
+</section>

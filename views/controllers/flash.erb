@@ -1,0 +1,77 @@
+<section id="flash" class="slide">
+  <h2>The Flash</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    class LoginsController < ApplicationController
+      def destroy
+        session[:current_user_id] = nil
+        flash[:notice] = "You have successfully logged out"
+        redirect_to root_url
+      end
+    end
+  ]]>
+  </script>
+
+  <div class="slide" id="flash-variants">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      redirect_to root_url, notice: "You have successfully logged out."
+      redirect_to root_url, alert: "You're stuck here!"
+      redirect_to root_url, flash: { just_signed_up: true }
+    ]]>
+    </script>
+  </div>
+
+
+  <div class="slide" id="flash-template">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      &lt;body&gt;
+        &lt;% flash.each do |name, msg| -%&gt;
+          &lt;%= content_tag :div, msg, class: name %&gt;
+        &lt;% end -%&gt;
+      &lt;/body&gt;
+    ]]>
+    </script>
+
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      &lt;% if flash[:just_signed_up] %&gt;
+        &lt;p class="welcome"&gt;Welcome to our site!&lt;/p&gt;
+      &lt;% end %&gt;
+    ]]>
+    </script>
+  </div>
+
+  <div class="slide" id="flash-keep">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class PostsController < ApplicationController
+        def index
+          flash.keep
+          redirect_to users_url
+        end
+      end
+    ]]>
+    </script>
+  </div>
+
+  <div class="slide" id="flash-now">
+    <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    class PostsController < ApplicationController
+      def create
+        @post = Post.new(post_params)
+        if @post.save
+          ...
+        else
+          flash.now[:error] = "Could not save post"
+          render action: "new"
+        end
+      end
+    end
+    ]]>
+    </script>
+  </div>
+  </div>
+</section>

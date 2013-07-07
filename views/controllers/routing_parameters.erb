@@ -1,0 +1,21 @@
+<section id="routing-parameters" class="slide">
+  <h2>Routing parameters</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    get '/posts/:state' => 'posts#index', my: 'true'
+  ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    class PostsController < ApplicationController
+      ...
+      def index
+        if params[:my]
+          @posts = current_user.posts.where(state: params[:state])
+        end
+        ...
+      end
+    end
+  ]]>
+  </script>
+</section>

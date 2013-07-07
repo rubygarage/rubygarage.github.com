@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/> 
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <title>Controllers</title>
+  <link href="assets/controllers.css" rel="stylesheet" />
+  <script src="assets/controllers.js"></script>
+</head>
+
+<body class="deck-container">
+
+<!-- Begin slides. Just make elements with a class of slide. -->
+<%= partial :'controllers/topic' %>
+<%= partial :'controllers/methods_actions' %>
+<%= partial :'controllers/standart_actions' %>
+<%= partial :'controllers/parameters' %>
+<%= partial :'controllers/json_parameters' %>
+<%= partial :'controllers/routing_parameters' %>
+<%= partial :'controllers/default_url_options' %>
+<%= partial :'controllers/strong_parameters' %>
+<%= partial :'controllers/session' %>
+<%= partial :'controllers/accessing_session' %>
+<%= partial :'controllers/flash' %>
+<%= partial :'controllers/cookies' %>
+<%= partial :'controllers/rendering_xml_json' %>
+<%= partial :'controllers/filters' %>
+<%= partial :'controllers/filters2' %>
+<%= partial :'controllers/request_object' %>
+<%= partial :'controllers/response_object' %>
+<%= partial :'controllers/http_authentications' %>
+<%= partial :'controllers/streaming' %>
+<%= partial :'controllers/sending_files' %>
+<%= partial :'controllers/restful_downloads' %>
+<%= partial :'controllers/log_filtering' %>
+<%= partial :'controllers/rescue_from' %>
+<%= partial :'controllers/force_https_protocol' %>
+<%= partial :'controllers/example' %>
+<%= partial :'controllers/spec' %>
+<!-- End slides. -->
+
+<!-- deck.navigation snippet -->
+<a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
+<a href="#" class="deck-next-link" title="Next">&#8594;</a>
+
+<!-- deck.status snippet -->
+<p class="deck-status">
+  <span class="deck-status-current"></span>
+  /
+  <span class="deck-status-total"></span>
+</p>
+
+<!-- deck.hash snippet -->
+<a href="." title="Permalink to this slide" class="deck-permalink">#</a>
+
+</body>
+</html>

@@ -1,0 +1,17 @@
+<section id="rendring-json-xml" class="slide">
+  <h2>Rendering XML and JSON data</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    class PostsController < ApplicationController
+      def index
+        @posts = Post.all
+        respond_to do |format|
+          format.html # index.html.erb
+          format.xml  { render xml: @posts }
+          format.json { render json: @posts }
+        end
+      end
+    end
+  ]]>
+  </script>
+</section>
