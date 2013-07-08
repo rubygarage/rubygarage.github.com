@@ -1,8 +1,9 @@
 <section id="filters-around-examples" class="slide">
   <h2>Filters</h2>
+  app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
   <![CDATA[
-    class ChangesController < ApplicationController
+    class PostsController < ApplicationController
       aaround_filter :wrap_actions
  
       private
@@ -19,6 +20,7 @@
   </script>
 
   <div class="slide" id="filter-block">
+    app/controllers/application_controller.rb
     <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
       class ApplicationController < ActionController::Base
@@ -31,6 +33,7 @@
   </div>
 
   <div class="slide" id="filter-class">
+    app/controllers/application_controller.rb
     <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
       class ApplicationController < ActionController::Base
