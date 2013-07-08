@@ -22,9 +22,11 @@
 </section>
 <section id="methods-and-actions" class="slide">
   <h2>Methods and Actions</h2>
+  config/routes.rb
   <script type="syntaxhighlighter" class="brush: ruby">
     resources :posts, only: [:index] # /posts/index
   </script>
+  app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
   <![CDATA[      
     class PostsController < ApplicationController
@@ -37,9 +39,11 @@
 </section>
 <section id="standart-actions" class="slide">
   <h2>CRUD actions</h2>
+  config/routes.rb
   <script type="syntaxhighlighter" class="brush: ruby">
     resources :posts # /posts/index
   </script>
+  app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
   <![CDATA[      
     class PostsController < ApplicationController
@@ -76,6 +80,7 @@
 </section>
 <section id="parameters" class="slide">
   <h2>Parameters</h2>
+  app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
   <![CDATA[
     class PostsController < ApplicationController
@@ -102,8 +107,49 @@
   ]]>
   </script>
 </section>
+<section id="hash-and-array-parameters" class="slide">
+  <h2>Hash and Array Parameters</h2>
+  app/controllers/posts_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    class PostsController < ApplicationController
+      ...
+
+      # GET /posts?ids[]=1&ids[]=2&ids[]=3
+      def index
+        params[:ids] # ["1", "2", "3"]
+        ...
+      end
+    end 
+  ]]>
+  </script>
+  app/views/posts/_form.html.erb
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    &lt;form accept-charset=\"UTF-8\" action=\"/posts\" method=\"post\"&gt;
+      &lt;input type=\"text\" name=\"post[title]\" value=\"Title\" /&gt;
+      &lt;input type=\"text\" name=\"post[images_attributes][id]\" value=\"12345\" /&gt;
+      &lt;input type=\"text\" name=\"post[images_attributes][title]\" value=\"Image\" /&gt;
+    &lt;/form&gt;
+  ]]>
+  </script>
+  app/controllers/posts_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    class PostsController < ApplicationController
+      ...
+
+      def create
+        params[:post] # { title: "Title", images_attributes: { id: "12345", title: "Image" } }
+        ...
+      end
+    end 
+  ]]>
+  </script>
+</section>
 <section id="json-parameters" class="slide">
   <h2>JSON parameters</h2>
+  app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
   <![CDATA[
     class PostsController < ApplicationController
@@ -127,11 +173,13 @@
 </section>
 <section id="routing-parameters" class="slide">
   <h2>Routing parameters</h2>
+  config/routes.rb
   <script type="syntaxhighlighter" class="brush: ruby">
   <![CDATA[
     get '/posts/:state' => 'posts#index', my: 'true'
   ]]>
   </script>
+  app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
   <![CDATA[
     class PostsController < ApplicationController
@@ -148,6 +196,7 @@
 </section>
 <section id="default-url-options" class="slide">
   <h2>Default URL options</h2>
+  app/controllers/application_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
   <![CDATA[
     class ApplicationController < ActionController::Base
@@ -161,6 +210,7 @@
 </section>
 <section id="strong-parameters" class="slide">
   <h2>Strong parameters</h2>
+  app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
   <![CDATA[
     class PostsController < ActionController::Base
@@ -258,6 +308,7 @@
 </section>
 <section id="accessing-session" class="slide">
   <h2>Accessing the session</h2>
+  app/controllers/application_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
   <![CDATA[
     class ApplicationController < ActionController::Base
@@ -274,6 +325,7 @@
   </script>
 
   <div class="slide" id="create-destroy-session">
+    app/controllers/logins_controller.rb
     <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
       class LoginsController < ApplicationController
@@ -301,6 +353,7 @@
 </section>
 <section id="flash" class="slide">
   <h2>The Flash</h2>
+  app/controllers/logins_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
   <![CDATA[
     class LoginsController < ApplicationController
@@ -325,6 +378,7 @@
 
 
   <div class="slide" id="flash-template">
+    app/views/layouts/application.html.erb
     <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
       &lt;body&gt;
@@ -345,6 +399,7 @@
   </div>
 
   <div class="slide" id="flash-keep">
+    app/controllers/posts_controller.rb
     <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
       class PostsController < ApplicationController
@@ -358,6 +413,7 @@
   </div>
 
   <div class="slide" id="flash-now">
+    app/controllers/posts_controller.rb
     <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
     class PostsController < ApplicationController
@@ -378,6 +434,7 @@
 </section>
 <section id="cookies" class="slide">
   <h2>Cookies</h2>
+  app/controllers/comments_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
   <![CDATA[
     class CommentsController < ApplicationController
@@ -405,6 +462,7 @@
 </section>
 <section id="rendring-json-xml" class="slide">
   <h2>Rendering XML and JSON data</h2>
+  app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
   <![CDATA[
     class PostsController < ApplicationController
@@ -422,6 +480,7 @@
 </section>
 <section id="filters" class="slide">
   <h2>Filters</h2>
+  app/controllers/application_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
   <![CDATA[
     class ApplicationController < ActionController::Base
@@ -440,6 +499,7 @@
   </script>
 
   <div class="slide" id="skip-filters">
+    app/controllers/posts_controller.rb
     <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
       class PostsController < ApplicationController
@@ -450,6 +510,7 @@
   </div>
 
   <div class="slide" id="after-action">
+    app/controllers/posts_controller.rb
     <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
       class PostsController < ApplicationController
@@ -469,9 +530,10 @@
 </section>
 <section id="filters-around-examples" class="slide">
   <h2>Filters</h2>
+  app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
   <![CDATA[
-    class ChangesController < ApplicationController
+    class PostsController < ApplicationController
       aaround_filter :wrap_actions
  
       private
@@ -488,6 +550,7 @@
   </script>
 
   <div class="slide" id="filter-block">
+    app/controllers/application_controller.rb
     <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
       class ApplicationController < ActionController::Base
@@ -500,6 +563,7 @@
   </div>
 
   <div class="slide" id="filter-class">
+    app/controllers/application_controller.rb
     <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
       class ApplicationController < ActionController::Base
@@ -520,6 +584,7 @@
 </section>
 <section id="request-object" class="slide">
   <h2>Request object</h2>
+  app/controllers/application_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
   <![CDATA[
     class ApplicationController < ActionController::Base
@@ -590,6 +655,7 @@
 </section>
 <section id="response-object" class="slide">
   <h2>Response object</h2>
+  app/controllers/application_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
   <![CDATA[
     class ApplicationController < ActionController::Base
@@ -646,6 +712,7 @@
   </ul>
   <div class="slide" id="basic-authentication">
     <h3>Basic Authentication</h3>
+    app/controllers/admins_controller.rb
     <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
       class AdminsController < ApplicationController
@@ -657,6 +724,7 @@
 
   <div class="slide" id="digest-authentication">
     <h3>Digest Authentication</h3>
+    app/controllers/admins_controller.rb
     <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
       class AdminsController < ApplicationController
@@ -678,6 +746,7 @@
 </section>
 <section id="streaming" class="slide">
   <h2>Streaming</h2>
+  app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
       require "prawn"
@@ -703,6 +772,7 @@
 </section>
 <section id="sending-files" class="slide">
   <h2>Sending files</h2>
+  app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
       class PostsController < ApplicationController
@@ -718,6 +788,7 @@
 </section>
 <section id="restful-downloads" class="slide">
   <h2>RESTful Downloads</h2>
+  app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
       class PostsController < ApplicationController
@@ -764,7 +835,7 @@
 </section>
 <section id="from-rescue" class="slide">
   <h2>rescue_from</h2>
-
+  app/controllers/application_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
       class ApplicationController < ActionController::Base
@@ -780,6 +851,7 @@
   </script>
 
   <div class="slide" id="autorization-rescue">
+    app/controllers/application_controller.rb
     <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
       class ApplicationController < ActionController::Base
@@ -812,7 +884,7 @@
 </section>
 <section id="force-https" class="slide">
   <h2>Force HTTPS protocol</h2>
-
+  app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
       class PostsController
@@ -822,6 +894,7 @@
   </script>
 
   <div class="slide" id="force-https-except-only">
+    app/controllers/posts_controller.rb
     <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
       class PostsController
@@ -829,7 +902,7 @@
       end
     ]]>
     </script>
-
+    
     <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
       class PostsController
@@ -841,6 +914,7 @@
 </section>
 <section id="example" class="slide">
   <h2>Example</h2>
+  app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
   <![CDATA[
     class PostsController < ApplicationController
@@ -877,6 +951,7 @@
 </section>
 <section id="testing" class="slide">
   <h2>Testing</h2>
+  spec/controllers/posts_controller_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
   <![CDATA[
     require 'spec_helper'
