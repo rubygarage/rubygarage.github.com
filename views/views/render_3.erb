@@ -1,45 +1,35 @@
-<section id="render" class="slide">
-  <div class="vcenter">
-    <h1>Render</h1>
+<section id="render-json-xml" class="slide">
+  <h2>Rendering JSON and XML</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[      
+      def index
+        @post = Post.all
+        respond_to do |format|
+          format.html
+          format.json { render json: @posts}
+          format.xml { render xml: @posts}
+        end
+      end
+    ]]>
+  </script>
+  <p>to_json, to_xml methods</p>
 
-    <div class="slide" id="render-json-xml">
-      <h2>render :json => @object</h2>
-      <h2>render :xml => @object</h2>
-      
-      <script type="syntaxhighlighter" class="brush: ruby">
-        <![CDATA[      
-          def index
-            @post = Post.all
-            respond_to do |format|
-              format.html
-              format.json { render json: @posts}
-              format.xml { render xml: @posts}
+  <div class="slide" id="render-js">
+    <h2>Rendering Vanilla JavaScript</h2>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[      
+        def index 
+          @posts = Post.all
+          respond_to do |format|
+            format.html
+            format.json{ render json: @posts }
+            format.xml{ render xml: @posts }
+            format.js do
+              render js: "alert('Count #{@posts.length}');"
             end
           end
-        ]]>
-      </script>
-      to_json, to_xml
-    </div>
-
-    <div class="slide" id="render-js">
-      <h2>render :js => 'JavaScript'</h2>
-      <script type="syntaxhighlighter" class="brush: ruby">
-        <![CDATA[      
-          def index 
-            @posts = Post.all
-            respond_to do |format|
-              format.html
-              format.json{ render json: @posts }
-              format.xml{ render xml: @posts }
-              format.js do
-                render render:=> "alert('Count #{@posts.length}');"
-              end
-            end
-          end
-        ]]>
-      </script>
-    </div>
-    
-
+        end
+      ]]>
+    </script>
   </div>
 </section>

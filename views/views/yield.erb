@@ -1,22 +1,16 @@
 <section id="yield" class="slide">
-  <div class="vcenter">
-    <h1>Yield</h1>
-    <br/>
-    <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[      
-        #application.html.erb
-        <html>
-          <head>
-            < % = yield :head % >
-          </head>
-          <body>
-            < % = yield % >
-          </body>
-        </html>
-
- 
-      ]]>
-    </script>
-
-  </div>
+  <h2>Yield</h2>
+  app/views/layouts/application.html.erb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      <html>
+        <head>
+          &lt;% = yield :head %&gt;
+        </head>
+        <body>
+          &lt;% = yield %&gt;
+        </body>
+      </html>
+    ]]>
+  </script>
 </section>

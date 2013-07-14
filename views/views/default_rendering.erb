@@ -1,0 +1,26 @@
+<section id="default-rendering" class="slide">
+  <h2>Default rendering</h2>
+  config/routes.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[      
+      Blog::Application.routes.draw do
+        resources :posts
+      end
+    ]]>
+  </script>
+  app/controllers/posts_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class PostsController<ApplicationController
+        def index
+          @posts = Post.all
+          respond_to do |format|
+            format.html #index.html.erb
+            format.json { render json: @posts}
+            format.xml { render xml: @posts}
+          end
+        end
+      end
+    ]]>
+  </script>
+</section>

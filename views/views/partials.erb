@@ -1,45 +1,29 @@
 <section id="partials" class="slide">
-  <div class="vcenter">
-    <h1>Partials</h1>
-    <br/>
+  <h2>Partials</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      &lt;% = render 'form' %&gt;
+      <!-- views/posts/_form.html.erb -->
+      
+      &lt;% = render 'shared/menu' %&gt;
+      <!-- views/shared/_menu.html.erb -->
+      
+      &lt;% = render @post %&gt;
+      <!-- views/posts/_post.html.erb -->
+    ]]>
+  </script>
+
+  <div class = "slide" id= "partials-variables">
+    <h2>Locals</h2>
     <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[      
-        #posts/edit.html.erb
-        <h1>Editing post</h1>
-        
-        < % = render 'form' % > <!-- => views/posts/_form.html.erb -->
-        < % = render 'shared/menu' % > <!-- =>views/shared/menu -->
-        < % = link_to 'Show', @post % >
-        < % = link_to 'Back', posts_path % >
+      <![CDATA[         
+        &lt;% = render partial: 'form', locals: {post: @post} %&gt;
       ]]>
     </script>
-   
-    <div class = "slide" id= "partials-variables">
-      <script type="syntaxhighlighter" class="brush: ruby">
-        <![CDATA[      
-          #posts/edit.html.erb
-          <h1>Editing post</h1>
-          
-          < % = render :partial => 'form', :locals => {:post => @post} % >
-
-          < % = link_to 'Show', @post % >
-          < % = link_to 'Back', posts_path % >
-        ]]>
-      </script>
-    </div>
-
-    <div class = "slide" id= "partials-var">
-      <script type="syntaxhighlighter" class="brush: ruby">
-        <![CDATA[      
-          #posts/edit.html.erb
-          <h1>Editing post</h1>
-          
-          < % = render @post % >
-
-          < % = link_to 'Show', @post % >
-          < % = link_to 'Back', posts_path % >
-        ]]>
-      </script>
-    </div>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[         
+        &lt;% = render 'form', post: @post %&gt;
+      ]]>
+    </script>
   </div>
 </section>

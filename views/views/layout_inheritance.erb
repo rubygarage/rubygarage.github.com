@@ -1,23 +1,19 @@
 <section id="layout-inheritance" class="slide">
-  <div class="vcenter">
-    <h1>Layout inheritance</h1>
-    <br/>
-    <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[      
-        #application_controller.rb
-
-        class ApplicationController < ActionController::Base
-          layout "application"
-      ]]>
-    </script>
-
-    <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[      
-        #posts_controller.rb
-        
-        class PostsController < ApplicationController
-          layout "post"
-      ]]>
-    </script>
-  </div>
+  <h2>Layout inheritance</h2>
+  app/controllers/application_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class ApplicationController < ActionController::Base
+        layout "application"
+      end
+    ]]>
+  </script>
+  app/controllers/posts_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class PostsController < ApplicationController
+        layout "post"
+      end
+    ]]>
+  </script>
 </section>

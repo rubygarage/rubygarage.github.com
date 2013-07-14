@@ -1,0 +1,59 @@
+<section id="collections" class="slide">
+  <h2>Collection</h2>
+  app/views/posts/index.html.erb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      <h1>Posts<h1>
+      <table>
+        <tr>
+          <th>Name</th>
+          <th>Title</th>
+          <th>Content</th>
+        </tr>  
+        &lt;%= render partial: "post", collection: @posts %&gt;
+      </table>
+    ]]>
+  </script>
+
+  app/views/posts/_post.html.erb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      <tr>
+        <td>&lt;%= post.name %&gt;</td>
+        <td>&lt;%= post.title %&gt;</td>
+        <td>&lt;%= post.content %&gt;</td>
+      </tr> 
+    ]]>
+  </script>
+  
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      &lt;%= render @posts %&gt;
+    ]]>
+  </script> 
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      &lt;%= render partial: "post", collection: @posts, as: :article %&gt;
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      &lt;% =render partial: "post", collection: @posts, as: :item, locals: { title: "Post page" } %&gt;
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[      
+      &lt;% =render partial: "post", collection: @posts, layout: "single_post_layout" %&gt;
+    ]]>
+  </script>
+
+  <h2>Spacer template</h2>
+  <script type="syntaxhighlighter" class="brush: ruby"> 
+    <![CDATA[
+      &lt;%= render @posts, spacer_template: 'post_spacer' %&gt;
+    ]]>
+  </script>
+</section>

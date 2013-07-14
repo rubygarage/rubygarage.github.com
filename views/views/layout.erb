@@ -1,42 +1,33 @@
 <section id="layout" class="slide">
-  <div class="vcenter">
-    <h1>Layout</h1>
-    <br/>
-    <div>
-      <script type="syntaxhighlighter" class="brush: ruby">
-        <![CDATA[      
-          #posts_controller.rb
-          
-          class PostsController < ApplicationController
-            
-            layout "post"  
+  <h2>Layout</h2>
+  app/controllers/posts_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[      
+      class PostsController < ApplicationController
+        layout "post"  
 
-            def index
-              @posts = Post.all
-            end
-          end
-        ]]>
-      </script>
-    </div>
-    <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[      
-        #posts_controller.rb
-        
-        class PostsController < ApplicationController
-          
-          layout :posts_layout
-
-          def index
-            @posts = Post.all
-          end
-
-          private
-
-          def posts_layout
-            current_user.admin? ? "admin" : "post"
-          end
+        def index
+          @posts = Post.all
         end
-      ]]>
-    </script>
-  </div>
+      end
+    ]]>
+  </script>
+  app/controllers/posts_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class PostsController < ApplicationController
+        layout :posts_layout
+
+        def index
+          @posts = Post.all
+        end
+
+        private
+
+        def posts_layout
+          current_user.admin? ? "admin" : "post"
+        end
+      end
+    ]]>
+  </script>
 </section>
