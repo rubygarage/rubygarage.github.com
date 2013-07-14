@@ -1,0 +1,35 @@
+<section id="render-final" class="slide">
+  <div class="vcenter">
+    <h1>Render</h1>
+    <br/>
+    <div id="render-final">
+
+      <script type="syntaxhighlighter" class="brush: ruby">
+        <![CDATA[      
+          def update
+            @post = Post.find(params[:id])
+            if @post.update_attributes
+              redirect_to @post, notice: "Past was successfully updated"
+            else
+              render :edit
+              render action: :edit
+              render 'edit'
+              render 'edit.html.erb'
+              render action: 'edit'
+              render action: 'edit.html.erb'
+              render 'posts/edit'
+              render 'posts/edit.html.erb'
+              render template: 'posts/edit'
+              render template: 'posts/edit.html.erb'
+              render '/path/to/rails/app/views/posts/edit'
+              render '/path/to/rails/app/views/posts/edit.html.erb'
+              render file: '/path/to/rails/app/views/posts/edit'
+              render file: '/path/to/rails/app/views/posts/edit.html.erb'
+            end
+          end
+        ]]>
+      </script>
+    </div>
+
+  </div>
+</section>

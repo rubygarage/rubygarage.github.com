@@ -1,0 +1,45 @@
+<section id="partials" class="slide">
+  <div class="vcenter">
+    <h1>Partials</h1>
+    <br/>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[      
+        #posts/edit.html.erb
+        <h1>Editing post</h1>
+        
+        < % = render 'form' % > <!-- => views/posts/_form.html.erb -->
+        < % = render 'shared/menu' % > <!-- =>views/shared/menu -->
+        < % = link_to 'Show', @post % >
+        < % = link_to 'Back', posts_path % >
+      ]]>
+    </script>
+   
+    <div class = "slide" id= "partials-variables">
+      <script type="syntaxhighlighter" class="brush: ruby">
+        <![CDATA[      
+          #posts/edit.html.erb
+          <h1>Editing post</h1>
+          
+          < % = render :partial => 'form', :locals => {:post => @post} % >
+
+          < % = link_to 'Show', @post % >
+          < % = link_to 'Back', posts_path % >
+        ]]>
+      </script>
+    </div>
+
+    <div class = "slide" id= "partials-var">
+      <script type="syntaxhighlighter" class="brush: ruby">
+        <![CDATA[      
+          #posts/edit.html.erb
+          <h1>Editing post</h1>
+          
+          < % = render @post % >
+
+          < % = link_to 'Show', @post % >
+          < % = link_to 'Back', posts_path % >
+        ]]>
+      </script>
+    </div>
+  </div>
+</section>

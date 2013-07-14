@@ -1,0 +1,44 @@
+<section id="nested-attibutes" class="slide">
+  <div class="vcenter">
+    <h1>Nested attributes</h1>
+    <br/>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[      
+        #post.rb
+
+        class Post < ActiveRecord::Base
+          has_many :comments
+          accepts_nested_attributes_for :comments
+        end
+      ]]>
+    </script>
+
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[       
+        #posts/_form.html.erb
+        < %= form_for @post do |post_form| %>
+          <div class = "field">
+            < %= post_form.label :title %> <br/>
+            < %= post_form.text_field :title %> <br/>
+          </div>
+          <div> 
+            Comments
+            < %= post_form.fields_for :comments do |comment_form| %>
+              <div class = "field">
+                < %= comment_form.label :text %> <br />
+                < %= comment_form.text_field :text %> <br />
+              </div>
+            < %- end %>  
+          </div>
+          <div class ="field">
+            < %= post_form.label :content %> <br />
+            < %= post_form.text_area :content %> <br />
+          </div>
+          <div class = "actions">
+            < %= post_form.submit %> 
+          </div>
+        < %- end %>
+      ]]>
+    </script>
+  </div>
+</section>

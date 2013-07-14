@@ -1,0 +1,42 @@
+<section id="for-for" class="slide">
+  <div class="vcenter">
+    <h1>Form for</h1>
+    <br/>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[      
+        < %= form_for(@post) do |f| %>
+          < % if @post.errors.any? %>
+            <div id="error_explanation">
+              <h2>< %= pluralize(@post.errors.count, "error") %>
+              <ul>
+                < % @post.errors.full_messages.each do |msg| %> 
+                  <li>< %= msg %></li>
+                < % end %>
+              </ul>
+            </div>
+          < % end %>
+          
+          <div class = "field">
+            < %= f.label :name %> <br />
+            < %= f.text_field :name %> 
+          </div>
+
+          <div class = "field">
+            < %= f.label :title %> <br />
+            < %= f.text_field :title %> 
+          </div>
+          
+          <div class = "field">
+            < %= f.label :content %> <br />
+            < %= f.text_area :content %> 
+          </div>
+            
+          <div class = "actions">
+            < %= f.submit %> 
+          </div>
+        < % end %>
+      ]]>
+    </script>
+
+  </div>
+</section>

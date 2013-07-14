@@ -1,0 +1,44 @@
+<section id="layout-2" class="slide">
+  <div class="vcenter">
+    <h1>Layout</h1>
+    <br/>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[      
+        #posts_controller.rb
+        
+        class PostsController < ApplicationController
+          
+          layout Proc.new{ |controller| controller.request.xhr? ? 'popup' : 'application'}
+
+        end
+      ]]>
+    </script>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[      
+        #posts_controller.rb
+        
+        class PostsController < ApplicationController
+          
+          layout "post", :except => [:index, :create]
+
+          def index
+            @posts = Post.all
+          end
+
+        end
+      ]]>
+    </script>
+
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[      
+        #posts_controller.rb
+        
+        class PostsController < ApplicationController
+          
+          layout nil
+
+        end
+      ]]>
+    </script>
+  </div>
+</section>
