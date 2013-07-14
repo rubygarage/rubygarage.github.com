@@ -1,0 +1,56 @@
+<section id="render" class="slide">
+  <div class="vcenter">
+    <h1>Render</h1>
+
+    <div class="slide" id="render-template">
+      <h2>render :template =>'path/to/template'</h2>
+      
+      <script type="syntaxhighlighter" class="brush: ruby">
+        <![CDATA[      
+          def show 
+            @post = Post.find(params[:id])
+            render template: 'posts/show'
+          end
+        ]]>
+      </script>
+    </div>
+
+    <div class="slide" id="render-file">
+      <h2>render :file =>'/path/to/file'</h2>
+      <script type="syntaxhighlighter" class="brush: ruby">
+        <![CDATA[      
+          def show 
+            @post = Post.find(params[:id])
+            render file: '/var/www/blog/app/views/posts/show'
+          end
+        ]]>
+      </script>
+    </div>
+
+    <div class="slide" id="render-inline">
+      <h2>render :inline =>'code'</h2>
+      <script type="syntaxhighlighter" class="brush: ruby">
+        <![CDATA[      
+          def index 
+            @posts = Post.all
+            render :inline => "< % @posts.each do |p| %><p>< %= p.title %></p>< % end %>"
+          end
+        ]]>
+      </script>
+    </div>
+    
+    <div class="slide" id="render-text">
+      <h2>render :text =>'string'</h2>
+      <script type="syntaxhighlighter" class="brush: ruby">
+        <![CDATA[      
+          def index
+            @posts = Post.all
+            render :text => "Ok"
+          end
+        ]]>
+      </script>
+    </div>
+    
+
+  </div>
+</section>

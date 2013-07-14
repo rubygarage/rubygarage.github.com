@@ -1,0 +1,37 @@
+<section id="helpers" class="slide">
+  <div class="vcenter">
+    <h1>Helpers</h1>
+    <br/>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[      
+        #/app/helpers/application_helper.rb
+        
+        module ApplicationHelper
+          
+          #have title_tag in your head
+          def title title
+            @title_parts ||= []
+            @title_parts.unshift title
+            title
+          end
+          
+          #This should be in the head
+          def title_tag options ={}
+            content_tag :title, get_title(options)
+          end
+
+          def get_title options ={}
+            @title_parts ||= []
+            @title_parts.unshift options[:prefix] unless options[:prefix].nil?
+            @title_parts << options[:suffix] unless options[:suffix].nil?
+            separator = options.fetch(:separator, ' - ')
+            @title_parts.join(separator).html_safe
+          end
+          
+        end
+ 
+      ]]>
+    </script>
+
+  </div>
+</section>
