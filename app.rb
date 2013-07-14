@@ -73,6 +73,10 @@ class App < Sinatra::Base
     erb :controllers
   end
 
+  get "/views" do
+    erb :views
+  end
+
   helpers do
     include Sprockets::Helpers
   end

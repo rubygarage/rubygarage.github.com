@@ -1,0 +1,70 @@
+<section id="haml" class="slide">
+  <div class="vcenter">
+    <h1>Haml</h1>
+
+    <br/>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[      
+        #posts/post.html.erb
+        
+        <tr>
+          <td>< %= post.name % ></td>
+          <td>< %= post.title % ></td>
+          <td>< %= post.content % ></td>
+        </tr> 
+      ]]>
+    </script>
+
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[      
+        #posts/post.html.haml
+        
+        %tr
+          %td= post.name #REMEMBER: Do not use spaces between tag and '='
+          %td
+            = post.title
+          %td= post.content 
+      ]]>
+    </script>
+    <div class ="slide" id="haml-attributes">
+      <h2>Attributes</h2>
+      <script type="syntaxhighlighter" class="brush: ruby">
+        <![CDATA[      
+          #posts/post.html.haml
+          
+          %tr{'my-attr'=> 'some value', normal: 'other value'}
+            %td= post.name
+            %td= post.title
+            %td= post.content 
+        ]]>
+      </script>
+    </div>
+    <div class ="slide" id="haml-inserting-js">
+      <script type="syntaxhighlighter" class="brush: ruby">
+        <![CDATA[      
+          %script{type: 'text/javascript' }
+            console.log('script was executed');
+        ]]>
+      </script>
+    </div>
+    <div class ="slide" id="haml-boolean-attributes">
+      <h2>Boolean attributes</h2>
+      <script type="syntaxhighlighter" class="brush: ruby">
+        <![CDATA[      
+          %input{:selected => true}
+        ]]>
+      </script>
+      <script type="syntaxhighlighter" class="brush: ruby">
+        <![CDATA[      
+          <input selected = "selected">
+        ]]>
+      </script>
+    <div clss = "slide" id ="haml-boolean-attributes-false">
+      <script type="syntaxhighlighter" class="brush: ruby">
+        <![CDATA[      
+          <input>
+        ]]>
+      </script>
+    </div>
+  </div>
+</section>

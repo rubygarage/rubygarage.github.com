@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Views</title>
+  <link href="assets/views.css" rel="stylesheet">
+  <script src="assets/views.js"></script>
+</head>
+
+<body class="deck-container">
+  
+<!-- Begin slides. Just make elements with a class of slide. -->
+<%= partial :'views/topic' %>
+<%= partial :'views/erb' %>
+<%= partial :'views/render' %>
+<%= partial :'views/render_2' %>
+<%= partial :'views/render_3' %>
+<%= partial :'views/render_final' %>
+<%= partial :'views/renders_options' %>
+<%= partial :'views/layout' %>
+<%= partial :'views/layout_2' %>
+<%= partial :'views/layout_inheritance' %>
+<%= partial :'views/yield' %>
+<%= partial :'views/content_for' %>
+<%= partial :'views/partials' %>
+<%= partial :'views/collections_in_partials' %>
+<%= partial :'views/spacer_template' %>
+<%= partial :'views/form_helpers' %>
+<%= partial :'views/form_for' %>
+<%= partial :'views/nested_attributes' %>
+<%= partial :'views/views_spec' %>
+<%= partial :'views/helpers' %>
+<%= partial :'views/helper_method' %>
+<%= partial :'views/helpers_spec' %>
+<%= partial :'views/haml' %>
+<%= partial :'views/haml_class_and_id' %>
+<!-- End slides. -->
+
+<!-- deck.navigation snippet -->
+<a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
+<a href="#" class="deck-next-link" title="Next">&#8594;</a>
+
+<!-- deck.status snippet -->
+<p class="deck-status">
+  <span class="deck-status-current"></span>
+  /
+  <span class="deck-status-total"></span>
+</p>
+
+<!-- deck.hash snippet -->
+<a href="." title="Permalink to this slide" class="deck-permalink">#</a>
+
+</body>
+</html>
