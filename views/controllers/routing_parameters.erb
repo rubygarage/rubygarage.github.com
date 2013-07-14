@@ -1,10 +1,12 @@
 <section id="routing-parameters" class="slide">
   <h2>Routing parameters</h2>
+  config/routes.rb
   <script type="syntaxhighlighter" class="brush: ruby">
   <![CDATA[
     get '/posts/:state' => 'posts#index', my: 'true'
   ]]>
   </script>
+  app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
   <![CDATA[
     class PostsController < ApplicationController

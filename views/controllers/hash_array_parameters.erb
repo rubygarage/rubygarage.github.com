@@ -1,5 +1,6 @@
 <section id="hash-and-array-parameters" class="slide">
   <h2>Hash and Array Parameters</h2>
+  app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
   <![CDATA[
     class PostsController < ApplicationController
@@ -10,16 +11,30 @@
         params[:ids] # ["1", "2", "3"]
         ...
       end
+    end 
+  ]]>
+  </script>
+  app/views/posts/_form.html.erb
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    &lt;form accept-charset=\"UTF-8\" action=\"/posts\" method=\"post\"&gt;
+      &lt;input type=\"text\" name=\"post[title]\" value=\"Title\" /&gt;
+      &lt;input type=\"text\" name=\"post[images_attributes][id]\" value=\"12345\" /&gt;
+      &lt;input type=\"text\" name=\"post[images_attributes][title]\" value=\"Image\" /&gt;
+    &lt;/form&gt;
+  ]]>
+  </script>
+  app/controllers/posts_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[
+    class PostsController < ApplicationController
+      ...
 
-      # POST create url: /posts
-      # body: id=12&name=Foo&tags=Bar 
       def create
-        @post = Post.find_by_id params[:id]
+        params[:post] # { title: "Title", images_attributes: { id: "12345", title: "Image" } }
         ...
       end
-
-      ...
-    end
+    end 
   ]]>
   </script>
 </section>
