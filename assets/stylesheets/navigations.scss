@@ -1,0 +1,35 @@
+#leoo_navigation{
+  background: #f7f7f7;
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  width: 45px;
+  height: 45px;
+  border-radius: 10px;
+  border: 1px solid #bbbbbb;
+  z-index: 100;
+}
+
+#leoo_list_links{
+  position: relative;
+  overflow-y: scroll;
+  list-style-type: none;
+  margin: 15px 15px 15px 15px;
+  height: 270px;
+  display: none;
+}
+
+li.link_h1{
+  margin: 0px;
+}
+li.link_h2{
+  margin: 0px 0px  0px 15px;
+}
+li.link_h3{
+  margin: 0px 0px  0px 30px;
+}
+
+#leoo_menu{
+  margin: 0px 0px 0px 10px;
+  font-size: 32px;
+}
