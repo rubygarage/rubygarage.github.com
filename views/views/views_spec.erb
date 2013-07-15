@@ -28,4 +28,27 @@
       ]]>
     </script>
   </div>
+  
+  <div class="slide" id="spec-on-page">
+    spec/views/posts/show_spec.rb
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+        describe "posts/show.html.erb" do
+          it "displays the post's title" do
+            assign(:post, stub_model(Post, :title => "Cool title"))
+            render
+            expect(rendered).to include("Cool title")
+          end
+        end
+      ]]>
+    </script>
+  </div>
+  <div class="slide" id="spec-on-page-result">
+    app/views/posts/show.html.erb
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+        <h1>&lt;%= @post.title %&gt;</h1>
+      ]]>
+    </script>
+  </div>
 </section>
