@@ -5,10 +5,10 @@
     <![CDATA[
       module ApplicationHelper
         #have title_tag in your head
-        def title title
+        def title init_value
           @title_parts ||= []
-          @title_parts.unshift title
-          title
+          @title_parts.unshift init_value
+          init_value
         end
         
         #This should be in the head
@@ -26,4 +26,21 @@
       end
     ]]>
   </script>
+  <div class ="slide" id= 'use-helper'>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+        &lt;% title("text") %&gt;
+        &lt;%= title_tag prefix: 'pr', suffix: 'sf', separator: '-' %&gt;
+      ]]>
+    </script>
+  </div>
+  <div class ="slide" id= 'helper-result'>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+        <title>
+          pr-text-sf
+        </title>
+      ]]>
+    </script>
+  </div>
 </section>

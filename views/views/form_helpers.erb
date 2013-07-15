@@ -16,14 +16,21 @@
       <form accept-charset="UTF-8" action="/posts/search" method="get">
         <label for ="q"> Search for: </label>
         <input id ="q" name = "q" type = "text" />
-        <input id ="special_id" name= "special_id" type = "hidden" value="5" />
+        <input id ="special_id" name= "special_id" type = "hidden" value="11" />
         <input name = "commit" type ="submit" value= "Search" />
       </form>
     ]]>
   </script>
 
-  <div class = "slide" id="checkbox-and-radio-button-tags">
-    <p>checkbox_tag, radio_button_tag</p>
+  <div class = "slide" id="checkbox">
+    <p>checkbox_tag</p>
+    
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[    
+        check_box_tag(name, value = "1", checked = false, options = {})
+      ]]>
+    </script>  
+    
     <script type="syntaxhighlighter" class="brush: ruby">
       <![CDATA[    
         &lt;%= check_box_tag(:like) %&gt;
@@ -35,7 +42,20 @@
         <input id="like" name="like" type="checkbox" value="1" />
       ]]>
     </script>
-    
+
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[    
+        &lt;%= check_box_tag 'like', 'accepted', false, disabled: true %&gt;
+      ]]>
+    </script>
+
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[    
+        <input id="like" name="like" type="checkbox" value="accepted" disabled = "disabled"/>
+      ]]>
+    </script>
+  </div>
+  <div class = "slide" id='radio-button'>  
     <script type="syntaxhighlighter" class="brush: ruby">
       <![CDATA[    
         &lt;%= radion_button_tag(:age, "child") %&gt;
