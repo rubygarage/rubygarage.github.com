@@ -1,25 +1,20 @@
 <section id="haml-class-and-id" class="slide">
-  <div class="vcenter">
-    <h1>Haml</h1>
-    
-    <h2>Class and ID : . and #</h2>
-    <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[      
-        
-        %div#elems
-          %span.green= Green Label
-          %p.firstclass.secondclass
-      ]]>
-    </script>
-    <div class = "slide" id = "haml-class-and-id-result">
-      <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[      
-          <div id ="elems">
-            <span class = "green"> Green Label </span>
-            <p class = "firstclass secondclass"></p>
-          </div>
-        ]]>
-      </script>
-    </div>
-  </div>
+  <h2>Class and ID: . and #</h2>
+  Haml
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      %div#elems
+        %span.green= Green Label
+        %p.firstclass.secondclass
+    ]]>
+  </script>
+  HTML
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[      
+      <div id="elems">
+        <span class="green">Green Label</span>
+        <p class="firstclass secondclass"></p>
+      </div>
+    ]]>
+  </script>
 </section>
