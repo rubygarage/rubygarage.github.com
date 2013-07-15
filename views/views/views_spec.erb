@@ -1,35 +1,31 @@
 <section id="views-spec" class="slide">
-  <div class="vcenter">
-    <h1>Testing views</h1>
-    <br/>
-    <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[      
-        #index_spec.rb
-        
-        describe "posts/index.html.erb" do
-          it "renders _post partial for each post" do
-            assign(:posts, [stub_model(Post), stub_model(Post)])
-            render
-            view.should render_template(:partial => "_post", :count => 2)
-          end
+  <h2>Testing views</h2>
+  spec/views/posts/index_spec.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      describe "posts/index.html.erb" do
+        it "renders _post partial for each post" do
+          assign(:posts, [stub_model(Post), stub_model(Post)])
+          render
+          view.should render_template(:partial => "_post", :count => 2)
         end
+      end
+    ]]>
+  </script>
+  app/views/posts/index.html.erb
+  <div class = "slide" id="result-of-testing">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+        <h1>Listing posts</h1>
+        <table>
+          <tr>
+            <th>Name</th>
+            <th>Title</th>
+            <th>Content</th>
+          </tr>
+          &lt;%= render @posts %&gt;
+        </table>
       ]]>
     </script>
-    <div class = "slide" id="result-of-testing">
-      <script type="syntaxhighlighter" class="brush: ruby">
-        <![CDATA[      
-          #posts/index.html.erb
-          
-          <h1>Listing posts</h1>
-          <table>
-            <tr>
-              <th>Name</th>
-              <th>Title</th>
-              <th>Content</th>
-            </tr>
-            < %= render @posts %>
-          </table>
-        ]]>
-      </script>
   </div>
 </section>

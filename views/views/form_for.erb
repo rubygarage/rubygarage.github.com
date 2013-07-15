@@ -1,42 +1,38 @@
 <section id="for-for" class="slide">
-  <div class="vcenter">
-    <h1>Form for</h1>
-    <br/>
-    <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[      
-        < %= form_for(@post) do |f| %>
-          < % if @post.errors.any? %>
-            <div id="error_explanation">
-              <h2>< %= pluralize(@post.errors.count, "error") %>
-              <ul>
-                < % @post.errors.full_messages.each do |msg| %> 
-                  <li>< %= msg %></li>
-                < % end %>
-              </ul>
-            </div>
-          < % end %>
-          
-          <div class = "field">
-            < %= f.label :name %> <br />
-            < %= f.text_field :name %> 
+  <h2>Form for</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[      
+      &lt;%= form_for(@post) do |f| %&gt;
+        &lt;% if @post.errors.any? %&gt;
+          <div id="error_explanation">
+            <h2>&lt;%= pluralize(@post.errors.count, "error") %&gt;
+            <ul>
+              &lt;% @post.errors.full_messages.each do |msg| %&gt;
+                <li>&lt;%= msg %&gt;</li>
+              &lt;% end %&gt;
+            </ul>
           </div>
+        &lt;% end %&gt;
+        
+        <div class = "field">
+          &lt;%= f.label :name %&gt; <br />
+          &lt;%= f.text_field :name %&gt; 
+        </div>
 
-          <div class = "field">
-            < %= f.label :title %> <br />
-            < %= f.text_field :title %> 
-          </div>
+        <div class = "field">
+          &lt;%= f.label :title %&gt; <br />
+          &lt;%= f.text_field :title %&gt; 
+        </div>
+        
+        <div class = "field">
+          &lt;%= f.label :content %&gt; <br />
+          &lt;%= f.text_area :content %&gt; 
+        </div>
           
-          <div class = "field">
-            < %= f.label :content %> <br />
-            < %= f.text_area :content %> 
-          </div>
-            
-          <div class = "actions">
-            < %= f.submit %> 
-          </div>
-        < % end %>
-      ]]>
-    </script>
-
-  </div>
+        <div class = "actions">
+          &lt;%= f.submit %&gt;
+        </div>
+      &lt;% end %&gt;
+    ]]>
+  </script>
 </section>
