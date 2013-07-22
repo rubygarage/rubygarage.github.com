@@ -1,0 +1,23 @@
+@import "application";
+
+td {
+  padding-right: 10px;
+}
+
+#basics-cascade {
+  ul ul {
+    margin-bottom: 0px;
+  }
+}
+
+.columns {
+  @include pie-clearfix;
+}
+
+  .column-left {
+    float: left; width: 48%;
+  }
+
+  .column-right {
+    float: right; width: 48%;
+  }

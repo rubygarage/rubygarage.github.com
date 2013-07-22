@@ -77,6 +77,11 @@ class App < Sinatra::Base
     erb :views
   end
 
+  get "/htmlcssbasics" do
+    erb :htmlcssbasics
+  end
+
+
   helpers do
     include Sprockets::Helpers
   end
