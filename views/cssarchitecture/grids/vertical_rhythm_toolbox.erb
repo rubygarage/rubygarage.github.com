@@ -1,0 +1,38 @@
+<section id="grids-vertical-rhythm-toolbox" class="slide">
+  <h2>Vertical rhythm toolbox</h2>
+
+  <p>To establish the vertical rhythm for the project:</p>
+
+  <script type="syntaxhighlighter" class="brush: css">
+    <![CDATA[
+      //application.css.scss
+
+      $base-font-size: 14px;
+      $base-line-height: 20px;
+      
+      @include establish-baseline;
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: css">
+    <![CDATA[
+      //page.css.scss
+
+      p {
+        @include adjust-font-size-to(13px);
+        @include leader(1); //margin-top
+      }
+
+      h1 {
+        @include adjust-font-size-to(24px, 1.5); // font-size, multuplier of line-height
+        @include trailer(.5, 24px); //margin-bottom
+      }
+
+      h2 {
+        @include adjust-font-size-to(12px, 0.8);
+        @include trailer(.2, 12px);
+      }
+    ]]>
+  </script>
+
+</section>

@@ -81,6 +81,14 @@ class App < Sinatra::Base
     erb :htmlcssbasics
   end
 
+  get "/cssarchitecture" do
+    erb :cssarchitecture
+  end
+
+
+  #get "/cssbestpractices" do
+  #  erb :cssbestpractices
+  #end
 
   helpers do
     include Sprockets::Helpers

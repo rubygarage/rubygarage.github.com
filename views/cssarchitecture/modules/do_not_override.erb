@@ -1,0 +1,38 @@
+<section id="modules-do-not-override" class="slide">
+  <h2>Do not override</h2>
+  
+  <p>Describe the possible variations inside the module, not outside.</p>
+
+  <script type="syntaxhighlighter" class="brush: css">
+    <![CDATA[
+      .btn {
+        // Set text color
+        &.danger,
+        &.danger:hover,
+        &.error,
+        &.error:hover,
+        &.success,
+        &.success:hover,
+        &.info,
+        &.info:hover {
+          text-shadow: 0 -1px 0 rgba(0,0,0,.25);
+          color: $white;
+        }
+        // Danger and error appear as red
+        &.danger,
+        &.error {
+          @include gradientBar(#ee5f5b, #c43c35);
+        }
+        // Success appears as green
+        &.success {
+          @include gradientBar(#62c462, #57a957);
+        }
+        // Info appears as a neutral blue
+        &.info {
+          @include gradientBar(#5bc0de, #339bb9);
+        }
+      }
+    ]]>
+  </script>    
+
+</section>

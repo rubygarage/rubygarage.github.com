@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Views</title>
+  <link href="assets/views.css" rel="stylesheet">
+  <script src="assets/views.js"></script>
+</head>
+
+<body class="deck-container">
+  
+<!-- Begin slides. Just make elements with a class of slide. -->
+<section id="topic" class="slide">
+  <div class="vcenter">
+    <h1>View</h1>
+    <div class="about">
+      <p>Action View is the <strong>V </strong> in MVC. View responsible for displaying data. It doesn't make any logic operations. <strong>Only displaying data. </strong></p>
+    </div>
+  </div>
+</section><section id="responses" class="slide">
+  <h2>Responses</h2>
+  <p>From the controller's point of view, there are three ways to create an HTTP response:</p>
+  <ul>
+    <li>Call render to create a full response to send back to the browser</li>
+    <li>Call redirect_to to send an HTTP redirect status code to the browser</li>
+    <li>Call head to create a response consisting solely of HTTP headers to send back to the browser</li>
+  </ul>
+</section>
+<section id="default-rendering" class="slide">
+  <h2>Default rendering</h2>
+  config/routes.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[      
+      Blog::Application.routes.draw do
+        resources :posts
+      end
+    ]]>
+  </script>
+  app/controllers/posts_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class PostsController<ApplicationController
+        def index
+          @posts = Post.all
+          respond_to do |format|
+            format.html #index.html.erb
+            format.json { render json: @posts}
+            format.xml { render xml: @posts}
+          end
+        end
+      end
+    ]]>
+  </script>
+</section>
+<section id="erb" class="slide">
+  <h2>.erb</h2>
+  app/views/posts/index.html.erb 
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <h1>Listing posts</h1>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Text</th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        &lt;% @posts.each do |post| %&gt;
+          <tr>
+            <td>&lt;%= post.title %&gt;</td>
+            <td>&lt;%= post.text %&gt;</td>
+            <td>&lt;%= link_to 'Show', post %&gt;</td>
+            <td>&lt;%= link_to 'Edit', edit_post_path(post) %&gt;</td>
+            <td>&lt;%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %&gt;</td>
+          </tr>
+        &lt;% end %&gt;
+      </tbody>
+    </table>
+
+    <br>
+
+    &lt;%= link_to 'New Post', new_post_path %&gt;
+  </script>
+</section><section id="render" class="slide">
+  <h2>ActionController::Base#render method</h2>
+  <p>In most cases, the ActionController::Base#render method does the heavy lifting of rendering your application's content for use by a browser. There are a variety of ways to customize the behavior of render. You can render the default view for a Rails template, or a specific template, or a file, or inline code, or nothing at all. You can render text, JSON, or XML. You can specify the content type or HTTP status of the rendered response as well.</p>
+
+  <div class="slide" id="render-nothing">
+    <h2>Rendering Nothing</h2>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[      
+        def index 
+          @posts = Post.all
+          respond_to do |format|
+            format.html{ render nothing: true}
+          end
+        end
+      ]]>
+    </script>
+  </div>
+
+  <div class="slide" id="render-action">
+    <h2>Rendering an Action's View</h2>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[      
+        def update 
+          @post = Post.find(params[:id])
+          respond_to do |format|
+            if @post.update_attributes(params[:post])
+              format.html{ redirect_to @post, notice: 'Post was successfully updated.'}
+            else
+              format.html{ render action: 'edit'}
+            end
+          end
+        end
+      ]]>
+    </script>
+  </div>
+</section><section id="render-template" class="slide">
+  <h2>Rendering an Action's Template from Another Controller</h2>      
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[      
+      def show 
+        @post = Post.find(params[:id])
+        render 'posts/show'
+        render template: 'posts/show'
+      end
+    ]]>
+  </script>
+
+  <div class="slide" id="render-file">
+    <h2>Rendering an Arbitrary File</h2>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[      
+        def show 
+          @post = Post.find(params[:id])
+          render file: '/var/www/blog/app/views/posts/show'
+        end
+      ]]>
+    </script>
+  </div>
+
+  <div class="slide" id="render-inline">
+    <h2>Rendering an inline code</h2>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[      
+        def index 
+          @posts = Post.all
+          render inline: "&lt;% @posts.each do |p| %&gt;<p>&lt;%= p.title %&gt;</p>&lt;% end %&gt;"
+        end
+      ]]>
+    </script>
+  </div>
+  
+  <div class="slide" id="render-text">
+    <h2>Rendering a string</h2>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[      
+        def index
+          @posts = Post.all
+          render text: "Ok"
+        end
+      ]]>
+    </script>
+  </div>
+</section><section id="render-json-xml" class="slide">
+  <h2>Rendering JSON and XML</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[      
+      def index
+        @post = Post.all
+        respond_to do |format|
+          format.html
+          format.json { render json: @posts}
+          format.xml { render xml: @posts}
+        end
+      end
+    ]]>
+  </script>
+  <p>to_json, to_xml methods</p>
+
+  <div class="slide" id="render-js">
+    <h2>Rendering Vanilla JavaScript</h2>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[      
+        def index 
+          @posts = Post.all
+          respond_to do |format|
+            format.html
+            format.json{ render json: @posts }
+            format.xml{ render xml: @posts }
+            format.js do
+              render js: "alert('Count #{@posts.length}');"
+            end
+          end
+        end
+      ]]>
+    </script>
+  </div>
+</section><section id="render-final" class="slide">
+  <div class="vcenter">
+    <h1>Render</h1>
+    <br/>
+    <div id="render-final">
+
+      <script type="syntaxhighlighter" class="brush: ruby">
+        <![CDATA[      
+          def update
+            @post = Post.find(params[:id])
+            if @post.update_attributes
+              redirect_to @post, notice: "Past was successfully updated"
+            else
+              render :edit
+              render action: :edit
+              render 'edit'
+              render 'edit.html.erb'
+              render action: 'edit'
+              render action: 'edit.html.erb'
+              render 'posts/edit'
+              render 'posts/edit.html.erb'
+              render template: 'posts/edit'
+              render template: 'posts/edit.html.erb'
+              render '/path/to/rails/app/views/posts/edit'
+              render '/path/to/rails/app/views/posts/edit.html.erb'
+              render file: '/path/to/rails/app/views/posts/edit'
+              render file: '/path/to/rails/app/views/posts/edit.html.erb'
+            end
+          end
+        ]]>
+      </script>
+    </div>
+
+  </div>
+</section>
+<section id="content-type-option" class="slide">
+  <h2>The :content_type option</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[      
+      def index
+        @post = Post.all
+        respond_to do |format|
+          format.html
+          format.xml do
+            render template: 'posts/rss_list', content_type: 'application/rss'
+          end
+        end
+      end
+    ]]>
+  </script>
+
+  <div class = "slide" id ="status-option">
+    <h2>The :status option</h2>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      render status: 404
+    </script>
+  </div>
+
+  <div class = "slide" id ="location-option">
+    <h2>The :location option</h2>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[      
+        def index
+          @post = Post.all
+          respond_to do |format|
+            format.html
+            format.xml do
+              render xml: @posts, location: posts_url
+            end
+          end
+        end
+      ]]>
+    </script>
+  </div>
+
+  <div class = "slide" id ="layout-option">
+    <h2>The :layout option</h2>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[      
+        def show
+          @post = Post.find(params[:id])
+          render remplate: 'pages/post', layout: 'post'
+        end
+      ]]>
+    </script>
+  </div>
+</section><section id="layout" class="slide">
+  <h2>Layout</h2>
+  app/controllers/posts_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[      
+      class PostsController < ApplicationController
+        layout "post"  
+
+        def index
+          @posts = Post.all
+        end
+      end
+    ]]>
+  </script>
+  app/controllers/posts_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class PostsController < ApplicationController
+        layout :posts_layout
+
+        def index
+          @posts = Post.all
+        end
+
+        private
+
+        def posts_layout
+          current_user.admin? ? "admin" : "post"
+        end
+      end
+    ]]>
+  </script>
+</section><section id="layout-2" class="slide">
+  <h2>Layout</h2>
+  app/controllers/posts_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class PostsController < ApplicationController
+        layout Proc.new{ |controller| controller.request.xhr? ? 'popup' : 'application'}
+      end
+    ]]>
+  </script>
+  app/controllers/posts_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class PostsController < ApplicationController
+        layout "post", except: [:index, :create]
+      end
+    ]]>
+  </script>
+  app/controllers/posts_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[    
+      class PostsController < ApplicationController
+        layout nil
+      end
+    ]]>
+  </script>
+</section><section id="layout-inheritance" class="slide">
+  <h2>Layout inheritance</h2>
+  app/controllers/application_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class ApplicationController < ActionController::Base
+        layout "application"
+      end
+    ]]>
+  </script>
+  app/controllers/posts_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class PostsController < ApplicationController
+        layout "post"
+      end
+    ]]>
+  </script>
+</section>
+<section id="yield" class="slide">
+  <h2>Yield</h2>
+  app/views/layouts/application.html.erb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      <html>
+        <head>
+          &lt;%= yield :head %&gt;
+        </head>
+        <body>
+          &lt;%= yield %&gt;
+        </body>
+      </html>
+    ]]>
+  </script>
+</section>
+<section id="content_for" class="slide">
+  <h2>Content for</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      &lt;% content_for :head do %&gt; 
+        <title>Post page</title>
+      &lt;% end %&gt;
+      <p>Hello, It is my first post!</p> 
+    ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      <html>
+        <head> 
+          <title>Post page</title>
+        </head>
+        <body>
+          <p>Hello, It is my first post!</p>
+        </body> 
+      </html>
+    ]]>
+  </script>
+</section><section id="partials" class="slide">
+  <h2>Partials</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      &lt;% = render 'form' %&gt;
+      <!-- views/posts/_form.html.erb -->
+      
+      &lt;% = render 'shared/menu' %&gt;
+      <!-- views/shared/_menu.html.erb -->
+      
+      &lt;% = render @post %&gt;
+      <!-- views/posts/_post.html.erb -->
+    ]]>
+  </script>
+
+  <div class = "slide" id= "partials-variables">
+    <h2>Locals</h2>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[         
+        &lt;% = render partial: 'form', locals: {post: @post} %&gt;
+      ]]>
+    </script>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[         
+        &lt;% = render 'form', post: @post %&gt;
+      ]]>
+    </script>
+  </div>
+</section><section id="collections" class="slide">
+  <h2>Collection</h2>
+  app/views/posts/index.html.erb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      <h1>Posts<h1>
+      <table>
+        <tr>
+          <th>Name</th>
+          <th>Title</th>
+          <th>Content</th>
+        </tr>  
+        &lt;%= render partial: "post", collection: @posts %&gt;
+      </table>
+    ]]>
+  </script>
+
+  app/views/posts/_post.html.erb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      <tr>
+        <td>&lt;%= post.name %&gt;</td>
+        <td>&lt;%= post.title %&gt;</td>
+        <td>&lt;%= post.content %&gt;</td>
+      </tr> 
+    ]]>
+  </script>
+  
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      &lt;%= render @posts %&gt;
+    ]]>
+  </script> 
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      &lt;%= render partial: "post", collection: @posts, as: :article %&gt;
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      &lt;% =render partial: "post", collection: @posts, as: :item, locals: { title: "Post page" } %&gt;
+    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[      
+      &lt;% =render partial: "post", collection: @posts, layout: "single_post_layout" %&gt;
+    ]]>
+  </script>
+
+  <h2>Spacer template</h2>
+  <script type="syntaxhighlighter" class="brush: ruby"> 
+    <![CDATA[
+      &lt;%= render @posts, spacer_template: 'post_spacer' %&gt;
+    ]]>
+  </script>
+</section><section id="form-helpers" class="slide">
+  <h2>Form helpers</h2>
+  <p>form_tag, label_tag, text_field_tag, hidden_field_tag, submit_tag</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[      
+      &lt;%= form_tag("/posts/search", :method => 'get') do %&gt;
+        &lt;%= label_tag(:q, "Search for:") %&gt;
+        &lt;%= text_field_tag(:q) %&gt;
+        &lt;%= hidden_field_tag(:special_id, "11") %&gt;
+        &lt;%= submit_tag("Search")
+      &lt;% end %&gt;
+    ]]>
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[      
+      <form accept-charset="UTF-8" action="/posts/search" method="get">
+        <label for ="q"> Search for: </label>
+        <input id ="q" name = "q" type = "text" />
+        <input id ="special_id" name= "special_id" type = "hidden" value="11" />
+        <input name = "commit" type ="submit" value= "Search" />
+      </form>
+    ]]>
+  </script>
+
+  <div class = "slide" id="checkbox">
+    <p>checkbox_tag</p>
+    
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[    
+        check_box_tag(name, value = "1", checked = false, options = {})
+      ]]>
+    </script>  
+    
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[    
+        &lt;%= check_box_tag(:like) %&gt;
+      ]]>
+    </script>
+
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[    
+        <input id="like" name="like" type="checkbox" value="1" />
+      ]]>
+    </script>
+
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[    
+        &lt;%= check_box_tag 'like', 'accepted', false, disabled: true %&gt;
+      ]]>
+    </script>
+
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[    
+        <input id="like" name="like" type="checkbox" value="accepted" disabled = "disabled"/>
+      ]]>
+    </script>
+  </div>
+  <div class = "slide" id='radio-button'>  
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[    
+        &lt;%= radion_button_tag(:age, "child") %&gt;
+        &lt;%= label_tag(:age_child, "I am younger than 21") %&gt;
+        &lt;%= radion_button_tag(:age, "adult") %&gt;
+        &lt;%= label_tag(:age_child, "I am over 21") %&gt;
+      ]]>
+    </script>
+
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[    
+        <input id= "age_child" name= "age" type= "radio" value= "child" />
+        <label for= "age_child"> I am younger than 21 </label>
+        <input id= "age_adult" name= "age" type= "radio" value= "adult" />
+        <label for= "age_child"> I am over 21 </label>
+      ]]>
+    </script>
+
+  </div>
+  You can find more details <a href= "/api.rubyonrails.org/classes/ActionView/Helpers/FormTagHelper.html#" target="_blank"> here</a>
+</section><section id="for-for" class="slide">
+  <h2>Form for</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[      
+      &lt;%= form_for(@post) do |f| %&gt;
+        &lt;% if @post.errors.any? %&gt;
+          <div id="error_explanation">
+            <h2>&lt;%= pluralize(@post.errors.count, "error") %&gt;
+            <ul>
+              &lt;% @post.errors.full_messages.each do |msg| %&gt;
+                <li>&lt;%= msg %&gt;</li>
+              &lt;% end %&gt;
+            </ul>
+          </div>
+        &lt;% end %&gt;
+        
+        <div class = "field">
+          &lt;%= f.label :name %&gt; <br />
+          &lt;%= f.text_field :name %&gt; 
+        </div>
+
+        <div class = "field">
+          &lt;%= f.label :title %&gt; <br />
+          &lt;%= f.text_field :title %&gt; 
+        </div>
+        
+        <div class = "field">
+          &lt;%= f.label :content %&gt; <br />
+          &lt;%= f.text_area :content %&gt; 
+        </div>
+          
+        <div class = "actions">
+          &lt;%= f.submit %&gt;
+        </div>
+      &lt;% end %&gt;
+    ]]>
+  </script>
+</section><section id="nested-attibutes" class="slide">
+  <h2>Nested attributes</h2>
+  app/modals/post.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class Post < ActiveRecord::Base
+        has_many :comments
+        accepts_nested_attributes_for :comments
+      end
+    ]]>
+  </script>
+  app/views/posts/_form.html.erb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      &lt;%= form_for @post do |post_form| %&gt;
+        <div class = "field">
+          &lt;%= post_form.label :title %&gt; <br/>
+          &lt;%= post_form.text_field :title %&gt; <br/>
+        </div>
+        <div> 
+          Comments
+          &lt;%= post_form.fields_for :comments do |comment_form| %&gt;
+            <div class = "field">
+              &lt;%= comment_form.label :text %&gt; <br />
+              &lt;%= comment_form.text_field :text %&gt; <br />
+            </div>
+          &lt;%- end %&gt;
+        </div>
+        <div class ="field">
+          &lt;%= post_form.label :content %&gt; <br />
+          &lt;%= post_form.text_area :content %&gt; <br />
+        </div>
+        <div class = "actions">
+          &lt;%= post_form.submit %&gt;
+        </div>
+      &lt;%- end %&gt;
+    ]]>
+  </script>
+</section>
+<section id="nested-attibutes-html" class="slide">
+  <h2>Nested attributes</h2>
+  
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    <form  accept-charset ="UTF-8" action="/posts/2" class="edit_post" =" edit_post" method = "post">
+      <div style ="margin:0;padding:0;display:inline">
+        <input name="utf8" type="hidden" value="&#x2713;" />
+        <input name="_method" type="hidden" value="put" />
+        <input name="authenticity_token" type="hidden" value="IOTTvaKsTlk..." />
+      </div>
+      <div class="field">
+        <label for="post_title"> Title</label><br />
+        <input id="post_title" name="post[title]" size="30" type="text" value="Some cool title" />
+      </div>  
+        Comments
+          <div class="field">
+            <label for="post_comments_attributes_0_text"> Text</label><br />
+            <input id="post_comments_attributes_0_text" name="post[comments_attributes][0][text]" size="30" type="text" value="comment" />
+          </div> 
+          <input id="post_comments_attributes_0_id" name="post[comments_attributes][0][id]" type="hidden" value ="1">
+          <div class="field">
+            <label for="post_comments_attributes_1_text"> Text</label><br />
+            <input id="post_comments_attributes_1_text" name="post[comments_attributes][1][text]" size="30" type="text" value="comment" />
+          </div> 
+          <input id="post_comments_attributes_1_id" name="post[comments_attributes][1][id]" type="hidden" value ="2">
+          <div class="field">
+            <label for="post_comments_attributes_2_text"> Text</label><br />
+            <input id="post_comments_attributes_2_text" name="post[comments_attributes][2][text]" size="30" type="text" value="comment" />
+          </div> 
+          <input id="post_comments_attributes_2_id" name="post[comments_attributes][2][id]" type="hidden" value ="3">
+          <div class ="field">
+            <label for="post_content">Content</label><br/>
+            <textarea cols="40" id="post_content" name="post[content]" rows="20"> Some string with with sense</textarea>
+          </div>
+          <div class="actions">
+            <input name="commit" type="submit" value="Update Post"/>
+          </div>
+        </form>
+    ]]>
+  </script>
+</section>
+<section id="views-spec" class="slide">
+  <h2>Testing views</h2>
+  spec/views/posts/index_spec.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      describe "posts/index.html.erb" do
+        it "renders _post partial for each post" do
+          assign(:posts, [stub_model(Post), stub_model(Post)])
+          render
+          view.should render_template(:partial => "_post", :count => 2)
+        end
+      end
+    ]]>
+  </script>
+  app/views/posts/index.html.erb
+  <div class = "slide" id="result-of-testing">
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+        <h1>Listing posts</h1>
+        <table>
+          <tr>
+            <th>Name</th>
+            <th>Title</th>
+            <th>Content</th>
+          </tr>
+          &lt;%= render @posts %&gt;
+        </table>
+      ]]>
+    </script>
+  </div>
+  
+  <div class="slide" id="spec-on-page">
+    spec/views/posts/show_spec.rb
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+        describe "posts/show.html.erb" do
+          it "displays the post's title" do
+            assign(:post, stub_model(Post, :title => "Cool title"))
+            render
+            expect(rendered).to include("Cool title")
+          end
+        end
+      ]]>
+    </script>
+  </div>
+  <div class="slide" id="spec-on-page-result">
+    app/views/posts/show.html.erb
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+        <h1>&lt;%= @post.title %&gt;</h1>
+      ]]>
+    </script>
+  </div>
+</section><section id="helpers" class="slide">
+  <h2>Helpers</h2>
+  app/helpers/application_helper.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      module ApplicationHelper
+        #have title_tag in your head
+        def title init_value
+          @title_parts ||= []
+          @title_parts.unshift init_value
+          init_value
+        end
+        
+        #This should be in the head
+        def title_tag options ={}
+          content_tag :title, get_title(options)
+        end
+
+        def get_title options ={}
+          @title_parts ||= []
+          @title_parts.unshift options[:prefix] unless options[:prefix].nil?
+          @title_parts << options[:suffix] unless options[:suffix].nil?
+          separator = options.fetch(:separator, ' - ')
+          @title_parts.join(separator).html_safe
+        end
+      end
+    ]]>
+  </script>
+  <div class ="slide" id= 'use-helper'>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+        &lt;% title("text") %&gt;
+        &lt;%= title_tag prefix: 'pr', suffix: 'sf', separator: '-' %&gt;
+      ]]>
+    </script>
+  </div>
+  <div class ="slide" id= 'helper-result'>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+        <title>
+          pr-text-sf
+        </title>
+      ]]>
+    </script>
+  </div>
+</section>
+<section id="helper-method" class="slide">
+  <h2>helper_method</h2>
+  app/controllers/application_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      class ApplicationController < ActionController::Base
+        helper_method :current_user
+
+        def current_user
+          @_current_user ||= session[:current_user_id] && 
+            User.find_by_id(session[:current_user_id])
+        end
+      end
+    ]]>
+  </script>
+</section>
+<section id="helpers-spec" class="slide">
+  <h2>Testing helpers</h2>
+  spec/helpers/posts_spec.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      require 'spec_helper'
+      
+      describe PostsHelper do
+        describe "#post_title" do
+          it "should return post title" do
+            post = stub_model(Post, title: 'New age of IT')
+            post_title(post).should == 'New age of IT'
+          end
+        end          
+      end
+    ]]>
+  </script>
+  app/helpers/posts_spec.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      module PostsHelper
+        def post_title(post)
+          post.title
+        end
+      end 
+    ]]>
+  </script>
+</section>
+<section id="haml-topic" class="slide">
+  <h2>Haml</h2>
+<p>The principles of Haml: </p>
+<ul>
+<li> Markup should be beautiful</li>
+<li> Markup should be DRY</li>
+<li> Markup should be indented</li>
+<li> Structure should be clear</li>
+</ul>
+</section>
+<section id="haml" class="slide">
+  <h2>Haml</h2>
+  views/posts/post.html.erb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[      
+      <tr>
+        <td>&lt;%= post.name %&gt;</td>
+        <td>&lt;%= post.title %&gt;</td>
+        <td>&lt;%= post.content %&gt;</td>
+      </tr> 
+    ]]>
+  </script>
+  views/posts/post.html.haml
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      %tr
+        %td= post.name
+        %td= post.title
+        %td= post.content 
+    ]]>
+  </script>
+  REMEMBER: Do not use spaces between tag and '='
+  <div class ="slide" id="haml-attributes">
+    <h2>Attributes</h2>
+    views/posts/post.html.haml
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[
+        %tr{'my-attr'=> 'some value', normal: 'other value'}
+          %td= post.name
+          %td= post.title
+          %td= post.content 
+      ]]>
+    </script>
+  </div>
+
+  <div class ="slide" id="haml-boolean-attributes">
+    <h2>Boolean attributes</h2>
+    Haml
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[      
+        %input{selected: true}
+      ]]>
+    </script>
+    HTML
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[      
+        <input selected = "selected">
+      ]]>
+    </script>
+    Haml
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[      
+        %input{selected: false}
+      ]]>
+    </script>
+    HTML
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[      
+        <input>
+      ]]>
+    </script>
+  </div>
+
+  <div class ="slide" id="haml-inserting-js">
+    <h2>Inserting JavaScript</h2>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      <![CDATA[      
+        %script{type: 'text/javascript'}
+          console.log('script was executed');
+      ]]>
+    </script>
+  </div>
+</section>
+<section id="haml-class-and-id" class="slide">
+  <h2>Class and ID: . and #</h2>
+  Haml
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+      %div#elems
+        %span.green= "Green Label"
+        %p.firstclass.secondclass
+    ]]>
+  </script>
+  HTML
+  <script type="syntaxhighlighter" class="brush: ruby">
+  <![CDATA[      
+      <div id="elems">
+        <span class="green">Green Label</span>
+        <p class="firstclass secondclass"></p>
+      </div>
+    ]]>
+  </script>
+</section><!-- End slides. -->
+
+<!-- deck.navigation snippet -->
+<a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
+<a href="#" class="deck-next-link" title="Next">&#8594;</a>
+
+<!-- deck.status snippet -->
+<p class="deck-status">
+  <span class="deck-status-current"></span>
+  /
+  <span class="deck-status-total"></span>
+</p>
+
+<!-- deck.hash snippet -->
+<a href="." title="Permalink to this slide" class="deck-permalink">#</a>
+
+</body>
+</html>

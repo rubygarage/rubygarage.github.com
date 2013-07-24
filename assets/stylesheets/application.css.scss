@@ -7,3 +7,20 @@
 @import "compass";
 @import "bootstrap";
 @import "main";
+
+.columns {
+  @include pie-clearfix;
+
+  .column-half {
+    float: left; 
+    width: 48%;
+    +.column-half {
+      float: right;
+    }
+  }
+
+  .column-third {
+    float: left; 
+    width: 32%;
+  }
+}
