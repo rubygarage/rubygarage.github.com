@@ -1,0 +1,40 @@
+<section id="dont-repeat-yourself" class="slide">
+  <h2>Code sharing</h2>
+
+  <p>And it brings two more awesome tools for making our css DRY:</p>
+
+  <section class="slide">
+    <h3>Mixins</h3>
+    <script type="syntaxhighlighter" class="brush: css">
+      <![CDATA[
+        @mixin silly-links {
+          a {
+            color: blue;
+            background-color: red;
+          }
+        }
+
+        @include silly-links;
+      ]]>
+    </script>
+  </section>
+
+  <section class="slide">
+    <h3>Extend</h3>
+    <script type="syntaxhighlighter" class="brush: css">
+      <![CDATA[
+        .error {
+          border: 1px #f00;
+          background-color: #fdd;
+        }
+        .seriousError {
+          @extend .error;
+          border-width: 3px;
+        }
+      ]]>
+    </script>
+  </section>
+  <section class="slide">
+    <p>Which one is better?</p>
+  </section>
+</section>

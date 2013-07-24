@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Ruby on Rails</title>
+  <link href="assets/cssarchitecture.css" rel="stylesheet">
+  <script src="assets/cssarchitecture.js"></script>
+</head>
+
+<body class="deck-container">
+
+<!-- Begin slides. Just make elements with a class of slide. -->
+<section id="topic" class="slide">
+  <div class="vcenter">
+    <h1>CSS Architecture</h1>
+    <h1>Modules, semantics and grids</h1>
+  </div>
+</section>
+<section id="dont-repeat-yourself" class="slide">
+  <h2>Dont repeat yourself</h2>
+
+  <p>SASS add two more tools for making our css DRY:</p>
+
+  <section class="slide">
+    <h3>Mixins</h3>
+    <script type="syntaxhighlighter" class="brush: css">
+      <![CDATA[
+        @mixin silly-links {
+          a {
+            color: blue;
+            background-color: red;
+          }
+        }
+
+        @include silly-links;
+      ]]>
+    </script>
+  </section>
+
+  <section class="slide">
+    <h3>Extend</h3>
+    <script type="syntaxhighlighter" class="brush: css">
+      <![CDATA[
+        .error {
+          border: 1px #f00;
+          background-color: #fdd;
+        }
+        .seriousError {
+          @extend .error;
+          border-width: 3px;
+        }
+      ]]>
+    </script>
+  </section>
+</section>
+<!-- End slides. -->
+
+<!-- deck.navigation snippet -->
+<a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
+<a href="#" class="deck-next-link" title="Next">&#8594;</a>
+
+<!-- deck.status snippet -->
+<p class="deck-status">
+  <span class="deck-status-current"></span>
+  /
+  <span class="deck-status-total"></span>
+</p>
+
+<!-- deck.hash snippet -->
+<a href="." title="Permalink to this slide" class="deck-permalink">#</a>
+
+</body>
+</html>

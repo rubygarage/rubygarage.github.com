@@ -1,0 +1,42 @@
+<section id="basics-ways-to-link-css" class="slide">
+  <h2>Ways to link css</h2>
+
+  <p>There are three ways of inserting a style sheet:</p>
+
+  <ul>
+    <li>
+      External style sheet
+      <script type="syntaxhighlighter" class="brush: css">
+        <![CDATA[
+          <head>
+            <link rel="stylesheet" type="text/css" href="mystyle.css">
+          </head>
+        ]]>
+      </script>
+    </li>
+    <li>
+      Internal style sheet
+      <script type="syntaxhighlighter" class="brush: css">
+        <![CDATA[
+          <head>
+            <style>
+              p {
+                margin-left: 20px;
+              }
+            </style>
+          </head>
+        ]]>
+      </script>
+    </li>
+    <li>
+      Inline style
+      <script type="syntaxhighlighter" class="brush: css">
+        <![CDATA[
+          <p style="color: #fff; margin-left: 20px;">This is a paragraph.</p>
+        ]]>
+      </script>
+      
+    </li>
+ 
+  </ul>
+</section>

@@ -1,0 +1,62 @@
+<section id="basics-specificity-calculation" class="slide">
+  <h2>Specifity Calculation</h2>
+  
+  <table>
+    <tr>
+      <td>
+        0001
+      </td>
+      <td>
+        Element, Pseudo Element
+      </td>
+    </tr>
+    <tr>
+      <td>
+        0010
+      </td>
+      <td>
+        Class, Pseudo class, Attribute
+      </td>
+    </tr>
+    <tr>
+      <td>
+        0100
+      </td>
+      <td>
+        Id
+      </td>
+    </tr>
+    <tr>
+      <td>
+        1000
+      </td>
+      <td>
+        Inline Style
+      </td>
+    </tr>
+  </table>
+
+  <section class="slide" style="margin-top: 20px;">
+    <p>Id is more specific than a class is more specific than an element.</p>
+  </section>
+
+  <section class="slide" style="margin-top: 40px;">
+    <p>In our example</p>
+    <script type="syntaxhighlighter" class="brush: css">
+      <![CDATA[
+        div p.bio {       - 0012
+          font-size: 14px;
+        }
+        #sidebar p {      - 0101
+          font-size: 12px;
+        }
+      ]]>
+    </script>
+  </section>
+
+  <section class="slide" style="margin-top: 40px;">
+    <p>To make our life easier - it's better to avoid the complex sequences and random overrides in general.
+    <br />
+    Noone actually does this math in practice.</p>
+  </section>
+</section>

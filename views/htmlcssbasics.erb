@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Ruby on Rails</title>
+  <link href="assets/htmlcssbasics.css" rel="stylesheet">
+  <script src="assets/htmlcssbasics.js"></script>
+</head>
+
+<body class="deck-container">
+
+<!-- Begin slides. Just make elements with a class of slide. -->
+<%= partial :'htmlcssbasics/topic' %>
+<%= partial :'htmlcssbasics/start_from_practice' %>
+
+<%= partial :'htmlcssbasics/basics/topic' %>
+<%= partial :'htmlcssbasics/basics/html_tags' %>
+<%= partial :'htmlcssbasics/basics/doctype' %>
+<%= partial :'htmlcssbasics/basics/css_selectors' %>
+<%= partial :'htmlcssbasics/basics/reset' %>
+<%= partial :'htmlcssbasics/basics/ways_to_link_css' %>
+<%= partial :'htmlcssbasics/basics/specifity' %>
+<%= partial :'htmlcssbasics/basics/specifity_calculation' %>
+<%= partial :'htmlcssbasics/basics/cascade' %>
+<%= partial :'htmlcssbasics/basics/inheritance' %>
+<%= partial :'htmlcssbasics/basics/box_model' %>
+<%= partial :'htmlcssbasics/basics/box_rendering' %>
+<%= partial :'htmlcssbasics/basics/positioning1' %>
+<%= partial :'htmlcssbasics/basics/positioning2' %>
+<%= partial :'htmlcssbasics/basics/positioning-z-index' %>
+<%= partial :'htmlcssbasics/basics/measurements' %>
+<%= partial :'htmlcssbasics/basics/layouts' %>
+<%= partial :'htmlcssbasics/basics/useful-photoshop-shotcuts' %>
+
+<!-- End slides. -->
+
+<!-- deck.navigation snippet -->
+<a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
+<a href="#" class="deck-next-link" title="Next">&#8594;</a>
+
+<!-- deck.status snippet -->
+<p class="deck-status">
+  <span class="deck-status-current"></span>
+  /
+  <span class="deck-status-total"></span>
+</p>
+
+<!-- deck.hash snippet -->
+<a href="." title="Permalink to this slide" class="deck-permalink">#</a>
+
+</body>
+</html>

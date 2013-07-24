@@ -10,6 +10,7 @@ gem 'rack-test'
 gem 'sprockets'
 gem 'sprockets-sass'
 gem 'sprockets-helpers'
+gem 'shotgun'
 
 gem 'compass'
 gem 'bootstrap-sass'
