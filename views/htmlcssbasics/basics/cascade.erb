@@ -1,0 +1,51 @@
+<section id="basics-cascade" class="slide">
+  <h2>Cascade</h2>
+
+  <p>Specifity is only one part of the puzzle named Cascade. How it all works in together:</p>
+
+  <ol>
+    <li>All declarations to the element are found</li>
+    <li>They are sorted by origin
+      <ul>
+        <li>
+          Author Style Sheets
+          <ul>
+            <li>External style sheet</li>
+            <li>Internal style sheet</li>
+            <li>Inline style</li>
+          </ul>
+        </li>
+        <li>
+          User Style Sheets
+        </li>
+        <li>
+          User Agent Style Sheets
+        </li>
+      </ul>
+    </li>
+
+    <li>Specificity is calculated (this one we already know)</li>
+
+    <li>If two rules are equal in all of the above, the one declared last wins.</li>
+
+  </ol>
+
+  <section class="slide">
+    <h3>Directive "important!"</h3>
+    <p>Jumps out of the cascade to the highest level of priority.</p>
+    <script type="syntaxhighlighter" class="brush: css">
+      <![CDATA[
+        div p.bio {
+          font-size: 14px !important;
+        }
+        #sidebar p {
+          font-size: 12px;
+        }
+      ]]>
+    </script>
+  </section>
+
+  <section class="slide" style="margin-top: 20px;">
+    <p> It's better to aviod the situations where it's needed.</p>
+  </section>
+</section>

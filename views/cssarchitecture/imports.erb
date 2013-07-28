@@ -1,0 +1,35 @@
+<section id="dont-repeat-yourself" class="slide">
+  <h2>Import</h2>
+
+  <p>SASS allows us to seamlessly separate css code to different files, and then import them all together on pre-pocessing into one:</p>
+
+  <section>
+    <script type="syntaxhighlighter" class="brush: css">
+      <![CDATA[
+        /* _rounded.scss */
+
+        @mixin rounded($vert, $horz, $radius: 10px) {
+          border-#{$vert}-#{$horz}-radius: $radius;
+          -moz-border-radius-#{$vert}#{$horz}: $radius;
+          -webkit-border-#{$vert}-#{$horz}-radius: $radius;
+        }
+      ]]>
+    </script>
+  </section>
+
+  <section class="slide">
+    <script type="syntaxhighlighter" class="brush: css">
+      <![CDATA[
+        /* style.scss */
+
+        @import "rounded";
+
+        #navbar li { @include rounded(top, left); }
+        #footer { @include rounded(top, left, 5px); }
+        #sidebar { @include rounded(top, left, 8px); }
+      ]]>
+    </script>
+
+    <p>No additional queries on the page load.</p>
+  </section>
+</section>

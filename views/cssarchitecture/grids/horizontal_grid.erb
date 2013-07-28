@@ -1,0 +1,35 @@
+<section id="grids-horizontal-grid" class="slide">
+  <h2>Horizontal grid</h2>
+
+  <section class="columns">
+    <section class="column-half">
+      <img src="/assets/html_css/horizontal-grid.jpg" style="margin: 0; margin-bottom: 20px;" />
+    </section>
+    <section class="slide column-half">
+      <script type="syntaxhighlighter" class="brush: css">
+        <![CDATA[
+          $rowWidth: 960px;
+          $columnGutter: 20px;
+          $totalColumns: 12;
+
+          @import "foundation-grid";
+
+          #layout {
+            @include outerRow;
+          }
+
+            #content {
+              @include column(8);
+            }
+
+            #sidebar {
+              @include column(4);
+            }
+        ]]>
+      </script>
+    </section>
+  </section>
+
+  <p class="slide">Refer to foundation-grid.css for more options.</p>
+
+</section>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Ruby on Rails</title>
+  <link href="assets/cssarchitecture.css" rel="stylesheet">
+  <script src="assets/cssarchitecture.js"></script>
+</head>
+
+<body class="deck-container">
+
+<!-- Begin slides. Just make elements with a class of slide. -->
+<%= partial :'cssarchitecture/topic' %>
+<%= partial :'cssarchitecture/imports' %>
+<%= partial :'cssarchitecture/dont_repeat_yourself' %>
+
+<%= partial :'cssarchitecture/modules/topic' %>
+<%= partial :'cssarchitecture/modules/what_is_module' %>
+<%= partial :'cssarchitecture/modules/definition' %>
+<%= partial :'cssarchitecture/modules/components' %>
+<%= partial :'cssarchitecture/modules/folder_structure' %>
+<%= partial :'cssarchitecture/modules/do_not_override' %>
+
+<%= partial :'cssarchitecture/grids/topic' %>
+<%= partial :'cssarchitecture/grids/why_do_we_need_grids' %>
+<%= partial :'cssarchitecture/grids/horizontal_grid' %>
+<%= partial :'cssarchitecture/grids/vertical_measurements' %>
+<%= partial :'cssarchitecture/grids/baseline_grid' %>
+<%= partial :'cssarchitecture/grids/baseline_grid_fails' %>
+<%= partial :'cssarchitecture/grids/vertical_rhythm' %>
+<%= partial :'cssarchitecture/grids/vertical_rhythm_toolbox' %>
+
+<!-- End slides. -->
+
+<!-- deck.navigation snippet -->
+<a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
+<a href="#" class="deck-next-link" title="Next">&#8594;</a>
+
+<!-- deck.status snippet -->
+<p class="deck-status">
+  <span class="deck-status-current"></span>
+  /
+  <span class="deck-status-total"></span>
+</p>
+
+<!-- deck.hash snippet -->
+<a href="." title="Permalink to this slide" class="deck-permalink">#</a>
+
+</body>
+</html>

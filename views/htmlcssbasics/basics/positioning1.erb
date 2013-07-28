@@ -1,0 +1,34 @@
+<section id="basics-positioning-1" class="slide">
+  <h2>Positioning</h2>
+
+  <ul>
+    <li>
+      <h3>Tables</h3>
+      <p>Though it is historical it doesn't mean that we should neglect it.</p>
+    </li>
+    <li>
+      <section class="slide">
+        <h3>Float</h3>
+        <img src="/assets/html_css/float.png" style="margin: 0; margin-bottom: 20px;" />
+      </section>
+      <section class="slide">
+        <p>Need to clearfix:</p>
+        <img src="/assets/html_css/float-without-clearfix.jpg" style="margin: 0; margin-bottom: 20px;" />
+      </section>
+      <section class="slide">
+        <p>Here is the principle (applies to the container):</p>
+        <script type="syntaxhighlighter" class="brush: css">
+          <![CDATA[
+            @mixin pie-cleafix {
+              &:after {
+                content: "";
+                display: table;
+                clear: both;
+              }
+            }
+          ]]>
+        </script>
+      </section>
+    </li>  
+  </ul>
+</section>

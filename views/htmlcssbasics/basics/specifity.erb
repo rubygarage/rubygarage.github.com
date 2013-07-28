@@ -1,0 +1,39 @@
+<section id="basics-specificity" class="slide">
+  <h2>Specificity</h2>
+
+  <p>Which one will apply?</p>
+  <script type="syntaxhighlighter" class="brush: css">
+    <![CDATA[
+      p {
+        font-size: 12px;
+      }
+      p.bio {
+        font-size: 14px;
+      }
+    ]]>
+  </script>
+
+  <section class="slide">
+      
+    <p>What about here? What is more specific?</p>
+    <script type="syntaxhighlighter" class="brush: css">
+      <![CDATA[
+        <div id="sidebar">
+          <p class="bio">text here</p>
+        </div>
+      ]]>
+    </script>
+    <script type="syntaxhighlighter" class="brush: css">
+      <![CDATA[
+        div p.bio {
+          font-size: 14px;
+        }
+        #sidebar p {
+          font-size: 12px;
+        }
+      ]]>
+    </script>
+
+  </section>
+
+</section>
