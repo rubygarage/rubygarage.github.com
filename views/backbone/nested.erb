@@ -1,0 +1,27 @@
+<section id="nested" class="slide">
+  <h2>Nested attributes</h2>
+
+  <h4>in view</h4>
+  <script type="syntaxhighlighter" class="brush: js">
+    <![CDATA[
+      render: ->
+        $(@el).html(@template(@model.toJSON()))
+
+        @$('.field').not('.image').backboneLink(@model)
+        @$('.image').backboneLink(@model.image)
+
+        return this
+    ]]>
+  </script>
+
+  <h4>in model</h4>
+  <script type="syntaxhighlighter" class="brush: js">
+    <![CDATA[
+      json = _.clone(this.attributes)
+      if @image.has('description')
+        json.image_attributes = {description: @image.get('description')}
+        delete json['image']
+      json
+    ]]>
+  </script>
+</section>
