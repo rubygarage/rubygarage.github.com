@@ -1,0 +1,18 @@
+<section id="models-example" class="slide">
+  <h2>Model</h2>
+  <script type="syntaxhighlighter" class="brush: js">
+    <![CDATA[
+      class Blog.Models.Post extends Backbone.Model
+        paramRoot: 'post'
+
+        defaults:
+          title: null
+          body: null
+
+      class Blog.Collections.PostsCollection extends Backbone.Collection
+        model: Blog.Models.Post
+        url: '/posts'
+
+    ]]>
+  </script>
+</section>

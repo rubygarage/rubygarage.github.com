@@ -1,0 +1,15 @@
+<section id="events" class="slide">
+  <h2>Events</h2>
+  <ul class=centred>
+    <li><strong>"add"</strong> (model, collection) - when a model is added to a collection.</li>
+    <li><strong>"remove"</strong> (model, collection) - when a model is removed from a collection.</li>
+    <li><strong>"reset"</strong> (collection) - when a collection's entire contents have been replaced.</li>
+    <li><strong>"change"</strong> (model, options) - when a model's attributes have changed.</li>
+    <li><strong>"change:[attribute]"</strong> (model, value, options) - when a specific attribute has been changed.</li>
+    <li><strong>"destroy"</strong> (model, collection) - when a model is destroyed.</li>
+    <li><strong>"sync"</strong> (model, collection) - trigger whenever a model has been successfully synced to the server.</li>
+    <li><strong>"error"</strong> (model, collection) - when a model's validation fails, or a save call fails on the server.</li>
+    <li><strong>"route:[name]"</strong> (router) - when one of a routes has matched.</li>
+    <li><strong>"all"</strong> - this special event fires for any triggered event, passing the event name as the first argument</li>
+  </ul>
+</section>
