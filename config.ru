@@ -5,5 +5,6 @@ map App.assets_prefix do
 end
 
 map "/" do
+  use Rack::Static,:urls => ["/public"]# :root => 'public'
   run App
 end
