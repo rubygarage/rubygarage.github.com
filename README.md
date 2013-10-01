@@ -2,6 +2,8 @@
 
 ## Development
 
+Presentations are based on Deck.JS: http://imakewebthings.com/deck.js/introduction
+
 1. Add presentations to `./views` and amend `./app.rb` (`./views/awesome`, for example)
 2. Run `rackup` and open browser to preview `open http://127.0.0.1:9292/awesome`
 3. Add all the slides. Put images to `./assets/images/awesome` dir
