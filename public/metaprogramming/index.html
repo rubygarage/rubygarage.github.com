@@ -186,7 +186,7 @@ obj = MyClass.new    # => NameError: unitialized constant
       <![CDATA[
 class Person
   def method_missing (meth, *args, &block)
-    if met.to_s =~ /^find_all_by_(\w+)$/
+    if meth.to_s =~ /^find_all_by_(\w+)$/
       "Looking for the Person"
     else
       super
