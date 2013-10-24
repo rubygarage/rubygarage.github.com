@@ -1,30 +1,25 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8"/> 
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <title>BackboneJS</title>
-  <link href="assets/backbone.css" rel="stylesheet" />
-  <script src="assets/backbone.js"></script>
-</head>
-
-<body class="deck-container">
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <meta charset="utf-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+      <title>BackboneJS</title>
+      <link href="assets/backbone.css" rel="stylesheet" />
+      <script src="assets/backbone.js"></script>
+   </head>
+   <body class="deck-container">
 
 <!-- Begin slides. Just make elements with a class of slide. -->
-<section id="intro" class="slide">
-  <div class="vcenter">
+<section id="intro" class="slide"><div class="vcenter">
     <h1>BackboneJS</h1>
   </div>
-</section><section id="mvc" class="slide">
-  <h2>MVC</h2>
+</section><section id="mvc" class="slide"><h2>MVC</h2>
   
-  <img src="./assets/backbone/mvc.png">
-</section><section id="mvc-description" class="slide">
-  <h2>How does Backbone relate to «traditional» MVC?</h2>
+  <img src="/public/backbone/assets/mvc.png" /></section><section id="mvc-description" class="slide"><h2>How does Backbone relate to «traditional» MVC?</h2>
   
 
-  <ul class=centred>
-    <li>
+  <ul class="centred"><li>
       <strong>Backbone.Model</strong> - Like a Rails model minus the class methods. Wraps a row of data in business logic.
     </li>
     <li>
@@ -39,19 +34,14 @@
     <li>
       <strong>Client-side Tamplates</strong> - Rails ".html.erb" views, rendering a chuck of HTML.
     </li>
-  </ul>  
-</section><section id="rails-backbone" class="slide">
-  <h2>Installation</h2>
+  </ul></section><section id="rails-backbone" class="slide"><h2>Installation</h2>
   <p>Gemfile</p>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     <![CDATA[
       gem 'rails-backbone' 
-    ]]>
-  </script>
-  <br/>
-
-  <p>Console</p>
-  <script type="syntaxhighlighter" class="brush: bash">
+    ]]]]><![CDATA[>
+  ]]></script><br /><p>Console</p>
+  <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     <![CDATA[
       ᐅ rails g backbone:install
 
@@ -65,13 +55,11 @@
         create  app/assets/javascripts/backbone/templates
         create  app/assets/javascripts/backbone/templates/.gitkeep
         create  app/assets/javascripts/backbone/blog.js.coffee
-    ]]>
-  </script>
-</section><section id="structure" class="slide">
-  <h2>Structure</h2>
+    ]]]]><![CDATA[>
+  ]]></script></section><section id="structure" class="slide"><h2>Structure</h2>
 
   <p>application.js</p>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     <![CDATA[
       // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
       // about supported directives.
@@ -85,11 +73,9 @@
       //= require backbone_datalink
       //= require backbone/blog
       //= require_tree .
-    ]]>
-  </script>
-
-  <p>blog.js.coffee</p>
-  <script type="syntaxhighlighter" class="brush: ruby">
+    ]]]]><![CDATA[>
+  ]]></script><p>blog.js.coffee</p>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     <![CDATA[
       #= require_self
       #= require_tree ./templates
@@ -102,18 +88,13 @@
         Collections: {}
         Routers: {}
         Views: {}
-    ]]>
-  </script>
-
-</section><section id="underscore" class="slide">
-  <div class="vcenter">
+    ]]]]><![CDATA[>
+  ]]></script></section><section id="underscore" class="slide"><div class="vcenter">
     <h1>UnderscoreJS</h1>
-    <br/>
-    <p>http://underscorejs.org/</p>
+    <br /><p>http://underscorejs.org/</p>
   </div>
-</section><section id="scaffold" class="slide">
-  <h2>Server side</h2>
-  <script type="syntaxhighlighter" class="brush: bash">
+</section><section id="scaffold" class="slide"><h2>Server side</h2>
+  <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     <![CDATA[
       ᐅ rails g scaffold post title:string body:text
         invoke  active_record
@@ -126,10 +107,9 @@
          route    resources :posts
         invoke  scaffold_controller
         create    app/controllers/posts_controller.rb
-    ]]>
-  </script>
-  <h2>Backbone scaffold</h2>
-  <script type="syntaxhighlighter" class="brush: bash">
+    ]]]]><![CDATA[>
+  ]]></script><h2>Backbone scaffold</h2>
+  <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     <![CDATA[
       ᐅ rails g backbone:scaffold post title:string body:text
         create  app/assets/javascripts/backbone/models/post.js.coffee
@@ -144,24 +124,19 @@
         create  app/assets/javascripts/backbone/templates/posts/edit.jst.ejs
         create  app/assets/javascripts/backbone/views/posts/post_view.js.coffee
         create  app/assets/javascripts/backbone/templates/posts/post.jst.ejs
-    ]]>
-  </script>
-</section><section id="models" class="slide">
-  <h2>Model</h2>
+    ]]]]><![CDATA[>
+  ]]></script></section><section id="models" class="slide"><h2>Model</h2>
 
-  <div class=centred-block>
+  <div class="centred-block">
     <h3><strong>What do they do?</strong></h3>
 
-    <ul>
-      <li>Store data</li>
+    <ul><li>Store data</li>
       <li>Provide get/set accessors</li>
       <li>Fire events when modified</li>
       <li>Optionally make REST calls to a server for persistence</li>
-    </ul>
-  </div>
-</section><section id="models-example" class="slide">
-  <h2>Model</h2>
-  <script type="syntaxhighlighter" class="brush: js">
+    </ul></div>
+</section><section id="models-example" class="slide"><h2>Model</h2>
+  <script type="syntaxhighlighter" class="brush: js"><![CDATA[
     <![CDATA[
       class Blog.Models.Post extends Backbone.Model
         paramRoot: 'post'
@@ -174,35 +149,24 @@
         model: Blog.Models.Post
         url: '/posts'
 
-    ]]>
-  </script>
-</section><section id="models-methods" class="slide">
-  <h2>Model</h2>
-  <img src="./assets/backbone/models.png">
-</section><section id="models-use" class="slide">
-  <h2>Model</h2>
-  <img src="./assets/backbone/models-use.png">
-</section><section id="view" class="slide">
-  <h2>Views</h2>
+    ]]]]><![CDATA[>
+  ]]></script></section><section id="models-methods" class="slide"><h2>Model</h2>
+  <img src="/public/backbone/assets/models.png" /></section><section id="models-use" class="slide"><h2>Model</h2>
+  <img src="/public/backbone/assets/models-use.png" /></section><section id="view" class="slide"><h2>Views</h2>
 
-  <div class=centred-block>
+  <div class="centred-block">
     <h3><strong>What do they do?</strong></h3>
 
-    <ul>
-      <li>Display data & UI controls</li>
+    <ul><li>Display data &amp; UI controls</li>
       <li>Render data with a template</li>
       <li>React to model changes</li>
       <li>Act on user input</li>
-    </ul>
-  </div>
-</section><section id="view-methods" class="slide">
-  <h2>Views</h2>
-  <img src="./assets/backbone/views.png">
-</section><section id="view-example" class="slide">
-  <h2>Views</h2>
+    </ul></div>
+</section><section id="view-methods" class="slide"><h2>Views</h2>
+  <img src="/public/backbone/assets/views.png" /></section><section id="view-example" class="slide"><h2>Views</h2>
 
   <strong>index_view.js.coffee</strong>
-  <script type="syntaxhighlighter" class="brush: js">
+  <script type="syntaxhighlighter" class="brush: js"><![CDATA[
     <![CDATA[
       Blog.Views.Posts ||= {}
 
@@ -224,13 +188,11 @@
           @addAll()
 
           return this
-    ]]>
-  </script>
-</section><section id="view-example2" class="slide">
-  <h2>Views</h2>
+    ]]]]><![CDATA[>
+  ]]></script></section><section id="view-example2" class="slide"><h2>Views</h2>
 
   <strong>new_view.js.coffee</strong>
-  <script type="syntaxhighlighter" class="brush: js">
+  <script type="syntaxhighlighter" class="brush: js"><![CDATA[
     <![CDATA[
       Blog.Views.Posts ||= {}
 
@@ -269,35 +231,23 @@
           this.$("form").backboneLink(@model)
 
           return this
-    ]]>
-  </script>
-</section><section id="render" class="slide">
-  <h2>Render</h2>
-  <img src="./assets/backbone/render.png">
-</section><section id="view-use" class="slide">
-  <h2>Views</h2>
-  <img src="./assets/backbone/view-use.png">
-  <br/>
-  <img src="./assets/backbone/view-use2.png">
-</section><section id="ejs" class="slide">
-  <h2>EJS</h2>
+    ]]]]><![CDATA[>
+  ]]></script></section><section id="render" class="slide"><h2>Render</h2>
+  <img src="/public/backbone/assets/render.png" /></section><section id="view-use" class="slide"><h2>Views</h2>
+  <img src="/public/backbone/assets/view-use.png" /><br /><img src="/public/backbone/assets/view-use2.png" /></section><section id="ejs" class="slide"><h2>EJS</h2>
   <p style="text-align: center;">&lt;% Embedded JavaScript %&gt;</p>
-  <br/>
-  <p><strong>About.</strong></p>
+  <br /><p><strong>About.</strong></p>
   <p>EJS cleans the HTML out of your JavaScript with client side templates. After EJS gets its rubber gloves on dirty code, you'll feel organized and uncluttered.</p>
-  <script type="syntaxhighlighter" class="brush: js">
+  <script type="syntaxhighlighter" class="brush: js"><![CDATA[
     <![CDATA[
       <ul>
       &lt;%= for(var i=0; i<supplies.length; i++) {%&gt;
          <li>&lt;%= supplies[i] %&gt;</li>
       &lt;% } %&gt;
       </ul>
-    ]]>
-  </script>
-</section><section id="events" class="slide">
-  <h2>Events</h2>
-  <ul class=centred>
-    <li><strong>"add"</strong> (model, collection) - when a model is added to a collection.</li>
+    ]]]]><![CDATA[>
+  ]]></script></section><section id="events" class="slide"><h2>Events</h2>
+  <ul class="centred"><li><strong>"add"</strong> (model, collection) - when a model is added to a collection.</li>
     <li><strong>"remove"</strong> (model, collection) - when a model is removed from a collection.</li>
     <li><strong>"reset"</strong> (collection) - when a collection's entire contents have been replaced.</li>
     <li><strong>"change"</strong> (model, options) - when a model's attributes have changed.</li>
@@ -307,16 +257,10 @@
     <li><strong>"error"</strong> (model, collection) - when a model's validation fails, or a save call fails on the server.</li>
     <li><strong>"route:[name]"</strong> (router) - when one of a routes has matched.</li>
     <li><strong>"all"</strong> - this special event fires for any triggered event, passing the event name as the first argument</li>
-  </ul>
-</section><section id="view-inheritance" class="slide">
-  <h2>View</h2>
-  <img src="./assets/backbone/view-inheritance.png">
-</section><section id="router" class="slide">
-  <h2>Router</h2>
-  <img src="./assets/backbone/router.png">
-</section><section id="router-example" class="slide">
-  <h2>Router</h2>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  </ul></section><section id="view-inheritance" class="slide"><h2>View</h2>
+  <img src="/public/backbone/assets/view-inheritance.png" /></section><section id="router" class="slide"><h2>Router</h2>
+  <img src="/public/backbone/assets/router.png" /></section><section id="router-example" class="slide"><h2>Router</h2>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     <![CDATA[
       class Blog.Routers.PostsRouter extends Backbone.Router
         initialize: (options) ->
@@ -349,34 +293,28 @@
 
           @view = new Blog.Views.Posts.EditView(model: post)
           $("#posts").html(@view.render().el)
-    ]]>
-  </script>
-</section><section id="history" class="slide">
-  <h2>History</h2>
+    ]]]]><![CDATA[>
+  ]]></script></section><section id="history" class="slide"><h2>History</h2>
   <strong>posts.js</strong>
-  <script type="syntaxhighlighter" class="brush: js">
+  <script type="syntaxhighlighter" class="brush: js"><![CDATA[
     <![CDATA[
       $ ->
         new Blog.Routers.PostRouter({posts: postsJSON})
         Backbone.history.start()
-    ]]>
-  </script>
-
-  <strong>posts/index.html.erb</strong>
-  <script type="syntaxhighlighter" class="brush: ruby">
+    ]]]]><![CDATA[>
+  ]]></script><strong>posts/index.html.erb</strong>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     <![CDATA[
       <div id='posts'>
         <script type='text/javascript'>
           this.postsJSON = &lt;%= @post.to_json.html_safe %&gt;
         &lt;/script>
       </div>
-    ]]>
-  </script>  
-</section><section id="assotiations" class="slide">
-  <h2>Associations</h2>
+    ]]]]><![CDATA[>
+  ]]></script></section><section id="assotiations" class="slide"><h2>Associations</h2>
 
   <strong>post.js.coffee</strong>
-  <script type="syntaxhighlighter" class="brush: js">
+  <script type="syntaxhighlighter" class="brush: js"><![CDATA[
     <![CDATA[
       class Blog.Models.Post extends Backbone.Model
         paramRoot: 'post'
@@ -395,17 +333,11 @@
             @comments.reset(json)
           else
             @comments = new Blog.Collections.PostsCollection(json)
-    ]]>
-  </script>
-
-  <br/>
-
-  <img src="./assets/backbone/association.png">
-</section><section id="nested" class="slide">
-  <h2>Nested attributes</h2>
+    ]]]]><![CDATA[>
+  ]]></script><br /><img src="/public/backbone/assets/association.png" /></section><section id="nested" class="slide"><h2>Nested attributes</h2>
 
   <h4>in view</h4>
-  <script type="syntaxhighlighter" class="brush: js">
+  <script type="syntaxhighlighter" class="brush: js"><![CDATA[
     <![CDATA[
       render: ->
         $(@el).html(@template(@model.toJSON()))
@@ -414,25 +346,19 @@
         @$('.image').backboneLink(@model.image)
 
         return this
-    ]]>
-  </script>
-
-  <h4>in model</h4>
-  <script type="syntaxhighlighter" class="brush: js">
+    ]]]]><![CDATA[>
+  ]]></script><h4>in model</h4>
+  <script type="syntaxhighlighter" class="brush: js"><![CDATA[
     <![CDATA[
       json = _.clone(this.attributes)
       if @image.has('description')
         json.image_attributes = {description: @image.get('description')}
         delete json['image']
       json
-    ]]>
-  </script>
-</section><section id="nested-use" class="slide">
-  <h2>Nested attributes</h2>
+    ]]]]><![CDATA[>
+  ]]></script></section><section id="nested-use" class="slide"><h2>Nested attributes</h2>
 
-  <img src="./assets/backbone/nested.png">
-  <br/>
-  <script type="syntaxhighlighter" class="brush: bash">
+  <img src="/public/backbone/assets/nested.png" /><br /><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     <![CDATA[
       Started POST "/posts" for 127.0.0.1 at 2013-07-29 19:57:50 +0300
       Processing by PostsController#create as JSON
@@ -445,11 +371,9 @@
          (190.3ms)  commit transaction
         Rendered posts/show.json.jbuilder (0.3ms)
       Completed 201 Created in 234ms (Views: 3.2ms | ActiveRecord: 191.5ms)
-    ]]>
-  </script>
-</section><section id="validations" class="slide">
-  <h2>Validation</h2>
-  <script type="syntaxhighlighter" class="brush: js">
+    ]]]]><![CDATA[>
+  ]]></script></section><section id="validations" class="slide"><h2>Validation</h2>
+  <script type="syntaxhighlighter" class="brush: js"><![CDATA[
     <![CDATA[
       class Blog.Models.Post extends Backbone.Model
         paramRoot: 'post'
@@ -463,20 +387,12 @@
 
           if errors.length > 0
             errors
-    ]]>
-  </script>
-
-  <br/>
-  <h3>validate is called before set() and save()</h3>
-</section><section id="validations-use" class="slide">
-  <h2>Validation</h2>
+    ]]]]><![CDATA[>
+  ]]></script><br /><h3>validate is called before set() and save()</h3>
+</section><section id="validations-use" class="slide"><h2>Validation</h2>
   
-  <img src="./assets/backbone/validation.png">
-</section><!-- End slides. -->
-
-<!-- deck.navigation snippet -->
-<a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
-<a href="#" class="deck-next-link" title="Next">&#8594;</a>
+  <img src="/public/backbone/assets/validation.png" /></section><!-- End slides. --><!-- deck.navigation snippet --><a href="#" class="deck-prev-link" title="Previous">←</a>
+<a href="#" class="deck-next-link" title="Next">→</a>
 
 <!-- deck.status snippet -->
 <p class="deck-status">

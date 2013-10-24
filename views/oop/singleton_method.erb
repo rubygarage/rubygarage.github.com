@@ -1,5 +1,6 @@
 <section id="singleton-method" class="slide">
   <h2>Singleton methods and eigenclass</h2>
+  <h3>Ways to create singleton methods</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
     <![CDATA[
       class BookInStock
@@ -18,7 +19,11 @@
         def sum
         end
       end
-
+    ]]>
+  </script>
+  <h3>Ways to add a custom behaviour to an instance</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
       book = BookInStock.new
       def book.title
         "Title"

@@ -1,18 +1,17 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Ruby on Rails</title>
-  <link href="assets/rubybasics.css" rel="stylesheet">
-  <script src="assets/rubybasics.js"></script>
-</head>
-
-<body class="deck-container">
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <meta charset="utf-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+      <title>Ruby on Rails</title>
+      <link href="assets/rubybasics.css" rel="stylesheet" />
+      <script src="assets/rubybasics.js"></script>
+   </head>
+   <body class="deck-container">
 
 <!-- Begin slides. Just make elements with a class of slide. -->
-<section id="topic" class="slide">
-  <div class="vcenter">
+<section id="topic" class="slide"><div class="vcenter">
     <h1>Ruby is...</h1>
     <div class="description">
       <p>
@@ -20,76 +19,63 @@
       </p>
     </div>
   </div>
-</section><section id="rvm" class="slide">
-  <h2>RVM first</h2>
-  <img src="/assets/rvm.png" />
-  <script type="syntaxhighlighter" class="brush: bash">
+</section><section id="rvm" class="slide"><h2>RVM first</h2>
+  <img src="/public/rubybasics/assets/rvm.png" /><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
   <![CDATA[
     curl -L https://get.rvm.io | bash -s stable --autolibs=3
     rvm install 2.0.0
     rvm use 2.0.0
     rvm gemset create project_name
     rvm gemset use project_name
-  ]]>
-  </script>
-</section><section id="rvmrc" class="slide">
-  <h2>.rvmrc file</h2>
-  <script type="syntaxhighlighter" class="brush: bash">
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="rvmrc" class="slide"><h2>.rvmrc file</h2>
+  <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
   <![CDATA[
     rvm use 2.0.0@project_name --create
-  ]]>
-  </script>
-  <div id="rvm-best-practices" class="slide">
+  ]]]]><![CDATA[>
+  ]]></script><div id="rvm-best-practices" class="slide">
     <h2>RVM Best Practices</h2>
-    <ul>
-      <li>Use .rvmrc files for each of your individual projects</li>
+    <ul><li>Use .rvmrc files for each of your individual projects</li>
       <li>Check your .rvmrc into source control</li>
       <li>Use per-project gemsets</li>
       <li>Deploy with rvm when possible</li>
-    </ul>
-  </div>
-</section><section id="run-files" class="slide">
-  <h2>Run Ruby files</h2>
+    </ul></div>
+</section><section id="run-files" class="slide"><h2>Run Ruby files</h2>
   hello_world.rb
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     puts 'Hello Ruby world!'
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: bash">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
   <![CDATA[
     ruby hello_world.rb
     Hello Ruby world!
-  ]]>
-  </script>
+  ]]]]><![CDATA[>
+  ]]></script>
   hello_world.rb
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     #!/usr/bin/ruby
     puts 'Hello Ruby world!'
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: bash">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
   <![CDATA[
     ./hello_world.rb
     Hello Ruby world!
-  ]]>
-  </script>
-  <div id="irb" class="slide">
+  ]]]]><![CDATA[>
+  ]]></script><div id="irb" class="slide">
     <h2>Interactive Ruby</h2>
-    <script type="syntaxhighlighter" class="brush: bash">
+    <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     <![CDATA[
       irb
       >> puts 'Hello Ruby world!'
       Hello Ruby world!
       => nil
       >>
-    ]]>
-    </script>
-  </div>
-</section><section id="everything-is-an-object" class="slide">
-  <h2>Everything is an object</h2>
-  <script type="syntaxhighlighter" class="brush: ruby">
+    ]]]]><![CDATA[>
+    ]]></script></div>
+</section><section id="everything-is-an-object" class="slide"><h2>Everything is an object</h2>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     >> "alice".capitalize 
     => "Alice"
@@ -102,11 +88,9 @@
     
     >> [5, 12, 4].sort 
     => [4, 5, 12]
-  ]]>
-  </script>
-</section><section id="numbers" class="slide">
-  <h2>Numbers</h2>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="numbers" class="slide"><h2>Numbers</h2>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     > 100.class
     => Fixnum
@@ -116,11 +100,10 @@
 
     > 100.0.class
     => Float
-  ]]>
-  </script>
-  <div id="numbers-conversion" class="slide">
+  ]]]]><![CDATA[>
+  ]]></script><div id="numbers-conversion" class="slide">
     <h2>Numbers conversion</h2>
-    <script type="syntaxhighlighter" class="brush: ruby">
+    <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     <![CDATA[
       > 1 + 2
       => 3
@@ -139,102 +122,55 @@
 
       > 1 / 2.0
       => 0.5
-    ]]>
-    </script>
-  </div>
-</section><section id="numbers-arithmetic-operators" class="slide">
-  <h2>Arithmetic operators</h2>
+    ]]]]><![CDATA[>
+    ]]></script></div>
+</section><section id="numbers-arithmetic-operators" class="slide"><h2>Arithmetic operators</h2>
   <p>Assume variable a holds 10 and variable b holds 20 then:</p>
-  <table>
-    <tbody>
-      <tr>
-        <th style="width:10%">Operator</th><th style="width:45%">Description</th><th>Example</th>
-      </tr>
-      <tr>
-        <td>+</td><td>Addition - Adds values on either side of the operator</td><td> a + b will give 30</td>
-      </tr>
-      <tr>
-        <td>-</td><td>Subtraction - Subtracts right hand operand from left hand operand</td><td> a - b will give -10</td>
-      </tr>
-      <tr>
-        <td>*</td><td>Multiplication - Multiplies values on either side of the operator</td><td> a * b will give 200</td>
-      </tr>
-      <tr>
-        <td>/</td><td>Division - Divides left hand operand by right hand operand</td><td> b / a will give 2</td>
-      </tr>
-      <tr>
-        <td>%</td><td>Modulus - Divides left hand operand by right hand operand and returns remainder</td><td> b % a will give 0</td>
-      </tr>
-      <tr>
-        <td>**</td><td>Exponent - Performs exponential (power) calculation on operators</td><td> a**b will give 10 to the power 20</td>
-      </tr>
-    </tbody>
-  </table>
-</section><section id="numbers-assignment-operators" class="slide">
-  <h2>Assignment Operators</h2>
+  <table><tbody><tr><th style="width:10%">Operator</th><th style="width:45%">Description</th><th>Example</th>
+      </tr><tr><td>+</td><td>Addition - Adds values on either side of the operator</td><td> a + b will give 30</td>
+      </tr><tr><td>-</td><td>Subtraction - Subtracts right hand operand from left hand operand</td><td> a - b will give -10</td>
+      </tr><tr><td>*</td><td>Multiplication - Multiplies values on either side of the operator</td><td> a * b will give 200</td>
+      </tr><tr><td>/</td><td>Division - Divides left hand operand by right hand operand</td><td> b / a will give 2</td>
+      </tr><tr><td>%</td><td>Modulus - Divides left hand operand by right hand operand and returns remainder</td><td> b % a will give 0</td>
+      </tr><tr><td>**</td><td>Exponent - Performs exponential (power) calculation on operators</td><td> a**b will give 10 to the power 20</td>
+      </tr></tbody></table></section><section id="numbers-assignment-operators" class="slide"><h2>Assignment Operators</h2>
   <p>Assume variable a holds 10 and variable b holds 20 then:</p>
-  <table>
-    <tbody>
-      <tr>
-        <th>Operator</th><th>Description</th><th>Example</th>
-      </tr>
-      <tr>
-        <td>=</td><td>Simple assignment operator, Assigns values from right side operands to left side operand</td><td> c = a + b will assigne value of a + b into c</td>
-      </tr>
-      <tr>
-        <td>+=</td><td>Add AND assignment operator, It adds right operand to the left operand and assign the result to left operand</td><td> c += a is equivalent to c = c + a</td>
-      </tr>
-      <tr>
-        <td>-=</td><td>Subtract AND assignment operator, It subtracts right operand from the left operand and assign the result to left operand</td><td> c -= a is equivalent to c = c - a</td>
-      </tr>
-      <tr>
-        <td>*=</td><td>Multiply AND assignment operator, It multiplies right operand with the left operand and assign the result to left operand</td><td> c *= a is equivalent to c = c * a</td>
-      </tr>
-      <tr>
-        <td>/=</td><td>Divide AND assignment operator, It divides left operand with the right operand and assign the result to left operand</td><td> c /= a is equivalent to c = c / a</td>
-      </tr>
-      <tr>
-        <td>%=</td><td>Modulus AND assignment operator, It takes modulus using two operands and assign the result to  left operand</td><td> c %= a is equivalent to c = c % a</td>
-      </tr>
-      <tr>
-        <td>**=</td><td>Exponent AND assignment operator, Performs exponential (power) calculation on operators and assign value to the left operand</td><td> c **= a is equivalent to c = c ** a</td>
-      </tr>
-    </tbody>
-  </table>
-</section><section id="string" class="slide">
-  <h2>String</h2>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <table><tbody><tr><th>Operator</th><th>Description</th><th>Example</th>
+      </tr><tr><td>=</td><td>Simple assignment operator, Assigns values from right side operands to left side operand</td><td> c = a + b will assigne value of a + b into c</td>
+      </tr><tr><td>+=</td><td>Add AND assignment operator, It adds right operand to the left operand and assign the result to left operand</td><td> c += a is equivalent to c = c + a</td>
+      </tr><tr><td>-=</td><td>Subtract AND assignment operator, It subtracts right operand from the left operand and assign the result to left operand</td><td> c -= a is equivalent to c = c - a</td>
+      </tr><tr><td>*=</td><td>Multiply AND assignment operator, It multiplies right operand with the left operand and assign the result to left operand</td><td> c *= a is equivalent to c = c * a</td>
+      </tr><tr><td>/=</td><td>Divide AND assignment operator, It divides left operand with the right operand and assign the result to left operand</td><td> c /= a is equivalent to c = c / a</td>
+      </tr><tr><td>%=</td><td>Modulus AND assignment operator, It takes modulus using two operands and assign the result to  left operand</td><td> c %= a is equivalent to c = c % a</td>
+      </tr><tr><td>**=</td><td>Exponent AND assignment operator, Performs exponential (power) calculation on operators and assign value to the left operand</td><td> c **= a is equivalent to c = c ** a</td>
+      </tr></tbody></table></section><section id="string" class="slide"><h2>String</h2>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     > "New string"
     => New string
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     > String.new
     => ""
-  ]]>
-  </script>
-  <h3>Interpolation</h3>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><h3>Interpolation</h3>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     > "Seconds/day: #{24 * 60 * 60}"
     => Seconds/day: 86400 
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     > 'Seconds/day: #{24 * 60 * 60}'
     => Seconds/day: #{24 * 60 * 60}
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     > "Tro #{'Lo ' * 3}!!!1"
     => Tro Lo Lo Lo !!!1
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     > "Now is #{
                 def the(a)
@@ -243,24 +179,20 @@
                 the('time')
               } for all good coders ..."
     => Now is the time for all good coders ...
-  ]]>
-  </script>
-</section><section id="string-concatenation" class="slide">
-  <h2>String</h2>
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="string-concatenation" class="slide"><h2>String</h2>
   <h3>Concatenation</h3>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     > 'Con' "cat" 'ena' "te"
     => "Concatenate"
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     > 'Con' + "cat" + 'ena' + "te"
     => "Concatenate"
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     > str = "Programming"
     => "Programming"
@@ -270,12 +202,10 @@
 
     > str.concat(" Do you speak it?")
     => "Programming, Motherfucker. Do you speak it?"
-  ]]>
-  </script>
-</section><section id="string-concatenation" class="slide">
-  <h2>String</h2>
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="string-concatenation" class="slide"><h2>String</h2>
   <h3>Accessing</h3>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     str = "Programming, Motherfucker. Do you speak it?"
     => "Programming, Motherfucker. Do you speak it?"
@@ -298,81 +228,68 @@
 
     str[/[abc](.)\1/]
     => "amm"
-  ]]>
-  </script>
-</section><section id="string-useful-methods" class="slide">
-  <h2>String</h2>
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="string-useful-methods" class="slide"><h2>String</h2>
   <h3>Useful methods</h3>
   <p>
     Follow by <a href="http://ruby-doc.org/core-2.0/String.html" target="_blank">http://ruby-doc.org/core-2.0/String.html</a> for more information
   </p>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     "pROgraMMing".capitalize
     => "Programming"
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     "Programming".downcase   
     => "programming"
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     "Programming".chars
     => #<Enumerator: "Programming":chars>
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     "Programming".index("gra")
     => 3
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     "Programming".insert(0, "Extreme ")
     => "Extreme Programming"
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     "Programming".match(/(.)\1/)
     => #<MatchData "mm" 1:"m">
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     "Programming".partition("gra")
     => ["Pro", "gra", "mming"]
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     "Programming".reverse
     => "gnimmargorP"
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     "Programming, Motherfucker. Do you speak it?".split
     => ["Programming,", "Motherfucker.", "Do", "you", "speak", "it?"]
 
     "Programming,_Motherfucker._Do you speakit?".split('_')
     => ["Programming,", "Motherfucker.", "Do you speakit?"]
-  ]]>
-  </script>
-</section><section id="array" class="slide">
-  <h2>Array</h2>
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="array" class="slide"><h2>Array</h2>
   <h3>Creating</h3>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     > [[1, 2, 3], 10, 3.14, "This is a string", barnet("pebbles")]
     => [[1, 2, 3], 10, 3.14, "This is a string", "pebbles results"]
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     > Array.new
     => []
@@ -388,24 +305,20 @@
     
     > Array({:a => "a", :b => "b"})
     => [[:a, "a"], [:b, "b"]]
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     > %w(monkey fish lion dog cat #{Time.now})
     => ["monkey", "fish", "lion", "dog", "cat", "\#{Time.now}"]
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     > %W(monkey fish lion dog cat #{Time.now})
     => ["monkey", "fish", "lion", "dog", "cat", "2013-05-03 12:24:42 +0300"]
-  ]]>
-  </script>
-</section><section id="array-accessing-elements" class="slide">
-  <h2>Array</h2>
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="array-accessing-elements" class="slide"><h2>Array</h2>
   <h3>Accessing elements</h3>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     > languages = 'Ruby', 'JavaScript', 'Python', 'PHP'
     => ["Ruby", "JavaScript", "Python", "PHP"]
@@ -432,12 +345,10 @@
     => "CoffeeScript"
     > languages
     => ["Ruby", "CoffeeScript", "Python", "PHP"]
-  ]]>
-  </script>
-</section><section id="array-adding-items" class="slide">
-  <h2>Array</h2>
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="array-adding-items" class="slide"><h2>Array</h2>
   <h3>Adding items</h3>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     > languages = "Ruby", "JavaScript", "Python", "PHP"
     => ["Ruby", "JavaScript", "Python", "PHP"]
@@ -460,12 +371,10 @@
 
     > languages.insert(4, "Haml", "Sass")
     => ["C++", "Ruby", "JavaScript", "CoffeeScript", "Haml", "Sass", "Python", "PHP", "Closure", "Haskell"]
-  ]]>
-  </script>
-</section><section id="array-removing-items" class="slide">
-  <h2>Array</h2>
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="array-removing-items" class="slide"><h2>Array</h2>
   <h3>Removing items</h3>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     > languages = "C++", "Ruby", "JavaScript", "CoffeeScript", "Haml", "Sass", "Python", "PHP", "Closure", "Haskell"
     => ["C++", "Ruby", "JavaScript", "CoffeeScript", "Haml", "Sass", "Python", "PHP", "Closure", "Haskell"]
@@ -504,12 +413,10 @@
     > languages = "Ruby", "JavaScript", "PHP", "Python", "PHP"
     > languages.uniq
     => ["Ruby", "JavaScript", "PHP", "Python"]
-  ]]>
-  </script>
-</section><section id="array-obtaining-information" class="slide">
-  <h2>Array</h2>
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="array-obtaining-information" class="slide"><h2>Array</h2>
   <h3>Obtaining information</h3>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     > languages = "Ruby", "JavaScript", "PHP", "Python", "PHP"
     => ["Ruby", "JavaScript", "PHP", "Python", "PHP"]
@@ -530,12 +437,10 @@
 
     > languages.include?('Closure')
     => false
-  ]]>
-  </script>
-</section><section id="array-concat" class="slide">
-  <h2>Array</h2>
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="array-concat" class="slide"><h2>Array</h2>
   <h3>Concatenation</h3>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     > days1 = ["Mon", "Tue", "Wed"]
     > days2 = ["Thu", "Fri", "Sat", "Sun"]
@@ -544,19 +449,16 @@
 
     > days1.concat(days2)
     => ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     > days1 = ["Mon", "Tue", "Wed"]
     > days1 << "Thu" << "Fri" << "Sat" << "Sun"
     => ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-  ]]>
-  </script>
-</section><section id="array-operations" class="slide">
-  <h2>Array</h2>
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="array-operations" class="slide"><h2>Array</h2>
   <h3>Operations</h3>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     > os = ["Fedora", "SUSE", "Red Hat", "MacOS", "Windows"]
     > linux_os = ["SUSE", "Red Hat", "Ubuntu", "Fedora"]
@@ -586,31 +488,29 @@
 
     > linux_os * ", "
     => "SUSE, Red Hat, Ubuntu, Fedora"
-  ]]>
-  </script>
-</section><section id="array-iterators" class="slide">
-  <h2>Array</h2>
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="array-iterators" class="slide"><h2>Array</h2>
   <h3>Iterators</h3>
   each
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     a = [ "a", "b", "c" ]
     a.each {|x| print x, " -- " }
 
     a -- b -- c --
-  ]]>
-  </script>
+  ]]]]><![CDATA[>
+  ]]></script>
   each_index
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     a = [ "a", "b", "c" ]
     a.each_index {|x| print x, " -- " }
 
     0 -- 1 -- 2 --
-  ]]>
-  </script>
+  ]]]]><![CDATA[>
+  ]]></script>
   each_with_index
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     a = [ "a", "b", "c" ]
     a.each_with_index {|item, index| puts "[#{index}] => #{item}" }
@@ -618,11 +518,9 @@
     [0] => a
     [1] => b
     [2] => c
-  ]]>
-  </script>
-</section><section id="symbol" class="slide">
-  <h2>Symbol</h2>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="symbol" class="slide"><h2>Symbol</h2>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     > :ruby_rules
     => :ruby_rules
@@ -633,9 +531,8 @@
     > language = "Ruby"
     > :"#{language} rules"
     => :"Ruby rules"
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     > :ruby.object_id
     => 319048
@@ -646,64 +543,54 @@
     => 70200985531220
     > "ruby".object_id
     => 70200985514360
-  ]]>
-  </script>
-</section><section id="hash" class="slide">
-  <h2>Hash</h2>
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="hash" class="slide"><h2>Hash</h2>
   <h3>Creating</h3>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     > {:font_size => 10, :font_family => "Arial"}
     => {:font_size=>10, :font_family=>"Arial"}
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     > {font_size: 10, font_family: "Arial"}
     => {:font_size=>10, :font_family=>"Arial"}
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     > Hash.new
     => {}
-  ]]>
-  </script>
-</section><section id="hash-default" class="slide">
-  <h2>Hash</h2>
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="hash-default" class="slide"><h2>Hash</h2>
   <h3>Default value</h3>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     h = Hash.new("Default value")
     => {}
 
     h['key']
     => "Default value"
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     h = Hash.new { |hash, key| hash[key] = "Default value: #{key}" }
     => {}
 
     h['key']
     => "Default value: key"
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     h = Hash.new
     h.default = "Default value"
 
     h['key']
     => "Default value"
-  ]]>
-  </script>
-</section><section id="hash-removing-items" class="slide">
-  <h2>Hash</h2>
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="hash-removing-items" class="slide"><h2>Hash</h2>
   <h3>Removing items</h3>
   delete
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     h = { "a" => 100, "b" => 200 }
     
@@ -712,28 +599,28 @@
     
     h.delete("z")
     => nil
-  ]]>
-  </script>
+  ]]]]><![CDATA[>
+  ]]></script>
   delete_if
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     h = { "a" => 100, "b" => 200, "c" => 300 }
 
     h.delete_if {|key, value| value > 100 }   
     => {"a"=>100}
-  ]]>
-  </script>
+  ]]]]><![CDATA[>
+  ]]></script>
   keep_if
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     h = { "a" => 100, "b" => 200, "c" => 300 }
 
     h.keep_if {|key, value| value > 100 }   
     => {"b"=>200, "c"=>300}
-  ]]>
-  </script>
+  ]]]]><![CDATA[>
+  ]]></script>
   shift
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     h = { 1 => "a", 2 => "b", 3 => "c" }
 
@@ -742,46 +629,42 @@
 
     h
     => {2=>"b", 3=>"c"}
-  ]]>
-  </script>
-</section><section id="hash-methods" class="slide">
-  <h2>Hash</h2>
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="hash-methods" class="slide"><h2>Hash</h2>
   <h3>Useful methods</h3>
   each
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     h = { "a" => 100, "b" => 200 }
     h.each {|key, value| puts "#{key} is #{value}" }
     a is 100
     b is 200
     => {"a"=>100, "b"=>200}
-  ]]>
-  </script>
+  ]]]]><![CDATA[>
+  ]]></script>
   each_key
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     h = { "a" => 100, "b" => 200 }
     h.each_key {|key| puts key }
     a
     b
     => {"a"=>100, "b"=>200}
-  ]]>
-  </script>
+  ]]]]><![CDATA[>
+  ]]></script>
   each_value
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     h = { "a" => 100, "b" => 200 }
     h.each_value {|value| puts value }
     100
     200
     => {"a"=>100, "b"=>200}
-  ]]>
-  </script>
-</section><section id="hash-methods-2" class="slide">
-  <h2>Hash</h2>
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="hash-methods-2" class="slide"><h2>Hash</h2>
   <h3>Useful methods</h3>
   key?
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     h = { "a" => 100, "b" => 200 }
 
@@ -790,10 +673,10 @@
     
     h.key?("z")
     => false
-  ]]>
-  </script>
+  ]]]]><![CDATA[>
+  ]]></script>
   value?
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     h = { "a" => 100, "b" => 200 }
 
@@ -802,40 +685,38 @@
     
     h.value?(999)
     => false
-  ]]>
-  </script>
+  ]]]]><![CDATA[>
+  ]]></script>
   keys
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     h = { "a" => 100, "b" => 200 }
 
     h.keys
     => ["a", "b"]
-  ]]>
-  </script>
+  ]]]]><![CDATA[>
+  ]]></script>
   values
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     h = { "a" => 100, "b" => 200, "c" => 300 }
 
     h.values
     => [100, 200, 300
-  ]]>
-  </script>
+  ]]]]><![CDATA[>
+  ]]></script>
   values_at
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     h = { "a" => 100, "b" => 200, "c" => 300 }
 
     h.values_at("a", "c")
     => [100, 300]
-  ]]>
-  </script>
-</section><section id="hash-methods-3" class="slide">
-  <h2>Hash</h2>
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="hash-methods-3" class="slide"><h2>Hash</h2>
   <h3>Useful methods</h3>
   length
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     h = { "d" => 100, "a" => 200, "v" => 300, "e" => 400 }
 
@@ -847,30 +728,28 @@
     
     h.length
     => 3
-  ]]>
-  </script>
+  ]]]]><![CDATA[>
+  ]]></script>
   merge
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     h1 = { "a" => 100, "b" => 200 }
     h2 = { "b" => 254, "c" => 300 }
     
     h1.merge(h2)
     => {"a"=>100, "b"=>254, "c"=>300}
-  ]]>
-  </script>
+  ]]]]><![CDATA[>
+  ]]></script>
   select
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     h = { "a" => 100, "b" => 200, "c" => 300 }
 
     h.select {|key, value| value > 100}
     => {"b" => 200, "c" => 300}
-  ]]>
-  </script>
-</section><section id="struct" class="slide">
-  <h2>Struct</h2>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="struct" class="slide"><h2>Struct</h2>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     Customer = Struct.new(:name, :address, :zip)
     => Customer
@@ -883,9 +762,8 @@
     joe[:name]
     joe[0]
     => "Joe Smith"
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     Customer = Struct.new(:name, :address) do
       def greeting
@@ -894,11 +772,9 @@
     end
     Customer.new("Dave", "123 Main").greeting 
     => "Hello Dave!"
-  ]]>
-  </script>
-</section><section id="range" class="slide">
-  <h2>Range</h2>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="range" class="slide"><h2>Range</h2>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     # Creates a range from 1 to 10 inclusive
     1..10
@@ -914,11 +790,9 @@
     
     ('a'..'e').to_a    
     => ["a", "b", "c", "d", "e"]
-  ]]>
-  </script>
-</section><section id="time" class="slide">
-  <h2>Time</h2>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="time" class="slide"><h2>Time</h2>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     t = Time.new
     => 2013-05-09 18:50:25 +0300
@@ -952,19 +826,17 @@
 
     t.strftime("%Y-%m-%d %H:%M:%S")
     => "2013-05-09 18:50:25"
-  ]]>
-  </script>
-</section><section id="file" class="slide">
-  <h2>File</h2>
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="file" class="slide"><h2>File</h2>
   new
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     File.new("tmp.txt", "w")
     => #<File:tmp.txt>
-  ]]>
-  </script>
+  ]]]]><![CDATA[>
+  ]]></script>
   open, close
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     f = File.open("tmp.txt", "r")
     => #<File:tmp.txt>
@@ -976,13 +848,11 @@
     
     f.closed?
     => true
-  ]]>
-  </script>
-</section><section id="file-read" class="slide">
-  <h2>File</h2>
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="file-read" class="slide"><h2>File</h2>
   <h3>Read</h3>
   read
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     File.read("tmp.txt")
     => "This is line one\nThis is line two\nThis is line three\nAnd so on...\n"
@@ -992,20 +862,20 @@
 
     File.read("tmp.txt", 20, 10)
     => "ne one\nThis is line "
-  ]]>
-  </script>
+  ]]]]><![CDATA[>
+  ]]></script>
   gets
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     f = File.open("tmp.txt", "r")
     
     while line = f.gets
       print line
     end
-  ]]>
-  </script>
+  ]]]]><![CDATA[>
+  ]]></script>
   readlines
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     a = File.readlines("tmp.txt")
 
@@ -1014,85 +884,79 @@
 
     a[1]
     => "This is line two\n"
-  ]]>
-  </script>
+  ]]]]><![CDATA[>
+  ]]></script>
   each
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     f = File.open("tmp.txt", "r")
 
     f.each do |line|
       print line
     end
-  ]]>
-  </script>
-</section><section id="file-write" class="slide">
-  <h2>File</h2>
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="file-write" class="slide"><h2>File</h2>
   <h3>Write</h3>
   write, puts
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     f = File.open("tmp.txt", "w")
     f.write("new text")
-  ]]>
-  </script>
-</section><section id="file-useful-methods" class="slide">
-  <h2>File</h2>
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="file-useful-methods" class="slide"><h2>File</h2>
   delete
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     File.delete("file.txt")
-  ]]>
-  </script>
+  ]]]]><![CDATA[>
+  ]]></script>
   rename
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     File.rename("old_name.txt", "new_name.txt")
-  ]]>
-  </script>
+  ]]]]><![CDATA[>
+  ]]></script>
   ftype
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     File.ftype("file.txt")
     => "file"
 
     File.ftype(".")
     => "directory"
-  ]]>
-  </script>
+  ]]]]><![CDATA[>
+  ]]></script>
   join
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     File.join("usr", "mail", "gumby")
     => "usr/mail/gumby"
-  ]]>
-  </script>
+  ]]]]><![CDATA[>
+  ]]></script>
   expand_path
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     File.expand_path(__FILE__)
     => "/home/oracle/bin"
-  ]]>
-  </script>
-</section><section id="dir" class="slide">
-  <h2>Dir</h2>
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="dir" class="slide"><h2>Dir</h2>
   <p>Follow by <a href="http://ruby-doc.org/core-2.0/Dir.html" target="_blank">http://ruby-doc.org/core-2.0/Dir.html</a> for more information.</p>
   entries
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     Dir.entries("testdir")
     => [".", "..", "config.h", "main.rb"]
-  ]]>
-  </script>
+  ]]]]><![CDATA[>
+  ]]></script>
   glob
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     Dir.glob("*.[a-z][a-z]")
     => ["main.rb"]
-  ]]>
-  </script>
+  ]]]]><![CDATA[>
+  ]]></script>
   foreach
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     Dir.foreach("testdir") {|x| puts "Got #{x}" }
 
@@ -1100,18 +964,16 @@
     Got ..
     Got config.h
     Got main.rb
-  ]]>
-  </script>
+  ]]]]><![CDATA[>
+  ]]></script>
   mkdir
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     Dir.mkdir(File.join(Dir.home, ".foo"), 0700)
-  ]]>
-  </script>
-</section><section id="variables" class="slide">
-  <h2>Variables</h2>
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="variables" class="slide"><h2>Variables</h2>
   <h3>Local</h3>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     v = "Ruby"
     => "Ruby"
@@ -1124,41 +986,36 @@
 
     defined? v
     => "local-variable"
-  ]]>
-  </script>
-  <h3>Instance</h3>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><h3>Instance</h3>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     @i = "Ruby"
     => "Ruby"
 
     defined? @i
     => "instance-variable"
-  ]]>
-  </script>
-  <h3>Global</h3>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><h3>Global</h3>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     $g = "Ruby"
     => "Ruby"
 
     defined? $g
     => "global-variable"
-  ]]>
-  </script>
-  <h3>Constant</h3>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><h3>Constant</h3>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     C = "Ruby"
     => "Ruby"
 
     defined? C
     => "constant"
-  ]]>
-  </script>
-</section><section id="if-unless" class="slide">
-  <h2>If, unless</h2>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="if-unless" class="slide"><h2>If, unless</h2>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     a = 5
 
@@ -1169,9 +1026,8 @@
     if a == 4 then a = 7 end
 
     a = 7 if a == 4      
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     a = 5
 
@@ -1182,11 +1038,9 @@
     unless a == 4
       a = 7
     end
-  ]]>
-  </script>
-</section><section id="if-else" class="slide">
-  <h2>If, else</h2>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="if-else" class="slide"><h2>If, else</h2>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     a = 1
 
@@ -1200,21 +1054,18 @@
 
     res
     => "1 less than 5"
-  ]]>
-  </script>
-  <h3>Short-if expression</h3>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><h3>Short-if expression</h3>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     true ? "t" : "f"
     => "t"
 
     false ? "t" : "f"
     => "f"
-  ]]>
-  </script>
-</section><section id="or-and" class="slide"> 
-  <h2>Or, and</h2>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="or-and" class="slide"><h2>Or, and</h2>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     nil && 99
     => nil
@@ -1224,9 +1075,8 @@
 
     "cat" && 99
     => 99
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     nil || 99
     => 99
@@ -1236,11 +1086,9 @@
 
     "cat" || 99
     => "cat"
-  ]]>
-  </script>
-</section><section id="case" class="slide">
-  <h2>Case, when</h2>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="case" class="slide"><h2>Case, when</h2>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     a = 1
     r = case 
@@ -1253,9 +1101,8 @@
         end
     r
     => "1 less than 5"
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     a = 1
     case a
@@ -1269,18 +1116,15 @@
         "#{a} less than 0"
     end
     "1 greater than 0 less than 5"
-  ]]>
-  </script>
-</section><section id="methods" class="slide">
-  <h2>Methods</h2>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="methods" class="slide"><h2>Methods</h2>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     "Goonies has a rank of 10"
     "Ghostbusters has a rank of 9"
     "Goldfinger has a rank of 8"
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     def movie_listing(title, rank = 5)
       "#{title.capitalize} has a rank of #{rank}"
@@ -1294,26 +1138,22 @@
 
     movie_listing("goldfinger")
     => "Goldfinger has a rank of 5"
-  ]]>
-  </script>
-</section><section id="methods-definition" class="slide">
-  <h2>Methods</h2>
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="methods-definition" class="slide"><h2>Methods</h2>
   <h3>Definition</h3>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     def my_method
       # Code for the method would be here
     end
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     def my_method_with_arguments(arg1, arg2, arg3)
       # Code for the method would be here
     end
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     def cool_dude(arg1 = "Miles", arg2 = "Coltrane", arg3 = "Roach")
       "#{arg1}, #{arg2}, #{arg3}"
@@ -1330,12 +1170,10 @@
 
     cool_dude("Bart", "Elwood", "Linus")
     => "Bart, Elwood, Linus"
-  ]]>
-  </script>
-</section><section id="method-arguments" class="slide">
-  <h2>Methods</h2>
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="method-arguments" class="slide"><h2>Methods</h2>
   <h3>Arguments</h3>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     def var_args(arg1, *rest)
       "arg1=#{arg1}, rest=#{rest.inspect}"
@@ -1349,9 +1187,8 @@
 
     var_args("one", "two", "three")
     => "arg1=one, rest=['two', 'three']"
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     def split_apart(first, *split, last)
       "first: #{first.inspect}, split: #{split.inspect}, last: #{last.inspect}"
@@ -1365,19 +1202,16 @@
 
     split_apart(1, 2, 3, 4)
     => "first: 1, split: [2, 3], last: 4"
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     def split_apart(first, *, last)
       # ...
     end
-  ]]>
-  </script>
-</section><section id="method-return-values" class="slide">
-  <h2>Methods</h2>
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="method-return-values" class="slide"><h2>Methods</h2>
   <h3>Return values</h3>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     def meth_one
       "one"
@@ -1385,9 +1219,8 @@
 
     meth_one
     => "one"
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     def meth_two(arg)
       if arg > 0
@@ -1404,9 +1237,8 @@
 
     meth_two(0)
     => "zero"
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     def meth_three
       100.times do |num|
@@ -1417,12 +1249,10 @@
 
     meth_three
     => 32
-  ]]>
-  </script>
-</section><section id="method-blocks" class="slide">
-  <h2>Methods</h2>
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="method-blocks" class="slide"><h2>Methods</h2>
   <h3>Blocks</h3>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     def double(p1)
       yield(p1*2)
@@ -1435,9 +1265,8 @@
       "Then I got #{val}"
     end
     => "Then I got tomtom"
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     def try
       if block_given?
@@ -1455,12 +1284,10 @@
 
     try do "hello" end
     => "hello"
-  ]]>
-  </script>
-</section><section id="method-closures" class="slide">
-  <h2>Methods</h2>
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="method-closures" class="slide"><h2>Methods</h2>
   <h3>Closures</h3>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     def thrice
       yield
@@ -1476,13 +1303,10 @@
 
     puts "value of x after: #{x}"
     => "value of x after: 8"
-  ]]>
-  </script>
-</section>
-<section id="method-block-to-proc" class="slide">
-  <h2>Methods</h2>
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="method-block-to-proc" class="slide"><h2>Methods</h2>
   <h3>Convert the block to a Proc</h3>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     def thrice
       yield
@@ -1500,9 +1324,8 @@
 
     seven_times { x += 10 }
     => 74
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     def what_am_i(&block)
       block.class
@@ -1510,12 +1333,10 @@
 
     what_am_i {}
     => Proc
-  ]]>
-  </script>
-</section><section id="method-proc" class="slide">
-  <h2>Methods</h2>
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="method-proc" class="slide"><h2>Methods</h2>
   <h3>Proc aka procedure</h3>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     square = Proc.new do |n|
       n ** 2
@@ -1526,22 +1347,18 @@
 
     square.call(4)
     => 16
-  ]]>
-  </script>
-</section><section id="method-anonymous" class="slide">
-  <h2>Methods</h2>
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="method-anonymous" class="slide"><h2>Methods</h2>
   <h3>Anonymous</h3>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     bo = lambda {|param| "You called me with #{param}"}
     bo.call 99
     => "You called me with 99"
-  ]]>
-  </script>
-</section><section id="proc-vs-lambda" class="slide">
-  <h2>Proc vs lambda</h2>
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="proc-vs-lambda" class="slide"><h2>Proc vs lambda</h2>
   <h3>Lambdas check the number of arguments</h3>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     def args(code)
       one, two = 1, 2
@@ -1553,12 +1370,10 @@
 
     Give me a 1 and b 2 and c
     ArgumentError: wrong number of arguments (2 for 3)
-  ]]>
-  </script>
-</section><section id="proc-vs-lambda-2" class="slide">
-  <h2>Proc vs lambda</h2>
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="proc-vs-lambda-2" class="slide"><h2>Proc vs lambda</h2>
   <h3>Lambdas have lesser returns</h3>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     def proc_return
       Proc.new { return "Proc.new" }.call
@@ -1575,18 +1390,13 @@
 
     lambda_return
     => "lambda_return return"   
-  ]]>
-  </script>
-</section><section id="proc-vs-lambda-conclusion" class="slide">
-  <h2>Proc vs lambda</h2>
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="proc-vs-lambda-conclusion" class="slide"><h2>Proc vs lambda</h2>
   <h3>Conclusion</h3>
-  <ul>
-    <li>blocks and Procs act like code snippets</li>
+  <ul><li>blocks and Procs act like code snippets</li>
     <li>lambdas and Methods act like methods</li>
-  </ul>
-</section><section id="method-method" class="slide">
-  <h2>Method to object</h2>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  </ul></section><section id="method-method" class="slide"><h2>Method to object</h2>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     def square(n)
       n ** 2
@@ -1599,13 +1409,11 @@
 
     square_obj.call(4)
     => 16
-  ]]>
-  </script>
-</section><section id="method-naming" class="slide">
-  <h2>Methods</h2>
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="method-naming" class="slide"><h2>Methods</h2>
   <h3>Naming</h3>
   <h4>? - return true or false</h4>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     movie = ""
     movie.empty?
@@ -1619,10 +1427,9 @@
     => true
     movie.include?("x")
     => false
-  ]]>
-  </script>
-  <h4>! - change the current object</h4>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script><h4>! - change the current object</h4>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     movie = "Ghostbusters"
     => "Ghostbusters"
@@ -1636,11 +1443,9 @@
     => "sretsubtsohG"
     movie
     => "sretsubtsohG"
-  ]]>
-  </script>
-</section><section id="operators" class="slide">
-  <h2>Operators</h2>
-  <script type="syntaxhighlighter" class="brush: ruby">
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="operators" class="slide"><h2>Operators</h2>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
   <![CDATA[
     num = 12
     => 12
@@ -1650,36 +1455,31 @@
 
     num.*(2)
     => 24
-  ]]>
-  </script>
-</section><section id="koans" class="slide">
-  <h2>Ruby Koans</h2>
+  ]]]]><![CDATA[>
+  ]]></script></section><section id="koans" class="slide"><h2>Ruby Koans</h2>
   <p>
     <a href="http://koans.heroku.com" target="_blank">Ruby Koans Online</a>
   </p>
   <p>
     The Ruby Koans are a great way to learn about the Ruby language.
   </p>
-  <script type="syntaxhighlighter" class="brush: bash">
+  <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
   <![CDATA[
     git clone git://github.com/edgecase/ruby_koans.git ruby_koans
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: bash">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
   <![CDATA[
     cd ruby_koans
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: bash">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
   <![CDATA[
     rake gen
 
     mkdir -p koans
     cp src/edgecase.rb koans/edgecase.rb
     cp README.rdoc koans/README.rdoc
-  ]]>
-  </script>
-  <script type="syntaxhighlighter" class="brush: bash">
+  ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
   <![CDATA[
     rake
 
@@ -1694,14 +1494,9 @@
 
     mountains are merely mountains
     your path thus far [X_________________________________________________] 0/280
-  ]]>
-  </script>
-</section>
-<!-- End slides. -->
-
-<!-- deck.navigation snippet -->
-<a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
-<a href="#" class="deck-next-link" title="Next">&#8594;</a>
+  ]]]]><![CDATA[>
+  ]]></script></section><!-- End slides. --><!-- deck.navigation snippet --><a href="#" class="deck-prev-link" title="Previous">←</a>
+<a href="#" class="deck-next-link" title="Next">→</a>
 
 <!-- deck.status snippet -->
 <p class="deck-status">

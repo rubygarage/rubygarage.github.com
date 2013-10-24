@@ -1,28 +1,25 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Ruby on Rails</title>
-  <link href="assets/cssarchitecture.css" rel="stylesheet">
-  <script src="assets/cssarchitecture.js"></script>
-</head>
-
-<body class="deck-container">
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <meta charset="utf-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+      <title>Ruby on Rails</title>
+      <link href="assets/cssarchitecture.css" rel="stylesheet" />
+      <script src="assets/cssarchitecture.js"></script>
+   </head>
+   <body class="deck-container">
 
 <!-- Begin slides. Just make elements with a class of slide. -->
-<section id="topic" class="slide">
-  <div class="vcenter">
+<section id="topic" class="slide"><div class="vcenter">
     <h1>CSS Architecture</h1>
     <h2>Modules, semantics and grids</h2>
   </div>
-</section><section id="dont-repeat-yourself" class="slide">
-  <h2>Import</h2>
+</section><section id="dont-repeat-yourself" class="slide"><h2>Import</h2>
 
   <p>SASS allows us to seamlessly separate css code to different files, and then import them all together on pre-pocessing into one:</p>
 
-  <section>
-    <script type="syntaxhighlighter" class="brush: css">
+  <section><script type="syntaxhighlighter" class="brush: css"><![CDATA[
       <![CDATA[
         /* _rounded.scss */
 
@@ -31,12 +28,8 @@
           -moz-border-radius-#{$vert}#{$horz}: $radius;
           -webkit-border-#{$vert}-#{$horz}-radius: $radius;
         }
-      ]]>
-    </script>
-  </section>
-
-  <section class="slide">
-    <script type="syntaxhighlighter" class="brush: css">
+      ]]]]><![CDATA[>
+    ]]></script></section><section class="slide"><script type="syntaxhighlighter" class="brush: css"><![CDATA[
       <![CDATA[
         /* style.scss */
 
@@ -45,19 +38,14 @@
         #navbar li { @include rounded(top, left); }
         #footer { @include rounded(top, left, 5px); }
         #sidebar { @include rounded(top, left, 8px); }
-      ]]>
-    </script>
-
-    <p>No additional queries on the page load.</p>
-  </section>
-</section><section id="dont-repeat-yourself" class="slide">
-  <h2>Code sharing</h2>
+      ]]]]><![CDATA[>
+    ]]></script><p>No additional queries on the page load.</p>
+  </section></section><section id="dont-repeat-yourself" class="slide"><h2>Code sharing</h2>
 
   <p>And it brings two more awesome tools for making our css DRY:</p>
 
-  <section class="slide">
-    <h3>Mixins</h3>
-    <script type="syntaxhighlighter" class="brush: css">
+  <section class="slide"><h3>Mixins</h3>
+    <script type="syntaxhighlighter" class="brush: css"><![CDATA[
       <![CDATA[
         @mixin silly-links {
           a {
@@ -67,13 +55,9 @@
         }
 
         @include silly-links;
-      ]]>
-    </script>
-  </section>
-
-  <section class="slide">
-    <h3>Extend</h3>
-    <script type="syntaxhighlighter" class="brush: css">
+      ]]]]><![CDATA[>
+    ]]></script></section><section class="slide"><h3>Extend</h3>
+    <script type="syntaxhighlighter" class="brush: css"><![CDATA[
       <![CDATA[
         .error {
           border: 1px #f00;
@@ -83,44 +67,18 @@
           @extend .error;
           border-width: 3px;
         }
-      ]]>
-    </script>
-  </section>
-  <section class="slide">
-    <p>Which one is better?</p>
-  </section>
-</section>
-<section id="modules-topic" class="slide">
-  <div class="vcenter">
+      ]]]]><![CDATA[>
+    ]]></script></section><section class="slide"><p>Which one is better?</p>
+  </section></section><section id="modules-topic" class="slide"><div class="vcenter">
     <h1>Modules</h1>
   </div>
-</section><section id="modules-what-is-module" class="slide">
-  <h2>What is a module?</h2>
+</section><section id="modules-what-is-module" class="slide"><h2>What is a module?</h2>
   
-  <section class="columns">
-    
-    <section class="slide column-half">
-      <img src="/assets/html_css/bem-2.png" style="margin: 0; margin-bottom: 20px;" />
-    </section>
+  <section class="columns"><section class="slide column-half"><img src="/public/cssarchitecture/assets/bem-2.png" style="margin: 0; margin-bottom: 20px;" /></section><section class="slide column-half"><img src="/public/cssarchitecture/assets/bem-1.png" style="margin: 0; margin-bottom: 20px;" /></section></section><h3 class="slide" style="text-align: center;">So, Module is just a discrete component of the page.</h3>
 
-    <section class="slide column-half">
-      <img src="/assets/html_css/bem-1.png" style="margin: 0; margin-bottom: 20px;" />
-    </section>
-  </section>
-
-  <h3 class="slide" style="text-align: center;">So, Module is just a discrete component of the page.</h3>
-
-</section><section id="modules-definition" class="slide">
-  <h2>Organizing code with modules</h2>
+</section><section id="modules-definition" class="slide"><h2>Organizing code with modules</h2>
   
-  <section class="columns">
-    <section class="column-half">
-      <img src="/assets/html_css/bem-3.png" style="margin: 0; margin-bottom: 10px;" />
-    </section>
-
-    <section class="column-half">
-      <ul>
-        <li class="slide">
+  <section class="columns"><section class="column-half"><img src="/public/cssarchitecture/assets/bem-3.png" style="margin: 0; margin-bottom: 10px;" /></section><section class="column-half"><ul><li class="slide">
           <h4>Each Module is meant to exist as a standalone component</h4>
         </li>
         <li class="slide">
@@ -138,50 +96,25 @@
         <li class="slide">
           <h4>Modules are everything except the Layout</h4>
         </li>
-      </ul>
-
-    </section>
-  </section>
-  <h3 class="slide">
+      </ul></section></section><h3 class="slide">
     Sometimes css organized with modules is called object-oriented css.
   </h3>
-</section><section id="modules-definition" class="slide">
-  <h2>Components</h2>
+</section><section id="modules-definition" class="slide"><h2>Components</h2>
   
   <p>Special case of the modules are components.</p>
 
-  <section class="slide">
-    <img src="/assets/html_css/components.png" style="margin: 0; margin-bottom: 20px;" />
-  </section>
-
-  <p class="slide">We can learn a lot of how to write our modules by simply looking at famous component libraries' source code. Like Bootstrap, Foundation, etc.</p>
-</section><section id="modules-folder-structure" class="slide">
-  <h2>Folder structure</h2>
+  <section class="slide"><img src="/public/cssarchitecture/assets/components.png" style="margin: 0; margin-bottom: 20px;" /></section><p class="slide">We can learn a lot of how to write our modules by simply looking at famous component libraries' source code. Like Bootstrap, Foundation, etc.</p>
+</section><section id="modules-folder-structure" class="slide"><h2>Folder structure</h2>
   
   <p>What else apart from the modules and components do we need?</p>
 
-  <section class="columns">
-    <section class="column-third slide">
-      <img src="/assets/html_css/folder-structure-1.png" style="margin: 0; margin-bottom: 20px; width: 300px;" />
-    </section>
+  <section class="columns"><section class="column-third slide"><img src="/public/cssarchitecture/assets/folder-structure-1.png" style="margin: 0; margin-bottom: 20px; width: 300px;" /></section><section class="column-third slide"><img src="/public/cssarchitecture/assets/folder-structure-2.png" style="margin: 0; margin-bottom: 20px; width: 300px;" /></section><section class="column-third slide"><img src="/public/cssarchitecture/assets/folder-structure-3.png" style="margin: 0; margin-bottom: 20px; width: 300px;" /></section></section><p class="slide">If the module is specific to a certain page only, not reusable, - we can place it with an _ inside the respective page's folder.</p>
 
-    <section class="column-third slide">
-      <img src="/assets/html_css/folder-structure-2.png" style="margin: 0; margin-bottom: 20px; width: 300px;" />
-    </section>
-
-    <section class="column-third slide">
-      <img src="/assets/html_css/folder-structure-3.png" style="margin: 0; margin-bottom: 20px; width: 300px;" />
-    </section>
-  </section>
-
-  <p class="slide">If the module is specific to a certain page only, not reusable, - we can place it with an _ inside the respective page's folder.</p>
-
-</section><section id="modules-do-not-override" class="slide">
-  <h2>Do not override</h2>
+</section><section id="modules-do-not-override" class="slide"><h2>Do not override</h2>
   
   <p>Describe the possible variations inside the module, not outside.</p>
 
-  <script type="syntaxhighlighter" class="brush: css">
+  <script type="syntaxhighlighter" class="brush: css"><![CDATA[
     <![CDATA[
       .btn {
         // Set text color
@@ -210,43 +143,22 @@
           @include gradientBar(#5bc0de, #339bb9);
         }
       }
-    ]]>
-  </script>    
-
-</section>
-<section id="grids-topic" class="slide">
-  <div class="vcenter">
+    ]]]]><![CDATA[>
+  ]]></script></section><section id="grids-topic" class="slide"><div class="vcenter">
     <h1>Grids</h1>
   </div>
-</section><section id="grids-why-do-we-need-grids" class="slide">
-  <h2>What are grids?</h2>
+</section><section id="grids-why-do-we-need-grids" class="slide"><h2>What are grids?</h2>
   
-  <section>
-    <p>A typographic grid is a two-dimensional structure of axes used to structure content. The grid serves as an armature on which a designer can organize text and images in a rational, easy to absorb manner.</p>
-  </section>
-
-  <img src="/assets/html_css/grids.jpeg" style="margin: 0; margin-bottom: 20px;" />
-
-  <section class="slide">
-    <ul>
-      <li>
+  <section><p>A typographic grid is a two-dimensional structure of axes used to structure content. The grid serves as an armature on which a designer can organize text and images in a rational, easy to absorb manner.</p>
+  </section><img src="/public/cssarchitecture/assets/grids.jpeg" style="margin: 0; margin-bottom: 20px;" /><section class="slide"><ul><li>
         Consistent and balanced design
       </li>
       <li>
         Easier to reach the conformity in css
       </li>
-    </ul>
-  </section>
+    </ul></section></section><section id="grids-horizontal-grid" class="slide"><h2>Horizontal grid</h2>
 
-</section><section id="grids-horizontal-grid" class="slide">
-  <h2>Horizontal grid</h2>
-
-  <section class="columns">
-    <section class="column-half">
-      <img src="/assets/html_css/horizontal-grid.jpg" style="margin: 0; margin-bottom: 20px;" />
-    </section>
-    <section class="slide column-half">
-      <script type="syntaxhighlighter" class="brush: css">
+  <section class="columns"><section class="column-half"><img src="/public/cssarchitecture/assets/horizontal-grid.jpg" style="margin: 0; margin-bottom: 20px;" /></section><section class="slide column-half"><script type="syntaxhighlighter" class="brush: css"><![CDATA[
         <![CDATA[
           $rowWidth: 960px;
           $columnGutter: 20px;
@@ -265,75 +177,34 @@
             #sidebar {
               @include column(4);
             }
-        ]]>
-      </script>
-    </section>
-  </section>
+        ]]]]><![CDATA[>
+      ]]></script></section></section><p class="slide">Refer to foundation-grid.css for more options.</p>
 
-  <p class="slide">Refer to foundation-grid.css for more options.</p>
-
-</section><section id="grids-vertical-measurements" class="slide">
-  <h2>Vertical grid</h2>
+</section><section id="grids-vertical-measurements" class="slide"><h2>Vertical grid</h2>
 
 
-  <section class="columns">
-    <section class="column-half">
-      <h3>What is baseline?</h3>
+  <section class="columns"><section class="column-half"><h3>What is baseline?</h3>
 
-      <section class="slide">
-        <p>Baseline is the line upon which most letters "sit" and below which descenders extend</p>
-      <img src="/assets/html_css/baseline.png" style="margin: 0; margin: 60px 0 20px;" />
-      </section>
-    </section>
-
-    <section class="column-half">
-      <section class="slide">
-        <h3>What is css line-height?</h3>
-      </section>
-      <section class="slide">
-        <p>On block level elements, the line-height CSS property specifies the minimal height of line boxes within the element.</p>
-      <img src="/assets/html_css/line-height.png" style="margin: 40px 0 20px; width: 200px;" />
-      </section>
-    </section>
-  </section>
-
-</section><section id="grids-baseline-grid" class="slide">
-  <h2>Baseline grid utophy</h2>
+      <section class="slide"><p>Baseline is the line upon which most letters "sit" and below which descenders extend</p>
+      <img src="/public/cssarchitecture/assets/baseline.png" style="margin: 0; margin: 60px 0 20px;" /></section></section><section class="column-half"><section class="slide"><h3>What is css line-height?</h3>
+      </section><section class="slide"><p>On block level elements, the line-height CSS property specifies the minimal height of line boxes within the element.</p>
+      <img src="/public/cssarchitecture/assets/line-height.png" style="margin: 40px 0 20px; width: 200px;" /></section></section></section></section><section id="grids-baseline-grid" class="slide"><h2>Baseline grid utophy</h2>
 
   <p>When all the fonts sit perfectly on the lines.
   <br />
   Utophy, not even possible in the printed typography, since the font sized and line-heights differ.</p>
-  <img src="/assets/html_css/baseline-grid.png" style="margin: 0; margin-bottom: 20px; width: 900px;" />
+  <img src="/public/cssarchitecture/assets/baseline-grid.png" style="margin: 0; margin-bottom: 20px; width: 900px;" /></section><section id="grids-baseline-grid-fails" class="slide"><h2>Where baseline grid fails</h2>
 
-
-
-</section><section id="grids-baseline-grid-fails" class="slide">
-  <h2>Where baseline grid fails</h2>
-
-  <section class="columns">
-    <section class="column-half">
-      <p>Baseline grid</p>
-      <img src="/assets/html_css/baseline-grid-fails1.png" style="margin: 0; margin-bottom: 20px;" />
-    </section>
-    <section class="slide column-half">
-      <p>Vertical rhythm</p>
-      <img src="/assets/html_css/baseline-grid-fails2.png" style="margin: 0; margin-bottom: 20px;" />
-    </section>
-  </section>
-
-
-</section><section id="grids-vertical-rhythm" class="slide">
-  <h2>Vertical rhythm</h2>
+  <section class="columns"><section class="column-half"><p>Baseline grid</p>
+      <img src="/public/cssarchitecture/assets/baseline-grid-fails1.png" style="margin: 0; margin-bottom: 20px;" /></section><section class="slide column-half"><p>Vertical rhythm</p>
+      <img src="/public/cssarchitecture/assets/baseline-grid-fails2.png" style="margin: 0; margin-bottom: 20px;" /></section></section></section><section id="grids-vertical-rhythm" class="slide"><h2>Vertical rhythm</h2>
   <p>We have something smarter than baseline grid in our toolbox. First let's see the result:</p>
 
-  <img src="/assets/html_css/vertical-rhythm.png" style="margin: 0; margin-bottom: 20px; width: 800px;" />
-
-</section><section id="grids-vertical-rhythm-toolbox" class="slide">
-  <h2>Vertical rhythm toolbox</h2>
+  <img src="/public/cssarchitecture/assets/vertical-rhythm.png" style="margin: 0; margin-bottom: 20px; width: 800px;" /></section><section id="grids-vertical-rhythm-toolbox" class="slide"><h2>Vertical rhythm toolbox</h2>
 
   <p>To establish the vertical rhythm for the project:</p>
 
-  <script type="syntaxhighlighter" class="brush: css">
+  <script type="syntaxhighlighter" class="brush: css"><![CDATA[
     <![CDATA[
       //application.css.scss
 
@@ -341,10 +212,8 @@
       $base-line-height: 20px;
       
       @include establish-baseline;
-    ]]>
-  </script>
-
-  <script type="syntaxhighlighter" class="brush: css">
+    ]]]]><![CDATA[>
+  ]]></script><script type="syntaxhighlighter" class="brush: css"><![CDATA[
     <![CDATA[
       //page.css.scss
 
@@ -362,15 +231,9 @@
         @include adjust-font-size-to(12px, 0.8);
         @include trailer(.2, 12px);
       }
-    ]]>
-  </script>
-
-</section>
-<!-- End slides. -->
-
-<!-- deck.navigation snippet -->
-<a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
-<a href="#" class="deck-next-link" title="Next">&#8594;</a>
+    ]]]]><![CDATA[>
+  ]]></script></section><!-- End slides. --><!-- deck.navigation snippet --><a href="#" class="deck-prev-link" title="Previous">←</a>
+<a href="#" class="deck-next-link" title="Next">→</a>
 
 <!-- deck.status snippet -->
 <p class="deck-status">

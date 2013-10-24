@@ -1,51 +1,40 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Ruby on Rails</title>
-  <link href="assets/htmlcssbasics.css" rel="stylesheet">
-  <script src="assets/htmlcssbasics.js"></script>
-</head>
-
-<body class="deck-container">
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <meta charset="utf-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+      <title>Ruby on Rails</title>
+      <link href="assets/htmlcssbasics.css" rel="stylesheet" />
+      <script src="assets/htmlcssbasics.js"></script>
+   </head>
+   <body class="deck-container">
 
 <!-- Begin slides. Just make elements with a class of slide. -->
-<section id="topic" class="slide">
-  <div class="vcenter">
-    <h1>HTML&CSS basics</h1>
+<section id="topic" class="slide"><div class="vcenter">
+    <h1>HTML&amp;CSS basics</h1>
   </div>
-</section><section id="start-from-practice" class="slide">
-  <h2>Let's start from practice</h2>
+</section><section id="start-from-practice" class="slide"><h2>Let's start from practice</h2>
 
-  <script type="syntaxhighlighter" class="brush: bash">
+  <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     <![CDATA[
       git clone git@github.com:lyuba/css-training.git
 
       cd css-training
       vim .rvmrc
       gem install compass
-    ]]>
-  </script>
-  
-  <section class="slide">
-    <script type="syntaxhighlighter" class="brush: bash">
+    ]]]]><![CDATA[>
+  ]]></script><section class="slide"><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
       <![CDATA[
         compass watch
-      ]]>
-    </script>
-  </section>
-</section>
-<section id="basics-topic" class="slide">
-  <div class="vcenter">
+      ]]]]><![CDATA[>
+    ]]></script></section></section><section id="basics-topic" class="slide"><div class="vcenter">
     <h1>Basics</h1>
     <h2>Inside the page</h2>
   </div>
-</section><section id="basics-html-tags" class="slide">
-  <h2>HTML tags</h2>
+</section><section id="basics-html-tags" class="slide"><h2>HTML tags</h2>
 
-  <ul>
-    <li>
+  <ul><li>
       &lt;html&gt;, &lt;body&gt;, &lt;meta&gt;, &lt;title&gt;, &lt;link&gt;, ..
     </li>
     <li>
@@ -72,43 +61,32 @@
     <li>
       ..
     </li>
-  </ul>
-
-</section><section id="basics-doctype" class="slide">
-  <h2>Doctype</h2>
+  </ul></section><section id="basics-doctype" class="slide"><h2>Doctype</h2>
 
   HTML5
-  <script type="syntaxhighlighter" class="brush: css">
+  <script type="syntaxhighlighter" class="brush: css"><![CDATA[
     <![CDATA[
       <!DOCTYPE HTML>
-    ]]>
-  </script>
-
-  <section class="slide">
-    <h3>Already historical</h3>
+    ]]]]><![CDATA[>
+  ]]></script><section class="slide"><h3>Already historical</h3>
 
     XHML Strict
-    <script type="syntaxhighlighter" class="brush: css">
+    <script type="syntaxhighlighter" class="brush: css"><![CDATA[
       <![CDATA[
         <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-      ]]>
-    </script>
+      ]]]]><![CDATA[>
+    ]]></script>
     
     XHMTL Transitional
-    <script type="syntaxhighlighter" class="brush: css">
+    <script type="syntaxhighlighter" class="brush: css"><![CDATA[
       <![CDATA[
         <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-      ]]>
-    </script>
-  </section>
+      ]]]]><![CDATA[>
+    ]]></script></section></section><section id="basics-css-selectors" class="slide"><h2>CSS selectors</h2>
 
-</section><section id="basics-css-selectors" class="slide">
-  <h2>CSS selectors</h2>
-
-  <ul>
-    <li>
+  <ul><li>
       <b>Universal-selector</b>:
       *
     </li>
@@ -130,7 +108,7 @@
     </li>
     <li>
       <b>Subling-selector</b>:
-      selector > selector
+      selector &gt; selector
     </li>
     <li>
       <b>Adjacent-selector</b>:
@@ -147,15 +125,11 @@
     <li>
       ...
     </li>
-  </ul>
-
-</section><section id="basics-reset" class="slide">
-  <h2>CSS reset</h2>
+  </ul></section><section id="basics-reset" class="slide"><h2>CSS reset</h2>
 
   <p>The goal of a reset stylesheet is to reduce browser inconsistencies in things like default line heights, margins and font sizes of headings, and so on. </p>
 
-  <ul>
-    <li>
+  <ul><li>
       Eric Meyer’s “Reset CSS” 2.0
     </li>
     <li>
@@ -170,32 +144,24 @@
     <li>
       Normalize.css
     </li>
-  </ul>
-
-
-  <section class="slide">
+  </ul><section class="slide">
     Historically *-reset was considered less-effecient, but for now there is no considerable difference.
-  </section>
-
-</section><section id="basics-ways-to-link-css" class="slide">
-  <h2>Ways to link css</h2>
+  </section></section><section id="basics-ways-to-link-css" class="slide"><h2>Ways to link css</h2>
 
   <p>There are three ways of inserting a style sheet:</p>
 
-  <ul>
-    <li>
+  <ul><li>
       External style sheet
-      <script type="syntaxhighlighter" class="brush: css">
+      <script type="syntaxhighlighter" class="brush: css"><![CDATA[
         <![CDATA[
           <head>
             <link rel="stylesheet" type="text/css" href="mystyle.css">
           </head>
-        ]]>
-      </script>
-    </li>
+        ]]]]><![CDATA[>
+      ]]></script></li>
     <li>
       Internal style sheet
-      <script type="syntaxhighlighter" class="brush: css">
+      <script type="syntaxhighlighter" class="brush: css"><![CDATA[
         <![CDATA[
           <head>
             <style>
@@ -204,25 +170,20 @@
               }
             </style>
           </head>
-        ]]>
-      </script>
-    </li>
+        ]]]]><![CDATA[>
+      ]]></script></li>
     <li>
       Inline style
-      <script type="syntaxhighlighter" class="brush: css">
+      <script type="syntaxhighlighter" class="brush: css"><![CDATA[
         <![CDATA[
           <p style="color: #fff; margin-left: 20px;">This is a paragraph.</p>
-        ]]>
-      </script>
-      
-    </li>
+        ]]]]><![CDATA[>
+      ]]></script></li>
  
-  </ul>
-</section><section id="basics-specificity" class="slide">
-  <h2>Specificity</h2>
+  </ul></section><section id="basics-specificity" class="slide"><h2>Specificity</h2>
 
   <p>Which one will apply?</p>
-  <script type="syntaxhighlighter" class="brush: css">
+  <script type="syntaxhighlighter" class="brush: css"><![CDATA[
     <![CDATA[
       p {
         font-size: 12px;
@@ -230,20 +191,15 @@
       p.bio {
         font-size: 14px;
       }
-    ]]>
-  </script>
-
-  <section class="slide">
-      
-    <p>What about here? What is more specific?</p>
-    <script type="syntaxhighlighter" class="brush: css">
+    ]]]]><![CDATA[>
+  ]]></script><section class="slide"><p>What about here? What is more specific?</p>
+    <script type="syntaxhighlighter" class="brush: css"><![CDATA[
       <![CDATA[
         <div id="sidebar">
           <p class="bio">text here</p>
         </div>
-      ]]>
-    </script>
-    <script type="syntaxhighlighter" class="brush: css">
+      ]]]]><![CDATA[>
+    ]]></script><script type="syntaxhighlighter" class="brush: css"><![CDATA[
       <![CDATA[
         div p.bio {
           font-size: 14px;
@@ -251,56 +207,36 @@
         #sidebar p {
           font-size: 12px;
         }
-      ]]>
-    </script>
-
-  </section>
-
-</section><section id="basics-specificity-calculation" class="slide">
-  <h2>Specifity Calculation</h2>
+      ]]]]><![CDATA[>
+    ]]></script></section></section><section id="basics-specificity-calculation" class="slide"><h2>Specifity Calculation</h2>
   
-  <table>
-    <tr>
-      <td>
+  <table><tr><td>
         0001
       </td>
       <td>
         Element, Pseudo Element
       </td>
-    </tr>
-    <tr>
-      <td>
+    </tr><tr><td>
         0010
       </td>
       <td>
         Class, Pseudo class, Attribute
       </td>
-    </tr>
-    <tr>
-      <td>
+    </tr><tr><td>
         0100
       </td>
       <td>
         Id
       </td>
-    </tr>
-    <tr>
-      <td>
+    </tr><tr><td>
         1000
       </td>
       <td>
         Inline Style
       </td>
-    </tr>
-  </table>
-
-  <section class="slide" style="margin-top: 20px;">
-    <p>Id is more specific than a class is more specific than an element.</p>
-  </section>
-
-  <section class="slide" style="margin-top: 40px;">
-    <p>In our example</p>
-    <script type="syntaxhighlighter" class="brush: css">
+    </tr></table><section class="slide" style="margin-top: 20px;"><p>Id is more specific than a class is more specific than an element.</p>
+  </section><section class="slide" style="margin-top: 40px;"><p>In our example</p>
+    <script type="syntaxhighlighter" class="brush: css"><![CDATA[
       <![CDATA[
         div p.bio {       - 0012
           font-size: 14px;
@@ -308,51 +244,37 @@
         #sidebar p {      - 0101
           font-size: 12px;
         }
-      ]]>
-    </script>
-  </section>
-
-  <section class="slide" style="margin-top: 40px;">
-    <p>To make our life easier - it's better to avoid the complex sequences and random overrides in general.
+      ]]]]><![CDATA[>
+    ]]></script></section><section class="slide" style="margin-top: 40px;"><p>To make our life easier - it's better to avoid the complex sequences and random overrides in general.
     <br />
     Noone actually does this math in practice.</p>
-  </section>
-</section><section id="basics-cascade" class="slide">
-  <h2>Cascade</h2>
+  </section></section><section id="basics-cascade" class="slide"><h2>Cascade</h2>
 
   <p>Specifity is only one part of the puzzle named Cascade. How it all works in together:</p>
 
-  <ol>
-    <li>All declarations to the element are found</li>
+  <ol><li>All declarations to the element are found</li>
     <li>They are sorted by origin
-      <ul>
-        <li>
+      <ul><li>
           Author Style Sheets
-          <ul>
-            <li>External style sheet</li>
+          <ul><li>External style sheet</li>
             <li>Internal style sheet</li>
             <li>Inline style</li>
-          </ul>
-        </li>
+          </ul></li>
         <li>
           User Style Sheets
         </li>
         <li>
           User Agent Style Sheets
         </li>
-      </ul>
-    </li>
+      </ul></li>
 
     <li>Specificity is calculated (this one we already know)</li>
 
     <li>If two rules are equal in all of the above, the one declared last wins.</li>
 
-  </ol>
-
-  <section class="slide">
-    <h3>Directive "important!"</h3>
+  </ol><section class="slide"><h3>Directive "important!"</h3>
     <p>Jumps out of the cascade to the highest level of priority.</p>
-    <script type="syntaxhighlighter" class="brush: css">
+    <script type="syntaxhighlighter" class="brush: css"><![CDATA[
       <![CDATA[
         div p.bio {
           font-size: 14px !important;
@@ -360,22 +282,15 @@
         #sidebar p {
           font-size: 12px;
         }
-      ]]>
-    </script>
-  </section>
-
-  <section class="slide" style="margin-top: 20px;">
-    <p> It's better to aviod the situations where it's needed.</p>
-  </section>
-</section><section id="basics-inheritance" class="slide">
-  <h2>Inheritance</h2>
+      ]]]]><![CDATA[>
+    ]]></script></section><section class="slide" style="margin-top: 20px;"><p> It's better to aviod the situations where it's needed.</p>
+  </section></section><section id="basics-inheritance" class="slide"><h2>Inheritance</h2>
 
   <p>The idea behind inheritance is simple: elements inherit styles from their parent container. However, not all css properties are inherited.</p>
 
 
   <h3>Css properties that don't inherit</h3>
-  <ul>
-    <li>
+  <ul><li>
       margin
     </li>
     <li>
@@ -396,40 +311,24 @@
     <li>
       ...
     </li>
-  </ul>
-
-  <section class="slide">
-    <p>To force the inheritance of a certain property one can use:</p>
-    <script type="syntaxhighlighter" class="brush: css">
+  </ul><section class="slide"><p>To force the inheritance of a certain property one can use:</p>
+    <script type="syntaxhighlighter" class="brush: css"><![CDATA[
       <![CDATA[
         p {
           margin: inherit;
         }
-      ]]>
-    </script>
-  </section>
-</section><section id="basics-box-model" class="slide">
-  <h2>Box model</h2>
+      ]]]]><![CDATA[>
+    ]]></script></section></section><section id="basics-box-model" class="slide"><h2>Box model</h2>
   
-  <section style="float: left; width: 48%;">
-    <h3>box-sizing: content-box;</h3>
-    <img src="/assets/html_css/content-box-framed.png" style="margin: 0; margin-bottom: 20px;" />
-    <p>Has been standard for many years.</p>
-  </section>
+  <section style="float: left; width: 48%;"><h3>box-sizing: content-box;</h3>
+    <img src="/public/htmlcssbasics/assets/content-box-framed.png" style="margin: 0; margin-bottom: 20px;" /><p>Has been standard for many years.</p>
+  </section><section class="slide" style="float: right; width: 48%;"><h3>box-sizing: border-box;</h3>
+    <img src="/public/htmlcssbasics/assets/border-box-framed.png" style="margin: 0; margin-bottom: 20px;" /><p>Box-sizing: border-box now makes our life much easier! IE8 and up.</p>
+  </section><div style="clear:both;"></div>
 
-  <section class="slide" style="float: right; width: 48%;">
-    <h3>box-sizing: border-box;</h3>
-    <img src="/assets/html_css/border-box-framed.png" style="margin: 0; margin-bottom: 20px;" />
-    <p>Box-sizing: border-box now makes our life much easier! IE8 and up.</p>
-  </section>
+</section><section id="basics-box-model" class="slide"><h2>Box rendering</h2>
 
-  <div style="clear:both;"></div>
-
-</section><section id="basics-box-model" class="slide">
-  <h2>Box rendering</h2>
-
-  <ul>
-    <li>
+  <ul><li>
       <h3>display: block;</h3>
       <p>Takes 100% of the parent's width, height is adjustable.
       <br />
@@ -460,28 +359,17 @@
     <li>
       ..
     </li>
-  </section>
+  </ul></section><section id="basics-positioning-1" class="slide"><h2>Positioning</h2>
 
-</section><section id="basics-positioning-1" class="slide">
-  <h2>Positioning</h2>
-
-  <ul>
-    <li>
+  <ul><li>
       <h3>Tables</h3>
       <p>Though it is historical it doesn't mean that we should neglect it.</p>
     </li>
     <li>
-      <section class="slide">
-        <h3>Float</h3>
-        <img src="/assets/html_css/float.png" style="margin: 0; margin-bottom: 20px;" />
-      </section>
-      <section class="slide">
-        <p>Need to clearfix:</p>
-        <img src="/assets/html_css/float-without-clearfix.jpg" style="margin: 0; margin-bottom: 20px;" />
-      </section>
-      <section class="slide">
-        <p>Here is the principle (applies to the container):</p>
-        <script type="syntaxhighlighter" class="brush: css">
+      <section class="slide"><h3>Float</h3>
+        <img src="/public/htmlcssbasics/assets/float.png" style="margin: 0; margin-bottom: 20px;" /></section><section class="slide"><p>Need to clearfix:</p>
+        <img src="/public/htmlcssbasics/assets/float-without-clearfix.jpg" style="margin: 0; margin-bottom: 20px;" /></section><section class="slide"><p>Here is the principle (applies to the container):</p>
+        <script type="syntaxhighlighter" class="brush: css"><![CDATA[
           <![CDATA[
             @mixin pie-cleafix {
               &:after {
@@ -490,109 +378,59 @@
                 clear: both;
               }
             }
-          ]]>
-        </script>
-      </section>
-    </li>  
-  </ul>
-</section><section id="basics-positioning-1" class="slide">
-  <h2>Positioning</h2>
+          ]]]]><![CDATA[>
+        ]]></script></section></li>  
+  </ul></section><section id="basics-positioning-1" class="slide"><h2>Positioning</h2>
 
-  <ul>
-    <li>
+  <ul><li>
       <h3>Position</h3>
-      <ul>
-        <li>
+      <ul><li>
           Static
         </li>
         <li>
           <section class="slide">
             Relative
-            <img src="/assets/html_css/position-relative.gif" style="margin: 0; margin-bottom: 20px;" />
-          </section>
-        </li>
+            <img src="/public/htmlcssbasics/assets/position-relative.gif" style="margin: 0; margin-bottom: 20px;" /></section></li>
         <li>
           <section class="slide">
             Absolute
-            <img src="/assets/html_css/absolute-inside-relative.png" style="margin: 0; margin-bottom: 20px;" />
-          </section>
-        </li>
+            <img src="/public/htmlcssbasics/assets/absolute-inside-relative.png" style="margin: 0; margin-bottom: 20px;" /></section></li>
         <li>
           <section class="slide">
             Fixed
-            <img src="/assets/html_css/position-fixed.gif" style="margin: 0; margin-bottom: 20px;" />
-          </section>
-        </li>
-      </ul>
-    </li>    
-  </section>
+            <img src="/public/htmlcssbasics/assets/position-fixed.gif" style="margin: 0; margin-bottom: 20px;" /></section></li>
+      </ul></li>    
+  </ul></section><section id="basics-positioning-z-index" class="slide"><h2>Positioning</h2>
 
-</section><section id="basics-positioning-z-index" class="slide">
-  <h2>Positioning</h2>
-
-  <ul>
-    <li>
+  <ul><li>
       <h3>Z-index</h3>
-      <img src="/assets/html_css/z-index.png" style="margin: 0; margin-bottom: 20px;" />
-    </li>    
-  </ul>
+      <img src="/public/htmlcssbasics/assets/z-index.png" style="margin: 0; margin-bottom: 20px;" /></li>    
+  </ul></section><section id="basics-measurements" class="slide"><h2>Measurements</h2>
 
-</section><section id="basics-measurements" class="slide">
-  <h2>Measurements</h2>
-
-  <section class="slide">
-    <h3>Absolute</h3>
-    <ul>
-      <li>
+  <section class="slide"><h3>Absolute</h3>
+    <ul><li>
         px
       </li>
       <li>
         pt (printing)
       </li>
-    </ul>
-  </section>
-
-  <section class="slide">
-    <h3>Relative</h3>
-    <ul>
-      <li>
+    </ul></section><section class="slide"><h3>Relative</h3>
+    <ul><li>
         em
       </li>
       <li>
         %
       </li>
-    </ul>
-  </section>
+    </ul></section><section class="slide"><p>% and ems are the best for responsible designs and flexible grids.</p>
+  </section></section><section id="basics-layouts" class="slide"><h2>Layouts</h2>
 
-  <section class="slide">
-    <p>% and ems are the best for responsible designs and flexible grids.</p>
-  </section>
-</section><section id="basics-layouts" class="slide">
-  <h2>Layouts</h2>
-
-  <section class="columns">
-    <section class="column-half">
-      <h3>Fixed</h3>
-      <img src="/assets/html_css/fixed-layout.jpg" style="margin: 0; margin-bottom: 20px;" />
-    </section>
-
-    <section class="slide column-half">
-      <h3>Fluid</h3>
-      <img src="/assets/html_css/fluid-layout.jpg" style="margin: 0; margin-bottom: 20px;" />
-    </section>
-  </section>
-
-
-  <section class="slide" style="text-align: center;">
-    <h3>Elastic</h3>
+  <section class="columns"><section class="column-half"><h3>Fixed</h3>
+      <img src="/public/htmlcssbasics/assets/fixed-layout.jpg" style="margin: 0; margin-bottom: 20px;" /></section><section class="slide column-half"><h3>Fluid</h3>
+      <img src="/public/htmlcssbasics/assets/fluid-layout.jpg" style="margin: 0; margin-bottom: 20px;" /></section></section><section class="slide" style="text-align: center;"><h3>Elastic</h3>
     <p>Fluid layout with min-width and max-width defined.</p>
-  </section>
+  </section></section><section id="basics-useful-photoshop-shortcuts" class="slide"><h2>Useful Photoshop shortcuts</h2>
 
-</section><section id="basics-useful-photoshop-shortcuts" class="slide">
-  <h2>Useful Photoshop shortcuts</h2>
-
-  <ul>
-    <li>
+  <ul><li>
       <h3>CTRL+;</h3>
       Show the guides (which are often the grid)
     </li>
@@ -608,15 +446,9 @@
       <h3>CTRL+T</h3>
       Check the dimentions of the object
     </li>
-  </ul>
-
-  <p>Don't forget to turn on the Auto-select: Layer in the top menu!</p>
-</section>
-<!-- End slides. -->
-
-<!-- deck.navigation snippet -->
-<a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
-<a href="#" class="deck-next-link" title="Next">&#8594;</a>
+  </ul><p>Don't forget to turn on the Auto-select: Layer in the top menu!</p>
+</section><!-- End slides. --><!-- deck.navigation snippet --><a href="#" class="deck-prev-link" title="Previous">←</a>
+<a href="#" class="deck-next-link" title="Next">→</a>
 
 <!-- deck.status snippet -->
 <p class="deck-status">
