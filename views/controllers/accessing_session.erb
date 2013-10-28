@@ -2,7 +2,6 @@
   <h2>Accessing the session</h2>
   app/controllers/application_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     class ApplicationController < ActionController::Base
       ...
      
@@ -13,13 +12,11 @@
           User.find_by(id: session[:current_user_id])
       end
     end
-  ]]>
   </script>
 
   <div class="slide" id="create-destroy-session">
     app/controllers/logins_controller.rb
     <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       class LoginsController < ApplicationController
 
         def create
@@ -34,12 +31,9 @@
           redirect_to root_url
         end
       end
-    ]]>
     </script>
     <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       reset_session
-    ]]>
     </script>
   </div>
 </section>

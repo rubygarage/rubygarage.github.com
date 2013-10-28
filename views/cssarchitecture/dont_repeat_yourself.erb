@@ -6,32 +6,28 @@
   <section class="slide">
     <h3>Mixins</h3>
     <script type="syntaxhighlighter" class="brush: css">
-      <![CDATA[
-        @mixin silly-links {
-          a {
-            color: blue;
-            background-color: red;
-          }
+      @mixin silly-links {
+        a {
+          color: blue;
+          background-color: red;
         }
+      }
 
-        @include silly-links;
-      ]]>
+      @include silly-links;
     </script>
   </section>
 
   <section class="slide">
     <h3>Extend</h3>
     <script type="syntaxhighlighter" class="brush: css">
-      <![CDATA[
-        .error {
-          border: 1px #f00;
-          background-color: #fdd;
-        }
-        .seriousError {
-          @extend .error;
-          border-width: 3px;
-        }
-      ]]>
+      .error {
+        border: 1px #f00;
+        background-color: #fdd;
+      }
+      .seriousError {
+        @extend .error;
+        border-width: 3px;
+      }
     </script>
   </section>
   <section class="slide">

@@ -2,7 +2,6 @@
   <h2>Cookies</h2>
   app/controllers/comments_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     class CommentsController < ApplicationController
       def new
         @comment = Comment.new(author: cookies[:commenter_name])
@@ -23,6 +22,5 @@
         end
       end
     end
-  ]]>
   </script>
 </section>

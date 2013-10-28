@@ -3,31 +3,25 @@
   <h3>Iterators</h3>
   each
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     a = [ "a", "b", "c" ]
     a.each {|x| print x, " -- " }
 
     a -- b -- c --
-  ]]>
   </script>
   each_index
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     a = [ "a", "b", "c" ]
     a.each_index {|x| print x, " -- " }
 
     0 -- 1 -- 2 --
-  ]]>
   </script>
   each_with_index
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     a = [ "a", "b", "c" ]
     a.each_with_index {|item, index| puts "[#{index}] => #{item}" }
     
     [0] => a
     [1] => b
     [2] => c
-  ]]>
   </script>
 </section>

@@ -2,7 +2,6 @@
   <h2>Methods</h2>
   <h3>Blocks</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     def double(p1)
       yield(p1*2)
     end
@@ -14,10 +13,8 @@
       "Then I got #{val}"
     end
     => "Then I got tomtom"
-  ]]>
   </script>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     def try
       if block_given?
         yield
@@ -34,6 +31,5 @@
 
     try do "hello" end
     => "hello"
-  ]]>
   </script>
 </section>

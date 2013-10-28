@@ -2,21 +2,17 @@
   <h2>History</h2>
   <strong>posts.js</strong>
   <script type="syntaxhighlighter" class="brush: js">
-    <![CDATA[
-      $ ->
-        new Blog.Routers.PostRouter({posts: postsJSON})
-        Backbone.history.start()
-    ]]>
+    $ ->
+      new Blog.Routers.PostRouter({posts: postsJSON})
+      Backbone.history.start()
   </script>
 
   <strong>posts/index.html.erb</strong>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      <div id='posts'>
-        <script type='text/javascript'>
-          this.postsJSON = &lt;%= @post.to_json.html_safe %&gt;
-        &lt;/script>
-      </div>
-    ]]>
+    <div id='posts'>
+      <script type='text/javascript'>
+        this.postsJSON = &lt;%= @post.to_json.html_safe %&gt;
+      &lt;/script>
+    </div>
   </script>  
 </section>

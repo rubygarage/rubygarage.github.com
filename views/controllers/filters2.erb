@@ -2,7 +2,6 @@
   <h2>Filters</h2>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     class PostsController < ApplicationController
       aaround_filter :wrap_actions
  
@@ -16,26 +15,22 @@
         end
       end
     end
-  ]]>
   </script>
 
   <div class="slide" id="filter-block">
     app/controllers/application_controller.rb
     <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       class ApplicationController < ActionController::Base
         before_action do |controller|
           redirect_to new_login_url unless controller.send(:logged_in?)
         end
       end
-    ]]>
     </script>
   </div>
 
   <div class="slide" id="filter-class">
     app/controllers/application_controller.rb
     <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       class ApplicationController < ActionController::Base
         before_action LoginFilter
       end
@@ -48,7 +43,6 @@
           end
         end
       end
-    ]]>
     </script>
   </div>
 </section>

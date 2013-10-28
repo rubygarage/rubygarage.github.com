@@ -2,7 +2,6 @@
   <h2>Methods</h2>
   <h3>Arguments</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     def var_args(arg1, *rest)
       "arg1=#{arg1}, rest=#{rest.inspect}"
     end
@@ -15,10 +14,8 @@
 
     var_args("one", "two", "three")
     => "arg1=one, rest=['two', 'three']"
-  ]]>
   </script>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     def split_apart(first, *split, last)
       "first: #{first.inspect}, split: #{split.inspect}, last: #{last.inspect}"
     end
@@ -31,13 +28,10 @@
 
     split_apart(1, 2, 3, 4)
     => "first: 1, split: [2, 3], last: 4"
-  ]]>
   </script>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     def split_apart(first, *, last)
       # ...
     end
-  ]]>
   </script>
 </section>

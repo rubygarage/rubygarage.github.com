@@ -2,15 +2,13 @@
   <h2>Sending files</h2>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      class PostsController < ApplicationController
-        def download_pdf
-          post = Post.find(params[:id])
-          send_file("#{Rails.root}/files/posts/#{post.id}.pdf",
-                    filename: "#{post.title}.pdf",
-                    type: "application/pdf")
-        end
+    class PostsController < ApplicationController
+      def download_pdf
+        post = Post.find(params[:id])
+        send_file("#{Rails.root}/files/posts/#{post.id}.pdf",
+                  filename: "#{post.title}.pdf",
+                  type: "application/pdf")
       end
-    ]]>
-    </script>
+    end
+  </script>
 </section>
