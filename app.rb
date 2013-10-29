@@ -61,6 +61,10 @@ class App < Sinatra::Base
     erb :rails
   end
 
+  get "/sinatra" do
+    erb :sinatra
+  end
+
   get "/models" do
     erb :models
   end
