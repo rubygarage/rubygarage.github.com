@@ -4,13 +4,11 @@
   <p>So let's add some code structure</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     # file lib/codebreaker.rb
 
-    require 'codebreaker/game']]>
+    require 'codebreaker/game'
   </script>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     # file lib/codebreaker/game.rb
 
     module Codebreaker
@@ -19,11 +17,9 @@
         end
       end
     end
-  ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
     rspec spec/codebreaker/game_spec.rb --format doc
 
     Codebreaker::Game
@@ -38,7 +34,5 @@
       Codebreaker::Game#start prompts for the first guess
         # Not yet implemented
         # ./spec/codebreaker/game_spec.rb:7
-
-  ]]>
   </script>
 </section>

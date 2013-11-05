@@ -5,13 +5,11 @@
   </p>
   <h3>Checking equality and identity</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     cow.should == twin_cow
     cow.should eql(cow)
 
     cow.should === twin_cow
     cow.should equal(cow)
-  ]]>
   </script>
   <p>
     The <strong>==</strong> and <strong>eql</strong> methods are used to express values equivalence, and <strong>===</strong> and <strong>equal</strong> are used when you want the receiver and the argument to be the same object.

@@ -5,43 +5,37 @@
 told it to expect “Welcome to Codebreaker!” It doesn’t know anything about “Enter guess:”</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     # file spec/codebreaker/game_spec.rb
 
-	module Codebreaker
-	  describe Game do
-	    describe "#start" do
-	      it "sends a welcome message" do
-	        output = double('output').as_null_object
-	        game = Game.new(output)
-	        output.should_receive(:puts).with('Welcome to Codebreaker!')
-	        game.start
-	      end
+    module Codebreaker
+      describe Game do
+        describe "#start" do
+          it "sends a welcome message" do
+            output = double('output').as_null_object
+            game = Game.new(output)
+            output.should_receive(:puts).with('Welcome to Codebreaker!')
+            game.start
+          end
 
-	      it "prompts for the first guess" do
-			output = double('output').as_null_object
-			game = Game.new(output)
-			output.should_receive(:puts).with('Enter guess:')
-			game.start
-	      end
-	    end
-	  end
-	end
-  ]]>
+          it "prompts for the first guess" do
+            output = double('output').as_null_object
+            game = Game.new(output)
+            output.should_receive(:puts).with('Enter guess:')
+            game.start
+          end
+        end
+      end
+    end
   </script>
-
   <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
     rspec spec/codebreaker/game_spec.rb --format doc
 
-	Codebreaker::Game
-	  #start
-	    sends a welcome message
-	    prompts for the first guess
+    Codebreaker::Game
+      #start
+        sends a welcome message
+        prompts for the first guess
 
-	Finished in 0.00103 seconds
-	2 examples, 0 failures
-
-  ]]>
+    Finished in 0.00103 seconds
+    2 examples, 0 failures
   </script>
 </section>

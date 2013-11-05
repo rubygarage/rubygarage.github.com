@@ -1,7 +1,6 @@
 <section id="hooks-run-in-order" class="slide">
   <h2>Hooks run in order</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
   # file spec/callbacks_spec.rb
 
   describe "before and after callbacks" do
@@ -54,10 +53,9 @@
         puts "group test 2"
       end
     end
-  end]]>
+  end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
   rspec spec/callbacks_spec.rb 
   global before all
   global before each
@@ -78,6 +76,6 @@
   group after each
   global after each
   group after all
-  global after all]]>
+  global after all
   </script>
 </section>

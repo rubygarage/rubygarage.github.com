@@ -4,29 +4,25 @@
   <p>A <strong>test double</strong> is an object that stands in for another object in an example.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      thingamajig_double = double('thing-a-ma-jig')
-      stub_thingamajig = stub('thing-a-ma-jig')
-      mock_thingamajig = mock('thing-a-ma-jig')
-    ]]>
+    thingamajig_double = double('thing-a-ma-jig')
+    stub_thingamajig = stub('thing-a-ma-jig')
+    mock_thingamajig = mock('thing-a-ma-jig')
   </script>
 
   <p>The argument is a name, used for failure reporting, so you should use the role that the double is playing in the example.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      def double(*args)
-        __declare_double('Double', *args)
-      end
+    def double(*args)
+      __declare_double('Double', *args)
+    end
 
-      def stub(*args)
-        __declare_double('Stub', *args)
-      end
+    def stub(*args)
+      __declare_double('Stub', *args)
+    end
 
-      def mock(*args)
-        __declare_double('Mock', *args)
-      end
-    ]]>
+    def mock(*args)
+      __declare_double('Mock', *args)
+    end
   </script>
 
  <p>Mocks are objects that allow you to set and verify expectations that they will receive specific messages during run time. Stubs provide canned responses to messages they <strong>might</strong> receive in a test, while mocks allow you to specify and, subsquently, verify that certain messages <strong>should</strong> be received during the execution of a test.</p>

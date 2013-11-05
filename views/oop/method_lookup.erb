@@ -9,10 +9,8 @@ moves up the inheritance hierarchy to the superclass. Steps 2 and 3 are repeated
     <li>If no method named m is found after completing the search, then a method named method_missing is invoked instead.</li>
   </ul>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      foo = "some string"
-      foo.bar # singleton: no -> String class: no -> modules Comparable, Enumerable: no ->  
-              # Kernel module: no -> method_missing: no -> raise an exception
-    ]]>
+    foo = "some string"
+    foo.bar # singleton: no -> String class: no -> modules Comparable, Enumerable: no ->  
+            # Kernel module: no -> method_missing: no -> raise an exception
   </script>
 </section>

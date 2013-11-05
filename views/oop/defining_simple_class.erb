@@ -2,24 +2,20 @@
   <h2>Defining a simple class</h2>
   <h3>Creating the class</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     class BookInStock
-    end]]>
+    end
   </script>
-  <div class="slide">
+  <div id="class-as-object" class="slide">
     <h3>Define ruby objects</h3>
     <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[
       book = BookInStock.new
       book.class # => BookInStock
       book.is_a? BookInStock # => true
-      ]]>
     </script>
   </div>
   <div class="slide" id="initializing-class" >
     <h3>Initializing the class</h3>
     <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[
       class BookInStock
         def initialize(title, author, price)
           @title = title
@@ -29,7 +25,6 @@
       end
       
       BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99)
-      ]]>
     </script>
   </div>
 </section>

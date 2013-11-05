@@ -4,18 +4,16 @@
   <p>Removes a stub. On a double, the object will no longer respond to message. On a real object, the original method (if it exists) is restored.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      describe String do
-        before(:each) { String.stub(:new).and_return("hello") }
+    describe String do
+      before(:each) { String.stub(:new).and_return("hello") }
 
-        it "can restore it's own behavior" do
-          String.new("initial string").should == "hello"
-          String.unstub(:new)
+      it "can restore it's own behavior" do
+        String.new("initial string").should == "hello"
+        String.unstub(:new)
 
-          String.new("initial string").should == "initial string"
-        end
+        String.new("initial string").should == "initial string"
       end
-    ]]>
+    end
   </script>
 
 </section>

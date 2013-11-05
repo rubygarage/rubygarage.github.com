@@ -22,7 +22,6 @@
   <p>Dir.new("my/directory").should have(7).entries</p>
   <h4>A receiver IS a collection </h4>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     describe [1, 2, 3, 4, 5, 6, 7, 8, 9, 0] do
       it { should have(10).items }
 
@@ -32,11 +31,9 @@
       it { should have_at_least(5).items }
       it { should have_at_most(15).items }
     end
-  ]]>
   </script>
   <h4>A receiver OWNS a collection </h4>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     class String
       def words
         self.split(' ')
@@ -53,6 +50,5 @@
       it { should have_at_least(4).words }
       it { should have_at_most(6).words }
     end
-  ]]>
   </script>
 </section>

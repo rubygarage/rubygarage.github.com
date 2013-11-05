@@ -2,43 +2,39 @@
   <h2>Singleton methods and eigenclass</h2>
   <h3>Ways to create singleton methods</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      class BookInStock
-        def BookInStock.sum
-        end
+    class BookInStock
+      def BookInStock.sum
       end
+    end
 
-      class BookInStock
-        class << self
-          def sum
-          end
-        end
-      end
-
-      class << BookInStock
+    class BookInStock
+      class << self
         def sum
         end
       end
-    ]]>
+    end
+
+    class << BookInStock
+      def sum
+      end
+    end
   </script>
   <h3>Ways to add a custom behaviour to an instance</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      book = BookInStock.new
+    book = BookInStock.new
+    def book.title
+      "Title"
+    end
+    book.title # => Title
+
+    class << book
       def book.title
         "Title"
       end
-      book.title # => Title
+    end
+    book.title # => Title
 
-      class << book
-        def book.title
-          "Title"
-        end
-      end
-      book.title # => Title
-
-      another = BookInStock.new
-      another.title # => NoMethodError: undefined method 'title'
-    ]]>
+    another = BookInStock.new
+    another.title # => NoMethodError: undefined method 'title'
   </script>
 </section>

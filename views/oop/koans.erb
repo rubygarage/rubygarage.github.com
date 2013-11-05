@@ -1,0 +1,37 @@
+<section id="koans" class="slide">
+  <h2>Ruby Koans</h2>
+  <p>
+    <a href="http://koans.heroku.com" target="_blank">Ruby Koans Online</a>
+  </p>
+  <p>
+    The Ruby Koans are a great way to learn about the Ruby language.
+  </p>
+  <script type="syntaxhighlighter" class="brush: bash">
+    git clone git://github.com/edgecase/ruby_koans.git ruby_koans
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    cd ruby_koans
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    rake gen
+
+    mkdir -p koans
+    cp src/edgecase.rb koans/edgecase.rb
+    cp README.rdoc koans/README.rdoc
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    rake
+
+    The Master says:
+      You have not yet reached enlightenment.
+
+    The answers you seek...
+      Failed assertion, no message given.
+
+    Please meditate on the following code:
+      /Users/sparrow/Www/ruby_koans/koans/about_asserts.rb:10:in 'test_assert_truth'
+
+    mountains are merely mountains
+    your path thus far [X_________________________________________________] 0/280
+  </script>
+</section>

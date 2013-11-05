@@ -17,22 +17,17 @@
 </section><section id="defining-simple-class" class="slide"><h2>Defining a simple class</h2>
   <h3>Creating the class</h3>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
     class BookInStock
-    end]]]]><![CDATA[>
   ]]></script><div class="slide">
     <h3>Define ruby objects</h3>
     <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      <![CDATA[
       book = BookInStock.new
       book.class # => BookInStock
       book.is_a? BookInStock # => true
-      ]]]]><![CDATA[>
     ]]></script></div>
   <div class="slide" id="initializing-class">
     <h3>Initializing the class</h3>
     <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      <![CDATA[
       class BookInStock
         def initialize(title, author, price)
           @title = title
@@ -42,11 +37,9 @@
       end
       
       BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99)
-      ]]]]><![CDATA[>
     ]]></script></div>
 </section><section id="to_s-method" class="slide"><h2>Defining a to_s method</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
     class BookInStock
       def initialize(title, author, price)
         @title = title
@@ -60,10 +53,9 @@
     end
 
     book = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99)
-    book.to_s # => Book: The Great Gatsby / F. Scott Fitzgerald, 8.99]]]]><![CDATA[>
+    book.to_s # => Book: The Great Gatsby / F. Scott Fitzgerald, 8.99
   ]]></script></section><section id="set-and-get-attributes" class="slide"><h2>Creating methods for set and get attributes</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
     class BookInStock
       def initialize(title, author, price)
         @title = title
@@ -88,10 +80,8 @@
 
     book.price      # => NoMethodError: undefined method `price'
     book.price = 10 # => NoMethodError: undefined method `price='
-    ]]]]><![CDATA[>
   ]]></script></section><section id="accessor-and-attributes" class="slide"><h2>Accessor and attributes</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
     class BookInStock
       attr_accessor :title
       attr_writer :author
@@ -113,10 +103,9 @@
     book.author # => NoMethodError: undefined method 'author'
 
     book.price      # => 8.99
-    book.price = 10 # => NoMethodError: undefined method 'price=']]]]><![CDATA[>
+    book.price = 10 # => NoMethodError: undefined method 'price='
   ]]></script></section><section id="virtual-attributes" class="slide"><h2>Virtual attributes</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
     class BookInStock
       attr_reader :title, :author, :price
 
@@ -138,10 +127,8 @@
     book.price_in_cents = 100 
     book.price                # => 1.0
     book.price_in_cents       # => 100
-    ]]]]><![CDATA[>
   ]]></script></section><section id="defining-operators" class="slide"><h2>Defining operators</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
     class BookInStock
       attr_reader :title, :author, :price
 
@@ -163,107 +150,97 @@
     books_collection.title  # => The Great Gatsby, The Old Man and the Sea
     books_collection.author # => F. Scott Fitzgerald and Ernest Hemingway
     books_collection.price  # => 16.59
-    ]]]]><![CDATA[>
   ]]></script></section><section id="objects-comparasions" class="slide"><h2>Objects comparasion</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
-      book1 = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99) # => BookInStock:0x00000000e71cb0
-      book2 = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99) # => BookInStock:0x00000000e553f8
-      book1 == book2 # => false
-    ]]]]><![CDATA[>
+    book1 = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99) # => BookInStock:0x00000000e71cb0
+    book2 = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99) # => BookInStock:0x00000000e553f8
+    book1 == book2 # => false
   ]]></script><div class="slide" id="define-equality-method">
     <h3>Define equality method</h3>
     <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      <![CDATA[
-        class BookInStock
-          attr_reader :title, :author, :price
+      class BookInStock
+        attr_reader :title, :author, :price
 
-          def initialize(title, author, price)
-            @title = title
-            @author = author
-            @price = Float(price)
-          end
-
-          def ==(other)
-            if other.is_a? BookInStock
-              @title == other.title && @author == other.author && @price == other.price
-            else
-              false
-            end
-          end
+        def initialize(title, author, price)
+          @title = title
+          @author = author
+          @price = Float(price)
         end
 
-        book1 == book2 # => true
-      ]]]]><![CDATA[>
+        def ==(other)
+          if other.is_a? BookInStock
+            @title == other.title && @author == other.author && @price == other.price
+          else
+            false
+          end
+        end
+      end
+
+      book1 == book2 # => true
     ]]></script></div>
 </section><section id="self" class="slide"><h2>Self</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
-      class BookInStock
-        attr_reader :title, :author, :price
+    class BookInStock
+      attr_reader :title, :author, :price
 
-        def initialize(title, author, price)
-          @title, @author, @price = title, author, Float(price)
-        end
-
-        def title
-          "Author: #{@author}"
-        end
-
-        def my_object_print
-          puts self.inspect  # => <BookInStock:0x000000010aaef0 @title="t1", @author="a1", @price=10.0>
-        end
-
-        def attribute_print
-          puts self.author   # => The Great Gatsby
-          puts @author       # => The Great Gatsby
-        end
-
-        def variable_and_method
-          puts title         # => Author: F. Scott Fitzgerald
-          title = 'My best title'
-          puts title         # => My best title
-          puts self.title    # => Author: F. Scott Fitzgerald
-        end
-
-        def my_object_as_param
-          str = "my string"
-          puts str.eql? self # => false
-        end
-
-        def method_to_class
-          # puts class - error it try to create new class
-          puts self.class.inspect     # => BookInStock
-          self.class.my_class_method  # => BookInStock
-        end
-
-        def self.my_class_print
-          puts self.inspect           # => BookInStock
-        end
+      def initialize(title, author, price)
+        @title, @author, @price = title, author, Float(price)
       end
-    ]]]]><![CDATA[>
+
+      def title
+        "Author: #{@author}"
+      end
+
+      def my_object_print
+        puts self.inspect  # => <BookInStock:0x000000010aaef0 @title="t1", @author="a1", @price=10.0>
+      end
+
+      def attribute_print
+        puts self.author   # => The Great Gatsby
+        puts @author       # => The Great Gatsby
+      end
+
+      def variable_and_method
+        puts title         # => Author: F. Scott Fitzgerald
+        title = 'My best title'
+        puts title         # => My best title
+        puts self.title    # => Author: F. Scott Fitzgerald
+      end
+
+      def my_object_as_param
+        str = "my string"
+        puts str.eql? self # => false
+      end
+
+      def method_to_class
+        # puts class - error it try to create new class
+        puts self.class.inspect     # => BookInStock
+        self.class.my_class_method  # => BookInStock
+      end
+
+      def self.my_class_print
+        puts self.inspect           # => BookInStock
+      end
+    end
   ]]></script></section><section id="class-method" class="slide"><h2>Class method</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
-      class BookInStock
-        attr_reader :title, :author, :price
+    class BookInStock
+      attr_reader :title, :author, :price
 
-        def initialize(title, author, price)
-          @title, @author, @price = title, author, Float(price)
-        end
-
-        def self.total_amount(*books)
-          books.map(&:price).inject(0, &:+)
-        end
+      def initialize(title, author, price)
+        @title, @author, @price = title, author, Float(price)
       end
 
-      book1 = BookInStock.new("t1", "a1", 10)
-      book2 = BookInStock.new("t2", "a2", 20)
-      BookInStock.total_amount(book1, book2) # => 30.0
-    ]]]]><![CDATA[>
+      def self.total_amount(*books)
+        books.map(&:price).inject(0, &:+)
+      end
+    end
+
+    book1 = BookInStock.new("t1", "a1", 10)
+    book2 = BookInStock.new("t2", "a2", 20)
+    BookInStock.total_amount(book1, book2) # => 30.0
   ]]></script><div id="defining-several-self-methods" class="slide">
     <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      <![CDATA[
       class BookInStock
         class << self
           def total_amount(*books)
@@ -275,7 +252,6 @@
           end
         end
       end
-      ]]]]><![CDATA[>
     ]]></script></div>
 </section><section id="class-variables" class="slide"><h2>Class variables</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
@@ -338,25 +314,23 @@
     BookInStock::MIN_PRICE # => 20
   ]]></script></section><section id="scope-local-variables" class="slide"><h2>Scope</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
-      v1 = 1
+    v1 = 1
 
-      class MyClass
-        v2 = 2
-        local_variables   # => [:v2]
+    class MyClass
+      v2 = 2
+      local_variables   # => [:v2]
 
-        def my_method
-          v3 = 3
-          local_variables
-        end
-
-        local_variables   # => [:v2]
+      def my_method
+        v3 = 3
+        local_variables
       end
 
-      obj = MyClass.new
-      obj.my_method       # => [:v3]
-      local_variables     # => [:v1, :obj]
-    ]]]]><![CDATA[>
+      local_variables   # => [:v2]
+    end
+
+    obj = MyClass.new
+    obj.my_method       # => [:v3]
+    local_variables     # => [:v1, :obj]
   ]]></script></section><section id="public-private-protected" class="slide"><h2>Method visibility: public, protected, private</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     class BookInStock
@@ -454,7 +428,6 @@
     book.call_protected_method      # => "protected method called"
     book.call_private_method        # => "private method called"
     book.call_private_and_protected # => "protected method calledprivate method called"
-
   ]]></script></section><section id="super-method" class="slide"><h2>Method super</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     class PrintPublication
@@ -530,65 +503,59 @@
   ]]></script></section><section id="class-hierarchy" class="slide"><h2>Class hierarchy</h2>
   <img src="/public/oop/assets/class_hierarchy.png" /></section><section id="class-as-object" class="slide"><h2>Class as object</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
-      BookInStock = Class.new do
-        def initialize(title, author, price)
-          @title, @author, @price = title, author, Float(price)
-        end
-
-        attr_reader :title, :author, :price
-
-        def cover
-          "#{@title}, #{@author}"
-        end
+    BookInStock = Class.new do
+      def initialize(title, author, price)
+        @title, @author, @price = title, author, Float(price)
       end
 
-      BookInStock       # => BookInStock
-      BookInStock.class # => Class
+      attr_reader :title, :author, :price
 
-      book = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99)
-      book.cover        # => "The Great Gatsby, F. Scott Fitzgerald"  
-    ]]]]><![CDATA[>
+      def cover
+        "#{@title}, #{@author}"
+      end
+    end
+
+    BookInStock       # => BookInStock
+    BookInStock.class # => Class
+
+    book = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99)
+    book.cover        # => "The Great Gatsby, F. Scott Fitzgerald"  
   ]]></script></section><section id="singleton-method" class="slide"><h2>Singleton methods and eigenclass</h2>
   <h3>Ways to create singleton methods</h3>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
-      class BookInStock
-        def BookInStock.sum
-        end
+    class BookInStock
+      def BookInStock.sum
       end
+    end
 
-      class BookInStock
-        class << self
-          def sum
-          end
-        end
-      end
-
-      class << BookInStock
+    class BookInStock
+      class << self
         def sum
         end
       end
-    ]]]]><![CDATA[>
+    end
+
+    class << BookInStock
+      def sum
+      end
+    end
   ]]></script><h3>Ways to add a custom behaviour to an instance</h3>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
-      book = BookInStock.new
+    book = BookInStock.new
+    def book.title
+      "Title"
+    end
+    book.title # => Title
+
+    class << book
       def book.title
         "Title"
       end
-      book.title # => Title
+    end
+    book.title # => Title
 
-      class << book
-        def book.title
-          "Title"
-        end
-      end
-      book.title # => Title
-
-      another = BookInStock.new
-      another.title # => NoMethodError: undefined method 'title'
-    ]]]]><![CDATA[>
+    another = BookInStock.new
+    another.title # => NoMethodError: undefined method 'title'
   ]]></script></section><section id="module" class="slide"><h2>Module</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     module AudioConverter
@@ -614,32 +581,30 @@
     AudioConverter::Decoder.new("music.mp3")
   ]]></script></section><section id="module-constants-paths" class="slide"><h2>Module constants, paths</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
-      module M 
-        class C 
-          X = 'a constant'
-        end 
-        C::X  # => "a constant"
-      end
-      M::C::X # => "a constant"
+    module M 
+      class C 
+        X = 'a constant'
+      end 
+      C::X  # => "a constant"
+    end
+    M::C::X # => "a constant"
 
-      module M
-        Y = 'another constant'
-        class C
-          ::M::Y # => "another constant"
+    module M
+      Y = 'another constant'
+      class C
+        ::M::Y # => "another constant"
+      end
+    end
+
+    M.constants
+
+    module M
+      class C
+        module M2
+          Module.nesting # => [M::C::M2, M::C, M]
         end
       end
-
-      M.constants
-
-      module M
-        class C
-          module M2
-            Module.nesting # => [M::C::M2, M::C, M]
-          end
-        end
-      end
-    ]]]]><![CDATA[>
+    end
   ]]></script></section><section id="mixins" class="slide"><h2>Mixins</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     module AudioConverter
@@ -671,38 +636,34 @@
     ]]></script></div>
 </section><section id="extend" class="slide"><h2>Extend with module</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
-      module AudioConverter
-        def formats
-          ["mp3", "avi", "ogg"]
-        end
+    module AudioConverter
+      def formats
+        ["mp3", "avi", "ogg"]
+      end
+    end
+
+    class AudioUpload
+      extend AudioConverter
+
+      def initialize(file) 
+        @file = file
       end
 
-      class AudioUpload
-        extend AudioConverter
+      # class << self
+      #   include AudioConverter
+      # end
+    end
 
-        def initialize(file) 
-          @file = file
-        end
+    AudioUpload.formats # => ["mp3", "avi", "ogg"] 
 
-        # class << self
-        #   include AudioConverter
-        # end
-      end
+    audio = AudioUpload.new("audio.mp3")
+    audio.formats # => NoMethodError: undefined method 'formats'
 
-      AudioUpload.formats # => ["mp3", "avi", "ogg"] 
-
-      audio = AudioUpload.new("audio.mp3")
-      audio.formats # => NoMethodError: undefined method 'formats'
-
-      audio.extend(AudioConverter)
-      audio.formats # => ["mp3", "avi", "ogg"]
-    ]]]]><![CDATA[>
+    audio.extend(AudioConverter)
+    audio.formats # => ["mp3", "avi", "ogg"]
   ]]></script></section><section id="class-hierarchy" class="slide"><h2>Class and modules hierarchy, ancestors</h2>
   <img src="/public/oop/assets/hierarchy_with_module.png" /><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
-      Class.new.ancestors # => [#<Class:0x0000000268a568>, Object, Kernel, BasicObject]
-    ]]]]><![CDATA[>
+    Class.new.ancestors # => [#<Class:0x0000000268a568>, Object, Kernel, BasicObject]
   ]]></script></section><section id="method-lookup" class="slide"><h2>Method lookup</h2>
   <ul><li>Сhecks the eigenclass of o for singleton methods named m.</li>
     <li>If no method m is found in the eigenclass, Ruby searches the class of o for an instance method named m.</li>
@@ -711,11 +672,9 @@
 moves up the inheritance hierarchy to the superclass. Steps 2 and 3 are repeated for each class in the inheritance hierarchy until each ancestor class and its included modules have been searched.</li>
     <li>If no method named m is found after completing the search, then a method named method_missing is invoked instead.</li>
   </ul><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
-      foo = "some string"
-      foo.bar # singleton: no -> String class: no -> modules Comparable, Enumerable: no ->  
-              # Kernel module: no -> method_missing: no -> raise an exception
-    ]]]]><![CDATA[>
+    foo = "some string"
+    foo.bar # singleton: no -> String class: no -> modules Comparable, Enumerable: no ->  
+            # Kernel module: no -> method_missing: no -> raise an exception
   ]]></script></section><section id="exceptions" class="slide"><h2>Exceptions: begin, rescue, raise</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     begin 

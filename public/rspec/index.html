@@ -92,53 +92,44 @@
   <h2>Installation</h2>
   <h3>Setup envirepment</h3>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     rvm use 1.9.3-head@hello-rspec --create
-    Using /Users/sparrow/.rvm/gems/ruby-1.9.3-head with gemset hello-rspec]]>
+    Using /Users/sparrow/.rvm/gems/ruby-1.9.3-head with gemset hello-rspec
   </script>
   <h3>Install rspec</h3>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
-    gem install rspec]]>
+    gem install rspec
   </script>
 </section><section id="running-specs" class="slide">
   <h2>Running specs and formating output</h2>
   <h3>Running</h3>
   <p>All specs</p>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     rspec
   </script>
   <p>Specs in specific folder</p>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
-    rspec spec/arrays]]>
+    rspec spec/arrays
   </script>
   <p>Specific spec</p>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
-    rspec spec/arrays/push_spec.rb]]>
+    rspec spec/arrays/push_spec.rb
   </script>
   <p>Specific line in spec</p>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
-    rspec spec/arrays/push_spec.rb:5]]>
+    rspec spec/arrays/push_spec.rb:5
   </script>
   <h3>Formating</h3>
   <p>Colorization</p>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
-    rspec spec/arrays/push_spec.rb --color]]>
+    rspec spec/arrays/push_spec.rb --color
   </script>
-  <p> Documentation format </p>
+  <p>Documentation format</p>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
-    rspec spec/arrays/push_spec.rb --format documentation ]]>
+    rspec spec/arrays/push_spec.rb --format documentation
   </script>
 </section><section id="first-test" class="slide">
   <h2>First test</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     # file spec/burger_spec.rb
 
     describe Burger do
@@ -151,17 +142,15 @@
         burger = Burger.new(:ketchup => false)
         burger.should_not be_with_ketchup
       end
-    end]]>
+    end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     rspec spec/burger_spec.rb 
-    spec/burger_spec.rb:1:in '<top (required)>': uninitialized constant Object::Burger (NameError)]]>
+    spec/burger_spec.rb:1:in '<top (required)>': uninitialized constant Object::Burger (NameError)
   </script>
 </section><section id="first-implementation" class="slide">
   <h2>First implementation</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     # file spec/burger_spec.rb
     
     class Burger
@@ -184,15 +173,14 @@
         burger = Burger.new(:ketchup => false)
         burger.should_not be_with_ketchup
       end
-    end]]>
+    end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     rspec spec/burger_spec.rb 
     ..
 
     Finished in 0.0114 seconds
-    2 examples, 0 failures]]>
+    2 examples, 0 failures
   </script>
 </section><section id="describe" class="slide">
   <h2>Describe</h2>
@@ -200,7 +188,6 @@
     We use the describe() method to define an example group.
   </p>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     describe "A User" do
     end
     # => A User 
@@ -211,7 +198,7 @@
 
     describe User, "with no roles assigned" do
     end
-    # => User with no roles assigned]]>
+    # => User with no roles assigned
   </script>
   <p>
     The describe() method takes an arbitrary number of arguments and an optional block, and returns a subclass of RSpec::Core::ExampleGroup.
@@ -219,7 +206,6 @@
 </section><section id="nested-groups" class="slide">
   <h2>Nested groups</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     describe User
       describe "with no roles assigned" do
         it "is not allowed to view protected content" do
@@ -229,13 +215,12 @@
 
     # =>  User 
     # =>    with no roles assigned
-    # =>      is not allowed to view protected content]]>
+    # =>      is not allowed to view protected content
   </script>
 </section><section id="context" class="slide">
   <h2>Context</h2>
   <p>The context() method is an alias for describe().</p>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     describe User
       context "with no roles assigned" do
         it "is not allowed to view protected content" do
@@ -245,14 +230,13 @@
 
     # =>  User 
     # =>    with no roles assigned
-    # =>      is not allowed to view protected content]]>
+    # =>      is not allowed to view protected content
   </script>
 </section><section id="it" class="slide">
   <h2>What’s it() All About?</h2>
   <p>The it() method takes a single String, an optional Hash and an optional block.</p>
   <p>String with 'it' represents the detail that will be expressed in code within the block.</p>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     # file spec/array_spec.rb
 
     describe Array do
@@ -281,18 +265,16 @@
           array.size.should == 2
         end
       end
-    end]]>
+    end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
     rspec spec/array_spec.rb 
     ....
 
     Finished in 0.00759 seconds
-    4 examples, 0 failures]]>
+    4 examples, 0 failures
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
     rspec spec/array_spec.rb --format documentation
 
     Array
@@ -304,12 +286,11 @@
         should remove the last element
 
     Finished in 0.00212 seconds
-    4 examples, 0 failures]]>
+    4 examples, 0 failures
   </script>
 </section><section id="pending" class="slide">
   <h2>Pending</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
   # file spec/array_spec.rb
   
   describe Array do
@@ -330,10 +311,9 @@
     context "#first" do 
       it "return the first element"
     end
-  end]]>
+  end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
     rspec spec/array_spec.rb --format documentation
 
     Array
@@ -356,7 +336,6 @@
 
     Finished in 1.23 seconds
     3 examples, 0 failures, 3 pending
-  ]]>
   </script>
 </section><section id="hooks" class="slide">
   <h2>Before and after hooks</h2>
@@ -364,18 +343,16 @@
     Use before and after hooks to execute arbitrary code before and/or after the body of an example is run
   </p>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
-  before(:all)  # run one time only, before all of the examples in a group
-  before(:each) # run before each example
+    before(:all)  # run one time only, before all of the examples in a group
+    before(:each) # run before each example
 
-  after(:each)  # run after each example
-  after(:all)   # run one time only, after all of the examples in a group]]>
+    after(:each)  # run after each example
+    after(:all)   # run one time only, after all of the examples in a group
   </script>
 </section><section id="before-each" class="slide">
   <h2>before(:each)</h2>
   <p>Run before each example</p>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
   # file spec/array_spec.rb
   
   describe Array, "before each" do
@@ -410,21 +387,19 @@
         end
       end
     end
-  end]]>
+  end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
   rspec spec/array_spec.rb 
   ....
 
   Finished in 0.01025 seconds
-  4 examples, 0 failures]]>
+  4 examples, 0 failures
   </script>
 </section><section id="before-all" class="slide">
   <h2>before(:all)</h2>
   <p>Run one time only, before all of the examples in a group</p>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
   # file spec/array_spec.rb
   
   describe Array, "before all" do
@@ -460,20 +435,18 @@
         end
       end
     end
-  end]]>
+  end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
   rspec spec/array_spec.rb 
   ....
 
   Finished in 0.01025 seconds
-  4 examples, 0 failures]]>
+  4 examples, 0 failures
   </script>
 </section><section id="hooks-run-in-order" class="slide">
   <h2>Hooks run in order</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
   # file spec/callbacks_spec.rb
 
   describe "before and after callbacks" do
@@ -526,10 +499,9 @@
         puts "group test 2"
       end
     end
-  end]]>
+  end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
   rspec spec/callbacks_spec.rb 
   global before all
   global before each
@@ -550,12 +522,11 @@
   group after each
   global after each
   group after all
-  global after all]]>
+  global after all
   </script>
 </section><section id="hooks-in-configuration" class="slide">
   <h2>Define hooks in configuration</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
   # file spec/callbacks_spec.rb
 
   RSpec.configure do |config|
@@ -592,10 +563,9 @@
     it "run" do
       puts "test 2"
     end
-  end]]>
+  end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
   rspec spec/callbacks_spec.rb 
   before suite
   before all
@@ -606,7 +576,7 @@
   test 2
   after each
   after all
-  after suite]]>
+  after suite
   </script>
 </section><section id="let" class="slide">
   <h2>Let</h2>
@@ -615,23 +585,21 @@
   </p>
   <h3>Use before</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
-  before do
-    @empty_array = Array.new
-  end
+    before do
+      @empty_array = Array.new
+    end
 
-  it "should be empty" do
-    @empty_array.should be_empty
-  end]]>
+    it "should be empty" do
+      @empty_array.should be_empty
+    end
   </script>
   <h3>Use let</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
-  let(:empty_array) { Array.new }
+    let(:empty_array) { Array.new }
 
-  it "should be empty" do
-    empty_array.should be_empty
-  end]]>
+    it "should be empty" do
+      empty_array.should be_empty
+    end
   </script>
   <p>
     Note that <i>let</i> is lazy-evaluated: it is not evaluated until the first time the method it defines is invoked. You can use <i>let!</i> to force the method's invocation before each example.
@@ -642,42 +610,39 @@
     Use subject in the group scope to explicitly define the value that is returned by the subject method in the example scope.
   </p>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
-  # file spec/array_spec.rb
+    # file spec/array_spec.rb
 
-  describe Array, "with some elements" do
-    subject { [1,2,3] }
+    describe Array, "with some elements" do
+      subject { [1,2,3] }
 
-    it { should_not be_empty }
+      it { should_not be_empty }
 
-    it "should have the prescribed elements" do
-      subject.should == [1,2,3]
+      it "should have the prescribed elements" do
+        subject.should == [1,2,3]
+      end
+
+      it "should have the prescribed elements too" do
+        should == [1,2,3]
+      end
     end
-
-    it "should have the prescribed elements too" do
-      should == [1,2,3]
-    end
-  end]]>
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
-  rspec spec/array_spec.rb --format documentation
+    rspec spec/array_spec.rb --format documentation
 
-  Array with some elements
-    should not be empty
-    should have the prescribed elements
-    should have the prescribed elements too
+    Array with some elements
+      should not be empty
+      should have the prescribed elements
+      should have the prescribed elements too
 
-  Finished in 0.03275 seconds
-  3 examples, 0 failures]]>
+    Finished in 0.03275 seconds
+    3 examples, 0 failures
   </script>
 </section><section id="more-subject" class="slide">
   <h2>Subject</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
-  # file spec/subject_spec.rb
+    # file spec/subject_spec.rb
 
-   require "spec_helper"
+    require "spec_helper"
 
     class Actor
       attr_accessor :name
@@ -717,66 +682,61 @@
           actor.name.should  == name
         end
       end
-    end]]>
+    end
   </script>
-   <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
-  rspec spec/subject_spec.rb --format documentation
+  <script type="syntaxhighlighter" class="brush: bash">
+    rspec spec/subject_spec.rb --format documentation
 
-  Actor
-    with subject redefinition
-      should not be nil
-      has name
-      name
-        should == "Ivan"
-      name.length
-        should == 4
-    without subject redefenition
-      should not be nil
-      name
-        should == "John"
-    with subject renaming
-      has name
+    Actor
+      with subject redefinition
+        should not be nil
+        has name
+        name
+          should == "Ivan"
+        name.length
+          should == 4
+      without subject redefenition
+        should not be nil
+        name
+          should == "John"
+      with subject renaming
+        has name
 
-  Finished in 1.28 seconds
-  7 examples, 0 failures
-
-  ]]>
+    Finished in 1.28 seconds
+    7 examples, 0 failures
   </script>
 </section><section id="helper-methods" class="slide">
   <h2>Sharing helper methods</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
-  module UserHelpers
-    def valid_user
-      User.new(:email => 'email@example.com', :password => 'shhhhh')
+    module UserHelpers
+      def valid_user
+        User.new(:email => 'email@example.com', :password => 'shhhhh')
+      end
+
+      def invalid_user
+        User.new(:password => 'shhhhh')
+      end
     end
 
-    def invalid_user
-      User.new(:password => 'shhhhh')
-    end
-  end
+    describe User do
+      include UserHelpers
 
-  describe User do
-    include UserHelpers
+      it "does something when it is valid" do
+        user = valid_user
+        # do stuff
+      end
 
-    it "does something when it is valid" do
-      user = valid_user
-      # do stuff
+      it "does something when it is not valid" do
+        user = invalid_user
+        # do stuff
+      end
     end
-
-    it "does something when it is not valid" do
-      user = invalid_user
-      # do stuff
-    end
-  end]]>
   </script>
   <h3>Including helper to each test</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
-  RSpec.configure do |config|
-    config.include(UserHelpers)
-  end]]>
+    RSpec.configure do |config|
+      config.include(UserHelpers)
+    end
   </script>
 </section><section id="described-class" class="slide">
   <h2>Described class</h2>
@@ -784,17 +744,15 @@
     If the first argument to the outermost example group is a class, the class is exposed to each example via the described_class() method.
   </p>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     describe Fixnum do
       it "is available as described_class" do
         described_class.should == Fixnum
       end
-    end]]>
+    end
   </script>
 </section><section id="filters" class="slide">
   <h2>Filters</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     describe Actor do
       let(:name) { "Ivan" }
 
@@ -807,11 +765,10 @@
         end
 
       end
-    end]]>
+    end
   </script>
 
    <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
     rspec spec/subject_spec.rb --tag focus --format documentation
 
     Actor
@@ -820,86 +777,76 @@
 
     Finished in 1.22 seconds
     1 example, 0 failures
-  ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     # in file spec/spec_helper.rb
     Rspec.configure do |config|
       config.filter_run focus: true
       config.run_all_with_everything_filtered = true
     end
-    ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
     rspec spec/subject_spec.rb --tag ~slow --format documentation
 
     Finished in 1.39 seconds
     0 example, 0 failures
-  ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     # in file spec/spec_helper.rb
     Rspec.configure do |config|
       config.filter_run_excluding slow: true
       config.run_all_with_everything_filtered = true
     end
-    ]]>
-  </script>  
-
+  </script>
 </section><section id="shared-examples" class="slide">
   <h2>Shared Examples</h2>
   <p>
     Shared examples let you describe behaviour of types or modules. When declared, a shared group's content is stored. It is only realized in the context of another example group, which provides any context the shared group needs to run.
   </p>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
-  require "set"
+    require "set"
 
-  shared_examples "a collection object" do
-    describe "<<" do
-      it "adds objects to the end of the collection" do
-        collection << 1
-        collection << 2
-        collection.to_a.should eq([1,2])
+    shared_examples "a collection object" do
+      describe "<<" do
+        it "adds objects to the end of the collection" do
+          collection << 1
+          collection << 2
+          collection.to_a.should eq([1,2])
+        end
       end
     end
-  end
 
-  describe Array do
-    it_behaves_like "a collection object" do
-      let(:collection) { Array.new }
+    describe Array do
+      it_behaves_like "a collection object" do
+        let(:collection) { Array.new }
+      end
     end
-  end
 
-  describe Set do
-    it_behaves_like "a collection object" do
-      let(:collection) { Set.new }
+    describe Set do
+      it_behaves_like "a collection object" do
+        let(:collection) { Set.new }
+      end
     end
-  end]]>
   </script>
   <h3>Including helper to each test</h3>
   <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
-  rspec spec/collection_spec.rb --format documentation
-  
-  Array
-    behaves like a collection object
-      <<
-        adds objects to the end of the collection
+    rspec spec/collection_spec.rb --format documentation
+    
+    Array
+      behaves like a collection object
+        <<
+          adds objects to the end of the collection
 
-  Set
-    behaves like a collection object
-      <<
-        adds objects to the end of the collection
+    Set
+      behaves like a collection object
+        <<
+          adds objects to the end of the collection
 
-  Finished in 0.00443 seconds
-  2 examples, 0 failures]]>
+    Finished in 0.00443 seconds
+    2 examples, 0 failures
   </script>
 </section><section id="shared-context" class="slide">
   <h2>Shared context</h2>
@@ -907,7 +854,6 @@
     Use shared_context to define a block that will be evaluated in the context of example groups either explicitly, using include_context, or implicitly by matching metadata.
   </p>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
   shared_context "shared stuff", :a => :b do
     before { @some_var = :some_value }
 
@@ -958,15 +904,14 @@
     it "accesses the subject defined in the shared context" do
       subject.should eq('this is the subject')
     end
-  end]]>
+  end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
   rspec spec/shared_stuff_spec.rb 
   ........
 
   Finished in 0.00758 seconds
-  8 examples, 0 failures]]>
+  8 examples, 0 failures
   </script>
 </section><section id="expectations" class="slide">
   <h2>Expectations</h2>
@@ -975,13 +920,11 @@
   </p>
   <h3>Checking equality and identity</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     cow.should == twin_cow
     cow.should eql(cow)
 
     cow.should === twin_cow
     cow.should equal(cow)
-  ]]>
   </script>
   <p>
     The <strong>==</strong> and <strong>eql</strong> methods are used to express values equivalence, and <strong>===</strong> and <strong>equal</strong> are used when you want the receiver and the argument to be the same object.
@@ -995,10 +938,8 @@
     Spec::Expectations adds two methods to Object:
   </p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      should(matcher = nil)
-      should_not(matcher = nil)
-    ]]>
+    should(matcher = nil)
+    should_not(matcher = nil)
   </script>
   <p>
     Both methods take an optional Expression Matcher.
@@ -1015,111 +956,92 @@
     RSpec ships with a number of useful Expression Matchers. An Expression Matcher is any object that responds to the following methods:
   </p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      matches?(actual)
-      failure_message
-      negative_failure_message  # optional
-      description               # optional
-    ]]>
+    matches?(actual)
+    failure_message
+    negative_failure_message  # optional
+    description               # optional
   </script>
 </section><section id="eql" class="slide">
   <h2>Spec::Matchers</h2>
   <h3>Eql matcher</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      should eql(expected)
-      should_not eql(expected)
-    ]]>
+    should eql(expected)
+    should_not eql(expected)
   </script>
   <p>
     Passes if given and expected are of equal value, but not necessarily the same object.
   </p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      describe "a string" do
-        context "#eq" do
-          it "is equal to another string of the same value" do
-            "this string".should eq("this string")
-          end
-        end
-        context "#==" do
-          it "is equal to another string of the same value" do
-            "this string".should == "this string"
-          end
+    describe "a string" do
+      context "#eq" do
+        it "is equal to another string of the same value" do
+          "this string".should eq("this string")
         end
       end
-    ]]>
+      context "#==" do
+        it "is equal to another string of the same value" do
+          "this string".should == "this string"
+        end
+      end
+    end
   </script>
   <div id="equal" class="slide">
     <h3>Equal matcher</h3>
     <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[
-        should equal(expected)
-        should_not equal(expected)
-      ]]>
+      should equal(expected)
+      should_not equal(expected)
     </script>
     <p>
       Passes if given and expected are the same object (object identity).
     </p>
     <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[
-        describe "a string" do
-          context "#equal" do
-            it "is equal to itself" do
-              string = "this string"
-              string.should equal(string)
-            end
-          end
-          context "#===" do
-            it "is equal to itself" do
-              string = "this string"
-              string.should === string
-            end
+      describe "a string" do
+        context "#equal" do
+          it "is equal to itself" do
+            string = "this string"
+            string.should equal(string)
           end
         end
-      ]]>
+        context "#===" do
+          it "is equal to itself" do
+            string = "this string"
+            string.should === string
+          end
+        end
+      end
     </script>
   </div>
 </section><section id="floating-point" class="slide">
   <h2>Spec::Matchers</h2>
   <h3>Floating point numbers</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      should be_close(expected, delta)
-      should_not be_close(expected, delta)
-    ]]>
+    should be_close(expected, delta)
+    should_not be_close(expected, delta)
   </script>
   <p>Passes if given == expected +/- delta</p>
   <p>When dealing with floating points, it's convenient to use matcher be_close(), which takes two arguments: the floating point number you are expecting and the precision you require.</p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      result.should be_close(3.14, 0.005)
-    ]]>
+    result.should be_close(3.14, 0.005)
   </script>
 </section><section id="regexps" class="slide">
   <h2>Spec::Matchers</h2>
   <h3>Regular Expressions</h3>
   <p>For checking strings to match regular expressions, the <strong>match</strong> or <strong>=~</strong> is used. This can be very useful when dealing with multiple-line expectations.</p>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
-   result.should match(/this regexp/)
-   result.should =~ /this regexp/
-  ]]>
+    result.should match(/this regexp/)
+    result.should =~ /this regexp/
   </script>
 </section><section id="predicate_matchers" class="slide">
   <h2>Spec::Matchers</h2>
   <h3>Predicate Matchers</h3>
   <p>A Ruby predicate method is a method that ends with a “?” and returns a boolean value, like <strong>string.empty?</strong> or <strong>regexp.match?</strong> methods. For these cases Rspec allows us to describe expectations with <strong>be_something</strong> matcher. When using a be_something matcher, RSpec removes the “be_”, appends a “?” and calls the resulting method in the receiver.</p>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
-   # instead of writing
-   "".empty?.should == true
+    # instead of writing
+    "".empty?.should == true
 
-   # RSpec allows to use predicate expectation
-   "".should be_empty
-  ]]>
+    # RSpec allows to use predicate expectation
+    "".should be_empty
   </script>
-
   <h6>How it works</h6>
   <ul>
     <li>"be_"        ->      "?"</li>
@@ -1127,7 +1049,6 @@
     <li>"be_nil"     ->      "nil?"</li>
     <li>"be_empty"   ->      "empty?"</li>
   </ul>
-
   <p>
     Alternately, for a predicate method that begins with "has" like Hash#has_key?, RSpec allows you to use an alternate form since "be_has_key" makes no sense.
   </p>
@@ -1135,7 +1056,6 @@
     <li>hash.should have_key(:foo)       ->    calls hash.has_key?(:foo)</li>
     <li>array.should_not have_odd_values   ->    calls array.has_odd_values?</li>
   </ul>
-
 </section><section id="include" class="slide">
   <h2>Spec::Matchers</h2>
   <h3>Include</h3>
@@ -1143,20 +1063,16 @@
     Passes if given includes expected. This works for collections and Strings. You can also pass in multiple args and it will only pass if all args are found in collection.
   </p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      [1,2,3].should include(3)
-      [1,2,3].should include(2,3)
-      "spread".should include("read")
-      "spread".should_not include("red")
-    ]]>
+    [1,2,3].should include(3)
+    [1,2,3].should include(2,3)
+    "spread".should include("read")
+    "spread".should_not include("red")
   </script>
   <div id="exist" class="slide">
     <h3>Exist</h3>
     <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       should exist
       should_not exist
-    ]]>
     </script>  
     <p>Passes if given.exist?</p>
   </div>
@@ -1165,37 +1081,31 @@
   <h3>Changes</h3>
   <p>Sometimens you expect some code (wrapped in a proc) to change the state of some object. There is a convenient way to check it with rspec:</p>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
-   it "should remove the last element" do
-     lambda {
-       @array.pop
-     }.should change{ @array.size }
-   end
-  ]]>
+    it "should remove the last element" do
+      lambda {
+        @array.pop
+      }.should change{ @array.size }
+    end
   </script>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
-   it "should remove the last element" do
-     expect { @array.pop }.to change{ @array.size }
-   end
-  ]]>
+    it "should remove the last element" do
+      expect { @array.pop }.to change{ @array.size }
+    end
   </script>
   <div id="by-to-from" class="slide">
     <h6>by(), to(), from()</h6>
     <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-     it "should remove the last element" do
-       expect { @array.pop }.to change{ @array.size }.by(1)
-     end
+      it "should remove the last element" do
+        expect { @array.pop }.to change{ @array.size }.by(1)
+      end
 
-    it "should remove the last element" do
-       expect { @array.pop }.to change{ @array.size }.to(2)
-     end
+      it "should remove the last element" do
+        expect { @array.pop }.to change{ @array.size }.to(2)
+      end
 
-    it "should remove the last element" do
-       expect { @array.pop }.to change{ @array.size }.from(3).to(2)
-     end
-    ]]>
+      it "should remove the last element" do
+        expect { @array.pop }.to change{ @array.size }.from(3).to(2)
+      end
     </script>
   </div>
 </section><section id="have" class="slide">
@@ -1222,7 +1132,6 @@
   <p>Dir.new("my/directory").should have(7).entries</p>
   <h4>A receiver IS a collection </h4>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     describe [1, 2, 3, 4, 5, 6, 7, 8, 9, 0] do
       it { should have(10).items }
 
@@ -1232,11 +1141,9 @@
       it { should have_at_least(5).items }
       it { should have_at_most(15).items }
     end
-  ]]>
   </script>
   <h4>A receiver OWNS a collection </h4>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     class String
       def words
         self.split(' ')
@@ -1253,7 +1160,6 @@
       it { should have_at_least(4).words }
       it { should have_at_most(6).words }
     end
-  ]]>
   </script>
 </section><section id="custom-matchers" class="slide">
   <h2>Spec::Matchers</h2>
@@ -1265,42 +1171,39 @@
     Imagine that you are writing a game in which players can be in various zones on a virtual board. To specify that bob should be in zone 4, you could say:
   </p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[bob.current_zone.should eql(Zone.new("4"))]]>
+    bob.current_zone.should eql(Zone.new("4"))
   </script>
 
   <p>But you might find it more expressive to say:</p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[bob.should be_in_zone("4")]]>
+    bob.should be_in_zone("4")
   </script>
 
   <p>You can create such a matcher like so:</p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     RSpec::Matchers.define :be_in_zone do |zone|
       match do |player|
         player.in_zone?(zone)
       end
-    end]]>
+    end
   </script>
 
   <p>Also you can override the failure messages and the generated description:</p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      RSpec::Matchers.define :be_in_zone do |zone|
-        match do |player|
-          player.in_zone?(zone)
-        end
-        failure_message_for_should do |player|
-          # generate and return the appropriate string.
-        end
-        failure_message_for_should_not do |player|
-          # generate and return the appropriate string.
-        end
-        description do
-          # generate and return the appropriate string.
-        end
+    RSpec::Matchers.define :be_in_zone do |zone|
+      match do |player|
+        player.in_zone?(zone)
       end
-    ]]>
+      failure_message_for_should do |player|
+        # generate and return the appropriate string.
+      end
+      failure_message_for_should_not do |player|
+        # generate and return the appropriate string.
+      end
+      description do
+        # generate and return the appropriate string.
+      end
+    end
   </script>
 </section><section id="chaining" class="slide">
   <h2>Spec::Matchers</h2>
@@ -1308,36 +1211,32 @@
   <p>You can also create matchers that obey a fluent interface using the chain method:</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      RSpec::Matchers.define :have_errors_on do |attribute|
-        chain :with_message do |message|
-          @message = message
-        end
-       
-        match do |model|
-          model.valid?
-       
-          @has_errors = model.errors.key?(attribute)
-       
-          if @message
-            @has_errors && model.errors[attribute].include?(@message)
-          else
-            @has_errors
-          end
+    RSpec::Matchers.define :have_errors_on do |attribute|
+      chain :with_message do |message|
+        @message = message
+      end
+     
+      match do |model|
+        model.valid?
+     
+        @has_errors = model.errors.key?(attribute)
+     
+        if @message
+          @has_errors && model.errors[attribute].include?(@message)
+        else
+          @has_errors
         end
       end
-    ]]>
+    end
   </script>
 
   <p>And now it can be used as follows:</p>
-    <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      describe User do
-        before { subject.email = "foobar" }
-       
-        it { should have_errors_on(:email).with_message("Email has an invalid format") }
-      end
-    ]]>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    describe User do
+      before { subject.email = "foobar" }
+     
+      it { should have_errors_on(:email).with_message("Email has an invalid format") }
+    end
   </script>
 </section><section id="mocks-and-stubs" class="slide">
   <h2>Mocks, Stubs and doubles</h2>
@@ -1345,29 +1244,25 @@
   <p>A <strong>test double</strong> is an object that stands in for another object in an example.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      thingamajig_double = double('thing-a-ma-jig')
-      stub_thingamajig = stub('thing-a-ma-jig')
-      mock_thingamajig = mock('thing-a-ma-jig')
-    ]]>
+    thingamajig_double = double('thing-a-ma-jig')
+    stub_thingamajig = stub('thing-a-ma-jig')
+    mock_thingamajig = mock('thing-a-ma-jig')
   </script>
 
   <p>The argument is a name, used for failure reporting, so you should use the role that the double is playing in the example.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      def double(*args)
-        __declare_double('Double', *args)
-      end
+    def double(*args)
+      __declare_double('Double', *args)
+    end
 
-      def stub(*args)
-        __declare_double('Stub', *args)
-      end
+    def stub(*args)
+      __declare_double('Stub', *args)
+    end
 
-      def mock(*args)
-        __declare_double('Mock', *args)
-      end
-    ]]>
+    def mock(*args)
+      __declare_double('Mock', *args)
+    end
   </script>
 
  <p>Mocks are objects that allow you to set and verify expectations that they will receive specific messages during run time. Stubs provide canned responses to messages they <strong>might</strong> receive in a test, while mocks allow you to specify and, subsquently, verify that certain messages <strong>should</strong> be received during the execution of a test.</p>
@@ -1377,17 +1272,15 @@
   <p>Use the as_null_object method to ignore any messages that aren't explicitly set as stubs or message expectations.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      describe 'null object' do
-        specify {
-          null_object = double('null object').as_null_object
-          other_null = mock('other null', null_object: true)
+    describe 'null object' do
+      specify {
+        null_object = double('null object').as_null_object
+        other_null = mock('other null', null_object: true)
 
-          null_object.should respond_to(:any_undefined_method)
-          other_null.should respond_to(:any_undefined_method)
-        }
-      end
-    ]]>
+        null_object.should respond_to(:any_undefined_method)
+        other_null.should respond_to(:any_undefined_method)
+      }
+    end
   </script>
 </section><section id="method_stubs" class="slide">
   <h2>Method stubs</h2>
@@ -1395,46 +1288,38 @@
   <p>A <strong>method stub</strong> is a method that we can program to return predefined responses during the execution of a code example.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      describe Statement do
-        it "uses the customer's name in the header" do
-          customer = double('customer')
-          customer.stub(:name).and_return('Aslak')
-          statement = Statement.new(customer)
-          statement.generate.should =~ /^Statement for Aslak/
-        end
+    describe Statement do
+      it "uses the customer's name in the header" do
+        customer = double('customer')
+        customer.stub(:name).and_return('Aslak')
+        statement = Statement.new(customer)
+        statement.generate.should =~ /^Statement for Aslak/
       end
-    ]]>
+    end
   </script>
 
   <p>Method stubs can return different values on different calls: this will return 5.5% when a message for interest_rate is received <strong>for the first time</strong>, but will return 3% for subsequent calls/messages.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      HomeLoan.stub(interest_rate).and_return('5.5%', '3%')
-    ]]>
+    HomeLoan.stub(interest_rate).and_return('5.5%', '3%')
   </script>
 
   <p>The mock object can be created with stubbed methods at once.</p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      customer = double('customer', name: 'Aslak')
-      obj = mock('object', created_at: { Time.now })
-    ]]>
+    customer = double('customer', name: 'Aslak')
+    obj = mock('object', created_at: { Time.now })
   </script>
 
   <p>Stub methods can return values depending on the arguments.</p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      ages = double('ages')
-      ages.stub(:age_for) do |what|
-        if what == 'drinking'
-          21
-        elsif what == 'voting'
-          18
-        end
+    ages = double('ages')
+    ages.stub(:age_for) do |what|
+      if what == 'drinking'
+        21
+      elsif what == 'voting'
+        18
       end
-    ]]>
+    end
   </script>
 </section>
 
@@ -1444,44 +1329,36 @@
   <p>Besides returning a value, method stub can yield a block, raise an exception, or throw the message.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      class Triviality
-        def one_two_three
-          yield self
-        end
+    class Triviality
+      def one_two_three
+        yield self
       end
+    end
 
-      triviality.stub(:one_two_three).and_yield(triviality)
-      triviality.one_two_three { }
-    ]]>
+    triviality.stub(:one_two_three).and_yield(triviality)
+    triviality.one_two_three { }
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      double.stub(:msg).and_raise(NoMethodError)
-
-      double.stub(:msg).and_throw(:msg)
-    ]]>
+    double.stub(:msg).and_raise(NoMethodError)
+    double.stub(:msg).and_throw(:msg)
   </script>
-
 </section><section id="unstub" class="slide">
   <h2>unstub (or unstub!)</h2>
 
   <p>Removes a stub. On a double, the object will no longer respond to message. On a real object, the original method (if it exists) is restored.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      describe String do
-        before(:each) { String.stub(:new).and_return("hello") }
+    describe String do
+      before(:each) { String.stub(:new).and_return("hello") }
 
-        it "can restore it's own behavior" do
-          String.new("initial string").should == "hello"
-          String.unstub(:new)
+      it "can restore it's own behavior" do
+        String.new("initial string").should == "hello"
+        String.unstub(:new)
 
-          String.new("initial string").should == "initial string"
-        end
+        String.new("initial string").should == "initial string"
       end
-    ]]>
+    end
   </script>
 
 </section><section id="stub-const" class="slide">
@@ -1490,25 +1367,23 @@
   <p>Support is provided for stubbing constants. Stubbed constant names must be fully qualified; the current module nesting is not considered.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      module MyGem
-        class SomeClass; end
-      end
+    module MyGem
+      class SomeClass; end
+    end
 
-      module MyGem
-        describe "Something" do
-          it "accidentally stubs the wrong constant" do
-            # this stubs ::SomeClass (in the top-level namespace),
-            # not MyGem::SomeClass like you probably mean.
-            stub_const("SomeClass", Class.new)
-          end
+    module MyGem
+      describe "Something" do
+        it "accidentally stubs the wrong constant" do
+          # this stubs ::SomeClass (in the top-level namespace),
+          # not MyGem::SomeClass like you probably mean.
+          stub_const("SomeClass", Class.new)
+        end
 
-          it "stubs the right constant" do
-            stub_const("MyGem::SomeClass", Class.new)
-          end
+        it "stubs the right constant" do
+          stub_const("MyGem::SomeClass", Class.new)
         end
       end
-    ]]>
+    end
   </script>
 </section><section id="any-instance" class="slide">
   <h2>Stub on any instance of a class</h2>
@@ -1520,16 +1395,14 @@ receives the message, nothing happens.</p>
   <p>Messages can be stubbed on any class, including those in Ruby's core library.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      describe "any_instance.stub" do
-        it "returns the specified value on any instance of the class" do
-          String.any_instance.stub(:foo).and_return(:return_value)
+    describe "any_instance.stub" do
+      it "returns the specified value on any instance of the class" do
+        String.any_instance.stub(:foo).and_return(:return_value)
 
-          str = "sample string"
-          str.foo.should eq(:return_value)
-        end
+        str = "sample string"
+        str.foo.should eq(:return_value)
       end
-    ]]>
+    end
   </script>
 
 </section><section id="stub-chain" class="slide">
@@ -1538,29 +1411,23 @@ receives the message, nothing happens.</p>
   <p>The <strong>stub_chain</strong> method lets you to stub a chain of methods in one statement - and there is no need to stub each method in the dependency chain represented by a chain of messages to different objects.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      Article.recent.published.authored_by(params[:author_id])
-    ]]>
+    Article.recent.published.authored_by(params[:author_id])
   </script>
   <br/>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      recent = double()
-      published = double()
-      authored_by = double()
-      article = double()
+    recent = double()
+    published = double()
+    authored_by = double()
+    article = double()
 
-      Article.stub(:recent).and_return(recent)
-      recent.stub(:published).and_return(published)
-      published.stub(:authored_by).and_return(article)
-    ]]>
+    Article.stub(:recent).and_return(recent)
+    recent.stub(:published).and_return(published)
+    published.stub(:authored_by).and_return(article)
   </script>
   <br/>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      article = double()
-      Article.stub_chain(:recent, :published, :authored_by).and_return(article)
-    ]]>
+    article = double()
+    Article.stub_chain(:recent, :published, :authored_by).and_return(article)
   </script>
 </section><section id="stub_before_all" class="slide">
   <h2>Stubs and before(:all)</h2>
@@ -1570,7 +1437,6 @@ receives the message, nothing happens.</p>
   <p>Stubs in before(:all) are not supported. The reason is that all stubs and mocks get cleared out after each example, so any stub that is set in before(:all) would work in the first example that happens to run in that group, but not for any others.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     module RSpec
       module Mocks
         ...
@@ -1590,7 +1456,6 @@ receives the message, nothing happens.</p>
         expectation_ordering.clear
       end
     end
-  ]]>
 </script>
 </section><section id="should-receive" class="slide">
   <h2>Message expectations</h2>
@@ -1598,53 +1463,45 @@ receives the message, nothing happens.</p>
   <p>A message expectation is an expectation that the test double will receive a message some time before the example ends. If the message is received, the expectation is satisfied. If not, the example fails.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      describe Zipcode do
-        context "when created" do
-          it "validates a record with provided validator" do
-            validator = double("validator")
-            validator.should_receive(:validate)
+    describe Zipcode do
+      context "when created" do
+        it "validates a record with provided validator" do
+          validator = double("validator")
+          validator.should_receive(:validate)
 
-            zipcode = Zipcode.new("02134", validator)
-            zipcode.valid?
-          end
+          zipcode = Zipcode.new("02134", validator)
+          zipcode.valid?
         end
       end
-    ]]>
+    end
   </script>
 
   <p>For a negative expectation, the <strong>should_not_receive</strong> method is provided</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      network_double.stub(:ping).and_return(false)
-      network_double.should_not_receive(:open_connection)
-    ]]>
+    network_double.stub(:ping).and_return(false)
+    network_double.should_not_receive(:open_connection)
   </script>
 </section><section id="with" class="slide">
   <h2>Message expectations</h2>
   <h3>Expecting Arguments</h3>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      double.should_receive(:msg).with(*args)
-      double.should_not_receive(:msg).with(*args)
-    ]]>
+    double.should_receive(:msg).with(*args)
+    double.should_not_receive(:msg).with(*args)
   </script>
 
   <p>Arguments that are passed to with are compared with actual arguments received using ==. In cases in which you want to specify things about the arguments rather than the arguments themselves, you can use any of the matchers that ship with rspec-expectations.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      double.should_receive(:msg).with(no_args())
-      double.should_receive(:msg).with(any_args())
-      double.should_receive(:msg).with(1, kind_of(Numeric), "b") #2nd argument can be any kind of Numeric
-      double.should_receive(:msg).with(1, boolean(), "b") #2nd argument can be true or false
-      double.should_receive(:msg).with(1, /abc/, "b") #2nd argument can be any String matching the submitted Regexp
-      double.should_receive(:msg).with(1, anything(), "b") #2nd argument can be anything at all
-      double.should_receive(:msg).with(1, duck_type(:abs, :div), "b")
-                          #2nd argument can be object that responds to #abs and #div
-    ]]>
+    double.should_receive(:msg).with(no_args())
+    double.should_receive(:msg).with(any_args())
+    double.should_receive(:msg).with(1, kind_of(Numeric), "b") #2nd argument can be any kind of Numeric
+    double.should_receive(:msg).with(1, boolean(), "b") #2nd argument can be true or false
+    double.should_receive(:msg).with(1, /abc/, "b") #2nd argument can be any String matching the submitted Regexp
+    double.should_receive(:msg).with(1, anything(), "b") #2nd argument can be anything at all
+    double.should_receive(:msg).with(1, duck_type(:abs, :div), "b")
+                        #2nd argument can be object that responds to #abs and #div
   </script>
 </section><section id="receive-counts" class="slide">
   <h2>Message expectations</h2>
@@ -1653,19 +1510,17 @@ receives the message, nothing happens.</p>
   <p>The implicit expectation is that the message passed to should_receive will be called once. You can make the expected counts explicit using the following</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      double.should_receive(:msg).once
-      double.should_receive(:msg).twice
-      double.should_receive(:msg).exactly(n).times
-      double.should_receive(:msg).at_least(:once)
-      double.should_receive(:msg).at_least(:twice)
-      double.should_receive(:msg).at_least(n).times
-      double.should_receive(:msg).at_most(:once)
-      double.should_receive(:msg).at_most(:twice)
-      double.should_receive(:msg).at_most(n).times
-      double.should_receive(:msg).any_number_of_times
-      double.should_receive(:msg).never
-    ]]>
+    double.should_receive(:msg).once
+    double.should_receive(:msg).twice
+    double.should_receive(:msg).exactly(n).times
+    double.should_receive(:msg).at_least(:once)
+    double.should_receive(:msg).at_least(:twice)
+    double.should_receive(:msg).at_least(n).times
+    double.should_receive(:msg).at_most(:once)
+    double.should_receive(:msg).at_most(:twice)
+    double.should_receive(:msg).at_most(n).times
+    double.should_receive(:msg).any_number_of_times
+    double.should_receive(:msg).never
   </script>
 </section><section id="ordering" class="slide">
   <h2>Message expectations</h2>
@@ -1674,20 +1529,18 @@ receives the message, nothing happens.</p>
   <p>When specifying interactions with a test double, the order of the calls is rarely important. In fact, the ideal situation is to specify only a single call. But sometimes, we need to specify that messages are sent in a specific order.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      describe Roster do
-        it "asks database for count before adding" do
-          database = double()
-          student = double()
+    describe Roster do
+      it "asks database for count before adding" do
+        database = double()
+        student = double()
 
-          database.should_receive(:count).with('Roster', :course_id => 37).ordered
-          database.should_receive(:add).with(student).ordered
+        database.should_receive(:count).with('Roster', :course_id => 37).ordered
+        database.should_receive(:add).with(student).ordered
 
-          roster = Roster.new(37, database)
-          roster.register(student)
-        end
+        roster = Roster.new(37, database)
+        roster.register(student)
       end
-    ]]>
+    end
   </script>
 
   <p>This example will pass only if the <strong>count( )</strong> and <strong>add( )</strong> messages are sent with the correct arguments and in the same order.</p>
@@ -1698,35 +1551,29 @@ receives the message, nothing happens.</p>
   <p>Whether you are setting a message expectation or a method stub, you can tell the object precisely how to respond. The most generic way is to pass a block to stub or should_receive:</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      double.should_receive(:msg) { value }
-    ]]>
+    double.should_receive(:msg) { value }
   </script>
 
   <p>When the double receives the msg message, it evaluates the block and returns the result.</p>
 
   <p>The same responses are available, as for stub method:</p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      double.should_receive(:msg).and_return(value)
-      double.should_receive(:msg).exactly(3).times.and_return(value1, value2, value3)
-        # returns value1 the first time, value2 the second, etc
-      double.should_receive(:msg).and_raise(error)
-        #error can be an instantiated object or a class
-        #if it is a class, it must be instantiable with no args
-      double.should_receive(:msg).and_throw(:msg)
-      double.should_receive(:msg).and_yield(values,to,yield)
-      double.should_receive(:msg).and_yield(values,to,yield).and_yield(some,other,values,this,time)
-        # for methods that yield to a block multiple times
-    ]]>
+    double.should_receive(:msg).and_return(value)
+    double.should_receive(:msg).exactly(3).times.and_return(value1, value2, value3)
+      # returns value1 the first time, value2 the second, etc
+    double.should_receive(:msg).and_raise(error)
+      #error can be an instantiated object or a class
+      #if it is a class, it must be instantiable with no args
+    double.should_receive(:msg).and_throw(:msg)
+    double.should_receive(:msg).and_yield(values,to,yield)
+    double.should_receive(:msg).and_yield(values,to,yield).and_yield(some,other,values,this,time)
+      # for methods that yield to a block multiple times
   </script>
 
   <p>When working with a partial mock object, you may occasionally want to set a message expecation without interfering with how the object responds to the message. </p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      Person.should_receive(:find).and_call_original
-      Person.find # => executes the original find method and returns the result
-    ]]>
+    Person.should_receive(:find).and_call_original
+    Person.find # => executes the original find method and returns the result
   </script>
 </section><section id="example" class="slide">
   <h2>So, let's create an application</h2>
@@ -1748,11 +1595,9 @@ receives the message, nothing happens.</p>
   </p>
 </section><section id="selecting-stories" class="slide">
   <h2>Selecting Stories</h2>
-
   <p>
     A great way to get started gathering user stories is to do a high-level brain dump of the sorts of things we might like to do. Here are some titles to get started:
   </p>
-
   <ul>
     <li><strong>Code-breaker starts game</strong>
       <p>The code-breaker opens a shell, types a command, and sees a welcome message and a prompt to enter
@@ -1785,20 +1630,16 @@ the first guess.</p>
 </section><section id="codebreaker-gem" class="slide">
   <h2>Creating codebreaker gem</h2>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     rvm use 1.9.3-head@codebreaker --create
-    Using /Users/sparrow/.rvm/gems/ruby-1.9.3-head with gemset codebreaker]]>
+    Using /Users/sparrow/.rvm/gems/ruby-1.9.3-head with gemset codebreaker
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
-    gem install bundler]]>
+    gem install bundler
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
-    bundle gem codebreaker]]>
+    bundle gem codebreaker
   </script>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     # file codebreaker.gemspec
 
     # ...
@@ -1806,11 +1647,10 @@ the first guess.</p>
       # ...
     
       gem.add_development_dependency "rspec"
-    end]]>
+    end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
-    bundle install]]>
+    bundle install
   </script>
 </section><section id="first-spec" class="slide">
   <h2>Describing Code with RSpec</h2>
@@ -1818,16 +1658,13 @@ the first guess.</p>
   <p>Now we're going to describe the expected behavior of instances of the Game class.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     # file spec/spec_helper.rb
 
     require 'bundler/setup'
     require 'codebreaker'
-  ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     # file spec/codebreaker/game_spec.rb
 
     require 'spec_helper'
@@ -1839,18 +1676,17 @@ the first guess.</p>
           it "prompts for the first guess"
         end
       end
-    end]]>
+    end
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
     rspec spec/codebreaker/game_spec.rb --format doc
 
     /home/alony/projects/rspec-example/spec/codebreaker/game_spec.rb:4:in '<module:Codebreaker>': 
       uninitialized constant Codebreaker::Game (NameError)
     from /home/alony/projects/rspec-example/spec/codebreaker/game_spec.rb:3:in '<top (required)>'
     from /home/alony/.rvm/gems/ruby-1.9.2-p320/gems/rspec-core-2.11.1/lib/rspec/core/configuration.rb:780:in 'load'
-    ...]]>
+    ...
   </script>
 </section><section id="addig-code" class="slide">
   <h2>Describing Code with RSpec</h2>
@@ -1858,13 +1694,11 @@ the first guess.</p>
   <p>So let's add some code structure</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     # file lib/codebreaker.rb
 
-    require 'codebreaker/game']]>
+    require 'codebreaker/game'
   </script>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     # file lib/codebreaker/game.rb
 
     module Codebreaker
@@ -1873,11 +1707,9 @@ the first guess.</p>
         end
       end
     end
-  ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
     rspec spec/codebreaker/game_spec.rb --format doc
 
     Codebreaker::Game
@@ -1892,8 +1724,6 @@ the first guess.</p>
       Codebreaker::Game#start prompts for the first guess
         # Not yet implemented
         # ./spec/codebreaker/game_spec.rb:7
-
-  ]]>
   </script>
 </section><section id="failing-spec" class="slide">
   <h2>Red: Start with a Failing Code Example</h2>
@@ -1901,7 +1731,6 @@ the first guess.</p>
   <p>In game_spec.rb, we want to specify that when we start the game, it sends the right messages to the output.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     # file spec/codebreaker/game_spec.rb
 
     require 'spec_helper'
@@ -1918,11 +1747,10 @@ the first guess.</p>
           it "prompts for the first guess"
         end
       end
-    end]]>
+    end
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
     rspec spec/codebreaker/game_spec.rb --format doc
 
     Codebreaker::Game
@@ -1943,7 +1771,6 @@ the first guess.</p>
                expected: 1 time
                received: 0 times
          # ./spec/codebreaker/game_spec.rb:9:in 'block (3 levels) in <module:Codebreaker>'
-  ]]>
   </script>
 </section><section id="passing-spec" class="slide">
   <h2>Green: Get the Example to Pass</h2>
@@ -1951,7 +1778,6 @@ the first guess.</p>
   <p>The failure message tells us that output never received puts. Here’s what we need to do to get this example to pass:</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     # file lib/codebreaker/game.rb
 
     module Codebreaker
@@ -1965,11 +1791,9 @@ the first guess.</p>
         end
       end
     end
-  ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
     rspec spec/codebreaker/game_spec.rb --format doc
 
     Codebreaker::Game
@@ -1984,8 +1808,6 @@ the first guess.</p>
 
     Finished in 0.00071 seconds
     2 examples, 0 failures, 1 pending
-
-  ]]>
   </script>
 </section><section id="next-step" class="slide">
   <h2>Next step</h2>
@@ -1993,7 +1815,6 @@ the first guess.</p>
   <p>The following failing step is the next thing to work on: <strong>And I should see "Enter guess:"</strong>.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     # file spec/codebreaker/game_spec.rb
 
     require 'spec_helper'
@@ -2014,11 +1835,9 @@ the first guess.</p>
         end
       end
     end
-  ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
     rspec spec/codebreaker/game_spec.rb --format doc
 
     Codebreaker::Game
@@ -2036,8 +1855,8 @@ the first guess.</p>
          # ./lib/codebreaker/game.rb:8:in 'start'
          # ./spec/codebreaker/game_spec.rb:16:in 'block (3 levels) in <module:Codebreaker>'
 
-   Finished in 0.00126 seconds
-   2 examples, 1 failure]]>
+    Finished in 0.00126 seconds
+    2 examples, 1 failure
   </script>
 </section><section id="resolve-step" class="slide">
   <h2>Trying to get green again</h2>
@@ -2045,7 +1864,6 @@ the first guess.</p>
   <p>This time, the output didn’t receive puts('Enter guess:'). Resolve that as follows:</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     # file lib/codebreaker/game.rb
 
     module Codebreaker
@@ -2060,11 +1878,9 @@ the first guess.</p>
         end
       end
     end
-  ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
     rspec spec/codebreaker/game_spec.rb --format doc
 
     Codebreaker::Game
@@ -2092,7 +1908,6 @@ the first guess.</p>
 
     Finished in 0.00136 seconds
     2 examples, 2 failures
-  ]]>
   </script>
 </section><section id="fix-step" class="slide">
   <h2>Fix things up</h2>
@@ -2101,44 +1916,38 @@ the first guess.</p>
 told it to expect “Welcome to Codebreaker!” It doesn’t know anything about “Enter guess:”</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     # file spec/codebreaker/game_spec.rb
 
-	module Codebreaker
-	  describe Game do
-	    describe "#start" do
-	      it "sends a welcome message" do
-	        output = double('output').as_null_object
-	        game = Game.new(output)
-	        output.should_receive(:puts).with('Welcome to Codebreaker!')
-	        game.start
-	      end
+    module Codebreaker
+      describe Game do
+        describe "#start" do
+          it "sends a welcome message" do
+            output = double('output').as_null_object
+            game = Game.new(output)
+            output.should_receive(:puts).with('Welcome to Codebreaker!')
+            game.start
+          end
 
-	      it "prompts for the first guess" do
-			output = double('output').as_null_object
-			game = Game.new(output)
-			output.should_receive(:puts).with('Enter guess:')
-			game.start
-	      end
-	    end
-	  end
-	end
-  ]]>
+          it "prompts for the first guess" do
+            output = double('output').as_null_object
+            game = Game.new(output)
+            output.should_receive(:puts).with('Enter guess:')
+            game.start
+          end
+        end
+      end
+    end
   </script>
-
   <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
     rspec spec/codebreaker/game_spec.rb --format doc
 
-	Codebreaker::Game
-	  #start
-	    sends a welcome message
-	    prompts for the first guess
+    Codebreaker::Game
+      #start
+        sends a welcome message
+        prompts for the first guess
 
-	Finished in 0.00103 seconds
-	2 examples, 0 failures
-
-  ]]>
+    Finished in 0.00103 seconds
+    2 examples, 0 failures
   </script>
 </section><section id="refactor" class="slide">
   <h2>Refactor</h2>
@@ -2148,7 +1957,6 @@ told it to expect “Welcome to Codebreaker!” It doesn’t know anything about
   <p>In this case, we have a very clear break between what is context and what is behavior, so let’s take advantage of that and move the context to a block that is executed before each of the examples.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     # file spec/codebreaker/game_spec.rb
 
     module Codebreaker
@@ -2169,11 +1977,9 @@ told it to expect “Welcome to Codebreaker!” It doesn’t know anything about
         end
       end
     end
-  ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
     rspec spec/codebreaker/game_spec.rb --format doc
 
     Codebreaker::Game
@@ -2183,7 +1989,6 @@ told it to expect “Welcome to Codebreaker!” It doesn’t know anything about
 
     Finished in 0.00105 seconds
     2 examples, 0 failures
-  ]]>
   </script>
 </section><!-- End slides. -->
 

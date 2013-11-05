@@ -1,32 +1,30 @@
 <section id="extend" class="slide">
   <h2>Extend with module</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      module AudioConverter
-        def formats
-          ["mp3", "avi", "ogg"]
-        end
+    module AudioConverter
+      def formats
+        ["mp3", "avi", "ogg"]
+      end
+    end
+
+    class AudioUpload
+      extend AudioConverter
+
+      def initialize(file) 
+        @file = file
       end
 
-      class AudioUpload
-        extend AudioConverter
+      # class << self
+      #   include AudioConverter
+      # end
+    end
 
-        def initialize(file) 
-          @file = file
-        end
+    AudioUpload.formats # => ["mp3", "avi", "ogg"] 
 
-        # class << self
-        #   include AudioConverter
-        # end
-      end
+    audio = AudioUpload.new("audio.mp3")
+    audio.formats # => NoMethodError: undefined method 'formats'
 
-      AudioUpload.formats # => ["mp3", "avi", "ogg"] 
-
-      audio = AudioUpload.new("audio.mp3")
-      audio.formats # => NoMethodError: undefined method 'formats'
-
-      audio.extend(AudioConverter)
-      audio.formats # => ["mp3", "avi", "ogg"]
-    ]]>
+    audio.extend(AudioConverter)
+    audio.formats # => ["mp3", "avi", "ogg"]
   </script>
 </section>

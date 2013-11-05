@@ -8,16 +8,14 @@ receives the message, nothing happens.</p>
   <p>Messages can be stubbed on any class, including those in Ruby's core library.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      describe "any_instance.stub" do
-        it "returns the specified value on any instance of the class" do
-          String.any_instance.stub(:foo).and_return(:return_value)
+    describe "any_instance.stub" do
+      it "returns the specified value on any instance of the class" do
+        String.any_instance.stub(:foo).and_return(:return_value)
 
-          str = "sample string"
-          str.foo.should eq(:return_value)
-        end
+        str = "sample string"
+        str.foo.should eq(:return_value)
       end
-    ]]>
+    end
   </script>
 
 </section>

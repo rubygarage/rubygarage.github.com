@@ -1,49 +1,47 @@
 <section id="self" class="slide">
   <h2>Self</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      class BookInStock
-        attr_reader :title, :author, :price
+    class BookInStock
+      attr_reader :title, :author, :price
 
-        def initialize(title, author, price)
-          @title, @author, @price = title, author, Float(price)
-        end
-
-        def title
-          "Author: #{@author}"
-        end
-
-        def my_object_print
-          puts self.inspect  # => <BookInStock:0x000000010aaef0 @title="t1", @author="a1", @price=10.0>
-        end
-
-        def attribute_print
-          puts self.author   # => The Great Gatsby
-          puts @author       # => The Great Gatsby
-        end
-
-        def variable_and_method
-          puts title         # => Author: F. Scott Fitzgerald
-          title = 'My best title'
-          puts title         # => My best title
-          puts self.title    # => Author: F. Scott Fitzgerald
-        end
-
-        def my_object_as_param
-          str = "my string"
-          puts str.eql? self # => false
-        end
-
-        def method_to_class
-          # puts class - error it try to create new class
-          puts self.class.inspect     # => BookInStock
-          self.class.my_class_method  # => BookInStock
-        end
-
-        def self.my_class_print
-          puts self.inspect           # => BookInStock
-        end
+      def initialize(title, author, price)
+        @title, @author, @price = title, author, Float(price)
       end
-    ]]>
+
+      def title
+        "Author: #{@author}"
+      end
+
+      def my_object_print
+        puts self.inspect  # => <BookInStock:0x000000010aaef0 @title="t1", @author="a1", @price=10.0>
+      end
+
+      def attribute_print
+        puts self.author   # => The Great Gatsby
+        puts @author       # => The Great Gatsby
+      end
+
+      def variable_and_method
+        puts title         # => Author: F. Scott Fitzgerald
+        title = 'My best title'
+        puts title         # => My best title
+        puts self.title    # => Author: F. Scott Fitzgerald
+      end
+
+      def my_object_as_param
+        str = "my string"
+        puts str.eql? self # => false
+      end
+
+      def method_to_class
+        # puts class - error it try to create new class
+        puts self.class.inspect     # => BookInStock
+        self.class.my_class_method  # => BookInStock
+      end
+
+      def self.my_class_print
+        puts self.inspect           # => BookInStock
+      end
+    end
   </script>
 </section>

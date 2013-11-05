@@ -1,7 +1,6 @@
 <section id="first-implementation" class="slide">
   <h2>First implementation</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     # file spec/burger_spec.rb
     
     class Burger
@@ -24,14 +23,13 @@
         burger = Burger.new(:ketchup => false)
         burger.should_not be_with_ketchup
       end
-    end]]>
+    end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     rspec spec/burger_spec.rb 
     ..
 
     Finished in 0.0114 seconds
-    2 examples, 0 failures]]>
+    2 examples, 0 failures
   </script>
 </section>

@@ -5,34 +5,28 @@
   <p>Whether you are setting a message expectation or a method stub, you can tell the object precisely how to respond. The most generic way is to pass a block to stub or should_receive:</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      double.should_receive(:msg) { value }
-    ]]>
+    double.should_receive(:msg) { value }
   </script>
 
   <p>When the double receives the msg message, it evaluates the block and returns the result.</p>
 
   <p>The same responses are available, as for stub method:</p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      double.should_receive(:msg).and_return(value)
-      double.should_receive(:msg).exactly(3).times.and_return(value1, value2, value3)
-        # returns value1 the first time, value2 the second, etc
-      double.should_receive(:msg).and_raise(error)
-        #error can be an instantiated object or a class
-        #if it is a class, it must be instantiable with no args
-      double.should_receive(:msg).and_throw(:msg)
-      double.should_receive(:msg).and_yield(values,to,yield)
-      double.should_receive(:msg).and_yield(values,to,yield).and_yield(some,other,values,this,time)
-        # for methods that yield to a block multiple times
-    ]]>
+    double.should_receive(:msg).and_return(value)
+    double.should_receive(:msg).exactly(3).times.and_return(value1, value2, value3)
+      # returns value1 the first time, value2 the second, etc
+    double.should_receive(:msg).and_raise(error)
+      #error can be an instantiated object or a class
+      #if it is a class, it must be instantiable with no args
+    double.should_receive(:msg).and_throw(:msg)
+    double.should_receive(:msg).and_yield(values,to,yield)
+    double.should_receive(:msg).and_yield(values,to,yield).and_yield(some,other,values,this,time)
+      # for methods that yield to a block multiple times
   </script>
 
   <p>When working with a partial mock object, you may occasionally want to set a message expecation without interfering with how the object responds to the message. </p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      Person.should_receive(:find).and_call_original
-      Person.find # => executes the original find method and returns the result
-    ]]>
+    Person.should_receive(:find).and_call_original
+    Person.find # => executes the original find method and returns the result
   </script>
 </section>

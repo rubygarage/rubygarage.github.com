@@ -5,23 +5,21 @@
   </p>
   <h3>Use before</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
-  before do
-    @empty_array = Array.new
-  end
+    before do
+      @empty_array = Array.new
+    end
 
-  it "should be empty" do
-    @empty_array.should be_empty
-  end]]>
+    it "should be empty" do
+      @empty_array.should be_empty
+    end
   </script>
   <h3>Use let</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
-  let(:empty_array) { Array.new }
+    let(:empty_array) { Array.new }
 
-  it "should be empty" do
-    empty_array.should be_empty
-  end]]>
+    it "should be empty" do
+      empty_array.should be_empty
+    end
   </script>
   <p>
     Note that <i>let</i> is lazy-evaluated: it is not evaluated until the first time the method it defines is invoked. You can use <i>let!</i> to force the method's invocation before each example.

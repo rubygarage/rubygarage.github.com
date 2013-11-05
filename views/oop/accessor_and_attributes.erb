@@ -1,7 +1,6 @@
 <section id="accessor-and-attributes" class="slide">
   <h2>Accessor and attributes</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     class BookInStock
       attr_accessor :title
       attr_writer :author
@@ -23,6 +22,6 @@
     book.author # => NoMethodError: undefined method 'author'
 
     book.price      # => 8.99
-    book.price = 10 # => NoMethodError: undefined method 'price=']]>
+    book.price = 10 # => NoMethodError: undefined method 'price='
   </script>
 </section>
