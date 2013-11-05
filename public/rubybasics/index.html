@@ -20,7 +20,11 @@
     </div>
   </div>
 </section><section id="rvm" class="slide"><h2>RVM first</h2>
-  <img src="/public/rubybasics/assets/rvm.png" /><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+  <img src="/public/rubybasics/assets/rvm.png" /><p>
+    Visit
+    <a href="https://rvm.io" target="_blank">https://rvm.io</a> for more details.
+  </p>
+  <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     curl -L https://get.rvm.io | bash -s stable --autolibs=3
     rvm install 2.0.0
     rvm use 2.0.0
@@ -29,7 +33,17 @@
   ]]></script></section><section id="rvmrc" class="slide"><h2>.rvmrc file</h2>
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     rvm use 2.0.0@project_name --create
-  ]]></script><div id="rvm-best-practices" class="slide">
+  ]]></script><div id="ruby-version-file" class="slide">
+    <h2>.ruby-version file</h2>
+    <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+      2.0.0-p247
+    ]]></script></div>
+  <div id="ruby-gemset-file" class="slide">
+    <h2>.ruby-gemset file</h2>
+    <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+      project_name
+    ]]></script></div>
+  <div id="rvm-best-practices" class="slide">
     <h2>RVM Best Practices</h2>
     <ul><li>Use .rvmrc files for each of your individual projects</li>
       <li>Check your .rvmrc into source control</li>
@@ -224,6 +238,7 @@
     "Programming,_Motherfucker._Do you speakit?".split('_')
     => ["Programming,", "Motherfucker.", "Do you speakit?"]
   ]]></script></section><section id="array" class="slide"><h2>Array</h2>
+  Follow by <a href="http://ruby-doc.org/core-2.0/Array.html" target="_blank">http://ruby-doc.org/core-2.0/Array.html</a> for more information
   <h3>Creating</h3>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     > [[1, 2, 3], 10, 3.14, "This is a string", barnet("pebbles")]
@@ -433,6 +448,9 @@
     [1] => b
     [2] => c
   ]]></script></section><section id="symbol" class="slide"><h2>Symbol</h2>
+  <p>
+    Follow by <a href="http://www.ruby-doc.org/core-2.0.0/Symbol.html" target="_blank">http://www.ruby-doc.org/core-2.0.0/Symbol.html</a> for more information.
+  </p>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     > :ruby_rules
     => :ruby_rules
@@ -454,6 +472,9 @@
     > "ruby".object_id
     => 70200985514360
   ]]></script></section><section id="hash" class="slide"><h2>Hash</h2>
+  <p>
+    Follow by <a href="http://www.ruby-doc.org/core-2.0.0/Hash.html" target="_blank">http://www.ruby-doc.org/core-2.0.0/Hash.html</a> for more information.
+  </p>
   <h3>Creating</h3>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     > {:font_size => 10, :font_family => "Arial"}
@@ -616,6 +637,9 @@
     h.select {|key, value| value > 100}
     => {"b" => 200, "c" => 300}
   ]]></script></section><section id="struct" class="slide"><h2>Struct</h2>
+  <p>
+    Follow by <a href="http://www.ruby-doc.org/core-2.0.0/Struct.html" target="_blank">http://www.ruby-doc.org/core-2.0.0/Struct.html</a> for more information.
+  </p>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     Customer = Struct.new(:name, :address, :zip)
     => Customer
@@ -637,6 +661,9 @@
     Customer.new("Dave", "123 Main").greeting 
     => "Hello Dave!"
   ]]></script></section><section id="range" class="slide"><h2>Range</h2>
+  <p>
+    Follow by <a href="http://www.ruby-doc.org/core-2.0.0/Range.html" target="_blank">http://www.ruby-doc.org/core-2.0.0/Range.html</a> for more information.
+  </p>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     # Creates a range from 1 to 10 inclusive
     1..10
@@ -653,6 +680,9 @@
     ('a'..'e').to_a    
     => ["a", "b", "c", "d", "e"]
   ]]></script></section><section id="time" class="slide"><h2>Time</h2>
+  <p>
+    Follow by <a href="http://www.ruby-doc.org/core-2.0.0/Time.html" target="_blank">http://www.ruby-doc.org/core-2.0.0/Time.html</a> for more information.
+  </p>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     t = Time.new
     => 2013-05-09 18:50:25 +0300
@@ -687,6 +717,9 @@
     t.strftime("%Y-%m-%d %H:%M:%S")
     => "2013-05-09 18:50:25"
   ]]></script></section><section id="file" class="slide"><h2>File</h2>
+  <p>
+    Follow by <a href="http://www.ruby-doc.org/core-2.0.0/File.html" target="_blank">http://www.ruby-doc.org/core-2.0.0/File.html</a> for more information.
+  </p>
   new
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     File.new("tmp.txt", "w")
@@ -835,25 +868,23 @@
     => "constant"
   ]]></script></section><section id="if-unless" class="slide"><h2>If, unless</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    a = 5
-
     if a == 4
       a = 7
     end
-
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     if a == 4 then a = 7 end
-
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     a = 7 if a == 4
   ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    a = 5
-
     if a != 4
       a = 7
     end
-
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     unless a == 4
       a = 7
     end
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    a = 7 unless a == 4
   ]]></script></section><section id="if-else" class="slide"><h2>If, else</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     a = 1
@@ -920,6 +951,58 @@
         "#{a} less than 0"
     end
     "1 greater than 0 less than 5"
+  ]]></script></section><section id="loop" class="slide"><h2>Loop</h2>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    i = 0
+    loop do
+      i += 1
+      next if i == 5
+      print "#{i} "
+      break if i == 10
+    end
+    #=> 1 2 3 4 6 7 8 9 10
+  ]]></script></section><section id="while" class="slide"><h2>While</h2>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    i = 1
+    while i < 11
+      print "#{i} "
+      i += 1
+    end
+    #=> 1 2 3 4 6 7 8 9 10
+  ]]></script></section><section id="do-while" class="slide"><h2>Like do...while</h2>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    i = 11
+    begin
+      print "#{i} "
+      i += 1
+    end while i < 10
+    #=> 11
+  ]]></script></section><section id="until" class="slide"><h2>Until</h2>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    i = 1
+    until i > 10
+      print "#{i} "
+      i += 1
+    end
+    #=> 1 2 3 4 6 7 8 9 10
+  ]]></script></section><section id="for" class="slide"><h2>For</h2>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    for i in 1..10
+      print "#{i} "
+    end
+    #=> 1 2 3 4 6 7 8 9 10
+  ]]></script></section><section id="each" class="slide"><h2>Each</h2>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    [1,2,3,4,5,6,7,8,9,10].each {|value| print "#{value} "}
+    #=> 1 2 3 4 6 7 8 9 10
+  ]]></script></section><section id="times" class="slide"><h2>Times</h2>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    10.times {|i| print "#{i} "}
+    #=> 0 1 2 3 4 6 7 8 9
+  ]]></script></section><section id="upto" class="slide"><h2>Upto</h2>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    1.upto(10) {|i| print "#{i} "}
+    #=> 1 2 3 4 6 7 8 9 10
   ]]></script></section><section id="methods" class="slide"><h2>Methods</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     "Goonies has a rank of 10"
