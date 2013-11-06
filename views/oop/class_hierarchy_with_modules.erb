@@ -1,7 +1,17 @@
-<section id="class-hierarchy" class="slide">
+<section id="class-hierarchy-with-modules" class="slide">
   <h2>Class and modules hierarchy, ancestors</h2>
-  <img src="/assets/hierarchy_with_module.png" />
   <script type="syntaxhighlighter" class="brush: ruby">
-    Class.new.ancestors # => [#<Class:0x0000000268a568>, Object, Kernel, BasicObject]
+    module M
+    end
+
+    class C
+      include M
+    end
+
+    class D < C
+    end
+
+    D.ancestors # => [D, C, M, Object, Kernel, BasicObject]
   </script>
+  <img src="/assets/hierarchy_with_module.png" />
 </section>

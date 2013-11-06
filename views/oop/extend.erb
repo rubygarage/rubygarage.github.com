@@ -10,13 +10,13 @@
     class AudioUpload
       extend AudioConverter
 
-      def initialize(file) 
-        @file = file
-      end
-
       # class << self
       #   include AudioConverter
       # end
+
+      def initialize(file) 
+        @file = file
+      end
     end
 
     AudioUpload.formats # => ["mp3", "avi", "ogg"] 

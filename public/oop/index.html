@@ -18,7 +18,8 @@
   <h3>Creating the class</h3>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     class BookInStock
-  ]]></script><div class="slide">
+    end
+  ]]></script><div id="define-ruby-objects" class="slide">
     <h3>Define ruby objects</h3>
     <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
       book = BookInStock.new
@@ -469,7 +470,7 @@
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     class A
       @@value = 1
-      def A.value
+      def self.value
         @@value
       end
     end
@@ -490,7 +491,7 @@
       NUM = 2
     end
 
-    class B  < A
+    class B < A
     end
 
     A::NUM # => 2
@@ -548,7 +549,7 @@
     book.title # => Title
 
     class << book
-      def book.title
+      def title
         "Title"
       end
     end
@@ -596,7 +597,7 @@
       end
     end
 
-    M.constants
+    M.constants # => [:C, :Y]
 
     module M
       class C
@@ -624,8 +625,10 @@
     audio_upload = AudioUpload.new("music.mp3")
     audio_upload.compare_formats("video.avi")
   ]]></script><div class="slide" id="require-mixin">
+    <h3>require</h3>
     <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
       require 'audio_converter'
+
       class AudioUpload
         include AudioConverter  
 
@@ -645,13 +648,13 @@
     class AudioUpload
       extend AudioConverter
 
-      def initialize(file) 
-        @file = file
-      end
-
       # class << self
       #   include AudioConverter
       # end
+
+      def initialize(file) 
+        @file = file
+      end
     end
 
     AudioUpload.formats # => ["mp3", "avi", "ogg"] 
@@ -661,20 +664,29 @@
 
     audio.extend(AudioConverter)
     audio.formats # => ["mp3", "avi", "ogg"]
-  ]]></script></section><section id="class-hierarchy" class="slide"><h2>Class and modules hierarchy, ancestors</h2>
-  <img src="/public/oop/assets/hierarchy_with_module.png" /><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    Class.new.ancestors # => [#<Class:0x0000000268a568>, Object, Kernel, BasicObject]
-  ]]></script></section><section id="method-lookup" class="slide"><h2>Method lookup</h2>
-  <ul><li>Сhecks the eigenclass of o for singleton methods named m.</li>
-    <li>If no method m is found in the eigenclass, Ruby searches the class of o for an instance method named m.</li>
-    <li>If no method m is found in the class, Ruby searches the instance methods of any modules included by the class of o. If that class includes more than one module, then they are searched in the reverse of the order in which they were included. That is, the most recently included module is searched first. </li>
-    <li>If no instance method m is found in the class of o or in its modules, then the search
-moves up the inheritance hierarchy to the superclass. Steps 2 and 3 are repeated for each class in the inheritance hierarchy until each ancestor class and its included modules have been searched.</li>
-    <li>If no method named m is found after completing the search, then a method named method_missing is invoked instead.</li>
+  ]]></script></section><section id="class-hierarchy-with-modules" class="slide"><h2>Class and modules hierarchy, ancestors</h2>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    module M
+    end
+
+    class C
+      include M
+    end
+
+    class D < C
+    end
+
+    D.ancestors # => [D, C, M, Object, Kernel, BasicObject]
+  ]]></script><img src="/public/oop/assets/hierarchy_with_module.png" /></section><section id="method-lookup" class="slide"><h2>Method lookup</h2>
+  <ul><li>Сhecks the eigenclass of 'foo' for singleton methods named 'bar'.</li>
+    <li>If no method 'bar' is found in the eigenclass, Ruby searches the class of 'foo' for an instance method named 'bar'.</li>
+    <li>If no method 'bar' is found in the class, Ruby searches the instance methods of any modules included by the class of 'foo'. If that class includes more than one module, then they are searched in the reverse of the order in which they were included. That is, the most recently included module is searched first. </li>
+    <li>If no instance method 'bar' is found in the class of 'foo' or in its modules, then the search moves up the inheritance hierarchy to the superclass. Steps 2 and 3 are repeated for each class in the inheritance hierarchy until each ancestor class and its included modules have been searched.</li>
+    <li>If no method named 'bar' is found after completing the search, then a method named method_missing is invoked instead.</li>
   </ul><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     foo = "some string"
-    foo.bar # singleton: no -> String class: no -> modules Comparable, Enumerable: no ->  
-            # Kernel module: no -> method_missing: no -> raise an exception
+    foo.bar # singleton: no -> String class: no -> Comparable module: no ->  
+            # Object class: no -> Kernel module: no -> method_missing: no -> raise an exception
   ]]></script></section><section id="exceptions" class="slide"><h2>Exceptions: begin, rescue, raise</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     begin 
@@ -705,7 +717,7 @@ moves up the inheritance hierarchy to the superclass. Steps 2 and 3 are repeated
     Ensuring execution
   ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     begin
-      raise "A test exception."
+      puts "A test exception."
     rescue Exception => e 
       puts e.message
       puts e.backtrace.inspect
@@ -744,16 +756,50 @@ moves up the inheritance hierarchy to the superclass. Steps 2 and 3 are repeated
     Makes four
   ]]></script></section><section id="exceptions-hierarchy" class="slide"><h2>Exceptions hierarchy</h2>
   <img src="/public/oop/assets/hierarchy_exceptions.png" /></section><section id="tasks" class="slide"><h2>Tasks</h2>
-  <ul><li>In library each book order includes information about reader: name, order date, issue date. Write program that determines: 
-      1) the smallest period for which library found a book 
-      2) how many orders were not satisfied 
-      3) who often takes the book 
-      4) what is the most popular book
-      5) how many people ordered one of the three most popular books.</li><br /><li>Describe the mail sorting (city, street, house, apartment, destination, value). Write a program that determines: 
-      1) the number of parcels sent to some city 
-      2) how many parcels with value higher than 10  were sent 
-      3) what is the most popular address</li>
-  </ul></section><!-- End slides. --><!-- deck.navigation snippet --><a href="#" class="deck-prev-link" title="Previous">←</a>
+  <ul><li>In library each book order includes information about reader: name, order date, issue date. Write program that determines:
+      <ol><li>the smallest period for which library found a book</li>
+        <li>how many orders were not satisfied</li>
+        <li>who often takes the book</li>
+        <li>what is the most popular book</li>
+        <li>how many people ordered one of the three most popular books.</li>
+      </ol></li>
+    <li>Describe the mail sorting (city, street, house, apartment, destination, value). Write a program that determines: 
+      <ol><li>the number of parcels sent to some city</li>
+        <li>how many parcels with value higher than 10  were sent</li>
+        <li>what is the most popular address</li>
+      </ol></li>
+  </ul></section><section id="koans" class="slide"><h2>Ruby Koans</h2>
+  <p>
+    <a href="http://koans.heroku.com" target="_blank">Ruby Koans Online</a>
+  </p>
+  <p>
+    The Ruby Koans are a great way to learn about the Ruby language.
+  </p>
+  <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+    git clone git://github.com/edgecase/ruby_koans.git ruby_koans
+  ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+    cd ruby_koans
+  ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+    rake gen
+
+    mkdir -p koans
+    cp src/edgecase.rb koans/edgecase.rb
+    cp README.rdoc koans/README.rdoc
+  ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+    rake
+
+    The Master says:
+      You have not yet reached enlightenment.
+
+    The answers you seek...
+      Failed assertion, no message given.
+
+    Please meditate on the following code:
+      /Users/sparrow/Www/ruby_koans/koans/about_asserts.rb:10:in 'test_assert_truth'
+
+    mountains are merely mountains
+    your path thus far [X_________________________________________________] 0/280
+  ]]></script></section><!-- End slides. --><!-- deck.navigation snippet --><a href="#" class="deck-prev-link" title="Previous">←</a>
 <a href="#" class="deck-next-link" title="Next">→</a>
 
 <!-- deck.status snippet -->
