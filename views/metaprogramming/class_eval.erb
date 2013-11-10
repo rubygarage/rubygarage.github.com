@@ -1,11 +1,13 @@
-<section class="slide" id="class_eval">
+<section class="slide" id="class-eval">
   <h2>Class eval</h2>
   <p><strong>class_eval</strong> (also known by its alternate name, <strong>module_eval</strong>) evaluates a block in the context of an existing class.</p>
   <div class="row">
     <script type="syntaxhighlighter" class="brush: ruby">
       def add_method_to(a_class)
         a_class.class_eval do
-          def m; 'Hello!' ; end
+          def m
+            'Hello!'
+          end
         end
       end
 

@@ -1,4 +1,4 @@
-<section class="slide" id="instance_eval">
+<section class="slide" id="instance-eval">
   <h2 class="not-capitalized">instance_eval and instance_exec</h2>
   <p><strong>instance_eval</strong> method evaluates a string containing Ruby source code, or the given block, within the context of the receiver (obj).</p>
   <div class="row">
@@ -14,9 +14,7 @@
       self    # => #<MyClass:0x3340dc @v=1>
       @v      # => 1
     end
-  </script>
-  <br/>
-  <script type="syntaxhighlighter" class="brush: ruby">
+    
     v=2
     obj.instance_eval { @v = v }
     obj.instance_eval { @v }    # => 2

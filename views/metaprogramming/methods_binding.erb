@@ -11,13 +11,17 @@
       end
     end
 
+    class MyClass2 < MyClass
+    end
+
     object = MyClass.new(1)
     m = object.method(:my_method)
-    m.call                    # => 1
+    m.call # => 1
 
     unbound = m.unbind
-    another_object = MyClass.new(2)
+
+    another_object = MyClass2.new(2)
     m = unbound.bind(another_object)
-    m.call                    # => 2
+    m.call # => 2
   </script>
 </section>

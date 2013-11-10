@@ -14,7 +14,7 @@
     end
 
     obj = MyClass.new
-    def obj.singleton 
+    def obj.my_singleton 
       "i'm singleton"
     end
           
@@ -22,15 +22,15 @@
                   # "test.rb:16:in `<top>`", ... ]
 
     obj.class     # => MyClass
-    obj.methods.grep /my/  # => [:my_method]
-    obj.private_methods    # => [:my_private, :irb...]
-    obj.instance_variables # => [:@v]
-    obj.singleton_methods  # => [:singleton]
+    obj.methods.grep /my/             # => [:my_singleton, :my_method]
+    obj.private_methods.grep /my/     # => [:my_private]
+    obj.instance_variables            # => [:@v]
+    obj.singleton_methods             # => [:my_singleton]
 
     MyClass.instance_methods(false) # => [:my_method]
     local_variables                 # => [:obj]
 
-    MyClass.instance_methods == obj.methods # => true
+    MyClass.instance_methods == obj.methods # => false, should be true but we have 'my_singleton' method
     MyClass.methods == obj.methods          # => false
   </script>
 </section>

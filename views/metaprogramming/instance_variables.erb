@@ -1,15 +1,5 @@
-<section class="slide" id="instance_variables">
-  <h2>Instance variables</h2>
-  <script type="syntaxhighlighter" class="brush: ruby">
-    class Polygon
-      @@sides = 10
-    end
-
-    puts Polygon.sides # => 10
-  </script>
-<div class="slide" id="instance-variable-meths">
-  <h2 class="not-capitalized">instance_variable_get(), instance_variable_set(),
-instance_variable_defined?()</h2>
+<section class="slide" id="instance-variable-meths">
+  <h2>Instance variables <br/> instance_variable_get(), instance_variable_set(), instance_variable_defined?()</h2>
   <div class="row">
     <script type="syntaxhighlighter" class="brush: ruby">
       class MyClass
@@ -19,13 +9,12 @@ instance_variable_defined?()</h2>
       end
 
       c = MyClass.new('aaa', 'bbb')
-      puts c.instance_variable_get(:@a)     # => "aaa"
+      puts c.instance_variable_get(:@a)         # => "aaa"
       puts c.instance_variable_set(:@a, "dog")  # => "dog"
-      puts c.instance_variable_get(:@a)     # => "dog"
+      puts c.instance_variable_get(:@a)         # => "dog"
       puts c.instance_variable_set(:@c, "cat")  # => "cat"
       puts c.instance_variable_defined?(:@c)    # => true
-      puts c.instance_variable_get(:@c)     # => "cat"
+      puts c.instance_variable_get(:@c)         # => "cat"
     </script>
   </div>
-</div>
 </section>

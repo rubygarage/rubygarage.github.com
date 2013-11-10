@@ -7,9 +7,6 @@
       end
     end
 
-    class MyStrin < String
-    end
-
     module M
       def self.included(othermod)
         puts "M was mixed in #{othermod}"
@@ -22,15 +19,31 @@
       def my_method; end
     end
 
-    class C
+    class MyString < String
       include M
+
+      def singleton_method_added(method)
+        puts "New singleton method: #{method}"
+      end
+
+      def method_missing(method, *args, &block)
+        puts "not existing method #{method} was called"
+      end
+    end
+
+    str = MyString.new
+    str.yay!
+
+    def str.yay_method
     end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-    >> ruby test.rb
-
-    String was inherited by MyString
+    >> ruby hooks.rb
+    
     New method: M#my_method
-    M was mixed into C
+    String was inherited by MyString
+    M was mixed in MyString
+    not existing method yay! was called
+    New singleton method: yay_method
   </script>
 </section>
