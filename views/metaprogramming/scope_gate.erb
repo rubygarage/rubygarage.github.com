@@ -2,50 +2,42 @@
   <h2>Blocks and local variables</h2>
   <div class="column left">
   <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[
-        my_var = 'Success!'
+    my_var = 'Success!'
 
-        class MyClass
-          puts "#{my_var} in class definition"
+    class MyClass
+      puts "#{my_var} in class definition"
 
-          def my_method
-            puts "#{my_var} in the method"
-          end
-        end
+      def my_method
+        puts "#{my_var} in the method"
+      end
+    end
 
-        MyClass.new.my_method
-]]>
+    MyClass.new.my_method
   </script>
-<br/>
+  <br/>
   <script type="syntaxhighlighter" class="brush: bash">
-      <![CDATA[
-      undefined local variable or method
-      `my_var` for MyClass::Class (NameError)]]>
+    undefined local variable or method
+    `my_var` for MyClass::Class (NameError)
   </script>
-</div>
-
-<div class="column right slide">
+  </div>
+  <div class="column right slide">
   <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[
-        my_var = 'Success'
+    my_var = 'Success'
 
-        MyClass = Class.new do
-          puts "#{my_var} in class definition"
+    MyClass = Class.new do
+      puts "#{my_var} in class definition"
 
-          define_method :my_method do
-            puts "#{my_var} in the method"
-          end
-        end
+      define_method :my_method do
+        puts "#{my_var} in the method"
+      end
+    end
 
-        MyClass.new.my_method
-]]>
+    MyClass.new.my_method
   </script>
-<br/>
+  <br/>
   <script type="syntaxhighlighter" class="brush: bash">
-      <![CDATA[
-      Success in class definition
-      Success in the method
-      ]]>
+    Success in class definition
+    Success in the method
   </script>
-</div>
+  </div>
 </section>

@@ -3,21 +3,19 @@
   <p>In Ruby current binding can be captured, and any code can be evaluated in that captured scope, any time.</p>
   <div class="row">
   <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[
-def local_with_binding(bind)
-  bind.eval("local")
-end
+    def local_with_binding(bind)
+      bind.eval("local")
+    end
 
-def my_meth
-  local = "local from the inside"
-  local_with_binding(binding)
-end
+    def my_meth
+      local = "local from the inside"
+      local_with_binding(binding)
+    end
 
-local = "top level local"
+    local = "top level local"
 
-puts local_with_binding(binding)      # => "top level local"
-puts my_meth                # => "local from the inside"
-      ]]>
+    puts local_with_binding(binding)  # => "top level local"
+    puts my_meth                      # => "local from the inside"
   </script>
 </div>
 </section>

@@ -1,28 +1,25 @@
 <section class="slide" id="conclusion">
   <h2>Conclusion</h2>
-
-<ul>
-  <li>blocks and Procs act like code snippets</li>
-  <li>lambdas and Methods act like methods</li>
-</ul>
+  <ul>
+    <li>blocks and Procs act like code snippets</li>
+    <li>lambdas and Methods act like methods</li>
+  </ul>
 </section>
 
 <section class="slide" id="singleton">
   <h2>Singleton Methods</h2>
   <div>A Singleton method is a method which belongs to a single object rather than to an entire class and other objects.</div>
   <div class="row">
-  <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[
-str = "Just a regular string"
+    <script type="syntaxhighlighter" class="brush: ruby">
+      str = "Just a regular string"
 
-def str.title?
-  self.upcase == self
-end
+      def str.title?
+        self.upcase == self
+      end
 
-str.title?                 # => false
-str.methods.grep /title?/  # => ["title?"]
-str.singleton_methods      # => ["title?"]
-      ]]>
-</script>
-</div>
+      str.title?                 # => false
+      str.methods.grep /title?/  # => ["title?"]
+      str.singleton_methods      # => ["title?"]
+    </script>
+  </div>
 </section>

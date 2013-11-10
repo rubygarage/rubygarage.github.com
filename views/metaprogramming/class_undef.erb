@@ -4,10 +4,8 @@
   <p>As a class is just an object in the memory, which is identified by the constant, destroying a constant will cause a class itself to be removed by GC</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[
-Object.send(:remove_const, :MyClass)
+    Object.send(:remove_const, :MyClass)
 
-obj = MyClass.new    # => NameError: unitialized constant
-  ]]>
+    obj = MyClass.new    # => NameError: unitialized constant
   </script>
 </section>
