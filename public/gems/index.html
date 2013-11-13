@@ -36,12 +36,11 @@
   <h2>Usage</h2>
   <h3>Installation</h3>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[gem install progressbar]]>
+    gem install progressbar
   </script>
   <div id="using-in-code" class="slide">
     <h3>Using a gem in your code</h3>
     <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[
       require 'progressbar'
 
       bar = ProgressBar.new("Example progress", 50)
@@ -51,13 +50,13 @@
         increment = (rand(6) + 3)
         bar.inc(increment)
         total += increment
-      end]]>
+      end
     </script>
   </div>
   <div id="uninstall" class="slide">
     <h3>Uninstallation</h3>
     <script type="syntaxhighlighter" class="brush: bash">
-      <![CDATA[gem uninstall progressbar]]>
+      gem uninstall progressbar
     </script>
   </div>
 </section><section id="bundler" class="slide">
@@ -66,21 +65,19 @@
   <div id="bundler-installation" class="slide">
     <h3>Bundler installation</h3>
     <script type="syntaxhighlighter" class="brush: bash">
-      <![CDATA[gem install bundler]]>
+      gem install bundler
     </script>
   </div>
   <div id="bundle-init" class="slide">
     <h3>Bundle init</h3>
     <script type="syntaxhighlighter" class="brush: bash">
-      <![CDATA[
       bundle init
-      Writing new Gemfile to /Users/sparrow/Www/test-bundler/Gemfile]]>
+      Writing new Gemfile to /Users/sparrow/Www/test-bundler/Gemfile
     </script>
   </div>
 </section><section id="gemfile" class="slide">
   <h2>Gemfile</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     source "http://rubygems.org"
     # Gemfiles require at least one gem source
     
@@ -93,24 +90,23 @@
     # If a gem main file is different than the gem name, specify how to require it
 
     gem "sinatra", :git => "git://github.com/sinatra/sinatra.git"
-    # Git repositories are also valid gem sources]]>
+    # Git repositories are also valid gem sources
   </script>
   <div id="bundle-install" class="slide">
     <h3>Bundle install</h3>
     <script type="syntaxhighlighter" class="brush: bash">
-      <![CDATA[bundle install]]>
+      bundle install
     </script>
   </div>
   <div id="bundle-update" class="slide">
     <h3>Bundle update</h3>
     <script type="syntaxhighlighter" class="brush: bash">
-      <![CDATA[bundle update]]>
+      bundle update
     </script>
   </div>
 </section><section id="gemfile-lock" class="slide">
   <h2>Gemfile.lock</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     GIT
       remote: git://github.com/sinatra/sinatra.git
       revision: 9984d0d2b3f1ea12273c6c25f8e102b2329f33e9
@@ -142,27 +138,24 @@
       nokogiri
       rack (~> 1.1)
       rspec
-      sinatra!]]>
+      sinatra!
   </script>
 </section><section id="creating-gem" class="slide">
   <h2>Creating gem</h2>
   <h3>Preparing environment</h3>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     rvm use 1.9.3-head@create-gem --create
-    Using /Users/sparrow/.rvm/gems/ruby-1.9.3-head with gemset create-gem]]>
+    Using /Users/sparrow/.rvm/gems/ruby-1.9.3-head with gemset create-gem
   </script>
   <div id="creating-gem-installing-bundler" class="slide">
     <h3>Installing bundler</h3>
     <script type="syntaxhighlighter" class="brush: bash">
-      <![CDATA[
-      gem install bundler]]>
+      gem install bundler
     </script>
   </div>
   <div id="creating-gem-with-bundler" class="slide">
     <h3>Creating gem with bundler</h3>
     <script type="syntaxhighlighter" class="brush: bash">
-      <![CDATA[
       bundle gem new_gem
       create  new_gem/Gemfile
       create  new_gem/Rakefile
@@ -172,7 +165,7 @@
       create  new_gem/new_gem.gemspec
       create  new_gem/lib/new_gem.rb
       create  new_gem/lib/new_gem/version.rb
-      Initializating git repo in /Users/sparrow/Www/new_gem]]>
+      Initializating git repo in /Users/sparrow/Www/new_gem
     </script>
   </div>
 </section><section id="gem-structure" class="slide">
@@ -195,7 +188,6 @@
   <h2>Gemspec</h2>
   <h3>new_gem.gemspec</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[
       # -*- encoding: utf-8 -*-
       require File.expand_path('../lib/new_gem/version', __FILE__)
 
@@ -212,84 +204,76 @@
         gem.name          = "new_gem"
         gem.require_paths = ["lib"]
         gem.version       = NewGem::VERSION
-      end]]>
+      end
     </script>
 </section><section id="version" class="slide">
   <h2>Gem structure</h2>
   <h3>lib/new_gem/version.rb</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     module NewGem
       VERSION = "0.0.1"
-    end]]>
+    end
   </script>
 
   <div id="gem-structure-gemfile" class="slide">
     <h3>Gemfile</h3>
     <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[
       source 'https://rubygems.org'
 
       # Specify your gem dependencies in new_gem.gemspec
-      gemspec]]>
+      gemspec
     </script>
   </div>
 
   <div id="gem-dependencies" class="slide">
     <h3>new_gem.gemspec</h3>
     <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[
       # ...
       Gem::Specification.new do |gem|
         # ...
 
         gem.add_dependency "sqlite3"
         gem.add_development_dependency "rspec"
-      end]]>
+      end
     </script>
   </div>
 </section><section id="lib-gem-file" class="slide">
   <h2>Gem structure</h2>
   <h3>lib/new_gem.rb</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     require "new_gem/version"
 
     module NewGem
       # Your code goes here...
-    end]]>
+    end
   </script>
   <div id="rakefile" class="slide">
     <h3>Rakefile</h3>
     <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[
       #!/usr/bin/env rake
-      require "bundler/gem_tasks"]]>
+      require "bundler/gem_tasks"
     </script>
   </div>
 </section><section id="testing" class="slide">
   <h2>Testing</h2>
   <h3>Add rspec to new_gem.gemspec</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     # ...
     Gem::Specification.new do |gem|
       # ...
       gem.add_development_dependency "rspec"
-    end]]>
+    end
   </script>
   <div id="spec-helper" class="slide">
     <h3>spec/spec_helper.rb</h3>
     <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     require 'bundler/setup'
-    require 'new_gem']]>
+    require 'new_gem'
     </script>
   </div>
   <div id="new-gem-spec" class="slide">
     <h3>spec/new_gem_spec.rb</h3>
     <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     require 'spec_helper'
 
     describe NewGem do
@@ -298,40 +282,37 @@
           NewGem.name.should == "New Gem"
         end
       end
-    end]]>
+    end
     </script>
   </div>
 </section><section id="implementation" class="slide">
   <h2>Testing</h2>
   <h3>lib/new_gem.rb</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     require "new_gem/version"
 
     module NewGem
       def self.name
         "New Gem"
       end
-    end]]>
+    end
   </script>
   <div id="running-tests" class="slide">
     <h3>Running tests</h3>
     <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
       rspec spec/
       .
 
       Finished in 0.00051 seconds
-      1 example, 0 failures]]>
+      1 example, 0 failures
     </script>
   </div>
 </section><section id="build" class="slide">
   <h2>Build and push gem to RubyGems.org</h2>
   <h3>Rakefile</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     #!/usr/bin/env rake
-    require "bundler/gem_tasks"]]>
+    require "bundler/gem_tasks"
   </script>
   <div id="rake-tasks" class="slide">
     <h3>Rake tasks</h3>
@@ -345,9 +326,8 @@
   <div id="build-gem" class="slide">
     <h3>Build gem</h3>
     <script type="syntaxhighlighter" class="brush: bash">
-      <![CDATA[
       rake build
-      new_gem 0.0.1 built to pkg/new_gem-0.0.1.gem]]>
+      new_gem 0.0.1 built to pkg/new_gem-0.0.1.gem
     </script>
   </div>
 </section><!-- End slides. -->

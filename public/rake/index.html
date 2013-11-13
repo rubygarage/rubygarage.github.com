@@ -35,6 +35,9 @@
 </section><section id="rake" class="slide">
   <h2>Rake</h2>
   <p>
+    <strong>Rake</strong> is a software task management tool. It allows you to specify tasks and describe dependencies as well as to group tasks in a namespace.
+  </p>
+  <p>
     It is similar to <strong>Make</strong>, but it has a number of differences. The tool is written in the Ruby, and the <strong>Rakefiles</strong> (equivalent of Makefiles in Make) use Ruby syntax. You don't have to learn new complicated build tool syntax.
   </p>
   <div id="install-rake" class="slide">
@@ -49,17 +52,15 @@
     <p>
       Rake tasks should always be located in file named <strong>rakefile</strong>, <strong>Rakefile</strong>, <strong>rakefile.rb</strong> or <strong>Rakefile.rb</strong>. First two forms are most commonly used.
     </p>
+    Rakefile
     <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[
-      # file Rakefile
       task :default do
         puts "Hello World!"
-      end]]>
+      end
     </script>
     <script type="syntaxhighlighter" class="brush: bash">
-      <![CDATA[
       rake
-      Hello World!]]>
+      Hello World!
     </script>
     <p>
       What actually happened? When given Rakefile, Rake is looking for tasks which are simply task method invocations. There may be many tasks located in one Rakefile. When running Rake from the command line, you can pass name of the task that you want to be executed. If there is no task given, Rake is looking for the default task. That is why our Rake invocation did the job without passing any extra parameters.
@@ -75,10 +76,8 @@
     <li>Walk dog</li>
   </ol>
   <p>In rake I might express my morning as follows:</p>
+  Rakefile
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-    # file Rakefile
-
     task :turn_off_alarm do
       puts "Turned off alarm. Would have liked 5 more minutes, though."
     end
@@ -95,43 +94,37 @@
    
     task :walk_dog do
       puts "Dog walked."
-    end]]>
+    end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     rake turn_off_alarm
-    Turned off alarm. Would have liked 5 more minutes, though.]]>
+    Turned off alarm. Would have liked 5 more minutes, though.
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     rake groom_myself
     Brushed teeth.
     Showered.
-    Shaved.]]>
+    Shaved.
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     rake make_coffee
-    Made a cup of coffee. Shakes are gone.]]>
+    Made a cup of coffee. Shakes are gone.
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     rake walk_dog
-    Dog walked.]]>
+    Dog walked.
   </script>
 </section><section id="expressing-dependencies" class="slide">
   <h2>Expressing dependencies</h2>
+  Rakefile
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-    # file Rakefile
-    ...
+    # ...
 
     task :ready_for_the_day => [:turn_off_alarm, :groom_myself, :make_coffee, :walk_dog] do
       puts "Ready for the day!"
-    end]]>
+    end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     rake ready_for_the_day
     Turned off alarm. Would have liked 5 more minutes, though.
     Brushed teeth.
@@ -139,7 +132,7 @@
     Shaved.
     Made a cup of coffee. Shakes are gone.
     Dog walked.
-    Ready for the day!]]>
+    Ready for the day!
   </script>
   <p>
     By running the <i>ready_for_the_day</i> task it notices that the <i>turn_off_alarm</i>, <i>groom_myself</i>, <i>make_coffee</i>, and <i>walk_dog</i> tasks are all prerequisites of the <i>ready_for_the_day</i> task. Then it runs them all in the appropriate order.
@@ -147,16 +140,15 @@
   <p>
     Dependencies can be specified not only when defining the task, but also later, depending on the run time conditions.
   </p>
+  Rakefile
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-    # file Rakefile
-    ...
+    # ...
 
     task :ready_for_the_day do
       puts "Ready for the day!"
     end
 
-    task :ready_for_the_day => [:turn_off_alarm, :groom_myself, :make_coffee, :walk_dog]]]>
+    task :ready_for_the_day => [:turn_off_alarm, :groom_myself, :make_coffee, :walk_dog]
   </script>
   <p>Effect will be the same.</p>
 </section><section id="namespaces" class="slide">
@@ -164,134 +156,115 @@
   <p>
     Rake supports the concept of namespaces which essentially lets you group together similar tasks inside of one namespace. You’d then specify the namespace when you call a task inside it. It keeps things tidy while still being quite effective.
   </p>
+  Rakefile
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-    # file Rakefile
     namespace :morning do
       task :turn_of_alarm
-      ....
-    end]]>
+      # ...
+    end
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     rake morning:ready_for_the_day
-    ...]]>
+    ...
   </script>
 </section><section id="the-default-task" class="slide">
   <h2>The Default Task</h2>
   <p>
     Rake has the concept of a default task. This is essentially the task that will be run if you type rake without any arguments. If we wanted our default task to be turning off the alarm from the example above, we'd do this:
   </p>
+  Rakefile
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-    # file Rakefile
     task :default => 'morning:turn_off_alarm'
-    ...]]>
+    # ...
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     rake
-    Turned off alarm. Would have liked 5 more minutes, though.]]>
+    Turned off alarm. Would have liked 5 more minutes, though.
   </script>
 </section><section id="describing-tasks" class="slide">
   <h2>Describing tasks</h2>
   <p>
     You can use the desc method to describe your tasks. This is done on the line right above the task definition. It’s also what gives you that nice output when you run <strong>rake -T</strong> to get a list of tasks. Tasks are displayed in alphabetical order.
   </p>
+  Rakefile
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-    # file Rakefile
-    ...
     desc "Make coffee"
     task :make_coffee do
       puts "Made a cup of coffee. Shakes are gone."
     end
-    ...]]>
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     rake -T 
-    rake morning:make_coffee  # Make coffee]]>
+    rake morning:make_coffee  # Make coffee
   </script>
 </section><section id="redefining-tasks" class="slide">
   <h2>Redefining tasks</h2>
   <p>
     Let’s say you want to add on to an existing task. Perhaps you have another item in your grooming routine like styling your hair. You could write another task and slip it in as a dependency for groom_myself but you could also redefine groom_myself.
   </p>
+  Rakefile
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-    # file Rakefile
-    
     namespace :morning do
-      ...
       task :groom_myself do
         puts "Brushed teeth."
         puts "Showered."
         puts "Shaved."
       end
-      ...
     end
     
     namespace :morning do
       task :groom_myself do
         puts "Styled hair."
       end
-    end]]>
+    end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     rake morning:groom_myself
     Brushed teeth.
     Showered.
     Shaved.
-    Styled hair.]]>
+    Styled hair.
   </script>
 </section><section id="invoking-tasks" class="slide">
   <h2>Invoking tasks</h2>
   <p>
     You may at some point want to invoke a task from inside another task. Let’s say, for example, you wanted to make coffee in the afternoon, too. If you need an extra upper after lunch you could do that the following way:
   </p>
+  Rakefile
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-    # file Rakefile
-    ...
     namespace :afternoon do
       task :make_coffee do
         Rake::Task['morning:make_coffee'].invoke
         puts "Ready for the rest of the day!"
       end
-    end]]>
+    end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     rake afternoon:make_coffee
     Made a cup of coffee. Shakes are gone.
-    Ready for the rest of the day!]]>
+    Ready for the rest of the day!
   </script>
 </section><section id="invoking-and-executing" class="slide">
   <h2>Invoking and executing</h2>
   <h3>Invoke</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-    Rake::Task["morning:make_coffee"].invoke]]>
+    Rake::Task["morning:make_coffee"].invoke
   </script>
   <p>
     This one executes the dependencies, but it only executes the task if it has not already been invoked.
   </p>
   <h3>Reenable</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     Rake::Task["morning:make_coffee"].reenable
-    Rake::Task["morning:make_coffee"].invoke]]>
+    Rake::Task["morning:make_coffee"].invoke
   </script>
   <p>
     This first resets the task's already_invoked state, allowing the task to then be executed again, dependencies and all.
   </p>
   <h3>Execute</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-    Rake::Task["morning:make_coffee"].execute]]>
+    Rake::Task["morning:make_coffee"].execute
   </script>
   <p>
     This always executes the task, but it doesn't execute its dependencies.
@@ -299,69 +272,54 @@
 </section><section id="using-named-variable" class="slide">
   <h2>Passing parameters to tasks</h2>
   <h3>Using a named variable</h3>
+  Rakefile
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-    # file Rakefile
     namespace :morning do
-      ...
       desc "Make coffee"
       task :make_coffee do
         cups = ENV['cups']
         puts "Made #{cups} cups of coffee. Shakes are gone."
       end
-      ...
     end
-    ]]>
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     rake morning:make_coffee cups=2
-    Made 2 cups of coffee. Shakes are gone.]]>
+    Made 2 cups of coffee. Shakes are gone.
   </script>
 </section><section id="using-arguments" class="slide">
   <h2>Passing parameters to tasks</h2>
   <h3>Using arguments</h3>
+  Rakefile
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-    # file Rakefile
     namespace :morning do
-      ...
       desc "Make coffee"
       task :make_coffee, :cups do |t, args|
         cups = args.cups
         puts "Made #{cups} cups of coffee. Shakes are gone."
       end
-      ...
     end
-    ]]>
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     rake morning:make_coffee[2]
-    Made 2 cups of coffee. Shakes are gone.]]>
+    Made 2 cups of coffee. Shakes are gone.
   </script>
 </section><section id="custom-black-magic" class="slide">
   <h2>Passing parameters to tasks</h2>
   <h3>Custom black magic</h3>
+  Rakefile
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-    # file Rakefile
     namespace :morning do
-      ...
       desc "Make coffee"
-      task :make_coffee, :cups do |t, args|
+      task :make_coffee do
         cups = ARGV.last
         puts "Made #{cups} cups of coffee. Shakes are gone."
         task cups.to_sym do ; end
       end
-      ...
     end
-    ]]>
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     rake morning:make_coffee 2
-    Made 2 cups of coffee. Shakes are gone.]]>
+    Made 2 cups of coffee. Shakes are gone.
   </script>
   <p>A few things are happening here that are worth an explanation:</p>
   <ol>
@@ -380,10 +338,8 @@
     <li>Rake has to be required</li>
     <li>The Rake file under test has to be manually loaded</li>
   </ul>
+  spec/morning_rake_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-    # file spec/morning_rake_spec.rb
-
     require 'rake'
 
     describe 'morning namespace rake task' do
@@ -421,14 +377,13 @@
           end
         end
       end
-    end]]>
+    end
   </script>
 </section><section id="test-implementation" class="slide">
   <h2>How to test it</h2>
   <h3>Implementation</h3>
+  Rakefile
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-    # file Rakefile
     class Coffee
       def initialize cups = 1
       end
@@ -442,10 +397,8 @@
         puts "Made #{cups} cups of coffee. Shakes are gone."
       end
     end
-    ]]>
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     rspec spec/morning_rake_spec.rb
     Made 1 cups of coffee. Shakes are gone.
     ..Made 2 cups of coffee. Shakes are gone.
@@ -453,7 +406,6 @@
 
     Finished in 0.97735 seconds
     4 examples, 0 failures
-    ]]>
   </script>
 </section><!-- End slides. -->
 

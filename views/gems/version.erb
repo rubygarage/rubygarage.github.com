@@ -2,34 +2,31 @@
   <h2>Gem structure</h2>
   <h3>lib/new_gem/version.rb</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     module NewGem
       VERSION = "0.0.1"
-    end]]>
+    end
   </script>
 
   <div id="gem-structure-gemfile" class="slide">
     <h3>Gemfile</h3>
     <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[
       source 'https://rubygems.org'
 
       # Specify your gem dependencies in new_gem.gemspec
-      gemspec]]>
+      gemspec
     </script>
   </div>
 
   <div id="gem-dependencies" class="slide">
     <h3>new_gem.gemspec</h3>
     <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[
       # ...
       Gem::Specification.new do |gem|
         # ...
 
         gem.add_dependency "sqlite3"
         gem.add_development_dependency "rspec"
-      end]]>
+      end
     </script>
   </div>
 </section>

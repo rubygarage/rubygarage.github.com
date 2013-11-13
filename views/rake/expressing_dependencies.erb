@@ -1,16 +1,14 @@
 <section id="expressing-dependencies" class="slide">
   <h2>Expressing dependencies</h2>
+  Rakefile
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-    # file Rakefile
-    ...
+    # ...
 
     task :ready_for_the_day => [:turn_off_alarm, :groom_myself, :make_coffee, :walk_dog] do
       puts "Ready for the day!"
-    end]]>
+    end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     rake ready_for_the_day
     Turned off alarm. Would have liked 5 more minutes, though.
     Brushed teeth.
@@ -18,7 +16,7 @@
     Shaved.
     Made a cup of coffee. Shakes are gone.
     Dog walked.
-    Ready for the day!]]>
+    Ready for the day!
   </script>
   <p>
     By running the <i>ready_for_the_day</i> task it notices that the <i>turn_off_alarm</i>, <i>groom_myself</i>, <i>make_coffee</i>, and <i>walk_dog</i> tasks are all prerequisites of the <i>ready_for_the_day</i> task. Then it runs them all in the appropriate order.
@@ -26,16 +24,15 @@
   <p>
     Dependencies can be specified not only when defining the task, but also later, depending on the run time conditions.
   </p>
+  Rakefile
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-    # file Rakefile
-    ...
+    # ...
 
     task :ready_for_the_day do
       puts "Ready for the day!"
     end
 
-    task :ready_for_the_day => [:turn_off_alarm, :groom_myself, :make_coffee, :walk_dog]]]>
+    task :ready_for_the_day => [:turn_off_alarm, :groom_myself, :make_coffee, :walk_dog]
   </script>
   <p>Effect will be the same.</p>
 </section>
