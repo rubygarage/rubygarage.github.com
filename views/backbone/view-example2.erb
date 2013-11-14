@@ -3,44 +3,42 @@
 
   <strong>new_view.js.coffee</strong>
   <script type="syntaxhighlighter" class="brush: js">
-    <![CDATA[
-      Blog.Views.Posts ||= {}
+    Blog.Views.Posts ||= {}
 
-      class Blog.Views.Posts.NewView extends Backbone.View
-        template: JST["backbone/templates/posts/new"]
+    class Blog.Views.Posts.NewView extends Backbone.View
+      template: JST["backbone/templates/posts/new"]
 
-        events:
-          "submit #new-post": "save"
+      events:
+        "submit #new-post": "save"
 
-        constructor: (options) ->
-          super(options)
-          @model = new @collection.model()
+      constructor: (options) ->
+        super(options)
+        @model = new @collection.model()
 
-          @model.bind("change:errors", () =>
-            this.render()
-          )
+        @model.bind("change:errors", () =>
+          this.render()
+        )
 
-        save: (e) ->
-          e.preventDefault()
-          e.stopPropagation()
+      save: (e) ->
+        e.preventDefault()
+        e.stopPropagation()
 
-          @model.unset("errors")
+        @model.unset("errors")
 
-          @collection.create(@model.toJSON(),
-            success: (post) =>
-              @model = post
-              window.location.hash = "/#{@model.id}"
+        @collection.create(@model.toJSON(),
+          success: (post) =>
+            @model = post
+            window.location.hash = "/#{@model.id}"
 
-            error: (post, jqXHR) =>
-              @model.set({errors: $.parseJSON(jqXHR.responseText)})
-          )
+          error: (post, jqXHR) =>
+            @model.set({errors: $.parseJSON(jqXHR.responseText)})
+        )
 
-        render: ->
-          $(@el).html(@template(@model.toJSON() ))
+      render: ->
+        $(@el).html(@template(@model.toJSON() ))
 
-          this.$("form").backboneLink(@model)
+        this.$("form").backboneLink(@model)
 
-          return this
-    ]]>
+        return this
   </script>
 </section>

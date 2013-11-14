@@ -2,7 +2,6 @@
   <h2>Proc vs lambda</h2>
   <h3>Lambdas have lesser returns</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     def proc_return
       Proc.new { return "Proc.new" }.call
       return "proc_return return"
@@ -17,7 +16,6 @@
     => "Proc.new"
 
     lambda_return
-    => "lambda_return return"   
-  ]]>
+    => "lambda_return return"
   </script>
 </section>

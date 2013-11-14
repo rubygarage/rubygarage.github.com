@@ -1,14 +1,12 @@
 <section id="array" class="slide">
   <h2>Array</h2>
+  Follow by <a href="http://ruby-doc.org/core-2.0/Array.html" target="_blank">http://ruby-doc.org/core-2.0/Array.html</a> for more information
   <h3>Creating</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     > [[1, 2, 3], 10, 3.14, "This is a string", barnet("pebbles")]
     => [[1, 2, 3], 10, 3.14, "This is a string", "pebbles results"]
-  ]]>
   </script>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     > Array.new
     => []
     
@@ -23,18 +21,13 @@
     
     > Array({:a => "a", :b => "b"})
     => [[:a, "a"], [:b, "b"]]
-  ]]>
   </script>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     > %w(monkey fish lion dog cat #{Time.now})
     => ["monkey", "fish", "lion", "dog", "cat", "\#{Time.now}"]
-  ]]>
   </script>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     > %W(monkey fish lion dog cat #{Time.now})
     => ["monkey", "fish", "lion", "dog", "cat", "2013-05-03 12:24:42 +0300"]
-  ]]>
   </script>
 </section>

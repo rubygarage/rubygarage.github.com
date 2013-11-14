@@ -1,15 +1,15 @@
 <section id="file" class="slide">
   <h2>File</h2>
+  <p>
+    Follow by <a href="http://www.ruby-doc.org/core-2.0.0/File.html" target="_blank">http://www.ruby-doc.org/core-2.0.0/File.html</a> for more information.
+  </p>
   new
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     File.new("tmp.txt", "w")
     => #<File:tmp.txt>
-  ]]>
   </script>
   open, close
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     f = File.open("tmp.txt", "r")
     => #<File:tmp.txt>
 
@@ -20,6 +20,5 @@
     
     f.closed?
     => true
-  ]]>
   </script>
 </section>

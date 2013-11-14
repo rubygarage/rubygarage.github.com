@@ -2,25 +2,22 @@
   <h2>Testing</h2>
   <h3>Add rspec to new_gem.gemspec</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     # ...
     Gem::Specification.new do |gem|
       # ...
       gem.add_development_dependency "rspec"
-    end]]>
+    end
   </script>
   <div id="spec-helper" class="slide">
     <h3>spec/spec_helper.rb</h3>
     <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     require 'bundler/setup'
-    require 'new_gem']]>
+    require 'new_gem'
     </script>
   </div>
   <div id="new-gem-spec" class="slide">
     <h3>spec/new_gem_spec.rb</h3>
     <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     require 'spec_helper'
 
     describe NewGem do
@@ -29,7 +26,7 @@
           NewGem.name.should == "New Gem"
         end
       end
-    end]]>
+    end
     </script>
   </div>
 </section>

@@ -1,7 +1,6 @@
 <section id="set-and-get-attributes" class="slide">
   <h2>Creating methods for set and get attributes</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     class BookInStock
       def initialize(title, author, price)
         @title = title
@@ -26,6 +25,5 @@
 
     book.price      # => NoMethodError: undefined method `price'
     book.price = 10 # => NoMethodError: undefined method `price='
-    ]]>
   </script>
 </section>

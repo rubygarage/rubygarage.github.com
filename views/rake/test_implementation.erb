@@ -1,9 +1,8 @@
 <section id="test-implementation" class="slide">
   <h2>How to test it</h2>
   <h3>Implementation</h3>
+  Rakefile
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-    # file Rakefile
     class Coffee
       def initialize cups = 1
       end
@@ -17,10 +16,8 @@
         puts "Made #{cups} cups of coffee. Shakes are gone."
       end
     end
-    ]]>
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     rspec spec/morning_rake_spec.rb
     Made 1 cups of coffee. Shakes are gone.
     ..Made 2 cups of coffee. Shakes are gone.
@@ -28,6 +25,5 @@
 
     Finished in 0.97735 seconds
     4 examples, 0 failures
-    ]]>
   </script>
 </section>

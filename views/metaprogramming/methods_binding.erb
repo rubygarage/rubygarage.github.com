@@ -1,27 +1,27 @@
 <section class="slide" id="methods-binding">
   <h2 class="not-capitalized">Method Objects binding</h2>
-  <div class="row">
   <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[
-class MyClass
-  def initialize(value)
-    @x = value
-  end
+    class MyClass
+      def initialize(value)
+        @x = value
+      end
 
-  def my_method
-    @x
-  end
-end
+      def my_method
+        @x
+      end
+    end
 
-object = MyClass.new(1)
-m = object.method(:my_method)
-m.call                    # => 1
+    class MyClass2 < MyClass
+    end
 
-unbound = m.unbind
-another_object = MyClass.new(2)
-m = unbound.bind(another_object)
-m.call                    # => 2
-      ]]>
-</script>
-</div>
+    object = MyClass.new(1)
+    m = object.method(:my_method)
+    m.call # => 1
+
+    unbound = m.unbind
+
+    another_object = MyClass2.new(2)
+    m = unbound.bind(another_object)
+    m.call # => 2
+  </script>
 </section>

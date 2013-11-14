@@ -2,3 +2,4 @@
 .sass-cache/
 .rvmrc
 *.swp
+.ruby-gemset

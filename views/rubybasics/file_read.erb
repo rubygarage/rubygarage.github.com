@@ -3,7 +3,6 @@
   <h3>Read</h3>
   read
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     File.read("tmp.txt")
     => "This is line one\nThis is line two\nThis is line three\nAnd so on...\n"
 
@@ -12,21 +11,17 @@
 
     File.read("tmp.txt", 20, 10)
     => "ne one\nThis is line "
-  ]]>
   </script>
   gets
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     f = File.open("tmp.txt", "r")
     
     while line = f.gets
       print line
     end
-  ]]>
   </script>
   readlines
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     a = File.readlines("tmp.txt")
 
     a[0]
@@ -34,16 +29,13 @@
 
     a[1]
     => "This is line two\n"
-  ]]>
   </script>
   each
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     f = File.open("tmp.txt", "r")
 
     f.each do |line|
       print line
     end
-  ]]>
   </script>
 </section>

@@ -5,20 +5,18 @@
   <p>When specifying interactions with a test double, the order of the calls is rarely important. In fact, the ideal situation is to specify only a single call. But sometimes, we need to specify that messages are sent in a specific order.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      describe Roster do
-        it "asks database for count before adding" do
-          database = double()
-          student = double()
+    describe Roster do
+      it "asks database for count before adding" do
+        database = double()
+        student = double()
 
-          database.should_receive(:count).with('Roster', :course_id => 37).ordered
-          database.should_receive(:add).with(student).ordered
+        database.should_receive(:count).with('Roster', :course_id => 37).ordered
+        database.should_receive(:add).with(student).ordered
 
-          roster = Roster.new(37, database)
-          roster.register(student)
-        end
+        roster = Roster.new(37, database)
+        roster.register(student)
       end
-    ]]>
+    end
   </script>
 
   <p>This example will pass only if the <strong>count( )</strong> and <strong>add( )</strong> messages are sent with the correct arguments and in the same order.</p>

@@ -4,46 +4,38 @@
   <p>A <strong>method stub</strong> is a method that we can program to return predefined responses during the execution of a code example.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      describe Statement do
-        it "uses the customer's name in the header" do
-          customer = double('customer')
-          customer.stub(:name).and_return('Aslak')
-          statement = Statement.new(customer)
-          statement.generate.should =~ /^Statement for Aslak/
-        end
+    describe Statement do
+      it "uses the customer's name in the header" do
+        customer = double('customer')
+        customer.stub(:name).and_return('Aslak')
+        statement = Statement.new(customer)
+        statement.generate.should =~ /^Statement for Aslak/
       end
-    ]]>
+    end
   </script>
 
   <p>Method stubs can return different values on different calls: this will return 5.5% when a message for interest_rate is received <strong>for the first time</strong>, but will return 3% for subsequent calls/messages.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      HomeLoan.stub(interest_rate).and_return('5.5%', '3%')
-    ]]>
+    HomeLoan.stub(interest_rate).and_return('5.5%', '3%')
   </script>
 
   <p>The mock object can be created with stubbed methods at once.</p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      customer = double('customer', name: 'Aslak')
-      obj = mock('object', created_at: { Time.now })
-    ]]>
+    customer = double('customer', name: 'Aslak')
+    obj = mock('object', created_at: { Time.now })
   </script>
 
   <p>Stub methods can return values depending on the arguments.</p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      ages = double('ages')
-      ages.stub(:age_for) do |what|
-        if what == 'drinking'
-          21
-        elsif what == 'voting'
-          18
-        end
+    ages = double('ages')
+    ages.stub(:age_for) do |what|
+      if what == 'drinking'
+        21
+      elsif what == 'voting'
+        18
       end
-    ]]>
+    end
   </script>
 </section>
 
@@ -53,24 +45,18 @@
   <p>Besides returning a value, method stub can yield a block, raise an exception, or throw the message.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      class Triviality
-        def one_two_three
-          yield self
-        end
+    class Triviality
+      def one_two_three
+        yield self
       end
+    end
 
-      triviality.stub(:one_two_three).and_yield(triviality)
-      triviality.one_two_three { }
-    ]]>
+    triviality.stub(:one_two_three).and_yield(triviality)
+    triviality.one_two_three { }
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      double.stub(:msg).and_raise(NoMethodError)
-
-      double.stub(:msg).and_throw(:msg)
-    ]]>
+    double.stub(:msg).and_raise(NoMethodError)
+    double.stub(:msg).and_throw(:msg)
   </script>
-
 </section>

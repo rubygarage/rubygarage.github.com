@@ -4,27 +4,23 @@
   <p>A message expectation is an expectation that the test double will receive a message some time before the example ends. If the message is received, the expectation is satisfied. If not, the example fails.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      describe Zipcode do
-        context "when created" do
-          it "validates a record with provided validator" do
-            validator = double("validator")
-            validator.should_receive(:validate)
+    describe Zipcode do
+      context "when created" do
+        it "validates a record with provided validator" do
+          validator = double("validator")
+          validator.should_receive(:validate)
 
-            zipcode = Zipcode.new("02134", validator)
-            zipcode.valid?
-          end
+          zipcode = Zipcode.new("02134", validator)
+          zipcode.valid?
         end
       end
-    ]]>
+    end
   </script>
 
   <p>For a negative expectation, the <strong>should_not_receive</strong> method is provided</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      network_double.stub(:ping).and_return(false)
-      network_double.should_not_receive(:open_connection)
-    ]]>
+    network_double.stub(:ping).and_return(false)
+    network_double.should_not_receive(:open_connection)
   </script>
 </section>

@@ -2,24 +2,22 @@
   <h2>Methods with shared variable</h2>
   <div class="row">
   <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[
-def define_methods
-  shared = 0
+    def define_methods
+      shared = 0
 
-  Kernel.send :define_method, :counter do
-    shared
-  end
+      Kernel.send :define_method, :counter do
+        shared
+      end
 
-  Kernel.send :define_method, :inc do |x|
-    shared += x
-  end
-end
+      Kernel.send :define_method, :inc do |x|
+        shared += x
+      end
+    end
 
-define_methods
-puts counter    # => 0
-inc(4)
-puts counter    # => 4
-      ]]>
+    define_methods
+    puts counter    # => 0
+    inc(4)
+    puts counter    # => 4
   </script>
 </div>
 </section>

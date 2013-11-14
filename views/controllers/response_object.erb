@@ -2,7 +2,6 @@
   <h2>Response object</h2>
   app/controllers/application_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     class ApplicationController < ActionController::Base
       after_action :check_response
       ...
@@ -12,7 +11,6 @@
         send_admin_email if response.status == 404
       end
     end
-  ]]>
   </script>
   <table class="table">
     <thead>

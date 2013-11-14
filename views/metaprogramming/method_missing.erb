@@ -2,17 +2,15 @@
   <h2>Method missing</h2>
   <p>When you send a message to an object, the object executes the first method it finds on its method lookup path with the same name as the message. If it fails to find any such method, it end up with <strong>method_missing</strong> method, where a NoMethodError exception is raised unless you have provided other behavior for it. The method_missing method is passed the symbol of the non-existent method, an array of the arguments that were passed in the original call and any block passed to the original method.</p>
 
-    <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[
-class Person
-  def method_missing (meth, *args, &block)
-    if met.to_s =~ /^find_all_by_(\w+)$/
-      "Looking for the Person"
-    else
-      super
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class Person
+      def method_missing (meth, *args, &block)
+        if meth.to_s =~ /^find_all_by_(\w+)$/
+          "Looking for the Person"
+        else
+          super
+        end
+      end
     end
-  end
-end
-  ]]>
   </script>
 </section>

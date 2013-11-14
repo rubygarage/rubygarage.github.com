@@ -1,38 +1,49 @@
 <section class="slide" id="hooks">
   <h2>Hook methods</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[
-class String
-  def self.inherited(subclass)
-    puts "#{self} was inherited by #{subclass}"
-  end
-end
+    class String
+      def self.inherited(subclass)
+        puts "#{self} was inherited by #{subclass}"
+      end
+    end
 
-class MyStrin < String; end
+    module M
+      def self.included(othermod)
+        puts "M was mixed in #{othermod}"
+      end
 
-module M
-  def self.included(othermod)
-    puts "M was mixed in #{othermod}"
-  end
+      def self.method_added(method)
+        puts "New method: M##{method}"
+      end
 
-  def self.method_added(method)
-    puts "New method: M##{method}"
-  end
+      def my_method; end
+    end
 
-  def my_method; end
-end
+    class MyString < String
+      include M
 
-class C; include M; end
-      ]]>
+      def singleton_method_added(method)
+        puts "New singleton method: #{method}"
+      end
+
+      def method_missing(method, *args, &block)
+        puts "not existing method #{method} was called"
+      end
+    end
+
+    str = MyString.new
+    str.yay!
+
+    def str.yay_method
+    end
   </script>
-
   <script type="syntaxhighlighter" class="brush: bash">
-      <![CDATA[
->> ruby test.rb
-
-String was inherited by MyString
-New method: M#my_method
-M was mixed into C
-      ]]>
+    >> ruby hooks.rb
+    
+    New method: M#my_method
+    String was inherited by MyString
+    M was mixed in MyString
+    not existing method yay! was called
+    New singleton method: yay_method
   </script>
 </section>

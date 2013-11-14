@@ -2,58 +2,50 @@
   <h2>Spec::Matchers</h2>
   <h3>Eql matcher</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      should eql(expected)
-      should_not eql(expected)
-    ]]>
+    should eql(expected)
+    should_not eql(expected)
   </script>
   <p>
     Passes if given and expected are of equal value, but not necessarily the same object.
   </p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      describe "a string" do
-        context "#eq" do
-          it "is equal to another string of the same value" do
-            "this string".should eq("this string")
-          end
-        end
-        context "#==" do
-          it "is equal to another string of the same value" do
-            "this string".should == "this string"
-          end
+    describe "a string" do
+      context "#eq" do
+        it "is equal to another string of the same value" do
+          "this string".should eq("this string")
         end
       end
-    ]]>
+      context "#==" do
+        it "is equal to another string of the same value" do
+          "this string".should == "this string"
+        end
+      end
+    end
   </script>
   <div id="equal" class="slide">
     <h3>Equal matcher</h3>
     <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[
-        should equal(expected)
-        should_not equal(expected)
-      ]]>
+      should equal(expected)
+      should_not equal(expected)
     </script>
     <p>
       Passes if given and expected are the same object (object identity).
     </p>
     <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[
-        describe "a string" do
-          context "#equal" do
-            it "is equal to itself" do
-              string = "this string"
-              string.should equal(string)
-            end
-          end
-          context "#===" do
-            it "is equal to itself" do
-              string = "this string"
-              string.should === string
-            end
+      describe "a string" do
+        context "#equal" do
+          it "is equal to itself" do
+            string = "this string"
+            string.should equal(string)
           end
         end
-      ]]>
+        context "#===" do
+          it "is equal to itself" do
+            string = "this string"
+            string.should === string
+          end
+        end
+      end
     </script>
   </div>
 </section>

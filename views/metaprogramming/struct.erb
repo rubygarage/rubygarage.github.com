@@ -1,7 +1,9 @@
 <section id="struct" class="slide">
   <h2>Struct</h2>
+  <p>
+    Follow by <a href="http://www.ruby-doc.org/core-2.0.0/Struct.html" target="_blank">http://www.ruby-doc.org/core-2.0.0/Struct.html</a> for more information.
+  </p>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     Customer = Struct.new(:name, :address, :zip)
     => Customer
     
@@ -13,10 +15,8 @@
     joe[:name]
     joe[0]
     => "Joe Smith"
-  ]]>
   </script>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     Customer = Struct.new(:name, :address) do
       def greeting
         "Hello #{name}!"
@@ -24,6 +24,9 @@
     end
     Customer.new("Dave", "123 Main").greeting 
     => "Hello Dave!"
-  ]]>
   </script>
+  <div class="slide" id="struct-homework">
+    <h3>Homework</h3>
+    <p>Please implement your own class 'Factory' which will have the same behavior as 'Struct' class.</p>
+  </div>
 </section>

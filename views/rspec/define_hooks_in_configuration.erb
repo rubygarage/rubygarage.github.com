@@ -1,7 +1,6 @@
 <section id="hooks-in-configuration" class="slide">
   <h2>Define hooks in configuration</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
   # file spec/callbacks_spec.rb
 
   RSpec.configure do |config|
@@ -38,10 +37,9 @@
     it "run" do
       puts "test 2"
     end
-  end]]>
+  end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
   rspec spec/callbacks_spec.rb 
   before suite
   before all
@@ -52,6 +50,6 @@
   test 2
   after each
   after all
-  after suite]]>
+  after suite
   </script>
 </section>

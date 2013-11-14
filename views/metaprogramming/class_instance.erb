@@ -2,30 +2,28 @@
   <h2 class="not-capitalized">Class plus instance methods</h2>
   <div class="row">
   <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[
-module MyMixin
+    module MyMixin
+      def self.included(base)
+        base.extend ClassMethods
+      end
 
-  def self.included(base)
-    base.extend ClassMethods
-  end
+      def x
+        "x()"
+      end
 
-  def x
-    "x()"
-  end
-
-  module ClassMethods
-    def y
-      "y()"
+      module ClassMethods
+        def y
+          "y()"
+        end
+      end
     end
-  end
-  
-end
 
-class C; include MyMixin; end
+    class C
+      include MyMixin
+    end
 
-C.new.x         # => x()
-C.y             # => y()
-      ]]>
+    C.new.x         # => x()
+    C.y             # => y()
   </script>
 </div>
 </section>

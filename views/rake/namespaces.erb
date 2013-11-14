@@ -3,18 +3,16 @@
   <p>
     Rake supports the concept of namespaces which essentially lets you group together similar tasks inside of one namespace. You’d then specify the namespace when you call a task inside it. It keeps things tidy while still being quite effective.
   </p>
+  Rakefile
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-    # file Rakefile
     namespace :morning do
       task :turn_of_alarm
-      ....
-    end]]>
+      # ...
+    end
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     rake morning:ready_for_the_day
-    ...]]>
+    ...
   </script>
 </section>

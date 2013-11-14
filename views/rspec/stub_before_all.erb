@@ -6,7 +6,6 @@
   <p>Stubs in before(:all) are not supported. The reason is that all stubs and mocks get cleared out after each example, so any stub that is set in before(:all) would work in the first example that happens to run in that group, but not for any others.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     module RSpec
       module Mocks
         ...
@@ -26,6 +25,5 @@
         expectation_ordering.clear
       end
     end
-  ]]>
 </script>
 </section>

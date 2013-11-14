@@ -2,23 +2,20 @@
   <h2>rescue_from</h2>
   app/controllers/application_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      class ApplicationController < ActionController::Base
-        rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
-       
-        private
-       
-        def record_not_found
-          render text: "404 Not Found", status: 404
-        end
+    class ApplicationController < ActionController::Base
+      rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
+     
+      private
+     
+      def record_not_found
+        render text: "404 Not Found", status: 404
       end
-    ]]>
+    end
   </script>
 
   <div class="slide" id="autorization-rescue">
     app/controllers/application_controller.rb
     <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       class ApplicationController < ActionController::Base
         rescue_from User::NotAuthorized, with: :user_not_authorized
        
@@ -43,7 +40,6 @@
           raise User::NotAuthorized unless current_user.admin?
         end
       end
-    ]]>
     </script>
   </div>
 </section>

@@ -3,24 +3,20 @@
   <h3>Expecting Arguments</h3>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      double.should_receive(:msg).with(*args)
-      double.should_not_receive(:msg).with(*args)
-    ]]>
+    double.should_receive(:msg).with(*args)
+    double.should_not_receive(:msg).with(*args)
   </script>
 
   <p>Arguments that are passed to with are compared with actual arguments received using ==. In cases in which you want to specify things about the arguments rather than the arguments themselves, you can use any of the matchers that ship with rspec-expectations.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-      double.should_receive(:msg).with(no_args())
-      double.should_receive(:msg).with(any_args())
-      double.should_receive(:msg).with(1, kind_of(Numeric), "b") #2nd argument can be any kind of Numeric
-      double.should_receive(:msg).with(1, boolean(), "b") #2nd argument can be true or false
-      double.should_receive(:msg).with(1, /abc/, "b") #2nd argument can be any String matching the submitted Regexp
-      double.should_receive(:msg).with(1, anything(), "b") #2nd argument can be anything at all
-      double.should_receive(:msg).with(1, duck_type(:abs, :div), "b")
-                          #2nd argument can be object that responds to #abs and #div
-    ]]>
+    double.should_receive(:msg).with(no_args())
+    double.should_receive(:msg).with(any_args())
+    double.should_receive(:msg).with(1, kind_of(Numeric), "b") #2nd argument can be any kind of Numeric
+    double.should_receive(:msg).with(1, boolean(), "b") #2nd argument can be true or false
+    double.should_receive(:msg).with(1, /abc/, "b") #2nd argument can be any String matching the submitted Regexp
+    double.should_receive(:msg).with(1, anything(), "b") #2nd argument can be anything at all
+    double.should_receive(:msg).with(1, duck_type(:abs, :div), "b")
+                        #2nd argument can be object that responds to #abs and #div
   </script>
 </section>

@@ -3,7 +3,6 @@
   <h3>Removing items</h3>
   delete
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     h = { "a" => 100, "b" => 200 }
     
     h.delete("a")
@@ -11,29 +10,23 @@
     
     h.delete("z")
     => nil
-  ]]>
   </script>
   delete_if
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     h = { "a" => 100, "b" => 200, "c" => 300 }
 
     h.delete_if {|key, value| value > 100 }   
     => {"a"=>100}
-  ]]>
   </script>
   keep_if
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     h = { "a" => 100, "b" => 200, "c" => 300 }
 
     h.keep_if {|key, value| value > 100 }   
     => {"b"=>200, "c"=>300}
-  ]]>
   </script>
   shift
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     h = { 1 => "a", 2 => "b", 3 => "c" }
 
     h.shift
@@ -41,6 +34,5 @@
 
     h
     => {2=>"b", 3=>"c"}
-  ]]>
   </script>
 </section>

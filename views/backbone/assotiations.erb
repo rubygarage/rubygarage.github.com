@@ -3,25 +3,23 @@
 
   <strong>post.js.coffee</strong>
   <script type="syntaxhighlighter" class="brush: js">
-    <![CDATA[
-      class Blog.Models.Post extends Backbone.Model
-        paramRoot: 'post'
+    class Blog.Models.Post extends Backbone.Model
+      paramRoot: 'post'
 
-        defaults:
-          title: null
-          body: null
+      defaults:
+        title: null
+        body: null
 
-        initialize: ->
-          @on('change:comments', @parseComments)
-          @parseComments()
+      initialize: ->
+        @on('change:comments', @parseComments)
+        @parseComments()
 
-        parseComments: =>
-          json = @get('comments')
-          if @comments
-            @comments.reset(json)
-          else
-            @comments = new Blog.Collections.PostsCollection(json)
-    ]]>
+      parseComments: =>
+        json = @get('comments')
+        if @comments
+          @comments.reset(json)
+        else
+          @comments = new Blog.Collections.PostsCollection(json)
   </script>
 
   <br/>

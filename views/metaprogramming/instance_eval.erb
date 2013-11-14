@@ -1,31 +1,25 @@
-<section class="slide" id="instance_eval">
+<section class="slide" id="instance-eval">
   <h2 class="not-capitalized">instance_eval and instance_exec</h2>
   <p><strong>instance_eval</strong> method evaluates a string containing Ruby source code, or the given block, within the context of the receiver (obj).</p>
   <div class="row">
   <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[class MyClass
-  def initialize
-    @v = 1
-  end
-end
+    class MyClass
+      def initialize
+        @v = 1
+      end
+    end
 
-obj = MyClass.new
-obj.instance_eval do
-  self    # => #<MyClass:0x3340dc @v=1>
-  @v      # => 1
-end
-      ]]>
-  </script>
-<br/>
-  <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[
-v=2
-obj.instance_eval { @v = v }
-obj.instance_eval { @v }    # => 2
+    obj = MyClass.new
+    obj.instance_eval do
+      self    # => #<MyClass:0x3340dc @v=1>
+      @v      # => 1
+    end
+    
+    v=2
+    obj.instance_eval { @v = v }
+    obj.instance_eval { @v }    # => 2
 
-obj.instance_exec(3) { |multiplier| @v * multiplier } # => 6
-
-      ]]>
+    obj.instance_exec(3) { |multiplier| @v * multiplier } # => 6
   </script>
 </div>
 </section>

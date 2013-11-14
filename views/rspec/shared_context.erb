@@ -4,7 +4,6 @@
     Use shared_context to define a block that will be evaluated in the context of example groups either explicitly, using include_context, or implicitly by matching metadata.
   </p>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
   shared_context "shared stuff", :a => :b do
     before { @some_var = :some_value }
 
@@ -55,14 +54,13 @@
     it "accesses the subject defined in the shared context" do
       subject.should eq('this is the subject')
     end
-  end]]>
+  end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
   rspec spec/shared_stuff_spec.rb 
   ........
 
   Finished in 0.00758 seconds
-  8 examples, 0 failures]]>
+  8 examples, 0 failures
   </script>
 </section>

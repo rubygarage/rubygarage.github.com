@@ -3,21 +3,18 @@
   <p>
     You may at some point want to invoke a task from inside another task. Let’s say, for example, you wanted to make coffee in the afternoon, too. If you need an extra upper after lunch you could do that the following way:
   </p>
+  Rakefile
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-    # file Rakefile
-    ...
     namespace :afternoon do
       task :make_coffee do
         Rake::Task['morning:make_coffee'].invoke
         puts "Ready for the rest of the day!"
       end
-    end]]>
+    end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     rake afternoon:make_coffee
     Made a cup of coffee. Shakes are gone.
-    Ready for the rest of the day!]]>
+    Ready for the rest of the day!
   </script>
 </section>

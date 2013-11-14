@@ -1,38 +1,33 @@
 <section class="slide" id="to_proc">
   <h2 class="not-capitalized">Convert the block to a Proc</h2>
-
   <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[
-class Array
-  def iterate!(&code)
-    self.each_with_index do |n, i|
-      self[i] = code.call(n)
+    class Array
+      def iterate!(&code)
+        self.each_with_index do |n, i|
+          self[i] = code.call(n)
+        end
+      end
     end
-  end
-end
 
-array = [1, 2, 3, 4]
+    array = [1, 2, 3, 4]
 
-array.iterate! do |n|
-  n ** 2
-end
+    array.iterate! do |n|
+      n ** 2
+    end
 
-puts array.inspect
+    puts array.inspect
 
-# => [1, 4, 9, 16]
-      ]]>
+    # => [1, 4, 9, 16]
   </script>
 
 
   <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[
-def what_am_i(&block)
-  block.class
-end
+    def what_am_i(&block)
+      block.class
+    end
 
-puts what_am_i {}
+    puts what_am_i {}
 
-# => Proc
-      ]]>
+    # => Proc
   </script>
 </section>

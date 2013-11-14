@@ -3,32 +3,27 @@
   <p>
     Let’s say you want to add on to an existing task. Perhaps you have another item in your grooming routine like styling your hair. You could write another task and slip it in as a dependency for groom_myself but you could also redefine groom_myself.
   </p>
+  Rakefile
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-    # file Rakefile
-    
     namespace :morning do
-      ...
       task :groom_myself do
         puts "Brushed teeth."
         puts "Showered."
         puts "Shaved."
       end
-      ...
     end
     
     namespace :morning do
       task :groom_myself do
         puts "Styled hair."
       end
-    end]]>
+    end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     rake morning:groom_myself
     Brushed teeth.
     Showered.
     Shaved.
-    Styled hair.]]>
+    Styled hair.
   </script>
 </section>

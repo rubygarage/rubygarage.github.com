@@ -2,39 +2,35 @@
   <h2>Method aliases</h2>
   <div class="row">
   <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[
-class MyClass
-  def my_method; 'my_method'; end
-  alias :m :my_method
-end
+    class MyClass
+      def my_method; 'my_method'; end
+      alias :m :my_method
+    end
 
-obj = MyClass.new
-obj.my_method     # => 'my_method'
-obj.m             # => 'my_method'
+    obj = MyClass.new
+    obj.my_method     # => 'my_method'
+    obj.m             # => 'my_method'
 
-class MyClass
-  alias_method :m2, :m
-end
-obj.m2            # => 'my_method'
-      ]]>
+    class MyClass
+      alias_method :m2, :m
+    end
+    obj.m2            # => 'my_method'
   </script>
-</div>
+  </div>
 
   <h2 class="not-capitalized">What happens if you alias a method and then redefine it?</h2>
   <div class="row">
   <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[
-class String
-  alias :real_length :length
+    class String
+      alias :real_length :length
 
-  def length
-    real_length > 5 ? 'long' : 'short'
-  end
-end
+      def length
+        real_length > 5 ? 'long' : 'short'
+      end
+    end
 
-"War and Peace".real_length   # => 13
-"War and Peace".length        # => 'long'
-      ]]>
+    "War and Peace".real_length   # => 13
+    "War and Peace".length        # => 'long'
   </script>
-</div>
+  </div>
 </section>

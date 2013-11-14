@@ -4,33 +4,31 @@
     Use subject in the group scope to explicitly define the value that is returned by the subject method in the example scope.
   </p>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
-  # file spec/array_spec.rb
+    # file spec/array_spec.rb
 
-  describe Array, "with some elements" do
-    subject { [1,2,3] }
+    describe Array, "with some elements" do
+      subject { [1,2,3] }
 
-    it { should_not be_empty }
+      it { should_not be_empty }
 
-    it "should have the prescribed elements" do
-      subject.should == [1,2,3]
+      it "should have the prescribed elements" do
+        subject.should == [1,2,3]
+      end
+
+      it "should have the prescribed elements too" do
+        should == [1,2,3]
+      end
     end
-
-    it "should have the prescribed elements too" do
-      should == [1,2,3]
-    end
-  end]]>
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
-  rspec spec/array_spec.rb --format documentation
+    rspec spec/array_spec.rb --format documentation
 
-  Array with some elements
-    should not be empty
-    should have the prescribed elements
-    should have the prescribed elements too
+    Array with some elements
+      should not be empty
+      should have the prescribed elements
+      should have the prescribed elements too
 
-  Finished in 0.03275 seconds
-  3 examples, 0 failures]]>
+    Finished in 0.03275 seconds
+    3 examples, 0 failures
   </script>
 </section>

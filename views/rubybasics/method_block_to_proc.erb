@@ -2,7 +2,6 @@
   <h2>Methods</h2>
   <h3>Convert the block to a Proc</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     def thrice
       yield
       yield
@@ -19,16 +18,13 @@
 
     seven_times { x += 10 }
     => 74
-  ]]>
   </script>
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
     def what_am_i(&block)
       block.class
     end
 
     what_am_i {}
     => Proc
-  ]]>
   </script>
 </section>
