@@ -3,20 +3,15 @@
   <p>
     Use subject in the group scope to explicitly define the value that is returned by the subject method in the example scope.
   </p>
+  spec/array_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    # file spec/array_spec.rb
-
     describe Array, "with some elements" do
       subject { [1,2,3] }
 
-      it { should_not be_empty }
+      it { expect(subject).not_to be_empty }
 
       it "should have the prescribed elements" do
-        subject.should == [1,2,3]
-      end
-
-      it "should have the prescribed elements too" do
-        should == [1,2,3]
+        expect(subject).to eq([1,2,3])
       end
     end
   </script>
@@ -26,7 +21,6 @@
     Array with some elements
       should not be empty
       should have the prescribed elements
-      should have the prescribed elements too
 
     Finished in 0.03275 seconds
     3 examples, 0 failures

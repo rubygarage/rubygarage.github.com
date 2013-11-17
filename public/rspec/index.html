@@ -129,30 +129,28 @@
   </script>
 </section><section id="first-test" class="slide">
   <h2>First test</h2>
+  spec/burger_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    # file spec/burger_spec.rb
-
     describe Burger do
       it "should be with ketchup" do
-        burger = Burger.new(:ketchup => true)
-        burger.should be_with_ketchup
+        burger = Burger.new(ketchup: true)
+        expect(burger).to be_with_ketchup
       end
 
       it "should be without ketchup" do
-        burger = Burger.new(:ketchup => false)
-        burger.should_not be_with_ketchup
+        burger = Burger.new(ketchup: false)
+        expect(burger).not_to be_with_ketchup
       end
     end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
     rspec spec/burger_spec.rb 
-    spec/burger_spec.rb:1:in '<top (required)>': uninitialized constant Object::Burger (NameError)
+    spec/burger_spec.rb:1:in '<top (required)>': uninitialized constant Burger (NameError)
   </script>
 </section><section id="first-implementation" class="slide">
   <h2>First implementation</h2>
+  spec/burger_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    # file spec/burger_spec.rb
-    
     class Burger
       def initialize ingredients = {}
         @ingredients = ingredients
@@ -165,13 +163,13 @@
 
     describe Burger do
       it "should be with ketchup" do
-        burger = Burger.new(:ketchup => true)
-        burger.should be_with_ketchup
+        burger = Burger.new(ketchup: true)
+        expect(burger).to be_with_ketchup
       end
 
       it "should be without ketchup" do
-        burger = Burger.new(:ketchup => false)
-        burger.should_not be_with_ketchup
+        burger = Burger.new(ketchup: false)
+        expect(burger).not_to be_with_ketchup
       end
     end
   </script>
@@ -236,33 +234,32 @@
   <h2>What’s it() All About?</h2>
   <p>The it() method takes a single String, an optional Hash and an optional block.</p>
   <p>String with 'it' represents the detail that will be expressed in code within the block.</p>
+  spec/array_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    # file spec/array_spec.rb
-
     describe Array do
       context "#last" do
         it "should return the last element" do
           array = [:first, :second, :third]
-          array.last.should == :third
+          expect(array.last).to eq(:third)
         end
 
         it "should not remove the last element" do
           array = [:first, :second, :third]
           array.last
-          array.size.should == 3
+          expect(array.size).to eq(3)
         end
       end
 
       context "#pop" do
         it "should return the last element" do
           array = [:first, :second, :third]
-          array.pop.should == :third
+          expect(array.pop).to eq(:third)
         end
 
         it "should remove the last element" do
           array = [:first, :second, :third]
           array.pop
-          array.size.should == 2
+          expect(array.size).to eq(2)
         end
       end
     end
@@ -290,21 +287,20 @@
   </script>
 </section><section id="pending" class="slide">
   <h2>Pending</h2>
+  spec/array_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-  # file spec/array_spec.rb
-  
   describe Array do
     context "#last" do
       it "should return the last element" do
         array = [:first, :second, :third]
         pending "bug report #85346"
-        array.last.should == :third
+        expect(array.last).to eq(:third)
       end
 
       xit "should not remove the last element" do
         array = [:first, :second, :third]
         array.last
-        array.size.should == 3
+        expect(array.size).to eq(3)
       end
     end
 
@@ -352,9 +348,8 @@
 </section><section id="before-each" class="slide">
   <h2>before(:each)</h2>
   <p>Run before each example</p>
+  spec/array_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-  # file spec/array_spec.rb
-  
   describe Array, "before each" do
     context "#size" do
       before(:each) do
@@ -363,12 +358,12 @@
 
       context "when empty" do
         it "should return zero" do
-          @array.size.should == 0
+          expect(@array.size).to eq(0)
         end
 
         it "should return one" do
           @array.push 100
-          @array.size.should == 1
+          expect(@array.size).to eq(1)
         end
       end
 
@@ -379,11 +374,11 @@
 
         it "should return zero" do
           @array = []
-          @array.size.should == 0
+          expect(@array.size).to eq(0)
         end
 
         it "should return ten" do
-          @array.size.should == 10
+          expect(@array.size).to eq(10)
         end
       end
     end
@@ -399,9 +394,8 @@
 </section><section id="before-all" class="slide">
   <h2>before(:all)</h2>
   <p>Run one time only, before all of the examples in a group</p>
+  spec/array_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-  # file spec/array_spec.rb
-  
   describe Array, "before all" do
     context "#size" do
       context "when empty" do
@@ -411,11 +405,11 @@
 
         it "should return one" do
           @array.push 100
-          @array.size.should == 1
+          expect(@array.size).to eq(1)
         end
 
         it "should return one again" do
-          @array.size.should == 1
+          expect(@array.size).to eq(1)
         end
       end
 
@@ -427,11 +421,11 @@
 
         it "should return nine" do
           @array.pop
-          @array.size.should == 9
+          expect(@array.size).to eq(9)
         end
 
         it "should return nine again" do
-          @array.size.should == 9
+          expect(@array.size).to eq(9)
         end
       end
     end
@@ -446,9 +440,8 @@
   </script>
 </section><section id="hooks-run-in-order" class="slide">
   <h2>Hooks run in order</h2>
+  spec/callbacks_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-  # file spec/callbacks_spec.rb
-
   describe "before and after callbacks" do
     before(:all) do
       puts "global before all"
@@ -526,9 +519,8 @@
   </script>
 </section><section id="hooks-in-configuration" class="slide">
   <h2>Define hooks in configuration</h2>
+  file spec/callbacks_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-  # file spec/callbacks_spec.rb
-
   RSpec.configure do |config|
     config.before(:suite) do
       puts "before suite"
@@ -590,7 +582,7 @@
     end
 
     it "should be empty" do
-      @empty_array.should be_empty
+      expect(@empty_array).to be_empty
     end
   </script>
   <h3>Use let</h3>
@@ -598,7 +590,7 @@
     let(:empty_array) { Array.new }
 
     it "should be empty" do
-      empty_array.should be_empty
+      expect(@empty_array).to be_empty
     end
   </script>
   <p>
@@ -609,20 +601,15 @@
   <p>
     Use subject in the group scope to explicitly define the value that is returned by the subject method in the example scope.
   </p>
+  spec/array_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    # file spec/array_spec.rb
-
     describe Array, "with some elements" do
       subject { [1,2,3] }
 
-      it { should_not be_empty }
+      it { expect(subject).not_to be_empty }
 
       it "should have the prescribed elements" do
-        subject.should == [1,2,3]
-      end
-
-      it "should have the prescribed elements too" do
-        should == [1,2,3]
+        expect(subject).to eq([1,2,3])
       end
     end
   </script>
@@ -632,7 +619,6 @@
     Array with some elements
       should not be empty
       should have the prescribed elements
-      should have the prescribed elements too
 
     Finished in 0.03275 seconds
     3 examples, 0 failures
@@ -710,11 +696,11 @@
   <script type="syntaxhighlighter" class="brush: ruby">
     module UserHelpers
       def valid_user
-        User.new(:email => 'email@example.com', :password => 'shhhhh')
+        User.new(email: 'email@example.com', password: 'shhhhh')
       end
 
       def invalid_user
-        User.new(:password => 'shhhhh')
+        User.new(password: 'shhhhh')
       end
     end
 
@@ -746,7 +732,7 @@
   <script type="syntaxhighlighter" class="brush: ruby">
     describe Fixnum do
       it "is available as described_class" do
-        described_class.should == Fixnum
+        expect(described_class).to eq(Fixnum)
       end
     end
   </script>
@@ -761,9 +747,8 @@
         subject { actor }
          
         it "has name", slow: true do
-          subject.name.should == name
+          expect(subject.name).to eq(name)
         end
-
       end
     end
   </script>
@@ -814,7 +799,7 @@
         it "adds objects to the end of the collection" do
           collection << 1
           collection << 2
-          collection.to_a.should eq([1,2])
+          expect(collection.to_a).to eq([1,2])
         end
       end
     end
@@ -854,7 +839,7 @@
     Use shared_context to define a block that will be evaluated in the context of example groups either explicitly, using include_context, or implicitly by matching metadata.
   </p>
   <script type="syntaxhighlighter" class="brush: ruby">
-  shared_context "shared stuff", :a => :b do
+  shared_context "shared stuff", a: :b do
     before { @some_var = :some_value }
 
     def shared_method
@@ -872,37 +857,37 @@
     include_context "shared stuff"
 
     it "has access to methods defined in shared context" do
-      shared_method.should == "it works"
+      expect(shared_method).to eq("it works")
     end
 
     it "has access to methods defined with let in shared context" do
-      shared_let['arbitrary'].should == "object"
+      expect(shared_let['arbitrary']).to eq("object")
     end
 
     it "runs the before hooks defined in the shared context" do
-      @some_var.should == :some_value
+      expect(@some_var).to eq(:some_value)
     end
 
     it "accesses the subject defined in the shared context" do
-      should == "this is the subject"
+      expect(subject).to eq("this is the subject")
     end
   end
 
-  describe "group that includes a shared context using metadata", :a => :b do
+  describe "group that includes a shared context using metadata", a: :b do
     it "has access to methods defined in shared context" do
-      shared_method.should eq("it works")
+      expect(shared_method).to eq("it works")
     end
 
     it "has access to methods defined with let in shared context" do
-      shared_let['arbitrary'].should eq('object')
+      expect(shared_let['arbitrary']).to eq('object')
     end
 
     it "runs the before hooks defined in the shared context" do
-      @some_var.should be(:some_value)
+      expect(@some_var).to eq(:some_value)
     end
 
     it "accesses the subject defined in the shared context" do
-      subject.should eq('this is the subject')
+      expect(subject).to eq('this is the subject')
     end
   end
   </script>
@@ -916,21 +901,19 @@
 </section><section id="expectations" class="slide">
   <h2>Expectations</h2>
   <p>
-    For checking the expectations, <strong>should()</strong> and <strong>should_not()</strong> methods are used.
+    For checking the expectations, <strong>expect(obj).to</strong> and <strong>expect(obj).not_to</strong> methods are used.
   </p>
   <h3>Checking equality and identity</h3>
+  Equality
   <script type="syntaxhighlighter" class="brush: ruby">
-    cow.should == twin_cow
-    cow.should eql(cow)
-
-    cow.should === twin_cow
-    cow.should equal(cow)
+    expect(cow).to eq(twin_cow)
+  </script>
+  Identity
+  <script type="syntaxhighlighter" class="brush: ruby">
+    expect(cow).to equal(twin_cow)
   </script>
   <p>
-    The <strong>==</strong> and <strong>eql</strong> methods are used to express values equivalence, and <strong>===</strong> and <strong>equal</strong> are used when you want the receiver and the argument to be the same object.
-  </p>
-  <p>
-    Note: Instead of using <strong>!=</strong>, you should use the <strong>should_not()</strong> method!
+    The <strong>eq</strong> methods are used to express values equivalence, and <strong>equal</strong> are used when you want the receiver and the argument to be the same object.
   </p>
 </section><section id="how-expectations-work" class="slide">
   <h2>How Expectations work</h2>
@@ -965,8 +948,8 @@
   <h2>Spec::Matchers</h2>
   <h3>Eql matcher</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-    should eql(expected)
-    should_not eql(expected)
+    expect(obj).to eql(expected)
+    expect(obj).not_to eql(expected)
   </script>
   <p>
     Passes if given and expected are of equal value, but not necessarily the same object.
@@ -975,12 +958,7 @@
     describe "a string" do
       context "#eq" do
         it "is equal to another string of the same value" do
-          "this string".should eq("this string")
-        end
-      end
-      context "#==" do
-        it "is equal to another string of the same value" do
-          "this string".should == "this string"
+          expect("this string").to eq("this string")
         end
       end
     end
@@ -988,8 +966,8 @@
   <div id="equal" class="slide">
     <h3>Equal matcher</h3>
     <script type="syntaxhighlighter" class="brush: ruby">
-      should equal(expected)
-      should_not equal(expected)
+      expect(obj).to equal(expected)
+      expect(obj).not_to equal(expected)
     </script>
     <p>
       Passes if given and expected are the same object (object identity).
@@ -999,13 +977,7 @@
         context "#equal" do
           it "is equal to itself" do
             string = "this string"
-            string.should equal(string)
-          end
-        end
-        context "#===" do
-          it "is equal to itself" do
-            string = "this string"
-            string.should === string
+            expect(string).to equal(string)
           end
         end
       end
@@ -1015,21 +987,20 @@
   <h2>Spec::Matchers</h2>
   <h3>Floating point numbers</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-    should be_close(expected, delta)
-    should_not be_close(expected, delta)
+    expect(obj).to be_close(expected, delta)
+    expect(obj).not_to be_close(expected, delta)
   </script>
   <p>Passes if given == expected +/- delta</p>
   <p>When dealing with floating points, it's convenient to use matcher be_close(), which takes two arguments: the floating point number you are expecting and the precision you require.</p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    result.should be_close(3.14, 0.005)
+    expect(result).to be_close(3.14, 0.005)
   </script>
 </section><section id="regexps" class="slide">
   <h2>Spec::Matchers</h2>
   <h3>Regular Expressions</h3>
-  <p>For checking strings to match regular expressions, the <strong>match</strong> or <strong>=~</strong> is used. This can be very useful when dealing with multiple-line expectations.</p>
+  <p>For checking strings to match regular expressions, the <strong>match</strong> is used. This can be very useful when dealing with multiple-line expectations.</p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    result.should match(/this regexp/)
-    result.should =~ /this regexp/
+    expect(result).to match(/this regexp/)
   </script>
 </section><section id="predicate_matchers" class="slide">
   <h2>Spec::Matchers</h2>
@@ -1037,10 +1008,10 @@
   <p>A Ruby predicate method is a method that ends with a “?” and returns a boolean value, like <strong>string.empty?</strong> or <strong>regexp.match?</strong> methods. For these cases Rspec allows us to describe expectations with <strong>be_something</strong> matcher. When using a be_something matcher, RSpec removes the “be_”, appends a “?” and calls the resulting method in the receiver.</p>
   <script type="syntaxhighlighter" class="brush: ruby">
     # instead of writing
-    "".empty?.should == true
+    expect("".empty?).to eq(true)
 
     # RSpec allows to use predicate expectation
-    "".should be_empty
+    expect("").to be_empty
   </script>
   <h6>How it works</h6>
   <ul>
@@ -1053,8 +1024,8 @@
     Alternately, for a predicate method that begins with "has" like Hash#has_key?, RSpec allows you to use an alternate form since "be_has_key" makes no sense.
   </p>
   <ul>
-    <li>hash.should have_key(:foo)       ->    calls hash.has_key?(:foo)</li>
-    <li>array.should_not have_odd_values   ->    calls array.has_odd_values?</li>
+    <li>expect(hash).to have_key(:foo)        ->    calls hash.has_key?(:foo)</li>
+    <li>expect(array).to_not have_odd_values  ->    calls array.has_odd_values?</li>
   </ul>
 </section><section id="include" class="slide">
   <h2>Spec::Matchers</h2>
@@ -1063,16 +1034,16 @@
     Passes if given includes expected. This works for collections and Strings. You can also pass in multiple args and it will only pass if all args are found in collection.
   </p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    [1,2,3].should include(3)
-    [1,2,3].should include(2,3)
-    "spread".should include("read")
-    "spread".should_not include("red")
+    expect([1,2,3]).to include(3)
+    expect([1,2,3]).to include(2,3)
+    expect("spread").to include("read")
+    expect("spread").to_not include("red")
   </script>
   <div id="exist" class="slide">
     <h3>Exist</h3>
     <script type="syntaxhighlighter" class="brush: ruby">
-      should exist
-      should_not exist
+      expect(obj).to exist
+      expect(obj).not_to exist
     </script>  
     <p>Passes if given.exist?</p>
   </div>
@@ -1080,13 +1051,6 @@
   <h2>Spec::Matchers</h2>
   <h3>Changes</h3>
   <p>Sometimens you expect some code (wrapped in a proc) to change the state of some object. There is a convenient way to check it with rspec:</p>
-  <script type="syntaxhighlighter" class="brush: ruby">
-    it "should remove the last element" do
-      lambda {
-        @array.pop
-      }.should change{ @array.size }
-    end
-  </script>
   <script type="syntaxhighlighter" class="brush: ruby">
     it "should remove the last element" do
       expect { @array.pop }.to change{ @array.size }
@@ -1115,31 +1079,31 @@
     RSpec provides several matchers that make it easy to set expectations about the size of a collection. There are three basic forms:
   </p>
   <ul>
-    <li>collection.should have(x).items</li>
-    <li>collection.should haveatleast(x).items</li>
-    <li>collection.should haveatmost(x).items</li>
+    <li>expect(collection).to have(x).items</li>
+    <li>expect(collection).to have_at_least(x).items</li>
+    <li>expect(collection).to have_at_most(x).items</li>
   </ul>
   <p>
-    These work on any collection-like object--the object just needs to respond to #size or #length (or both). When the matcher is called directly on a collection object, the #items call is pure syntactic sugar. You can use anything you want here. These are equivalent:
+    These work on any collection-like object-the object just needs to respond to #size or #length (or both). When the matcher is called directly on a collection object, the #items call is pure syntactic sugar. You can use anything you want here. These are equivalent:
   </p>
   <ul>
-    <li>collection.should have(x).items</li>
-    <li>collection.should have(x).things</li>
+    <li>expect(collection).to have(x).items</li>
+    <li>expect(collection).to have(x).things</li>
   </ul>
   <p>
     You can also use this matcher on a non-collection object that returns a collection from one of its methods. For example, Dir#entries returns an array, so you could set an expectation using the following:
   </p>
-  <p>Dir.new("my/directory").should have(7).entries</p>
+  <p>expect(Dir.new("my/directory")).to have(7).entries</p>
   <h4>A receiver IS a collection </h4>
   <script type="syntaxhighlighter" class="brush: ruby">
     describe [1, 2, 3, 4, 5, 6, 7, 8, 9, 0] do
-      it { should have(10).items }
+      it { expect(subject).to have(10).items }
 
-      it { should_not have(2).items }
+      it { expect(subject).not_to have(2).items }
 
-      it { should have_exactly(10).items }
-      it { should have_at_least(5).items }
-      it { should have_at_most(15).items }
+      it { expect(subject).to have_exactly(10).items }
+      it { expect(subject).to have_at_least(5).items }
+      it { expect(subject).to have_at_most(15).items }
     end
   </script>
   <h4>A receiver OWNS a collection </h4>
@@ -1151,14 +1115,14 @@
     end
 
     describe "a sentence with some words" do
-      it { should have(5).words }
-      it { should_not have(4).words }
+      it { expect(subject).to have(5).words }
+      it { expect(subject).not_to have(4).words }
 
-      it { should have_exactly(5).words }
-      it { should_not have_exactly(10).words }
+      it { expect(subject).to have_exactly(5).words }
+      it { expect(subject).not_to have_exactly(10).words }
 
-      it { should have_at_least(4).words }
-      it { should have_at_most(6).words }
+      it { expect(subject).to have_at_least(4).words }
+      it { expect(subject).to have_at_most(6).words }
     end
   </script>
 </section><section id="custom-matchers" class="slide">
@@ -1171,12 +1135,12 @@
     Imagine that you are writing a game in which players can be in various zones on a virtual board. To specify that bob should be in zone 4, you could say:
   </p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    bob.current_zone.should eql(Zone.new("4"))
+    expect(bob.current_zone).to eq(Zone.new("4"))
   </script>
 
   <p>But you might find it more expressive to say:</p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    bob.should be_in_zone("4")
+    expect(bob).to be_in_zone("4")
   </script>
 
   <p>You can create such a matcher like so:</p>
@@ -1235,39 +1199,21 @@
     describe User do
       before { subject.email = "foobar" }
      
-      it { should have_errors_on(:email).with_message("Email has an invalid format") }
+      it { expect(subject).to have_errors_on(:email).with_message("Email has an invalid format") }
     end
   </script>
 </section><section id="mocks-and-stubs" class="slide">
-  <h2>Mocks, Stubs and doubles</h2>
+  <h2>Doubles</h2>
 
   <p>A <strong>test double</strong> is an object that stands in for another object in an example.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
     thingamajig_double = double('thing-a-ma-jig')
-    stub_thingamajig = stub('thing-a-ma-jig')
-    mock_thingamajig = mock('thing-a-ma-jig')
   </script>
 
   <p>The argument is a name, used for failure reporting, so you should use the role that the double is playing in the example.</p>
-
-  <script type="syntaxhighlighter" class="brush: ruby">
-    def double(*args)
-      __declare_double('Double', *args)
-    end
-
-    def stub(*args)
-      __declare_double('Stub', *args)
-    end
-
-    def mock(*args)
-      __declare_double('Mock', *args)
-    end
-  </script>
-
- <p>Mocks are objects that allow you to set and verify expectations that they will receive specific messages during run time. Stubs provide canned responses to messages they <strong>might</strong> receive in a test, while mocks allow you to specify and, subsquently, verify that certain messages <strong>should</strong> be received during the execution of a test.</p>
 </section><section id="as_null_object" class="slide">
-  <h2>Mocks, Stubs snd doubles</h2>
+  <h2>Doubles, as_null_object</h2>
 
   <p>Use the as_null_object method to ignore any messages that aren't explicitly set as stubs or message expectations.</p>
 
@@ -1275,10 +1221,7 @@
     describe 'null object' do
       specify {
         null_object = double('null object').as_null_object
-        other_null = mock('other null', null_object: true)
-
-        null_object.should respond_to(:any_undefined_method)
-        other_null.should respond_to(:any_undefined_method)
+        expect(null_object).to respond_to(:any_undefined_method)
       }
     end
   </script>
@@ -1293,7 +1236,7 @@
         customer = double('customer')
         customer.stub(:name).and_return('Aslak')
         statement = Statement.new(customer)
-        statement.generate.should =~ /^Statement for Aslak/
+        expect(statement.generate).to match(/^Statement for Aslak/)
       end
     end
   </script>
@@ -1307,7 +1250,7 @@
   <p>The mock object can be created with stubbed methods at once.</p>
   <script type="syntaxhighlighter" class="brush: ruby">
     customer = double('customer', name: 'Aslak')
-    obj = mock('object', created_at: { Time.now })
+    obj = double('object', created_at: -> { Time.now })
   </script>
 
   <p>Stub methods can return values depending on the arguments.</p>
@@ -1351,12 +1294,12 @@
   <script type="syntaxhighlighter" class="brush: ruby">
     describe String do
       before(:each) { String.stub(:new).and_return("hello") }
-
+     
       it "can restore it's own behavior" do
-        String.new("initial string").should == "hello"
+        expect(String.new("initial string")).to eq("hello")
         String.unstub(:new)
-
-        String.new("initial string").should == "initial string"
+     
+        expect(String.new("initial string")).to eq("initial string")
       end
     end
   </script>
@@ -1400,7 +1343,7 @@ receives the message, nothing happens.</p>
         String.any_instance.stub(:foo).and_return(:return_value)
 
         str = "sample string"
-        str.foo.should eq(:return_value)
+        expect(str.foo).to eq(:return_value)
       end
     end
   </script>

@@ -5,16 +5,16 @@
     Passes if given includes expected. This works for collections and Strings. You can also pass in multiple args and it will only pass if all args are found in collection.
   </p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    [1,2,3].should include(3)
-    [1,2,3].should include(2,3)
-    "spread".should include("read")
-    "spread".should_not include("red")
+    expect([1,2,3]).to include(3)
+    expect([1,2,3]).to include(2,3)
+    expect("spread").to include("read")
+    expect("spread").to_not include("red")
   </script>
   <div id="exist" class="slide">
     <h3>Exist</h3>
     <script type="syntaxhighlighter" class="brush: ruby">
-      should exist
-      should_not exist
+      expect(obj).to exist
+      expect(obj).not_to exist
     </script>  
     <p>Passes if given.exist?</p>
   </div>

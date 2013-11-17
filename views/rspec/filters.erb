@@ -9,9 +9,8 @@
         subject { actor }
          
         it "has name", slow: true do
-          subject.name.should == name
+          expect(subject.name).to eq(name)
         end
-
       end
     end
   </script>

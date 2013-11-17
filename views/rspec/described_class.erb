@@ -6,7 +6,7 @@
   <script type="syntaxhighlighter" class="brush: ruby">
     describe Fixnum do
       it "is available as described_class" do
-        described_class.should == Fixnum
+        expect(described_class).to eq(Fixnum)
       end
     end
   </script>

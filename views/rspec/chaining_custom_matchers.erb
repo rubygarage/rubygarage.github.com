@@ -28,7 +28,7 @@
     describe User do
       before { subject.email = "foobar" }
      
-      it { should have_errors_on(:email).with_message("Email has an invalid format") }
+      it { expect(subject).to have_errors_on(:email).with_message("Email has an invalid format") }
     end
   </script>
 </section>

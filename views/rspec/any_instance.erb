@@ -13,7 +13,7 @@ receives the message, nothing happens.</p>
         String.any_instance.stub(:foo).and_return(:return_value)
 
         str = "sample string"
-        str.foo.should eq(:return_value)
+        expect(str.foo).to eq(:return_value)
       end
     end
   </script>

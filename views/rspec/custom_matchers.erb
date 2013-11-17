@@ -8,12 +8,12 @@
     Imagine that you are writing a game in which players can be in various zones on a virtual board. To specify that bob should be in zone 4, you could say:
   </p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    bob.current_zone.should eql(Zone.new("4"))
+    expect(bob.current_zone).to eq(Zone.new("4"))
   </script>
 
   <p>But you might find it more expressive to say:</p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    bob.should be_in_zone("4")
+    expect(bob).to be_in_zone("4")
   </script>
 
   <p>You can create such a matcher like so:</p>

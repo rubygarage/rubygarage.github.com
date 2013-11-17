@@ -4,10 +4,10 @@
   <p>A Ruby predicate method is a method that ends with a “?” and returns a boolean value, like <strong>string.empty?</strong> or <strong>regexp.match?</strong> methods. For these cases Rspec allows us to describe expectations with <strong>be_something</strong> matcher. When using a be_something matcher, RSpec removes the “be_”, appends a “?” and calls the resulting method in the receiver.</p>
   <script type="syntaxhighlighter" class="brush: ruby">
     # instead of writing
-    "".empty?.should == true
+    expect("".empty?).to eq(true)
 
     # RSpec allows to use predicate expectation
-    "".should be_empty
+    expect("").to be_empty
   </script>
   <h6>How it works</h6>
   <ul>
@@ -20,7 +20,7 @@
     Alternately, for a predicate method that begins with "has" like Hash#has_key?, RSpec allows you to use an alternate form since "be_has_key" makes no sense.
   </p>
   <ul>
-    <li>hash.should have_key(:foo)       ->    calls hash.has_key?(:foo)</li>
-    <li>array.should_not have_odd_values   ->    calls array.has_odd_values?</li>
+    <li>expect(hash).to have_key(:foo)        ->    calls hash.has_key?(:foo)</li>
+    <li>expect(array).to_not have_odd_values  ->    calls array.has_odd_values?</li>
   </ul>
 </section>

@@ -2,12 +2,12 @@
   <h2>Spec::Matchers</h2>
   <h3>Floating point numbers</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-    should be_close(expected, delta)
-    should_not be_close(expected, delta)
+    expect(obj).to be_close(expected, delta)
+    expect(obj).not_to be_close(expected, delta)
   </script>
   <p>Passes if given == expected +/- delta</p>
   <p>When dealing with floating points, it's convenient to use matcher be_close(), which takes two arguments: the floating point number you are expecting and the precision you require.</p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    result.should be_close(3.14, 0.005)
+    expect(result).to be_close(3.14, 0.005)
   </script>
 </section>

@@ -1,20 +1,19 @@
 <section id="pending" class="slide">
   <h2>Pending</h2>
+  spec/array_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-  # file spec/array_spec.rb
-  
   describe Array do
     context "#last" do
       it "should return the last element" do
         array = [:first, :second, :third]
         pending "bug report #85346"
-        array.last.should == :third
+        expect(array.last).to eq(:third)
       end
 
       xit "should not remove the last element" do
         array = [:first, :second, :third]
         array.last
-        array.size.should == 3
+        expect(array.size).to eq(3)
       end
     end
 

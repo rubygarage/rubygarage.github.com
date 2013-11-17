@@ -2,8 +2,8 @@
   <h2>Spec::Matchers</h2>
   <h3>Eql matcher</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-    should eql(expected)
-    should_not eql(expected)
+    expect(obj).to eql(expected)
+    expect(obj).not_to eql(expected)
   </script>
   <p>
     Passes if given and expected are of equal value, but not necessarily the same object.
@@ -12,12 +12,7 @@
     describe "a string" do
       context "#eq" do
         it "is equal to another string of the same value" do
-          "this string".should eq("this string")
-        end
-      end
-      context "#==" do
-        it "is equal to another string of the same value" do
-          "this string".should == "this string"
+          expect("this string").to eq("this string")
         end
       end
     end
@@ -25,8 +20,8 @@
   <div id="equal" class="slide">
     <h3>Equal matcher</h3>
     <script type="syntaxhighlighter" class="brush: ruby">
-      should equal(expected)
-      should_not equal(expected)
+      expect(obj).to equal(expected)
+      expect(obj).not_to equal(expected)
     </script>
     <p>
       Passes if given and expected are the same object (object identity).
@@ -36,13 +31,7 @@
         context "#equal" do
           it "is equal to itself" do
             string = "this string"
-            string.should equal(string)
-          end
-        end
-        context "#===" do
-          it "is equal to itself" do
-            string = "this string"
-            string.should === string
+            expect(string).to equal(string)
           end
         end
       end

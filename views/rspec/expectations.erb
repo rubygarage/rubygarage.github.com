@@ -1,20 +1,18 @@
 <section id="expectations" class="slide">
   <h2>Expectations</h2>
   <p>
-    For checking the expectations, <strong>should()</strong> and <strong>should_not()</strong> methods are used.
+    For checking the expectations, <strong>expect(obj).to</strong> and <strong>expect(obj).not_to</strong> methods are used.
   </p>
   <h3>Checking equality and identity</h3>
+  Equality
   <script type="syntaxhighlighter" class="brush: ruby">
-    cow.should == twin_cow
-    cow.should eql(cow)
-
-    cow.should === twin_cow
-    cow.should equal(cow)
+    expect(cow).to eq(twin_cow)
+  </script>
+  Identity
+  <script type="syntaxhighlighter" class="brush: ruby">
+    expect(cow).to equal(twin_cow)
   </script>
   <p>
-    The <strong>==</strong> and <strong>eql</strong> methods are used to express values equivalence, and <strong>===</strong> and <strong>equal</strong> are used when you want the receiver and the argument to be the same object.
-  </p>
-  <p>
-    Note: Instead of using <strong>!=</strong>, you should use the <strong>should_not()</strong> method!
+    The <strong>eq</strong> methods are used to express values equivalence, and <strong>equal</strong> are used when you want the receiver and the argument to be the same object.
   </p>
 </section>

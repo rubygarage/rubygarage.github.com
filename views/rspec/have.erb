@@ -5,31 +5,31 @@
     RSpec provides several matchers that make it easy to set expectations about the size of a collection. There are three basic forms:
   </p>
   <ul>
-    <li>collection.should have(x).items</li>
-    <li>collection.should haveatleast(x).items</li>
-    <li>collection.should haveatmost(x).items</li>
+    <li>expect(collection).to have(x).items</li>
+    <li>expect(collection).to have_at_least(x).items</li>
+    <li>expect(collection).to have_at_most(x).items</li>
   </ul>
   <p>
-    These work on any collection-like object--the object just needs to respond to #size or #length (or both). When the matcher is called directly on a collection object, the #items call is pure syntactic sugar. You can use anything you want here. These are equivalent:
+    These work on any collection-like object-the object just needs to respond to #size or #length (or both). When the matcher is called directly on a collection object, the #items call is pure syntactic sugar. You can use anything you want here. These are equivalent:
   </p>
   <ul>
-    <li>collection.should have(x).items</li>
-    <li>collection.should have(x).things</li>
+    <li>expect(collection).to have(x).items</li>
+    <li>expect(collection).to have(x).things</li>
   </ul>
   <p>
     You can also use this matcher on a non-collection object that returns a collection from one of its methods. For example, Dir#entries returns an array, so you could set an expectation using the following:
   </p>
-  <p>Dir.new("my/directory").should have(7).entries</p>
+  <p>expect(Dir.new("my/directory")).to have(7).entries</p>
   <h4>A receiver IS a collection </h4>
   <script type="syntaxhighlighter" class="brush: ruby">
     describe [1, 2, 3, 4, 5, 6, 7, 8, 9, 0] do
-      it { should have(10).items }
+      it { expect(subject).to have(10).items }
 
-      it { should_not have(2).items }
+      it { expect(subject).not_to have(2).items }
 
-      it { should have_exactly(10).items }
-      it { should have_at_least(5).items }
-      it { should have_at_most(15).items }
+      it { expect(subject).to have_exactly(10).items }
+      it { expect(subject).to have_at_least(5).items }
+      it { expect(subject).to have_at_most(15).items }
     end
   </script>
   <h4>A receiver OWNS a collection </h4>
@@ -41,14 +41,14 @@
     end
 
     describe "a sentence with some words" do
-      it { should have(5).words }
-      it { should_not have(4).words }
+      it { expect(subject).to have(5).words }
+      it { expect(subject).not_to have(4).words }
 
-      it { should have_exactly(5).words }
-      it { should_not have_exactly(10).words }
+      it { expect(subject).to have_exactly(5).words }
+      it { expect(subject).not_to have_exactly(10).words }
 
-      it { should have_at_least(4).words }
-      it { should have_at_most(6).words }
+      it { expect(subject).to have_at_least(4).words }
+      it { expect(subject).to have_at_most(6).words }
     end
   </script>
 </section>

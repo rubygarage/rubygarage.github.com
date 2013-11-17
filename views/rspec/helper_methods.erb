@@ -3,11 +3,11 @@
   <script type="syntaxhighlighter" class="brush: ruby">
     module UserHelpers
       def valid_user
-        User.new(:email => 'email@example.com', :password => 'shhhhh')
+        User.new(email: 'email@example.com', password: 'shhhhh')
       end
 
       def invalid_user
-        User.new(:password => 'shhhhh')
+        User.new(password: 'shhhhh')
       end
     end
 

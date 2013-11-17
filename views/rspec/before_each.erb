@@ -1,9 +1,8 @@
 <section id="before-each" class="slide">
   <h2>before(:each)</h2>
   <p>Run before each example</p>
+  spec/array_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-  # file spec/array_spec.rb
-  
   describe Array, "before each" do
     context "#size" do
       before(:each) do
@@ -12,12 +11,12 @@
 
       context "when empty" do
         it "should return zero" do
-          @array.size.should == 0
+          expect(@array.size).to eq(0)
         end
 
         it "should return one" do
           @array.push 100
-          @array.size.should == 1
+          expect(@array.size).to eq(1)
         end
       end
 
@@ -28,11 +27,11 @@
 
         it "should return zero" do
           @array = []
-          @array.size.should == 0
+          expect(@array.size).to eq(0)
         end
 
         it "should return ten" do
-          @array.size.should == 10
+          expect(@array.size).to eq(10)
         end
       end
     end

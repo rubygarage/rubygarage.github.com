@@ -4,13 +4,6 @@
   <p>Sometimens you expect some code (wrapped in a proc) to change the state of some object. There is a convenient way to check it with rspec:</p>
   <script type="syntaxhighlighter" class="brush: ruby">
     it "should remove the last element" do
-      lambda {
-        @array.pop
-      }.should change{ @array.size }
-    end
-  </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
-    it "should remove the last element" do
       expect { @array.pop }.to change{ @array.size }
     end
   </script>

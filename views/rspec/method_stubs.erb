@@ -9,7 +9,7 @@
         customer = double('customer')
         customer.stub(:name).and_return('Aslak')
         statement = Statement.new(customer)
-        statement.generate.should =~ /^Statement for Aslak/
+        expect(statement.generate).to match(/^Statement for Aslak/)
       end
     end
   </script>
@@ -23,7 +23,7 @@
   <p>The mock object can be created with stubbed methods at once.</p>
   <script type="syntaxhighlighter" class="brush: ruby">
     customer = double('customer', name: 'Aslak')
-    obj = mock('object', created_at: { Time.now })
+    obj = double('object', created_at: -> { Time.now })
   </script>
 
   <p>Stub methods can return values depending on the arguments.</p>

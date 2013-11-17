@@ -6,12 +6,12 @@
   <script type="syntaxhighlighter" class="brush: ruby">
     describe String do
       before(:each) { String.stub(:new).and_return("hello") }
-
+     
       it "can restore it's own behavior" do
-        String.new("initial string").should == "hello"
+        expect(String.new("initial string")).to eq("hello")
         String.unstub(:new)
-
-        String.new("initial string").should == "initial string"
+     
+        expect(String.new("initial string")).to eq("initial string")
       end
     end
   </script>
