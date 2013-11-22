@@ -14,6 +14,21 @@
       end
     end
   </script>
+  <h3>Old syntax</h3>
+  spec/burger_spec.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    describe Burger do
+      it "should be with ketchup" do
+        burger = Burger.new(ketchup: true)
+        burger.should be_with_ketchup
+      end
+
+      it "should be without ketchup" do
+        burger = Burger.new(ketchup: false)
+        burger.should_not be_with_ketchup
+      end
+    end
+  </script>
   <script type="syntaxhighlighter" class="brush: bash">
     rspec spec/burger_spec.rb 
     spec/burger_spec.rb:1:in '<top (required)>': uninitialized constant Burger (NameError)

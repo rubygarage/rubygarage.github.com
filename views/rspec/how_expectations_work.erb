@@ -1,5 +1,6 @@
 <section id="how-expectations-work" class="slide">
   <h2>How Expectations work</h2>
+  <h3>Old Syntax</h3>
   <p>
     Spec::Expectations adds two methods to Object:
   </p>
@@ -16,4 +17,9 @@
   <p>
     Similarly, when should_not receives a matcher, it calls <i>matches?(self)</i>. If it returns false, the spec passes and execution continues. If it returns true, then the spec fails with the message returned by matcher.negative_failure_message.
   </p>
+  <h3>New Syntax</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    expect(obj).to(matcher = nil)
+    expect(obj).not_to(matcher = nil)
+  </script>
 </section>

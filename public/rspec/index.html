@@ -143,6 +143,21 @@
       end
     end
   </script>
+  <h3>Old syntax</h3>
+  spec/burger_spec.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    describe Burger do
+      it "should be with ketchup" do
+        burger = Burger.new(ketchup: true)
+        burger.should be_with_ketchup
+      end
+
+      it "should be without ketchup" do
+        burger = Burger.new(ketchup: false)
+        burger.should_not be_with_ketchup
+      end
+    end
+  </script>
   <script type="syntaxhighlighter" class="brush: bash">
     rspec spec/burger_spec.rb 
     spec/burger_spec.rb:1:in '<top (required)>': uninitialized constant Burger (NameError)
@@ -590,7 +605,7 @@
     let(:empty_array) { Array.new }
 
     it "should be empty" do
-      expect(@empty_array).to be_empty
+      expect(empty_array).to be_empty
     end
   </script>
   <p>
@@ -625,9 +640,8 @@
   </script>
 </section><section id="more-subject" class="slide">
   <h2>Subject</h2>
+  spec/subject_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    # file spec/subject_spec.rb
-
     require "spec_helper"
 
     class Actor
@@ -738,6 +752,7 @@
   </script>
 </section><section id="filters" class="slide">
   <h2>Filters</h2>
+  spec/subject_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
     describe Actor do
       let(:name) { "Ivan" }
@@ -753,7 +768,7 @@
     end
   </script>
 
-   <script type="syntaxhighlighter" class="brush: bash">
+  <script type="syntaxhighlighter" class="brush: bash">
     rspec spec/subject_spec.rb --tag focus --format documentation
 
     Actor
@@ -764,8 +779,8 @@
     1 example, 0 failures
   </script>
 
+  spec/spec_helper.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    # in file spec/spec_helper.rb
     Rspec.configure do |config|
       config.filter_run focus: true
       config.run_all_with_everything_filtered = true
@@ -779,8 +794,8 @@
     0 example, 0 failures
   </script>
 
+  spec/spec_helper.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    # in file spec/spec_helper.rb
     Rspec.configure do |config|
       config.filter_run_excluding slow: true
       config.run_all_with_everything_filtered = true
@@ -917,6 +932,7 @@
   </p>
 </section><section id="how-expectations-work" class="slide">
   <h2>How Expectations work</h2>
+  <h3>Old Syntax</h3>
   <p>
     Spec::Expectations adds two methods to Object:
   </p>
@@ -933,6 +949,11 @@
   <p>
     Similarly, when should_not receives a matcher, it calls <i>matches?(self)</i>. If it returns false, the spec passes and execution continues. If it returns true, then the spec fails with the message returned by matcher.negative_failure_message.
   </p>
+  <h3>New Syntax</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    expect(obj).to(matcher = nil)
+    expect(obj).not_to(matcher = nil)
+  </script>
 </section><section id="matchers" class="slide">
   <h2>Matchers</h2>
   <p>
