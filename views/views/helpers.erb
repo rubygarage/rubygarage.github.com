@@ -2,7 +2,6 @@
   <h2>Helpers</h2>
   app/helpers/application_helper.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       module ApplicationHelper
         #have title_tag in your head
         def title init_value
@@ -10,7 +9,7 @@
           @title_parts.unshift init_value
           init_value
         end
-        
+
         #This should be in the head
         def title_tag options ={}
           content_tag :title, get_title(options)
@@ -24,23 +23,18 @@
           @title_parts.join(separator).html_safe
         end
       end
-    ]]>
   </script>
   <div class ="slide" id= 'use-helper'>
     <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[
         &lt;% title("text") %&gt;
         &lt;%= title_tag prefix: 'pr', suffix: 'sf', separator: '-' %&gt;
-      ]]>
     </script>
   </div>
   <div class ="slide" id= 'helper-result'>
     <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[
         <title>
           pr-text-sf
         </title>
-      ]]>
     </script>
   </div>
 </section>

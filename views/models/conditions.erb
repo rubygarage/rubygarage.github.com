@@ -2,83 +2,63 @@
   <h2>Conditions</h2>
   String conditions
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     > User.where("first_name = 'Anna'")
     User Load (0.4ms)  SELECT "users".* FROM "users" WHERE (first_name = 'Anna')
-     => #<ActiveRecord::Relation [#<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>]> 
-    
-    ]]>
+     => #<ActiveRecord::Relation [#<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>]>
+
   </script>
 
   Array conditions
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     User.where("email = ?", params[:email])
-    ]]>
   </script>
-  
+
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     User.where("last_name = ? AND receive_news = ?", params[:last_name], true)
-    ]]>
   </script>
 
   Placeholder conditions
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     > Payment.where("created_at >= :start_date", { start_date: 10.days.ago })
     Payment Load (0.1ms)  SELECT "payments".* FROM "payments" WHERE (created_at >= '2013-06-13 18:56:01.086812')
-      => #<ActiveRecord::Relation []> 
-    ]]>
+      => #<ActiveRecord::Relation []>
   </script>
 
   Hash conditions
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     User.where(first_name: 'Anna')
-    ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     User.where('first_name' => 'Anna')
-    ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     > Post.where(user: User.first)
     SELECT "posts".* FROM "posts" WHERE "posts"."user_id" = 1
       => #<ActiveRecord::Relation []>
-    ]]>
   </script>
 
   Range conditions
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
       > User.where(created_at: (Time.now.midnight - 1.day)..Time.now.midnight)
       User Load (0.5ms)  SELECT "users".* FROM "users" WHERE ("users"."created_at" BETWEEN '2013-06-21 21:00:00.000000' AND '2013-06-22 21:00:00.000000')
-        => #<ActiveRecord::Relation []> 
-    ]]>
+        => #<ActiveRecord::Relation []>
   </script>
 
   Subset conditions
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
       > Tag.where(name: ['cooking', 'programming'])
       SELECT "tags".* FROM "tags" WHERE "tags"."name" IN ('cooking', 'programming')
         => #<ActiveRecord::Relation []>
-    ]]>
   </script>
 
   NOT conditions
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
       > Post.where.not(user: User.first)
       User Load (0.2ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT 1
       Post Load (0.2ms)  SELECT "posts".* FROM "posts" WHERE ("posts"."user_id" != 1)
-       => #<ActiveRecord::Relation []> 
-    ]]>
+       => #<ActiveRecord::Relation []>
   </script>
 </section>

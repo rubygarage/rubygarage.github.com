@@ -2,31 +2,27 @@
   <h2>Callback registrations</h2>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[ 
     rails g migration AddLoginToUsers login:string
-    ]]>
   </script>
-  
+
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[ 
-    class User < ActiveRecord::Base  
-      ... 
+    class User < ActiveRecord::Base
+      ...
       validates :login, :email, presence: true
- 
+
       before_validation :ensure_login_has_a_value
 
       before_create do |user|
         user.first_name = user.login.capitalize if user.first_name.blank?
       end
-     
+
       protected
-      
+
       def ensure_login_has_a_value
         if login.nil?
           self.login = email unless email.blank?
         end
       end
     end
-    ]]>
   </script>
 </section>

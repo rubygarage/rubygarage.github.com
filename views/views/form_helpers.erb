@@ -2,76 +2,58 @@
   <h2>Form helpers</h2>
   <p>form_tag, label_tag, text_field_tag, hidden_field_tag, submit_tag</p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[      
       &lt;%= form_tag("/posts/search", :method => 'get') do %&gt;
         &lt;%= label_tag(:q, "Search for:") %&gt;
         &lt;%= text_field_tag(:q) %&gt;
         &lt;%= hidden_field_tag(:special_id, "11") %&gt;
         &lt;%= submit_tag("Search")
       &lt;% end %&gt;
-    ]]>
   </script>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[      
       <form accept-charset="UTF-8" action="/posts/search" method="get">
         <label for ="q"> Search for: </label>
         <input id ="q" name = "q" type = "text" />
         <input id ="special_id" name= "special_id" type = "hidden" value="11" />
         <input name = "commit" type ="submit" value= "Search" />
       </form>
-    ]]>
   </script>
 
   <div class = "slide" id="checkbox">
     <p>checkbox_tag</p>
-    
+
     <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[    
         check_box_tag(name, value = "1", checked = false, options = {})
-      ]]>
-    </script>  
-    
+    </script>
+
     <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[    
         &lt;%= check_box_tag(:like) %&gt;
-      ]]>
     </script>
 
     <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[    
         <input id="like" name="like" type="checkbox" value="1" />
-      ]]>
     </script>
 
     <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[    
         &lt;%= check_box_tag 'like', 'accepted', false, disabled: true %&gt;
-      ]]>
     </script>
 
     <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[    
         <input id="like" name="like" type="checkbox" value="accepted" disabled = "disabled"/>
-      ]]>
     </script>
   </div>
-  <div class = "slide" id='radio-button'>  
+  <div class = "slide" id='radio-button'>
     <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[    
         &lt;%= radion_button_tag(:age, "child") %&gt;
         &lt;%= label_tag(:age_child, "I am younger than 21") %&gt;
         &lt;%= radion_button_tag(:age, "adult") %&gt;
         &lt;%= label_tag(:age_child, "I am over 21") %&gt;
-      ]]>
     </script>
 
     <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[    
         <input id= "age_child" name= "age" type= "radio" value= "child" />
         <label for= "age_child"> I am younger than 21 </label>
         <input id= "age_adult" name= "age" type= "radio" value= "adult" />
         <label for= "age_child"> I am over 21 </label>
-      ]]>
     </script>
 
   </div>

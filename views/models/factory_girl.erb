@@ -1,7 +1,6 @@
 <section id="factory-girl" class="slide">
   <h2>factory_girl</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       FactoryGirl.define do
         factory :user do
           first_name 'John'
@@ -12,10 +11,8 @@
           admin true
         end
       end
-    ]]>
   </script>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       # Saved instance
       user = FactoryGirl.create(:user)
 
@@ -30,6 +27,5 @@
 
       # Override attributes
       user = FactoryGirl.create(:user, first_name: "Jack")
-    ]]>
   </script>
 </section>

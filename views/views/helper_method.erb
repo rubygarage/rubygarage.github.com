@@ -2,15 +2,13 @@
   <h2>helper_method</h2>
   app/controllers/application_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       class ApplicationController < ActionController::Base
         helper_method :current_user
 
         def current_user
-          @_current_user ||= session[:current_user_id] && 
+          @_current_user ||= session[:current_user_id] &&
             User.find_by_id(session[:current_user_id])
         end
       end
-    ]]>
   </script>
 </section>

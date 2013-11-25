@@ -2,15 +2,12 @@
   <h2>Default rendering</h2>
   config/routes.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[      
       Blog::Application.routes.draw do
         resources :posts
       end
-    ]]>
   </script>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       class PostsController<ApplicationController
         def index
           @posts = Post.all
@@ -21,6 +18,5 @@
           end
         end
       end
-    ]]>
   </script>
 </section>

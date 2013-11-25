@@ -1,27 +1,22 @@
 <section id="fake-data-settings" class="slide">
   <h2>Factory Girl and Database Cleaner</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       # in Gemfile
       group :test do
         gem 'rspec-rails'
         gem 'factory_girls_rails'
         gem 'database_cleaner'
-      end 
-    ]]>
+      end
   </script>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       # in application.rb
       config.generators do |g|
         g.test_framework :rspec
         g.fixture_replacement :factory_girl, dir: 'spec/factories'
         g.template_engine :haml
       end
-    ]]>
   </script>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       # in spec_helper.rb
       config.use_transactional_fixtures = false
 
@@ -36,7 +31,6 @@
 
       config.after(:each) do
         DatabaseCleaner.clean
-      end      
-    ]]>
+      end
   </script>
 </section>

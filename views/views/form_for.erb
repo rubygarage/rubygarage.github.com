@@ -1,7 +1,6 @@
 <section id="for-for" class="slide">
   <h2>Form for</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[      
       &lt;%= form_for(@post) do |f| %&gt;
         &lt;% if @post.errors.any? %&gt;
           <div id="error_explanation">
@@ -13,26 +12,25 @@
             </ul>
           </div>
         &lt;% end %&gt;
-        
+
         <div class = "field">
           &lt;%= f.label :name %&gt; <br />
-          &lt;%= f.text_field :name %&gt; 
+          &lt;%= f.text_field :name %&gt;
         </div>
 
         <div class = "field">
           &lt;%= f.label :title %&gt; <br />
-          &lt;%= f.text_field :title %&gt; 
+          &lt;%= f.text_field :title %&gt;
         </div>
-        
+
         <div class = "field">
           &lt;%= f.label :content %&gt; <br />
-          &lt;%= f.text_area :content %&gt; 
+          &lt;%= f.text_area :content %&gt;
         </div>
-          
+
         <div class = "actions">
           &lt;%= f.submit %&gt;
         </div>
       &lt;% end %&gt;
-    ]]>
   </script>
 </section>

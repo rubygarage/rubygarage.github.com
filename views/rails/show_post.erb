@@ -6,7 +6,7 @@
     <p id="notice">Post was successfully created.</p>
     <p>
       <strong>Title:</strong>
-      Facebook’s New Colocation And Image Recognition Patents Tease The Future Of Sharing 
+      Facebook’s New Colocation And Image Recognition Patents Tease The Future Of Sharing
     </p>
     <p>
       <strong>Text:</strong>
@@ -23,7 +23,6 @@
 
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     class PostsController < ApplicationController
       ...
       # GET /posts/1
@@ -32,12 +31,10 @@
       end
       ...
     end
-    ]]>
   </script>
 
-  app/views/posts/show.html.erb 
+  app/views/posts/show.html.erb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     <p id="notice">&lt;%= notice %&gt;</p>
 
     <p>
@@ -52,13 +49,10 @@
 
     &lt;%= link_to 'Edit', edit_post_path(@post) %&gt; |
     &lt;%= link_to 'Back', posts_path %&gt;
-    ]]>
   </script>
 
   app/views/posts/show.json.jbuilder
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     json.extract! @post, :title, :text, :created_at, :updated_at
-    ]]>
   </script>
 </section>

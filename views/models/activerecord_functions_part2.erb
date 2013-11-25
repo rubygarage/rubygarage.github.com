@@ -3,32 +3,26 @@
   <h3>create, count, update_attributes</h3>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[  
     2.0.0-p0 :001 > new_user = User.create(first_name: "Ivan", email: "ivan.melechov@gmail.com")
       (0.1ms)  begin transaction
       SQL (3.0ms)  INSERT INTO "users" ("created_at", "email", "first_name", "last_name", "password", "receive_news", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 18:18:40 UTC +00:00], ["email", "ivan.melechov@gmail.com"], ["first_name", "Ivan"], ["last_name", nil], ["password", nil], ["receive_news", false], ["updated_at", Sun, 02 Jun 2013 18:18:40 UTC +00:00]]
       (125.0ms)  commit transaction
-     => #<User id: 2, first_name: "Ivan", email: "ivan.melechov@gmail.com", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:18:40", last_name: nil, receive_news: false> 
-  ]]>
-  </script>
+     => #<User id: 2, first_name: "Ivan", email: "ivan.melechov@gmail.com", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:18:40", last_name: nil, receive_news: false>
+</script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-   <![CDATA[  
    2.0.0-p0 :002 > User.count
-     (0.2ms)  SELECT COUNT(*) FROM "users" 
-    => 2      
-   ]]>
-  </script>
+     (0.2ms)  SELECT COUNT(*) FROM "users"
+    => 2
+ </script>
 
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[  
     2.0.0-p0 :003 > new_user.update_attributes(first_name: "Van'ka", email: "vanka@yandex.ru")
      (0.2ms)  begin transaction
      (0.5ms)  UPDATE "users" SET "first_name" = 'Van''ka', "email" = 'vanka@yandex.ru', "updated_at" = '2013-06-02 18:20:00.982364' WHERE "users"."id" = 2
      (124.8ms)  commit transaction
-     => true 
-        
-    ]]>
-  </script> 
+     => true
+
+  </script>
 </section>

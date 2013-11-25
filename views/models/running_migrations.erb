@@ -3,22 +3,18 @@
   <h3>Running Migrations</h3>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[    
-        rake db:migrate     
-    ]]>
+        rake db:migrate
   </script>
 
   <h3>Rollback Migrations</h3>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[    
         rake db:rollback
         rake db:rollback STEP=3
-        rake db:migrate:down VERSION=20111214211749  
+        rake db:migrate:down VERSION=20111214211749
         rake db:migrate:up VERSION=20111214211749
         rake db:migrate:redo STEP=3
-           
-    ]]>
+
   </script>
 
- 
+
 </section>

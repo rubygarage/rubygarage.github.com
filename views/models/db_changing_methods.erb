@@ -1,76 +1,58 @@
 <section id="db-changing-methods" class="slide">
   <h2>Methods for db structure changing</h2>
-  
+
   <code>create_table</code>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[    
       create_table :friends do |t|
         t.string :first_name
         t.string :last_name
         t.string :email
         t.timestamps
       end
-    ]]>
   </script>
-  
+
   <code>change_table</code>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[    
       change_table :friends do |t|
         t.remove :last_name, :first_name
         t.string :phone_number
         t.index  :phone_number
       end
-    ]]>
   </script>
-  
+
   <code>add_column</code>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       add_column :friends, :first_name, :string
       add_column :friends, :last_name, :integer
-    ]]>
   </script>
 
   <code>change_column</code>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       change_column :friends, :last_name, :string
-    ]]>
   </script>
 
   <code>rename_column</code>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       rename_column :friends, :last_name, :surname
-    ]]>
   </script>
 
   <code>remove_column</code>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       remove_column :friends, :surname
-    ]]>
   </script>
 
   <code>add_index</code>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       add_index :friends, :email
-    ]]>
   </script>
 
   <code>remove_index</code>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       remove_index :friends, :email
-    ]]>
   </script>
 
   <code>drop_table</code>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       drop_table :friends
-    ]]>
   </script>
 </section>

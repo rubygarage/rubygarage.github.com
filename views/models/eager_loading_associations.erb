@@ -1,88 +1,74 @@
 <section id="eager-loading-associations" class="slide">
   <h2>Eager Loading Associations</h2>
-   
+
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     users = User.limit(10)
-    
+
     users.each do |user|
       puts user.posts.map(&:title)
     end
 
     User Load (0.6ms)  SELECT "users".* FROM "users" LIMIT 10
-      => #<ActiveRecord::Relation [#<User id: 1, first_name: "Marta", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-23 21:02:23", last_name: nil, receive_news: false>, #<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>]> 
+      => #<ActiveRecord::Relation [#<User id: 1, first_name: "Marta", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-23 21:02:23", last_name: nil, receive_news: false>, #<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>]>
     Post Load (0.6ms)  SELECT "posts".* FROM "posts" WHERE "posts"."user_id" = ?  [["user_id", 1]]
     =>
     Post Load (0.3ms)  SELECT "posts".* FROM "posts" WHERE "posts"."user_id" = ?  [["user_id", 2]]
 
     => First step
-       First step   
-    ]]>
+       First step
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     users = User.includes(:posts).limit(10)
- 
+
     users.each do |user|
       puts user.posts.map(&:title)
     end
-    
+
     User Load (0.6ms)  SELECT "users".* FROM "users" LIMIT 10
     Post Load (0.3ms)  SELECT "posts".* FROM "posts" WHERE "posts"."user_id" IN (1, 2)
-      => #<ActiveRecord::Relation [#<User id: 1, first_name: "Marta", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-23 21:02:23", last_name: nil, receive_news: false>, #<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>]> 
+      => #<ActiveRecord::Relation [#<User id: 1, first_name: "Marta", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-23 21:02:23", last_name: nil, receive_news: false>, #<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>]>
       =>
       =>  First step
           First step
-      => [#<User id: 1, first_name: "Marta", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-23 21:02:23", last_name: nil, receive_news: false>, #<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>] 
-    ]]>
+      => [#<User id: 1, first_name: "Marta", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-23 21:02:23", last_name: nil, receive_news: false>, #<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>]
   </script>
   Array of Multiple Associations
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     >p =  Post.includes(:blog, :tags)
       Post Load (0.5ms)  SELECT "posts".* FROM "posts"
       Blog Load (0.3ms)  SELECT "blogs".* FROM "blogs" WHERE "blogs"."id" IN (1)
-      SQL (0.3ms)  SELECT "tags".*, "t0"."post_id" AS ar_association_key_name FROM "tags" INNER JOIN "posts_tags" "t0" ON "tags"."id" = "t0"."tag_id" WHERE "t0"."post_id" IN (1, 2, 3, 4, 5)  
-       => #<ActiveRecord::Relation [#<Post id: 1, text: "I'm so happy today", user_id: 1, created_at: "2013-06-02 18:43:10", updated_at: "2013-06-02 18:43:10", title: nil, published: nil, blog_id: nil>, #<Post id: 2, text: "I'm waiting", user_id: 1, created_at: "2013-06-02 19:01:45", updated_at: "2013-06-02 19:01:45", title: nil, published: nil, blog_id: nil>, #<Post id: 3, text: "New post", user_id: 1, created_at: "2013-06-02 19:06:35", updated_at: "2013-06-02 19:06:35", title: nil, published: nil, blog_id: nil>, #<Post id: 4, text: "Some text", user_id: 2, created_at: "2013-06-23 20:18:11", updated_at: "2013-06-23 20:18:11", title: "First step", published: nil, blog_id: nil>, #<Post id: 5, text: "Some another text", user_id: 2, created_at: "2013-06-23 20:18:23", updated_at: "2013-06-23 21:24:37", title: "First step", published: nil, blog_id: 1>]> 
-    ]]>
+      SQL (0.3ms)  SELECT "tags".*, "t0"."post_id" AS ar_association_key_name FROM "tags" INNER JOIN "posts_tags" "t0" ON "tags"."id" = "t0"."tag_id" WHERE "t0"."post_id" IN (1, 2, 3, 4, 5)
+       => #<ActiveRecord::Relation [#<Post id: 1, text: "I'm so happy today", user_id: 1, created_at: "2013-06-02 18:43:10", updated_at: "2013-06-02 18:43:10", title: nil, published: nil, blog_id: nil>, #<Post id: 2, text: "I'm waiting", user_id: 1, created_at: "2013-06-02 19:01:45", updated_at: "2013-06-02 19:01:45", title: nil, published: nil, blog_id: nil>, #<Post id: 3, text: "New post", user_id: 1, created_at: "2013-06-02 19:06:35", updated_at: "2013-06-02 19:06:35", title: nil, published: nil, blog_id: nil>, #<Post id: 4, text: "Some text", user_id: 2, created_at: "2013-06-23 20:18:11", updated_at: "2013-06-23 20:18:11", title: "First step", published: nil, blog_id: nil>, #<Post id: 5, text: "Some another text", user_id: 2, created_at: "2013-06-23 20:18:23", updated_at: "2013-06-23 21:24:37", title: "First step", published: nil, blog_id: 1>]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     > p.first.tags
-     => #<ActiveRecord::Associations::CollectionProxy []> 
-    ]]>
+     => #<ActiveRecord::Associations::CollectionProxy []>
   </script>
 
   Nested Associations Hash
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     > User.includes([:subscriptions, {:posts => [:tags]}]).find(1)
       User Load (1.9ms)  SELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT 1  [["id", 1]]
       Subscription Load (0.1ms)  SELECT "subscriptions".* FROM "subscriptions" WHERE "subscriptions"."user_id" IN (1)
       Post Load (0.2ms)  SELECT "posts".* FROM "posts" WHERE "posts"."user_id" IN (1)
       SQL (0.2ms)  SELECT "tags".*, "t0"."post_id" AS ar_association_key_name FROM "tags" INNER JOIN "posts_tags" "t0" ON "tags"."id" = "t0"."tag_id" WHERE "t0"."post_id" IN (1, 2, 3)
      => #<User id: 1, first_name: "Marta", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-23 21:02:23", last_name: nil, receive_news: false>
-    ]]>
   </script>
 
   Specifying Conditions on Eager Loaded Associations
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     > p = Post.includes(:tags).where("tags.name != 'nil'")
       SQL (0.7ms)  SELECT "posts"."id" AS t0_r0, "posts"."text" AS t0_r1, "posts"."user_id" AS t0_r2, "posts"."created_at" AS t0_r3, "posts"."updated_at" AS t0_r4, "posts"."title" AS t0_r5, "posts"."published" AS t0_r6, "posts"."blog_id" AS t0_r7, "tags"."id" AS t1_r0, "tags"."name" AS t1_r1, "tags"."created_at" AS t1_r2, "tags"."updated_at" AS t1_r3 FROM "posts" LEFT OUTER JOIN "posts_tags" ON "posts_tags"."post_id" = "posts"."id" LEFT OUTER JOIN "tags" ON "tags"."id" = "posts_tags"."tag_id" WHERE (tags.name != 'nil')
-      => #<ActiveRecord::Relation [#<Post id: 5, text: "Some another text", user_id: 2, created_at: "2013-06-23 20:18:23", updated_at: "2013-06-23 21:24:37", title: "First step", published: nil, blog_id: 1>]> 
+      => #<ActiveRecord::Relation [#<Post id: 5, text: "Some another text", user_id: 2, created_at: "2013-06-23 20:18:23", updated_at: "2013-06-23 21:24:37", title: "First step", published: nil, blog_id: 1>]>
     > p.first.tags
-    => #<ActiveRecord::Associations::CollectionProxy [#<Tag id: 1, name: "good", created_at: "2013-06-23 21:25:07", updated_at: "2013-06-23 21:25:07">]> 
-    ]]>
+    => #<ActiveRecord::Associations::CollectionProxy [#<Tag id: 1, name: "good", created_at: "2013-06-23 21:25:07", updated_at: "2013-06-23 21:25:07">]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     > p = Post.includes(:tags).where("tags.name != 'nil'").references(:tags)
     SQL (0.7ms)  SELECT "posts"."id" AS t0_r0, "posts"."text" AS t0_r1, "posts"."user_id" AS t0_r2, "posts"."created_at" AS t0_r3, "posts"."updated_at" AS t0_r4, "posts"."title" AS t0_r5, "posts"."published" AS t0_r6, "posts"."blog_id" AS t0_r7, "tags"."id" AS t1_r0, "tags"."name" AS t1_r1, "tags"."created_at" AS t1_r2, "tags"."updated_at" AS t1_r3 FROM "posts" LEFT OUTER JOIN "posts_tags" ON "posts_tags"."post_id" = "posts"."id" LEFT OUTER JOIN "tags" ON "tags"."id" = "posts_tags"."tag_id" WHERE (tags.name != 'nil')
-    ]]>
   </script>
 </section>

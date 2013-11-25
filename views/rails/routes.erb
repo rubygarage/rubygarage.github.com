@@ -2,14 +2,11 @@
   <h2>Routes</h2>
   config/routes.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     Community::Application.routes.draw do
       resources :posts
     end
-    ]]>
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     rake routes
 
         Prefix  Verb   URI Pattern               Controller#Action
@@ -21,6 +18,5 @@
                 PATCH  /posts/:id(.:format)      posts#update
                 PUT    /posts/:id(.:format)      posts#update
                 DELETE /posts/:id(.:format)      posts#destroy
-    ]]>
   </script>
 </section>

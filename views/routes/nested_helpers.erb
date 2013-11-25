@@ -1,17 +1,14 @@
 <section id="nested-limits" class="slide">
   <h2>Nested Resources</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       resources :users do
         resources :posts do
           resources :comments
         end
       end
-    ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
           user_post_comments GET        /users/:user_id/posts/:post_id/comments(.:format)          comments#index
                              POST       /users/:user_id/posts/:post_id/comments(.:format)          comments#create
        new_user_post_comment GET        /users/:user_id/posts/:post_id/comments/new(.:format)      comments#new
@@ -33,6 +30,5 @@
                         user GET        /users/:id(.:format)                                       users#show
                              PUT        /users/:id(.:format)                                       users#update
                              DELETE     /users/:id(.:format)                                       users#destroy
-    ]]>
   </script>
 </section>

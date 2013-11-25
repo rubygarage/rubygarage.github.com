@@ -1,7 +1,6 @@
 <section id="custom-validators" class="slide">
   <h2>Custom Validators</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[    
     class MyValidator < ActiveModel::Validator
       def validate(record)
         unless record.first_name.starts_with? 'X'
@@ -9,16 +8,14 @@
         end
       end
     end
-     
+
     class User
       include ActiveModel::Validations
       validates_with MyValidator
     end
-    ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[    
     class EmailValidator < ActiveModel::EachValidator
       def validate_each(record, attribute, value)
         unless value =~ /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
@@ -26,11 +23,10 @@
         end
       end
     end
-     
+
     class User < ActiveRecord::Base
       validates :email, presence: true, email: true
     end
-    ]]>
   </script>
 
 </section>

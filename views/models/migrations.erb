@@ -1,7 +1,6 @@
 <section id="migrations" class="slide">
   <h2>Overview</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       class CreateUsers < ActiveRecord::Migration
         def change
           create_table :users do |t|
@@ -13,9 +12,8 @@
           end
         end
       end
-    ]]>
   </script>
-  
+
   <h3>Schema Conventions</h3>
   <ul>
     <li><strong>Foreign keys</strong> - These fields should be named following the pattern singularized_table_name_id (e.g., item_id, order_id). These are the fields that Active Record will look for when you create associations between your models.</li>

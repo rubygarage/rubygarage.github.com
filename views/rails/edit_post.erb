@@ -21,7 +21,6 @@
 
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     class PostsController < ApplicationController
       ...
       # GET /posts/1/edit
@@ -29,21 +28,17 @@
       end
       ...
     end
-    ]]>
   </script>
 
-  app/views/posts/edit.html.erb 
+  app/views/posts/edit.html.erb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     &lt;%= render 'form' %&gt;
     &lt;%= link_to 'Show', @post %&gt; |
     &lt;%= link_to 'Back', posts_path %&gt;
-    ]]>
   </script>
 
-  app/views/posts/_form.html.erb 
+  app/views/posts/_form.html.erb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     &lt;%= form_for(@post) do |f| %&gt;
       &lt;% if @post.errors.any? %&gt;
         <div id="error_explanation">
@@ -67,6 +62,5 @@
         &lt;%= f.submit %&gt;
       </div>
     &lt;% end %&gt;
-    ]]>
   </script>
 </section>

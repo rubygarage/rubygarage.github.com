@@ -33,7 +33,6 @@
     </ol>
   </p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
 # Block, we pass env variable to
 proc do |env|
   [ 200,
@@ -51,7 +50,6 @@ class MyApp
     ]
   end
 end
-    ]]>
   </script>
 
 </section>
@@ -73,7 +71,6 @@ end
   <h4>Let's try it.</h4>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
 app = proc do |env|
   req = Rack::Request.new(env)
   res = Rack::Response.new
@@ -83,16 +80,13 @@ app = proc do |env|
 
   res.finish
 end
-    ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-      <![CDATA[
 $ curl http://127.0.0.1:8765
 You GET me!
 $
-]]>
-  </script>
+</script>
 </section>
 
 <section id="write-middleware" class="slide">
@@ -103,7 +97,6 @@ $
   </p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
 class Authenticator
   def initialize(app, options={})
     @app = app # save app somewhere, so we can chain call
@@ -126,17 +119,14 @@ app = proc do |env|
 end
 
 run app
-    ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-      <![CDATA[
 $ curl http://127.0.0.1:9292
 Unauthenticated
 $ curl -H "Auth: secret" http://127.0.0.1:9292
 Passed
 $
-    ]]>
   </script>
 
 </section>

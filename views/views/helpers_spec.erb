@@ -2,27 +2,23 @@
   <h2>Testing helpers</h2>
   spec/helpers/posts_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       require 'spec_helper'
-      
+
       describe PostsHelper do
         describe "#post_title" do
           it "should return post title" do
             post = stub_model(Post, title: 'New age of IT')
             post_title(post).should == 'New age of IT'
           end
-        end          
+        end
       end
-    ]]>
   </script>
   app/helpers/posts_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       module PostsHelper
         def post_title(post)
           post.title
         end
-      end 
-    ]]>
+      end
   </script>
 </section>

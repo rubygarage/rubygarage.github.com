@@ -2,7 +2,6 @@
   <h2>Migrations</h2>
   db/migrate/20130609121432_create_posts.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     class CreatePosts < ActiveRecord::Migration
       def change
         create_table :posts do |t|
@@ -13,19 +12,16 @@
         end
       end
     end
-    ]]>
   </script>
   <div id="run-migrations" class="slide">
     <h3>Run migration</h3>
     <script type="syntaxhighlighter" class="brush: bash">
-      <![CDATA[
       rake db:migrate
 
       == CreatePosts: migrating ====================================================
       -- create_table(:posts)
          -> 0.0020s
       == CreatePosts: migrated (0.0021s) ===========================================
-      ]]>
     </script>
   </div>
 </section>

@@ -1,11 +1,9 @@
 <section id="conditional-callbacks" class="slide">
   <h2>Conditional Callbacks</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[     
     before_save :normalize_card_number, if: :paid_with_card?
     before_save :normalize_card_number, if: "paid_with_card?"
     before_save :normalize_card_number, if: Proc.new { |order| order.paid_with_card? }
     after_create :send_email_to_user,   if: :user_wants_emails?, unless: Proc.new { |comment| comment.post.ignore_comments? }
-  ]]>
-  </script>
+</script>
 </section>

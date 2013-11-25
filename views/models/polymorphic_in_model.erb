@@ -2,7 +2,6 @@
   <h2>Polymorphic Assosiations</h2>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
       rails g model Picture imageable:references{polymorphic} file:string
       invoke  active_record
       create    db/migrate/20130616213914_create_pictures.rb
@@ -10,12 +9,10 @@
       invoke    test_unit
       create      test/models/picture_test.rb
       create      test/fixtures/pictures.yml
-    ]]>
   </script>
 
   db/migrate/20130616213914_create_pictures.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     class CreatePictures < ActiveRecord::Migration
       def change
         create_table :pictures do |t|
@@ -26,21 +23,17 @@
         end
       end
     end
-    ]]>
   </script>
 
   app/models/picture.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[ 
     class Picture < ActiveRecord::Base
       belongs_to :imageable, polymorphic: true
-    end      
-    ]]>
+    end
   </script>
 
   app/models/user.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[    
     class User < ActiveRecord::Base
       has_many :posts
       has_many :subscriptions
@@ -49,12 +42,10 @@
       has_one :plan, through: :user_plan
       has_one :picture, as: :imageable
     end
-    ]]>
   </script>
 
   app/models/post.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[    
     class Post < ActiveRecord::Base
       belongs_to :user
       belongs_to :blog
@@ -62,27 +53,22 @@
       has_and_belongs_to_many :tags
       has_many :pictures, as: :imageable
     end
-    ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     > user.create_picture(file: 'public/picture/photo.png')
       (0.1ms)  begin transaction
       SQL (32.7ms)  INSERT INTO "pictures" ("created_at", "file", "imageable_id", "imageable_type", "updated_at") VALUES (?, ?, ?, ?, ?)  [["created_at", Sun, 16 Jun 2013 21:46:37 UTC +00:00], ["file", "public/picture/photo.png"], ["imageable_id", 1], ["imageable_type", "User"], ["updated_at", Sun, 16 Jun 2013 21:46:37 UTC +00:00]]
       (1.5ms)  commit transaction
       Picture Load (0.4ms)  SELECT "pictures".* FROM "pictures" WHERE "pictures"."imageable_id" = ? AND "pictures"."imageable_type" = ? ORDER BY "pictures"."id" ASC LIMIT 1  [["imageable_id", 1], ["imageable_type", "User"]]
       => #<Picture id: 1, imageable_id: 1, imageable_type: "User", file: "public/picture/photo.png", created_at: "2013-06-16 21:46:37", updated_at: "2013-06-16 21:46:37">
-    ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     > post.pictures.create(file: 'public/picture/image.png')
       (0.1ms)  begin transaction
       SQL (0.6ms)  INSERT INTO "pictures" ("created_at", "file", "imageable_id", "imageable_type", "updated_at") VALUES (?, ?, ?, ?, ?)  [["created_at", Sun, 16 Jun 2013 21:51:25 UTC +00:00], ["file", "public/picture/image.png"], ["imageable_id", 1], ["imageable_type", "Post"], ["updated_at", Sun, 16 Jun 2013 21:51:25 UTC +00:00]]
       (1.7ms)  commit transaction
       => #<Picture id: 2, imageable_id: 1, imageable_type: "Post", file: "public/picture/image.png", created_at: "2013-06-16 21:51:25", updated_at: "2013-06-16 21:51:25">
-    ]]>
   </script>
 </section>

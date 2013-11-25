@@ -1,8 +1,7 @@
 <section id="nested-attibutes-html" class="slide">
   <h2>Nested attributes</h2>
-  
+
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     <form  accept-charset ="UTF-8" action="/posts/2" class="edit_post" =" edit_post" method = "post">
       <div style ="margin:0;padding:0;display:inline">
         <input name="utf8" type="hidden" value="&#x2713;" />
@@ -12,22 +11,22 @@
       <div class="field">
         <label for="post_title"> Title</label><br />
         <input id="post_title" name="post[title]" size="30" type="text" value="Some cool title" />
-      </div>  
+      </div>
         Comments
           <div class="field">
             <label for="post_comments_attributes_0_text"> Text</label><br />
             <input id="post_comments_attributes_0_text" name="post[comments_attributes][0][text]" size="30" type="text" value="comment" />
-          </div> 
+          </div>
           <input id="post_comments_attributes_0_id" name="post[comments_attributes][0][id]" type="hidden" value ="1">
           <div class="field">
             <label for="post_comments_attributes_1_text"> Text</label><br />
             <input id="post_comments_attributes_1_text" name="post[comments_attributes][1][text]" size="30" type="text" value="comment" />
-          </div> 
+          </div>
           <input id="post_comments_attributes_1_id" name="post[comments_attributes][1][id]" type="hidden" value ="2">
           <div class="field">
             <label for="post_comments_attributes_2_text"> Text</label><br />
             <input id="post_comments_attributes_2_text" name="post[comments_attributes][2][text]" size="30" type="text" value="comment" />
-          </div> 
+          </div>
           <input id="post_comments_attributes_2_id" name="post[comments_attributes][2][id]" type="hidden" value ="3">
           <div class ="field">
             <label for="post_content">Content</label><br/>
@@ -37,6 +36,5 @@
             <input name="commit" type="submit" value="Update Post"/>
           </div>
         </form>
-    ]]>
   </script>
 </section>

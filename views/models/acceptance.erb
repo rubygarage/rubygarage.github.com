@@ -1,27 +1,21 @@
 <section id="acceptance" class="slide">
   <h2>Acceptance</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[       
     rails g migration AddTermsOfServiceToUsers terms_of_service:boolean
-    ]]>
   </script>
 
 <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[       
-    class User < ActiveRecord::Base  
-      ... 
-      validates :terms_of_service, acceptance: true  # get accept: 1
-    end   
-    ]]>
-  </script>
-  
-  <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[     
-    class User < ActiveRecord::Base   
+    class User < ActiveRecord::Base
       ...
-      validates :terms_of_service, acceptance: { accept: 'yes' }  
+      validates :terms_of_service, acceptance: true  # get accept: 1
     end
-    ]]>
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class User < ActiveRecord::Base
+      ...
+      validates :terms_of_service, acceptance: { accept: 'yes' }
+    end
   </script>
   <p>Do not this validation on the both sides of the association it causes endless cycle.</p>
 

@@ -5,7 +5,6 @@
     <div id="render-final">
 
       <script type="syntaxhighlighter" class="brush: ruby">
-        <![CDATA[      
           def update
             @post = Post.find(params[:id])
             if @post.update_attributes
@@ -27,7 +26,6 @@
               render file: '/path/to/rails/app/views/posts/edit.html.erb'
             end
           end
-        ]]>
       </script>
     </div>
 

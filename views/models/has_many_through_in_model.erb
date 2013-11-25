@@ -1,7 +1,6 @@
 <section id="has-many-through-in-model" class="slide">
   <h2>has_many :through</h2>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
       rails g model Blog title:string description:text
       invoke  active_record
       create    db/migrate/20130615195018_create_blogs.rb
@@ -9,11 +8,9 @@
       invoke    test_unit
       create      test/models/blog_test.rb
       create      test/fixtures/blogs.yml
-    ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
       rails g model Subscription user:belongs_to blog:belongs_to receive_news:boolean
       invoke  active_record
       create    db/migrate/20130615200154_create_subscriptions.rb
@@ -21,20 +18,16 @@
       invoke    test_unit
       create      test/models/subscription_test.rb
       create      test/fixtures/subscriptions.yml
-    ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
       rails g migration AddBlogRefToPosts blog:references
       invoke  active_record
       create    db/migrate/20130616200237_add_blog_ref_to_posts.rb
-    ]]>
   </script>
 
   db/migrate/20130615195018_create_blogs.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       class CreateBlogs < ActiveRecord::Migration
         def change
           create_table :blogs do |t|
@@ -45,12 +38,10 @@
           end
         end
       end
-    ]]>
   </script>
 
   db/migrate/20130615200154_create_subscriptions.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       class CreateSubscriptions < ActiveRecord::Migration
         def change
           create_table :subscriptions do |t|
@@ -62,60 +53,49 @@
           end
         end
       end
-    ]]>
   </script>
 
   db/migrate/20130616200237_add_blog_ref_to_posts.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       class AddBlogRefToPosts < ActiveRecord::Migration
         def change
           add_reference :posts, :blog, index: true
         end
       end
-    ]]>
   </script>
 
   app/models/user.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       class User < ActiveRecord::Base
         has_many :posts
         has_many :subscriptions
         has_many :blogs, through: :subscriptions
       end
-    ]]>
   </script>
 
   app/models/blog.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       class Blog < ActiveRecord::Base
         has_many :subscriptions
         has_many :users, through: :subscriptions
       end
-    ]]>
   </script>
 
   app/models/subscription.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       class Subscription < ActiveRecord::Base
         belongs_to :user
         belongs_to :blog
       end
-    ]]>
   </script>
 
   app/models/post.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       class Post < ActiveRecord::Base
         belongs_to :user
         belongs_to :blog
         has_one :post_info
         has_and_belongs_to_many :tags
       end
-    ]]>
   </script>
 </section>

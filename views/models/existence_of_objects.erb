@@ -4,62 +4,48 @@
   exists?
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     > User.exists?(1)
       User Exists (0.2ms)  SELECT 1 AS one FROM "users" WHERE "users"."state" = 'pending' AND "users"."id" = 1 LIMIT 1
-     => nil 
+     => nil
     > User.exists?(3)
       User Exists (0.4ms)  SELECT 1 AS one FROM "users" WHERE "users"."state" = 'pending' AND "users"."id" = 3 LIMIT 1
-     => 1 
-    ]]>
+     => 1
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     > User.where(:first_name => 'Ryan').exists?
       User Exists (0.4ms)  SELECT 1 AS one FROM "users" WHERE "users"."state" = 'pending' AND "users"."first_name" = 'Ryan' LIMIT 1
-     => nil     
-    ]]>
+     => nil
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     > User.exists?
        User Exists (0.5ms)  SELECT 1 AS one FROM "users" WHERE "users"."state" = 'pending' LIMIT 1
-     => 1    
-    ]]>
+     => 1
   </script>
 
   any? and many?
   via a model
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
-    > Post.any?       
+    > Post.any?
       (0.1ms)  SELECT COUNT(*) FROM "posts"
-     => true 
-    ]]>
+     => true
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
-    > Post.many?       
+    > Post.many?
       (0.4ms)  SELECT COUNT(*) FROM "posts"
-     => true 
-    ]]>
+     => true
   </script>
   via a relation
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     Post.where(:published => true).any?
     Post.where(:published => true).many?
-    ]]>
   </script>
   via an association
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     Post.first.tags.any?
     Post.first.tags.many?
-    ]]>
   </script>
 
 </section>

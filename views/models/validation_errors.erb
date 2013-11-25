@@ -2,44 +2,34 @@
   <h2>Validation Errors</h2>
   <h3>errors.add</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[ 
     class User < ActiveRecord::Base
       def a_method_used_for_validation_purposes
         errors.add(:first_name, "cannot contain the characters !@#%*()_-+=")
         # errors[:first_name] = "cannot contain the characters !@#%*()_-+="
       end
     end
-    ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[ 
-    user = User.create(:first_name => "!@#")     
+    user = User.create(:first_name => "!@#")
     user.errors[:first_name] # => ["cannot contain the characters !@#%*()_-+="]
     user.errors.full_messages  # => ["Name cannot contain the characters !@#%*()_-+="]
-    ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[ 
     class User < ActiveRecord::Base
       def a_method_used_for_validation_purposes
         errors[:base] << "This user is invalid because ..."
       end
     end
-    ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[ 
       errors.clear
-    ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[ 
       errors.size
-    ]]>
   </script>
 
 </section>

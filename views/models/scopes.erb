@@ -1,158 +1,120 @@
 <section id="scopes" class="slide">
   <h2>Scopes</h2>
-   
+
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     class Post < ActiveRecord::Base
       ...
       scope :published, -> { where(published: true) }
-    end    
-    ]]>
+    end
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     class Post < ActiveRecord::Base
       ...
       def self.published
         where(published: true)
       end
-    end    
-    ]]>
+    end
   </script>
 
    <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     class Post < ActiveRecord::Base
       scope :published,               -> { where(published: true) }
       scope :published_with_tags, -> { published.where("tags_count > 0") }
-    end  
-    ]]>
+    end
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       Post.published
-    ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       Tags.first.posts.published
-    ]]>
   </script>
 
   Passing in arguments
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     class Post < ActiveRecord::Base
       ...
       scope :created_before, ->(time) { where("created_at < ?", time) }
-    end    
-    ]]>
+    end
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
      Post.created_before(Time.now)
-    ]]>
   </script>
 
   Merging of scopes
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     rails g migration AddStateToUser state:string
-    ]]>
   </script>
 
    <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     class User < ActiveRecord::Base
       scope :active, -> { where state: 'active' }
       scope :inactive, -> { where state: 'inactive' }
     end
-    ]]>
   </script>
 
  <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     > User.active.inactive
       User Load (0.2ms)  SELECT "users".* FROM "users" WHERE "users"."state" = 'active' AND "users"."state" = 'inactive'
-    ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     > User.active.where(state: 'finished')
-      User Load (0.5ms)  SELECT "users".* FROM "users" WHERE "users"."state" = 'active' AND "users"."state" = 'finished'  
-    ]]>
+      User Load (0.5ms)  SELECT "users".* FROM "users" WHERE "users"."state" = 'active' AND "users"."state" = 'finished'
   </script>
 
 If we do want the last where clause to win
 <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     > User.active.merge(User.inactive)
       User Load (0.6ms)  SELECT "users".* FROM "users" WHERE "users"."state" = 'inactive'
-    ]]>
   </script>
 
 default_scope
 - will be applied across all queries
 - will be overridden by scope and where conditions
 <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[
   class User < ActiveRecord::Base
     default_scope { where state: 'pending' }
     scope :active, -> { where state: 'active' }
     scope :inactive, -> { where state: 'inactive' }
   end
-  ]]>
 </script>
 
 <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
   > User.all
     User Load (0.2ms)  SELECT "users".* FROM "users" WHERE "users"."state" = 'pending'
-  ]]>
 </script>
 
 <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
-  > User.active 
+  > User.active
     User Load (0.6ms)  SELECT "users".* FROM "users" WHERE "users"."state" = 'active'
-  ]]>
 </script>
 
 <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
   > User.where(state: 'inactive')
-    User Load (0.6ms)  SELECT "users".* FROM "users" WHERE "users"."state" = 'inactive'    
-  ]]>
+    User Load (0.6ms)  SELECT "users".* FROM "users" WHERE "users"."state" = 'inactive'
 </script>
 
 Removing All Scoping
 
 <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
   > User.unscoped.all
-    SELECT "users".* FROM "users"      
-  ]]>
+    SELECT "users".* FROM "users"
 </script>
 
 <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
   > User.unscoped.load
     User Load (0.5ms)  SELECT "users".* FROM "users"
-   => #<ActiveRecord::Relation [#<User id: 1, first_name: "Anna", email: "ann@ua.fm", password: "111111", created_at: "2013-06-24 08:52:36", updated_at: "2013-06-24 08:52:36", last_name: nil, receive_news: true, state: "active">, #<User id: 2, first_name: "Gregory", email: "greg@ua.fm", password: "111111", created_at: "2013-06-24 08:53:24", updated_at: "2013-06-24 08:53:24", last_name: "Taunsend", receive_news: false, state: "inactive">]>      
-  ]]>
+   => #<ActiveRecord::Relation [#<User id: 1, first_name: "Anna", email: "ann@ua.fm", password: "111111", created_at: "2013-06-24 08:52:36", updated_at: "2013-06-24 08:52:36", last_name: nil, receive_news: true, state: "active">, #<User id: 2, first_name: "Gregory", email: "greg@ua.fm", password: "111111", created_at: "2013-06-24 08:53:24", updated_at: "2013-06-24 08:53:24", last_name: "Taunsend", receive_news: false, state: "inactive">]>
 </script>
 
 <script type="syntaxhighlighter" class="brush: bash">
-  <![CDATA[
   > User.unscoped.to_a
     User Load (0.5ms)  SELECT "users".* FROM "users"
-   => [#<User id: 1, first_name: "Anna", email: "ann@ua.fm", password: "111111", created_at: "2013-06-24 08:52:36", updated_at: "2013-06-24 08:52:36", last_name: nil, receive_news: true, state: "active">, #<User id: 2, first_name: "Gregory", email: "greg@ua.fm", password: "111111", created_at: "2013-06-24 08:53:24", updated_at: "2013-06-24 08:53:24", last_name: "Taunsend", receive_news: false, state: "inactive">]         
-  ]]>
+   => [#<User id: 1, first_name: "Anna", email: "ann@ua.fm", password: "111111", created_at: "2013-06-24 08:52:36", updated_at: "2013-06-24 08:52:36", last_name: nil, receive_news: true, state: "active">, #<User id: 2, first_name: "Gregory", email: "greg@ua.fm", password: "111111", created_at: "2013-06-24 08:53:24", updated_at: "2013-06-24 08:53:24", last_name: "Taunsend", receive_news: false, state: "inactive">]
 </script>
 </section>

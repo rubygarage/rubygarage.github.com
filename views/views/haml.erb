@@ -2,34 +2,28 @@
   <h2>Haml</h2>
   views/posts/post.html.erb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[      
       <tr>
         <td>&lt;%= post.name %&gt;</td>
         <td>&lt;%= post.title %&gt;</td>
         <td>&lt;%= post.content %&gt;</td>
-      </tr> 
-    ]]>
+      </tr>
   </script>
   views/posts/post.html.haml
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       %tr
         %td= post.name
         %td= post.title
-        %td= post.content 
-    ]]>
+        %td= post.content
   </script>
   REMEMBER: Do not use spaces between tag and '='
   <div class ="slide" id="haml-attributes">
     <h2>Attributes</h2>
     views/posts/post.html.haml
     <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[
         %tr{'my-attr'=> 'some value', normal: 'other value'}
           %td= post.name
           %td= post.title
-          %td= post.content 
-      ]]>
+          %td= post.content
     </script>
   </div>
 
@@ -37,37 +31,27 @@
     <h2>Boolean attributes</h2>
     Haml
     <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[      
         %input{selected: true}
-      ]]>
     </script>
     HTML
     <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[      
         <input selected = "selected">
-      ]]>
     </script>
     Haml
     <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[      
         %input{selected: false}
-      ]]>
     </script>
     HTML
     <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[      
         <input>
-      ]]>
     </script>
   </div>
 
   <div class ="slide" id="haml-inserting-js">
     <h2>Inserting JavaScript</h2>
     <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[      
         %script{type: 'text/javascript'}
           console.log('script was executed');
-      ]]>
     </script>
   </div>
 </section>

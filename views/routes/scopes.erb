@@ -1,17 +1,13 @@
 <section id="scopes" class="slide">
   <h2>Route without a module prefix</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       scope '/admin' do
         resources :posts, :comments
       end
-    ]]>
   </script>
   <p>or, for a single case:</p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       resources :posts, path: '/admin/posts'
-    ]]>
   </script>
 
   <div class="slide">
