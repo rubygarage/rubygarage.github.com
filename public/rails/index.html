@@ -24,22 +24,18 @@
   <h2>Instaling Rails</h2>
   <h3>Preparing environment</h3>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     rvm use 2.0.0-p195@community --create
-    Using /Users/sparrow/.rvm/gems/ruby-2.0.0-p195 with gemset community]]>
-  </script>  
+    Using /Users/sparrow/.rvm/gems/ruby-2.0.0-p195 with gemset community</script>
   <h3>Installing Rails</h3>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
-    gem install rails --version 4.0.0.rc1]]>
-  </script>
-</section><section id="creating-application" class="slide">
+    gem install rails --version 4.0.0.rc1</script>
+</section>
+<section id="creating-application" class="slide">
   <h2>Creating rails application</h2>
   <h3>Rails new</h3>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     rails new community
-    create  
+    create
     create README.rdoc
     create Rakefile
     create config.ru
@@ -53,22 +49,18 @@
     create vendor/assets/stylesheets
     create vendor/assets/stylesheets/.keep
     run bundle install
-    ]]>
   </script>
   <h3>Goto directory</h3>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     cd community
-    ]]>
   </script>
   <h3>Add .rvmrc</h3>
   .rvmrc
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     rvm use 2.0.0-p195@community --create
-    ]]>
   </script>
-</section><section id="directories-structure" class="slide">
+</section>
+<section id="directories-structure" class="slide">
   <h2>Directories structure</h2>
   <table>
     <thead>
@@ -140,7 +132,6 @@
 </section><section id="gemfile" class="slide">
   <h2>Gemfile</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     source 'https://rubygems.org'
 
     # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -186,13 +177,12 @@
 
     # Use debugger
     # gem 'debugger', group: [:development, :test]
-    ]]>
   </script>
-</section><section id="database-config" class="slide">
+</section>
+<section id="database-config" class="slide">
   <h2>Database config</h2>
   config/database.yml
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     # SQLite version 3.x
     #   gem install sqlite3
     #
@@ -218,11 +208,9 @@
       database: db/production.sqlite3
       pool: 5
       timeout: 5000
-    ]]>
   </script>
   MySQL
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     development:
       adapter: mysql2
       encoding: utf8
@@ -230,32 +218,27 @@
       username: root
       password:
       socket: /tmp/mysql.sock
-    ]]>
   </script>
   Postgresql
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     development:
       adapter: postgresql
       encoding: unicode
       database: community_development
       username: root
       password:
-    ]]>
   </script>
-</section><section id="creating-database" class="slide">
+</section>
+<section id="creating-database" class="slide">
   <h2>Creating the Database</h2>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
       rake db:create
-    ]]>
   </script>
   <div id="starting-up-web-server" class="slide">
     <h2>Starting up the Web Server</h2>
     <script type="syntaxhighlighter" class="brush: bash">
-      <![CDATA[
         rails server
-        
+
         => Booting WEBrick
         => Rails 4.0.0.rc1 application starting in development on http://0.0.0.0:3000
         => Run `rails server -h` for more startup options
@@ -263,15 +246,14 @@
         [2013-06-09 15:07:13] INFO  WEBrick 1.3.1
         [2013-06-09 15:07:13] INFO  ruby 2.0.0 (2013-05-14) [x86_64-darwin11.4.2]
         [2013-06-09 15:07:13] INFO  WEBrick::HTTPServer#start: pid=71367 port=3000
-      ]]>
-    </script>  
+    </script>
   </div>
-</section><section id="generate-post-scaffold" class="slide">
+</section>
+<section id="generate-post-scaffold" class="slide">
   <h2>Generate scaffold</h2>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     rails generate scaffold Post title:string text:text
-    
+
       invoke  active_record
       create    db/migrate/20130609121432_create_posts.rb
       create    app/models/post.rb
@@ -305,14 +287,13 @@
       invoke    scss
       create      app/assets/stylesheets/posts.css.scss
       invoke  scss
-      create    app/assets/stylesheets/scaffolds.css.scss  
-    ]]>
+      create    app/assets/stylesheets/scaffolds.css.scss
   </script>
-</section><section id="migrations" class="slide">
+</section>
+<section id="migrations" class="slide">
   <h2>Migrations</h2>
   db/migrate/20130609121432_create_posts.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     class CreatePosts < ActiveRecord::Migration
       def change
         create_table :posts do |t|
@@ -323,26 +304,23 @@
         end
       end
     end
-    ]]>
   </script>
   <div id="run-migrations" class="slide">
     <h3>Run migration</h3>
     <script type="syntaxhighlighter" class="brush: bash">
-      <![CDATA[
       rake db:migrate
 
       == CreatePosts: migrating ====================================================
       -- create_table(:posts)
          -> 0.0020s
       == CreatePosts: migrated (0.0021s) ===========================================
-      ]]>
     </script>
   </div>
-</section><section id="db-schema" class="slide">
+</section>
+<section id="db-schema" class="slide">
   <h2>DB schema</h2>
   db/schema.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     ActiveRecord::Schema.define(version: 20130609121432) do
 
       create_table "posts", force: true do |t|
@@ -353,20 +331,17 @@
       end
 
     end
-    ]]>
   </script>
-</section><section id="routes" class="slide">
+</section>
+<section id="routes" class="slide">
   <h2>Routes</h2>
   config/routes.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     Community::Application.routes.draw do
       resources :posts
     end
-    ]]>
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     rake routes
 
         Prefix  Verb   URI Pattern               Controller#Action
@@ -378,22 +353,20 @@
                 PATCH  /posts/:id(.:format)      posts#update
                 PUT    /posts/:id(.:format)      posts#update
                 DELETE /posts/:id(.:format)      posts#destroy
-    ]]>
   </script>
-</section><section id="models" class="slide">
+</section>
+<section id="models" class="slide">
   <h2>Models</h2>
   app/models/post.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     class Post < ActiveRecord::Base
     end
-    ]]>
   </script>
-</section><section id="controllers" class="slide">
+</section>
+<section id="controllers" class="slide">
   <h2>Controllers</h2>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     class PostsController < ApplicationController
       before_action :set_post, only: [:show, :edit, :update, :destroy]
 
@@ -468,9 +441,9 @@
           params.require(:post).permit(:title, :text)
         end
     end
-    ]]>
   </script>
-</section><section id="listing-posts" class="slide">
+</section>
+<section id="listing-posts" class="slide">
   <h2>Listing posts</h2>
 
   GET localhost:3000/posts
@@ -501,14 +474,11 @@
 
   GET localhost:3000/posts.json
   <script type="syntaxhighlighter" class="brush: javascript">
-    <![CDATA[
     [{"title":"Facebook’s New Colocation And Image Recognition Patents Tease The Future Of Sharing ","text":"Facebook’s empire was built on photo tags and sharing, but it’s a grueling process many neglect. Luckily, new Facebook patents give it tech to continuously capture video whenever your camera is open, rank and surface the best images, and auto-tag them with people, places, and businesses. They tease a future where pattern, facial, and audio recognition identify what you’re seeing for easy sharing.","url":"http://localhost:3000/posts/1.json"}]
-    ]]>
   </script>
 
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     class PostsController < ApplicationController
       ...
       # GET /posts
@@ -517,12 +487,10 @@
         @posts = Post.all
       end
       ...
-    ]]>
   </script>
 
   app/views/posts/index.html.erb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     <h1>Listing posts</h1>
 
     <table>
@@ -552,7 +520,6 @@
     <br>
 
     &lt;%= link_to 'New Post', new_post_path %&gt;
-    ]]>
   </script>
 
   app/views/posts/index.json.jbuilder
@@ -562,7 +529,8 @@
       json.url post_url(post, format: :json)
     end
   </script>
-</section><section id="new-post" class="slide">
+</section>
+<section id="new-post" class="slide">
   <h2>New post</h2>
 
   GET localhost:3000/posts/new
@@ -585,7 +553,6 @@
 
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     class PostsController < ApplicationController
       ...
       # GET /posts/new
@@ -593,23 +560,19 @@
         @post = Post.new
       end
       ...
-    ]]>
   </script>
 
-  app/views/posts/index.html.erb 
+  app/views/posts/index.html.erb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     <h1>New post</h1>
 
     &lt;%= render 'form' %&gt;
 
     &lt;%= link_to 'Back', posts_path %&gt;
-    ]]>
   </script>
 
-  app/views/posts/_form.html.erb 
+  app/views/posts/_form.html.erb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     &lt;%= form_for(@post) do |f| %&gt;
       &lt;% if @post.errors.any? %&gt;
         <div id="error_explanation">
@@ -634,13 +597,12 @@
         &lt;%= f.submit %&gt;
       </div>
     &lt;% end %&gt;
-    ]]>
   </script>
-</section><section id="create-post" class="slide">
+</section>
+<section id="create-post" class="slide">
   <h2>Create post</h2>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     class PostsController < ApplicationController
       ...
       # POST /posts
@@ -660,9 +622,9 @@
       end
       ...
     end
-    ]]>
   </script>
-</section><section id="show-post" class="slide">
+</section>
+<section id="show-post" class="slide">
   <h2>Show post</h2>
 
   GET localhost:3000/posts/1
@@ -670,7 +632,7 @@
     <p id="notice">Post was successfully created.</p>
     <p>
       <strong>Title:</strong>
-      Facebook’s New Colocation And Image Recognition Patents Tease The Future Of Sharing 
+      Facebook’s New Colocation And Image Recognition Patents Tease The Future Of Sharing
     </p>
     <p>
       <strong>Text:</strong>
@@ -687,7 +649,6 @@
 
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     class PostsController < ApplicationController
       ...
       # GET /posts/1
@@ -696,12 +657,10 @@
       end
       ...
     end
-    ]]>
   </script>
 
-  app/views/posts/show.html.erb 
+  app/views/posts/show.html.erb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     <p id="notice">&lt;%= notice %&gt;</p>
 
     <p>
@@ -716,16 +675,14 @@
 
     &lt;%= link_to 'Edit', edit_post_path(@post) %&gt; |
     &lt;%= link_to 'Back', posts_path %&gt;
-    ]]>
   </script>
 
   app/views/posts/show.json.jbuilder
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     json.extract! @post, :title, :text, :created_at, :updated_at
-    ]]>
   </script>
-</section><section id="edit-post" class="slide">
+</section>
+<section id="edit-post" class="slide">
   <h2>Edit post</h2>
   GET localhost:3000/posts/1/edit
   <div class="html-example">
@@ -748,7 +705,6 @@
 
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     class PostsController < ApplicationController
       ...
       # GET /posts/1/edit
@@ -756,21 +712,17 @@
       end
       ...
     end
-    ]]>
   </script>
 
-  app/views/posts/edit.html.erb 
+  app/views/posts/edit.html.erb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     &lt;%= render 'form' %&gt;
     &lt;%= link_to 'Show', @post %&gt; |
     &lt;%= link_to 'Back', posts_path %&gt;
-    ]]>
   </script>
 
-  app/views/posts/_form.html.erb 
+  app/views/posts/_form.html.erb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     &lt;%= form_for(@post) do |f| %&gt;
       &lt;% if @post.errors.any? %&gt;
         <div id="error_explanation">
@@ -794,13 +746,12 @@
         &lt;%= f.submit %&gt;
       </div>
     &lt;% end %&gt;
-    ]]>
   </script>
-</section><section id="update-post" class="slide">
+</section>
+<section id="update-post" class="slide">
   <h2>Update post</h2>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     class PostsController < ApplicationController
       ...
       # PATCH/PUT /posts/1
@@ -818,13 +769,11 @@
       end
       ...
     end
-    ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-    <form accept-charset="UTF-8" 
-      action="/posts/1" class="edit_post" id="edit_post_1" 
+    <form accept-charset="UTF-8"
+      action="/posts/1" class="edit_post" id="edit_post_1"
       method="post">
 
       <div style="margin:0;padding:0;display:inline">
@@ -832,14 +781,13 @@
         <input name="_method" type="hidden" value="patch" />
         <input name="authenticity_token" type="hidden" value="n4Djzu/hPGSd5oMdGdfJ3sqePMR+E/1fs2679AMHLE0=" />
       </div>
-    ]]>
   </script>
 
-</section><section id="delete-post" class="slide">
+</section>
+<section id="delete-post" class="slide">
   <h2>Delete post</h2>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     class PostsController < ApplicationController
       ...
       # DELETE /posts/1
@@ -853,24 +801,21 @@
       end
       ...
     end
-    ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
-    <form accept-charset="UTF-8" 
-      action="/posts/1" class="edit_post" id="edit_post_1" 
+    <form accept-charset="UTF-8"
+      action="/posts/1" class="edit_post" id="edit_post_1"
       method="post">
-      
+
       <input name="_method" type="hidden" value="delete" />
-    ]]>
   </script>
 
-</section><section id="layout" class="slide">
+</section>
+<section id="layout" class="slide">
   <h2>Layout</h2>
   app/views/layouts/application.html.erb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     <!DOCTYPE html>
     <html>
     <head>
@@ -885,56 +830,49 @@
 
     </body>
     </html>
-    ]]>
   </script>
-</section><section id="application-controller" class="slide">
+</section>
+<section id="application-controller" class="slide">
   <h2>ApplicationController</h2>
   app/controllers/application_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     class ApplicationController < ActionController::Base
       # Prevent CSRF attacks by raising an exception.
       # For APIs, you may want to use :null_session instead.
       protect_from_forgery with: :exception
     end
-    ]]>
   </script>
-</section><section id="helpers" class="slide">
+</section>
+<section id="helpers" class="slide">
   <h2>Helpers</h2>
   app/helpers/posts_helper.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     module PostsHelper
       def post_short_description(post)
-        if post.text.length > 10 
+        if post.text.length > 10
           post.text.slice(0, 7).concat("...")
         end
       end
     end
-    ]]>
   </script>
-</section><section id="assets" class="slide">
+</section>
+<section id="assets" class="slide">
   <h2>Assets</h2>
   app/assets/javascripts/application.js
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     //= require jquery
     //= require jquery_ujs
     //= require turbolinks
     //= require_tree .
-    ]]>
   </script>
   app/assets/stylesheets/application.css
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     /*
      *= require_self
      *= require_tree .
      */
-    ]]>
   </script>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       <!DOCTYPE html>
       <html>
         <head>
@@ -952,9 +890,9 @@
         </head>
         <body>
         ...
-    ]]>
   </script>
-</section><!-- End slides. -->
+</section>
+<!-- End slides. -->
 
 <!-- deck.navigation snippet -->
 <a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
