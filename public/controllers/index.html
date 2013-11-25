@@ -24,13 +24,11 @@
   ]]></script>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-  <![CDATA[      
     class PostsController < ApplicationController
       def index
         @posts = Post.all
       end
     end
-  ]]]]><![CDATA[>
   ]]></script></section><section id="standart-actions" class="slide"><h2>CRUD actions</h2>
   config/routes.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
@@ -38,7 +36,6 @@
   ]]></script>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-  <![CDATA[      
     class PostsController < ApplicationController
       def index # GET /posts
         ...
@@ -68,11 +65,9 @@
         ...
       end
     end
-  ]]]]><![CDATA[>
   ]]></script></section><section id="parameters" class="slide"><h2>Parameters</h2>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-  <![CDATA[
     class PostsController < ApplicationController
       ...
 
@@ -94,11 +89,9 @@
 
       ...
     end
-  ]]]]><![CDATA[>
   ]]></script></section><section id="hash-and-array-parameters" class="slide"><h2>Hash and Array Parameters</h2>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-  <![CDATA[
     class PostsController < ApplicationController
       ...
 
@@ -107,22 +100,18 @@
         params[:ids] # ["1", "2", "3"]
         ...
       end
-    end 
-  ]]]]><![CDATA[>
+    end
   ]]></script>
   app/views/posts/_form.html.erb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-  <![CDATA[
     &lt;form accept-charset=\"UTF-8\" action=\"/posts\" method=\"post\"&gt;
       &lt;input type=\"text\" name=\"post[title]\" value=\"Title\" /&gt;
       &lt;input type=\"text\" name=\"post[images_attributes][id]\" value=\"12345\" /&gt;
       &lt;input type=\"text\" name=\"post[images_attributes][title]\" value=\"Image\" /&gt;
     &lt;/form&gt;
-  ]]]]><![CDATA[>
   ]]></script>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-  <![CDATA[
     class PostsController < ApplicationController
       ...
 
@@ -130,12 +119,10 @@
         params[:post] # { title: "Title", images_attributes: { id: "12345", title: "Image" } }
         ...
       end
-    end 
-  ]]]]><![CDATA[>
+    end
   ]]></script></section><section id="json-parameters" class="slide"><h2>JSON parameters</h2>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-  <![CDATA[
     class PostsController < ApplicationController
       ...
 
@@ -152,17 +139,13 @@
       end
       ...
     end
-  ]]]]><![CDATA[>
   ]]></script></section><section id="routing-parameters" class="slide"><h2>Routing parameters</h2>
   config/routes.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-  <![CDATA[
     get '/posts/:state' => 'posts#index', my: 'true'
-  ]]]]><![CDATA[>
   ]]></script>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-  <![CDATA[
     class PostsController < ApplicationController
       ...
       def index
@@ -172,22 +155,18 @@
         ...
       end
     end
-  ]]]]><![CDATA[>
   ]]></script></section><section id="default-url-options" class="slide"><h2>Default URL options</h2>
   app/controllers/application_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-  <![CDATA[
     class ApplicationController < ActionController::Base
     
       def default_url_options # /posts/new -> /posts/new?locale=en
         { locale: I18n.locale }
       end
     end
-  ]]]]><![CDATA[>
   ]]></script></section><section id="strong-parameters" class="slide"><h2>Strong parameters</h2>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-  <![CDATA[
     class PostsController < ActionController::Base
       def create # ActiveModel::ForbiddenAttributes exception
         Post.create(params[:post])
@@ -204,10 +183,8 @@
           params.require(:post).permit(:title, :text)
         end
     end
-  ]]]]><![CDATA[>
   ]]></script><div class="slide" id="permitted-params">
     <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
       params.permit(:id)
       params.permit(:id => [])
       params.require(:post).permit!
@@ -215,19 +192,15 @@
               :images_attributes => [ :id, :name, :_destroy])
 
       params.fetch(:post, {}).permit(:title, :text)
-
-    ]]]]><![CDATA[>
     ]]></script></div>
 
   <div class="slide" id="scope-strong-parameters">
     <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
       def post_params
         params.require(:post).permit(:title).tap do |whitelisted|
           whitelisted[:data] = params[:post][:data]
         end
       end
-    ]]]]><![CDATA[>
     ]]></script></div>
 </section><section id="session" class="slide"><h2>Session</h2>
   <ul><li>ActionDispatch::Session::CookieStore - Stores everything on the client</li>
@@ -237,39 +210,28 @@
   </ul><div class="slide" id="active-record-store">
     <p>config/initializers/session_store.rb</p>
     <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
       YourApp::Application.config.session_store :active_record_store
-    ]]]]><![CDATA[>
     ]]></script></div>
   <div class="slide" id="cookie-store-with-key">
     <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
       YourApp::Application.config.session_store :cookie_store, key: '_your_app_session'
-    ]]]]><![CDATA[>
     ]]></script></div>
   <div class="slide" id="cookie-store-with-key">
     <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
       YourApp::Application.config.session_store :cookie_store, key: '_your_app_session'
-    ]]]]><![CDATA[>
     ]]></script></div>
   <div class="slide" id="cookie-store-with-domain">
     <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
       YourApp::Application.config.session_store :cookie_store, key: '_your_app_session', domain: ".example.com"
-    ]]]]><![CDATA[>
     ]]></script></div>
   <div class="slide" id="cookie-store-with-domain">
     <p>config/initializers/secret_token.rb</p>
     <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
       YourApp::Application.config.secret_key_base = '49d3f3de9ed86c74b94ad6bd0...'
-    ]]]]><![CDATA[>
     ]]></script></div>
 </section><section id="accessing-session" class="slide"><h2>Accessing the session</h2>
   app/controllers/application_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-  <![CDATA[
     class ApplicationController < ActionController::Base
       ...
      
@@ -280,11 +242,9 @@
           User.find_by(id: session[:current_user_id])
       end
     end
-  ]]]]><![CDATA[>
   ]]></script><div class="slide" id="create-destroy-session">
     app/controllers/logins_controller.rb
     <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
       class LoginsController < ApplicationController
 
         def create
@@ -299,16 +259,12 @@
           redirect_to root_url
         end
       end
-    ]]]]><![CDATA[>
     ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
       reset_session
-    ]]]]><![CDATA[>
     ]]></script></div>
 </section><section id="flash" class="slide"><h2>The Flash</h2>
   app/controllers/logins_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-  <![CDATA[
     class LoginsController < ApplicationController
       def destroy
         session[:current_user_id] = nil
@@ -316,52 +272,42 @@
         redirect_to root_url
       end
     end
-  ]]]]><![CDATA[>
   ]]></script><div class="slide" id="flash-variants">
     <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
       redirect_to root_url, notice: "You have successfully logged out."
       redirect_to root_url, alert: "You're stuck here!"
       redirect_to root_url, flash: { just_signed_up: true }
-    ]]]]><![CDATA[>
     ]]></script></div>
 
 
   <div class="slide" id="flash-template">
     app/views/layouts/application.html.erb
     <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
       &lt;body&gt;
         &lt;% flash.each do |name, msg| -%&gt;
           &lt;%= content_tag :div, msg, class: name %&gt;
         &lt;% end -%&gt;
       &lt;/body&gt;
-    ]]]]><![CDATA[>
     ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
       &lt;% if flash[:just_signed_up] %&gt;
         &lt;p class="welcome"&gt;Welcome to our site!&lt;/p&gt;
       &lt;% end %&gt;
-    ]]]]><![CDATA[>
     ]]></script></div>
 
   <div class="slide" id="flash-keep">
     app/controllers/posts_controller.rb
     <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
       class PostsController < ApplicationController
         def index
           flash.keep
           redirect_to users_url
         end
       end
-    ]]]]><![CDATA[>
     ]]></script></div>
 
   <div class="slide" id="flash-now">
     app/controllers/posts_controller.rb
     <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
     class PostsController < ApplicationController
       def create
         @post = Post.new(post_params)
@@ -373,13 +319,11 @@
         end
       end
     end
-    ]]]]><![CDATA[>
     ]]></script></div>
   
 </section><section id="cookies" class="slide"><h2>Cookies</h2>
   app/controllers/comments_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-  <![CDATA[
     class CommentsController < ApplicationController
       def new
         @comment = Comment.new(author: cookies[:commenter_name])
@@ -400,11 +344,9 @@
         end
       end
     end
-  ]]]]><![CDATA[>
   ]]></script></section><section id="rendring-json-xml" class="slide"><h2>Rendering XML and JSON data</h2>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-  <![CDATA[
     class PostsController < ApplicationController
       def index
         @posts = Post.all
@@ -415,11 +357,9 @@
         end
       end
     end
-  ]]]]><![CDATA[>
   ]]></script></section><section id="filters" class="slide"><h2>Filters</h2>
   app/controllers/application_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-  <![CDATA[
     class ApplicationController < ActionController::Base
       before_action :require_login
      
@@ -432,21 +372,17 @@
         end
       end
     end
-  ]]]]><![CDATA[>
   ]]></script><div class="slide" id="skip-filters">
     app/controllers/posts_controller.rb
     <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
       class PostsController < ApplicationController
         skip_before_action :require_login, only: [:index, :show]
       end
-    ]]]]><![CDATA[>
     ]]></script></div>
 
   <div class="slide" id="after-action">
     app/controllers/posts_controller.rb
     <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
       class PostsController < ApplicationController
         after_action :last_open_page
 
@@ -458,12 +394,10 @@
           session[:last_open_page] = Time.now
         end
       end
-    ]]]]><![CDATA[>
     ]]></script></div>
 </section><section id="filters-around-examples" class="slide"><h2>Filters</h2>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-  <![CDATA[
     class PostsController < ApplicationController
       aaround_filter :wrap_actions
  
@@ -477,23 +411,19 @@
         end
       end
     end
-  ]]]]><![CDATA[>
   ]]></script><div class="slide" id="filter-block">
     app/controllers/application_controller.rb
     <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
       class ApplicationController < ActionController::Base
         before_action do |controller|
           redirect_to new_login_url unless controller.send(:logged_in?)
         end
       end
-    ]]]]><![CDATA[>
     ]]></script></div>
 
   <div class="slide" id="filter-class">
     app/controllers/application_controller.rb
     <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
       class ApplicationController < ActionController::Base
         before_action LoginFilter
       end
@@ -506,12 +436,10 @@
           end
         end
       end
-    ]]]]><![CDATA[>
     ]]></script></div>
 </section><section id="request-object" class="slide"><h2>Request object</h2>
   app/controllers/application_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-  <![CDATA[
     class ApplicationController < ActionController::Base
       before_action :current_city
       ...
@@ -521,7 +449,6 @@
         session[:city] = City.find_by_ip(request.remote_ip)
       end
     end
-  ]]]]><![CDATA[>
   ]]></script><table class="table"><thead><tr><th>Property of request</th>
         <th>Purpose</th>
       </tr></thead><tbody><tr><td>host</td>
@@ -549,7 +476,6 @@
       </tr></tbody></table></section><section id="response-object" class="slide"><h2>Response object</h2>
   app/controllers/application_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-  <![CDATA[
     class ApplicationController < ActionController::Base
       after_action :check_response
       ...
@@ -559,7 +485,6 @@
         send_admin_email if response.status == 404
       end
     end
-  ]]]]><![CDATA[>
   ]]></script><table class="table"><thead><tr><th>Property of response</th>
         <th>Purpose</th>
       </tr></thead><tbody><tr><td>body</td>
@@ -581,18 +506,15 @@
     <h3>Basic Authentication</h3>
     app/controllers/admins_controller.rb
     <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
       class AdminsController < ApplicationController
         http_basic_authenticate_with name: "foo", password: "bar"
       end
-    ]]]]><![CDATA[>
     ]]></script></div>
 
   <div class="slide" id="digest-authentication">
     <h3>Digest Authentication</h3>
     app/controllers/admins_controller.rb
     <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
       class AdminsController < ApplicationController
         USERS = { "foo" => "bar" }
        
@@ -606,99 +528,81 @@
           end
         end
       end
-    ]]]]><![CDATA[>
     ]]></script></div>
 </section><section id="streaming" class="slide"><h2>Streaming</h2>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
-      require "prawn"
-      class PostsController < ApplicationController
-        def download_pdf
-          post = Post.find(params[:id])
-          send_data generate_pdf(post),
-                    filename: "#{client.name}.pdf",
-                    type: "application/pdf"
-        end
-       
-        private
-       
-        def generate_pdf(post)
-          Prawn::Document.new do
-            text post.title, align: :center
-            text post.text
-          end.render
-        end
+    require "prawn"
+    class PostsController < ApplicationController
+      def download_pdf
+        post = Post.find(params[:id])
+        send_data generate_pdf(post),
+                  filename: "#{client.name}.pdf",
+                  type: "application/pdf"
       end
-    ]]]]><![CDATA[>
-    ]]></script></section><section id="sending-files" class="slide"><h2>Sending files</h2>
+     
+      private
+     
+      def generate_pdf(post)
+        Prawn::Document.new do
+          text post.title, align: :center
+          text post.text
+        end.render
+      end
+    end
+  ]]></script></section><section id="sending-files" class="slide"><h2>Sending files</h2>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
-      class PostsController < ApplicationController
-        def download_pdf
-          post = Post.find(params[:id])
-          send_file("#{Rails.root}/files/posts/#{post.id}.pdf",
-                    filename: "#{post.title}.pdf",
-                    type: "application/pdf")
-        end
+    class PostsController < ApplicationController
+      def download_pdf
+        post = Post.find(params[:id])
+        send_file("#{Rails.root}/files/posts/#{post.id}.pdf",
+                  filename: "#{post.title}.pdf",
+                  type: "application/pdf")
       end
-    ]]]]><![CDATA[>
-    ]]></script></section><section id="restful-downloads" class="slide"><h2>RESTful Downloads</h2>
+    end
+  ]]></script></section><section id="restful-downloads" class="slide"><h2>RESTful Downloads</h2>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
-      class PostsController < ApplicationController
-        def show # GET /clients/1.pdf
-          @post = Post.find(params[:id])
-       
-          respond_to do |format|
-            format.html
-            format.pdf { render pdf: generate_pdf(@post) }
-          end
+    class PostsController < ApplicationController
+      def show # GET /clients/1.pdf
+        @post = Post.find(params[:id])
+     
+        respond_to do |format|
+          format.html
+          format.pdf { render pdf: generate_pdf(@post) }
         end
       end
-    ]]]]><![CDATA[>
+    end
   ]]></script>
   config/initializers/mime_types.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-  <![CDATA[
     Mime::Type.register "application/pdf", :pdf
-  ]]]]><![CDATA[>
   ]]></script></section><section id="log-filtering" class="slide"><h2>Log Filtering</h2>
 
   <h3>Parameters Filtering</h3>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
-      config.filter_parameters << :password
-    ]]]]><![CDATA[>
+    config.filter_parameters << :password
   ]]></script><h3>Redirects Filtering</h3>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-  <![CDATA[
     config.filter_redirect << 's3.amazonaws.com'
-  ]]]]><![CDATA[>
   ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-  <![CDATA[
     config.filter_redirect.concat ['s3.amazonaws.com', /private_path/]
-  ]]]]><![CDATA[>
   ]]></script></section><section id="from-rescue" class="slide"><h2>rescue_from</h2>
   app/controllers/application_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
-      class ApplicationController < ActionController::Base
-        rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
-       
-        private
-       
-        def record_not_found
-          render text: "404 Not Found", status: 404
-        end
+    class ApplicationController < ActionController::Base
+      rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
+     
+      private
+     
+      def record_not_found
+        render text: "404 Not Found", status: 404
       end
-    ]]]]><![CDATA[>
+    end
   ]]></script><div class="slide" id="autorization-rescue">
     app/controllers/application_controller.rb
     <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
       class ApplicationController < ActionController::Base
         rescue_from User::NotAuthorized, with: :user_not_authorized
        
@@ -723,35 +627,27 @@
           raise User::NotAuthorized unless current_user.admin?
         end
       end
-    ]]]]><![CDATA[>
     ]]></script></div>
 </section><section id="force-https" class="slide"><h2>Force HTTPS protocol</h2>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
-      class PostsController
-        force_ssl
-      end
-    ]]]]><![CDATA[>
+    class PostsController
+      force_ssl
+    end
   ]]></script><div class="slide" id="force-https-except-only">
     app/controllers/posts_controller.rb
     <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
       class PostsController
         force_ssl only: [:new, :create, :update, :edit]
       end
-    ]]]]><![CDATA[>
     ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
       class PostsController
         force_ssl except: :index
       end
-    ]]]]><![CDATA[>
     ]]></script></div>
 </section><section id="example" class="slide"><h2>Example</h2>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-  <![CDATA[
     class PostsController < ApplicationController
 
       def show
@@ -780,12 +676,9 @@
           params[:post]
         end
     end
-
-  ]]]]><![CDATA[>
   ]]></script></section><section id="testing" class="slide"><h2>Testing</h2>
   spec/controllers/posts_controller_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-  <![CDATA[
     require 'spec_helper'
 
     describe PostsController do
@@ -877,7 +770,6 @@
         end
       end
     end
-  ]]]]><![CDATA[>
   ]]></script></section><!-- End slides. --><!-- deck.navigation snippet --><a href="#" class="deck-prev-link" title="Previous">←</a>
 <a href="#" class="deck-next-link" title="Next">→</a>
 

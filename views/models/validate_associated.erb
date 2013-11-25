@@ -1,12 +1,10 @@
 <section id="validates-associated" class="slide">
   <h2>Validates Assosiated</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[ 
-    class User < ActiveRecord::Base  
-      ... 
+    class User < ActiveRecord::Base
+      ...
       has_many :posts
       validates_associated :posts
     end
-    ]]>
   </script>
 </section>

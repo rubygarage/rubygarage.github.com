@@ -2,19 +2,16 @@
   <h2>Layout</h2>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[      
       class PostsController < ApplicationController
-        layout "post"  
+        layout "post"
 
         def index
           @posts = Post.all
         end
       end
-    ]]>
   </script>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       class PostsController < ApplicationController
         layout :posts_layout
 
@@ -28,6 +25,5 @@
           current_user.admin? ? "admin" : "post"
         end
       end
-    ]]>
   </script>
 </section>

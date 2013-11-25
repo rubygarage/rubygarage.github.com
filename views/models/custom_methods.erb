@@ -2,31 +2,27 @@
   <h2>Custom Methods</h2>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[    
       rails g model Payment discount:decimal{8.2} total_value:decimal{8.2} expiration_date:date
-    ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[    
     class Payment < ActiveRecord::Base
       belongs_to :user_plan
       validate :expiration_date_cannot_be_in_the_past,
         :discount_cannot_be_greater_than_total_value
-     
+
       def expiration_date_cannot_be_in_the_past
         if !expiration_date.blank? and expiration_date < Date.today
           errors.add(:expiration_date, "can't be in the past")
         end
       end
-     
+
       def discount_cannot_be_greater_than_total_value
         if discount > total_value
           errors.add(:discount, "can't be greater than total value")
         end
       end
     end
-    ]]>
   </script>
 
 </section>

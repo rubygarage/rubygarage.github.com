@@ -1,16 +1,14 @@
 <section id="group" class="slide">
   <h2>Group</h2>
-   
+
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     > p = PostInfo.select("id, sum(views) AS sum_views").group("post_id")
       PostInfo Load (0.5ms)  SELECT id, sum(views) AS sum_views FROM "post_infos" GROUP BY post_id
-     => #<ActiveRecord::Relation [#<PostInfo id: 1>, #<PostInfo id: 2>]> 
+     => #<ActiveRecord::Relation [#<PostInfo id: 1>, #<PostInfo id: 2>]>
     > p.each{ |p| puts p.sum_views }
      9
      2
-     => [#<PostInfo id: 1>, #<PostInfo id: 2>] 
-    ]]>
+     => [#<PostInfo id: 1>, #<PostInfo id: 2>]
   </script>
 
 </section>

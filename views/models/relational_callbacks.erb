@@ -1,25 +1,22 @@
 <section id="relational-callbacks" class="slide">
   <h2>Relational Callbacks</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[     
     class User < ActiveRecord::Base
       ...
       has_many :posts, dependent: :destroy
     end
- 
+
     class Post < ActiveRecord::Base
       ...
       after_destroy :log_destroy_action
-     
+
       def log_destroy_action
         puts 'Post destroyed'
       end
-    end     
-  ]]>
-  </script>
+    end
+</script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[     
     > user = User.first
       => #<User id: 1>
     > user.posts.create!
@@ -27,6 +24,5 @@
     > user.destroy
       # Post destroyed
       => #<User id: 1>
-    ]]>
   </script>
 </section>

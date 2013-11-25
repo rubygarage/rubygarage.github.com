@@ -1,29 +1,23 @@
 <section id="partials" class="slide">
   <h2>Partials</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       &lt;% = render 'form' %&gt;
       <!-- views/posts/_form.html.erb -->
-      
+
       &lt;% = render 'shared/menu' %&gt;
       <!-- views/shared/_menu.html.erb -->
-      
+
       &lt;% = render @post %&gt;
       <!-- views/posts/_post.html.erb -->
-    ]]>
   </script>
 
   <div class = "slide" id= "partials-variables">
     <h2>Locals</h2>
     <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[         
         &lt;% = render partial: 'form', locals: {post: @post} %&gt;
-      ]]>
     </script>
     <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[         
         &lt;% = render 'form', post: @post %&gt;
-      ]]>
     </script>
   </div>
 </section>

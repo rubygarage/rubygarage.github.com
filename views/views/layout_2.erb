@@ -2,26 +2,20 @@
   <h2>Layout</h2>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       class PostsController < ApplicationController
         layout Proc.new{ |controller| controller.request.xhr? ? 'popup' : 'application'}
       end
-    ]]>
   </script>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       class PostsController < ApplicationController
         layout "post", except: [:index, :create]
       end
-    ]]>
   </script>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[    
       class PostsController < ApplicationController
         layout nil
       end
-    ]]>
   </script>
 </section>

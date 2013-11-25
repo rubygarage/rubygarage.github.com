@@ -1,21 +1,17 @@
 <section id="sharing-observers" class="slide">
   <h2>Sharing Observers</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[ 
     class MailerObserver < ActiveRecord::Observer
       observe :registration, :user
-     
+
       def after_create(model)
         # code to send confirmation email...
       end
-    end   
-    ]]>
+    end
   </script>
    <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[ 
     config.active_record.observers = :mailer_observer
-    ]]>
   </script>
-  
+
 
 </section>

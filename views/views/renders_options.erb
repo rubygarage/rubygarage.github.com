@@ -1,7 +1,6 @@
 <section id="content-type-option" class="slide">
   <h2>The :content_type option</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[      
       def index
         @post = Post.all
         respond_to do |format|
@@ -11,7 +10,6 @@
           end
         end
       end
-    ]]>
   </script>
 
   <div class = "slide" id ="status-option">
@@ -24,7 +22,6 @@
   <div class = "slide" id ="location-option">
     <h2>The :location option</h2>
     <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[      
         def index
           @post = Post.all
           respond_to do |format|
@@ -34,19 +31,16 @@
             end
           end
         end
-      ]]>
     </script>
   </div>
 
   <div class = "slide" id ="layout-option">
     <h2>The :layout option</h2>
     <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[      
         def show
           @post = Post.find(params[:id])
           render remplate: 'pages/post', layout: 'post'
         end
-      ]]>
     </script>
   </div>
 </section>

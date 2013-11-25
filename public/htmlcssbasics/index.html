@@ -17,17 +17,13 @@
 </section><section id="start-from-practice" class="slide"><h2>Let's start from practice</h2>
 
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-    <![CDATA[
       git clone git@github.com:lyuba/css-training.git
 
       cd css-training
       vim .rvmrc
       gem install compass
-    ]]]]><![CDATA[>
   ]]></script><section class="slide"><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-      <![CDATA[
         compass watch
-      ]]]]><![CDATA[>
     ]]></script></section></section><section id="basics-topic" class="slide"><div class="vcenter">
     <h1>Basics</h1>
     <h2>Inside the page</h2>
@@ -65,25 +61,19 @@
 
   HTML5
   <script type="syntaxhighlighter" class="brush: css"><![CDATA[
-    <![CDATA[
       <!DOCTYPE HTML>
-    ]]]]><![CDATA[>
   ]]></script><section class="slide"><h3>Already historical</h3>
 
     XHML Strict
     <script type="syntaxhighlighter" class="brush: css"><![CDATA[
-      <![CDATA[
         <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-      ]]]]><![CDATA[>
     ]]></script>
-    
+
     XHMTL Transitional
     <script type="syntaxhighlighter" class="brush: css"><![CDATA[
-      <![CDATA[
         <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-      ]]]]><![CDATA[>
     ]]></script></section></section><section id="basics-css-selectors" class="slide"><h2>CSS selectors</h2>
 
   <ul><li>
@@ -153,16 +143,13 @@
   <ul><li>
       External style sheet
       <script type="syntaxhighlighter" class="brush: css"><![CDATA[
-        <![CDATA[
           <head>
             <link rel="stylesheet" type="text/css" href="mystyle.css">
           </head>
-        ]]]]><![CDATA[>
       ]]></script></li>
     <li>
       Internal style sheet
       <script type="syntaxhighlighter" class="brush: css"><![CDATA[
-        <![CDATA[
           <head>
             <style>
               p {
@@ -170,46 +157,37 @@
               }
             </style>
           </head>
-        ]]]]><![CDATA[>
       ]]></script></li>
     <li>
       Inline style
       <script type="syntaxhighlighter" class="brush: css"><![CDATA[
-        <![CDATA[
           <p style="color: #fff; margin-left: 20px;">This is a paragraph.</p>
-        ]]]]><![CDATA[>
       ]]></script></li>
- 
+
   </ul></section><section id="basics-specificity" class="slide"><h2>Specificity</h2>
 
   <p>Which one will apply?</p>
   <script type="syntaxhighlighter" class="brush: css"><![CDATA[
-    <![CDATA[
       p {
         font-size: 12px;
       }
       p.bio {
         font-size: 14px;
       }
-    ]]]]><![CDATA[>
   ]]></script><section class="slide"><p>What about here? What is more specific?</p>
     <script type="syntaxhighlighter" class="brush: css"><![CDATA[
-      <![CDATA[
         <div id="sidebar">
           <p class="bio">text here</p>
         </div>
-      ]]]]><![CDATA[>
     ]]></script><script type="syntaxhighlighter" class="brush: css"><![CDATA[
-      <![CDATA[
         div p.bio {
           font-size: 14px;
         }
         #sidebar p {
           font-size: 12px;
         }
-      ]]]]><![CDATA[>
     ]]></script></section></section><section id="basics-specificity-calculation" class="slide"><h2>Specifity Calculation</h2>
-  
+
   <table><tr><td>
         0001
       </td>
@@ -237,14 +215,12 @@
     </tr></table><section class="slide" style="margin-top: 20px;"><p>Id is more specific than a class is more specific than an element.</p>
   </section><section class="slide" style="margin-top: 40px;"><p>In our example</p>
     <script type="syntaxhighlighter" class="brush: css"><![CDATA[
-      <![CDATA[
         div p.bio {       - 0012
           font-size: 14px;
         }
         #sidebar p {      - 0101
           font-size: 12px;
         }
-      ]]]]><![CDATA[>
     ]]></script></section><section class="slide" style="margin-top: 40px;"><p>To make our life easier - it's better to avoid the complex sequences and random overrides in general.
     <br />
     Noone actually does this math in practice.</p>
@@ -275,14 +251,12 @@
   </ol><section class="slide"><h3>Directive "important!"</h3>
     <p>Jumps out of the cascade to the highest level of priority.</p>
     <script type="syntaxhighlighter" class="brush: css"><![CDATA[
-      <![CDATA[
         div p.bio {
           font-size: 14px !important;
         }
         #sidebar p {
           font-size: 12px;
         }
-      ]]]]><![CDATA[>
     ]]></script></section><section class="slide" style="margin-top: 20px;"><p> It's better to aviod the situations where it's needed.</p>
   </section></section><section id="basics-inheritance" class="slide"><h2>Inheritance</h2>
 
@@ -313,11 +287,9 @@
     </li>
   </ul><section class="slide"><p>To force the inheritance of a certain property one can use:</p>
     <script type="syntaxhighlighter" class="brush: css"><![CDATA[
-      <![CDATA[
         p {
           margin: inherit;
         }
-      ]]]]><![CDATA[>
     ]]></script></section></section><section id="basics-box-model" class="slide"><h2>Box model</h2>
   
   <section style="float: left; width: 48%;"><h3>box-sizing: content-box;</h3>
@@ -370,7 +342,6 @@
         <img src="/public/htmlcssbasics/assets/float.png" style="margin: 0; margin-bottom: 20px;" /></section><section class="slide"><p>Need to clearfix:</p>
         <img src="/public/htmlcssbasics/assets/float-without-clearfix.jpg" style="margin: 0; margin-bottom: 20px;" /></section><section class="slide"><p>Here is the principle (applies to the container):</p>
         <script type="syntaxhighlighter" class="brush: css"><![CDATA[
-          <![CDATA[
             @mixin pie-cleafix {
               &:after {
                 content: "";
@@ -378,8 +349,7 @@
                 clear: both;
               }
             }
-          ]]]]><![CDATA[>
-        ]]></script></section></li>  
+        ]]></script></section></li>
   </ul></section><section id="basics-positioning-1" class="slide"><h2>Positioning</h2>
 
   <ul><li>

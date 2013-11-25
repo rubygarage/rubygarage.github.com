@@ -91,7 +91,6 @@
 </section><section id="config-ru-example" class="slide"><h4>Example</h4>
 
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
 #\ -w -p 8765
 
 # The line above containg options
@@ -113,23 +112,18 @@ end
 
 # finalize configuration by 'running' our app
 run app
-    ]]]]><![CDATA[>
   ]]></script></section><section id="rackup-try" class="slide"><h4>Try to run</h4>
 
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-      <![CDATA[
 $ rackup
 [2013-02-10 23:57:52] INFO  WEBrick 1.3.1
 [2013-02-10 23:57:52] INFO  ruby 1.9.3 (2012-11-10) [x86_64-darwin11.4.2]
 [2013-02-10 23:57:52] INFO  WEBrick::HTTPServer#start: pid=65529 port=8765
-]]]]><![CDATA[>
-  ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-      <![CDATA[
+]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
 $ curl http://127.0.0.1:8765
 Hello
 $
-]]]]><![CDATA[>
-  ]]></script></section><section id="how-rack-works" class="slide"><div class="vcenter">
+]]></script></section><section id="how-rack-works" class="slide"><div class="vcenter">
     <h1>How it works?</h1>
   </div>
 </section><section id="rack-stack" class="slide"><h4>Stack of middlewares</h4>
@@ -151,7 +145,6 @@ $
       <li>Hash of headers</li>
       <li>Array with responce body</li>
     </ol><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
 # Block, we pass env variable to
 proc do |env|
   [ 200,
@@ -169,7 +162,6 @@ class MyApp
     ]
   end
 end
-    ]]]]><![CDATA[>
   ]]></script></section><section id="helper-classes" class="slide"><h4>Array?! It's Ruby. It's can't be so borring!</h4>
 
   <p>
@@ -181,7 +173,6 @@ end
 </section><section id="helper-example" class="slide"><h4>Let's try it.</h4>
 
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
 app = proc do |env|
   req = Rack::Request.new(env)
   res = Rack::Response.new
@@ -191,21 +182,17 @@ app = proc do |env|
 
   res.finish
 end
-    ]]]]><![CDATA[>
   ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-      <![CDATA[
 $ curl http://127.0.0.1:8765
 You GET me!
 $
-]]]]><![CDATA[>
-  ]]></script></section><section id="write-middleware" class="slide"><h4>Try to create own middleware</h4>
+]]></script></section><section id="write-middleware" class="slide"><h4>Try to create own middleware</h4>
 
   <p>
     In this example we will try to do authentication middleware.
   </p>
 
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
 class Authenticator
   def initialize(app, options={})
     @app = app # save app somewhere, so we can chain call
@@ -228,15 +215,12 @@ app = proc do |env|
 end
 
 run app
-    ]]]]><![CDATA[>
   ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-      <![CDATA[
 $ curl http://127.0.0.1:9292
 Unauthenticated
 $ curl -H "Auth: secret" http://127.0.0.1:9292
 Passed
 $
-    ]]]]><![CDATA[>
   ]]></script></section><section id="start-from-beginning" class="slide"><div class="vcenter">
     <h1>Hmm... Is there any magic?</h1>
   </div>
@@ -247,58 +231,46 @@ $
   </div>
 </section><section id="level-0" class="slide"><h4>Prepare yourself</h4>
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-      <![CDATA[
     mkdir follow-the-rack && cd follow-the-rack
     rvm --create --rvmrc 1.9.3@follow-the-rack
     cd .
-  ]]]]><![CDATA[>
-    ]]></script><p>
+]]></script><p>
     Gemfile
   </p>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
   source :rubygems
 
   gem "rack"
   gem "debugger"
-  ]]]]><![CDATA[>
-    ]]></script><p>
+]]></script><p>
     Install
   </p>
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-      <![CDATA[
   bundle
-  ]]]]><![CDATA[>
-    ]]></script><p>
+]]></script><p>
     config.ru
   </p>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    <![CDATA[
 require 'bundler/setup'
 
 app = lambda do |env|
           Rack::Response.new('Hello').finish
         end
 run app
-  ]]]]><![CDATA[>
 ]]></script><p>
   Start app with "rackup"
 </p>
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-      <![CDATA[
 $ rackup
 [2013-02-10 22:03:22] INFO  WEBrick 1.3.1
 [2013-02-10 22:03:22] INFO  ruby 1.9.3 (2012-11-10) [x86_64-darwin11.4.2]
 [2013-02-10 22:03:22] INFO  WEBrick::HTTPServer#start: pid=64350 port=9292
-  ]]]]><![CDATA[>
 ]]></script><p>
   Open Rack gem sources
 </p>
 
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-      <![CDATA[
 $ EDITOR=mvim bundle open rack
-  ]]]]><![CDATA[>
 ]]></script></section><section id="level-1" class="slide"><h4>What happened, when we started this command?</h4>
   <br /><p>
     <strong>1.</strong> Invoke of <code>Rack::Server.start</code> <a href="https://github.com/rack/rack/blob/7b535cd7ce78eaaaec99cd2677ad8dd5962019a4/bin/rackup#L4">bin/rackup#L4</a>
@@ -325,18 +297,15 @@ $ EDITOR=mvim bundle open rack
   </p>
 </section><section id="going-to-request" class="slide"><h4>Wooh! We made it. Now we see in console...</h4>
   <br /><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-      <![CDATA[
 [2013-02-10 22:03:22] INFO  WEBrick 1.3.1
 [2013-02-10 22:03:22] INFO  ruby 1.9.3 (2012-11-10) [x86_64-darwin11.4.2]
 [2013-02-10 22:03:22] INFO  WEBrick::HTTPServer#start: pid=64350 port=9292
-  ]]]]><![CDATA[>
 ]]></script></section><section id="http-request" class="slide"><h4>The HTTP request</h4>
   <p>
     Let's request a URL by curl... What will it send?
   </p>
 
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-      <![CDATA[
 $ curl -iv http://127.0.0.1:9999/
   * About to connect() to 127.0.0.1 port 9999 (#0)
   *   Trying 127.0.0.1... connected
@@ -346,8 +315,7 @@ $ curl -iv http://127.0.0.1:9999/
       libcurl/7.21.4 OpenSSL/0.9.8r zlib/1.2.5
   > Host: 127.0.0.1:9292
   > Accept: */*
-  ]]]]><![CDATA[>
-    ]]></script></section><section id="webrick-level" class="slide"><h4>What will happen, after WEBrick receives data trough TCP socket?</h4>
+]]></script></section><section id="webrick-level" class="slide"><h4>What will happen, after WEBrick receives data trough TCP socket?</h4>
   <br /><p>
     At the end, it will call <code>service</code> method.<br />
     The handler we used, was inherited from <a href="http://www.ruby-doc.org/stdlib-1.9.3/libdoc/webrick/rdoc/WEBrick/HTTPServlet/AbstractServlet.html">WEBrick::HTTPServlet::AbstractServlet</a><br />

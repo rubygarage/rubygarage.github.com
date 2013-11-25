@@ -1,7 +1,6 @@
 <section id="render-json-xml" class="slide">
   <h2>Rendering JSON and XML</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[      
       def index
         @post = Post.all
         respond_to do |format|
@@ -10,15 +9,13 @@
           format.xml { render xml: @posts}
         end
       end
-    ]]>
   </script>
   <p>to_json, to_xml methods</p>
 
   <div class="slide" id="render-js">
     <h2>Rendering Vanilla JavaScript</h2>
     <script type="syntaxhighlighter" class="brush: ruby">
-      <![CDATA[      
-        def index 
+        def index
           @posts = Post.all
           respond_to do |format|
             format.html
@@ -29,7 +26,6 @@
             end
           end
         end
-      ]]>
     </script>
   </div>
 </section>

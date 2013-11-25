@@ -2,18 +2,14 @@
   <h2>Layout inheritance</h2>
   app/controllers/application_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       class ApplicationController < ActionController::Base
         layout "application"
       end
-    ]]>
   </script>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       class PostsController < ApplicationController
         layout "post"
       end
-    ]]>
   </script>
 </section>

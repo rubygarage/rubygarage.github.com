@@ -1,23 +1,19 @@
 <section id="nested" class="slide">
   <h2>Nested Resources</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       class User < ActiveRecord::Base
         has_many :posts
       end
-       
+
       class Post < ActiveRecord::Base
         belongs_to :user
       end
-    ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       resources :users do
         resources :posts
       end
-    ]]>
   </script>
 
   <div class="slide">

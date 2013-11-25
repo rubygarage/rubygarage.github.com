@@ -1,25 +1,21 @@
 <section id="null-relation" class="slide">
   <h2>Null Relation</h2>
-   
+
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     Post.none # returns an empty Relation and fires no queries.
-    ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     # The visible_posts method below is expected to return a Relation.
       @posts = current_user.visible_posts.where(title: params[:title])
-       
+
       def visible_posts
         case role
         when 'Reviewer'
           Post.published
         when 'Bad User'
-          Post.none 
+          Post.none
         end
       end
-    ]]>
   </script>
 </section>

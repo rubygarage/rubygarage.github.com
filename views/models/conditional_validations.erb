@@ -1,36 +1,28 @@
 <section id="conditional-validations" class="slide">
   <h2>Condional validations</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[ 
       class User < ActiveRecord::Base
         validates :card_number, presence: true, if: :paid_with_card?
-       
+
         def paid_with_card?
           payment_type == "card"
         end
       end
-    ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[ 
       validates :last_name, presence: true, if: "first_name.nil?"
-    ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[ 
       validates :password, confirmation: true, unless: Proc.new { |a| a.password.blank? }
-    ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[ 
       with_options if: :is_admin? do |admin|
         admin.validates :password, length: { minimum: 10 }
         admin.validates :email, presence: true
       end
-    ]]>
   </script>
 
 </section>

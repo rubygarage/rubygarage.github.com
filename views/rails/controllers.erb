@@ -2,7 +2,6 @@
   <h2>Controllers</h2>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     class PostsController < ApplicationController
       before_action :set_post, only: [:show, :edit, :update, :destroy]
 
@@ -77,6 +76,5 @@
           params.require(:post).permit(:title, :text)
         end
     end
-    ]]>
   </script>
 </section>

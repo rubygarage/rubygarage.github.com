@@ -2,7 +2,6 @@
   <h2>has_one :through</h2>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     rails g model Plan name:string description:text price:decimal{8.2}
       invoke  active_record
       create    db/migrate/20130616211135_create_plans.rb
@@ -10,11 +9,9 @@
       invoke    test_unit
       create      test/models/plan_test.rb
       create      test/fixtures/plans.yml
-    ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     rails g model UserPlan user:belongs_to plan:belongs_to
       invoke  active_record
       create    db/migrate/20130616211306_create_user_plans.rb
@@ -22,12 +19,10 @@
       invoke    test_unit
       create      test/models/user_plan_test.rb
       create      test/fixtures/user_plans.yml
-    ]]>
   </script>
 
   db/migrate/20130616211135_create_plans.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     class CreatePlans < ActiveRecord::Migration
       def change
         create_table :plans do |t|
@@ -39,13 +34,11 @@
         end
       end
     end
-    ]]>
   </script>
 
 
   db/migrate/20130616211306_create_user_plans.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     class CreateUserPlans < ActiveRecord::Migration
       def change
         create_table :user_plans do |t|
@@ -56,12 +49,10 @@
         end
       end
     end
-    ]]>
   </script>
 
   app/models/user.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     class User < ActiveRecord::Base
       has_many :posts
       has_many :subscriptions
@@ -69,26 +60,21 @@
       has_one :user_plan
       has_one :plan, through: :user_plan
     end
-    ]]>
   </script>
 
   app/models/user_plan.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[    
     class UserPlan < ActiveRecord::Base
       belongs_to :user
       belongs_to :plan
     end
-    ]]>
   </script>
 
   app/models/plan.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-  <![CDATA[    
     class Plan < ActiveRecord::Base
       has_many :user_plans
       has_many :users, through: :user_plans
     end
-    ]]>
   </script>
 </section>

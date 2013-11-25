@@ -1,13 +1,11 @@
 <section id="validate-each" class="slide">
   <h2>validate_each</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[ 
     class User < ActiveRecord::Base
       validates_each :first_name, :last_name do |record, attr, value|
         record.errors.add(attr, 'must start with upper case') if value =~ /\A[a-z]/
       end
     end
-    ]]>
   </script>
 
 </section>

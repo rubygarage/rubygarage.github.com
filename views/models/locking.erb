@@ -2,59 +2,47 @@
   <h2>Locking Records for Update</h2>
 
   Optimistic locking
-   
+
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     lock_version Integer
-    ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     u1 = User.find(1)
     u2 = User.find(1)
- 
+
     u1.first_name = "Michael"
     u1.save
- 
+
     u2.first_name = "should fail"
     u2.save # Raises an ActiveRecord::StaleObjectError
-    ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     ActiveRecord::Base.lock_optimistically = false
-    ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     class User < ActiveRecord::Base
       self.locking_column = :lock_user_column
 end
-    ]]>
   </script>
 
   Pessimistic locking
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     User.transaction do
       user = User.lock.first
       user.first_name = 'Marta'
       user.save
-    end    
-    ]]>
+    end
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     User Load (0.5ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT 1
     SQL (2.6ms)  UPDATE "users" SET "first_name" = ?, "updated_at" = ? WHERE "users"."id" = 1  [["first_name", "Marta"], ["updated_at", Sun, 23 Jun 2013 21:02:23 UTC +00:00]]
      (119.9ms)  commit transaction
-   => true     
-    ]]>
+   => true
   </script>
 
 </section>

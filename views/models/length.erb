@@ -2,25 +2,21 @@
   <h2>Length</h2>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[ 
     rails g migration AddCardNumberToUsers card_number:string
-    ]]>
   </script>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[    
     class User < ActiveRecord::Base
       ...
-      validates :first_name, length: { 
-        minimum: 2, 
-        maximum: 500, 
+      validates :first_name, length: {
+        minimum: 2,
+        maximum: 500,
         wrong_length: "Invalid length",
-        too_long: "%{count} characters is the maximum allowed" 
+        too_long: "%{count} characters is the maximum allowed"
         too_short: "must have at least %{count} characters"
       }
       validates :password, length: { in: 6..20 }
       validates :card_number, length:  { is: 14 }
     end
-    ]]>
   </script>
 
   <ul>

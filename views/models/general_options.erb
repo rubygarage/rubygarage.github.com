@@ -1,36 +1,30 @@
 <section id="general-options" class="slide">
   <h2>General options</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[ 
     class Post < ActiveRecord::Base
       validates :title, allow_nil: true
     end
-    ]]>
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[ 
     class User < ActiveRecord::Base
       validates :last_name, allow_blank: true
     end
-    ]]>
   </script>
 
   <p>:allow_nil and :allow_blank are ignored by :presence</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[ 
     class User < ActiveRecord::Base
       # it will be possible to update email with a duplicated value
       validates :email, uniqueness: true, on: :create
-     
+
       # it will be possible to create the record with a non-numerical age
       validates :card_number, numericality: true, on: :update
-     
+
       # the default (validates on both create and update)
       validates :first_name, presence: true, on: :save
     end
-    ]]>
   </script>
 
 </section>

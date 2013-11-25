@@ -1,99 +1,79 @@
 <section id="finding-by-sql" class="slide">
   <h2>Finding by SQL</h2>
 
-  find_by_sql 
+  find_by_sql
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     >   User.find_by_sql("SELECT * FROM users INNER JOIN posts ON users.id = posts.user_id")
       User Load (0.7ms)  SELECT * FROM users INNER JOIN posts ON users.id = posts.user_id
-     => [#<User id: 1, first_name: "Anna", email: "ann@ua.fm", password: "111111", created_at: "2013-06-24 08:54:47", updated_at: "2013-06-24 08:54:47", last_name: nil, receive_news: true, state: "active">, #<User id: 2, first_name: "Gregory", email: "greg@ua.fm", password: "111111", created_at: "2013-06-24 08:55:25", updated_at: "2013-06-24 08:55:25", last_name: "Taunsend", receive_news: false, state: "inactive">] 
-    ]]>
+     => [#<User id: 1, first_name: "Anna", email: "ann@ua.fm", password: "111111", created_at: "2013-06-24 08:54:47", updated_at: "2013-06-24 08:54:47", last_name: nil, receive_news: true, state: "active">, #<User id: 2, first_name: "Gregory", email: "greg@ua.fm", password: "111111", created_at: "2013-06-24 08:55:25", updated_at: "2013-06-24 08:55:25", last_name: "Taunsend", receive_news: false, state: "inactive">]
   </script>
 
   select_all
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     > Post.connection.select_all("SELECT * FROM posts WHERE id = '1'")
        (0.5ms)  SELECT * FROM posts WHERE id = '1'
-     => #<ActiveRecord::Result:0x0000000398efb0 @columns=["id", "text", "user_id", "created_at", "updated_at", "title", "published", "blog_id"], @rows=[[1, "Every trip begins with the first step", 1, "2013-06-24 08:54:47.619258", "2013-06-24 08:54:47.619258", "1000 miles", nil, nil]], @hash_rows=nil, @column_types={}>     
-    ]]>
+     => #<ActiveRecord::Result:0x0000000398efb0 @columns=["id", "text", "user_id", "created_at", "updated_at", "title", "published", "blog_id"], @rows=[[1, "Every trip begins with the first step", 1, "2013-06-24 08:54:47.619258", "2013-06-24 08:54:47.619258", "1000 miles", nil, nil]], @hash_rows=nil, @column_types={}>
   </script>
 
   pluck
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
       > User.where(state: "active").pluck(:id)
         (0.5ms)  SELECT "users"."id" FROM "users" WHERE "users"."state" = 'active'
-       => [1]       
-    ]]>
+       => [1]
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     > User.distinct.pluck(:first_name)
       (0.5ms)  SELECT DISTINCT "users"."first_name" FROM "users" WHERE "users"."state" = 'pending'
-     => ["Mark", "Alice"]               
-    ]]>
+     => ["Mark", "Alice"]
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     > User.pluck(:id,:first_name)
       (0.4ms)  SELECT "users"."id", "users"."first_name" FROM "users" WHERE "users"."state" = 'pending'
-     => [[3, "Mark"], [4, "Alice"]] 
-          
-    ]]>
+     => [[3, "Mark"], [4, "Alice"]]
+
   </script>
-  
+
   pluck allows to replace code
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
     User.select(:id).map { |u| u.id }
     # or
     User.select(:id).map(&:id)
     # or
-    User.select(:id, :first_name).map { |u| [u.id, u.first_name] }          
-    ]]>
+    User.select(:id, :first_name).map { |u| [u.id, u.first_name] }
   </script>
 
   with
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
       User.pluck(:id)
       # or
-      User.pluck(:id, :first_name)      
-    ]]>
+      User.pluck(:id, :first_name)
   </script>
 
   ids
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
-    > User.ids   
+    > User.ids
       (0.5ms)  SELECT id FROM "users" WHERE "users"."state" = 'pending'
-      => [3, 4] 
-   
-    ]]>
+      => [3, 4]
+
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
     class User < ActiveRecord::Base
       self.primary_key = "user_id"
-    end       
-    ]]>
+    end
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    <![CDATA[
-      > User.ids 
-      (0.2ms)  SELECT user_id FROM "users" WHERE "users"."state" = 'pending'   
-    ]]>
+      > User.ids
+      (0.2ms)  SELECT user_id FROM "users" WHERE "users"."state" = 'pending'
   </script>
 
 

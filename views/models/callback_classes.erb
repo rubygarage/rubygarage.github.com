@@ -1,8 +1,7 @@
 <section id="callback-classes" class="slide">
   <h2>Callback Classes</h2>
-  
+
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[     
     class PictureFileCallbacks
       def after_destroy(picture_file)
         if File.exists?(picture_file.filepath)
@@ -10,17 +9,13 @@
         end
       end
     end
-  ]]>
-  </script>
+</script>
    <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[     
     class PictureFile < ActiveRecord::Base
       after_destroy PictureFileCallbacks.new
     end
-  ]]>
-  </script>
+</script>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[     
      class PictureFileCallbacks
       def self.after_destroy(picture_file)
         if File.exists?(picture_file.filepath)
@@ -28,13 +23,10 @@
         end
       end
     end
-  ]]>
-  </script>
+</script>
    <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[     
      class PictureFile < ActiveRecord::Base
       after_destroy PictureFileCallbacks
     end
-  ]]>
-  </script>
+</script>
 </section>

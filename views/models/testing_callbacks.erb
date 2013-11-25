@@ -1,12 +1,10 @@
 <section id="testing-callbacks" class="slide">
   <h2>Testing callbacks</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-    <![CDATA[
       it "should init 'field' on create" do
         n = Model.create
         n.field.should == value
       end
-    ]]>
   </script>
   <p>Set up object in state before callback</p>
 </section>
