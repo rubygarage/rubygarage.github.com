@@ -1594,23 +1594,31 @@ the first guess.</p>
 </section><section id="codebreaker-gem" class="slide">
   <h2>Creating codebreaker gem</h2>
   <script type="syntaxhighlighter" class="brush: bash">
-    rvm use 1.9.3-head@codebreaker --create
-    Using /Users/sparrow/.rvm/gems/ruby-1.9.3-head with gemset codebreaker
+    rvm use 2.0.0-p247@codebreaker --create
+    Using /Users/sparrow/.rvm/gems/ruby-2.0.0-p247 with gemset codebreaker
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
     gem install bundler
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
     bundle gem codebreaker
+      create  codebreaker/Gemfile
+      create  codebreaker/Rakefile
+      create  codebreaker/LICENSE.txt
+      create  codebreaker/README.md
+      create  codebreaker/.gitignore
+      create  codebreaker/codebreaker.gemspec
+      create  codebreaker/lib/codebreaker.rb
+      create  codebreaker/lib/codebreaker/version.rb
+      Initializating git repo in /Users/sparrow/Www/codebreaker
   </script>
+  codebreaker.gemspec
   <script type="syntaxhighlighter" class="brush: ruby">
-    # file codebreaker.gemspec
-
     # ...
-    Gem::Specification.new do |gem|
+    Gem::Specification.new do |spec|
       # ...
     
-      gem.add_development_dependency "rspec"
+      spec.add_development_dependency "rspec"
     end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
@@ -1621,16 +1629,14 @@ the first guess.</p>
 
   <p>Now we're going to describe the expected behavior of instances of the Game class.</p>
 
+  spec/spec_helper.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    # file spec/spec_helper.rb
-
     require 'bundler/setup'
     require 'codebreaker'
   </script>
 
+  spec/codebreaker/game_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    # file spec/codebreaker/game_spec.rb
-
     require 'spec_helper'
 
     module Codebreaker
@@ -1657,14 +1663,13 @@ the first guess.</p>
 
   <p>So let's add some code structure</p>
 
+  lib/codebreaker.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    # file lib/codebreaker.rb
-
     require 'codebreaker/game'
   </script>
-  <script type="syntaxhighlighter" class="brush: ruby">
-    # file lib/codebreaker/game.rb
 
+  lib/codebreaker/game.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
     module Codebreaker
       class Game
         def start
@@ -1694,9 +1699,8 @@ the first guess.</p>
 
   <p>In game_spec.rb, we want to specify that when we start the game, it sends the right messages to the output.</p>
 
+  spec/codebreaker/game_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    # file spec/codebreaker/game_spec.rb
-
     require 'spec_helper'
 
     module Codebreaker
@@ -1741,9 +1745,8 @@ the first guess.</p>
 
   <p>The failure message tells us that output never received puts. Here’s what we need to do to get this example to pass:</p>
 
+  lib/codebreaker/game.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    # file lib/codebreaker/game.rb
-
     module Codebreaker
       class Game
         def initialize(output)
@@ -1778,16 +1781,15 @@ the first guess.</p>
 
   <p>The following failing step is the next thing to work on: <strong>And I should see "Enter guess:"</strong>.</p>
 
+  spec/codebreaker/game_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    # file spec/codebreaker/game_spec.rb
-
     require 'spec_helper'
 
     module Codebreaker
       describe Game do
         describe "#start" do
           it "sends a welcome message" do
-            ...
+            # ...
           end
 
           it "prompts for the first guess" do
@@ -1827,9 +1829,8 @@ the first guess.</p>
 
   <p>This time, the output didn’t receive puts('Enter guess:'). Resolve that as follows:</p>
 
+  lib/codebreaker/game.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    # file lib/codebreaker/game.rb
-
     module Codebreaker
       class Game
         def initialize(output)
@@ -1879,9 +1880,8 @@ the first guess.</p>
   <p>We’ve told the double in the first example to expect puts( ) with “Welcome to Codebreaker!” and we’ve satisfied that requirement, but we’ve only
 told it to expect “Welcome to Codebreaker!” It doesn’t know anything about “Enter guess:”</p>
 
+  spec/codebreaker/game_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    # file spec/codebreaker/game_spec.rb
-
     module Codebreaker
       describe Game do
         describe "#start" do
@@ -1920,9 +1920,8 @@ told it to expect “Welcome to Codebreaker!” It doesn’t know anything about
 
   <p>In this case, we have a very clear break between what is context and what is behavior, so let’s take advantage of that and move the context to a block that is executed before each of the examples.</p>
 
+  spec/codebreaker/game_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    # file spec/codebreaker/game_spec.rb
-
     module Codebreaker
       describe Game do
         describe "#start" do
