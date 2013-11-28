@@ -1,23 +1,31 @@
 <section id="codebreaker-gem" class="slide">
   <h2>Creating codebreaker gem</h2>
   <script type="syntaxhighlighter" class="brush: bash">
-    rvm use 1.9.3-head@codebreaker --create
-    Using /Users/sparrow/.rvm/gems/ruby-1.9.3-head with gemset codebreaker
+    rvm use 2.0.0-p247@codebreaker --create
+    Using /Users/sparrow/.rvm/gems/ruby-2.0.0-p247 with gemset codebreaker
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
     gem install bundler
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
     bundle gem codebreaker
+      create  codebreaker/Gemfile
+      create  codebreaker/Rakefile
+      create  codebreaker/LICENSE.txt
+      create  codebreaker/README.md
+      create  codebreaker/.gitignore
+      create  codebreaker/codebreaker.gemspec
+      create  codebreaker/lib/codebreaker.rb
+      create  codebreaker/lib/codebreaker/version.rb
+      Initializating git repo in /Users/sparrow/Www/codebreaker
   </script>
+  codebreaker.gemspec
   <script type="syntaxhighlighter" class="brush: ruby">
-    # file codebreaker.gemspec
-
     # ...
-    Gem::Specification.new do |gem|
+    Gem::Specification.new do |spec|
       # ...
     
-      gem.add_development_dependency "rspec"
+      spec.add_development_dependency "rspec"
     end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
