@@ -1,0 +1,13 @@
+<section id="feature-envy" class="slide">
+  <h2>Feature Envy</h2>
+  <ul>
+    <li>A code fragment references another object more often than it references itself.</li>
+    <li>Several clients do the same series of manipulations on a particular type of object.</li>
+  </ul>
+  <h3>Problems</h3>
+  <ul>
+    <li>Communication: Code that “belongs” on one class but is located in another can be hard to find and may upset the System of Names in the host class.</li>
+    <li>Flexibility: A code fragment that is in the wrong class creates couplings that may not be natural within the application’s domain and a loss of cohesion in the unwilling host class.</li>
+    <li>Duplication: Existing functionality that is difficult to find is also easy to miss, which in turn may lead to it being written more than once.</li>
+  </ul>
+</section>

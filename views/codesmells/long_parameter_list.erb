@@ -1,0 +1,13 @@
+<section id="long-parameter-list" class="slide">
+  <h2>Long Parameter List</h2>
+  <ul>
+    <li>A method has more than one or two parameters.</li>
+    <li>A method yields more than one or two objects to an associated block.</li>
+  </ul>
+  <h3>Problems</h3>
+  <ul>
+    <li><strong>Simplicity:</strong> A Long Parameter List often indicates that a method has more than one responsibility. Sometimes the parameters have no meaningful grouping—they don’t go together. In such cases it may be that the method, or the objects it uses, doesn’t represent a meaningful and cohesive abstraction in the problem domain.</li>
+    <li><strong>Flexibility:</strong> A Long Parameter List represents a large number of pieces of shared information between the caller and called code. If either changes, the parameter list is likely to need changing too.</li>
+    <li><strong>Communication:</strong> A lot of parameters represent a lot to remember—the programmer has to remember not only what objects to pass, but in which order. More suc- cinct APIs are easier and quicker to use.</li>
+  </ul>
+</section>

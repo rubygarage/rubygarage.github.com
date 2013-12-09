@@ -57,6 +57,10 @@ class App < Sinatra::Base
     erb :oop
   end
 
+  get "/codesmells" do
+    erb :codesmells
+  end
+
   get "/rails" do
     erb :rails
   end

@@ -1,0 +1,11 @@
+<section id="long-method" class="slide">
+  <h2>Long Method</h2>
+  <ul>
+    <li>A method has a large number of lines. (We’re immediately suspicious of any method with more than five lines.)</li>
+  </ul>
+  <h3>Problems</h3>
+  <ul>
+    <li>Flexibility: A Long Method is guaranteed to be a Greedy Method—at least two responsibilities are coupled together in one place, which in turn leads to Divergent Change.</li>
+    <li>Testability: It can be difficult to isolate individual behaviors of a Long Method for testing; and if a method does too much it may also be difficult to create fixtures that contain enough context for the method to work properly.</li>
+  </ul>
+</section>
