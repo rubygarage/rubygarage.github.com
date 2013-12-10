@@ -15,6 +15,7 @@
   <div class="vcenter">
     <h1>Rails</h1>
     <div class="principles">
+      <p>David Heinemeier Hansson (DHH), <a href="http://37signals.com" target="_blank">37signals</a></p>
       <h3>The Rails philosophy includes two major guiding principles</h3>
       <p>DRY - "Don't Repeat Yourself" - suggests that writing the same code over and over again is a bad thing.</p>
       <p>Convention Over Configuration - means that Rails makes assumptions about what you want to do and how you're going to do it, rather than requiring you to specify every little thing through endless configuration files.</p>
@@ -24,11 +25,11 @@
   <h2>Instaling Rails</h2>
   <h3>Preparing environment</h3>
   <script type="syntaxhighlighter" class="brush: bash">
-    rvm use 2.0.0-p195@community --create
-    Using /Users/sparrow/.rvm/gems/ruby-2.0.0-p195 with gemset community</script>
+    rvm use 2.0.0-p247@community --create
+    Using /Users/sparrow/.rvm/gems/ruby-2.0.0-p247 with gemset community</script>
   <h3>Installing Rails</h3>
   <script type="syntaxhighlighter" class="brush: bash">
-    gem install rails --version 4.0.0.rc1</script>
+    gem install rails</script>
 </section>
 <section id="creating-application" class="slide">
   <h2>Creating rails application</h2>
@@ -54,10 +55,14 @@
   <script type="syntaxhighlighter" class="brush: bash">
     cd community
   </script>
-  <h3>Add .rvmrc</h3>
-  .rvmrc
+  <h3>Add .ruby-version and .ruby-gemset</h3>
+  .ruby-version
   <script type="syntaxhighlighter" class="brush: ruby">
-    rvm use 2.0.0-p195@community --create
+    2.0.0-p247
+  </script>
+  .ruby-gemset
+  <script type="syntaxhighlighter" class="brush: ruby">
+    community
   </script>
 </section>
 <section id="directories-structure" class="slide">
@@ -135,13 +140,13 @@
     source 'https://rubygems.org'
 
     # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-    gem 'rails', '4.0.0.rc1'
+    gem 'rails', '4.0.2'
 
     # Use sqlite3 as the database for Active Record
     gem 'sqlite3'
 
     # Use SCSS for stylesheets
-    gem 'sass-rails', '~> 4.0.0.rc1'
+    gem 'sass-rails', '~> 4.0.0'
 
     # Use Uglifier as compressor for JavaScript assets
     gem 'uglifier', '>= 1.3.0'
@@ -159,7 +164,7 @@
     gem 'turbolinks'
 
     # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-    gem 'jbuilder', '~> 1.0.1'
+    gem 'jbuilder', '~> 1.2'
 
     group :doc do
       # bundle exec rake doc:rails generates the API under doc/api.
@@ -167,7 +172,7 @@
     end
 
     # Use ActiveModel has_secure_password
-    # gem 'bcrypt-ruby', '~> 3.0.0'
+    # gem 'bcrypt-ruby', '~> 3.1.2'
 
     # Use unicorn as the app server
     # gem 'unicorn'
@@ -238,14 +243,13 @@
     <h2>Starting up the Web Server</h2>
     <script type="syntaxhighlighter" class="brush: bash">
         rails server
-
         => Booting WEBrick
-        => Rails 4.0.0.rc1 application starting in development on http://0.0.0.0:3000
+        => Rails 4.0.2 application starting in development on http://0.0.0.0:3000
         => Run `rails server -h` for more startup options
         => Ctrl-C to shutdown server
-        [2013-06-09 15:07:13] INFO  WEBrick 1.3.1
-        [2013-06-09 15:07:13] INFO  ruby 2.0.0 (2013-05-14) [x86_64-darwin11.4.2]
-        [2013-06-09 15:07:13] INFO  WEBrick::HTTPServer#start: pid=71367 port=3000
+        [2013-12-09 20:44:46] INFO  WEBrick 1.3.1
+        [2013-12-09 20:44:46] INFO  ruby 2.0.0 (2013-06-27) [x86_64-darwin11.4.2]
+        [2013-12-09 20:44:46] INFO  WEBrick::HTTPServer#start: pid=37644 port=3000
     </script>
   </div>
 </section>
@@ -253,16 +257,15 @@
   <h2>Generate scaffold</h2>
   <script type="syntaxhighlighter" class="brush: bash">
     rails generate scaffold Post title:string text:text
-
       invoke  active_record
-      create    db/migrate/20130609121432_create_posts.rb
+      create    db/migrate/20131209184636_create_posts.rb
       create    app/models/post.rb
       invoke    test_unit
       create      test/models/post_test.rb
       create      test/fixtures/posts.yml
       invoke  resource_route
        route    resources :posts
-      invoke  jbuilder_scaffold_controller
+      invoke  scaffold_controller
       create    app/controllers/posts_controller.rb
       invoke    erb
       create      app/views/posts
@@ -278,7 +281,6 @@
       invoke      test_unit
       create        test/helpers/posts_helper_test.rb
       invoke    jbuilder
-       exist      app/views/posts
       create      app/views/posts/index.json.jbuilder
       create      app/views/posts/show.json.jbuilder
       invoke  assets
@@ -292,7 +294,7 @@
 </section>
 <section id="migrations" class="slide">
   <h2>Migrations</h2>
-  db/migrate/20130609121432_create_posts.rb
+  db/migrate/20131209184636_create_posts.rb
   <script type="syntaxhighlighter" class="brush: ruby">
     class CreatePosts < ActiveRecord::Migration
       def change
@@ -321,7 +323,7 @@
   <h2>DB schema</h2>
   db/schema.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    ActiveRecord::Schema.define(version: 20130609121432) do
+    ActiveRecord::Schema.define(version: 20131209184636) do
 
       create_table "posts", force: true do |t|
         t.string   "title"
@@ -525,7 +527,7 @@
   app/views/posts/index.json.jbuilder
   <script type="syntaxhighlighter" class="brush: ruby">
     json.array!(@posts) do |post|
-      json.extract! post, :title, :text
+      json.extract! post, :id, :title, :text
       json.url post_url(post, format: :json)
     end
   </script>
