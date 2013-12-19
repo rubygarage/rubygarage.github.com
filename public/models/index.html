@@ -712,17 +712,11 @@
     <li><code>update</code></li>
     <li><code>update!</code></li>
   </ul></section><section id="skipping-validations" class="slide"><h2>Skiping Validations</h2>
-  <ul><li><code>decrement!</code></li>
-    <li><code>decrement_counter</code></li>
-    <li><code>increment!</code></li>
-    <li><code>increment_counter</code></li>
-    <li><code>toggle!</code></li>
-    <li><code>touch</code></li>
+  <ul><li><code>touch</code></li>
     <li><code>update_all</code></li>
     <li><code>update_attribute</code></li>
     <li><code>update_column</code></li>
     <li><code>update_columns</code></li>
-    <li><code>update_counters</code></li>
     <li><code>save(validate: false)</code></li>
   </ul></section><section id="valid-invalid" class="slide"><h2>valid? and invalid?</h2>
 
@@ -781,11 +775,7 @@
        (0.1ms)  begin transaction
        (0.1ms)  rollback transaction
       => true
-  ]]></script></section><section id="topic-validation-helpers" class="slide"><div class="vcenter">
-    <h1>Active Record Validations</h1>
-    <h2>Helpers</h2>
-  </div>
-</section><section id="presence" class="slide"><h2>Presence</h2>
+  ]]></script></section><section id="presence" class="slide"><h2>Presence</h2>
 <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     class User < ActiveRecord::Base
       attr_accessible :email, :first_name, :password
@@ -810,25 +800,24 @@
     end
   ]]></script><p>Do not this validation on the both sides of the association it causes endless cycle.</p>
 
-</section><section id="validates-associated" class="slide"><h2>Validates Assosiated</h2>
-  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class User < ActiveRecord::Base
-      ...
-      has_many :posts
-      validates_associated :posts
-    end
-  ]]></script></section><section id="confirmation" class="slide"><h2>Confirmation</h2>
+</section><section id="confirmation" class="slide"><h2>Confirmation</h2>
 <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     class User < ActiveRecord::Base
       ...
       validates :email, :first_name, presence: true
       validates :email, confirmation: true
     end
+  ]]></script></section><section id="inclusion" class="slide"><h2>Inclusion</h2>
+<script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    class Tag < ActiveRecord::Base
+      ...
+      validates :name, inclusion: { in: %w(reading cooking programming), message: "%{value} is not a valid value" }
+    end
   ]]></script></section><section id="exclusion" class="slide"><h2>Exclusion</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     class User < ActiveRecord::Base
       ...
-      validates :first_name, exclusion: { in:  %w(Admin BadDog),  message:  "First name %{value} is invalid." }
+      validates :first_name, exclusion: { in:  %w(Admin BadDog),  message:  "First name %{value} is reserved." }
     end
   ]]></script></section><section id="format" class="slide"><h2>Format</h2>
 <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
@@ -837,12 +826,6 @@
       validates :email, :first_name, presence: true
       validates :email, confirmation: true
       validates :email, format: { with: /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/, :message => "Only emails allowed" }
-    end
-  ]]></script></section><section id="inclusion" class="slide"><h2>Inclusion</h2>
-<script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class Tag < ActiveRecord::Base
-      ...
-      validates :name, inclusion: { in: %w(reading cooking programming), message: "%{value} is not a valid value" }
     end
   ]]></script></section><section id="length" class="slide"><h2>Length</h2>
 
@@ -891,6 +874,13 @@
       validates :page_address, uniqueness: { case_sensitive:  false }
     end
 
+  ]]></script></section><section id="validates-associated" class="slide"><h2>Validates Assosiated</h2>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    class User < ActiveRecord::Base
+      ...
+      has_many :posts
+      validates_associated :posts
+    end
   ]]></script></section><section id="validates-with" class="slide"><h2>validates_with</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     class User < ActiveRecord::Base
@@ -963,11 +953,7 @@
         admin.validates :password, length: { minimum: 10 }
         admin.validates :email, presence: true
       end
-  ]]></script></section><section id="topic-custom-validations" class="slide"><div class="vcenter">
-    <h1>Active Record Validations</h1>
-    <h2>Custom Validations</h2>
-  </div>
-</section><section id="custom-validators" class="slide"><h2>Custom Validators</h2>
+  ]]></script></section><section id="custom-validators" class="slide"><h2>Custom Validators</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     class MyValidator < ActiveModel::Validator
       def validate(record)
@@ -1485,15 +1471,15 @@
 
 except
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-    > Post.where('id > 2').limit(2).except(:title)
-      Post Load (0.5ms)  SELECT "posts".* FROM "posts" WHERE (id > 2) LIMIT 2
+    > Post.where('id > 2').limit(2).except(:limit)
+      Post Load (0.5ms)  SELECT "posts".* FROM "posts" WHERE (id > 2)
      => #<ActiveRecord::Relation [#<Post id: 3, text: "New post", user_id: 1, created_at: "2013-06-02 19:06:35", updated_at: "2013-06-02 19:06:35", title: nil, published: nil>, #<Post id: 4, text: "Some text", user_id: 2, created_at: "2013-06-23 20:18:11", updated_at: "2013-06-23 20:18:11", title: "First step", published: nil>]>
   ]]></script>
 
   unscope
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      Post.order('id DESC').limit(20).unscope(:order) = Post.limit(20)
-      Post.order('id DESC').limit(20).unscope(:order, :limit) = Post.all
+      Post.order('id DESC').limit(20).unscope(:order) # == Post.limit(20)
+      Post.order('id DESC').limit(20).unscope(:order, :limit) # == Post.all
   ]]></script>
 
   only
@@ -1554,13 +1540,13 @@ except
     user.save
 
     ActiveRecord::ReadOnlyRecord: ActiveRecord::ReadOnlyRecord
-  ]]></script></section><section id="locking" class="slide"><h2>Locking Records for Update</h2>
+  ]]></script></section><section id="optimistic-locking" class="slide"><h2>Locking Records for Update</h2>
+  <h3>Optimistic locking</h3>
+  <p>Optimistic locking allows multiple users to access the same record for edits, and assumes a minimum of conflicts with the data. It does this by checking whether another process has made changes to a record since it was opened, an ActiveRecord::StaleObjectError exception is thrown if that has occurred and the update is ignored.</p>
 
-  Optimistic locking
+  <p><code>lock_version</code> field should present. Each update to the record increments the lock_version column and the locking facilities ensure that records instantiated twice will let the last one saved raise a StaleObjectError if the first was also updated.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    lock_version Integer
-  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     u1 = User.find(1)
     u2 = User.find(1)
 
@@ -1569,27 +1555,17 @@ except
 
     u2.first_name = "should fail"
     u2.save # Raises an ActiveRecord::StaleObjectError
-  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    ActiveRecord::Base.lock_optimistically = false
-  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class User < ActiveRecord::Base
-      self.locking_column = :lock_user_column
-end
-  ]]></script>
+  ]]></script></section><section id="pessimistic-locking" class="slide"><h2>Locking Records for Update</h2>
+  <h3>Pessimistic locking</h3>
 
-  Pessimistic locking
+  <p>It provides support for row-level locking using SELECT … FOR UPDATE and other lock types.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     User.transaction do
-      user = User.lock.first
+      user = User.find(1, lock: true)
       user.first_name = 'Marta'
       user.save
     end
-  ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-    User Load (0.5ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT 1
-    SQL (2.6ms)  UPDATE "users" SET "first_name" = ?, "updated_at" = ? WHERE "users"."id" = 1  [["first_name", "Marta"], ["updated_at", Sun, 23 Jun 2013 21:02:23 UTC +00:00]]
-     (119.9ms)  commit transaction
-   => true
   ]]></script></section><section id="joining-tables" class="slide"><h2>Joining Tables</h2>
 
   Using a String SQL Fragmen
@@ -1715,7 +1691,7 @@ end
       ...
       scope :published, -> { where(published: true) }
     end
-  ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     class Post < ActiveRecord::Base
       ...
       def self.published
@@ -1747,7 +1723,7 @@ end
 
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     rails g migration AddStateToUser state:string
-  ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     class User < ActiveRecord::Base
       scope :active, -> { where state: 'active' }
       scope :inactive, -> { where state: 'inactive' }
@@ -1791,14 +1767,6 @@ Removing All Scoping
 <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
   > User.unscoped.all
     SELECT "users".* FROM "users"
-]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-  > User.unscoped.load
-    User Load (0.5ms)  SELECT "users".* FROM "users"
-   => #<ActiveRecord::Relation [#<User id: 1, first_name: "Anna", email: "ann@ua.fm", password: "111111", created_at: "2013-06-24 08:52:36", updated_at: "2013-06-24 08:52:36", last_name: nil, receive_news: true, state: "active">, #<User id: 2, first_name: "Gregory", email: "greg@ua.fm", password: "111111", created_at: "2013-06-24 08:53:24", updated_at: "2013-06-24 08:53:24", last_name: "Taunsend", receive_news: false, state: "inactive">]>
-]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-  > User.unscoped.to_a
-    User Load (0.5ms)  SELECT "users".* FROM "users"
-   => [#<User id: 1, first_name: "Anna", email: "ann@ua.fm", password: "111111", created_at: "2013-06-24 08:52:36", updated_at: "2013-06-24 08:52:36", last_name: nil, receive_news: true, state: "active">, #<User id: 2, first_name: "Gregory", email: "greg@ua.fm", password: "111111", created_at: "2013-06-24 08:53:24", updated_at: "2013-06-24 08:53:24", last_name: "Taunsend", receive_news: false, state: "inactive">]
 ]]></script></section><section id="find-or-build" class="slide"><h2>Find or Build a New Object</h2>
 
   find_or_create_by
@@ -1810,19 +1778,11 @@ Removing All Scoping
       SQL (3.8ms)  INSERT INTO "users" ("created_at", "first_name", "state", "updated_at") VALUES (?, ?, ?, ?)  [["created_at", Mon, 24 Jun 2013 09:26:43 UTC +00:00], ["first_name", "Mark"], ["state", "pending"], ["updated_at", Mon, 24 Jun 2013 09:26:43 UTC +00:00]]
        (134.1ms)  commit transaction
      => #<User id: 3, first_name: "Mark", email: nil, password: nil, created_at: "2013-06-24 09:26:43", updated_at: "2013-06-24 09:26:43", last_name: nil, receive_news: false, state: "pending">
-  ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-    >  User.find_or_create_by(first_name: 'Mark')
+  
+    > User.find_or_create_by(first_name: 'Mark')
       User Load (0.6ms)  SELECT "users".* FROM "users" WHERE "users"."state" = 'pending' AND "users"."first_name" = 'Mark' LIMIT 1
      => #<User id: 3, first_name: "Mark", email: nil, password: nil, created_at: "2013-06-24 09:26:43", updated_at: "2013-06-24 09:26:43", last_name: nil, receive_news: false, state: "pending">
-  ]]></script>
-
-  find_or_create_by! raises an exception if the new record is invalid
-
-  create_with
-
-  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    User.create_with(locked: false).find_or_create_by(first_name: 'Alice')
-  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+  ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     User.find_or_create_by(first_name: 'Andy') do |c|
       c.locked = false
     end
@@ -1834,13 +1794,13 @@ Removing All Scoping
     > clark = User.find_or_initialize_by(first_name: 'Clark')
       User Load (0.5ms)  SELECT "users".* FROM "users" WHERE "users"."state" = 'pending' AND "users"."first_name" = 'Clark' LIMIT 1
      => #<User id: nil, first_name: "Clark", email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false, state: "pending">
-  ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+  
     > clark.persisted?
      => false
-  ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+  
     > clark.new_record?
      => true
-  ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+  
     > clark.save
   ]]></script></section><section id="finding-by-sql" class="slide"><h2>Finding by SQL</h2>
 
@@ -1871,32 +1831,14 @@ Removing All Scoping
       (0.5ms)  SELECT DISTINCT "users"."first_name" FROM "users" WHERE "users"."state" = 'pending'
      => ["Mark", "Alice"]
   ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-    > User.pluck(:id,:first_name)
+    > User.pluck(:id, :first_name)
       (0.4ms)  SELECT "users"."id", "users"."first_name" FROM "users" WHERE "users"."state" = 'pending'
      => [[3, "Mark"], [4, "Alice"]]
 
   ]]></script>
 
-  pluck allows to replace code
-
-  <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-    User.select(:id).map { |u| u.id }
-    # or
-    User.select(:id).map(&:id)
-    # or
-    User.select(:id, :first_name).map { |u| [u.id, u.first_name] }
-  ]]></script>
-
-  with
-
-  <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-      User.pluck(:id)
-      # or
-      User.pluck(:id, :first_name)
-  ]]></script>
-
   ids
-
+  
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     > User.ids
       (0.5ms)  SELECT id FROM "users" WHERE "users"."state" = 'pending'
@@ -1915,19 +1857,19 @@ Removing All Scoping
 
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     > User.exists?(1)
-      User Exists (0.2ms)  SELECT 1 AS one FROM "users" WHERE "users"."state" = 'pending' AND "users"."id" = 1 LIMIT 1
-     => nil
+      User Exists (0.2ms)  SELECT 1 AS one FROM "users" WHERE "users"."id" = 1 LIMIT 1
+     => true
     > User.exists?(3)
-      User Exists (0.4ms)  SELECT 1 AS one FROM "users" WHERE "users"."state" = 'pending' AND "users"."id" = 3 LIMIT 1
-     => 1
+      User Exists (0.4ms)  SELECT 1 AS one FROM "users" WHERE "users"."id" = 3 LIMIT 1
+     => false
   ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     > User.where(:first_name => 'Ryan').exists?
-      User Exists (0.4ms)  SELECT 1 AS one FROM "users" WHERE "users"."state" = 'pending' AND "users"."first_name" = 'Ryan' LIMIT 1
-     => nil
+      User Exists (0.4ms)  SELECT 1 AS one FROM "users" WHERE "users"."first_name" = 'Ryan' LIMIT 1
+     => false
   ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     > User.exists?
-       User Exists (0.5ms)  SELECT 1 AS one FROM "users" WHERE "users"."state" = 'pending' LIMIT 1
-     => 1
+       User Exists (0.5ms)  SELECT 1 AS one FROM "users" LIMIT 1
+     => true
   ]]></script>
 
   any? and many?
@@ -1954,14 +1896,12 @@ Removing All Scoping
   count
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     > User.count
-      (0.4ms)  SELECT COUNT(*) FROM "users" WHERE "users"."state" = 'pending'
+      (0.4ms)  SELECT COUNT(*) FROM "users"
      => 2
-  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    User.where(:first_name => 'Ryan').count
-  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    User.includes("posts").where(first_name: 'Ryan', posts: { published: true }).count
-  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    User.count(:last_name)
+  ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+    > User.where(:first_name => 'Ryan').count
+      (0.4ms)  SELECT COUNT(*) FROM "users" WHERE "users"."first_name" = 'Ryan'
+     => 2
   ]]></script>
 
   average
