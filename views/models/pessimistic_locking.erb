@@ -1,0 +1,14 @@
+<section id="pessimistic-locking" class="slide">
+  <h2>Locking Records for Update</h2>
+  <h3>Pessimistic locking</h3>
+
+  <p>It provides support for row-level locking using SELECT … FOR UPDATE and other lock types.</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    User.transaction do
+      user = User.find(1, lock: true)
+      user.first_name = 'Marta'
+      user.save
+    end
+  </script>
+</section>

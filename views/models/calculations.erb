@@ -3,20 +3,14 @@
   count
   <script type="syntaxhighlighter" class="brush: bash">
     > User.count
-      (0.4ms)  SELECT COUNT(*) FROM "users" WHERE "users"."state" = 'pending'
+      (0.4ms)  SELECT COUNT(*) FROM "users"
      => 2
   </script>
 
-  <script type="syntaxhighlighter" class="brush: ruby">
-    User.where(:first_name => 'Ryan').count
-  </script>
-
-  <script type="syntaxhighlighter" class="brush: ruby">
-    User.includes("posts").where(first_name: 'Ryan', posts: { published: true }).count
-  </script>
-
-  <script type="syntaxhighlighter" class="brush: ruby">
-    User.count(:last_name)
+  <script type="syntaxhighlighter" class="brush: bash">
+    > User.where(:first_name => 'Ryan').count
+      (0.4ms)  SELECT COUNT(*) FROM "users" WHERE "users"."first_name" = 'Ryan'
+     => 2
   </script>
 
   average

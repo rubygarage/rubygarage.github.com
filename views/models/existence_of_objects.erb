@@ -5,23 +5,23 @@
 
   <script type="syntaxhighlighter" class="brush: bash">
     > User.exists?(1)
-      User Exists (0.2ms)  SELECT 1 AS one FROM "users" WHERE "users"."state" = 'pending' AND "users"."id" = 1 LIMIT 1
-     => nil
+      User Exists (0.2ms)  SELECT 1 AS one FROM "users" WHERE "users"."id" = 1 LIMIT 1
+     => true
     > User.exists?(3)
-      User Exists (0.4ms)  SELECT 1 AS one FROM "users" WHERE "users"."state" = 'pending' AND "users"."id" = 3 LIMIT 1
-     => 1
+      User Exists (0.4ms)  SELECT 1 AS one FROM "users" WHERE "users"."id" = 3 LIMIT 1
+     => false
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
     > User.where(:first_name => 'Ryan').exists?
-      User Exists (0.4ms)  SELECT 1 AS one FROM "users" WHERE "users"."state" = 'pending' AND "users"."first_name" = 'Ryan' LIMIT 1
-     => nil
+      User Exists (0.4ms)  SELECT 1 AS one FROM "users" WHERE "users"."first_name" = 'Ryan' LIMIT 1
+     => false
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
     > User.exists?
-       User Exists (0.5ms)  SELECT 1 AS one FROM "users" WHERE "users"."state" = 'pending' LIMIT 1
-     => 1
+       User Exists (0.5ms)  SELECT 1 AS one FROM "users" LIMIT 1
+     => true
   </script>
 
   any? and many?

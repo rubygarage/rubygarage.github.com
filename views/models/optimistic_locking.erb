@@ -1,0 +1,18 @@
+<section id="optimistic-locking" class="slide">
+  <h2>Locking Records for Update</h2>
+  <h3>Optimistic locking</h3>
+  <p>Optimistic locking allows multiple users to access the same record for edits, and assumes a minimum of conflicts with the data. It does this by checking whether another process has made changes to a record since it was opened, an ActiveRecord::StaleObjectError exception is thrown if that has occurred and the update is ignored.</p>
+
+  <p><code>lock_version</code> field should present. Each update to the record increments the lock_version column and the locking facilities ensure that records instantiated twice will let the last one saved raise a StaleObjectError if the first was also updated.</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    u1 = User.find(1)
+    u2 = User.find(1)
+
+    u1.first_name = "Michael"
+    u1.save
+
+    u2.first_name = "should fail"
+    u2.save # Raises an ActiveRecord::StaleObjectError
+  </script>
+</section>

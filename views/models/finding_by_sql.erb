@@ -32,32 +32,14 @@
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    > User.pluck(:id,:first_name)
+    > User.pluck(:id, :first_name)
       (0.4ms)  SELECT "users"."id", "users"."first_name" FROM "users" WHERE "users"."state" = 'pending'
      => [[3, "Mark"], [4, "Alice"]]
 
   </script>
 
-  pluck allows to replace code
-
-  <script type="syntaxhighlighter" class="brush: bash">
-    User.select(:id).map { |u| u.id }
-    # or
-    User.select(:id).map(&:id)
-    # or
-    User.select(:id, :first_name).map { |u| [u.id, u.first_name] }
-  </script>
-
-  with
-
-  <script type="syntaxhighlighter" class="brush: bash">
-      User.pluck(:id)
-      # or
-      User.pluck(:id, :first_name)
-  </script>
-
   ids
-
+  
   <script type="syntaxhighlighter" class="brush: bash">
     > User.ids
       (0.5ms)  SELECT id FROM "users" WHERE "users"."state" = 'pending'

@@ -3,7 +3,7 @@
   <script type="syntaxhighlighter" class="brush: ruby">
     class User < ActiveRecord::Base
       ...
-      validates :first_name, exclusion: { in:  %w(Admin BadDog),  message:  "First name %{value} is invalid." }
+      validates :first_name, exclusion: { in:  %w(Admin BadDog),  message:  "First name %{value} is reserved." }
     end
   </script>
 </section>
