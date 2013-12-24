@@ -1805,7 +1805,6 @@ Removing All Scoping
   ]]></script></section><section id="finding-by-sql" class="slide"><h2>Finding by SQL</h2>
 
   find_by_sql
-
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     >   User.find_by_sql("SELECT * FROM users INNER JOIN posts ON users.id = posts.user_id")
       User Load (0.7ms)  SELECT * FROM users INNER JOIN posts ON users.id = posts.user_id
@@ -1813,7 +1812,6 @@ Removing All Scoping
   ]]></script>
 
   select_all
-
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     > Post.connection.select_all("SELECT * FROM posts WHERE id = '1'")
        (0.5ms)  SELECT * FROM posts WHERE id = '1'
@@ -1821,7 +1819,6 @@ Removing All Scoping
   ]]></script>
 
   pluck
-
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
       > User.where(state: "active").pluck(:id)
         (0.5ms)  SELECT "users"."id" FROM "users" WHERE "users"."state" = 'active'
@@ -1838,7 +1835,6 @@ Removing All Scoping
   ]]></script>
 
   ids
-  
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     > User.ids
       (0.5ms)  SELECT id FROM "users" WHERE "users"."state" = 'pending'
@@ -1936,184 +1932,355 @@ Removing All Scoping
      => 11
   ]]></script></section><section id="topic-testing-models" class="slide"><div class="vcenter">
     <h1>Testing Models</h1>
+    <div class="about">
+      <p>A model spec should include tests for the following:</p>
+      <ul><li>Validations</li>
+        <li>Associations</li>
+        <li>Callbacks</li>
+        <li>Class and instance methods</li>
+      </ul></div>
   </div>
-</section><section id="fake-data-settings" class="slide"><h2>Factory Girl and Database Cleaner</h2>
+</section><section id="tests-configuration" class="slide"><h2>Tests configuration</h2>
+  Gemfile
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      # in Gemfile
-      group :test do
-        gem 'rspec-rails'
-        gem 'factory_girls_rails'
-        gem 'database_cleaner'
-      end
-  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      # in application.rb
-      config.generators do |g|
-        g.test_framework :rspec
-        g.fixture_replacement :factory_girl, dir: 'spec/factories'
-        g.template_engine :haml
-      end
-  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      # in spec_helper.rb
-      config.use_transactional_fixtures = false
+    group :development, :test do 
+      gem 'rspec-rails' 
+      gem 'factory_girl_rails'
+    end 
 
-      config.before(:suite) do
-        DatabaseCleaner.strategy = :transaction
-        DatabaseCleaner.clean_with(:truncation)
-      end.before(:each) do
+    group :test do 
+      gem 'faker'
+      gem 'database_cleaner'
+    end
+  ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+    bundle
+  ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+    rails g rspec:install
+      create  .rspec
+      create  spec
+      create  spec/spec_helper.rb
+  ]]></script>
 
-      config.before(:each) do
-        DatabaseCleaner.start
-      end
-
-      config.after(:each) do
-        DatabaseCleaner.clean
-      end
-  ]]></script></section><section id="factory-girl" class="slide"><h2>factory_girl</h2>
+  config/application.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      FactoryGirl.define do
-        factory :user do
-          first_name 'John'
-          last_name  'Doe'
-        end
+    config.generators do |g|
+      g.test_framework :rspec
+      g.fixture_replacement :factory_girl, dir: 'spec/factories'
+    end
+  ]]></script></section><section id="testing-basic-structure" class="slide"><h2>Basic structure</h2>
 
-        factory :admin, parent: :user do
+  <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+    rails g model User email:text name:text admin:boolena
+      invoke  active_record
+      create    db/migrate/20131223130327_create_users.rb
+      create    app/models/user.rb
+      invoke    rspec
+      create      spec/models/user_spec.rb
+      invoke      factory_girl
+      create        spec/factories/users.rb  
+  ]]></script>
+
+  app/models/user.rb
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    class User < ActiveRecord::Base
+      validates :email, :first_name, presence: true
+      validates :email, uniqueness: true
+      
+      has_many :posts
+
+      scope :admins -> { where(admin: true) }
+
+      after_update :email_changed, if: :email_changed?
+
+      private
+
+      def email_changed
+        UserMailer.email_changed(self).deliver
+      end
+    end
+  ]]></script>
+
+  app/mailers/user_mailer.rb
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    class UserMailer < ActionMailer::Base
+      default from: "from@example.com"
+
+      def email_changed(user)
+        # Sending email
+      end
+    end
+  ]]></script>
+
+  spec/models/user_spec.rb
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    require 'spec_helper'
+
+    describe User do 
+      it "is invalid without an email"
+      it "has unique email"
+      it "is invalid without a name"
+
+      it "has many posts"
+
+      context ".admins" do
+        it "returns list of admins"
+        it "doesn't return regular users"
+      end
+
+      context "change email" do
+        it "sends email changed notification"
+        it "doesn't send email changed notification" do
+      end
+    end
+  ]]></script></section><section id="database-cleaner" class="slide"><h2>Database Cleaner</h2>
+  <p><a href="https://github.com/bmabey/database_cleaner" target="_blank">DatabaseCleaner</a> is a set of strategies for cleaning your database in Ruby. The original use case was to ensure a clean state during tests. Each strategy is a small amount of code but is code that is usually needed in any ruby app that is testing with a database.</p>
+  spec/spec_helper.rb
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    # This part turns off the default RSpec database cleansing strategy.
+    config.use_transactional_fixtures = false
+
+    config.before(:suite) do
+      # This says that before the entire test suite runs, clear the test database out completely.
+      # This gets rid of any garbage left over from interrupted or poorly-written tests - a common source of surprising test behavior.
+      DatabaseCleaner.clean_with(:truncation)
+
+      # This part sets the default database cleaning strategy to be transactions. 
+      # Transactions are very fast, and for all the tests where they do work - that is, any test where the entire test runs in the RSpec process - they are preferable.
+      DatabaseCleaner.strategy = :transaction
+    end
+
+    # These lines hook up database_cleaner around the beginning and end of each test, 
+    # telling it to execute whatever cleanup strategy we selected beforehand.
+    config.before(:each) do
+      DatabaseCleaner.start
+    end
+
+    config.after(:each) do
+      DatabaseCleaner.clean
+    end
+  ]]></script></section><section id="factory-girl" class="slide"><h2>FactoryGirl</h2>
+  <p><a href="https://github.com/thoughtbot/factory_girl" target="_blank">FactoryGirl</a> is a library for setting up Ruby objects as test data.</p>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    FactoryGirl.define do
+      sequence :email do |n|
+        "email#{n}@factory.com"
+      end
+
+      factory :user do
+        email { FactoryGirl.generate(:email) } 
+        name "John Doe"
+        admin false
+
+        factory :admin do
           admin true
         end
-      end
-  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      # Saved instance
-      user = FactoryGirl.create(:user)
 
-      # Unsaved instance
-      user = FactoryGirl.build(:user)
+        factory :author do
+          ignore do
+            posts_count 5
+          end
 
-      # Attribute hash (ignores associations)
-      user_attributes = FactoryGirl.attributes_for(:user)
-
-      # Stubbed object
-      user_stub = FactoryGirl.stub(:user)
-
-      # Override attributes
-      user = FactoryGirl.create(:user, first_name: "Jack")
-  ]]></script></section><section id="factory-girl-examples" class="slide"><h2>factory_girl</h2>
-  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      FactoryGirl.define do
-        sequence :email do |n|
-          "email#{n}@factory.com"
-        end
-
-        factory :user do
-          email { Factory.next(:email) }
-          password "rubyruby"
-          password_confirmation "rubyruby"
-        end
-      end
-  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      FactoryGirl.define do
-        factory :user do
-          sequence :email { |n| "email#{n}@factory.com" }
-          password "rubyruby"
-          password_confirmation { |u| u.password }
-        end
-      end
-  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      FactoryGirl.define :post do
-        factory :post do
-          name "Post name"
-          association :user
-        end
-      end
-  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      factory :author, parent: :user do
-        after_create do |user|
-          3.times do
-            user.posts << FactoryGirl.create(:post)
+          after(:create) do |user, evaluator|
+            create_list(:post, evaluator.posts_count, user: user)
           end
         end
       end
 
-      factory :some_another_user, parent: :user do
-        after_build do |user|
-          do_something_to(user)
+      factory :post do
+        title "Post title"
+        user
+      end
+    end
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    # Saved instance
+    user = FactoryGirl.create(:user)
+
+    # Unsaved instance
+    user = FactoryGirl.build(:user)
+
+    # Attribute hash (ignores associations)
+    user_attributes = FactoryGirl.attributes_for(:user)
+
+    # Stubbed object
+    user_stub = FactoryGirl.build_stubbed(:user)
+
+    # Override attributes
+    user = FactoryGirl.create(:user, name: "Jack Daniel")
+
+    # Passing a block to any of the methods above will yield the return object
+    user = FactoryGirl.create(:user) do |user|
+      user.posts.create(FactoryGirl.attributes_for(:post))
+    end
+  ]]></script></section><section id="faker" class="slide"><h2>Faker</h2>
+  <p><a href="https://github.com/stympy/faker" target="_blank">Faker</a> is used to easily generate fake data: names, addresses, phone numbers, etc.</p>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    FactoryGirl.define do
+      factory :user do
+        email { Faker::Internet.email } 
+        name { Faker::Name.name }
+        admin false
+
+        factory :admin do
+          admin true
+        end
+
+        factory :author do
+          ignore do
+            posts_count 5
+          end
+
+          after(:create) do |user, evaluator|
+            create_list(:post, evaluator.posts_count, user: user)
+          end
         end
       end
+
+      factory :post do
+        title { Faker::Lorem.sentence }
+        user
+      end
+    end
   ]]></script></section><section id="testing-validations" class="slide"><h2>Testing validations</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      it "requires x" do
-        n = Model.new
-        n.should_not be_valid
-        n.error.on(:x).should_not be_nil
-      end
-  ]]></script><p>Create object with invalid property</p>
-  <p>Check for not valid</p>
-  <p>Check object error is not empty</p>
-</section><section id="testing-associations" class="slide"><h2>Testing associations</h2>
-  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      it "have posts" do
-        @user.should respond_to :posts
-      end
-  ]]></script></section><section id="shoulda-matchers" class="slide"><h2>Shoulda matchers</h2>
-  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      group :test do
-        gem 'rspec-rails'
-        gem 'factory-girl-rails'
-        gem 'database_cleaner'
-        gem 'shoulda-matchers'
-      end
-  ]]></script></section><section id="shoulda-example" class="slide"><h2>Shoulda</h2>
-  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      # in user_spec.rb
-      describe User do
-        it { should have_many(:posts) }
-        it { should validate_presence_of(:first_name }
-        it { should validate_presence_of(:last_name }
-      end
-  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      # in user.rb
-      class User < ActiveRecord::Base
-        validates :first_name, :last_name, presence: true
-        has_many :posts
-      end
-  ]]></script></section><section id="shoulda-using" class="slide"><h2>Shoulda</h2>
-  <h3>ActiveRecord Matchers</h3>
-  <p>Matchers to test associations</p>
-  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      describe Post do
-        it { should belong_to(:user) }
-        it { should have_many(:tags).through(:taggings) }
+    describe User do
+      let(:user) { FactoryGirl.create :user }
+
+      it "is invalid without an email" do
+        expect(FactoryGirl.build :user, email: nil).not_to be_valid
       end
 
-      describe Blog do
-        it { should have_many(:subscriptions) }
-        it { should have_many(:users).through(:subscriptions) }
+      it "does not allow duplicate emails" do
+        expect(FactoryGirl.build :user, email: user.email).not_to be_valid
       end
 
-      describe User do
-        it { should have_many(:posts) }
+      it "is invalid without a name" do
+        expect(FactoryGirl.build :user, name: nil).not_to be_valid
       end
-  ]]></script><h3>ActiveModel Matchers</h3>
-  <p>Matchers to test validations</p>
+    end
+  ]]></script></section><section id="testing-associations" class="slide"><h2>Testing associations</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      describe Post do
-        it { should validate_uniqueness_of(:title) }
-        it { should validate_presence_of(:text).with_message(/some/) }
-        it { should validate_presence_of(:title) }
-        it { should validate_numericality_of(:user_id) }
-      end
+    describe User do
+      let(:user) { FactoryGirl.create :user }
 
-      describe User do
-        it { should_not allow_value("blah").for(:email) }
-        it { should allow_value("some@f.com").for(:email) }
-        it { should_not ensure_inclusion_of(:age).in_range(1..100) }
+      it "has many posts" do
+        expect(user).to respond_to :posts
       end
+    end
+  ]]></script></section><section id="testing-scopes" class="slide"><h2>Testing scopes</h2>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    describe User do
+      context ".admins" do
+        before do
+          @users = FactoryGirl.create_list(:user, 3)
+          @admins = FactoryGirl.create_list(:admin, 3)
+        end
+     
+        it "returns list of admins" do
+          expect(User.admins).to match_array(@admins)
+        end
+     
+        it "doesn't return regular users" do
+          expect(User.admins).not_to match_array(@users)
+        end
+      end
+    end
   ]]></script></section><section id="testing-callbacks" class="slide"><h2>Testing callbacks</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      it "should init 'field' on create" do
-        n = Model.create
-        n.field.should == value
+    describe User do
+      let(:user) { FactoryGirl.create :user }
+
+      context "change email" do
+        it "sends email changed notification" do
+          user.email = Faker::Internet.email
+          expect(UserMailer).to receive(:email_changed).with(user).and_return(double("meil", deliver: true))
+          user.save
+        end
+
+        it "doesn't send email changed notification" do
+          user.name = "Santa Claus"
+          expect(UserMailer).not_to receive(:email_changed)
+          user.save
+        end
       end
-  ]]></script><p>Set up object in state before callback</p>
-</section><!-- End slides. --><!-- deck.navigation snippet --><a href="#" class="deck-prev-link" title="Previous">←</a>
+    end
+  ]]></script></section><section id="shoulda-matchers" class="slide"><h2>Shoulda matchers</h2>
+  <p><a href="https://github.com/thoughtbot/shoulda-matchers" target="_blank">Shoulda-matchers</a> provides Test::Unit and RSpec-compatible one-liners that test common Rails functionality.</p>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    group :test do
+      gem 'shoulda-matchers'
+    end
+  ]]></script>
+
+  spec/models/user_spec.rb
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    require 'spec_helper'
+
+    describe User do 
+      it { expect(user).to validate_presence_of(:email) }
+      it { expect(user).to validate_uniqueness_of(:email) }
+      it { expect(user).to validate_presence_of(:name) }
+      it { expect(user).to have_many(:posts) }
+    end
+  ]]></script></section><section id="homework" class="slide"><h2>Homework. Amazon.</h2>
+  <p>Business logic structure:</p>
+  <p>Book</p>
+  <ul><li>Title</li>
+    <li>Descirption</li>
+    <li>Author</li>
+    <li>Category</li>
+    <li>Price</li>
+    <li>In stock</li>
+    <li>Rating</li>
+  </ul><p>Category</p>
+  <ul><li>Title</li>
+    <li>Books</li>
+  </ul><p>Author</p>
+  <ul><li>Firstname</li>
+    <li>Lastname</li>
+  </ul><p>Rating</p>
+  <ul><li>Book</li>
+    <li>Customer</li>
+    <li>Rating</li>
+    <li>Text</li>
+  </ul><p>Customer</p>
+  <ul><li>Email</li>
+    <li>Password</li>
+    <li>Firstname</li>
+    <li>Lastname</li>
+  </ul><p>Order</p>
+  <ul><li>Customer</li>
+    <li>Total price</li>
+    <li>State</li>
+    <li>Completed at</li><li></li>
+    <li>Bill address</li>
+    <li>Ship address</li>
+  </ul><p>OrderItem</p>
+  <ul><li>Book</li>
+    <li>Order</li>
+    <li>Price</li>
+    <li>Quantity</li><li></li>
+  </ul><p>Address</p>
+  <ul><li>Address</li>
+    <li>Zipcode</li>
+    <li>City</li>
+    <li>Phone</li>
+    <li>Country</li>
+  </ul><p>Country</p>
+  <ul><li>Name</li>
+  </ul><p>CreditCard</p>
+  <ul><li>Number</li>
+    <li>CVV</li>
+    <li>Expiration month</li>
+    <li>Expiration year</li>
+    <li>Firstname</li>
+    <li>Lastname</li>
+    <li>Customer</li>
+    <li>Order</li>
+  </ul>
+  MVP
+  <ul><li>A customer should be able to order a book if it's exist on a stock</li>
+    <li>A customer should be able to rate a book only once</li>
+  </ul></section><!-- End slides. --><!-- deck.navigation snippet --><a href="#" class="deck-prev-link" title="Previous">←</a>
 <a href="#" class="deck-next-link" title="Next">→</a>
 
 <!-- deck.status snippet -->
