@@ -1,5 +1,5 @@
 <section id="fake-data-settings" class="slide">
-  <h2>Factory Girl and Database Cleaner</h2>
+  <h2>Fake data</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
       # in Gemfile
       group :test do
@@ -16,21 +16,21 @@
         g.template_engine :haml
       end
   </script>
+  spec_helper.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-      # in spec_helper.rb
-      config.use_transactional_fixtures = false
+    config.use_transactional_fixtures = false
 
-      config.before(:suite) do
-        DatabaseCleaner.strategy = :transaction
-        DatabaseCleaner.clean_with(:truncation)
-      end.before(:each) do
+    config.before(:suite) do
+      DatabaseCleaner.strategy = :transaction
+      DatabaseCleaner.clean_with(:truncation)
+    end.before(:each) do
 
-      config.before(:each) do
-        DatabaseCleaner.start
-      end
+    config.before(:each) do
+      DatabaseCleaner.start
+    end
 
-      config.after(:each) do
-        DatabaseCleaner.clean
-      end
+    config.after(:each) do
+      DatabaseCleaner.clean
+    end
   </script>
 </section>

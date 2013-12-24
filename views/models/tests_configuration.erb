@@ -1,0 +1,34 @@
+<section id="tests-configuration" class="slide">
+  <h2>Tests configuration</h2>
+  Gemfile
+  <script type="syntaxhighlighter" class="brush: ruby">
+    group :development, :test do 
+      gem 'rspec-rails' 
+      gem 'factory_girl_rails'
+    end 
+
+    group :test do 
+      gem 'faker'
+      gem 'database_cleaner'
+    end
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    bundle
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    rails g rspec:install
+      create  .rspec
+      create  spec
+      create  spec/spec_helper.rb
+  </script>
+
+  config/application.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    config.generators do |g|
+      g.test_framework :rspec
+      g.fixture_replacement :factory_girl, dir: 'spec/factories'
+    end
+  </script>
+</section>

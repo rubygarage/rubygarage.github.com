@@ -1,11 +1,21 @@
 <section id="shoulda-matchers" class="slide">
   <h2>Shoulda matchers</h2>
+  <p><a href="https://github.com/thoughtbot/shoulda-matchers" target="_blank">Shoulda-matchers</a> provides Test::Unit and RSpec-compatible one-liners that test common Rails functionality.</p>
   <script type="syntaxhighlighter" class="brush: ruby">
-      group :test do
-        gem 'rspec-rails'
-        gem 'factory-girl-rails'
-        gem 'database_cleaner'
-        gem 'shoulda-matchers'
-      end
+    group :test do
+      gem 'shoulda-matchers'
+    end
+  </script>
+
+  spec/models/user_spec.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    require 'spec_helper'
+
+    describe User do 
+      it { expect(user).to validate_presence_of(:email) }
+      it { expect(user).to validate_uniqueness_of(:email) }
+      it { expect(user).to validate_presence_of(:name) }
+      it { expect(user).to have_many(:posts) }
+    end
   </script>
 </section>

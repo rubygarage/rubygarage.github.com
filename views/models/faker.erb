@@ -1,0 +1,32 @@
+<section id="faker" class="slide">
+  <h2>Faker</h2>
+  <p><a href="https://github.com/stympy/faker" target="_blank">Faker</a> is used to easily generate fake data: names, addresses, phone numbers, etc.</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    FactoryGirl.define do
+      factory :user do
+        email { Faker::Internet.email } 
+        name { Faker::Name.name }
+        admin false
+
+        factory :admin do
+          admin true
+        end
+
+        factory :author do
+          ignore do
+            posts_count 5
+          end
+
+          after(:create) do |user, evaluator|
+            create_list(:post, evaluator.posts_count, user: user)
+          end
+        end
+      end
+
+      factory :post do
+        title { Faker::Lorem.sentence }
+        user
+      end
+    end
+  </script>
+</section>

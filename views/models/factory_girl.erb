@@ -1,31 +1,57 @@
 <section id="factory-girl" class="slide">
-  <h2>factory_girl</h2>
+  <h2>FactoryGirl</h2>
+  <p><a href="https://github.com/thoughtbot/factory_girl" target="_blank">FactoryGirl</a> is a library for setting up Ruby objects as test data.</p>
   <script type="syntaxhighlighter" class="brush: ruby">
-      FactoryGirl.define do
-        factory :user do
-          first_name 'John'
-          last_name  'Doe'
-        end
+    FactoryGirl.define do
+      sequence :email do |n|
+        "email#{n}@factory.com"
+      end
 
-        factory :admin, parent: :user do
+      factory :user do
+        email { FactoryGirl.generate(:email) } 
+        name "John Doe"
+        admin false
+
+        factory :admin do
           admin true
         end
+
+        factory :author do
+          ignore do
+            posts_count 5
+          end
+
+          after(:create) do |user, evaluator|
+            create_list(:post, evaluator.posts_count, user: user)
+          end
+        end
       end
+
+      factory :post do
+        title "Post title"
+        user
+      end
+    end
   </script>
   <script type="syntaxhighlighter" class="brush: ruby">
-      # Saved instance
-      user = FactoryGirl.create(:user)
+    # Saved instance
+    user = FactoryGirl.create(:user)
 
-      # Unsaved instance
-      user = FactoryGirl.build(:user)
+    # Unsaved instance
+    user = FactoryGirl.build(:user)
 
-      # Attribute hash (ignores associations)
-      user_attributes = FactoryGirl.attributes_for(:user)
+    # Attribute hash (ignores associations)
+    user_attributes = FactoryGirl.attributes_for(:user)
 
-      # Stubbed object
-      user_stub = FactoryGirl.stub(:user)
+    # Stubbed object
+    user_stub = FactoryGirl.build_stubbed(:user)
 
-      # Override attributes
-      user = FactoryGirl.create(:user, first_name: "Jack")
+    # Override attributes
+    user = FactoryGirl.create(:user, name: "Jack Daniel")
+
+    # Passing a block to any of the methods above will yield the return object
+    user = FactoryGirl.create(:user) do |user|
+      user.posts.create(FactoryGirl.attributes_for(:post))
+    end
   </script>
 </section>

@@ -1,10 +1,22 @@
 <section id="testing-callbacks" class="slide">
   <h2>Testing callbacks</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-      it "should init 'field' on create" do
-        n = Model.create
-        n.field.should == value
+    describe User do
+      let(:user) { FactoryGirl.create :user }
+
+      context "change email" do
+        it "sends email changed notification" do
+          user.email = Faker::Internet.email
+          expect(UserMailer).to receive(:email_changed).with(user).and_return(double("meil", deliver: true))
+          user.save
+        end
+
+        it "doesn't send email changed notification" do
+          user.name = "Santa Claus"
+          expect(UserMailer).not_to receive(:email_changed)
+          user.save
+        end
       end
+    end
   </script>
-  <p>Set up object in state before callback</p>
 </section>
