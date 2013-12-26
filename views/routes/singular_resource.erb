@@ -2,63 +2,69 @@
   <h2>Singular Resources</h2>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-      get 'user', to: 'users#show'
+    get 'user', to: 'users#show'
   </script>
 
   <br/>
 
-  <div class="slide">
+  <div id="singular-resources-resourceful-route" class="slide">
     <p>This resourceful route:</p>
     <script type="syntaxhighlighter" class="brush: ruby">
-        resource :user
+      resource :user
     </script>
   </div>
 
   <br/>
 
-  <div class="slide">
+  <div id="singular-resources-urls" class="slide">
     <table>
       <tr>
-        <th>HTTP Verb</th>
-        <th>Path</th>
-        <th>Action</th>
-        <th>Used for</th>
+        <th>Prefix</th>
+        <th>Verb</th>
+        <th>URI Pattern</th>
+        <th>Controller#Action</th>
       </tr>
       <tr>
-        <td>GET</td>
-        <td>/user/new</td>
-        <td>new</td>
-        <td>return an HTML form for creating the user</td>
-      </tr>
-      <tr>
+        <td>user</td>
         <td>POST</td>
-        <td>/user</td>
-        <td>create</td>
-        <td>create the new user</td>
+        <td>/user(.:format)</td>
+        <td>users#create</td>
       </tr>
       <tr>
+        <td>new_user</td>
         <td>GET</td>
-        <td>/user</td>
-        <td>show</td>
-        <td>display the one and only user resource</td>
+        <td>/user/new(.:format)</td>
+        <td>users#new</td>
       </tr>
       <tr>
+        <td>edit_user</td>
         <td>GET</td>
-        <td>/user/edit</td>
-        <td>edit</td>
-        <td>return an HTML form for editing the user</td>
+        <td>/user/edit(.:format)</td>
+        <td>users#edit</td>
       </tr>
       <tr>
-        <td>PATCH/PUT</td>
-        <td>/user</td>
-        <td>update</td>
-        <td>update the one and only user resource</td>
+        <td></td>
+        <td>GET</td>
+        <td>/user(.:format)</td>
+        <td>users#show</td>
       </tr>
       <tr>
+        <td></td>
+        <td>PATCH</td>
+        <td>/user(.:format)</td>
+        <td>users#update</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>PUT</td>
+        <td>/user(.:format)</td>
+        <td>users#update</td>
+      </tr>
+      <tr>
+        <td></td>
         <td>DELETE</td>
-        <td>/user</td>
-        <td>destroy</td>
-        <td>delete the user resource</td>
+        <td>/user(.:format)</td>
+        <td>users#destroy</td>
       </tr>
     </table>
     </script>

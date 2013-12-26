@@ -12431,5 +12431,13 @@ a.label:hover, a.badge:hover {
 }
 
 table td {
-  padding: 0 10px;
+  padding: 3px 10px;
+}
+
+#main .about {
+  text-align: left;
+  padding: 5% 10%;
+}
+#main .about p, #main .about li {
+  font-weight: normal;
 }

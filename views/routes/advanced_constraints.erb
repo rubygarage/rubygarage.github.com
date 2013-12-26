@@ -11,16 +11,14 @@
       end
     end
      
-    Blog::Application.routes.draw do
-      get '*path', to: 'blacklist#index',
-        constraints: BlacklistConstraint.new
+    Community::Application.routes.draw do
+      get '*path', to: 'blacklist#index', constraints: BlacklistConstraint.new
     end
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    Blog::Application.routes.draw do
-      get '*path', to: 'blacklist#index',
-        constraints: lambda { |request| Blacklist.retrieve_ips.include?(request.remote_ip) }
+    Community::Application.routes.draw do
+      get '*path', to: 'blacklist#index', constraints: lambda { |request| Blacklist.retrieve_ips.include?(request.remote_ip) }
     end
   </script>
 </section>

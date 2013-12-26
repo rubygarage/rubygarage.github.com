@@ -1,10 +1,70 @@
 <section id="restrincting" class="slide">
   <h2>Restricting the Routes Created</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-      resources :posts, only: [:index, :show]
+    resources :users, except: :destroy
+    resources :posts, only: [:index, :show]
   </script>
 
-  <script type="syntaxhighlighter" class="brush: ruby">
-      resources :photos, except: :destroy
-  </script>
+  <table>
+    <tr>
+      <th>Prefix</th>
+      <th>Verb</th>
+      <th>URI Pattern</th>
+      <th>Controller#Action</th>
+    </tr>
+    <tr>
+      <td>users</td>
+      <td>GET</td>
+      <td>/users(.:format)</td>
+      <td>users#index</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>POST</td>
+      <td>/users(.:format)</td>
+      <td>users#create</td>
+    </tr>
+    <tr>
+      <td>new_user</td>
+      <td>GET</td>
+      <td>/users/new(.:format)</td>
+      <td>users#new</td>
+    </tr>
+    <tr>
+      <td>edit_user</td>
+      <td>GET</td>
+      <td>/users/:id/edit(.:format)</td>
+      <td>users#edit</td>
+    </tr>
+    <tr>
+      <td>user</td>
+      <td>GET</td>
+      <td>/users/:id(.:format)</td>
+      <td>users#show</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>PATCH</td>
+      <td>/users/:id(.:format)</td>
+      <td>users#update</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>PUT</td>
+      <td>/users/:id(.:format)</td>
+      <td>users#update</td>
+    </tr>
+    <tr>
+      <td>posts</td>
+      <td>GET</td>
+      <td>/posts(.:format)</td>
+      <td>posts#index</td>
+    </tr>
+    <tr>
+      <td>post</td>
+      <td>GET</td>
+      <td>/posts/:id(.:format)</td>
+      <td>posts#show</td>
+    </tr>
+  </table>
 </section>

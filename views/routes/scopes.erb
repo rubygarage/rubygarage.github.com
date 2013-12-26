@@ -1,64 +1,75 @@
 <section id="scopes" class="slide">
   <h2>Route without a module prefix</h2>
+
+  config/routes.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-      scope '/admin' do
-        resources :posts, :comments
-      end
+    scope '/admin' do
+      resources :posts, :comments
+    end
   </script>
-  <p>or, for a single case:</p>
+  
+  <p>or for a single case:</p>
+
+  config/routes.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-      resources :posts, path: '/admin/posts'
+    resources :posts, path: '/admin/posts'
   </script>
 
-  <div class="slide">
+  <div id="scopes-urls" class="slide">
     <table>
       <tr>
-        <th>HTTP Verb</th>
-        <th>Path</th>
-        <th>Action</th>
-        <th>Named helper</th>
+        <th>Prefix</th>
+        <th>Verb</th>
+        <th>URI Pattern</th>
+        <th>Controller#Action</th>
       </tr>
       <tr>
+        <td>posts</td>
         <td>GET</td>
-        <td>/admin/posts</td>
-        <td>index</td>
-        <td>posts_path</td>
+        <td>/admin/posts(.:format)</td>
+        <td>posts#index</td>
       </tr>
       <tr>
-        <td>GET</td>
-        <td>/admin/posts/new</td>
-        <td>new</td>
-        <td>new_post_path</td>
-      </tr>
-      <tr>
+        <td></td>
         <td>POST</td>
-        <td>/admin/posts</td>
-        <td>create</td>
-        <td>posts_path</td>
+        <td>/admin/posts(.:format)</td>
+        <td>posts#create</td>
       </tr>
       <tr>
+        <td>new_post</td>
         <td>GET</td>
-        <td>/admin/posts/:id</td>
-        <td>show</td>
-        <td>post_path(:id)</td>
+        <td>/admin/posts/new(.:format)</td>
+        <td>posts#new</td>
       </tr>
       <tr>
+        <td>edit_post</td>
         <td>GET</td>
-        <td>/admin/posts/:id/edit</td>
-        <td>edit</td>
-        <td>edit_post_path(:id)</td>
+        <td>/admin/posts/:id/edit(.:format)</td>
+        <td>posts#edit</td>
       </tr>
       <tr>
-        <td>PATCH/PUT</td>
-        <td>/admin/posts/:id</td>
-        <td>update</td>
-        <td>post_path(:id)</td>
+        <td>post</td>
+        <td>GET</td>
+        <td>/admin/posts/:id(.:format)</td>
+        <td>posts#show</td>
       </tr>
       <tr>
+        <td></td>
+        <td>PATCH</td>
+        <td>/admin/posts/:id(.:format)</td>
+        <td>posts#update</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>PUT</td>
+        <td>/admin/posts/:id(.:format)</td>
+        <td>posts#update</td>
+      </tr>
+      <tr>
+        <td></td>
         <td>DELETE</td>
-        <td>/admin/posts/:id</td>
-        <td>destroy</td>
-        <td>post_path(:id)</td>
+        <td>/admin/posts/:id(.:format)</td>
+        <td>posts#destroy</td>
       </tr>
     </table>
   </div>

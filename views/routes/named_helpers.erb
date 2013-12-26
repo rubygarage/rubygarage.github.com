@@ -2,57 +2,63 @@
   <h2>Overriding the Named Helpers</h2>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-      resources :posts, as: 'messages'
+    resources :posts, as: 'messages'
   </script>
 
   <table>
     <tr>
-      <th>HTTP Verb</th>
-      <th>Path</th>
-      <th>Action</th>
-      <th>Named Helper</th>
+      <th>Prefix</th>
+      <th>Verb</th>
+      <th>URI Pattern</th>
+      <th>Controller#Action</th>
     </tr>
     <tr>
+      <td>messages</td>
       <td>GET</td>
-      <td>/posts</td>
-      <td>index</td>
-      <td>messages_path</td>
+      <td>/posts(.:format)</td>
+      <td>posts#index</td>
     </tr>
     <tr>
+      <td></td>
       <td>POST</td>
-      <td>/posts</td>
-      <td>create</td>
-      <td>messages_path</td>
+      <td>/posts(.:format)</td>
+      <td>posts#create</td>
     </tr>
     <tr>
+      <td>new_message</td>
       <td>GET</td>
-      <td>/posts/new</td>
-      <td>new</td>
-      <td>new_messages_path</td>
+      <td>/posts/new(.:format)</td>
+      <td>posts#new</td>
     </tr>
     <tr>
+      <td>edit_message</td>
       <td>GET</td>
-      <td>/posts/:id/edit</td>
-      <td>edit</td>
-      <td>edit_message_path</td>
+      <td>/posts/:id/edit(.:format)</td>
+      <td>posts#edit</td>
     </tr>
     <tr>
+      <td>message</td>
       <td>GET</td>
-      <td>/posts/:id</td>
-      <td>show</td>
-      <td>message_path</td>
+      <td>/posts/:id(.:format)</td>
+      <td>posts#show</td>
     </tr>
     <tr>
-      <td>PATCH/PUT</td>
-      <td>/posts/:id</td>
-      <td>update</td>
-      <td>message_path</td>
+      <td></td>
+      <td>PATCH</td>
+      <td>/posts/:id(.:format)</td>
+      <td>posts#update</td>
     </tr>
     <tr>
+      <td></td>
+      <td>PUT</td>
+      <td>/posts/:id(.:format)</td>
+      <td>posts#update</td>
+    </tr>
+    <tr>
+      <td></td>
       <td>DELETE</td>
-      <td>/posts/:id</td>
-      <td>destroy</td>
-      <td>message_path</td>
+      <td>/posts/:id(.:format)</td>
+      <td>posts#destroy</td>
     </tr>
   </table>
 </section>

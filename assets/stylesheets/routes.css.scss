@@ -1,7 +1,17 @@
 @import "application";
 
-table{
-  td{
-    padding: 0 10px;
+table {
+  td {
+    padding: 3px 10px;
+  }
+}
+
+#main {
+  .about {
+    text-align: left;
+    padding: 5% 10%;
+    p, li {
+      font-weight:normal;
+    }
   }
 }

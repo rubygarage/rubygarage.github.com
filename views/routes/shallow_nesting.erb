@@ -1,36 +1,127 @@
 <section id="shallow" class="slide">
   <h2>Shallow Nesting</h2>
+
+  config/routes.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-      resources :posts do
-        resources :comments, only: [:index, :new, :create]
-      end
-      resources :comments, only: [:show, :edit, :update, :destroy]
+    resources :posts do
+      resources :comments, only: [:index, :new, :create]
+    end
+
+    resources :comments, only: [:show, :edit, :update, :destroy]
   </script>
 
-  <div class="slide">
+  <div id="shallow-option" class="slide">
     <p>There exists shorthand syntax to achieve just that, via the :shallow option:</p>
+    config/routes.rb
     <script type="syntaxhighlighter" class="brush: ruby">
-        resources :posts do
-          resources :comments, shallow: true
-        end
+      resources :posts do
+        resources :comments, shallow: true
+      end
     </script>
-  </div>
-
-  <div class="slide">
-    <script type="syntaxhighlighter" class="brush: ruby">
-        resources :posts, shallow: true do
-          resources :comments
-          resources :files
-        end
-    </script>
-
-    <script type="syntaxhighlighter" class="brush: ruby">
-        shallow do
-          resources :posts do
-            resources :comments
-            resources :files
-          end
-        end
-    </script>
+    <table>
+      <tr>
+        <th>Prefix</th>
+        <th>Verb</th>
+        <th>URI Pattern</th>
+        <th>Controller#Action</th>
+      </tr>
+      <tr>
+        <td>post_comments</td>
+        <td>GET</td>
+        <td>/posts/:post_id/comments(.:format)</td>
+        <td>comments#index</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>POST</td>
+        <td>/posts/:post_id/comments(.:format)</td>
+        <td>comments#create</td>
+      </tr>
+      <tr>
+        <td>new_post_comment</td>
+        <td>GET</td>
+        <td>/posts/:post_id/comments/new(.:format)</td>
+        <td>comments#new</td>
+      </tr>
+      <tr>
+        <td>edit_comment</td>
+        <td>GET</td>
+        <td>/comments/:id/edit(.:format)</td>
+        <td>comments#edit</td>
+      </tr>
+      <tr>
+        <td>comment</td>
+        <td>GET</td>
+        <td>/comments/:id(.:format)</td>
+        <td>comments#show</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>PATCH</td>
+        <td>/comments/:id(.:format)</td>
+        <td>comments#update</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>PUT</td>
+        <td>/comments/:id(.:format)</td>
+        <td>comments#update</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>DELETE</td>
+        <td>/comments/:id(.:format)</td>
+        <td>comments#destroy</td>
+      </tr>
+      <tr>
+        <td>posts</td>
+        <td>GET</td>
+        <td>/posts(.:format)</td>
+        <td>posts#index</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>POST</td>
+        <td>/posts(.:format)</td>
+        <td>posts#create</td>
+      </tr>
+      <tr>
+        <td>new_post</td>
+        <td>GET</td>
+        <td>/posts/new(.:format)</td>
+        <td>posts#new</td>
+      </tr>
+      <tr>
+        <td>edit_post</td>
+        <td>GET</td>
+        <td>/posts/:id/edit(.:format)</td>
+        <td>posts#edit</td>
+      </tr>
+      <tr>
+        <td>post</td>
+        <td>GET</td>
+        <td>/posts/:id(.:format)</td>
+        <td>posts#show</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>PATCH</td>
+        <td>/posts/:id(.:format)</td>
+        <td>posts#update</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>PUT</td>
+        <td>/posts/:id(.:format)</td>
+        <td>posts#update</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>DELETE</td>
+        <td>/posts/:id(.:format)</td>
+        <td>posts#destroy</td>
+      </tr>
+    </table>
+    <br/>
   </div>
 </section>

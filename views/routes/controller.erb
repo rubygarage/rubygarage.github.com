@@ -7,52 +7,58 @@
 
   <table>
     <tr>
-      <th>HTTP Verb</th>
-      <th>Path</th>
-      <th>Action</th>
-      <th>Named Helper</th>
+      <th>Prefix</th>
+      <th>Verb</th>
+      <th>URI Pattern</th>
+      <th>Controller#Action</th>
     </tr>
     <tr>
+      <td>posts</td>
       <td>GET</td>
-      <td>/posts</td>
-      <td>index</td>
-      <td>posts_path</td>
+      <td>/posts(.:format)</td>
+      <td>messages#index</td>
     </tr>
     <tr>
+      <td></td>
       <td>POST</td>
-      <td>/posts</td>
-      <td>create</td>
-      <td>posts_path</td>
+      <td>/posts(.:format)</td>
+      <td>messages#create</td>
     </tr>
     <tr>
+      <td>new_post</td>
       <td>GET</td>
-      <td>/posts/new</td>
-      <td>new</td>
-      <td>new_posts_path</td>
+      <td>/posts/new(.:format)</td>
+      <td>messages#new</td>
     </tr>
     <tr>
+      <td>edit_post</td>
       <td>GET</td>
-      <td>/posts/:id/edit</td>
-      <td>edit</td>
-      <td>edit_post_path</td>
+      <td>/posts/:id/edit(.:format)</td>
+      <td>messages#edit</td>
     </tr>
     <tr>
+      <td>post</td>
       <td>GET</td>
-      <td>/posts/:id</td>
-      <td>show</td>
-      <td>post_path</td>
+      <td>/posts/:id(.:format)</td>
+      <td>messages#show</td>
     </tr>
     <tr>
-      <td>PATCH/PUT</td>
-      <td>/posts/:id</td>
-      <td>update</td>
-      <td>post_path</td>
+      <td></td>
+      <td>PATCH</td>
+      <td>/posts/:id(.:format)</td>
+      <td>messages#update</td>
     </tr>
     <tr>
+      <td></td>
+      <td>PUT</td>
+      <td>/posts/:id(.:format)</td>
+      <td>messages#update</td>
+    </tr>
+    <tr>
+      <td></td>
       <td>DELETE</td>
-      <td>/posts/:id</td>
-      <td>destroy</td>
-      <td>post_path</td>
+      <td>/posts/:id(.:format)</td>
+      <td>messages#destroy</td>
     </tr>
   </table>
 </section>

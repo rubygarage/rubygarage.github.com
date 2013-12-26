@@ -1,60 +1,66 @@
 <section id="namespaces" class="slide">
   <h2>Controller Namespaces and Routing</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-      namespace :admin do
-        resources :posts
-      end
+    namespace :admin do
+      resources :posts
+    end
   </script>
 
-  <div class="slide">
+  <div id="namespaces-urls" class="slide">
     <table>
       <tr>
-        <th>HTTP Verb</th>
-        <th>Path</th>
-        <th>Action</th>
-        <th>Named helper</th>
+        <th>Prefix</th>
+        <th>Verb</th>
+        <th>URI Pattern</th>
+        <th>Controller#Action</th>
       </tr>
       <tr>
+        <td>admin_posts</td>
         <td>GET</td>
-        <td>/admin/posts</td>
-        <td>index</td>
-        <td>admin_posts_path</td>
+        <td>/admin/posts(.:format)</td>
+        <td>admin/posts#index</td>
       </tr>
       <tr>
-        <td>GET</td>
-        <td>/admin/posts/new</td>
-        <td>new</td>
-        <td>new_admin_post_path</td>
-      </tr>
-      <tr>
+        <td></td>
         <td>POST</td>
-        <td>/admin/posts</td>
-        <td>create</td>
-        <td>admin_posts_path</td>
+        <td>/admin/posts(.:format)</td>
+        <td>admin/posts#create</td>
       </tr>
       <tr>
+        <td>new_admin_post</td>
         <td>GET</td>
-        <td>/admin/posts/:id</td>
-        <td>show</td>
-        <td>admin_post_path(:id)</td>
+        <td>/admin/posts/new(.:format)</td>
+        <td>admin/posts#new</td>
       </tr>
       <tr>
+        <td>edit_admin_post</td>
         <td>GET</td>
-        <td>/admin/posts/:id/edit</td>
-        <td>edit</td>
-        <td>edit_admin_post_path(:id)</td>
+        <td>/admin/posts/:id/edit(.:format)</td>
+        <td>admin/posts#edit</td>
       </tr>
       <tr>
-        <td>PATCH/PUT</td>
-        <td>/admin/posts/:id</td>
-        <td>update</td>
-        <td>admin_post_path(:id)</td>
+        <td>admin_post</td>
+        <td>GET</td>
+        <td>/admin/posts/:id(.:format)</td>
+        <td>admin/posts#show</td>
       </tr>
       <tr>
+        <td></td>
+        <td>PATCH</td>
+        <td>/admin/posts/:id(.:format)</td>
+        <td>admin/posts#update</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>PUT</td>
+        <td>/admin/posts/:id(.:format)</td>
+        <td>admin/posts#update</td>
+      </tr>
+      <tr>
+        <td></td>
         <td>DELETE</td>
-        <td>/admin/posts/:id</td>
-        <td>destroy</td>
-        <td>admin_post_path(:id)</td>
+        <td>/admin/posts/:id(.:format)</td>
+        <td>admin/posts#destroy</td>
       </tr>
     </table>
   </div>

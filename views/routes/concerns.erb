@@ -1,32 +1,28 @@
 <section id="conserns" class="slide">
   <h2>Routing concerns</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-      concern :commentable do
-        resources :comments
-      end
+    resources :messages do
+      resources :comments
+    end
 
-      concern :image_attachable do
-        resources :images, only: :index
-      end
+    resources :posts do
+      resources :comments
+      resources :images, only: :index
+    end
   </script>
 
-  <div class="slide">
-    <script type="syntaxhighlighter" class="brush: ruby">
-        resources :messages, concerns: :commentable
+  <p>let's refactor it:</p>
 
-        resources :posts, concerns: [:commentable, :image_attachable]
-    </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    concern :commentable do
+      resources :comments
+    end
 
-    <p>is equivalent to:</p>
-    <script type="syntaxhighlighter" class="brush: ruby">
-        resources :messages do
-          resources :comments
-        end
-
-        resources :posts do
-          resources :comments
-          resources :images, only: :index
-        end
-    </script>
-  </div>
+    concern :image_attachable do
+      resources :images, only: :index
+    end
+      
+    resources :messages, concerns: :commentable
+    resources :posts, concerns: [:commentable, :image_attachable]
+  </script>
 </section>

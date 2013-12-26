@@ -1,10 +1,13 @@
 <section id="verb-constraints" class="slide">
   <h2>HTTP Verb Constraints</h2>
+  
+  config/rputes.rb
   <script type="syntaxhighlighter" class="brush: ruby">
     match 'posts', to: 'posts#show', via: [:get, :post]
   </script>
 
-  <script type="syntaxhighlighter" class="brush: ruby">
-    match 'posts', to: 'posts#show', via: :all
+  <script type="syntaxhighlighter" class="brush: bash">
+    rake routes
+      posts GET|POST /posts(.:format) posts#show
   </script>
 </section>

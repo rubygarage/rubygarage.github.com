@@ -1,18 +1,26 @@
 <section id="namespaces-controller" class="slide">
   <h2>Controller Namespaces and Routing</h2>
-  <img src="/assets/routes_namespaces.png">
+  
+  app/controllers/admin/posts_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class Admin::PostsController < ApplicationController
+      # ...
+    end
+  </script>
 
   <div class="slide">
+    config/routes.rb
     <script type="syntaxhighlighter" class="brush: ruby">
-        scope module: 'admin' do
-          resources :posts, :comments
-        end
+      scope module: 'admin' do
+        resources :posts, :comments
+      end
     </script>
 
-    <p>or, for a single case</p>
+    <p>or for a single case</p>
 
+    config/routes.rb
     <script type="syntaxhighlighter" class="brush: ruby">
-        resources :posts, module: 'admin'
+      resources :posts, module: 'admin'
     </script>
   </div>
 </section>

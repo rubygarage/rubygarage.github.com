@@ -7,17 +7,21 @@
   </script>
 
   <p>it asks the router to match it to a controller action. If the first matching route is:</p>
-  <script type="syntaxhighlighter" class="brush: ruby">
-      get '/posts/:id', to: 'posts#show'
-  </script>
-
-  <h3>Generating Paths and URLs from Code</h3>
+  config/routes.rb
   <script type="syntaxhighlighter" class="brush: ruby">
       get '/posts/:id', to: 'posts#show', as: 'post'
   </script>
+  <p>the request is dispatched to the posts controller's show action with { id: '17' } in params.</p>
 
+  app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-      < %= link_to 'Post Record', post_path(@post) %>
+    def show
+      @post = Post.find(params[:id])
+    end
   </script>
 
+  app/views/posts/show.html.erb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    &lt;%= link_to 'Post Record', post_path(@post) %>
+  </script>
 </section>
