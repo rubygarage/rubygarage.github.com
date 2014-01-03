@@ -1,82 +1,59 @@
 <section id="homework" class="slide">
   <h2>Homework. Amazon.</h2>
   <p>Business logic structure:</p>
-  <p>Book</p>
+  <h3>Book</h3>
   <ul>
-    <li>Title</li>
-    <li>Descirption</li>
-    <li>Author</li>
-    <li>Category</li>
-    <li>Price</li>
-    <li>In stock</li>
-    <li>Rating</li>
+    <li>Should contain title, descirption, price and how many books in stock</li>
+    <li>Should belong to author and category</li>
+    <li>Should have many ratings from costomers</li>
   </ul>
-  <p>Category</p>
+  <h3>Category</h3>
   <ul>
-    <li>Title</li>
-    <li>Books</li>
+    <li>Has a title</li>
+    <li>Should have many books</li>
   </ul>
-  <p>Author</p>
+  <h3>Author</h3>
   <ul>
-    <li>Firstname</li>
-    <li>Lastname</li>
+    <li>Should contain firstname, lastname, photo, biography</li>
+    <li>Should have many books</li>
   </ul>
-  <p>Rating</p>
+  <h3>Rating</h3>
   <ul>
-    <li>Book</li>
-    <li>Customer</li>
-    <li>Rating</li>
-    <li>Text</li>
+    <li>Should contain text review and rating number from one to ten</li>
+    <li>Should belong to customer and book</li>
   </ul>
-  <p>Customer</p>
+  <h3>Customer</h3>
   <ul>
-    <li>Email</li>
-    <li>Password</li>
-    <li>Firstname</li>
-    <li>Lastname</li>
+    <li>Should contain email, password, firstname, lastname</li>
+    <li>Should have many orders</li>
   </ul>
   <p>Order</p>
   <ul>
-    <li>Customer</li>
-    <li>Total price</li>
-    <li>State</li>
-    <li>Completed at</li>
-    <li>Bill address</li>
-    <li>Ship address</li>
+    <li>Should contain total price, completed date and state (in progress/complited/shipped)</li>
+    <li>Should belong to customer</li>
+    <li>Should have one billing address and one shipping address</li>
   </ul>
   <p>OrderItem</p>
   <ul>
-    <li>Book</li>
-    <li>Order</li>
-    <li>Price</li>
-    <li>Quantity</li>
+    <li>Should contain price and quantity</li>
+    <li>Should belong to book and order</li>
   </ul>
   <p>Address</p>
   <ul>
-    <li>Address</li>
-    <li>Zipcode</li>
-    <li>City</li>
-    <li>Phone</li>
-    <li>Country</li>
+    <li>Should contain address, zipcode, city, phone, country</li>
   </ul>
   <p>Country</p>
   <ul>
-    <li>Name</li>
+    <li>Should contain a name</li>
   </ul>
   <p>CreditCard</p>
   <ul>
-    <li>Number</li>
-    <li>CVV</li>
-    <li>Expiration month</li>
-    <li>Expiration year</li>
-    <li>Firstname</li>
-    <li>Lastname</li>
-    <li>Customer</li>
-    <li>Order</li>
+    <li>Should contain number, CVV, expiration month, expiration year, firstname, lastname</li>
+    <li>Should belong to customer and have many orders</li>
   </ul>
   MVP
   <ul>
-    <li>A customer should be able to order a book if it's exist on a stock</li>
-    <li>A customer should be able to rate a book only once</li>
+    <li>As a customer I should be able to order a book if it's exist in the stock</li>
+    <li>As a customer I should be able to rate a book and add my comments. But only once and for book what I ordered.</li>
   </ul>
 </section>
