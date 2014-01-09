@@ -2,12 +2,13 @@
   <h2>Routing parameters</h2>
   config/routes.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    get '/posts/:state' => 'posts#index', my: 'true'
+    get '/posts/:state' => 'posts#index', my: true
   </script>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
     class PostsController < ApplicationController
       ...
+      # GET /posts/active
       def index
         if params[:my]
           @posts = current_user.posts.where(state: params[:state])

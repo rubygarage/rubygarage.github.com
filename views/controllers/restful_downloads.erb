@@ -3,7 +3,7 @@
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
     class PostsController < ApplicationController
-      def show # GET /clients/1.pdf
+      def show # GET /posts/1.pdf
         @post = Post.find(params[:id])
      
         respond_to do |format|

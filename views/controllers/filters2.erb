@@ -1,9 +1,9 @@
 <section id="filters-around-examples" class="slide">
-  <h2>Filters</h2>
+  <h2>Around actions</h2>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
     class PostsController < ApplicationController
-      aaround_filter :wrap_actions
+      around_action :wrap_actions
  
       private
  

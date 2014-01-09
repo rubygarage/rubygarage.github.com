@@ -8,7 +8,7 @@
 
       private
       def current_city
-        session[:city] = City.find_by_ip(request.remote_ip)
+        session[:city] = City.find_by(ip: request.remote_ip)
       end
     end
   </script>

@@ -7,7 +7,7 @@
 
       # GET /posts?ids[]=1&ids[]=2&ids[]=3
       def index
-        params[:ids] # ["1", "2", "3"]
+        params[:ids] # => ["1", "2", "3"]
         ...
       end
     end
@@ -26,7 +26,7 @@
       ...
 
       def create
-        params[:post] # { title: "Title", images_attributes: { id: "12345", title: "Image" } }
+        params[:post] # => { title: "Title", images_attributes: { id: "12345", title: "Image" } }
         ...
       end
     end

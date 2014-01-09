@@ -4,12 +4,12 @@
   <script type="syntaxhighlighter" class="brush: ruby">
     class PostsController < ActionController::Base
       def create # ActiveModel::ForbiddenAttributes exception
-        Post.create(params[:post])
+        Post.create(post_params)
       end
     
       def update
         post = current_user.posts.find(params[:id])
-        post.update_attributes!(post_params)
+        post.update(post_params)
         redirect_to post
       end
      
@@ -26,7 +26,7 @@
       params.permit(:id => [])
       params.require(:post).permit!
       params.permit(:title, {:comments => []},
-              :images_attributes => [ :id, :name, :_destroy])
+              :images_attributes => [:id, :name, :_destroy])
 
       params.fetch(:post, {}).permit(:title, :text)
     </script>

@@ -5,7 +5,7 @@
     class PostsController < ApplicationController
       ...
 
-      # GET by state url: /posts?state=confirmed
+      # GET by /posts?state=confirmed
       def index
         @posts = if params[:state] == "confirmed"
           Post.confirmed
@@ -14,10 +14,11 @@
         end
       end
 
-      # POST update url: /posts
-      # body: id=12&name=Foo&tags=Bar 
+      # PATCH to /posts
+      # id=12&post[name]=Foo&post[text]=Bar 
       def update
-        @post = Post.find_by_id params[:id]
+        @post = Post.find(params[:id])
+        @post.update(params[:post])
         ...
       end
 

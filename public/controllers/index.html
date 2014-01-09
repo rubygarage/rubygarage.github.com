@@ -20,7 +20,7 @@
 </section><section id="methods-and-actions" class="slide"><h2>Methods and Actions</h2>
   config/routes.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    resources :posts, only: [:index] # /posts/index
+    resources :posts, only: [:index] # GET /posts
   ]]></script>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
@@ -32,7 +32,7 @@
   ]]></script></section><section id="standart-actions" class="slide"><h2>CRUD actions</h2>
   config/routes.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    resources :posts # /posts/index
+    resources :posts
   ]]></script>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
@@ -41,27 +41,27 @@
         ...
       end
 
-      def show # GET /posts/1
+      def show    # GET /posts/:id
         ...
       end
 
-      def new # GET /posts/new
+      def new     # GET /posts/new
         ...
       end
 
-      def edit # GET /posts/1/edit
+      def edit    # GET /posts/:id/edit
         ...
       end
 
-      def create # POST /posts/
+      def create  # POST /posts/
         ...
       end
 
-      def update # PATCH /posts/1 PUT /posts/1
+      def update  # PATCH /posts/:id PUT /posts/:id
         ...
       end
 
-      def destroy # DELETE /posts/1
+      def destroy # DELETE /posts/:id
         ...
       end
     end
@@ -71,7 +71,7 @@
     class PostsController < ApplicationController
       ...
 
-      # GET by state url: /posts?state=confirmed
+      # GET by /posts?state=confirmed
       def index
         @posts = if params[:state] == "confirmed"
           Post.confirmed
@@ -80,10 +80,11 @@
         end
       end
 
-      # POST update url: /posts
-      # body: id=12&name=Foo&tags=Bar 
+      # PATCH to /posts
+      # id=12&post[name]=Foo&post[text]=Bar 
       def update
-        @post = Post.find_by_id params[:id]
+        @post = Post.find(params[:id])
+        @post.update(params[:post])
         ...
       end
 
@@ -97,7 +98,7 @@
 
       # GET /posts?ids[]=1&ids[]=2&ids[]=3
       def index
-        params[:ids] # ["1", "2", "3"]
+        params[:ids] # => ["1", "2", "3"]
         ...
       end
     end
@@ -116,7 +117,7 @@
       ...
 
       def create
-        params[:post] # { title: "Title", images_attributes: { id: "12345", title: "Image" } }
+        params[:post] # => { title: "Title", images_attributes: { id: "12345", title: "Image" } }
         ...
       end
     end
@@ -142,12 +143,13 @@
   ]]></script></section><section id="routing-parameters" class="slide"><h2>Routing parameters</h2>
   config/routes.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    get '/posts/:state' => 'posts#index', my: 'true'
+    get '/posts/:state' => 'posts#index', my: true
   ]]></script>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     class PostsController < ApplicationController
       ...
+      # GET /posts/active
       def index
         if params[:my]
           @posts = current_user.posts.where(state: params[:state])
@@ -169,12 +171,12 @@
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     class PostsController < ActionController::Base
       def create # ActiveModel::ForbiddenAttributes exception
-        Post.create(params[:post])
+        Post.create(post_params)
       end
     
       def update
         post = current_user.posts.find(params[:id])
-        post.update_attributes!(post_params)
+        post.update(post_params)
         redirect_to post
       end
      
@@ -189,7 +191,7 @@
       params.permit(:id => [])
       params.require(:post).permit!
       params.permit(:title, {:comments => []},
-              :images_attributes => [ :id, :name, :_destroy])
+              :images_attributes => [:id, :name, :_destroy])
 
       params.fetch(:post, {}).permit(:title, :text)
     ]]></script></div>
@@ -211,10 +213,6 @@
     <p>config/initializers/session_store.rb</p>
     <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
       YourApp::Application.config.session_store :active_record_store
-    ]]></script></div>
-  <div class="slide" id="cookie-store-with-key">
-    <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      YourApp::Application.config.session_store :cookie_store, key: '_your_app_session'
     ]]></script></div>
   <div class="slide" id="cookie-store-with-key">
     <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
@@ -352,12 +350,12 @@
         @posts = Post.all
         respond_to do |format|
           format.html # index.html.erb
+          format.json # index.json.jbuilder
           format.xml  { render xml: @posts }
-          format.json { render json: @posts }
         end
       end
     end
-  ]]></script></section><section id="filters" class="slide"><h2>Filters</h2>
+  ]]></script></section><section id="filters" class="slide"><h2>Before/after actions</h2>
   app/controllers/application_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     class ApplicationController < ActionController::Base
@@ -395,11 +393,11 @@
         end
       end
     ]]></script></div>
-</section><section id="filters-around-examples" class="slide"><h2>Filters</h2>
+</section><section id="filters-around-examples" class="slide"><h2>Around actions</h2>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     class PostsController < ApplicationController
-      aaround_filter :wrap_actions
+      around_action :wrap_actions
  
       private
  
@@ -446,7 +444,7 @@
 
       private
       def current_city
-        session[:city] = City.find_by_ip(request.remote_ip)
+        session[:city] = City.find_by(ip: request.remote_ip)
       end
     end
   ]]></script><table class="table"><thead><tr><th>Property of request</th>
@@ -565,7 +563,7 @@
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     class PostsController < ApplicationController
-      def show # GET /clients/1.pdf
+      def show # GET /posts/1.pdf
         @post = Post.find(params[:id])
      
         respond_to do |format|

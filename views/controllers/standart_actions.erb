@@ -2,7 +2,7 @@
   <h2>CRUD actions</h2>
   config/routes.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    resources :posts # /posts/index
+    resources :posts
   </script>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
@@ -11,27 +11,27 @@
         ...
       end
 
-      def show # GET /posts/1
+      def show    # GET /posts/:id
         ...
       end
 
-      def new # GET /posts/new
+      def new     # GET /posts/new
         ...
       end
 
-      def edit # GET /posts/1/edit
+      def edit    # GET /posts/:id/edit
         ...
       end
 
-      def create # POST /posts/
+      def create  # POST /posts/
         ...
       end
 
-      def update # PATCH /posts/1 PUT /posts/1
+      def update  # PATCH /posts/:id PUT /posts/:id
         ...
       end
 
-      def destroy # DELETE /posts/1
+      def destroy # DELETE /posts/:id
         ...
       end
     end
