@@ -1,0 +1,14 @@
+<section id="fix-the-action-new-could-not-be-found" class="slide">
+  <h2>Fix the action 'new' could not be found for UsersController</h2>
+  app/controllers/users_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class UsersController < ApplicationController
+      def new
+      end
+    end
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    $ rspec spec/features/registration_spec.rb 
+      Missing template users/new, application/new
+  </script>
+</section>

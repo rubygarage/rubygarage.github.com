@@ -1,0 +1,44 @@
+<section id="user-model-specs" class="slide">
+  <h2>Model specs</h2>
+  spec/models/user_spec.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    require 'spec_helper'
+
+    describe User do
+      let(:user) { User.new }
+
+      it { expect(user).to validate_presence_of(:email) }
+      it { expect(user).to validate_uniqueness_of(:email) }
+      it { expect(user).to validate_presence_of(:password) }
+    end
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    $ rails g model User email:string password:string
+      invoke  active_record
+      create    db/migrate/20140121123310_create_users.rb
+      create    app/models/user.rb
+      invoke    rspec
+      conflict  spec/models/user_spec.rb
+      skip      spec/models/user_spec.rb
+      
+    $ rake db:migrage
+  </script>
+  app/models/user.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class User < ActiveRecord::Base
+      validates :email, :password, presence: true
+      validates :email, uniqueness: true
+    end
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    $ rspec spec/models/user_spec.rb
+    3 examples, 0 failures
+    
+    $ rspec spec/controllers/users_controller_spec.rb 
+    2 examples, 0 failures
+
+    $ rspec spec/features/registration_spec.rb
+    AbstractController::ActionNotFound:
+      The action 'create' could not be found for UsersController
+  </script>
+</section>

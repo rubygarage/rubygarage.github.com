@@ -1,0 +1,37 @@
+@import "application";
+
+#intro {
+  .about {
+    text-align: left;
+    padding: 5% 10%;
+    p, li {
+      font-weight:normal;
+    }
+  }
+}
+
+#bdd-cycle {
+  img.bdd-cycle {
+    width: 50%;
+    float: left;
+    margin: 0;
+  }
+  .bdd-cycle-list {
+    width: 45%;
+    float: left;
+    padding-left: 5%;
+  }
+}
+
+#meet-the-capybara {
+  img.capybara {
+    width: 50%;
+    float: left;
+    margin: 0;
+  }
+  .capybara-description {
+    width: 45%;
+    float: left;
+    padding-left: 5%;
+  }
+}

@@ -1,0 +1,42 @@
+<section id="users-new-spec" class="slide">
+  <h2>View specs</h2>
+  spec/views/users/new_spec.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    require 'spec_helper'
+
+    describe 'users/new.html.erb' do
+      it 'has new_user form' do
+        user = mock_model("User").as_new_record
+        assign(:user, user)
+        render
+        expect(rendered).to have_selector('form#new_user')
+      end
+    end
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    $ rspec spec/views/users/new_spec.rb
+    Capybara::ExpectationNotMet:
+      expected to find css "form#new_user" but there were no matches
+  </script>
+  app/views/users/new.html.erb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    &lt;%= form_for @user do |f| %&gt;
+    &lt;%- end %&gt;
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    $ rspec spec/views/users/new_spec.rb
+    ActionView::Template::Error:
+       undefined method 'users_path' for #<#<Class:0x007f91f5982a68>:0x007f91f5a36e78>
+  </script>
+  config/routes.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    Bookstore::Application.routes.draw do
+      get 'register', to: 'users#new', as: 'register'
+      resources :users
+    end
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    $ rspec spec/views/users/new_spec.rb
+    1 example, 0 failures
+  </script>
+</section>

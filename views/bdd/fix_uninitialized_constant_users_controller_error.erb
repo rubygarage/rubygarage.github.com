@@ -1,0 +1,13 @@
+<section id="fix-uninitialized-constant-users-controller-error" class="slide">
+  <h2>Fix uninitialized constant UsersController</h2>
+  app/controllers/users_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class UsersController < ApplicationController
+    end
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    $ rspec spec/features/registration_spec.rb 
+      AbstractController::ActionNotFound:
+       The action 'new' could not be found for UsersController
+  </script>
+</section>

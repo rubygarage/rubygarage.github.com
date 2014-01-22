@@ -1,0 +1,29 @@
+<section id="fix-undefined-local-variable-or-method-root-url" class="slide">
+  <h2>Fix undefined local variable or method 'root_url' error</h2>
+  config/routes.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    Bookstore::Application.routes.draw do
+      get 'register', to: 'users#new', as: 'register'
+      resources :users
+      root 'pages#home'
+    end
+  </script>
+  app/controllers/pages_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class PagesController < ApplicationController
+      def home
+      end
+    end
+  </script>
+  <p>
+    app/views/pages/home.html.erb created
+  </p>
+  <script type="syntaxhighlighter" class="brush: bash">
+    $ rspec spec/controllers/users_controller_spec.rb 
+    6 examples, 0 failures
+
+    $ rspec spec/features/registration_spec.rb
+    Failure/Error: expect(page).to have_content 'Sign out'
+      expected to find text "Sign out" in ""
+  </script>
+</section>
