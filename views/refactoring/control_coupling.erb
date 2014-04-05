@@ -1,0 +1,19 @@
+<section id="control-coupling" class="slide">
+  <h2>Control Coupling</h2>
+  <ul>
+    <li>A method or block checks the value of a parameter in order to decide which execution path to take.</li>
+    <li>A method's name includes a word such as "or."</li>
+  </ul>
+  <h3>Problems</h3>
+  <ul>
+    <li>Duplication: Control Coupling is a kind of duplication, because the caller already knows which path should be taken.</li>
+    <li>Flexibility: The caller and callee are coupled together - any change to the possible values of the controlling parameter must be reflected on both sides.</li>
+    <li>Simplicity: The called method is probably also a Greedy Method, because it includes at least two different code paths.</li>
+  </ul>
+  <h3>What to Do</h3>
+  <ul>
+    <li>Use <a href="#extract-method-before">Extract Method</a> to strip the controlled method down to the bare skeleton.</li>
+    <li>Then use <a href="#inline-method-before">Inline Method</a> to push the responsibility back up to the caller(s).</li>
+    <li>Repeat all the way up the call stack to the source of the control value.</li>
+  </ul>
+</section>

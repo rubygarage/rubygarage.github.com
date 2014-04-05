@@ -1,0 +1,20 @@
+<section id="long-parameter-list" class="slide">
+  <h2>Long Parameter List</h2>
+  <ul>
+    <li>A method has more than one or two parameters.</li>
+    <li>A method yields more than one or two objects to an associated block.</li>
+  </ul>
+  <h3>Problems</h3>
+  <ul>
+    <li>Simplicity: A Long Parameter List often indicates that a method has more than one responsibility. Sometimes the parameters have no meaningful grouping—they don’t go together. In such cases it may be that the method, or the objects it uses, doesn’t represent a meaningful and cohesive abstraction in the problem domain.</li>
+    <li>Flexibility: A Long Parameter List represents a large number of pieces of shared information between the caller and called code. If either changes, the parameter list is likely to need changing too.</li>
+    <li>Communication: A lot of parameters represent a lot to remember—the programmer has to remember not only what objects to pass, but in which order. More suc- cinct APIs are easier and quicker to use.</li>
+  </ul>
+  <h3>What to Do</h3>
+  <ul>
+    <li>If a parameter's value can be obtained from another object use <a href="#replace-parameter-with-method-before">Replace Parameter with Method</a>.</li>
+    <li>If the parameters come from a single object, try <a href="preserve-whole-object-before">Preserve Whole Object</a>.</li>
+    <li>If the data is not from one logical object, you still might group them via <a href="#introduce-parameter-object-before">Introduce Parameter Object</a>.</li>
+    <li>Otherwise make clearer with <a href="#introduce-named-parameter-before">Introduce Named Parameter</a></li>
+  </ul>
+</section>

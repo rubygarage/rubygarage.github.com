@@ -1,0 +1,19 @@
+<section id="comments" class="slide">
+  <h2>Comments</h2>
+  <ul>
+    <li>The code contains a comment.</li>
+  </ul>
+  <h3>Problems</h3>
+  <ul>
+    <li>Flexibility: Any comment that explains the code must be kept in step if the code is changed.</li>
+    <li>Duplication: Most comments can be reflected just as well in the code itself. For example, the goal of a method can often be communicated as well through its name as it can through a comment.</li>
+    <li>Communication: Comments that say something slightly different than the code create cognitive drag or even mistrust and slow the reader down.</li>
+  </ul>
+  <p>Don’t delete comments that are pulling their own weight such as rdoc API documentation.</p>
+  <h3>What to Do</h3>
+  <ul>
+    <li>When a comment explains a code fragment, you can often use <a href="#extract-method-before">Extract Method</a> to pull the fragment out into a separate method. The comment will often suggest a name for the new method.</li>
+    <li>When a comment explains what a method does (better than the method's name!), use <a href="#rename-method-before">Rename Method</a> using the comment as the basis of the new name.</li>
+    <li>When a comment explains preconditions, consider using <a href="#introduce-assertion-before">Introduce Assertion</a> to replace the comment with code.</li>
+  </ul>
+</section>

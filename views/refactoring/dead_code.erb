@@ -1,0 +1,17 @@
+<section id="dead-code" class="slide">
+  <h2>Dead Code</h2>
+  <ul>
+    <li>A variable, parameter, code fragment, method, module, or class is not used anywhere (perhaps other than in tests)</li>
+  </ul>
+  <h3>Problems</h3>
+  <ul>
+    <li>Size: Dead Code adds to the application’s size, and thus to the amount of code that must be understood by developers and maintainers.</li>
+    <li>Communication: It isn’t always obvious when code is dead, and so the reader may take it as having a bearing on the behavior of his software. Indeed, Dead Code that is also incorrect or invalid may lead the developer seriously astray.</li>
+    <li>Flexibility: All code has dependencies on other code; but Dead Code may create dependencies where otherwise there would be none. These unnecessary couplings may, in turn, slow the pace of change for the code in these areas.</li>
+  </ul>
+  <h3>What to Do</h3>
+  <ul>
+    <li>Delete the unused code and any associated tests.</li>
+    <li>The code you just deleted may have been the only client of some other code, so that in turn is now dead. Continue checking and deleting until you find no more Dead Code.</li>
+  </ul>
+</section>

@@ -1,0 +1,17 @@
+<section id="collection-closure-method-before" class="slide">
+  <h3>Replace Loop with Collection Closure Method</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    managers = []
+    employees.each do |e|
+      managers << e if e.manager?
+    end
+
+    offices = []
+    employees.each {|e| offices << e.office}
+
+    manager_offices = []
+    employees.each do |e|
+      manager_offices << e.office if e.manager?
+    end
+  </script>
+</section>

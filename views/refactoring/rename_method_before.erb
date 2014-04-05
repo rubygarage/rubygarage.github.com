@@ -1,0 +1,15 @@
+<section id="rename-method-before" class="slide">
+  <h3>Rename Method</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class UserService
+      USERNAME = "josemota"
+      PASSWORD = "secret"
+
+      class << self
+        def lgn username, password
+          username == USERNAME && password == PASSWORD
+        end
+      end
+    end
+  </script>
+</section>

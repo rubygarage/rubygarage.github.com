@@ -1,0 +1,18 @@
+<section id="lazy-class" class="slide">
+  <h2>Lazy Class</h2>
+  <ul>
+    <li>A class isn't doing much its parents, children, or clients seem to be doing all the associated work and there isn’t enough behavior left in the class to justify its continued existence.</li>
+  </ul>
+  <h3>Problems</h3>
+  <ul>
+    <li>Simplicity: Every additional class in the application represents something extra to understand, and extra code to navigate while following a flow.</li>
+    <li>Communication: A Lazy Class also occupies one of the names in your domain space, without paying for that usage.</li>
+  </ul>
+  <h3>When to Leave It</h3>
+  <p>Sometimes, a Lazy Class is present to communicate intent. You may have to balance communication versus simplicity in your design; and when communication wins, leave the Lazy Class in place.</p>
+  <h3>What to Do</h3>
+  <ul>
+    <li>If parents or children of the class seem like the right place for the class’ behavior, fold it into one of them via <i>Collapse Hierarchy</i>.</li>
+    <li>Otherwise, fold its behavior into its caller via <a href="#inline-class-before">Inline Class</a>.</li>
+  </ul>
+</section>

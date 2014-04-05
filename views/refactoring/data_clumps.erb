@@ -1,0 +1,17 @@
+<section id="data-clump" class="slide">
+  <h2>Data Clump</h2>
+  <ul>
+    <li>The same two or three items frequently appear together in classes and parameter lists.</li>
+    <li>A group of instance variable names start or end with similar substrings.</li>
+  </ul>
+  <h3>Problems</h3>
+  <ul>
+    <li>Duplication: The recurrence of the items often means there is duplicate code spread around to handle them.</li>
+    <li>Abstraction: There may be a missing concept, making the system harder to understand.</li>
+  </ul>
+  <h3>What to Do</h3>
+  <ul>
+    <li>If the items are instance variables in a class, use <a href="#extract-class-before">Extract Class</a> to pull them into a new class.</li>
+    <li>If the values are together in method signatures, use <a href="#introduce-parameter-object-before">Introduce Parameter Object</a>, <a href="#replace-array-with-object-before">Replace Array with Object</a> to extract the new object.</li>
+  </ul>
+</section>

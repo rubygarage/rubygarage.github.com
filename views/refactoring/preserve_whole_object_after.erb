@@ -1,0 +1,16 @@
+<section id="preserve-whole-object-after" class="slide">
+  <h3>Preserve Whole Object</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class Room
+      def within_plan?(plan)
+        plan.within_range?(days_temperature_range)
+      end
+    end
+
+    class HeatingPlan
+      def within_range?(room_range)
+        (room_range.low >= @range.low) && (room_range.high <= @range.high)
+      end
+    end
+  </script>
+</section>

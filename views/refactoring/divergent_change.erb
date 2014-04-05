@@ -1,0 +1,16 @@
+<section id="divergent-change" class="slide">
+  <h2>Divergent Change</h2>
+  <ul>
+    <li>You find yourself changing the same module for different reasons.</li>
+  </ul>
+  <h3>Problems</h3>
+  <ul>
+    <li>Flexibility: If a module needs to change for many different reasons, you may quickly find that two developers need to change it at the same time. So the module becomes a bottleneck, slowing down progress.</li>
+    <li>Abstraction: Worse, a module with high "churn" may never stabilize, and so may never come to reliably represent a useful domain abstraction.</li>
+  </ul>
+  <h3>What to Do</h3>
+  <ul>
+    <li>If the module has too many (i.e., more than one) responsibilities use <a href="extract-class-before">Extract Class</a> or <a href="extract-module-before">Extract Module</a> to separate the responsibilities.</li>
+    <li>If several classes share the same decisions or variation points, you may be able to consolidate them into new classes (e.g., by <a href="#hide-delegate-before">Hide Delegate</a>, <a href="#pull-up-method-before">Pull Up Method</a>, <a href="#form-template-method">Form Template Method</a>, Extract Superclass or Extract Subclass) or extract a common module to serve as a mix-in. In the limit, these extracted classes or modules can form a layer (e.g., a persistence layer).</li>
+  </ul>
+</section>

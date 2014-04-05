@@ -1,0 +1,37 @@
+<section id="inline-class-after" class="slide">
+  <h3>Inline Class</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class Person
+      def initialize
+        @office_telephone = TelephoneNumber.new
+      end
+
+      def area_code
+        @office_telephone.area_code
+      end
+
+      def area_code=(arg)
+        @office_telephone.area_code = arg
+      end
+      
+      def number
+        @office_telephone.number
+      end
+      
+      def number=(arg)
+        @office_telephone.number = arg
+      end
+    end
+
+    class TelephoneNumber
+      attr_accessor :area_code, :number
+
+      def telephone_number
+        '(' + area_code + ') ' + number
+      end
+    end
+
+    martin = Person.new
+    martin.area_code = "781"
+  </script>
+</section>

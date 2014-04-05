@@ -1,0 +1,33 @@
+<section id="replace-array-with-object-after" class="slide">
+  <h3>Replace Array With Object</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class Cart
+      attr_reader :products
+
+      def initialize(products)
+        @products = products.map { |product| Product.new *product }
+      end
+
+      def total
+        products.inject(0) { |sum, product| sum + product.price }
+      end
+
+    end
+
+    class Product
+      attr_reader :name, :color, :price
+
+      def initialize(name, color, price)
+        @name  = name
+        @color = color
+        @price = price
+      end
+    end
+
+    Cart.new([
+      [ "Sweater"   , "Pink" , 5.0  ],
+      [ "Trousers"  , "Blue" , 8.0  ],
+      [ "Golf Club" , "Gray" , 12.0 ]
+    ]).total
+  </script>
+</section>

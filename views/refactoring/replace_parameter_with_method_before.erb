@@ -1,0 +1,23 @@
+<section id="replace-parameter-with-method-before" class="slide">
+  <h3>Replace Parameter With Method</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class CartItem
+      def initialize(product, quantity)
+        @product  = product
+        @quantity = quantity
+      end
+
+      def price
+        base_price = @quantity * @product.price
+        level_of_discount = 1
+        level_of_discount = 2 if @quantity > 100
+        discounted_price(base_price, level_of_discount)
+      end
+
+      def discounted_price(base_price, level_of_discount)
+        return base_price * 0.9 if level_of_discount == 2
+        base_price * 0.95
+      end
+    end
+  </script>
+</section>

@@ -1,0 +1,16 @@
+<section id="shotgun-surgery" class="slide">
+  <h2>Shotgun Surgery</h2>
+  <ul>
+    <li>Making a simple change requires you to change several classes or modules.</li>
+  </ul>
+  <h3>Problems</h3>
+  <ul>
+    <li>Communication: You change a single decision and you have to change several classes, which probably means that the decision doesn't have a name, and consequently the application's design isn't being clearly communicated. That will cause current and future developers to need to search the code more, which may in turn lead to defects.</li>
+    <li>Flexibility: It probably also means that the decision hasn't been isolated from other decisions. So some modules may be harder to test than necessary, and some modules may churn for longer, perhaps never stabilizing.</li>
+  </ul>
+  <h3>What to Do</h3>
+  <ul>
+    <li>Identify the class or module that should own the group of changes. It may be an existing module, or you may need to use <a href="#extract-module-before">Extract Module</a> to create a new one.</li>
+    <li>Use <a href="#move-field-before">Move Field</a> and Move Method to put the functionality onto the chosen module. After the module not chosen is simple enough, you may be able to use Inline Module to eliminate it.</li>
+  </ul>
+</section>

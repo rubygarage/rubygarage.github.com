@@ -1,0 +1,10 @@
+<section id="collection-closure-method-after" class="slide">
+  <h3>Replace Loop with Collection Closure Method</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    managers = employees.select {|e| e.manager?}
+
+    offices = employees.collect {|e| e.office}
+
+    manager_offices = employees.select {|e| e.manager?}.collect {|e| e.office}
+  </script>
+</section>
