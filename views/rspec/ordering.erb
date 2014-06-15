@@ -10,8 +10,8 @@
         database = double()
         student = double()
 
-        database.should_receive(:count).with('Roster', :course_id => 37).ordered
-        database.should_receive(:add).with(student).ordered
+        expect(database).to receive(:count).with('Roster', :course_id => 37).ordered
+        expect(database).to receive(:add).with(student).ordered
 
         roster = Roster.new(37, database)
         roster.register(student)

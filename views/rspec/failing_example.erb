@@ -10,38 +10,20 @@
     module Codebreaker
       describe Game do
         describe "#start" do
-          it "sends a welcome message" do
-            output = double('output')
-            game = Game.new(output)
-            output.should_receive(:puts).with('Welcome to Codebreaker!')
+          it "generates secret code" do
+            game = Game.new
+            expect(game).to receive(:generate)
             game.start
           end
-          it "prompts for the first guess"
+          it "saves 4 numbers secret code"
+          it "saves secret code with numbers from 1 to 6"
         end
       end
     end
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    rspec spec/codebreaker/game_spec.rb --format doc
-
-    Codebreaker::Game
-      #start
-        sends a welcome message (FAILED - 1)
-        prompts for the first guess (PENDING: Not yet implemented)
-
-    Pending:
-      Codebreaker::Game#start prompts for the first guess
-        # Not yet implemented
-        # ./spec/codebreaker/game_spec.rb:12
-
-    Failures:
-
-      1) Codebreaker::Game#start sends a welcome message
-         Failure/Error: output.should_receive(:puts).with('Welcome to Codebreaker!')
-           (Double "output").puts("Welcome to Codebreaker!")
-               expected: 1 time
-               received: 0 times
-         # ./spec/codebreaker/game_spec.rb:9:in 'block (3 levels) in <module:Codebreaker>'
+    rspec spec/codebreaker/game_spec.rb
+    3 examples, 1 failures, 2 pending
   </script>
 </section>

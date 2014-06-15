@@ -4,32 +4,37 @@
     A great way to get started gathering user stories is to do a high-level brain dump of the sorts of things we might like to do. Here are some titles to get started:
   </p>
   <ul>
-    <li><strong>Code-breaker starts game</strong>
-      <p>The code-breaker opens a shell, types a command, and sees a welcome message and a prompt to enter
-the first guess.</p>
+    <li><strong>Start game</strong>
+      <p>When a new game was started, the game generates secret code. The code should have 4 items.</p>
     </li>
     <li><strong>Code-breaker submits guess</strong>
-      <p>The code-breaker enters a guess, and the system replies by marking the guess according to the marking algorithm.
-      </p></li>
+      <p>The code-breaker propose a guess, and the system replies by marking the guess according to the marking algorithm.
+      </p>
+    </li>
     <li><strong>Code-breaker wins game</strong>
       <p>
-       The code-breaker enters a guess that matches the secret code exactly. The system responds by marking the guess with four + signs and a message congratulating the code-breaker on breaking the code in however many guesses it took.
-      </p></li>
+       The code-breaker propose a guess that matches the secret code exactly. The system responds by marking the guess with four + signs.
+      </p>
+    </li>
     <li><strong>Code-breaker loses game</strong>
       <p>
         After some number of turns, the game tells the code-breaker that the game is over (need to decide how many turns and whether to reveal the code).
-      </p></li>
+      </p>
+    </li>
     <li><strong>Code-breaker plays again</strong>
       <p>
         After the game is won or lost, the system prompts the code-breaker to play again. If the code-breaker indicates yes, a new game begins. If the code-breaker indicates no, the system shuts down.
-      </p></li>
+      </p>
+    </li>
     <li><strong>Code-breaker requests hint</strong>
       <p>
         At any time during a game, the code-breaker can request a hint, at which point the system reveals one of the numbers in the secret code.
-      </p></li>
+      </p>
+    </li>
     <li><strong>Code-breaker saves score</strong>
       <p>
         After the game is won or lost, the code-breaker can opt to save information about the game: who (initials?), how many turns, and so on.
-      </p></li>
+      </p>
+    </li>
   </ul>
 </section>

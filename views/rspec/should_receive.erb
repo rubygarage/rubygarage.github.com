@@ -8,7 +8,7 @@
       context "when created" do
         it "validates a record with provided validator" do
           validator = double("validator")
-          validator.should_receive(:validate)
+          expect(validator).to receive(:validate)
 
           zipcode = Zipcode.new("02134", validator)
           zipcode.valid?
@@ -17,10 +17,10 @@
     end
   </script>
 
-  <p>For a negative expectation, the <strong>should_not_receive</strong> method is provided</p>
+  <p>For a negative expectation</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
     network_double.stub(:ping).and_return(false)
-    network_double.should_not_receive(:open_connection)
+    expect(network_double).not_to receive(:open_connection)
   </script>
 </section>

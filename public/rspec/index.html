@@ -1431,7 +1431,7 @@ receives the message, nothing happens.</p>
       context "when created" do
         it "validates a record with provided validator" do
           validator = double("validator")
-          validator.should_receive(:validate)
+          expect(validator).to receive(:validate)
 
           zipcode = Zipcode.new("02134", validator)
           zipcode.valid?
@@ -1440,31 +1440,30 @@ receives the message, nothing happens.</p>
     end
   </script>
 
-  <p>For a negative expectation, the <strong>should_not_receive</strong> method is provided</p>
+  <p>For a negative expectation</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
     network_double.stub(:ping).and_return(false)
-    network_double.should_not_receive(:open_connection)
+    expect(network_double).not_to receive(:open_connection)
   </script>
 </section><section id="with" class="slide">
   <h2>Message expectations</h2>
   <h3>Expecting Arguments</h3>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    double.should_receive(:msg).with(*args)
-    double.should_not_receive(:msg).with(*args)
+    expect(double).to receive(:msg).with(*args)
   </script>
 
   <p>Arguments that are passed to with are compared with actual arguments received using ==. In cases in which you want to specify things about the arguments rather than the arguments themselves, you can use any of the matchers that ship with rspec-expectations.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    double.should_receive(:msg).with(no_args())
-    double.should_receive(:msg).with(any_args())
-    double.should_receive(:msg).with(1, kind_of(Numeric), "b") #2nd argument can be any kind of Numeric
-    double.should_receive(:msg).with(1, boolean(), "b") #2nd argument can be true or false
-    double.should_receive(:msg).with(1, /abc/, "b") #2nd argument can be any String matching the submitted Regexp
-    double.should_receive(:msg).with(1, anything(), "b") #2nd argument can be anything at all
-    double.should_receive(:msg).with(1, duck_type(:abs, :div), "b")
+    expect(double).to receive(:msg).with(no_args())
+    expect(double).to receive(:msg).with(any_args())
+    expect(double).to receive(:msg).with(1, kind_of(Numeric), "b") #2nd argument can be any kind of Numeric
+    expect(double).to receive(:msg).with(1, boolean(), "b") #2nd argument can be true or false
+    expect(double).to receive(:msg).with(1, /abc/, "b") #2nd argument can be any String matching the submitted Regexp
+    expect(double).to receive(:msg).with(1, anything(), "b") #2nd argument can be anything at all
+    expect(double).to receive(:msg).with(1, duck_type(:abs, :div), "b")
                         #2nd argument can be object that responds to #abs and #div
   </script>
 </section><section id="receive-counts" class="slide">
@@ -1474,17 +1473,17 @@ receives the message, nothing happens.</p>
   <p>The implicit expectation is that the message passed to should_receive will be called once. You can make the expected counts explicit using the following</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    double.should_receive(:msg).once
-    double.should_receive(:msg).twice
-    double.should_receive(:msg).exactly(n).times
-    double.should_receive(:msg).at_least(:once)
-    double.should_receive(:msg).at_least(:twice)
-    double.should_receive(:msg).at_least(n).times
-    double.should_receive(:msg).at_most(:once)
-    double.should_receive(:msg).at_most(:twice)
-    double.should_receive(:msg).at_most(n).times
-    double.should_receive(:msg).any_number_of_times
-    double.should_receive(:msg).never
+    expect(double).to receive(:msg).once
+    expect(double).to receive(:msg).twice
+    expect(double).to receive(:msg).exactly(n).times
+    expect(double).to receive(:msg).at_least(:once)
+    expect(double).to receive(:msg).at_least(:twice)
+    expect(double).to receive(:msg).at_least(n).times
+    expect(double).to receive(:msg).at_most(:once)
+    expect(double).to receive(:msg).at_most(:twice)
+    expect(double).to receive(:msg).at_most(n).times
+    expect(double).to receive(:msg).any_number_of_times
+    expect(double).to receive(:msg).never
   </script>
 </section><section id="ordering" class="slide">
   <h2>Message expectations</h2>
@@ -1498,8 +1497,8 @@ receives the message, nothing happens.</p>
         database = double()
         student = double()
 
-        database.should_receive(:count).with('Roster', :course_id => 37).ordered
-        database.should_receive(:add).with(student).ordered
+        expect(database).to receive(:count).with('Roster', :course_id => 37).ordered
+        expect(database).to receive(:add).with(student).ordered
 
         roster = Roster.new(37, database)
         roster.register(student)
@@ -1515,28 +1514,28 @@ receives the message, nothing happens.</p>
   <p>Whether you are setting a message expectation or a method stub, you can tell the object precisely how to respond. The most generic way is to pass a block to stub or should_receive:</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    double.should_receive(:msg) { value }
+    expect(double).to receive(:msg) { value }
   </script>
 
   <p>When the double receives the msg message, it evaluates the block and returns the result.</p>
 
   <p>The same responses are available, as for stub method:</p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    double.should_receive(:msg).and_return(value)
-    double.should_receive(:msg).exactly(3).times.and_return(value1, value2, value3)
+    expect(double).to receive(:msg).and_return(value)
+    expect(double).to receive(:msg).exactly(3).times.and_return(value1, value2, value3)
       # returns value1 the first time, value2 the second, etc
-    double.should_receive(:msg).and_raise(error)
+    expect(double).to receive(:msg).and_raise(error)
       #error can be an instantiated object or a class
       #if it is a class, it must be instantiable with no args
-    double.should_receive(:msg).and_throw(:msg)
-    double.should_receive(:msg).and_yield(values,to,yield)
-    double.should_receive(:msg).and_yield(values,to,yield).and_yield(some,other,values,this,time)
+    expect(double).to receive(:msg).and_throw(:msg)
+    expect(double).to receive(:msg).and_yield(values,to,yield)
+    expect(double).to receive(:msg).and_yield(values,to,yield).and_yield(some,other,values,this,time)
       # for methods that yield to a block multiple times
   </script>
 
   <p>When working with a partial mock object, you may occasionally want to set a message expecation without interfering with how the object responds to the message. </p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    Person.should_receive(:find).and_call_original
+    expect(Person).to receive(:find).and_call_original
     Person.find # => executes the original find method and returns the result
   </script>
 </section><section id="example" class="slide">
@@ -1563,33 +1562,38 @@ receives the message, nothing happens.</p>
     A great way to get started gathering user stories is to do a high-level brain dump of the sorts of things we might like to do. Here are some titles to get started:
   </p>
   <ul>
-    <li><strong>Code-breaker starts game</strong>
-      <p>The code-breaker opens a shell, types a command, and sees a welcome message and a prompt to enter
-the first guess.</p>
+    <li><strong>Start game</strong>
+      <p>When a new game was started, the game generates secret code. The code should have 4 items.</p>
     </li>
     <li><strong>Code-breaker submits guess</strong>
-      <p>The code-breaker enters a guess, and the system replies by marking the guess according to the marking algorithm.
-      </p></li>
+      <p>The code-breaker propose a guess, and the system replies by marking the guess according to the marking algorithm.
+      </p>
+    </li>
     <li><strong>Code-breaker wins game</strong>
       <p>
-       The code-breaker enters a guess that matches the secret code exactly. The system responds by marking the guess with four + signs and a message congratulating the code-breaker on breaking the code in however many guesses it took.
-      </p></li>
+       The code-breaker propose a guess that matches the secret code exactly. The system responds by marking the guess with four + signs.
+      </p>
+    </li>
     <li><strong>Code-breaker loses game</strong>
       <p>
         After some number of turns, the game tells the code-breaker that the game is over (need to decide how many turns and whether to reveal the code).
-      </p></li>
+      </p>
+    </li>
     <li><strong>Code-breaker plays again</strong>
       <p>
         After the game is won or lost, the system prompts the code-breaker to play again. If the code-breaker indicates yes, a new game begins. If the code-breaker indicates no, the system shuts down.
-      </p></li>
+      </p>
+    </li>
     <li><strong>Code-breaker requests hint</strong>
       <p>
         At any time during a game, the code-breaker can request a hint, at which point the system reveals one of the numbers in the secret code.
-      </p></li>
+      </p>
+    </li>
     <li><strong>Code-breaker saves score</strong>
       <p>
         After the game is won or lost, the code-breaker can opt to save information about the game: who (initials?), how many turns, and so on.
-      </p></li>
+      </p>
+    </li>
   </ul>
 </section><section id="codebreaker-gem" class="slide">
   <h2>Creating codebreaker gem</h2>
@@ -1642,8 +1646,9 @@ the first guess.</p>
     module Codebreaker
       describe Game do
         describe "#start" do
-          it "sends a welcome message"
-          it "prompts for the first guess"
+          it "generates secret code"
+          it "saves 4 numbers secret code"
+          it "saves secret code with numbers from 1 to 6" do
         end
       end
     end
@@ -1683,16 +1688,9 @@ the first guess.</p>
 
     Codebreaker::Game
       #start
-        sends a welcome message (PENDING: Not yet implemented)
-        prompts for the first guess (PENDING: Not yet implemented)
-
-    Pending:
-      Codebreaker::Game#start sends a welcome message
-        # Not yet implemented
-        # ./spec/codebreaker/game_spec.rb:6
-      Codebreaker::Game#start prompts for the first guess
-        # Not yet implemented
-        # ./spec/codebreaker/game_spec.rb:7
+        generates secret code
+        saves 4 numbers secret code
+        saves secret code with numbers from 1 to 6
   </script>
 </section><section id="failing-spec" class="slide">
   <h2>Red: Start with a Failing Code Example</h2>
@@ -1706,39 +1704,21 @@ the first guess.</p>
     module Codebreaker
       describe Game do
         describe "#start" do
-          it "sends a welcome message" do
-            output = double('output')
-            game = Game.new(output)
-            output.should_receive(:puts).with('Welcome to Codebreaker!')
+          it "generates secret code" do
+            game = Game.new
+            expect(game).to receive(:generate)
             game.start
           end
-          it "prompts for the first guess"
+          it "saves 4 numbers secret code"
+          it "saves secret code with numbers from 1 to 6"
         end
       end
     end
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    rspec spec/codebreaker/game_spec.rb --format doc
-
-    Codebreaker::Game
-      #start
-        sends a welcome message (FAILED - 1)
-        prompts for the first guess (PENDING: Not yet implemented)
-
-    Pending:
-      Codebreaker::Game#start prompts for the first guess
-        # Not yet implemented
-        # ./spec/codebreaker/game_spec.rb:12
-
-    Failures:
-
-      1) Codebreaker::Game#start sends a welcome message
-         Failure/Error: output.should_receive(:puts).with('Welcome to Codebreaker!')
-           (Double "output").puts("Welcome to Codebreaker!")
-               expected: 1 time
-               received: 0 times
-         # ./spec/codebreaker/game_spec.rb:9:in 'block (3 levels) in <module:Codebreaker>'
+    rspec spec/codebreaker/game_spec.rb
+    3 examples, 1 failures, 2 pending
   </script>
 </section><section id="passing-spec" class="slide">
   <h2>Green: Get the Example to Pass</h2>
@@ -1749,31 +1729,24 @@ the first guess.</p>
   <script type="syntaxhighlighter" class="brush: ruby">
     module Codebreaker
       class Game
-        def initialize(output)
-          @output = output
+        def initialize
+          @code = ""
         end
 
         def start
-          @output.puts 'Welcome to Codebreaker!'
+          generate
+        end
+
+        private
+
+        def generate
         end
       end
     end
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    rspec spec/codebreaker/game_spec.rb --format doc
-
-    Codebreaker::Game
-      #start
-        sends a welcome message
-        prompts for the first guess (PENDING: Not yet implemented)
-
-    Pending:
-      Codebreaker::Game#start prompts for the first guess
-        # Not yet implemented
-        # ./spec/codebreaker/game_spec.rb:12
-
-    Finished in 0.00071 seconds
+    rspec spec/codebreaker/game_spec.rb
     2 examples, 0 failures, 1 pending
   </script>
 </section><section id="next-step" class="slide">
@@ -1788,16 +1761,17 @@ the first guess.</p>
     module Codebreaker
       describe Game do
         describe "#start" do
-          it "sends a welcome message" do
-            # ...
-          end
-
-          it "prompts for the first guess" do
-            output = double('output')
-            game = Game.new(output)
-            output.should_receive(:puts).with('Enter guess:')
+          it "generates secret code" do
+            game = Game.new
+            expect(game).to receive(:generate)
             game.start
           end
+          it "saves 4 numbers secret code" do
+            game = Game.new
+            game.start
+            expect(game.instance_variable_get(:@secret_code)).to have(4).items
+          end
+          it "saves secret code with numbers from 1 to 6"
         end
       end
     end
@@ -1925,18 +1899,17 @@ told it to expect “Welcome to Codebreaker!” It doesn’t know anything about
     module Codebreaker
       describe Game do
         describe "#start" do
-          let(:output) { double('output').as_null_object }
-          let(:game)   { Game.new(output) }
+          let(:game) { Game.new }
 
-          it "sends a welcome message" do
-            output.should_receive(:puts).with('Welcome to Codebreaker!')
+          it "generates secret code" do
+            expect(game).to receive(:generate)
             game.start
           end
-
-          it "prompts for the first guess" do
-            output.should_receive(:puts).with('Enter guess:')
+          it "saves 4 numbers secret code" do
             game.start
+            expect(game.instance_variable_get(:@secret_code)).to have(4).items
           end
+          it "saves secret code with numbers from 1 to 6"
         end
       end
     end
@@ -1971,4 +1944,3 @@ told it to expect “Welcome to Codebreaker!” It doesn’t know anything about
 
 </body>
 </html>
-
