@@ -2225,39 +2225,52 @@ Removing All Scoping
   <p>Business logic structure:</p>
   <h3>Book</h3>
   <ul><li>Should contain title, descirption, price and how many books in stock</li>
+    <li>Title, price, books in stock fields should be required</li>
     <li>Should belong to author and category</li>
     <li>Should have many ratings from costomers</li>
   </ul><h3>Category</h3>
   <ul><li>Has a title</li>
+    <li>Title should be required and unique</li>
     <li>Should have many books</li>
   </ul><h3>Author</h3>
-  <ul><li>Should contain firstname, lastname, photo, biography</li>
+  <ul><li>Should contain firstname, lastname, biography</li>
+    <li>Firstname, lastname fields should be required</li>
     <li>Should have many books</li>
   </ul><h3>Rating</h3>
   <ul><li>Should contain text review and rating number from one to ten</li>
     <li>Should belong to customer and book</li>
   </ul><h3>Customer</h3>
   <ul><li>Should contain email, password, firstname, lastname</li>
-    <li>Should have many orders</li>
+    <li>Email, password, firstname, lastname fields should be required</li>
+    <li>Email should be unique</li>
+    <li>Should have many orders, ratings</li>
+    <li>A customer should be able to create a new order</li>
+    <li>A customer should be able to return a current order in progress</li>
   </ul><p>Order</p>
   <ul><li>Should contain total price, completed date and state (in progress/complited/shipped)</li>
-    <li>Should belong to customer</li>
+    <li>Total price, completed date and state fields should be required</li>
+    <li>By default an order should have 'in progress' state</li>
+    <li>Should belong to customer and credit card</li>
+    <li>Should have many order items</li>
     <li>Should have one billing address and one shipping address</li>
+    <li>An order should be able to add a book to the order</li>
+    <li>An order should be able to return a total price of the order</li>
   </ul><p>OrderItem</p>
   <ul><li>Should contain price and quantity</li>
+    <li>Price and quantity fields should be required</li>
     <li>Should belong to book and order</li>
   </ul><p>Address</p>
   <ul><li>Should contain address, zipcode, city, phone, country</li>
+    <li>All fields should be required</li>
   </ul><p>Country</p>
   <ul><li>Should contain a name</li>
+    <li>Name should be required and unique</li>
   </ul><p>CreditCard</p>
   <ul><li>Should contain number, CVV, expiration month, expiration year, firstname, lastname</li>
+    <li>All fields should be required</li>
     <li>Should belong to customer and have many orders</li>
-  </ul>
-  MVP
-  <ul><li>As a customer I should be able to order a book if it's exist in the stock</li>
-    <li>As a customer I should be able to rate a book and add my comments. But only once and for book what I ordered.</li>
-  </ul></section><!-- End slides. --><!-- deck.navigation snippet --><a href="#" class="deck-prev-link" title="Previous">←</a>
+  </ul><p>Necessary to create a DB structure, models, associations and validations to models, autotests and factories for autotests.</p>
+</section><!-- End slides. --><!-- deck.navigation snippet --><a href="#" class="deck-prev-link" title="Previous">←</a>
 <a href="#" class="deck-next-link" title="Next">→</a>
 
 <!-- deck.status snippet -->
