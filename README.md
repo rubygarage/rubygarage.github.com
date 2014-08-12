@@ -13,7 +13,7 @@ Presentations are based on Deck.JS: http://imakewebthings.com/deck.js/introducti
 
 ## License
 
-![CC_BY](http://creativecommons.org/licenses/by/4.0/ "Creative Commons Attribution 4.0 International License")
+![CC_BY](https://i.creativecommons.org/l/by/4.0/88x31.png "Creative Commons Attribution 4.0 International License")
 
 This project is licensed under a Creative Commons Attribution 4.0 International License.
 See a [human-readable summary](http://creativecommons.org/licenses/by/4.0/)
