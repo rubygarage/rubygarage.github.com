@@ -1,1 +1,15 @@
 @import "application";
+#about_oop {
+  .about {
+    text-align: left;
+    padding: 5% 10%;
+    p, li {
+      font-weight:normal;
+    }
+  }
+}
+#object-oriented-programming {
+  .method-call {
+    text-align: left;
+  }
+}

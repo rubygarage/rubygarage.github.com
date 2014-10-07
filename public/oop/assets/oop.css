@@ -12429,3 +12429,15 @@ a.label:hover, a.badge:hover {
   float: left;
   width: 32%;
 }
+
+#about_oop .about {
+  text-align: left;
+  padding: 5% 10%;
+}
+#about_oop .about p, #about_oop .about li {
+  font-weight: normal;
+}
+
+#object-oriented-programming .method-call {
+  text-align: left;
+}
