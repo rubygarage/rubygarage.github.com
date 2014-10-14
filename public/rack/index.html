@@ -33,7 +33,7 @@
     <h2>torture device? oO<h2>
   </h2></h2></div>
 </section><section id="rack-is" class="slide"><div class="vcenter">
-    <img width="200" src="/public/rack/assets/rack-logo.png" /><h2>
+    <img width="200" src="assets/rack-logo.png" /><h2>
       a Ruby Webserver Interface
     </h2>
     <h4>Rack provides a minimal interface between webservers supporting Ruby and Ruby frameworks.<h4>
@@ -49,29 +49,29 @@
     <h1>How it all works in general?</h1>
   </div>
 </section><section id="usual-cgi-flow" class="slide"><h4>Usual boring picture</h4>
-  <img src="/public/rack/assets/CGI-server-request.png" /></section><section id="cgi-flow-with-rack" class="slide"><h4>And here comes Rack</h4>
-  <img src="/public/rack/assets/CGI-server-with-Rack.png" /></section><section id="servers-aware-of-rack" class="slide"><h4>If server supports Rack</h4>
-  <img src="/public/rack/assets/No-CGI-with-servers-aware-of-Rack.png" /></section><section id="popular-servers-with-rack" class="slide"><div class="vcenter">
+  <img src="assets/CGI-server-request.png" /></section><section id="cgi-flow-with-rack" class="slide"><h4>And here comes Rack</h4>
+  <img src="assets/CGI-server-with-Rack.png" /></section><section id="servers-aware-of-rack" class="slide"><h4>If server supports Rack</h4>
+  <img src="assets/No-CGI-with-servers-aware-of-Rack.png" /></section><section id="popular-servers-with-rack" class="slide"><div class="vcenter">
     <h1>The most popular servers</h1>
   </div>
 </section><section id="thin" class="slide"><div class="vcenter">
-    <img src="/public/rack/assets/logo-thin.gif" /><h2><a href="http://code.macournoyer.com/thin/">Thin</a></h2>
+    <img src="assets/logo-thin.gif" /><h2><a href="http://code.macournoyer.com/thin/">Thin</a></h2>
     <br /><h4>Power of EventMachine with multiple concurrent requests</h4>
   </div>
 </section><section id="unicorn" class="slide"><div class="vcenter">
-    <img src="/public/rack/assets/logo-github-unicorn.png" /><h2><a href="http://unicorn.bogomips.org/">Unicorn</a></h2>
+    <img src="assets/logo-github-unicorn.png" /><h2><a href="http://unicorn.bogomips.org/">Unicorn</a></h2>
     <br /><h4>True UNIX way. Follow Github with Cargo Cult.</h4>
   </div>
 </section><section id="phusionpassenger" class="slide"><div class="vcenter">
-    <img src="/public/rack/assets/logo-phusionpassenger.png" width="200" /><h2><a href="https://www.phusionpassenger.com/">Phusion Passenger</a></h2>
+    <img src="assets/logo-phusionpassenger.png" width="200" /><h2><a href="https://www.phusionpassenger.com/">Phusion Passenger</a></h2>
     <br /><h4>Runs Python too and <i>much</i> more.</h4>
   </div>
 </section><section id="pow" class="slide"><div class="vcenter">
-    <img src="/public/rack/assets/logo-pow.png" width="200" /><h2><a href="http://pow.cx/">Pow</a></h2>
+    <img src="assets/logo-pow.png" width="200" /><h2><a href="http://pow.cx/">Pow</a></h2>
     <br /><h4>For OS X only. By 37signals.</h4>
   </div>
 </section><section id="webrick" class="slide"><div class="vcenter">
-    <img src="/public/rack/assets/logo-webrick.jpg" width="200" /><h2><a href="http://www.ruby-doc.org/stdlib-1.9.3/libdoc/webrick/rdoc/WEBrick.html">WEBrick</a></h2>
+    <img src="assets/logo-webrick.jpg" width="200" /><h2><a href="http://www.ruby-doc.org/stdlib-1.9.3/libdoc/webrick/rdoc/WEBrick.html">WEBrick</a></h2>
     <br /><h4>Out of box!</h4>
   </div>
 </section><section id="lets-code" class="slide"><div class="vcenter">
@@ -134,10 +134,10 @@ $
   <p>
     They are pushed during configuration phase
   </p>
-  <img src="/public/rack/assets/middlewares-stack.png" /><p>
+  <img src="assets/middlewares-stack.png" /><p>
     And request goes troug each one
   </p>
-  <img src="/public/rack/assets/middlewares-call.png" /></section><section id="rack-response" class="slide"><h4>What should we respond?</h4>
+  <img src="assets/middlewares-call.png" /></section><section id="rack-response" class="slide"><h4>What should we respond?</h4>
 
   <p>
     An Array containing:
@@ -225,7 +225,7 @@ $
     <h1>Hmm... Is there any magic?</h1>
   </div>
 </section><section id="go-deeper-0" class="slide"><div class="vcenter">
-    <img src="/public/rack/assets/go-deeper.png" /></div>
+    <img src="assets/go-deeper.png" /></div>
 </section><section id="go-deeper-1" class="slide"><div class="vcenter">
     <h1>WE HAVE TO GO DEEPER!</h1>
   </div>
@@ -330,7 +330,7 @@ $ curl -iv http://127.0.0.1:9999/
     And we get response, that is written to <code>res</code> parameter.
   </p>
 </section><section id="thats-all-folks" class="slide"><div class="vcenter">
-    <img src="/public/rack/assets/thatsallfolks.png" /></div>
+    <img src="assets/thatsallfolks.png" /></div>
 </section><section id="sources" class="slide"><h4>List of sites, I took knowlage from:</h4>
   <ul><li><a href="http://rack.github.com/">Rack from Github</a></li>
     <li><a href="http://en.wikipedia.org/wiki/Common_Gateway_Interface">Wikipedia: CGI and fiends</a></li>
