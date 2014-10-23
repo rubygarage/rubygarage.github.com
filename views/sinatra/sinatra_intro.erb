@@ -1,0 +1,298 @@
+<section id="sinatra" class="slide"  style="background: url('assets/sinatra/legend.gif');
+        background-repeat: no-repeat; background-position: top center;">
+  <div class="vcenter">
+    <h1>Sinatra</h1>
+  </div>
+</section>
+
+<section id="put_it_in_your_pipe" class="slide">
+  <h4>Put this in your pipe!</h4>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    require 'sinatra'
+
+    get '/hi' do
+    "Hello World!"
+    end
+    ]]>
+  </script>
+
+  <h4>And smoke it!</h4>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    <![CDATA[
+    $ gem install sinatra
+    $ ruby hi.rb
+    == Sinatra has taken the stage ...
+    >> Listening on 0.0.0.0:4567
+    ]]>
+  </script>
+</section>
+
+<section id="sinatra-intro" class="slide">
+ <h4>Routes</h4>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    get '/' do
+    .. show something ..
+    end
+
+    post '/' do
+    .. create something ..
+    end
+
+    put '/' do
+    .. replace something ..
+    end
+
+    patch '/' do
+    .. modify something ..
+    end
+
+    delete '/' do
+    .. annihilate something ..
+    end
+    ]]>
+  </script>
+</section>
+
+<section id="sinatra-url_parameters" class="slide">
+  <h4>Parameters</h4>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    get '/hello/:name' do
+    # matches "GET /hello/foo" and "GET /hello/bar"
+    # params[:name] is 'foo' or 'bar'
+      "Hello #{params[:name]}!"
+    end
+
+    get '/hello/:name' do |n|
+    # matches "GET /hello/foo" and "GET /hello/bar"
+    # params[:name] is 'foo' or 'bar'
+    # n stores params[:name]
+      "Hello #{n}!"
+    end
+
+    get '/say/*/to/*' do
+    # matches /say/hello/to/world
+      params[:splat] # => ["hello", "world"]
+    end
+
+    get '/download/*.*' do
+        # matches /download/path/to/file.xml
+      params[:splat] # => ["path/to/file", "xml"]
+    end
+    ]]>
+  </script>
+  ... and others, including your custom matchers!
+</section>
+
+
+<section id="sinatra-returns" class="slide">
+  <div class="vcenter">
+    <h2>You can return any object that would either be a valid <br>Rack response, Rack body object or HTTP status code:</h2>
+    <ul>
+        <li>An Array with three elements: [status (Fixnum), headers (Hash), response body (responds to #each)]</li>
+        <li>An Array with two elements: [status (Fixnum), response body (responds to #each)]</li>
+        <li>An object that responds to #each and passes nothing but strings to the given block</li>
+        <li>A Fixnum representing the status code</li>
+    </ul>
+  </div>
+</section>
+
+
+<section id="sinatra-statics" class="slide">
+  <h2>Static files</h2>
+  <h5> A file ./public/css/style.css is made available as http://example.com/css/style.css.</h5>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    #Static files are served from the ./public directory.
+    #You can specify a different location by setting the :public_folder option:
+      set :public_folder, File.dirname(__FILE__) + '/static'
+    ]]>
+  </script>
+</section>
+
+
+<section id="sinatra-views" class="slide">
+  <h2>Views/Templates</h2>
+  <h5>Each template language is exposed via its own rendering method. These methods simply return a string:</h5>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    get '/' do
+    #This renders views/index.erb.
+      erb :index
+    end
+
+    get '/' do
+    #Instead of a template name, you can also just pass in the template content directly:
+      code = "<%= Time.now %>"
+      erb code
+    end
+
+
+    get '/' do
+    #Templates take a second argument, the options hash:
+      erb :index, :layout => :post
+    end
+    ]]>
+  </script>
+</section>
+
+
+<section id="sinatra-helpers" class="slide">
+  <h2>Helpers</h2>
+  <h5>Use the top-level helpers method to define helper methods for use in route handlers and templates:</h5>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    helpers do
+      def bar(name)
+        "#{name}bar"
+      end
+    end
+
+    get '/:name' do
+      bar(params[:name])
+    end
+    ]]>
+  </script>
+</section>
+
+<section id="sinatra-passing" class="slide">
+  <h2>Passing</h2>
+  <h5>A route can punt processing to the next matching route using pass:</h5>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    get '/guess/:who' do
+      pass unless params[:who] == 'Frank'
+      'You got me!'
+    end
+
+    get '/guess/*' do
+      'You missed!'
+    end
+    ]]>
+  </script>
+</section>
+
+<section id="sinatra-triggering" class="slide">
+  <h2>Triggering</h2>
+  <h5>Sometimes passing is not what you want...</h5>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    get '/foo' do
+    #gets the result of calling another route
+      status, headers, body = call env.merge("PATH_INFO" => '/bar')
+      [status, headers, body.map(&:upcase)]
+    end
+
+    get '/bar' do
+      "bar"
+    end
+    ]]>
+  </script>
+</section>
+
+<section id="sinatra-middleware" class="slide">
+  <h2>Use Sinatra as Middleware</h2>
+  <h5>Not only is Sinatra able to use other Rack middleware,
+    any Sinatra application can in turn be added in front of any Rack endpoint as middleware itself.</h5>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+    require 'sinatra/base'
+
+    class LoginScreen < Sinatra::Base
+      enable :sessions
+
+      get('/login') { haml :login }
+
+      post('/login') do
+        if params[:name] == 'admin' && params[:password] == 'admin'
+          session['user_name'] = params[:name]
+        else
+          redirect '/login'
+        end
+      end
+    end
+
+    class MyApp < Sinatra::Base
+    # middleware will run before filters
+      use LoginScreen
+
+      before do
+        unless session['user_name']
+        #halt stops the request within a route
+          halt "Access denied, please <a href='/login'>login</a>."
+        end
+      end
+
+      get('/') { "Hello #{session['user_name']}." }
+    end
+    ]]>
+  </script>
+</section>
+
+
+<section id="sinatra-errors" class="slide">
+  <h2>Error Handling</h2>
+  <h5>Error handlers run within the same context as routes and before filters,
+    which means you get all the goodies it has to offer, like haml, erb, halt, etc.</h5>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+
+    not_found do
+    #When a Sinatra::NotFound exception is raised, or the response’s status code is 404,
+    #the not_found handler is invoked:
+      'This is nowhere to be found.'
+    end
+
+    error do
+    #he error handler is invoked any time an exception is raised from a route block or a filter.
+    #The exception object can be obtained from the sinatra.error Rack variable:
+      'Sorry there was a nasty error - ' + env['sinatra.error'].name
+    end
+    ]]>
+  </script>
+  Or the custom error:
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+
+    error MyCustomError do
+      'So what happened was...' + env['sinatra.error'].message
+    end
+
+    get '/' do
+      raise MyCustomError, 'something bad'
+    end
+
+    ]]>
+  </script>
+  Or for the status code:
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <![CDATA[
+
+    get '/secret' do
+      403
+    end
+
+    error 400..510 do
+      'Boom'
+    end
+
+    ]]>
+  </script>
+</section>
+
+
+
+
+
