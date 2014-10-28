@@ -1,0 +1,44 @@
+<section class="slide" id="update">
+  <h2>Updating the document</h2>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: bash">
+      > db.inventory.update(
+          { item: "MNO2" },
+          {
+          $set: {
+            category: "apparel",
+            details: { model: "14Q3", manufacturer: "XYZ Company" }
+          }
+          }
+      )
+
+      WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+    </script>
+  </div>
+  <h2>We can also update an embedded field</h2>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: bash">
+      > db.inventory.update(
+          { item: "ABC1" },
+          { $set: { "details.model": "14Q2" } }
+        )
+
+      WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+    </script>
+  </div>
+  <h2>And multiple objects with multi: true option</h2>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: bash">
+      > db.inventory.update(
+        { category: "clothing" },
+        {
+          $set: { category: "apparel" },
+          $currentDate: { lastModified: true }
+        },
+        { multi: true }
+        )
+      WriteResult({ "nMatched" : 3, "nUpserted" : 0, "nModified" : 3 })
+
+    </script>
+  </div>
+</section>

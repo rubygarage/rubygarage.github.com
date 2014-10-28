@@ -1,0 +1,23 @@
+<section class="slide" id="exporting">
+  <h2>We can export data to some nice JSON format</h2>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: bash">
+      $ mongoexport -d blog -c cats
+      connected to: 127.0.0.1
+      { "_id" : { "$oid" : "5448feecd2465b24a5c6adb6" }, "name" : "Viking", "color" : "red tabby", "breed" : "maine coon" }
+      exported 1 records
+    </script>
+  </div>
+  <h2>And even to CSV!</h2>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: bash">
+      $ mongoexport -d book -c cats -f name,color,breed --csv -o test.csv
+      connected to: 127.0.0.1
+      exported 1 records
+
+      $ cat test.csv
+      name,color,breed
+      "Viking","red tabby","maine coon"
+    </script>
+  </div>
+</section>
