@@ -1,0 +1,23 @@
+<section class="slide" id="retrieving">
+  <h2>Finding first 10 elements</h2>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: bash">
+      > db.cats.find()
+      { "_id" : ObjectId("5448feecd2465b24a5c6adb6"), "name" : "Viking", "color" : "red tabby", "breed" : "maine coon" }
+    </script>
+  </div>
+  <h2>Finding by attribute value</h2>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: bash">
+      > db.cats.find({name: 'Viking'})
+      { "_id" : ObjectId("5448feecd2465b24a5c6adb6"), "name" : "Viking", "color" : "red tabby", "breed" : "maine coon" }
+    </script>
+  </div>
+  <h2>Finding by attribute value</h2>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: bash">
+      > db.cats.find({breed: /maine/})
+      { "_id" : ObjectId("5448feecd2465b24a5c6adb6"), "name" : "Viking", "color" : "red tabby", "breed" : "maine coon" }
+    </script>
+  </div>
+</section>
