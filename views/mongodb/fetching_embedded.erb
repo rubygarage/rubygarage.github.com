@@ -1,0 +1,23 @@
+<section class="slide" id="fetching_embedded">
+  <h2>Fetching embedded document elements</h2>
+  <div class="row">
+    <script type="syntaxhighlighter" class="brush: bash">
+      > var book = db.books.findOne({name : 'Oliver Twist'})
+      > book.reviews.length
+        2
+      > book.votes.length
+        3
+      > book.reviews
+      [
+        {  user: "Gautam",
+          comment: "Very interesting read"
+        },
+        {  user: "Harry",
+           comment: "Who is Oliver Twist?"
+        }
+       ]
+      > book.votes
+      [ "Gautam", "Tom", "Dick"]
+    </script>
+  </div>
+</section>

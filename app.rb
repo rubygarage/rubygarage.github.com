@@ -105,6 +105,10 @@ class App < Sinatra::Base
     erb :bdd
   end
 
+  get '/mongodb' do
+    erb :mongodb
+  end
+
   #get "/cssbestpractices" do
   #  erb :cssbestpractices
   #end
