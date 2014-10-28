@@ -18,4 +18,4 @@ gem 'coffee-script'
 gem 'htmlentities'
 gem 'nokogiri'
 
-gem 'pry-debugger'
+gem 'pry-byebug'
