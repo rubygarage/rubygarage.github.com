@@ -1,30 +1,34 @@
 <section id="passing-spec" class="slide">
   <h2>Green: Get the Example to Pass</h2>
 
-  <p>The failure message tells us that output never received puts. Here’s what we need to do to get this example to pass:</p>
-
   lib/codebreaker/game.rb
   <script type="syntaxhighlighter" class="brush: ruby">
     module Codebreaker
       class Game
         def initialize
-          @code = ""
+          @secret_code = ""
         end
 
         def start
-          generate
-        end
-
-        private
-
-        def generate
+          @secret_code = "Secret Code, LOL :)"
         end
       end
     end
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    rspec spec/codebreaker/game_spec.rb
-    2 examples, 0 failures, 1 pending
+    $ rspec spec/codebreaker/game_spec.rb 
+    .**
+
+    Pending:
+      Codebreaker::Game#start saves 4 numbers secret code
+        # Not yet implemented
+        # ./spec/codebreaker/game_spec.rb:35
+      Codebreaker::Game#start saves secret code with numbers from 1 to 6
+        # Not yet implemented
+        # ./spec/codebreaker/game_spec.rb:36
+
+    Finished in 0.00215 seconds
+    3 examples, 0 failures, 2 pending
   </script>
 </section>

@@ -1,25 +1,16 @@
 <section id="how-expectations-work" class="slide">
   <h2>How Expectations work</h2>
-  <h3>Old Syntax</h3>
-  <p>
-    Spec::Expectations adds two methods to Object:
-  </p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    should(matcher = nil)
-    should_not(matcher = nil)
+    expect(obj).to(matcher = nil)
+    expect(obj).not_to(matcher = nil)
   </script>
   <p>
     Both methods take an optional Expression Matcher.
   </p>
   <p>
-    When should receives an Expression Matcher, it calls <i>matches?(self)</i>. If it returns true, the spec passes and execution continues. If it returns false, then the spec fails with the message returned by matcher.failure_message.
+    When <i>to</i> receives an Expression Matcher, it calls <i>matches?(self)</i>. If it returns true, the spec passes and execution continues. If it returns false, then the spec fails with the message returned by matcher.failure_message.
   </p>
   <p>
-    Similarly, when should_not receives a matcher, it calls <i>matches?(self)</i>. If it returns false, the spec passes and execution continues. If it returns true, then the spec fails with the message returned by matcher.negative_failure_message.
+    Similarly, when <i>not_to</i> receives a matcher, it calls <i>matches?(self)</i>. If it returns false, the spec passes and execution continues. If it returns true, then the spec fails with the message returned by matcher.negative_failure_message.
   </p>
-  <h3>New Syntax</h3>
-  <script type="syntaxhighlighter" class="brush: ruby">
-    expect(obj).to(matcher = nil)
-    expect(obj).not_to(matcher = nil)
-  </script>
 </section>

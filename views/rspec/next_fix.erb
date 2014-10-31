@@ -1,4 +1,4 @@
-<section id="resolve-step" class="slide">
+<section id="resolve-another-step" class="slide">
   <h2>Trying to get green again</h2>
 
   lib/codebreaker/game.rb
@@ -10,7 +10,7 @@
         end
 
         def start
-          @secret_code = "Secr"
+          @secret_code = "1234"
         end
       end
     end
@@ -18,14 +18,9 @@
 
   <script type="syntaxhighlighter" class="brush: bash">
     rspec spec/codebreaker/game_spec.rb 
-    ..*
+    ...
 
-    Pending:
-      Codebreaker::Game#start saves secret code with numbers from 1 to 6
-        # Not yet implemented
-        # ./spec/codebreaker/game_spec.rb:40
-
-    Finished in 0.00314 seconds
-    3 examples, 0 failures, 1 pending
+    Finished in 0.00409 seconds
+    3 examples, 0 failures
   </script>
 </section>

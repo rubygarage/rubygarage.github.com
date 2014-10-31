@@ -9,32 +9,39 @@
   <script type="syntaxhighlighter" class="brush: ruby">
     module Codebreaker
       describe Game do
-        describe "#start" do
+        context "#start" do
           let(:game) { Game.new }
 
-          it "generates secret code" do
-            expect(game).to receive(:generate)
+          before do
             game.start
           end
+
+          it "saves secret code" do
+            expect(game.instance_variable_get(:@secret_code)).not_to be_empty
+          end
+
           it "saves 4 numbers secret code" do
-            game.start
             expect(game.instance_variable_get(:@secret_code)).to have(4).items
           end
-          it "saves secret code with numbers from 1 to 6"
+
+          it "saves secret code with numbers from 1 to 6" do
+            expect(game.instance_variable_get(:@secret_code)).to match(/[1-6]+/)
+          end
         end
       end
     end
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    rspec spec/codebreaker/game_spec.rb --format doc
+    rspec spec/codebreaker/game_spec.rb 
+    ...
 
-    Codebreaker::Game
-      #start
-        sends a welcome message
-        prompts for the first guess
+    Finished in 0.00409 seconds
+    3 examples, 0 failures
+    MacBookPro-C8BCC89CA02E-2:codebreaker sparrow$ rspec spec/codebreaker/game_spec.rb 
+    ...
 
-    Finished in 0.00105 seconds
-    2 examples, 0 failures
+    Finished in 0.00412 seconds
+    3 examples, 0 failures
   </script>
 </section>

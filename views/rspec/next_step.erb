@@ -1,8 +1,6 @@
 <section id="next-step" class="slide">
   <h2>Next step</h2>
 
-  <p>The following failing step is the next thing to work on: <strong>And I should see "Enter guess:"</strong>.</p>
-
   spec/codebreaker/game_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
     require 'spec_helper'
@@ -10,16 +8,18 @@
     module Codebreaker
       describe Game do
         describe "#start" do
-          it "generates secret code" do
+          it "saves secret code" do
             game = Game.new
-            expect(game).to receive(:generate)
             game.start
+            expect(game.instance_variable_get(:@secret_code)).not_to be_empty
           end
+
           it "saves 4 numbers secret code" do
             game = Game.new
             game.start
             expect(game.instance_variable_get(:@secret_code)).to have(4).items
           end
+
           it "saves secret code with numbers from 1 to 6"
         end
       end
@@ -27,24 +27,26 @@
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    rspec spec/codebreaker/game_spec.rb --format doc
+    rspec spec/codebreaker/game_spec.rb 
+    .F*
 
-    Codebreaker::Game
-      #start
-        sends a welcome message
-        prompts for the first guess (FAILED - 1)
+    Pending:
+      Codebreaker::Game#start saves secret code with numbers from 1 to 6
+        # Not yet implemented
+        # ./spec/codebreaker/game_spec.rb:40
 
     Failures:
 
-      1) Codebreaker::Game#start prompts for the first guess
-         Failure/Error: game.start
-           Double "output" received :puts with unexpected arguments
-             expected: ("Enter guess:")
-                  got: ("Welcome to Codebreaker!")
-         # ./lib/codebreaker/game.rb:8:in 'start'
-         # ./spec/codebreaker/game_spec.rb:16:in 'block (3 levels) in <module:Codebreaker>'
+      1) Codebreaker::Game#start saves 4 numbers secret code
+         Failure/Error: expect(game.instance_variable_get(:@secret_code)).to have(4).items
+           expected 4 items, got 19
+         # ./spec/codebreaker/game_spec.rb:38:in `block (3 levels) in <module:Codebreaker>'
 
-    Finished in 0.00126 seconds
-    2 examples, 1 failure
+    Finished in 0.02608 seconds
+    3 examples, 1 failure, 1 pending
+
+    Failed examples:
+
+    rspec ./spec/codebreaker/game_spec.rb:35 # Codebreaker::Game#start saves 4 numbers secret code
   </script>
 </section>

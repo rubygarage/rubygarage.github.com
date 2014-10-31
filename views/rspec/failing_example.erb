@@ -1,8 +1,6 @@
 <section id="failing-spec" class="slide">
   <h2>Red: Start with a Failing Code Example</h2>
 
-  <p>In game_spec.rb, we want to specify that when we start the game, it sends the right messages to the output.</p>
-
   spec/codebreaker/game_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
     require 'spec_helper'
@@ -10,10 +8,10 @@
     module Codebreaker
       describe Game do
         describe "#start" do
-          it "generates secret code" do
+          it "saves secret code" do
             game = Game.new
-            expect(game).to receive(:generate)
             game.start
+            expect(game.instance_variable_get(:@secret_code)).not_to be_empty
           end
           it "saves 4 numbers secret code"
           it "saves secret code with numbers from 1 to 6"
@@ -23,7 +21,29 @@
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    rspec spec/codebreaker/game_spec.rb
-    3 examples, 1 failures, 2 pending
+    rspec spec/codebreaker/game_spec.rb 
+    F**
+
+    Pending:
+      Codebreaker::Game#start saves 4 numbers secret code
+        # Not yet implemented
+        # ./spec/codebreaker/game_spec.rb:35
+      Codebreaker::Game#start saves secret code with numbers from 1 to 6
+        # Not yet implemented
+        # ./spec/codebreaker/game_spec.rb:36
+
+    Failures:
+
+      1) Codebreaker::Game#start saves secret code
+         Failure/Error: expect(game.instance_variable_get(:@secret_code)).not_to be_empty
+           expected empty? to return false, got true
+         # ./spec/codebreaker/game_spec.rb:33:in `block (3 levels) in <module:Codebreaker>'
+
+    Finished in 0.00842 seconds
+    3 examples, 1 failure, 2 pending
+
+    Failed examples:
+
+    rspec ./spec/codebreaker/game_spec.rb:30 # Codebreaker::Game#start saves secret code
   </script>
 </section>

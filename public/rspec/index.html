@@ -638,73 +638,6 @@
     Finished in 0.03275 seconds
     3 examples, 0 failures
   </script>
-</section><section id="more-subject" class="slide">
-  <h2>Subject</h2>
-  spec/subject_spec.rb
-  <script type="syntaxhighlighter" class="brush: ruby">
-    require "spec_helper"
-
-    class Actor
-      attr_accessor :name
-
-      def initialize(name = "John")
-        @name = name
-      end
-    end
-
-    describe Actor do
-      let(:name) { "Ivan" }
-
-      context "without subject redefenition" do
-        it { should_not be_nil }
-
-        its(:name) { should == 'John' }
-      end
-
-      context "with subject redefinition" do 
-        let(:actor) {  Actor.new(name) } 
-        subject { actor }
-         
-        it { should_not be_nil }
-
-        it "has name" do
-          subject.name.should == name
-        end
-
-        its(:name) { should == name }
-        its("name.length") { should == name.length }
-      end
-
-      context "with subject renaming" do
-        subject(:actor) { Actor.new(name) }
-
-        it "has name" do
-          actor.name.should  == name
-        end
-      end
-    end
-  </script>
-  <script type="syntaxhighlighter" class="brush: bash">
-    rspec spec/subject_spec.rb --format documentation
-
-    Actor
-      with subject redefinition
-        should not be nil
-        has name
-        name
-          should == "Ivan"
-        name.length
-          should == 4
-      without subject redefenition
-        should not be nil
-        name
-          should == "John"
-      with subject renaming
-        has name
-
-    Finished in 1.28 seconds
-    7 examples, 0 failures
-  </script>
 </section><section id="helper-methods" class="slide">
   <h2>Sharing helper methods</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
@@ -932,28 +865,19 @@
   </p>
 </section><section id="how-expectations-work" class="slide">
   <h2>How Expectations work</h2>
-  <h3>Old Syntax</h3>
-  <p>
-    Spec::Expectations adds two methods to Object:
-  </p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    should(matcher = nil)
-    should_not(matcher = nil)
+    expect(obj).to(matcher = nil)
+    expect(obj).not_to(matcher = nil)
   </script>
   <p>
     Both methods take an optional Expression Matcher.
   </p>
   <p>
-    When should receives an Expression Matcher, it calls <i>matches?(self)</i>. If it returns true, the spec passes and execution continues. If it returns false, then the spec fails with the message returned by matcher.failure_message.
+    When <i>to</i> receives an Expression Matcher, it calls <i>matches?(self)</i>. If it returns true, the spec passes and execution continues. If it returns false, then the spec fails with the message returned by matcher.failure_message.
   </p>
   <p>
-    Similarly, when should_not receives a matcher, it calls <i>matches?(self)</i>. If it returns false, the spec passes and execution continues. If it returns true, then the spec fails with the message returned by matcher.negative_failure_message.
+    Similarly, when <i>not_to</i> receives a matcher, it calls <i>matches?(self)</i>. If it returns false, the spec passes and execution continues. If it returns true, then the spec fails with the message returned by matcher.negative_failure_message.
   </p>
-  <h3>New Syntax</h3>
-  <script type="syntaxhighlighter" class="brush: ruby">
-    expect(obj).to(matcher = nil)
-    expect(obj).not_to(matcher = nil)
-  </script>
 </section><section id="matchers" class="slide">
   <h2>Matchers</h2>
   <p>
@@ -1695,8 +1619,6 @@ receives the message, nothing happens.</p>
 </section><section id="failing-spec" class="slide">
   <h2>Red: Start with a Failing Code Example</h2>
 
-  <p>In game_spec.rb, we want to specify that when we start the game, it sends the right messages to the output.</p>
-
   spec/codebreaker/game_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
     require 'spec_helper'
@@ -1704,10 +1626,10 @@ receives the message, nothing happens.</p>
     module Codebreaker
       describe Game do
         describe "#start" do
-          it "generates secret code" do
+          it "saves secret code" do
             game = Game.new
-            expect(game).to receive(:generate)
             game.start
+            expect(game.instance_variable_get(:@secret_code)).not_to be_empty
           end
           it "saves 4 numbers secret code"
           it "saves secret code with numbers from 1 to 6"
@@ -1717,42 +1639,66 @@ receives the message, nothing happens.</p>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    rspec spec/codebreaker/game_spec.rb
-    3 examples, 1 failures, 2 pending
+    rspec spec/codebreaker/game_spec.rb 
+    F**
+
+    Pending:
+      Codebreaker::Game#start saves 4 numbers secret code
+        # Not yet implemented
+        # ./spec/codebreaker/game_spec.rb:35
+      Codebreaker::Game#start saves secret code with numbers from 1 to 6
+        # Not yet implemented
+        # ./spec/codebreaker/game_spec.rb:36
+
+    Failures:
+
+      1) Codebreaker::Game#start saves secret code
+         Failure/Error: expect(game.instance_variable_get(:@secret_code)).not_to be_empty
+           expected empty? to return false, got true
+         # ./spec/codebreaker/game_spec.rb:33:in `block (3 levels) in <module:Codebreaker>'
+
+    Finished in 0.00842 seconds
+    3 examples, 1 failure, 2 pending
+
+    Failed examples:
+
+    rspec ./spec/codebreaker/game_spec.rb:30 # Codebreaker::Game#start saves secret code
   </script>
 </section><section id="passing-spec" class="slide">
   <h2>Green: Get the Example to Pass</h2>
-
-  <p>The failure message tells us that output never received puts. Here’s what we need to do to get this example to pass:</p>
 
   lib/codebreaker/game.rb
   <script type="syntaxhighlighter" class="brush: ruby">
     module Codebreaker
       class Game
         def initialize
-          @code = ""
+          @secret_code = ""
         end
 
         def start
-          generate
-        end
-
-        private
-
-        def generate
+          @secret_code = "Secret Code, LOL :)"
         end
       end
     end
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    rspec spec/codebreaker/game_spec.rb
-    2 examples, 0 failures, 1 pending
+    $ rspec spec/codebreaker/game_spec.rb 
+    .**
+
+    Pending:
+      Codebreaker::Game#start saves 4 numbers secret code
+        # Not yet implemented
+        # ./spec/codebreaker/game_spec.rb:35
+      Codebreaker::Game#start saves secret code with numbers from 1 to 6
+        # Not yet implemented
+        # ./spec/codebreaker/game_spec.rb:36
+
+    Finished in 0.00215 seconds
+    3 examples, 0 failures, 2 pending
   </script>
 </section><section id="next-step" class="slide">
   <h2>Next step</h2>
-
-  <p>The following failing step is the next thing to work on: <strong>And I should see "Enter guess:"</strong>.</p>
 
   spec/codebreaker/game_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
@@ -1761,16 +1707,18 @@ receives the message, nothing happens.</p>
     module Codebreaker
       describe Game do
         describe "#start" do
-          it "generates secret code" do
+          it "saves secret code" do
             game = Game.new
-            expect(game).to receive(:generate)
             game.start
+            expect(game.instance_variable_get(:@secret_code)).not_to be_empty
           end
+
           it "saves 4 numbers secret code" do
             game = Game.new
             game.start
             expect(game.instance_variable_get(:@secret_code)).to have(4).items
           end
+
           it "saves secret code with numbers from 1 to 6"
         end
       end
@@ -1778,114 +1726,136 @@ receives the message, nothing happens.</p>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    rspec spec/codebreaker/game_spec.rb --format doc
+    rspec spec/codebreaker/game_spec.rb 
+    .F*
 
-    Codebreaker::Game
-      #start
-        sends a welcome message
-        prompts for the first guess (FAILED - 1)
+    Pending:
+      Codebreaker::Game#start saves secret code with numbers from 1 to 6
+        # Not yet implemented
+        # ./spec/codebreaker/game_spec.rb:40
 
     Failures:
 
-      1) Codebreaker::Game#start prompts for the first guess
-         Failure/Error: game.start
-           Double "output" received :puts with unexpected arguments
-             expected: ("Enter guess:")
-                  got: ("Welcome to Codebreaker!")
-         # ./lib/codebreaker/game.rb:8:in 'start'
-         # ./spec/codebreaker/game_spec.rb:16:in 'block (3 levels) in <module:Codebreaker>'
+      1) Codebreaker::Game#start saves 4 numbers secret code
+         Failure/Error: expect(game.instance_variable_get(:@secret_code)).to have(4).items
+           expected 4 items, got 19
+         # ./spec/codebreaker/game_spec.rb:38:in `block (3 levels) in <module:Codebreaker>'
 
-    Finished in 0.00126 seconds
-    2 examples, 1 failure
+    Finished in 0.02608 seconds
+    3 examples, 1 failure, 1 pending
+
+    Failed examples:
+
+    rspec ./spec/codebreaker/game_spec.rb:35 # Codebreaker::Game#start saves 4 numbers secret code
   </script>
 </section><section id="resolve-step" class="slide">
   <h2>Trying to get green again</h2>
-
-  <p>This time, the output didn’t receive puts('Enter guess:'). Resolve that as follows:</p>
 
   lib/codebreaker/game.rb
   <script type="syntaxhighlighter" class="brush: ruby">
     module Codebreaker
       class Game
-        def initialize(output)
-          @output = output
+        def initialize
+          @secret_code = ""
         end
 
         def start
-          @output.puts 'Welcome to Codebreaker!'
-          @output.puts 'Enter guess:'
+          @secret_code = "Secr"
         end
       end
     end
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    rspec spec/codebreaker/game_spec.rb --format doc
+    rspec spec/codebreaker/game_spec.rb 
+    ..*
 
-    Codebreaker::Game
-      #start
-        sends a welcome message (FAILED - 1)
-        prompts for the first guess (FAILED - 2)
+    Pending:
+      Codebreaker::Game#start saves secret code with numbers from 1 to 6
+        # Not yet implemented
+        # ./spec/codebreaker/game_spec.rb:40
 
-    Failures:
-
-      1) Codebreaker::Game#start sends a welcome message
-         Failure/Error: game.start
-           Double "output" received :puts with unexpected arguments
-             expected: ("Welcome to Codebreaker!")
-                  got: ("Enter guess:")
-         # ./lib/codebreaker/game.rb:9:in `start'
-         # ./spec/codebreaker/game_spec.rb:10:in `block (3 levels) in <module:Codebreaker>'
-
-      2) Codebreaker::Game#start prompts for the first guess
-         Failure/Error: game.start
-           Double "output" received :puts with unexpected arguments
-             expected: ("Enter guess:")
-                  got: ("Welcome to Codebreaker!")
-         # ./lib/codebreaker/game.rb:8:in `start'
-         # ./spec/codebreaker/game_spec.rb:16:in `block (3 levels) in <module:Codebreaker>'
-
-    Finished in 0.00136 seconds
-    2 examples, 2 failures
+    Finished in 0.00314 seconds
+    3 examples, 0 failures, 1 pending
   </script>
-</section><section id="fix-step" class="slide">
-  <h2>Fix things up</h2>
-
-  <p>We’ve told the double in the first example to expect puts( ) with “Welcome to Codebreaker!” and we’ve satisfied that requirement, but we’ve only
-told it to expect “Welcome to Codebreaker!” It doesn’t know anything about “Enter guess:”</p>
+</section><section id="next-next-step" class="slide">
+  <h2>Next step</h2>
 
   spec/codebreaker/game_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
+    require 'spec_helper'
+
     module Codebreaker
       describe Game do
         describe "#start" do
-          it "sends a welcome message" do
-            output = double('output').as_null_object
-            game = Game.new(output)
-            output.should_receive(:puts).with('Welcome to Codebreaker!')
+          it "saves secret code" do
+            game = Game.new
             game.start
+            expect(game.instance_variable_get(:@secret_code)).not_to be_empty
           end
 
-          it "prompts for the first guess" do
-            output = double('output').as_null_object
-            game = Game.new(output)
-            output.should_receive(:puts).with('Enter guess:')
+          it "saves 4 numbers secret code" do
+            game = Game.new
             game.start
+            expect(game.instance_variable_get(:@secret_code)).to have(4).items
+          end
+
+          it "saves secret code with numbers from 1 to 6" do
+            game = Game.new
+            game.start
+            expect(game.instance_variable_get(:@secret_code)).to match(/[1-6]+/)
           end
         end
       end
     end
   </script>
+
   <script type="syntaxhighlighter" class="brush: bash">
-    rspec spec/codebreaker/game_spec.rb --format doc
+    rspec spec/codebreaker/game_spec.rb 
+    ..F
 
-    Codebreaker::Game
-      #start
-        sends a welcome message
-        prompts for the first guess
+    Failures:
 
-    Finished in 0.00103 seconds
-    2 examples, 0 failures
+      1) Codebreaker::Game#start saves secret code with numbers from 1 to 6
+         Failure/Error: expect(game.instance_variable_get(:@secret_code)).to match(/[1-6]+/)
+           expected "Secr" to match /[1-6]+/
+           Diff:
+           @@ -1,2 +1,2 @@
+           -/[1-6]+/
+           +"Secr"
+         # ./spec/codebreaker/game_spec.rb:43:in `block (3 levels) in <module:Codebreaker>'
+
+    Finished in 0.02563 seconds
+    3 examples, 1 failure
+
+    Failed examples:
+
+    rspec ./spec/codebreaker/game_spec.rb:40 # Codebreaker::Game#start saves secret code with numbers from 1 to 6
+  </script>
+</section><section id="resolve-another-step" class="slide">
+  <h2>Trying to get green again</h2>
+
+  lib/codebreaker/game.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    module Codebreaker
+      class Game
+        def initialize
+          @secret_code = ""
+        end
+
+        def start
+          @secret_code = "1234"
+        end
+      end
+    end
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    rspec spec/codebreaker/game_spec.rb 
+    ...
+
+    Finished in 0.00409 seconds
+    3 examples, 0 failures
   </script>
 </section><section id="refactor" class="slide">
   <h2>Refactor</h2>
@@ -1898,33 +1868,40 @@ told it to expect “Welcome to Codebreaker!” It doesn’t know anything about
   <script type="syntaxhighlighter" class="brush: ruby">
     module Codebreaker
       describe Game do
-        describe "#start" do
+        context "#start" do
           let(:game) { Game.new }
 
-          it "generates secret code" do
-            expect(game).to receive(:generate)
+          before do
             game.start
           end
+
+          it "saves secret code" do
+            expect(game.instance_variable_get(:@secret_code)).not_to be_empty
+          end
+
           it "saves 4 numbers secret code" do
-            game.start
             expect(game.instance_variable_get(:@secret_code)).to have(4).items
           end
-          it "saves secret code with numbers from 1 to 6"
+
+          it "saves secret code with numbers from 1 to 6" do
+            expect(game.instance_variable_get(:@secret_code)).to match(/[1-6]+/)
+          end
         end
       end
     end
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    rspec spec/codebreaker/game_spec.rb --format doc
+    rspec spec/codebreaker/game_spec.rb 
+    ...
 
-    Codebreaker::Game
-      #start
-        sends a welcome message
-        prompts for the first guess
+    Finished in 0.00409 seconds
+    3 examples, 0 failures
+    MacBookPro-C8BCC89CA02E-2:codebreaker sparrow$ rspec spec/codebreaker/game_spec.rb 
+    ...
 
-    Finished in 0.00105 seconds
-    2 examples, 0 failures
+    Finished in 0.00412 seconds
+    3 examples, 0 failures
   </script>
 </section><!-- End slides. -->
 
