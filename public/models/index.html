@@ -84,11 +84,10 @@
       invoke  active_record
       create    db/migrate/20130602150030_add_last_name_to_users.rb
 
-]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     YYYYMMDDHHMMSS UTC timestamp
     20130602150030_add_last_name_to_users.rb
-]]></script>
-
+  ]]></script><h3>Change</h3>
   db/migrate/20130602150030_add_last_name_to_users.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
      class AddLastNameToUsers < ActiveRecord::Migration
@@ -96,11 +95,11 @@
         add_column :users, :last_name, :string
       end
     end
-]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+  ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     rails g migration AddReceiveNewsToUsers receive_news:boolean
       invoke  active_record
       create    db/migrate/20130602151002_add_receive_news_to_users.rb
-]]></script>
+  ]]></script>
 
   db/migrate/20130602151002_add_receive_news_to_users.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
@@ -109,8 +108,7 @@
         add_column :users, :receive_news, :boolean
       end
     end
-]]></script>
-
+  ]]></script><h3>Up and down</h3>
   db/migrate/20130602151002_add_receive_news_to_users.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     class AddReceiveNewsToUsers < ActiveRecord::Migration
@@ -127,45 +125,45 @@
         remove_column :users, :receive_news
       end
     end
-]]></script></section><section id="db-changing-methods" class="slide"><h2>Methods for db structure changing</h2>
+  ]]></script></section><section id="db-changing-methods" class="slide"><h2>Methods for db structure changing</h2>
 
   <code>create_table</code>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      create_table :friends do |t|
-        t.string :first_name
-        t.string :last_name
-        t.string :email
-        t.timestamps
-      end
+    create_table :friends do |t|
+      t.string :first_name
+      t.string :last_name
+      t.string :email
+      t.timestamps
+    end
   ]]></script><code>change_table</code>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      change_table :friends do |t|
-        t.remove :last_name, :first_name
-        t.string :phone_number
-        t.index  :phone_number
-      end
+    change_table :friends do |t|
+      t.remove :last_name, :first_name
+      t.string :phone_number
+      t.index  :phone_number
+    end
   ]]></script><code>add_column</code>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      add_column :friends, :first_name, :string
-      add_column :friends, :last_name, :integer
+    add_column :friends, :first_name, :string
+    add_column :friends, :last_name, :integer
   ]]></script><code>change_column</code>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      change_column :friends, :last_name, :string
+    change_column :friends, :last_name, :string
   ]]></script><code>rename_column</code>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      rename_column :friends, :last_name, :surname
+    rename_column :friends, :last_name, :surname
   ]]></script><code>remove_column</code>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      remove_column :friends, :surname
+    remove_column :friends, :surname
   ]]></script><code>add_index</code>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      add_index :friends, :email
+    add_index :friends, :email
   ]]></script><code>remove_index</code>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      remove_index :friends, :email
+    remove_index :friends, :email
   ]]></script><code>drop_table</code>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      drop_table :friends
+    drop_table :friends
   ]]></script></section><section id="column-types" class="slide"><h2>Column Types</h2>
   <ul><li><code>:binary</code></li>
     <li><code>:boolean</code></li>
@@ -227,58 +225,60 @@
   </div>
 </section><section id="activerecord-functions" class="slide"><h2>ActiveRecord functions</h2>
 
-  <h3>new, all, save</h3>
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-
     rails c  # rails console
-  ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-    2.0.0-p0 :003 > user = User.new
-     => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false >]
-  ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-    2.0.0-p0 :001 > user.first_name = "Anna"
-     => "Anna"
-    2.0.0-p0 :003 > user.email = "happy_ann@gmail.com"
-     => "happy_ann@gmail.com"
-    2.0.0-p0 :004 > user.save
-      (0.2ms)  begin transaction
-      SQL (29.9ms)  INSERT INTO "users" ("created_at", "email", "first_name", "last_name", "password", "receive_news", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 17:23:02 UTC +00:00], ["email", "happy_ann@gmail.com"], ["first_name", "Anna"], ["last_name", nil], ["password", nil], ["receive_news", false], ["updated_at", Sun, 02 Jun 2013 17:23:02 UTC +00:00]]
-       (125.5ms)  commit transaction
-     => true
-  ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-    2.0.0-p0 :005 > User.all
-      User Load (0.4ms)  SELECT "users".* FROM "users"
-     => [#<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>]
+  ]]></script><h3>new</h3>
+  <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+    > user = User.new
+      => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false >]
+  ]]></script><h3>save</h3>
+  <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+    > user.first_name = "Anna"
+      => "Anna"
+
+    > user.email = "happy_ann@gmail.com"
+      => "happy_ann@gmail.com"
+    
+    > user.save
+      INSERT INTO "users" ("created_at", "email", "first_name", "last_name", "password", "receive_news", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 17:23:02 UTC +00:00], ["email", "happy_ann@gmail.com"], ["first_name", "Anna"], ["last_name", nil], ["password", nil], ["receive_news", false], ["updated_at", Sun, 02 Jun 2013 17:23:02 UTC +00:00]]
+      => true
+  ]]></script><h3>all</h3>
+  <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+    > User.all
+      SELECT "users".* FROM "users"
+      => [#<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>]
   ]]></script><h3>Rails 3</h3>
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-    2.0.0-p0 :006 > User.all.class
-      User Load (0.6ms)  SELECT "users".* FROM "users"
-     => Array
+    > User.all.class
+      SELECT "users".* FROM "users"
+    => Array
 
   ]]></script><h3>Rails 4</h3>
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-    2.0.0-p0 :007 > User.all.class
-      User Load (0.6ms)  SELECT "users".* FROM "users"
-     => ActiveRecord::Relation
+    > User.all.class
+    => ActiveRecord::Relation
   ]]></script></section><section id="activerecord-functions-part2" class="slide"><h2>ActiveRecord functions</h2>
-  <h3>create, count, update_attributes</h3>
-
+  <h3>create</h3>
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-    2.0.0-p0 :001 > new_user = User.create(first_name: "Ivan", email: "ivan.melechov@gmail.com")
-      (0.1ms)  begin transaction
-      SQL (3.0ms)  INSERT INTO "users" ("created_at", "email", "first_name", "last_name", "password", "receive_news", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 18:18:40 UTC +00:00], ["email", "ivan.melechov@gmail.com"], ["first_name", "Ivan"], ["last_name", nil], ["password", nil], ["receive_news", false], ["updated_at", Sun, 02 Jun 2013 18:18:40 UTC +00:00]]
-      (125.0ms)  commit transaction
-     => #<User id: 2, first_name: "Ivan", email: "ivan.melechov@gmail.com", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:18:40", last_name: nil, receive_news: false>
-]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-   2.0.0-p0 :002 > User.count
-     (0.2ms)  SELECT COUNT(*) FROM "users"
-    => 2
- ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-    2.0.0-p0 :003 > new_user.update_attributes(first_name: "Van'ka", email: "vanka@yandex.ru")
-     (0.2ms)  begin transaction
-     (0.5ms)  UPDATE "users" SET "first_name" = 'Van''ka', "email" = 'vanka@yandex.ru', "updated_at" = '2013-06-02 18:20:00.982364' WHERE "users"."id" = 2
-     (124.8ms)  commit transaction
-     => true
-
+    > new_user = User.create(first_name: "Ivan", email: "ivan.melechov@gmail.com")
+  
+      INSERT INTO "users" ("created_at", "email", "first_name", "last_name", "password", "receive_news", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 18:18:40 UTC +00:00], ["email", "ivan.melechov@gmail.com"], ["first_name", "Ivan"], ["last_name", nil], ["password", nil], ["receive_news", false], ["updated_at", Sun, 02 Jun 2013 18:18:40 UTC +00:00]]
+  
+      => #<User id: 2, first_name: "Ivan", email: "ivan.melechov@gmail.com", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:18:40", last_name: nil, receive_news: false>
+  ]]></script><h3>count</h3>
+  <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+    > User.count
+      
+      SELECT COUNT(*) FROM "users"
+      
+      => 2
+  ]]></script><h3>update</h3>
+  <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+    > new_user.update(first_name: "Van'ka", email: "vanka@yandex.ru")
+      
+      UPDATE "users" SET "first_name" = 'Van''ka', "email" = 'vanka@yandex.ru', "updated_at" = '2013-06-02 18:20:00.982364' WHERE "users"."id" = 2
+      
+      => true
   ]]></script></section><section id="topic-associations" class="slide"><div class="vcenter">
     <h1>Active Record Associations</h1>
   </div>
@@ -301,7 +301,6 @@
       rake db:migrate
       ==  AddUserRefToPosts: migrating ==============================================
       -- add_reference(:posts, :user, {:index=>true})
-         -> 0.0053s
       ==  AddUserRefToPosts: migrated (0.0054s) =====================================
   ]]></script>
 
@@ -312,17 +311,22 @@
     end
   ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     > user = User.first
-      User Load (0.4ms)  SELECT "users".* FROM "users" LIMIT 1
+
+      SELECT "users".* FROM "users" LIMIT 1
+      
       => #<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>
   ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     > post = Post.create(text: "I'm so happy today", title: "So happy", user_id: user.id)
-      (0.1ms)  begin transaction
-      SQL (29.2ms)  INSERT INTO "posts" ("created_at", "text", "title", "updated_at", "user_id") VALUES (?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 18:43:10 UTC +00:00], ["text", "I'm so happy today"], "So happy", ["updated_at", Sun, 02 Jun 2013 18:43:10 UTC +00:00], ["user_id", 1]]
+      
+      INSERT INTO "posts" ("created_at", "text", "title", "updated_at", "user_id") VALUES (?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 18:43:10 UTC +00:00], ["text", "I'm so happy today"], "So happy", ["updated_at", Sun, 02 Jun 2013 18:43:10 UTC +00:00], ["user_id", 1]]
       (126.0ms)  commit transaction
+      
       => #<Post id: 1, text: "I'm so happy today", title: "So happy", user_id: 1, created_at: "2013-06-02 18:43:10", updated_at: "2013-06-02 18:43:10">
   ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     > post.user
-      User Load (0.4ms)  SELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1
+      
+      SELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1
+      
       => #<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>
   ]]></script></section><section id="has-many" class="slide"><h2>has_many</h2>
   <img src="/public/models/assets/has_many.png" /></section><section id="has_many_in_model" class="slide"><h2>has_many</h2>
@@ -332,29 +336,33 @@
     class User < ActiveRecord::Base
       has_many :posts
     end
-  ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+  ]]></script><h3>Get</h3>
+  <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     > user.posts
-      Post Load (0.2ms)  SELECT "posts".* FROM "posts" WHERE "posts"."user_id" = 1
+      
+      SELECT "posts".* FROM "posts" WHERE "posts"."user_id" = 1
+      
       => [#<Post id: 1, text: "I'm so happy today", title: "So happy", user_id: 1, created_at: "2013-06-02 18:43:10", updated_at: "2013-06-02 18:43:10">]
-  ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+  ]]></script><h3>Create</h3>
+  <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     > user.posts << Post.new(text: "I'm waiting")
-      (0.2ms)  begin transaction
-      SQL (32.4ms)  INSERT INTO "posts" ("created_at", "text",  "updated_at", "user_id") VALUES (?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 19:01:45 UTC +00:00], ["text", "I'm waiting"], ["updated_at", Sun, 02 Jun 2013 19:01:45 UTC +00:00], ["user_id", 1]]
-      (203.0ms)  commit transaction
+      
+      INSERT INTO "posts" ("created_at", "text",  "updated_at", "user_id") VALUES (?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 19:01:45 UTC +00:00], ["text", "I'm waiting"], ["updated_at", Sun, 02 Jun 2013 19:01:45 UTC +00:00], ["user_id", 1]]
+      
       => [#<Post id: 1, text: "I'm so happy today", title: "So happy", user_id: 1, created_at: "2013-06-02 18:43:10", updated_at: "2013-06-02 18:43:10">, #<Post id: 2, text: "I'm waiting", title: nil, user_id: 1, created_at: "2013-06-02 19:01:45", updated_at: "2013-06-02 19:01:45">]
-  ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-    > user.posts
-      => [#<Post id: 1, text: "I'm so happy today", title: "So happy", user_id: 1, created_at: "2013-06-02 18:43:10", updated_at: "2013-06-02 18:43:10">, #<Post id: 2, text: "I'm waiting", title: nil, user_id: 1, created_at: "2013-06-02 19:01:45", updated_at: "2013-06-02 19:01:45">]
-  ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-    > user.posts.count
-      (0.2ms)  SELECT COUNT(*) FROM "posts" WHERE "posts"."user_id" = 1
-      => 2
   ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     > user.posts.create(text: "New post")
-      (0.2ms)  begin transaction
-      SQL (0.8ms)  INSERT INTO "posts" ("created_at", "text","updated_at", "user_id") VALUES (?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 19:06:35 UTC +00:00], ["text", "New post"], ["updated_at", Sun, 02 Jun 2013 19:06:35 UTC +00:00], ["user_id", 1]]
-      (140.8ms)  commit transaction
+      
+      INSERT INTO "posts" ("created_at", "text","updated_at", "user_id") VALUES (?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 19:06:35 UTC +00:00], ["text", "New post"], ["updated_at", Sun, 02 Jun 2013 19:06:35 UTC +00:00], ["user_id", 1]]
+      
       => #<Post id: 3, text: "New post", title: nil, user_id: 1, created_at: "2013-06-02 19:06:35", updated_at: "2013-06-02 19:06:35">
+  ]]></script><h3>Count</h3>
+  <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+    > user.posts.count
+      
+      SELECT COUNT(*) FROM "posts" WHERE "posts"."user_id" = 1
+      
+      => 2
   ]]></script></section><section id="has-one" class="slide"><h2>has_one</h2>
   <img src="/public/models/assets/has_one.png" /></section><section id="has-one-in-model" class="slide"><h2>has_one</h2>
 
@@ -377,31 +385,31 @@
     end
   ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     > post = Post.first
-      Post Load (0.1ms)  SELECT "posts".* FROM "posts" LIMIT 1
+      
+      SELECT "posts".* FROM "posts" LIMIT 1
+      
       => #<Post id: 1, text: "I'm so happy today", user_id: 1, created_at: "2013-06-02 18:43:10", updated_at: "2013-06-02 18:43:10">
-
-  ]]></script>
-
-  Creation PostInfo
+  ]]></script><h3>Creation PostInfo</h3>
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     > PostInfo.create(post_id: post.id, views: 40, likes: 5, rating: 10)
-      (0.1ms)  begin transaction
-      SQL (5.1ms)  INSERT INTO "post_infos" ("created_at", "likes", "post_id", "rating", "updated_at", "views") VALUES (?, ?, ?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 19:37:08 UTC +00:00], ["likes", 5], ["post_id", 1], ["rating", 10], ["updated_at", Sun, 02 Jun 2013 19:37:08 UTC +00:00], ["views", 40]]
-      (116.2ms)  commit transaction
+      
+      INSERT INTO "post_infos" ("created_at", "likes", "post_id", "rating", "updated_at", "views") VALUES (?, ?, ?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 19:37:08 UTC +00:00], ["likes", 5], ["post_id", 1], ["rating", 10], ["updated_at", Sun, 02 Jun 2013 19:37:08 UTC +00:00], ["views", 40]]
+      
       => #<PostInfo id: 2, post_id: 1, views: 40, likes: 5, rating: 10, created_at: "2013-06-02 19:37:08", updated_at: "2013-06-02 19:37:08">
-  ]]></script>
-
-  Creation using the association
+  ]]></script><h3>Getting using the association</h3>
+  <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+    > post.post_info
+      
+      SELECT "post_infos".* FROM "post_infos" WHERE "post_infos"."post_id" = 1 LIMIT 1
+      
+      => #<PostInfo id: 1, post_id: 1, views: 40, likes: 5, rating: 10, created_at: "2013-06-02 19:34:38", updated_at: "2013-06-02 19:34:38">
+  ]]></script><h3>Creation using the association</h3>
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     > post.create_post_info(views: 40, likes: 5, rating: 10)
-      (0.2ms)  begin transaction
-      SQL (29.4ms) INSERT INTO "post_infos" ("created_at", "likes", "post_id", "rating", "updated_at", "views") VALUES (?, ?, ?, ?, ?, ?)  [["created_at", Sun, 16 Jun 2013 20:21:58 UTC +00:00], ["likes", 5], ["post_id", 1], ["rating", 10], ["updated_at", Sun, 16 Jun 2013 20:21:58 UTC +00:00], ["views", 40]]
-      (1.5ms)  commit transaction
+      
+      INSERT INTO "post_infos" ("created_at", "likes", "post_id", "rating", "updated_at", "views") VALUES (?, ?, ?, ?, ?, ?)  [["created_at", Sun, 16 Jun 2013 20:21:58 UTC +00:00], ["likes", 5], ["post_id", 1], ["rating", 10], ["updated_at", Sun, 16 Jun 2013 20:21:58 UTC +00:00], ["views", 40]]
+      
       => #<PostInfo id: 1, post_id: 1, views: 40, likes: 5, rating: 10, created_at: "2013-06-16 20:21:58", updated_at: "2013-06-16 20:21:58">
-  ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-    > post.post_info
-      PostInfo Load (0.2ms)  SELECT "post_infos".* FROM "post_infos" WHERE "post_infos"."post_id" = 1 LIMIT 1
-      => #<PostInfo id: 1, post_id: 1, views: 40, likes: 5, rating: 10, created_at: "2013-06-02 19:34:38", updated_at: "2013-06-02 19:34:38">
   ]]></script></section><section id="has-many-through" class="slide"><h2>has_many :through</h2>
   <img src="/public/models/assets/has_many_through.png" /></section><section id="has-many-through-in-model" class="slide"><h2>has_many :through</h2>
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
@@ -495,7 +503,6 @@
         belongs_to :user
         belongs_to :blog
         has_one :post_info
-        has_and_belongs_to_many :tags
       end
   ]]></script></section><section id="has-one-through" class="slide"><h2>has_one :through</h2>
   <img src="/public/models/assets/has_one_through.png" /></section><section id="has-one-through-in-model" class="slide"><h2>has_one :through</h2>
@@ -588,11 +595,11 @@
       invoke  active_record
       create    db/migrate/20130615205723_create_posts_tags.rb
   ]]></script><h3>Rails 4</h3>
-    <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     create_join_table :posts, :tags
-  ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     create_join_table :posts, :tags, table_name: :tags_for_posts
-  ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
       create_join_table :posts, :tags, column_options:  {null:  true}
   ]]></script>
 
@@ -690,16 +697,15 @@
     end
   ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     > user.create_picture(file: 'public/picture/photo.png')
-      (0.1ms)  begin transaction
-      SQL (32.7ms)  INSERT INTO "pictures" ("created_at", "file", "imageable_id", "imageable_type", "updated_at") VALUES (?, ?, ?, ?, ?)  [["created_at", Sun, 16 Jun 2013 21:46:37 UTC +00:00], ["file", "public/picture/photo.png"], ["imageable_id", 1], ["imageable_type", "User"], ["updated_at", Sun, 16 Jun 2013 21:46:37 UTC +00:00]]
-      (1.5ms)  commit transaction
-      Picture Load (0.4ms)  SELECT "pictures".* FROM "pictures" WHERE "pictures"."imageable_id" = ? AND "pictures"."imageable_type" = ? ORDER BY "pictures"."id" ASC LIMIT 1  [["imageable_id", 1], ["imageable_type", "User"]]
+      
+      INSERT INTO "pictures" ("created_at", "file", "imageable_id", "imageable_type", "updated_at") VALUES (?, ?, ?, ?, ?)  [["created_at", Sun, 16 Jun 2013 21:46:37 UTC +00:00], ["file", "public/picture/photo.png"], ["imageable_id", 1], ["imageable_type", "User"], ["updated_at", Sun, 16 Jun 2013 21:46:37 UTC +00:00]]
+      
       => #<Picture id: 1, imageable_id: 1, imageable_type: "User", file: "public/picture/photo.png", created_at: "2013-06-16 21:46:37", updated_at: "2013-06-16 21:46:37">
   ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     > post.pictures.create(file: 'public/picture/image.png')
-      (0.1ms)  begin transaction
-      SQL (0.6ms)  INSERT INTO "pictures" ("created_at", "file", "imageable_id", "imageable_type", "updated_at") VALUES (?, ?, ?, ?, ?)  [["created_at", Sun, 16 Jun 2013 21:51:25 UTC +00:00], ["file", "public/picture/image.png"], ["imageable_id", 1], ["imageable_type", "Post"], ["updated_at", Sun, 16 Jun 2013 21:51:25 UTC +00:00]]
-      (1.7ms)  commit transaction
+      
+      INSERT INTO "pictures" ("created_at", "file", "imageable_id", "imageable_type", "updated_at") VALUES (?, ?, ?, ?, ?)  [["created_at", Sun, 16 Jun 2013 21:51:25 UTC +00:00], ["file", "public/picture/image.png"], ["imageable_id", 1], ["imageable_type", "Post"], ["updated_at", Sun, 16 Jun 2013 21:51:25 UTC +00:00]]
+      
       => #<Picture id: 2, imageable_id: 1, imageable_type: "Post", file: "public/picture/image.png", created_at: "2013-06-16 21:51:25", updated_at: "2013-06-16 21:51:25">
   ]]></script></section><section id="topic-validations" class="slide"><div class="vcenter">
     <h1>Active Record Validations</h1>
@@ -711,69 +717,63 @@
     <li><code>save!</code></li>
     <li><code>update</code></li>
     <li><code>update!</code></li>
-  </ul></section><section id="skipping-validations" class="slide"><h2>Skiping Validations</h2>
-  <ul><li><code>touch</code></li>
-    <li><code>update_all</code></li>
-    <li><code>update_attribute</code></li>
-    <li><code>update_column</code></li>
-    <li><code>update_columns</code></li>
-    <li><code>save(validate: false)</code></li>
-  </ul></section><section id="valid-invalid" class="slide"><h2>valid? and invalid?</h2>
+  </ul><h2>Skiping Validations</h2>
+  <code>save(validate: false)</code>
+</section><section id="valid-invalid" class="slide"><h2>valid? and invalid?</h2>
 
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     class User < ActiveRecord::Base
       has_many :posts
       validates :email, presence: true
     end
-  ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+  ]]></script><h3>valid?</h3>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     > User.new(email: "thebestemail@ua.fm").valid?
       => true
+
     > User.new().valid?
       => false
-  ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+  ]]></script><h3>Get errors</h3>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     > u = User.new
       => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>
+
     > u.errors
       => #<ActiveModel::Errors:0x00000003001970 @base=#<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>, @messages={}>
+    
     > u.valid?
       => false
+    
     > u.errors
       => #<ActiveModel::Errors:0x00000003001970 @base=#<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>, @messages={:email=>["can't be blank"]}>
-  ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+  ]]></script><h3>On create</h3>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     > u = User.create
-        (0.2ms)  begin transaction
-        (0.1ms)  rollback transaction
       => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>
+    
     > u.errors
       => #<ActiveModel::Errors:0x00000003172db8 @base=#<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>, @messages={:email=>["can't be blank"]}>
-  ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+  ]]></script><h3>On create!</h3>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    > User.create!
+      ActiveRecord::RecordInvalid: Validation failed: Email cant be blank
+  ]]></script><h3>On save and save!</h3>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     > u = User.new
       => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>
+    
     > u.save
-        (0.2ms)  begin transaction
-        (0.1ms)  rollback transaction
       => false
+    
     > u.save!
-       (0.1ms)  begin transaction
-       (0.1ms)  rollback transaction
-      ActiveRecord::RecordInvalid: Validation failed: Email cant be blank
-  ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-    > User.create
-        (0.1ms)  begin transaction
-        (0.1ms)  rollback transaction
-      => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>
-    > User.create!
-        (0.1ms)  begin transaction
-        (0.1ms)  rollback transaction
       ActiveRecord::RecordInvalid: Validation failed: Email cant be blank
   ]]></script></section><section id="errors" class="slide"><h2>errors[]</h2>
 
-  <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     > User.new.errors[:email].any?
       => false
+
     > User.create.errors[:email].any?
-       (0.1ms)  begin transaction
-       (0.1ms)  rollback transaction
       => true
   ]]></script></section><section id="presence" class="slide"><h2>Presence</h2>
 <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[

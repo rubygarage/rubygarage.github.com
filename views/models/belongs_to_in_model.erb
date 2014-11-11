@@ -19,7 +19,6 @@
       rake db:migrate
       ==  AddUserRefToPosts: migrating ==============================================
       -- add_reference(:posts, :user, {:index=>true})
-         -> 0.0053s
       ==  AddUserRefToPosts: migrated (0.0054s) =====================================
   </script>
 
@@ -32,21 +31,26 @@
 
   <script type="syntaxhighlighter" class="brush: bash">
     > user = User.first
-      User Load (0.4ms)  SELECT "users".* FROM "users" LIMIT 1
+
+      SELECT "users".* FROM "users" LIMIT 1
+      
       => #<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
     > post = Post.create(text: "I'm so happy today", title: "So happy", user_id: user.id)
-      (0.1ms)  begin transaction
-      SQL (29.2ms)  INSERT INTO "posts" ("created_at", "text", "title", "updated_at", "user_id") VALUES (?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 18:43:10 UTC +00:00], ["text", "I'm so happy today"], "So happy", ["updated_at", Sun, 02 Jun 2013 18:43:10 UTC +00:00], ["user_id", 1]]
+      
+      INSERT INTO "posts" ("created_at", "text", "title", "updated_at", "user_id") VALUES (?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 18:43:10 UTC +00:00], ["text", "I'm so happy today"], "So happy", ["updated_at", Sun, 02 Jun 2013 18:43:10 UTC +00:00], ["user_id", 1]]
       (126.0ms)  commit transaction
+      
       => #<Post id: 1, text: "I'm so happy today", title: "So happy", user_id: 1, created_at: "2013-06-02 18:43:10", updated_at: "2013-06-02 18:43:10">
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
     > post.user
-      User Load (0.4ms)  SELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1
+      
+      SELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1
+      
       => #<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>
   </script>
 </section>

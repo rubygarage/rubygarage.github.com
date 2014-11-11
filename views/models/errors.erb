@@ -1,12 +1,11 @@
 <section id="errors" class="slide">
   <h2>errors[]</h2>
 
-  <script type="syntaxhighlighter" class="brush: bash">
+  <script type="syntaxhighlighter" class="brush: ruby">
     > User.new.errors[:email].any?
       => false
+
     > User.create.errors[:email].any?
-       (0.1ms)  begin transaction
-       (0.1ms)  rollback transaction
       => true
   </script>
 

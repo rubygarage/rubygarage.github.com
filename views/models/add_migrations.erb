@@ -6,13 +6,14 @@
       invoke  active_record
       create    db/migrate/20130602150030_add_last_name_to_users.rb
 
-</script>
+  </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
     YYYYMMDDHHMMSS UTC timestamp
     20130602150030_add_last_name_to_users.rb
-</script>
+  </script>
 
+  <h3>Change</h3>
   db/migrate/20130602150030_add_last_name_to_users.rb
   <script type="syntaxhighlighter" class="brush: ruby">
      class AddLastNameToUsers < ActiveRecord::Migration
@@ -20,13 +21,13 @@
         add_column :users, :last_name, :string
       end
     end
-</script>
+  </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
     rails g migration AddReceiveNewsToUsers receive_news:boolean
       invoke  active_record
       create    db/migrate/20130602151002_add_receive_news_to_users.rb
-</script>
+  </script>
 
   db/migrate/20130602151002_add_receive_news_to_users.rb
   <script type="syntaxhighlighter" class="brush: ruby">
@@ -35,8 +36,9 @@
         add_column :users, :receive_news, :boolean
       end
     end
-</script>
+  </script>
 
+  <h3>Up and down</h3>
   db/migrate/20130602151002_add_receive_news_to_users.rb
   <script type="syntaxhighlighter" class="brush: ruby">
     class AddReceiveNewsToUsers < ActiveRecord::Migration
@@ -53,5 +55,5 @@
         remove_column :users, :receive_news
       end
     end
-</script>
+  </script>
 </section>

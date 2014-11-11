@@ -8,54 +8,54 @@
     end
   </script>
 
-  <script type="syntaxhighlighter" class="brush: bash">
+  <h3>valid?</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
     > User.new(email: "thebestemail@ua.fm").valid?
       => true
+
     > User.new().valid?
       => false
   </script>
 
-  <script type="syntaxhighlighter" class="brush: bash">
+  <h3>Get errors</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
     > u = User.new
       => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>
+
     > u.errors
       => #<ActiveModel::Errors:0x00000003001970 @base=#<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>, @messages={}>
+    
     > u.valid?
       => false
+    
     > u.errors
       => #<ActiveModel::Errors:0x00000003001970 @base=#<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>, @messages={:email=>["can't be blank"]}>
   </script>
 
-  <script type="syntaxhighlighter" class="brush: bash">
+  <h3>On create</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
     > u = User.create
-        (0.2ms)  begin transaction
-        (0.1ms)  rollback transaction
       => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>
+    
     > u.errors
       => #<ActiveModel::Errors:0x00000003172db8 @base=#<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>, @messages={:email=>["can't be blank"]}>
   </script>
 
-  <script type="syntaxhighlighter" class="brush: bash">
-    > u = User.new
-      => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>
-    > u.save
-        (0.2ms)  begin transaction
-        (0.1ms)  rollback transaction
-      => false
-    > u.save!
-       (0.1ms)  begin transaction
-       (0.1ms)  rollback transaction
+  <h3>On create!</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    > User.create!
       ActiveRecord::RecordInvalid: Validation failed: Email cant be blank
   </script>
 
-  <script type="syntaxhighlighter" class="brush: bash">
-    > User.create
-        (0.1ms)  begin transaction
-        (0.1ms)  rollback transaction
+  <h3>On save and save!</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    > u = User.new
       => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>
-    > User.create!
-        (0.1ms)  begin transaction
-        (0.1ms)  rollback transaction
+    
+    > u.save
+      => false
+    
+    > u.save!
       ActiveRecord::RecordInvalid: Validation failed: Email cant be blank
   </script>
 </section>
