@@ -18,6 +18,7 @@
   </script>
 
   <div class="slide" id="filter-block">
+    <h3>Filter block</h3>
     app/controllers/application_controller.rb
     <script type="syntaxhighlighter" class="brush: ruby">
       class ApplicationController < ActionController::Base
@@ -29,6 +30,7 @@
   </div>
 
   <div class="slide" id="filter-class">
+    <h3>Filter class</h3>
     app/controllers/application_controller.rb
     <script type="syntaxhighlighter" class="brush: ruby">
       class ApplicationController < ActionController::Base
@@ -36,7 +38,7 @@
       end
  
       class LoginFilter
-        def self.filter(controller)
+        def self.before(controller)
           unless controller.send(:logged_in?)
             controller.flash[:error] = "You must be logged in"
             controller.redirect_to controller.new_login_url

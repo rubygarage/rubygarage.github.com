@@ -14,8 +14,8 @@
 <section id="topic" class="slide"><div class="vcenter">
     <h1>Action Controller</h1>
     <div class="about">
-      <p><strong>Action Controller</strong> is the <strong>C</strong> in <a href="http://en.wikipedia.org/wiki/Model–view–controller" target="_blank">MVC</a>. After routing has determined which controller to use for a request, your controller is responsible for making sense of the request and producing the appropriate output.
-      <img src="/public/controllers/assets/mvc.png" /></p></div>
+      <p><strong>Action Controller</strong> is the <strong>C</strong> in <a href="http://en.wikipedia.org/wiki/Model–view–controller" target="_blank">MVC</a>. After routing has determined which controller to use for a request, your controller is responsible for making sense of the request and producing the appropriate output.</p>
+      <img class="mvc" src="/public/controllers/assets/mvc.png" /></div>
   </div>
 </section><section id="methods-and-actions" class="slide"><h2>Methods and Actions</h2>
   config/routes.rb
@@ -226,7 +226,8 @@
     <p>config/initializers/secret_token.rb</p>
     <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
       YourApp::Application.config.secret_key_base = '49d3f3de9ed86c74b94ad6bd0...'
-    ]]></script></div>
+    ]]></script><p>This token is used to sign cookies that the application sets. Without this, it's impossible to trust cookies that the browser sends, and hence difficult to rely on session based authentication.</p>
+  </div>
 </section><section id="accessing-session" class="slide"><h2>Accessing the session</h2>
   app/controllers/application_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
@@ -277,8 +278,8 @@
       redirect_to root_url, flash: { just_signed_up: true }
     ]]></script></div>
 
-
   <div class="slide" id="flash-template">
+    <h3>Show messages</h3>
     app/views/layouts/application.html.erb
     <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
       &lt;body&gt;
@@ -293,6 +294,7 @@
     ]]></script></div>
 
   <div class="slide" id="flash-keep">
+    <h3>Keep to another request</h3>
     app/controllers/posts_controller.rb
     <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
       class PostsController < ApplicationController
@@ -304,6 +306,7 @@
     ]]></script></div>
 
   <div class="slide" id="flash-now">
+    <h3>Use now</h3>
     app/controllers/posts_controller.rb
     <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     class PostsController < ApplicationController
@@ -342,7 +345,22 @@
         end
       end
     end
-  ]]></script></section><section id="rendring-json-xml" class="slide"><h2>Rendering XML and JSON data</h2>
+  ]]></script><div class="slide" id="cookies-expires">
+    <h3>Sets a cookie that expires in 1 hour</h3>
+    <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+      cookies[:login] = { value: "XJ-122", expires: 1.hour.from_now }
+    ]]></script></div>
+  <div class="slide" id="cookies-signed">
+    <h3>Sets a signed cookie, which prevents users from tampering with its value</h3>
+    <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+      cookies.signed[:user_id] = current_user.id
+    ]]></script></div>
+  <div class="slide" id="cookies-permanent">
+    <h3>Sets a "permanent" cookie (which expires in 20 years from now)</h3>
+    <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+      cookies.permanent[:login] = "XJ-122"
+    ]]></script></div>
+</section><section id="rendring-json-xml" class="slide"><h2>Rendering XML and JSON data</h2>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     class PostsController < ApplicationController
@@ -370,15 +388,7 @@
         end
       end
     end
-  ]]></script><div class="slide" id="skip-filters">
-    app/controllers/posts_controller.rb
-    <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      class PostsController < ApplicationController
-        skip_before_action :require_login, only: [:index, :show]
-      end
-    ]]></script></div>
-
-  <div class="slide" id="after-action">
+  ]]></script><div class="slide" id="after-action">
     app/controllers/posts_controller.rb
     <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
       class PostsController < ApplicationController
@@ -391,6 +401,15 @@
         def last_open_page
           session[:last_open_page] = Time.now
         end
+      end
+    ]]></script></div>
+
+  <div class="slide" id="skip-filters">
+    <h3>Skip before/after action</h3>
+    app/controllers/posts_controller.rb
+    <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+      class PostsController < ApplicationController
+        skip_before_action :require_login, only: [:index, :show]
       end
     ]]></script></div>
 </section><section id="filters-around-examples" class="slide"><h2>Around actions</h2>
@@ -410,6 +429,7 @@
       end
     end
   ]]></script><div class="slide" id="filter-block">
+    <h3>Filter block</h3>
     app/controllers/application_controller.rb
     <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
       class ApplicationController < ActionController::Base
@@ -420,6 +440,7 @@
     ]]></script></div>
 
   <div class="slide" id="filter-class">
+    <h3>Filter class</h3>
     app/controllers/application_controller.rb
     <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
       class ApplicationController < ActionController::Base
@@ -427,7 +448,7 @@
       end
  
       class LoginFilter
-        def self.filter(controller)
+        def self.before(controller)
           unless controller.send(:logged_in?)
             controller.flash[:error] = "You must be logged in"
             controller.redirect_to controller.new_login_url
@@ -549,6 +570,7 @@
       end
     end
   ]]></script></section><section id="sending-files" class="slide"><h2>Sending files</h2>
+  <p>If you want to send a file that already exists on disk, use the send_file method.</p>
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     class PostsController < ApplicationController
@@ -611,7 +633,9 @@
           redirect_to :back
         end
       end
-   
+    ]]></script>
+    app/controllers/posts_controller.rb
+    <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
       class PostsController < ApplicationController
         before_action :check_authorization
    
@@ -647,123 +671,158 @@
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     class PostsController < ApplicationController
-
       def show
         @post = Post.find(params[:id])
       end
-
-      ...
-
+     
       def update
-        if current_user
-          @post = current_user.posts.find(params[:id])
+        if current_user && @post = current_user.posts.find(params[:id])
           if @post.update(post_params)
             redirect_to @post, notice: 'Post was successfully updated.'
           else
-            flash.now[:error] = "Could not save post"
+            flash.now[:error] = 'Could not save post.'
             render action: 'edit'
           end
         else
-          redirect_to root_path
+          redirect_to root_path, notice: 'Not authorized user.'
         end
       end
-
+     
       private
-
-        def post_params
-          params[:post]
-        end
+     
+      def post_params
+        params.require(:post).permit(:title, :text)
+      end
     end
   ]]></script></section><section id="testing" class="slide"><h2>Testing</h2>
+  spec/factories/users.rb
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    FactoryGirl.define do
+      factory :user do
+        email { Faker::Internet.email } 
+        name { Faker::Name.name }
+      end
+    end
+  ]]></script>
+
+  spec/factories/posts.rb
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    FactoryGirl.define do
+      factory :post do
+        title { Faker::Lorem.sentence }
+        text { Faker::Lorem.paragraph }
+        user
+      end
+    end
+  ]]></script>
+
   spec/controllers/posts_controller_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     require 'spec_helper'
-
+ 
     describe PostsController do
-      before(:each) do
-        @post_params = { "name" => "post name", "description" => "description text" }
-        @post = mock_model(Post, id: 1, title: 'post name', text: "description text", save: true)
+      let(:post_params) { FactoryGirl.attributes_for(:post).stringify_keys }
+      let(:post) { FactoryGirl.build_stubbed(:post) }
+      let(:user) { FactoryGirl.create(:user) }
+     
+      describe "GET #show" do
+        before do
+          Post.stub(:find).and_return post
+        end
+     
+        it "receives find and return post" do
+          expect(Post).to receive(:find).with(post.id.to_s)
+          get :show, id: post.id
+        end
+     
+        it "assigns @post" do
+          get :show, id: post.id
+          expect(assigns(:post)).not_to be_nil
+        end
+     
+        it "renders :show template" do
+          get :show, id: post.id
+          expect(response).to render_template :show
+        end
       end
 
-      describe "GET 'show' for post" do
-        before(:each) do
-          Post.stub!(:find).and_return @post
+      describe "PUT #update" do
+        context "without ability to update" do
+          before do
+            user.stub_chain(:posts, :find).and_return nil
+            controller.stub(:current_user).and_return user
+            put :update, id: post.id, post: post_params
+          end
+
+          it "redirects to root page" do
+            expect(response).to redirect_to(root_path)
+          end
+
+          it "sends notice" do
+            expect(flash[:notice]).to eq 'Not authorized user.'
+          end
         end
 
-        it "should receive find and return post" do
-          post.should_receive(:find).with(@post.id.to_s).and_return @post
-          get :show, id: @post.id
+        context "with valid attributes" do
+          before do
+            post.stub(:update).and_return true
+            user.stub_chain(:posts, :find).and_return post
+            controller.stub(:current_user).and_return user
+          end
+     
+          it "assigns @post" do
+            put :update, id: post.id, post: post_params
+            expect(assigns(:post)).not_to be_nil
+          end
+     
+          it "receives update for @post" do
+            expect(post).to receive(:update).with(post_params)
+            put :update, id: post.id, post: post_params
+          end
+     
+          it "sends success notice" do
+            put :update, id: post.id, post: post_params
+            expect(flash[:notice]).to eq 'Post was successfully updated.'
+          end
+     
+          it "redirects to post page" do
+            put :update, id: post.id, post: post_params
+            expect(response).to redirect_to post
+          end
         end
 
-        it "should assign post" do
-          get :show, id: @post.id
-          assigns(:post).should == @post
+        context "with forbidden attributes" do
+          before do
+            post.stub(:update).and_return true
+            user.stub_chain(:posts, :find).and_return post
+            controller.stub(:current_user).and_return user
+          end
+
+          it "generates ParameterMissing error without post params" do
+            expect { put :update, id: post.id }.to raise_error(ActionController::ParameterMissing) 
+          end
+
+          it "filters forbidden params" do
+            expect(post).to receive(:update).with(post_params)
+            put :update, id: post.id, post: post_params.merge(user_id: 1)
+          end
         end
 
-        it "should render template show" do
-          get :show, id: @post.id
-          response.should render_template(:show)
-        end
-      end
-
-      describe "POST 'update' for post" do
-        it "should redirect to access page without ability" do
-          post :update, id: @post.id, post: @post_params
-          response.should redirect_to root_path
-        end
-
-        describe "update post with valid data" do
-
-          before(:each) do
-            @user = Factory.create(:user)
-            controller.stub(:current_user).and_return @user
-            @user.stub_chain(:posts, :find).and_return @post
-            @post.stub!(:update_attributes).and_return true
+        context "with invalid attributes" do
+          before do
+            post.stub(:update).and_return false
+            user.stub_chain(:posts, :find).and_return post
+            controller.stub(:current_user).and_return user
           end
 
-          it "should assign post" do
-            post :update, id: @post.id, post: @post_params
-            assigns(:post).should == @post
+          it "sends error flash" do
+            put :update, id: post.id, post: post_params
+            expect(flash[:error]).to eq 'Could not save post.'
           end
 
-          it "should receive update attributes and return true" do
-            @post.should_receive(:update_attributes).with(@post_params).and_return true
-            post :update, id: @post.id, post: @post_params
-          end
-
-          it "should return success flash" do
-            post :update, id: @post.id, post: @post_params
-            flash[:success].should == 'Post was successfully updated.'
-          end
-
-          it "should redirect to post" do
-            post :update, id: @post.id, post: @post_params
-            response.should redirect_to @post
-          end
-
-        end
-
-        describe "update post with invalid data" do
-          before(:each) do
-            @user = Factory.create(:user)
-            controller.stub(:current_user).and_return @user
-            @user.stub_chain(:posts, :find).and_return @post
-            @post.stub!(:update_attributes).and_return false
-          end
-
-          it "should receive update attributes and return false" do
-            @post.should_receive(:update_attributes).and_return false
-            post :update, id: @post.id
-          end
-
-          it "should return error flash" do
-            post :update, id: @post.id
-            flash[:error].should == "Could not save post"
-          end
-
-          it "should render template edit" do
-            post :update, id: @post.id
-            response.should render_template(:edit)
+          it "renders :edit template" do
+            put :update, id: post.id, post: post_params
+            expect(response).to render_template :edit
           end
         end
       end

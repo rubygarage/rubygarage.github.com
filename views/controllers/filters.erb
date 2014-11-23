@@ -16,15 +16,6 @@
     end
   </script>
 
-  <div class="slide" id="skip-filters">
-    app/controllers/posts_controller.rb
-    <script type="syntaxhighlighter" class="brush: ruby">
-      class PostsController < ApplicationController
-        skip_before_action :require_login, only: [:index, :show]
-      end
-    </script>
-  </div>
-
   <div class="slide" id="after-action">
     app/controllers/posts_controller.rb
     <script type="syntaxhighlighter" class="brush: ruby">
@@ -38,6 +29,16 @@
         def last_open_page
           session[:last_open_page] = Time.now
         end
+      end
+    </script>
+  </div>
+
+  <div class="slide" id="skip-filters">
+    <h3>Skip before/after action</h3>
+    app/controllers/posts_controller.rb
+    <script type="syntaxhighlighter" class="brush: ruby">
+      class PostsController < ApplicationController
+        skip_before_action :require_login, only: [:index, :show]
       end
     </script>
   </div>

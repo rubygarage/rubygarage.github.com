@@ -12440,6 +12440,16 @@ a.label:hover, a.badge:hover {
 #topic .about p, #topic .about li {
   font-weight: normal;
 }
+#topic .about .mvc {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.1) 0 1px 4px, rgba(0, 0, 0, 0.05) 0 0 40px inset;
+  -moz-box-shadow: rgba(0, 0, 0, 0.1) 0 1px 4px, rgba(0, 0, 0, 0.05) 0 0 40px inset;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 1px 4px, rgba(0, 0, 0, 0.05) 0 0 40px inset;
+  border: 1px solid #dddddd;
+  padding: 10px;
+}
 
 .action {
   text-align: left;
