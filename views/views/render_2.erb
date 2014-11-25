@@ -4,7 +4,6 @@
       def show
         @post = Post.find(params[:id])
         render 'posts/show'
-        render template: 'posts/show'
       end
   </script>
 
@@ -13,7 +12,7 @@
     <script type="syntaxhighlighter" class="brush: ruby">
         def show
           @post = Post.find(params[:id])
-          render file: '/var/www/blog/app/views/posts/show'
+          render '/var/www/blog/app/views/posts/show'
         end
     </script>
   </div>
