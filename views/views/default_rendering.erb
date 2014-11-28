@@ -12,8 +12,8 @@
         def index
           @posts = Post.all
           respond_to do |format|
-            format.html # index.html.erb
-            format.json # index.json.jbuilder
+            format.html # app/views/posts/index.html.erb
+            format.json # app/views/posts/index.json.jbuilder
           end
         end
       end

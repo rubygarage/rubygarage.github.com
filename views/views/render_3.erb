@@ -2,7 +2,7 @@
   <h2>Rendering Format</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
       def index
-        @post = Post.all
+        @posts = Post.all
         respond_to do |format|
           format.html {render html: "Count <strong>#{@posts.length}</strong>".html_safe}
           format.json {render json: @posts}

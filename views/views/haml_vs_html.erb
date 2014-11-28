@@ -1,0 +1,44 @@
+<section id="haml-vs-html" class="slide">
+  <h2>Haml vs HTML</h2>
+  Haml
+  <script type="syntaxhighlighter" class="brush: ruby">
+    #container
+      .box
+        %h2 Some Headline
+        %p Lorem ipsum doller your mom...
+        %ul.mainList
+          %li One
+          %li Two
+          %li Three
+      .box
+        %h2 Some Headline
+        %p Lorem ipsum doller your mom...
+        %ul.mainList
+          %li One
+          %li Two
+          %li Three​​​
+  </script>
+  HTML
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <div id='container'>
+      <div class='box'>
+        <h2>Some Headline</h2>
+        <p>Lorem ipsum doller your mom...</p>
+        <ul class='mainList'>
+          <li>One</li>
+          <li>Two</li>
+          <li>Three</li>
+        </ul>
+      </div>
+      <div class='box'>
+        <h2>Some Headline</h2>
+        <p>Lorem ipsum doller your mom...</p>
+        <ul class='mainList'>
+          <li>One</li>
+          <li>Two</li>
+          <li>Three​​​</li>
+        </ul>
+      </div>
+    </div>
+  </script>
+</section>

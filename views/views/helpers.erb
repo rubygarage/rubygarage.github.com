@@ -25,16 +25,21 @@
       end
   </script>
   <div class ="slide" id= 'use-helper'>
+    app/views/posts/show.html.erb
     <script type="syntaxhighlighter" class="brush: ruby">
         &lt;% title("text") %&gt;
+    </script>
+    app/views/layouts/application.html.erb
+    <script type="syntaxhighlighter" class="brush: ruby">
         &lt;%= title_tag prefix: 'pr', suffix: 'sf', separator: '-' %&gt;
     </script>
   </div>
   <div class ="slide" id= 'helper-result'>
+    HTML
     <script type="syntaxhighlighter" class="brush: ruby">
-        <title>
-          pr-text-sf
-        </title>
+      <title>
+        pr-text-sf
+      </title>
     </script>
   </div>
 </section>

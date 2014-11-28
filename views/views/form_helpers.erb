@@ -17,45 +17,5 @@
         <input name = "commit" type ="submit" value= "Search" />
       </form>
   </script>
-
-  <div class = "slide" id="checkbox">
-    <p>checkbox_tag</p>
-
-    <script type="syntaxhighlighter" class="brush: ruby">
-        check_box_tag(name, value = "1", checked = false, options = {})
-    </script>
-
-    <script type="syntaxhighlighter" class="brush: ruby">
-        &lt;%= check_box_tag(:like) %&gt;
-    </script>
-
-    <script type="syntaxhighlighter" class="brush: ruby">
-        <input id="like" name="like" type="checkbox" value="1" />
-    </script>
-
-    <script type="syntaxhighlighter" class="brush: ruby">
-        &lt;%= check_box_tag 'like', 'accepted', false, disabled: true %&gt;
-    </script>
-
-    <script type="syntaxhighlighter" class="brush: ruby">
-        <input id="like" name="like" type="checkbox" value="accepted" disabled = "disabled"/>
-    </script>
-  </div>
-  <div class = "slide" id='radio-button'>
-    <script type="syntaxhighlighter" class="brush: ruby">
-        &lt;%= radion_button_tag(:age, "child") %&gt;
-        &lt;%= label_tag(:age_child, "I am younger than 21") %&gt;
-        &lt;%= radion_button_tag(:age, "adult") %&gt;
-        &lt;%= label_tag(:age_child, "I am over 21") %&gt;
-    </script>
-
-    <script type="syntaxhighlighter" class="brush: ruby">
-        <input id= "age_child" name= "age" type= "radio" value= "child" />
-        <label for= "age_child"> I am younger than 21 </label>
-        <input id= "age_adult" name= "age" type= "radio" value= "adult" />
-        <label for= "age_child"> I am over 21 </label>
-    </script>
-
-  </div>
-  You can find more details <a href= "/api.rubyonrails.org/classes/ActionView/Helpers/FormTagHelper.html#" target="_blank"> here</a>
+  You can find more details <a href= "http://api.rubyonrails.org/classes/ActionView/Helpers/FormTagHelper.html" target="_blank"> here</a>
 </section>
