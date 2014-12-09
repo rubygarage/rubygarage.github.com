@@ -1,0 +1,83 @@
+<section id="a-little-complicated" class="slide">
+  <h2>Just do it a little complicated</h2>
+  config.ru
+  <script type="syntaxhighlighter" class="brush: ruby">
+    require "./lib/racker"
+    run Racker
+  </script>
+  lib/racker.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    require "erb"
+
+    class Racker
+      def self.call(env)
+        new(env).response.finish
+      end
+      
+      def initialize(env)
+        @request = Rack::Request.new(env)
+      end
+      
+      def response
+        case @request.path
+        when "/" then Rack::Response.new(render("index.html.erb"))
+        when "/update_word"
+          Rack::Response.new do |response|
+            response.set_cookie("word", @request.params["word"])
+            response.redirect("/")
+          end
+        else Rack::Response.new("Not Found", 404)
+        end
+      end
+      
+      def render(template)
+        path = File.expand_path("../views/#{template}", __FILE__)
+        ERB.new(File.read(path)).result(binding)
+      end
+      
+      def word
+        @request.cookies["word"] || "Nothing"
+      end
+    end
+  </script>
+  lib/views/index.html.erb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>WEB page</title>
+      </head>
+      <body>
+        <div id="container">
+          <h1>You said '&lt;%= word %&gt;'</h1>
+          <p>Say somthing new</p>
+          <form method="post" action="/update_word">
+            <input name="word" type="text">
+            <input type="submit" value="Say!">
+          </form>
+        </div>
+      </body>
+    </html>
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    $ rackup
+  </script>
+  <h3>Go to http://localhost:9292</h3>
+  <div class="html-example">
+    <h4>You said 'Nothing'</h4>
+    <p>Say somthing new</p>
+    <form method="post" action="/update_word">
+      <input name="word" type="text" value="Hello!">
+      <input type="submit" value="Say!">
+    </form>
+  </div>
+  <h3>After submit</h3>
+  <div class="html-example">
+    <h4>You said 'Hello!'</h4>
+    <p>Say somthing new</p>
+    <form method="post" action="/update_word">
+      <input name="word" type="text" value="">
+      <input type="submit" value="Say!">
+    </form>
+  </div>
+</section>

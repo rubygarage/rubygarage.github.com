@@ -12429,3 +12429,11 @@ a.label:hover, a.badge:hover {
   float: left;
   width: 32%;
 }
+
+#topic .about {
+  text-align: left;
+  padding: 5% 10%;
+}
+#topic .about p, #topic .about li {
+  font-weight: normal;
+}

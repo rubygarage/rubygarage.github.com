@@ -97,6 +97,10 @@ class App < Sinatra::Base
     erb :bdd
   end
 
+  get "/devise" do
+    erb :devise
+  end
+
   #get "/cssbestpractices" do
   #  erb :cssbestpractices
   #end

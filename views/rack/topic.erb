@@ -1,5 +1,18 @@
 <section id="topic" class="slide">
   <div class="vcenter">
     <h1>Rack</h1>
+    <div class="about">
+      <p>
+        <strong>Rack</strong> provides a minimal interface between webservers supporting Ruby and Ruby frameworks. This might seem a fairly simple thing, but it gives us a lot of power. One of the things it enables is Rack Middleware which is a filter that can be used to intercept a request and alter the response as a request is made to an application.
+      </p>
+      <p>
+        To use Rack, provide an "app": an object that responds to the call method, taking the environment hash as a parameter, and returning an Array with three elements:
+      </p>
+      <ul>
+        <li>The HTTP response code</li>
+        <li>A Hash of headers</li>
+        <li>The response body, which must respond to each</li>
+      </ul>
+    </div>
   </div>
 </section>

@@ -1,0 +1,54 @@
+<section id="useful-app" class="slide">
+  <h2>Just make it useful</h2>
+  config.ru
+  <script type="syntaxhighlighter" class="brush: ruby">
+    require "./lib/racker"
+    run Racker.new
+  </script>
+  lib/racker.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    require "erb"
+
+    class Racker
+      def call(env)
+        Rack::Response.new(render("index.html.erb"))
+      end
+
+      def render(template)
+        path = File.expand_path("../views/#{template}", __FILE__)
+        ERB.new(File.read(path)).result(binding)
+      end
+    end
+  </script>
+  lib/views/index.html.erb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>WEB page</title>
+      </head>
+      <body>
+        <div id="container">
+          <h1>We can load HTML! Wow!</h1>
+        </div>
+      </body>
+    </html>
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    $ rackup
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    $ curl http://localhost:9292
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>WEB page</title>
+      </head>
+      <body>
+        <div id="container">
+          <h1>We can load HTML! Wow!</h1>
+        </div>
+      </body>
+    </html>
+  </script>
+</section>

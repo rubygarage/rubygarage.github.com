@@ -1,0 +1,43 @@
+<section id="request" class="slide">
+  <h2>Request</h2>
+  lib/racker.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    require "erb"
+
+    class Racker
+      def call(env)
+        request = Rack::Request.new(env)
+        case request.path
+        when "/" then Rack::Response.new(render("index.html.erb"))
+        else Rack::Response.new("Not Found", 404)
+        end
+      end
+
+      def render(template)
+        path = File.expand_path("../views/#{template}", __FILE__)
+        ERB.new(File.read(path)).result(binding)
+      end
+    end
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    $ rackup
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    $ curl http://localhost:9292
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>WEB page</title>
+      </head>
+      <body>
+        <div id="container">
+          <h1>We can load HTML! Wow!</h1>
+        </div>
+      </body>
+    </html>
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    $ curl http://localhost:9292/page
+    Not Found
+  </script>
+</section>
