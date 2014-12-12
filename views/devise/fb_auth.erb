@@ -1,0 +1,19 @@
+<section id="fb-auth" class="slide">
+  <h2>Facebook Authentication</h2>
+  Gemfile
+  <script type="syntaxhighlighter" class="brush: ruby">
+    gem 'devise'
+    gem 'omniauth-facebook'
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    $ bundle
+  </script>
+  config/initializers/devise.rb
+  <script type="syntaxhighlighter" class="brush: bash">
+    Devise.setup do |config|
+    # ...
+    
+    # ...
+    end
+  </script>
+</section>

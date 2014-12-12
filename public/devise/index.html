@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/> 
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <title>Devise.</title>
+  <link href="assets/devise.css" rel="stylesheet" />
+  <script src="assets/devise.js"></script>
+</head>
+
+<body class="deck-container">
+
+<!-- Begin slides. Just make elements with a class of slide. -->
+<section id="intro" class="slide">
+  <div class="vcenter">
+    <h1>Devise</h1>
+    <div class="about">
+      <p>
+        Devise is a flexible authentication solution for Rails based on Warden. It:
+      </p>
+      <ul>
+        <li>Is Rack based.</li>
+        <li>Is a complete MVC solution based on Rails engines.</li>
+        <li>Allows you to have multiple models signed in at the same time.</li>
+        <li>Is based on a modularity concept: use only what you really need.</li>
+      </ul>
+      <a href="https://github.com/plataformatec/devise" target="_blank">https://github.com/plataformatec/devise</a>
+    </div>    
+  </div>
+</section><section id="install" class="slide">
+  <h2>Install Devise</h2>
+  Gemfile
+  <script type="syntaxhighlighter" class="brush: ruby">
+    gem 'devise'
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    $ bundle
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    $ rails generate devise:install
+      create  config/initializers/devise.rb
+      create  config/locales/devise.en.yml
+      ===============================================================================
+
+      Some setup you must do manually if you haven't yet:
+
+        1. Ensure you have defined default url options in your environments files. Here
+           is an example of default_url_options appropriate for a development environment
+           in config/environments/development.rb:
+
+             config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+
+           In production, :host should be set to the actual host of your application.
+
+        2. Ensure you have defined root_url to *something* in your config/routes.rb.
+           For example:
+
+             root to: "home#index"
+
+        3. Ensure you have flash messages in app/views/layouts/application.html.erb.
+           For example:
+
+             <p class="notice">&lt;%= notice %&gt;</p>
+             <p class="alert">&lt;%= alert %&gt;</p>
+
+        4. If you are deploying on Heroku with Rails 3.2 only, you may want to set:
+
+             config.assets.initialize_on_precompile = false
+
+           On config/application.rb forcing your application to not access the DB
+           or load models when precompiling your assets.
+
+        5. You can copy Devise views (for customization) to your app by running:
+
+             rails g devise:views
+  </script>
+</section><section id="generate-model" class="slide">
+  <h2>Generate Devise MODEL</h2>
+  <script type="syntaxhighlighter" class="brush: bash">
+    $ rails generate devise user
+    invoke  active_record
+      create    db/migrate/20141211212008_devise_create_users.rb
+      create    app/models/user.rb
+      invoke    rspec
+      create      spec/models/user_spec.rb
+      insert    app/models/user.rb
+       route  devise_for :users
+  </script>
+  app/models/user.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+  class User < ActiveRecord::Base
+    # Include default devise modules. Others available are:
+    # :confirmable, :lockable, :timeoutable and :omniauthable
+    devise :database_authenticatable, :registerable,
+           :recoverable, :rememberable, :trackable, :validatable
+  end
+  </script>
+  db/migrate/20141211212008_devise_create_users.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class DeviseCreateUsers < ActiveRecord::Migration
+      def change
+        create_table(:users) do |t|
+          ## Database authenticatable
+          t.string :email,              null: false, default: ""
+          t.string :encrypted_password, null: false, default: ""
+
+          ## Recoverable
+          t.string   :reset_password_token
+          t.datetime :reset_password_sent_at
+
+          ## Rememberable
+          t.datetime :remember_created_at
+
+          ## Trackable
+          t.integer  :sign_in_count, default: 0, null: false
+          t.datetime :current_sign_in_at
+          t.datetime :last_sign_in_at
+          t.string   :current_sign_in_ip
+          t.string   :last_sign_in_ip
+
+          ## Confirmable
+          # t.string   :confirmation_token
+          # t.datetime :confirmed_at
+          # t.datetime :confirmation_sent_at
+          # t.string   :unconfirmed_email # Only if using reconfirmable
+
+          ## Lockable
+          # t.integer  :failed_attempts, default: 0, null: false # Only if lock strategy is :failed_attempts
+          # t.string   :unlock_token # Only if unlock strategy is :email or :both
+          # t.datetime :locked_at
+
+
+          t.timestamps
+        end
+
+        add_index :users, :email,                unique: true
+        add_index :users, :reset_password_token, unique: true
+        # add_index :users, :confirmation_token,   unique: true
+        # add_index :users, :unlock_token,         unique: true
+      end
+    end
+  </script>
+  config/routes.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    Bookstore::Application.routes.draw do
+      devise_for :users
+    end
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    $ rake db:migrate
+    ==  DeviseCreateUsers: migrating ==============================================
+    -- create_table(:users)
+       -> 0.0112s
+    -- add_index(:users, :email, {:unique=>true})
+       -> 0.0012s
+    -- add_index(:users, :reset_password_token, {:unique=>true})
+       -> 0.0008s
+    ==  DeviseCreateUsers: migrated (0.0141s) =====================================
+  </script>
+</section><section id="login-signup" class="slide">
+  <h2>LogIn/SignUp</h2>
+  app/views/layouts/application.html.erb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Bookstore</title>
+      &lt;%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+      &lt;%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+      &lt;%= csrf_meta_tags %>
+    </head>
+    <body>
+      <div id="user-nav">
+        &lt;% if user_signed_in? %>
+          Logged in as <strong>&lt;%= current_user.email %></strong>.
+          &lt;%= link_to 'Edit profile', edit_user_registration_path %> |
+          &lt;%= link_to "Logout", destroy_user_session_path, method: :delete %>
+        &lt;% else %>
+          &lt;%= link_to "Sign up", new_user_registration_path %> |
+          &lt;%= link_to "Login", new_user_session_path %>
+        &lt;% end %>
+      </div>
+
+      &lt;% flash.each do |name, msg| %>
+        &lt;%= content_tag :div, msg, id: "flash-#{name}" %>
+      &lt;% end %>
+
+      &lt;%= yield %>
+    </body>
+    </html>
+  </script>
+</section><section id="generate-views" class="slide">
+  <h2>Generate Views</h2>
+  <script type="syntaxhighlighter" class="brush: bash">
+    $ rails generate devise:views
+      invoke  Devise::Generators::SharedViewsGenerator
+      create    app/views/devise/shared
+      create    app/views/devise/shared/_links.html.erb
+      invoke  form_for
+      create    app/views/devise/confirmations
+      create    app/views/devise/confirmations/new.html.erb
+      create    app/views/devise/passwords
+      create    app/views/devise/passwords/edit.html.erb
+      create    app/views/devise/passwords/new.html.erb
+      create    app/views/devise/registrations
+      create    app/views/devise/registrations/edit.html.erb
+      create    app/views/devise/registrations/new.html.erb
+      create    app/views/devise/sessions
+      create    app/views/devise/sessions/new.html.erb
+      create    app/views/devise/unlocks
+      create    app/views/devise/unlocks/new.html.erb
+      invoke  erb
+      create    app/views/devise/mailer
+      create    app/views/devise/mailer/confirmation_instructions.html.erb
+      create    app/views/devise/mailer/reset_password_instructions.html.erb
+      create    app/views/devise/mailer/unlock_instructions.html.erb
+  </script>
+</section><section id="fb-auth" class="slide">
+  <h2>Facebook Authentication</h2>
+  Gemfile
+  <script type="syntaxhighlighter" class="brush: ruby">
+    gem 'devise'
+    gem 'omniauth-facebook'
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    $ bundle
+  </script>
+  config/initializers/devise.rb
+  <script type="syntaxhighlighter" class="brush: bash">
+    Devise.setup do |config|
+    # ...
+    
+    # ...
+    end
+  </script>
+</section><!-- End slides. -->
+
+<!-- deck.navigation snippet -->
+<a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
+<a href="#" class="deck-next-link" title="Next">&#8594;</a>
+
+<!-- deck.status snippet -->
+<p class="deck-status">
+  <span class="deck-status-current"></span>
+  /
+  <span class="deck-status-total"></span>
+</p>
+
+<!-- deck.hash snippet -->
+<a href="." title="Permalink to this slide" class="deck-permalink">#</a>
+
+</body>
+</html>

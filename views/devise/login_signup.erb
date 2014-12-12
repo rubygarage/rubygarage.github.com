@@ -1,0 +1,33 @@
+<section id="login-signup" class="slide">
+  <h2>LogIn/SignUp</h2>
+  app/views/layouts/application.html.erb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Bookstore</title>
+      &lt;%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+      &lt;%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+      &lt;%= csrf_meta_tags %>
+    </head>
+    <body>
+      <div id="user-nav">
+        &lt;% if user_signed_in? %>
+          Logged in as <strong>&lt;%= current_user.email %></strong>.
+          &lt;%= link_to 'Edit profile', edit_user_registration_path %> |
+          &lt;%= link_to "Logout", destroy_user_session_path, method: :delete %>
+        &lt;% else %>
+          &lt;%= link_to "Sign up", new_user_registration_path %> |
+          &lt;%= link_to "Login", new_user_session_path %>
+        &lt;% end %>
+      </div>
+
+      &lt;% flash.each do |name, msg| %>
+        &lt;%= content_tag :div, msg, id: "flash-#{name}" %>
+      &lt;% end %>
+
+      &lt;%= yield %>
+    </body>
+    </html>
+  </script>
+</section>

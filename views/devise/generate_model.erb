@@ -1,0 +1,84 @@
+<section id="generate-model" class="slide">
+  <h2>Generate Devise MODEL</h2>
+  <script type="syntaxhighlighter" class="brush: bash">
+    $ rails generate devise user
+    invoke  active_record
+      create    db/migrate/20141211212008_devise_create_users.rb
+      create    app/models/user.rb
+      invoke    rspec
+      create      spec/models/user_spec.rb
+      insert    app/models/user.rb
+       route  devise_for :users
+  </script>
+  app/models/user.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+  class User < ActiveRecord::Base
+    # Include default devise modules. Others available are:
+    # :confirmable, :lockable, :timeoutable and :omniauthable
+    devise :database_authenticatable, :registerable,
+           :recoverable, :rememberable, :trackable, :validatable
+  end
+  </script>
+  db/migrate/20141211212008_devise_create_users.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class DeviseCreateUsers < ActiveRecord::Migration
+      def change
+        create_table(:users) do |t|
+          ## Database authenticatable
+          t.string :email,              null: false, default: ""
+          t.string :encrypted_password, null: false, default: ""
+
+          ## Recoverable
+          t.string   :reset_password_token
+          t.datetime :reset_password_sent_at
+
+          ## Rememberable
+          t.datetime :remember_created_at
+
+          ## Trackable
+          t.integer  :sign_in_count, default: 0, null: false
+          t.datetime :current_sign_in_at
+          t.datetime :last_sign_in_at
+          t.string   :current_sign_in_ip
+          t.string   :last_sign_in_ip
+
+          ## Confirmable
+          # t.string   :confirmation_token
+          # t.datetime :confirmed_at
+          # t.datetime :confirmation_sent_at
+          # t.string   :unconfirmed_email # Only if using reconfirmable
+
+          ## Lockable
+          # t.integer  :failed_attempts, default: 0, null: false # Only if lock strategy is :failed_attempts
+          # t.string   :unlock_token # Only if unlock strategy is :email or :both
+          # t.datetime :locked_at
+
+
+          t.timestamps
+        end
+
+        add_index :users, :email,                unique: true
+        add_index :users, :reset_password_token, unique: true
+        # add_index :users, :confirmation_token,   unique: true
+        # add_index :users, :unlock_token,         unique: true
+      end
+    end
+  </script>
+  config/routes.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    Bookstore::Application.routes.draw do
+      devise_for :users
+    end
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    $ rake db:migrate
+    ==  DeviseCreateUsers: migrating ==============================================
+    -- create_table(:users)
+       -> 0.0112s
+    -- add_index(:users, :email, {:unique=>true})
+       -> 0.0012s
+    -- add_index(:users, :reset_password_token, {:unique=>true})
+       -> 0.0008s
+    ==  DeviseCreateUsers: migrated (0.0141s) =====================================
+  </script>
+</section>
