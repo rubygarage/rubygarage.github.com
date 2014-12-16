@@ -1,0 +1,22 @@
+<section id="install" class="slide">
+  <h2>Install RailsAdmin</h2>
+  Gemfile
+  <script type="syntaxhighlighter" class="brush: ruby">
+    gem 'rails_admin'
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    $ bundle
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    $ rails g rails_admin:install
+           ?  Where do you want to mount rails_admin? Press <enter> for [admin] > 
+       route  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
+      create  config/initializers/rails_admin.rb
+  </script>
+  config/routes.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    Bookstore::Application.routes.draw do
+      mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
+    end
+  </script>
+</section>

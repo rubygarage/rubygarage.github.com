@@ -101,6 +101,14 @@ class App < Sinatra::Base
     erb :devise
   end
 
+  get "/railsadmin" do
+    erb :railsadmin
+  end
+
+  get "/cancan" do
+    erb :cancan
+  end
+
   #get "/cssbestpractices" do
   #  erb :cssbestpractices
   #end
