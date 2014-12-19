@@ -1,0 +1,20 @@
+<section id="install" class="slide">
+  <h2>Install RailsAdmin</h2>
+  Gemfile
+  <script type="syntaxhighlighter" class="brush: ruby">
+    gem 'carrierwave'
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    $ bundle
+  </script>
+  <h3>Generate uploader</h3>
+  <script type="syntaxhighlighter" class="brush: bash">
+    $ rails generate uploader Photo
+      create app/uploaders/photo_uploader.rb
+  </script>
+  <h3>Add photo to User</h3>
+  <script type="syntaxhighlighter" class="brush: bash">
+    $ rails g migration add_photo_to_users photo:string
+      create db/migrate/20141218224302_add_photo_to_users.rb
+  </script>
+</section>

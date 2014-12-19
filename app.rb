@@ -109,6 +109,10 @@ class App < Sinatra::Base
     erb :cancan
   end
 
+  get "/carrierwave" do
+    erb :carrierwave
+  end
+
   #get "/cssbestpractices" do
   #  erb :cssbestpractices
   #end

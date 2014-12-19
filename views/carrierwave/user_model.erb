@@ -1,0 +1,16 @@
+<section id="user-model" class="slide">
+  <h2>Mount uploader</h2>
+  app/models/user.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class User < ActiveRecord::Base
+      # Include default devise modules. Others available are:
+      # :confirmable, :lockable, :timeoutable and :omniauthable
+      devise :database_authenticatable, :registerable,
+             :recoverable, :rememberable, :trackable, :validatable
+      
+      has_many :posts
+
+      mount_uploader :photo, PhotoUploader
+    end
+  </script>
+</section>
