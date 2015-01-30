@@ -1,0 +1,22 @@
+<section id="configuration" class="slide">
+  <h2>Configuration</h2>
+  <p>Besides the <a href="https://github.com/rails/rails/blob/master/railties/lib/rails/railtie.rb" target="_blank">Railtie</a> configuration which is shared across the application, in a Rails::Engine you can access autoload_paths, eager_load_paths and autoload_once_paths, which, differently from a Railtie, are scoped to the current engine.</p>
+  lib/shopping_cart/engine.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class MyEngine < Rails::Engine
+      # Add a load path for this specific Engine
+      config.autoload_paths << File.expand_path("../lib/some/path", __FILE__)
+
+      config.generators do |g|
+        g.orm             :active_record
+        g.template_engine :erb
+        g.test_framework  :test_unit
+      end
+
+      # To add an initialization step from your Railtie to Rails boot process, you just need to create an initializer block
+      initializer "my_engine.add_middleware" do |app|
+        app.middleware.use MyEngine::Middleware
+      end
+    end
+  </script>
+</section>

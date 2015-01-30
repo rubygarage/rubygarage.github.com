@@ -1,0 +1,18 @@
+<section id="routes-and-mount" class="slide">
+  <h2>Routes and Mount</h2>
+  <h3>Routes</h3>
+  <p>If you don't specify an endpoint, routes will be used as the default endpoint. You can use them just like you use an application's routes</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    MyEngine::Engine.routes.draw do
+      get "/" => "posts#index"
+    end
+  </script>
+  <h3>Mount</h3>
+  <p>Now you can mount your engine in application's routes</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    Rails.application.routes.draw do
+      mount MyEngine::Engine => "/blog"
+      get "/blog/omg" => "main#omg"
+    end
+  </script>
+</section>

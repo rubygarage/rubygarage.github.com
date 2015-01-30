@@ -113,6 +113,10 @@ class App < Sinatra::Base
     erb :carrierwave
   end
 
+  get "/railsengines" do
+    erb :railsengines
+  end
+
   #get "/cssbestpractices" do
   #  erb :cssbestpractices
   #end

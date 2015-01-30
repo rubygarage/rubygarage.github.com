@@ -1,0 +1,70 @@
+<section id="testing" class="slide">
+  <h2>Testing with RSpec, Capybara, and FactoryGirl</h2>
+  <p>Add these lines to the gemspec file</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    s.add_development_dependency 'rspec-rails'
+    s.add_development_dependency 'capybara'
+    s.add_development_dependency 'factory_girl_rails'
+  </script>
+  <p>Add this line to your gemspec file</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    s.test_files = Dir["spec/**/*"]
+  </script>
+  <p>Modify Rakefile to look like this</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    #!/usr/bin/env rake
+    begin
+      require 'bundler/setup'
+    rescue LoadError
+      puts 'You must `gem install bundler` and `bundle install` to run rake tasks'
+    end
+
+    APP_RAKEFILE = File.expand_path("../spec/dummy/Rakefile", __FILE__)
+    load 'rails/tasks/engine.rake'
+
+    Bundler::GemHelper.install_tasks
+    Dir[File.join(File.dirname(__FILE__), 'tasks/**/*.rake')].each {|f| load f }
+    
+    require 'rspec/core'
+    require 'rspec/core/rake_task'
+    
+    desc "Run all specs in spec directory (excluding plugin specs)"
+    RSpec::Core::RakeTask.new(:spec => 'app:db:test:prepare')
+    
+    task :default => :spec
+  </script>
+  <p>Create a spec/spec_helper.rb file</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    ENV['RAILS_ENV'] ||= 'test'
+    
+    require File.expand_path("../dummy/config/environment.rb",  __FILE__)
+    require 'rspec/rails'
+    require 'rspec/autorun'
+    require 'factory_girl_rails'
+    
+    Rails.backtrace_cleaner.remove_silencers!
+    
+    # Load support files
+    Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
+    
+    RSpec.configure do |config|
+      config.mock_with :rspec
+      config.use_transactional_fixtures = true
+      config.infer_base_class_for_anonymous_controllers = false
+      config.order = "random"
+    end
+  </script>
+  <p>Add this config to your engine file</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    module ShoppingCart
+      class Engine < ::Rails::Engine
+        config.generators do |g|
+          g.test_framework      :rspec,        :fixture => false
+          g.fixture_replacement :factory_girl, :dir => 'spec/factories'
+          g.assets false
+          g.helper false
+        end
+      end
+    end
+  </script>
+</section>

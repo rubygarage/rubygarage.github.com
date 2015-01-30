@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>RailsEngines</title>
+  <link href="assets/railsengines.css" rel="stylesheet">
+  <script src="assets/railsengines.js"></script>
+</head>
+
+<body class="deck-container">
+
+<!-- Begin slides. Just make elements with a class of slide. -->
+<%= partial :'railsengines/topic' %>
+<%= partial :'railsengines/configuration' %>
+<%= partial :'railsengines/rack_and_middleware' %>
+<%= partial :'railsengines/routes_and_mount' %>
+<%= partial :'railsengines/isolated' %>
+<%= partial :'railsengines/full_or_mountable' %>
+<%= partial :'railsengines/init_engine' %>
+<%= partial :'railsengines/files_structure' %>
+<%= partial :'railsengines/mounting_the_engine' %>
+<%= partial :'railsengines/testing' %>
+<!-- End slides. -->
+
+<!-- deck.navigation snippet -->
+<a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
+<a href="#" class="deck-next-link" title="Next">&#8594;</a>
+
+<!-- deck.status snippet -->
+<p class="deck-status">
+  <span class="deck-status-current"></span>
+  /
+  <span class="deck-status-total"></span>
+</p>
+
+<!-- deck.hash snippet -->
+<a href="." title="Permalink to this slide" class="deck-permalink">#</a>
+
+</body>
+</html>
