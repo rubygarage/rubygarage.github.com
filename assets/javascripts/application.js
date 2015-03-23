@@ -1,5 +1,6 @@
 //= require modernizr.custom
 //= require jquery
+//= require remark
 //= require deck/deck.core.js
 //= require deck/extensions/deck.hash.js
 //= require deck/extensions/deck.navigation.js

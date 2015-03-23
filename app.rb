@@ -57,6 +57,14 @@ class App < Sinatra::Base
     erb :oop
   end
 
+  get "/oop_another" do
+    erb :oop_another
+  end
+
+  get "/enumerable" do
+    erb :enumerable
+  end
+
   get "/refactoring" do
     erb :refactoring
   end

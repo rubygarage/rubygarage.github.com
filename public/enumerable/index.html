@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Enumerator and Enumerable</title>
+    <link href="assets/enumerable.css" rel="stylesheet" />
+    <script src="assets/enumerable.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css">
+      @import url(http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(http://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(http://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body {
+        font-family: 'Droid Serif';
+        font-size: 1.5em;
+      }
+
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+
+      .small {
+        font-size: 0.6em;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Enumerator and Enumerable
+---
+```ruby
+module Sizable
+  def big?
+    length > 10
+  end
+end
+
+a = (1..100).to_a
+a.extend(Sizable)
+
+a.big? # => true
+```
+---
+# Comparable
+```ruby
+5 > 1 # => true
+5 < 1 # => false
+5 <= 5 # => true
+```
+---
+# Comparable
+```ruby
+class Train
+  Car = Struct.new(:humans)
+
+  private
+
+  def initialize(length)
+    @cars = length.times.map { Car.new(rand(50) ) }
+  end
+end
+
+t1 = Train.new(5)
+t2 = Train.new(6)
+t2 > t1 # => NoMethodError
+```
+---
+# Include comparable
+```ruby
+class Train
+  Car = Struct.new(:humans)
+
+  def <=>(other)
+    @cars.length <=> other.instance_variable_get(:@cars).length
+  end
+
+  private
+
+  def initialize(length)
+    @cars = length.times.map { Car.new(rand(50) ) }
+  end
+end
+```
+---
+# Include comparable
+```ruby
+t1 = Train.new(5)
+t2 = Train.new(6)
+
+t1 <=> t2 #=> -1
+t1 <=> t1 #=> 0
+t2 <=> t1 #=> 1
+
+t1 > t2 #=> NoMethodError
+```
+---
+# Include comparable
+```ruby
+class Train
+  include Comparable
+
+  Car = Struct.new(:humans)
+
+  def <=>(other)
+    @cars.length <=> other.instance_variable_get(:@cars).length
+  end
+
+  private
+
+  def initialize(length)
+    @cars = length.times.map { Car.new(rand(50) ) }
+  end
+end
+```
+---
+# Include comparable
+```ruby
+t1 = Train.new(5)
+t2 = Train.new(6)
+
+t1 < t2 # => false
+t2 > t1 # => true
+t1 == t1 # => true
+```
+---
+# Enumerable
+```ruby
+(1..10).map { |x| x.to_s }
+# => ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+```
+---
+# Include enumerable
+```ruby
+class Train
+  Car = Struct.new(:humans)
+
+  def each
+    k = 0
+    until k == @cars.size
+      yield(@cars[k])
+      k += 1
+    end
+    self
+  end
+
+  private
+
+  def initialize(length)
+    @cars = length.times.map { Car.new(rand(50) ) }
+  end
+end
+
+t1 = Train.new(5)
+t1.each { |t| puts t }
+```
+---
+# Include enumerable
+```ruby
+class Train
+  Car = Struct.new(:humans)
+
+  include Enumerable
+
+  def each
+    k = 0
+    until k == @cars.size
+      yield(@cars[k])
+      k += 1
+    end
+    self
+  end
+
+  private
+
+  def initialize(length)
+    @cars = length.times.map { Car.new(rand(50) ) }
+  end
+end
+```
+---
+# Include enumerable
+```ruby
+t = Train.new(5)
+
+t1.map do |t|
+  t.humans
+end
+
+# => [32, 22, 32, 46, 16]
+```
+---
+# Enumerator
+```ruby
+a = (1..3).to_a
+enum = a.each # => #<Enumerator: ...>
+enum.next # => 1
+enum.next # => 2
+enum.next # => 3
+enum.next # => StopIteration: iteration reached an end
+```
+---
+# Enumerator
+```ruby
+enum = Enumerator.new do |y|
+  y << 1
+  y << 2
+  y << 3
+end
+
+enum.to_a # => [1, 2, 3]
+
+enum.map(&:to_s) # => ['1', '2', '3']
+```
+---
+# Enumerator
+```ruby
+enum = Enumerator.new do |y|
+  a = 1
+  loop do
+    y << a
+    a *= 2
+  end
+end
+
+enum.take(5) # => [1, 2, 4, 8, 16]
+```
+---
+# Enumerator::Lazy
+```ruby
+10_000_000.times # => #<Enumerator: ...>
+10_000_000.times.lazy # => #<Enumerator::Lazy: ...>
+
+10_000_000.times.map { |x| x * 2 }.map(&:to_s).first(10)
+10_000_000.times.lazy.map { |x| x * 2 }.map(&:to_s).first(10)
+```
+
+    </textarea>
+    <script type="text/javascript">
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>

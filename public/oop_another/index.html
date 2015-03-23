@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <title>OOP</title>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <link href="assets/oop_another.css" rel="stylesheet" />
+      <script src="assets/oop_another.js"></script>
+      <style type="text/css">
+<![CDATA[
+      @import url(http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(http://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(http://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body {
+        font-family: 'Droid Serif';
+        font-size: 1.5em;
+      }
+
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+
+      .small {
+        font-size: 0.6em;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    ]]>
+      </style>
+   </head>
+   <body>
+  <img style="display: none;" src="/public/oop_another/assets/oop_lookup.png" /><textarea id="source">
+
+class: center, middle
+
+# OOP in RUBY
+
+---
+
+# Defining a simple class
+
+```ruby
+  class Car
+    # code...
+  end
+
+  AnotherCar = Class.new do
+    # code...
+  end
+```
+???
+класс это тоже класс
+
+---
+
+# Creating objects
+
+```ruby
+car = Car.new
+
+car.class # =&gt; Car
+
+car.is_a? Car # =&gt; true
+
+Car.ancestors
+# =&gt; [Car, Object, Kernel, BasicObject]
+
+```
+???
+откуда у экземпляра пустого класса появились методы?
+___
+даже пустой класс наследуется от базовых классов которые предоставляют базовые методы
+
+---
+
+# Defining methods
+```ruby
+  class Car
+    def accelerate!
+      @moving = true
+    end
+
+    def stop!
+      @moving = false
+    end
+
+    def moving?
+      @moving
+    end
+  end
+```
+---
+
+# Defining methods
+
+```ruby
+  car = Car.new   # =&gt; #<0x00000002033700>
+  car.moving?     # =&gt; nil
+  car.accelerate! # =&gt; true
+  car.moving?     # =&gt; true
+  car.stop!       # =&gt; false
+  car.moving?     # =&gt; false
+
+  car.inspect
+  # =&gt; "#<0x00000002033700>"
+```
+???
+inspect - один из стандартных методов (строкое представление обьекта)
+___
+показывает состояние обьекта
+---
+# Initializers
+```ruby
+  class Car
+    def initialize(type)
+     @type = type
+    end
+
+    def big?
+      @type == 'big'
+    end
+  end
+
+  car = Car.new('big')
+
+  car.big? # =&gt; true
+```
+???
+почему мы вызываем new, а определяем initialize?
+
+
+---
+# Attributes
+```ruby
+  class Snake
+    def length
+      @meters * 100
+    end
+
+    def length=(santimeters)
+      @meters = santimeters / 100.0
+    end
+  end
+
+  snake = Snake.new
+  snake.length = 150 # =&gt; 150
+  snake.length       # =&gt; 150.0
+  snake.inspect
+  #=&gt; "#<0x00000002777930>"
+```
+---
+# Attributes
+## attr_accessor
+```ruby
+class Snake
+  def length
+    @length
+  end
+
+  def length=(new_value)
+    @length = new_value
+  end
+end
+
+class Snake
+  attr_accessor :length
+end
+```
+---
+# Attributes
+## attr_reader
+```ruby
+class Snake
+  def length
+    @length
+  end
+end
+
+class Snake
+  attr_reader :length
+end
+```
+---
+# Attributes
+## attr_writer
+```ruby
+class Snake
+  def length=(new_value)
+    @length = new_value
+  end
+end
+
+class Snake
+  attr_writer :length
+end
+```
+---
+# Attributes
+## drawing the line
+```ruby
+class Snake
+  def length # attr_reader, attr_accessor
+    @length
+  end
+
+  def length=(new_value) # attr_writer, attr_accessor
+    @length = new_value
+  end
+end
+```
+---
+# Defining operators
+```ruby
+  class Snake
+    attr_reader :length
+
+    def initialize(length)
+      @length = length
+    end
+
+    def +(other)
+      Snake.new(length + other.length)
+    end
+  end
+```
+```ruby
+snake_1 = Snake.new(1) # =&gt; #<0x00000002f7d878>
+snake_2 = Snake.new(2) # =&gt; #<0x00000002f09fe0>
+snake_3 = snake_1 + snake_2
+# =&gt; #<0x00000002eb3050>
+```
+???
+Было бы неплохо еще проверить класс
+---
+# Comparation
+```ruby
+  class Snake
+    attr_reader :length
+
+    def initialize(length)
+      @length = length
+    end
+  end
+
+  snake = Snake.new(1) # =&gt; #<0x000000020800c8>
+  other_snake = Snake.new(1) # =&gt; #<0x00000001e80ae8>
+  snake == other_snake # =&gt; false
+```
+???
+айдишник же разный вот и разные обьeкты
+___
+цифры тоже обьекты.. как они сравниваются?
+___
+показать object_id цифр
+---
+# Comparation
+```ruby
+  class Snake
+    attr_reader :length
+
+    def initialize(length)
+      @length = length
+    end
+
+    def ==(other)
+      if other.is_a? Snake
+        length == other.length
+      else
+        false
+      end
+    end
+  end
+
+  snake = Snake.new(1)
+  other_snake = Snake.new(1)
+  snake == other_snake # =&gt; true
+```
+---
+# Self
+```ruby
+  class Snake
+    attr_reader :length
+
+    def initialize
+      @length = 1
+    end
+
+    def snake
+      self
+    end
+
+    def length_redefign
+      length # =&gt; 1
+      length = 5
+      length # =&gt; 5
+      self.length # =&gt; 1
+    end
+  end
+```
+???
+просто аналог this
+---
+# Class methods
+```ruby
+  class Snake
+    def self.description
+      'SNAAAAKESSS'
+    end
+  end
+
+  class Snake
+    class  'SNAAAAKESSS'
+  Snake.normal_description # =&gt; 'Snakes ...'
+```
+???
+просто разный синтаксис. self тут Snake
+___
+но если что class  1
+  Snake.new.all_count # =&gt; 2
+```
+???
+статическая переменная и инстансы имеют к ней доступ
+---
+# Class instance variables
+```ruby
+  class Snake
+    @count = 0
+    def self.add
+      @count += 1
+    end
+    def initialize
+      self.class.add
+    end
+    def all_count
+      @count
+    end
+    def self.count
+      @count
+    end
+  end
+  snake = Snake.new
+  # Oops..
+  snake.all_count # =&gt; nil
+  Snake.count # =&gt; 1
+```
+???
+а это переменная имено класса как обьекта. она его. и инстансы ее не видят
+---
+# Class constants
+```ruby
+  class Snake
+    NORMAL_LENGTH = 2
+  end
+
+  Snake::NORMAL_LENGTH # =&gt; 2
+
+  Snake::NORMAL_COLOR = '#6B554A'
+  Snake::NORMAL_COLOR # =&gt; '#6B554A'
+
+  Snake::NORMAL_COLOR = '#2D2D2D' # =&gt; warning: already initialized constant Snake::NORMAL_COLOR
+  Snake::NORMAL_COLOR # =&gt; '#2D2D2D'
+```
+---
+# Visibility private
+```ruby
+  class Snake
+    attr_reader :length
+
+    private
+
+    def initialize
+      set_defaults
+    end
+
+    def set_defaults
+      @length = 2
+    end
+  end
+
+  snake = Snake.new
+  snake.length # =&gt; 2
+  snake.set_defaults
+  # NoMethodError: private method `set_defaults'
+  # called for #<0x00000001d29b90>
+```
+???
+ну да initialize приватный.. он же вызывается другим методом так что всё ок
+---
+# Visibility protected
+```ruby
+  class Snake
+    def +(other)
+      Snake.new(length + other.length)
+    end
+
+    private
+
+    def initialize(length)
+      @length = length
+    end
+
+    protected
+
+    attr_reader :length
+  end
+```
+---
+# Protected example
+```ruby
+  snake1 = Snake.new(1)
+  snake2 = Snake.new(2)
+
+  snake1 + snake2 # =&gt; #<0x00000001e82d70>
+
+  snake1.length
+  # NoMethodError: protected method `length'
+  # called for #<0x00000001f95028>
+
+```
+
+---
+# Inheritance
+
+```ruby
+class Snake
+  attr_reader :length
+  def initialize(length)
+    @length = length
+  end
+end
+
+class LazySnake  2
+lazy.sleeping? # =&gt; false
+lazy.toggle_sleep
+lazy.sleeping? # =&gt; true
+```
+---
+# Inheritance
+## super
+```ruby
+class LazySnake  3
+```
+???
+по умалчанию супер свхатит теже аргументы что и метод где он дергается
+___
+но можно указать другие аргументы
+---
+# Inheritance
+## class variables
+```ruby
+class A
+  @@value = 1
+  def self.value
+    @@value
+  end
+end
+A.value # =&gt; 1
+
+class B  3
+```
+???
+расшареная
+---
+# Inheritance
+## constants
+```ruby
+class A
+  NUM = 2
+end
+
+class B  2
+B::NUM # =&gt; 2
+
+B::NUM = 3
+
+A::NUM # =&gt; 2
+B::NUM # =&gt; 3
+```
+???
+а константы везде свои
+---
+# Singleton methods
+```ruby
+class Snake
+  def Snake.count
+  end
+end
+
+class Snake
+  class  John
+
+class  David
+
+another = Snake.new
+another.name # =&gt; NoMethodError: undefined method 'name'
+```
+???
+class  "a constant"
+end
+M::C::X # =&gt; "a constant"
+
+module M
+  Y = 'another constant'
+  class C
+    ::M::Y # =&gt; "another constant"
+  end
+end
+
+M.constants # =&gt; [:C, :Y]
+```
+---
+class: small
+
+# Constants lookup order
+```ruby
+module Kernel
+  A = B = C = D = E = F = "from kernel"
+end
+
+A = B = C = D = E = "from toplevel"
+
+class Super
+  A = B = C = D = "from superclass"
+end
+
+module Included
+  A = B = C = "from included module"
+end
+
+module Enclosing
+  A = B = "from enclosing module"
+
+  class Local  e
+  puts e.message
+  puts e.backtrace.inspect
+ensure
+  puts "Ensuring execution"
+end
+
+A test exception.
+# ["test.rb:2:in '<main>'"]
+# Ensuring execution
+```
+???
+ensure - всегда вызывается
+___
+пример - закрыть файл
+---
+# Exceptions else
+```ruby
+begin
+  puts "A test exception."
+rescue Exception =&gt; e
+  puts e.message
+  puts e.backtrace.inspect
+else
+  puts "Executes if there is no exception"
+ensure
+  puts "Ensuring execution"
+end
+# A test exception.
+# Executes if there is no exception
+# Ensuring execution
+```
+???
+else - если нет исключения
+___
+пример - вывод радосного сообщения
+---
+# Throw and catch
+```ruby
+def try(number)
+  throw :two! if number == 2
+  puts number
+end
+
+catch :two! do
+  try(1)
+  try(2)
+  try(3)
+end
+
+try(4)
+
+# 1
+# 4
+```
+???
+вылезти из глубокой вложености
+
+    </main></0x00000001f95028></0x00000001e82d70></0x00000001d29b90></0x00000001e80ae8></0x000000020800c8></0x00000002eb3050></0x00000002f09fe0></0x00000002f7d878></0x00000002777930></0x00000002033700></0x00000002033700></textarea><script type="text/javascript"><![CDATA[
+      var slideshow = remark.create();
+    ]]></script></body>
+</html>
