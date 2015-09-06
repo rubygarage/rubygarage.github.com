@@ -1,0 +1,34 @@
+<section id="service_objects_layer" class="slide">
+  <h2>Service objects</h2>
+  <p>
+    Services are not the silver bullet. They don’t solve all the problems. They are good as the first step into the process of improving the design of your application.
+  </p>
+
+  <h3>Bryan Helmkamp</h3>
+  <p>Some actions in a system warrant a Service Object to encapsulate their operation. I reach for Service Objects when an action meets one or more of these criteria:</p>
+  <ul>
+    <li>The action is complex (e.g. closing the books at the end of an accounting period)</li>
+    <li>The action reaches across multiple models (e.g. an e-commerce purchase using
+Order, CreditCard and Customer objects)</li>
+    <li>The action interacts with an external service (e.g. posting to social networks)</li>
+    <li>The action is not a core concern of the underlying model (e.g. sweeping up
+outdated data after a certain time period)</li>
+    <li>There are multiple ways of performing the action (e.g. authenticating with an
+access token or password). This is the Gang of Four Strategy pattern</li>
+  </ul>
+
+  <h3>Eric Evans</h3>
+  <p>
+    <b>Service:</b> A standalone operation within the context of your domain. A Service Object collects one or more services into an object. Typically you will have only one instance of each service object type within your execution context.
+  </p>
+
+  <h3>Andrzej Krzywda</h3>
+  <ul>
+    <li>Isolate from the Rails HTTP-related parts</li>
+    <li>Faster build time</li>
+    <li>Easier testing</li>
+    <li>Easier reuse for API</li>
+    <li>Less coupling</li>
+    <li>Thinner controllers</li>
+  </ul>
+</section>

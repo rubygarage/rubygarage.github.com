@@ -117,6 +117,10 @@ class App < Sinatra::Base
     erb :railsengines
   end
 
+  get "/refactoringcontrollers" do
+    erb :refactoringcontrollers
+  end
+
   #get "/cssbestpractices" do
   #  erb :cssbestpractices
   #end

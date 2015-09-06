@@ -1,5 +1,4 @@
 require 'rack/test'
-require 'pry'
 require 'lib/img_postprocessor'
 
 class PresentationStatic

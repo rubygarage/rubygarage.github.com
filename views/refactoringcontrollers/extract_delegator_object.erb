@@ -1,0 +1,132 @@
+<section id="extract-delegator-object" class="slide">
+  <h2>Extract a delegator object</h2>
+  <h3>Example</h3>
+  app/controllers/payment_gateway_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+  class PaymentGatewayController < ApplicationController 
+    ALLOWED_IPS = ["127.0.0.1"]
+    before_filter :whitelist_ip
+    
+    def callback
+      order = Order.find(params[:order_id])
+      transaction = order.order_transactions.create(callback: params.slice(:status, :error_message, :merchant_error_message, :shop_orderid, :transaction_id, :type, :payment_status, :masked_credit_card, :nature, :require_capture, :amount, :currency))
+  
+      if transaction.successful?
+        order.paid! OrderMailer.order_paid(order.id).deliver redirect_to successful_order_path(order.id)
+      else
+        redirect_to retry_order_path(order.id) 
+      end
+    rescue ActiveRecord::RecordNotFound => e 
+      redirect_to missing_order_path(params[:order_id])
+    rescue => e
+      Honeybadger.notify(e) AdminOrderMailer.order_problem(order.id).deliver
+      redirect_to failed_order_path(order.id), alert: t("order.problems")
+    end
+  
+    private
+  
+    def whitelist_ip
+      raise UnauthorizedIpAccess unless ALLOWED_IPS.include?(request.remote_ip)
+    end
+  end
+  </script>
+  <h3>Refactoring. Move the action definition into new class and inherit from SimpleDelegator.</h3>
+  app/controllers/payment_gateway_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+  class PaymentGatewayController < ApplicationController
+    ALLOWED_IPS = ["127.0.0.1"]
+    before_filter :whitelist_ip
+    
+    def callback
+      PaymentGatewayCallback.new(self).callback
+    end
+
+    private
+
+    def whitelist_ip
+      raise UnauthorizedIpAccess unless ALLOWED_IPS.include?(request.remote_ip)
+    end
+  end
+  </script>
+
+  app/delegators/payment_gateway_callback.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class PaymentGatewayCallback < SimpleDelegator
+      def callback
+        order = Order.find(params[:order_id])
+        transaction = order.order_transactions.create(callback: params.slice(:status, :error_message, :merchant_error_message, :shop_orderid, :transaction_id, :type, :payment_status, :masked_credit_card, :nature, :require_capture, :amount, :currency))
+        if transaction.successful?
+          order.paid!
+          OrderMailer.order_paid(order.id).deliver
+          redirect_to successful_order_path(order.id)
+        else
+          redirect_to retry_order_path(order.id)
+        end
+      rescue ActiveRecord::RecordNotFound => e
+        redirect_to missing_order_path(params[:order_id])
+      rescue => e
+        Honeybadger.notify(e)
+        AdminOrderMailer.order_problem(order.id).deliver
+        redirect_to failed_order_path(order.id), alert: t("order.problems")
+      end
+    end
+  </script>
+  <h3>Refactoring. Controller responsibilities into the controller.</h3>
+  app/controllers/payment_gateway_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+  class PaymentGatewayController < ApplicationController
+    ALLOWED_IPS = ["127.0.0.1"]
+    before_filter :whitelist_ip
+    
+    def callback
+      if PaymentGatewayCallback.new.callback(
+          params[:order_id],
+          gateway_transaction_attributes
+        )
+        redirect_to successful_order_path(params[:order_id]) 
+      else
+        redirect_to retry_order_path(params[:order_id]) 
+      end
+    rescue ActiveRecord::RecordNotFound => e 
+      redirect_to missing_order_path(params[:order_id])
+    rescue
+      redirect_to failed_order_path(params[:order_id]), alert: t("order.problems") 
+    end
+
+    private
+
+    def whitelist_ip
+      raise UnauthorizedIpAccess unless ALLOWED_IPS.include?(request.remote_ip)
+    end
+
+    def gateway_transaction_attributes
+      params.slice(:status, :error_message, :merchant_error_message,
+        :shop_orderid, :transaction_id, :type, :payment_status,
+        :masked_credit_card, :nature, :require_capture, :amount, :currency
+      )
+    end
+  end
+  </script>
+
+  app/delegators/payment_gateway_callback.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class PaymentGatewayCallback
+      def callback(order_id, gateway_transaction_attributes)
+        order = Order.find(order_id)
+        transaction = order.order_transactions.create(callback: gateway_transaction_attributes) 
+        if transaction.successful?
+          order.paid! 
+          OrderMailer.order_paid(order.id).deliver 
+          return true
+        else
+          return false
+        end
+      rescue ActiveRecord::RecordNotFound => e
+        raise 
+      rescue => e
+        Honeybadger.notify(e) AdminOrderMailer.order_problem(order.id).deliver 
+        raise
+      end
+    end
+  </script>
+</section>

@@ -1,0 +1,58 @@
+<section id="split-controllers" class="slide">
+  <h2>Split controllers</h2>
+  <h3>Example</h3>
+  config/routes.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+  resources :users do
+    member do
+      get :following, :followers
+    end
+  end
+  </script>
+  app/controllers/users_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+  class UsersController < ApplicationController
+    # ...
+    def following
+      @presenter = Users::FollowedUsersPresenter.new(params[:id], params[:page])
+    end
+
+    def followers
+      @presenter = Users::FollowersPresenter.new(params[:id], params[:page])
+    end
+    # ...
+  end
+  </script>
+  <h3>Refactoring</h3>
+  config/routes.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+  resources :users do
+    member do
+      get :followers, controller: 'followers'
+      get :following, controller: 'following'
+    end
+   end
+  </script>
+  app/controllers/followers_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+  class FollowersController < ApplicationController
+    before_action :signed_in_user
+
+    def followers
+      @presenter = Users::FollowersPresenter.new(params[:id], params[:page])
+      render '/users/followers'
+    end
+  end
+  </script>
+  app/controllers/following_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+  class FollowingController < ApplicationController
+    before_action :signed_in_user
+
+    def following
+      @presenter = Users::FollowedUsersPresenter.new(params[:id], params[:page])
+      render '/users/followers'
+    end
+  end
+  </script>
+</section>

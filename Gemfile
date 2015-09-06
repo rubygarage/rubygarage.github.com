@@ -17,5 +17,3 @@ gem 'bootstrap-sass'
 gem 'coffee-script'
 gem 'htmlentities'
 gem 'nokogiri'
-
-gem 'pry-debugger'
