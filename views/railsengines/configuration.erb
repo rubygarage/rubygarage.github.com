@@ -1,5 +1,7 @@
 <section id="configuration" class="slide">
   <h2>Configuration</h2>
+  <p>Rails::Engine allows you to wrap a specific Rails application or subset of functionality and share it with other applications or within a larger packaged application. Since Rails 3.0, every Rails::Application is just an engine, which allows for simple feature and application sharing.</p>
+  <p>Any Rails::Engine is also a Rails::Railtie, so the same methods (like rake_tasks and generators) and configuration options that are available in railties can also be used in engines.</p>
   <p>Besides the <a href="https://github.com/rails/rails/blob/master/railties/lib/rails/railtie.rb" target="_blank">Railtie</a> configuration which is shared across the application, in a Rails::Engine you can access autoload_paths, eager_load_paths and autoload_once_paths, which, differently from a Railtie, are scoped to the current engine.</p>
   lib/shopping_cart/engine.rb
   <script type="syntaxhighlighter" class="brush: ruby">
@@ -15,7 +17,7 @@
 
       # To add an initialization step from your Railtie to Rails boot process, you just need to create an initializer block
       initializer "my_engine.add_middleware" do |app|
-        app.middleware.use MyEngine::Middleware
+        # some code
       end
     end
   </script>

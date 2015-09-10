@@ -23,8 +23,185 @@
       </p>
     </div>    
   </div>
-</section><section id="configuration" class="slide">
+</section><section id="init-engine" class="slide">
+  <h2>Generating an engine</h2>
+  <script type="syntaxhighlighter" class="brush: bash">
+    $ rails plugin new shopping_cart --dummy-path=spec/dummy --skip-test-unit --mountable
+      create  
+      create  README.rdoc
+      create  Rakefile
+      create  shopping_cart.gemspec
+      create  MIT-LICENSE
+      create  .gitignore
+      create  Gemfile
+      create  app
+      create  app/controllers/shopping_cart/application_controller.rb
+      create  app/helpers/shopping_cart/application_helper.rb
+      create  app/mailers
+      create  app/models
+      create  app/views/layouts/shopping_cart/application.html.erb
+      create  app/assets/images/shopping_cart
+      create  app/assets/images/shopping_cart/.keep
+      create  config/routes.rb
+      create  lib/shopping_cart.rb
+      create  lib/tasks/shopping_cart_tasks.rake
+      create  lib/shopping_cart/version.rb
+      create  lib/shopping_cart/engine.rb
+      create  app/assets/stylesheets/shopping_cart/application.css
+      create  app/assets/javascripts/shopping_cart/application.js
+      create  bin
+      create  bin/rails
+  vendor_app  spec/dummy
+         run  bundle install
+  </script>
+</section><section id="files-structure" class="slide">
+  <h2>Files structure</h2>
+
+  shopping_cart.gemspec
+  <script type="syntaxhighlighter" class="brush: ruby">
+    $:.push File.expand_path("../lib", __FILE__)
+
+    # Maintain your gem's version:
+    require "shopping_cart/version"
+
+    # Describe your gem and declare its dependencies:
+    Gem::Specification.new do |s|
+      s.name        = "shopping_cart"
+      s.version     = ShoppingCart::VERSION
+      s.authors     = ["Vladimir Vorobyov"]
+      s.email       = ["sparrowpublic@gmail.com"]
+      s.homepage    = "TODO"
+      s.summary     = "TODO: Summary of ShoppingCart."
+      s.description = "TODO: Description of ShoppingCart."
+      s.license     = "MIT"
+
+      s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
+      s.test_files = Dir["test/**/*"]
+
+      s.add_dependency "rails", "~> 4.2.0"
+
+      s.add_development_dependency "sqlite3"
+    end
+  </script>
+
+  lib/shopping_cart.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    require "shopping_cart/engine"
+
+    module ShoppingCart
+    end
+  </script>
+
+  lib/shopping_cart/engine.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    module ShoppingCart
+      class Engine < ::Rails::Engine
+        isolate_namespace ShoppingCart
+      end
+    end
+  </script>
+
+  app/controllers/shopping_cart/application_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    module ShoppingCart
+      class ApplicationController < ActionController::Base
+      end
+    end
+  </script>
+
+  config/routes.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    ShoppingCart::Engine.routes.draw do
+    end
+  </script>
+  <p>Then ensure that this file is loaded at the top of your config/application.rb (or in your Gemfile) and it will automatically load models, controllers and helpers inside app, load routes at config/routes.rb, load locales at config/locales/*, and load tasks at lib/tasks/*.</p>
+</section><section id="mounting-the-engine" class="slide">
+  <h2>Mounting the Engine</h2>
+  Specifying the engine inside the Gemfile would be done by specifying it as a normal, everyday gem
+  Gemfile
+  <script type="syntaxhighlighter" class="brush: ruby">
+    gem 'shopping_cart', path: "/path/to/shopping_cart"
+  </script>
+  <p>By placing the gem in the Gemfile it will be loaded when Rails is loaded. It will first require lib/shopping_cart.rb from the engine, then lib/shopping_cart/engine.rb, which is the file that defines the major pieces of functionality for the engine.</p>
+  <p>To make the engine's functionality accessible from within an application, it needs to be mounted in that application's config/routes.rb file.</p>
+  config/routes.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    mount ShoppingCart::Engine, at: "/cart"
+  </script>
+</section><section id="testing" class="slide">
+  <h2>Testing with RSpec, Capybara, and FactoryGirl</h2>
+  <p>Add these lines to the gemspec file</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    s.add_development_dependency 'rspec-rails'
+    s.add_development_dependency 'capybara'
+    s.add_development_dependency 'factory_girl_rails'
+  </script>
+  <p>Add this line to your gemspec file</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    s.test_files = Dir["spec/**/*"]
+  </script>
+  <p>Modify Rakefile to look like this</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    #!/usr/bin/env rake
+    begin
+      require 'bundler/setup'
+    rescue LoadError
+      puts 'You must `gem install bundler` and `bundle install` to run rake tasks'
+    end
+
+    APP_RAKEFILE = File.expand_path("../spec/dummy/Rakefile", __FILE__)
+    load 'rails/tasks/engine.rake'
+
+    Bundler::GemHelper.install_tasks
+    Dir[File.join(File.dirname(__FILE__), 'tasks/**/*.rake')].each {|f| load f }
+    
+    require 'rspec/core'
+    require 'rspec/core/rake_task'
+    
+    desc "Run all specs in spec directory (excluding plugin specs)"
+    RSpec::Core::RakeTask.new(:spec => 'app:db:test:prepare')
+    
+    task :default => :spec
+  </script>
+  <p>Create a spec/spec_helper.rb file</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    ENV['RAILS_ENV'] ||= 'test'
+    
+    require File.expand_path("../dummy/config/environment.rb",  __FILE__)
+    require 'rspec/rails'
+    require 'rspec/autorun'
+    require 'factory_girl_rails'
+    
+    Rails.backtrace_cleaner.remove_silencers!
+    
+    # Load support files
+    Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
+    
+    RSpec.configure do |config|
+      config.mock_with :rspec
+      config.use_transactional_fixtures = true
+      config.infer_base_class_for_anonymous_controllers = false
+      config.order = "random"
+    end
+  </script>
+  <p>Add this config to your engine file</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    module ShoppingCart
+      class Engine < ::Rails::Engine
+        config.generators do |g|
+          g.test_framework      :rspec,        :fixture => false
+          g.fixture_replacement :factory_girl, :dir => 'spec/factories'
+          g.assets false
+          g.helper false
+        end
+      end
+    end
+  </script>
+</section>
+<section id="configuration" class="slide">
   <h2>Configuration</h2>
+  <p>Rails::Engine allows you to wrap a specific Rails application or subset of functionality and share it with other applications or within a larger packaged application. Since Rails 3.0, every Rails::Application is just an engine, which allows for simple feature and application sharing.</p>
+  <p>Any Rails::Engine is also a Rails::Railtie, so the same methods (like rake_tasks and generators) and configuration options that are available in railties can also be used in engines.</p>
   <p>Besides the <a href="https://github.com/rails/rails/blob/master/railties/lib/rails/railtie.rb" target="_blank">Railtie</a> configuration which is shared across the application, in a Rails::Engine you can access autoload_paths, eager_load_paths and autoload_once_paths, which, differently from a Railtie, are scoped to the current engine.</p>
   lib/shopping_cart/engine.rb
   <script type="syntaxhighlighter" class="brush: ruby">
@@ -40,7 +217,7 @@
 
       # To add an initialization step from your Railtie to Rails boot process, you just need to create an initializer block
       initializer "my_engine.add_middleware" do |app|
-        app.middleware.use MyEngine::Middleware
+        # some code
       end
     end
   </script>
@@ -206,181 +383,8 @@
     create lib/my_mountable_engine/version.rb
     create lib/my_mountable_engine/engine.rb
   </script>
-</section><section id="init-engine" class="slide">
-  <h2>Generating an engine</h2>
-  <script type="syntaxhighlighter" class="brush: bash">
-    $ rails plugin new shopping_cart --dummy-path=spec/dummy --skip-test-unit --mountable
-      create  
-      create  README.rdoc
-      create  Rakefile
-      create  shopping_cart.gemspec
-      create  MIT-LICENSE
-      create  .gitignore
-      create  Gemfile
-      create  app
-      create  app/controllers/shopping_cart/application_controller.rb
-      create  app/helpers/shopping_cart/application_helper.rb
-      create  app/mailers
-      create  app/models
-      create  app/views/layouts/shopping_cart/application.html.erb
-      create  app/assets/images/shopping_cart
-      create  app/assets/images/shopping_cart/.keep
-      create  config/routes.rb
-      create  lib/shopping_cart.rb
-      create  lib/tasks/shopping_cart_tasks.rake
-      create  lib/shopping_cart/version.rb
-      create  lib/shopping_cart/engine.rb
-      create  app/assets/stylesheets/shopping_cart/application.css
-      create  app/assets/javascripts/shopping_cart/application.js
-      create  bin
-      create  bin/rails
-  vendor_app  spec/dummy
-         run  bundle install
-  </script>
-</section><section id="files-structure" class="slide">
-  <h2>Files structure</h2>
-
-  shopping_cart.gemspec
-  <script type="syntaxhighlighter" class="brush: ruby">
-    $:.push File.expand_path("../lib", __FILE__)
-
-    # Maintain your gem's version:
-    require "shopping_cart/version"
-
-    # Describe your gem and declare its dependencies:
-    Gem::Specification.new do |s|
-      s.name        = "shopping_cart"
-      s.version     = ShoppingCart::VERSION
-      s.authors     = ["Vladimir Vorobyov"]
-      s.email       = ["sparrowpublic@gmail.com"]
-      s.homepage    = "TODO"
-      s.summary     = "TODO: Summary of ShoppingCart."
-      s.description = "TODO: Description of ShoppingCart."
-      s.license     = "MIT"
-
-      s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
-      s.test_files = Dir["test/**/*"]
-
-      s.add_dependency "rails", "~> 4.2.0"
-
-      s.add_development_dependency "sqlite3"
-    end
-  </script>
-
-  app/controllers/shopping_cart/application_controller.rb
-  <script type="syntaxhighlighter" class="brush: ruby">
-    module ShoppingCart
-      class ApplicationController < ActionController::Base
-      end
-    end
-  </script>
-
-  config/routes.rb
-  <script type="syntaxhighlighter" class="brush: ruby">
-    ShoppingCart::Engine.routes.draw do
-    end
-  </script>
-
-  lib/shopping_cart.rb
-  <script type="syntaxhighlighter" class="brush: ruby">
-    require "shopping_cart/engine"
-
-    module ShoppingCart
-    end
-  </script>
-
-  lib/shopping_cart/engine.rb
-  <script type="syntaxhighlighter" class="brush: ruby">
-    module ShoppingCart
-      class Engine < ::Rails::Engine
-        isolate_namespace ShoppingCart
-      end
-    end
-  </script>
-  <p>Then ensure that this file is loaded at the top of your config/application.rb (or in your Gemfile) and it will automatically load models, controllers and helpers inside app, load routes at config/routes.rb, load locales at config/locales/*, and load tasks at lib/tasks/*.</p>
-</section><section id="mounting-the-engine" class="slide">
-  <h2>Mounting the Engine</h2>
-  Specifying the engine inside the Gemfile would be done by specifying it as a normal, everyday gem
-  Gemfile
-  <script type="syntaxhighlighter" class="brush: ruby">
-    gem 'shopping_cart', path: "/path/to/shopping_cart"
-  </script>
-  <p>By placing the gem in the Gemfile it will be loaded when Rails is loaded. It will first require lib/blorgh.rb from the engine, then lib/blorgh/engine.rb, which is the file that defines the major pieces of functionality for the engine.</p>
-  <p>To make the engine's functionality accessible from within an application, it needs to be mounted in that application's config/routes.rb file.</p>
-  config/routes.rb
-  <script type="syntaxhighlighter" class="brush: ruby">
-    mount ShoppingCart::Engine, at: "/cart"
-  </script>
-</section><section id="testing" class="slide">
-  <h2>Testing with RSpec, Capybara, and FactoryGirl</h2>
-  <p>Add these lines to the gemspec file</p>
-  <script type="syntaxhighlighter" class="brush: ruby">
-    s.add_development_dependency 'rspec-rails'
-    s.add_development_dependency 'capybara'
-    s.add_development_dependency 'factory_girl_rails'
-  </script>
-  <p>Add this line to your gemspec file</p>
-  <script type="syntaxhighlighter" class="brush: ruby">
-    s.test_files = Dir["spec/**/*"]
-  </script>
-  <p>Modify Rakefile to look like this</p>
-  <script type="syntaxhighlighter" class="brush: ruby">
-    #!/usr/bin/env rake
-    begin
-      require 'bundler/setup'
-    rescue LoadError
-      puts 'You must `gem install bundler` and `bundle install` to run rake tasks'
-    end
-
-    APP_RAKEFILE = File.expand_path("../spec/dummy/Rakefile", __FILE__)
-    load 'rails/tasks/engine.rake'
-
-    Bundler::GemHelper.install_tasks
-    Dir[File.join(File.dirname(__FILE__), 'tasks/**/*.rake')].each {|f| load f }
-    
-    require 'rspec/core'
-    require 'rspec/core/rake_task'
-    
-    desc "Run all specs in spec directory (excluding plugin specs)"
-    RSpec::Core::RakeTask.new(:spec => 'app:db:test:prepare')
-    
-    task :default => :spec
-  </script>
-  <p>Create a spec/spec_helper.rb file</p>
-  <script type="syntaxhighlighter" class="brush: ruby">
-    ENV['RAILS_ENV'] ||= 'test'
-    
-    require File.expand_path("../dummy/config/environment.rb",  __FILE__)
-    require 'rspec/rails'
-    require 'rspec/autorun'
-    require 'factory_girl_rails'
-    
-    Rails.backtrace_cleaner.remove_silencers!
-    
-    # Load support files
-    Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
-    
-    RSpec.configure do |config|
-      config.mock_with :rspec
-      config.use_transactional_fixtures = true
-      config.infer_base_class_for_anonymous_controllers = false
-      config.order = "random"
-    end
-  </script>
-  <p>Add this config to your engine file</p>
-  <script type="syntaxhighlighter" class="brush: ruby">
-    module ShoppingCart
-      class Engine < ::Rails::Engine
-        config.generators do |g|
-          g.test_framework      :rspec,        :fixture => false
-          g.fixture_replacement :factory_girl, :dir => 'spec/factories'
-          g.assets false
-          g.helper false
-        end
-      end
-    end
-  </script>
-</section><!-- End slides. -->
+</section>
+<!-- End slides. -->
 
 <!-- deck.navigation snippet -->
 <a href="#" class="deck-prev-link" title="Previous">&#8592;</a>

@@ -28,20 +28,6 @@
     end
   </script>
 
-  app/controllers/shopping_cart/application_controller.rb
-  <script type="syntaxhighlighter" class="brush: ruby">
-    module ShoppingCart
-      class ApplicationController < ActionController::Base
-      end
-    end
-  </script>
-
-  config/routes.rb
-  <script type="syntaxhighlighter" class="brush: ruby">
-    ShoppingCart::Engine.routes.draw do
-    end
-  </script>
-
   lib/shopping_cart.rb
   <script type="syntaxhighlighter" class="brush: ruby">
     require "shopping_cart/engine"
@@ -56,6 +42,20 @@
       class Engine < ::Rails::Engine
         isolate_namespace ShoppingCart
       end
+    end
+  </script>
+
+  app/controllers/shopping_cart/application_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    module ShoppingCart
+      class ApplicationController < ActionController::Base
+      end
+    end
+  </script>
+
+  config/routes.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    ShoppingCart::Engine.routes.draw do
     end
   </script>
   <p>Then ensure that this file is loaded at the top of your config/application.rb (or in your Gemfile) and it will automatically load models, controllers and helpers inside app, load routes at config/routes.rb, load locales at config/locales/*, and load tasks at lib/tasks/*.</p>
