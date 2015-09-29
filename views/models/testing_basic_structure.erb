@@ -20,7 +20,7 @@
       
       has_many :posts
 
-      scope :admins -> { where(admin: true) }
+      scope :admins, -> { where(admin: true) }
 
       after_update :email_changed, if: :email_changed?
 
