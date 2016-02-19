@@ -1,0 +1,19 @@
+<section id="method-keyword-arguments" class="slide">
+  <h2>Methods</h2>
+
+  <h3>Keyword Arguments (Ruby 2.0+)</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    def k(key1: 'value', key2: )
+      "first: #{key1}, second: #{key2}"
+    end
+
+    k
+    => ArgumentError: missing keyword: key2
+
+    k(key2: 321)
+    => "first: value, second: 321"
+
+    k(key1: 'first', key2: 'second')
+    => "first: first, second: second"
+  </script>
+</section>
