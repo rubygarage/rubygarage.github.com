@@ -1,14 +1,14 @@
 <section id="how-rack-works" class="slide">
   <div class="vcenter">
-    <h1>How it works?</h1>
+    <h1>How does it work?</h1>
   </div>
 </section>
 
 <section id="rack-stack" class="slide">
   <h4>Stack of middlewares</h4>
   <p>
-    Variable with request goes trough stack of middleares, unless one of them will return array. (Instead of claiing another).<br />
-    We will check last middleware. It's our app.
+    Variable with request goes trough stack of middlewares unless one of them will return an array. (Instead of chaining another).<br />
+    The last middleware is our app.
   </p>
   <p>
     They are pushed during configuration phase
@@ -16,7 +16,7 @@
   <img src="/assets/rack/middlewares-stack.png" />
 
   <p>
-    And request goes troug each one
+    And request goes trough each one
   </p>
   <img src="/assets/rack/middlewares-call.png" />
 </section>
@@ -29,7 +29,7 @@
     <ol>
       <li>HTTP status code</li>
       <li>Hash of headers</li>
-      <li>Array with responce body</li>
+      <li>Array with response body</li>
     </ol>
   </p>
   <script type="syntaxhighlighter" class="brush: ruby">
@@ -55,14 +55,14 @@ end
 </section>
 
 <section id="helper-classes" class="slide">
-  <h4>Array?! It's Ruby. It's can't be so borring!</h4>
+  <h4>Array?! It's Ruby. It's can't be so boring!</h4>
 
   <p>
     There are classes <code>Rack::Request</code> and <code>Rack::Response</code>.<br />
     <strong>Rack::Request</strong> provides a convenient interface to a Rack environment.
     It is stateless, the environment "env" passed to the constructor will be directly modified.<br />
     <strong>Rack::Response</strong> provides a convenient interface to create a Rack response.
-    It allows setting of headers and cookies, and provides useful defaults (a OK response containing HTML).
+    It allows setting of headers and cookies and provides useful defaults (an OK response containing HTML).
     Your application's "call" should end returning Response#finish.
   </p>
 </section>
@@ -93,7 +93,7 @@ $
   <h4>Try to create own middleware</h4>
 
   <p>
-    In this example we will try to do authentication middleware.
+    In this example, we will try to do authentication middleware.
   </p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
