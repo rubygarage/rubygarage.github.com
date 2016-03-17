@@ -1,5 +1,24 @@
 <section id="any-instance" class="slide">
   <h2>Stub on any instance of a class</h2>
+  <h3> New syntax </h3>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+     allow_any_instance_of(User).to receive(:name).and_return("User")
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    RSpec.describe "allow_any_instance_of" do
+      it 'yields the receiver to the block implementation' do
+        allow_any_instance_of(String).to receive(:slice) do |value, start, length|
+          value[start, length]
+        end
+
+        expect('string'.slice(2, 3)).to eq('rin')
+      end
+    end
+  </script>
+
+  <h3> Old syntax </h3>
 
   <p>Use any_instance.stub on a class to tell any instance of that class to
 return a value (or values) in response to a given message. If no instance
@@ -17,5 +36,4 @@ receives the message, nothing happens.</p>
       end
     end
   </script>
-
 </section>

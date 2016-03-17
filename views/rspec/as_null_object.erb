@@ -1,10 +1,17 @@
 <section id="as_null_object" class="slide">
   <h2>Doubles, as_null_object</h2>
 
+  <p>
+    Test doubles are strict by default, raising errors when they receive messages that have not
+    been allowed or expected. You can chain as_null_object off of double in order to make
+    the double "loose". For any message that has not explicitly allowed or expected, the double
+    will return itself. It acts as a black hole null object, allowing arbitrarily deep method chains.
+  </p>
+
   <p>Use the as_null_object method to ignore any messages that aren't explicitly set as stubs or message expectations.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    describe 'null object' do
+    RSpec.describe 'null object' do
       specify {
         null_object = double('null object').as_null_object
         expect(null_object).to respond_to(:any_undefined_method)

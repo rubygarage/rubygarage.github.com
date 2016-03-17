@@ -8,4 +8,51 @@
   </script>
 
   <p>The argument is a name, used for failure reporting, so you should use the role that the double is playing in the example.</p>
+
+  <h2>Verifying doubles</h2>
+
+  <p>Verifying doubles are a stricter alternative to normal doubles that provide guarantees about
+     what is being verified. When using verifying doubles, RSpec will check that the methods
+     being stubbed are actually present on the underlying object if it is available. Prefer using
+     verifying doubles over normal doubles.
+  </p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    # app/models/user.rb
+
+    class User
+      MIN_AGE = 18
+
+      def notify(msg)
+        puts msg
+      end
+    end
+
+    def call_user(user)
+     "Hey!" if user.valid
+    end
+
+    # spec/models/user_spec.rb
+
+    user = instance_double("User", name: "Peter")
+    expect(user).to receive(:notify).with("Warning!")
+
+    notifier = class_double("User").
+     as_stubbed_const(transfer_nested_constants: true)
+
+    expect(ConsoleNotifier::MIN_AGE).to eq(18)
+
+    user = object_double(User.new, valid: true)
+    expect(call_user(user)).to eq("Hey!")
+  </script>
+
+  <h2>Partial test doubles</h2>
+
+  <p>A partial test double is an extension of a real object in a system that is instrumented with
+test-double like behaviour in the context of a test. </p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    person = double("person")
+    allow(Person).to receive(:find) { person }
+  </script>
 </section>

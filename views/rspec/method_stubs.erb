@@ -1,41 +1,66 @@
 <section id="method_stubs" class="slide">
   <h2>Method stubs</h2>
 
-  <p>A <strong>method stub</strong> is a method that we can program to return predefined responses during the execution of a code example.</p>
+  <p>Test doubles are "strict" by default -- messages that have not been specifically
+allowed or expected will trigger an error.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    describe Statement do
+    class EmailConfirmationJob
+      include Sidekiq::Worker
+
+      def perform(user_id)
+        user = User.find(user_id)
+        UserMailer.send_confirmation_email(user)
+      end
+    end
+
+    describe "#perform" do
+      it "finds the user by id" do
+        allow(UserMailer).to receive(:send_confirmation_email)
+        expect(User).to receive(:find).with(12)
+
+        EmailConfirmationJob.new.perform(12)
+      end
+    end
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class Statement
+      def initialize(name)
+        @name = name
+      end
+
+      def generate
+        "Statement for #{@name}"
+      end
+    end
+
+    RSpec.describe Statement do
       it "uses the customer's name in the header" do
         customer = double('customer')
-        customer.stub(:name).and_return('Aslak')
+        allow(customer).to receive(:name).and_return('Aslak')
         statement = Statement.new(customer)
         expect(statement.generate).to match(/^Statement for Aslak/)
       end
     end
   </script>
 
-  <p>Method stubs can return different values on different calls: this will return 5.5% when a message for interest_rate is received <strong>for the first time</strong>, but will return 3% for subsequent calls/messages.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    HomeLoan.stub(interest_rate).and_return('5.5%', '3%')
+    RSpec.describe "receive_messages" do
+      it "returns first and last names" do
+        user = double("User")
+        allow(user).to receive_messages(first_name: 'David', last_name: 'Masterson')
+        expect(user.first_name).to eq('David')
+        expect(user.last_name).to eq('Masterson')
+      end
+    end
   </script>
 
   <p>The mock object can be created with stubbed methods at once.</p>
   <script type="syntaxhighlighter" class="brush: ruby">
     customer = double('customer', name: 'Aslak')
     obj = double('object', created_at: -> { Time.now })
-  </script>
-
-  <p>Stub methods can return values depending on the arguments.</p>
-  <script type="syntaxhighlighter" class="brush: ruby">
-    ages = double('ages')
-    ages.stub(:age_for) do |what|
-      if what == 'drinking'
-        21
-      elsif what == 'voting'
-        18
-      end
-    end
   </script>
 </section>
 
@@ -51,12 +76,33 @@
       end
     end
 
-    triviality.stub(:one_two_three).and_yield(triviality)
+    allow(triviality).to receive(:one_two_three).and_yield(triviality)
     triviality.one_two_three { }
   </script>
 
+  <p>and_raise(ExceptionClass)</p>
+  <p>and_raise("message")</p>
+  <p>and_raise(ExceptionClass, "message") </p>
+  <p>and_raise(instance_of_an_exception_class)</p>
+
   <script type="syntaxhighlighter" class="brush: ruby">
-    double.stub(:msg).and_raise(NoMethodError)
-    double.stub(:msg).and_throw(:msg)
+    allow(user).to receive(:some_method).and_raise(NoMethodError)
+  </script>
+
+  <p>and_throw(:symbol)</p>
+  <p>and_throw(:symbol, argument)</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    it "includes the provided argument when throwing" do
+      user = double
+      allow(user).to receive(:confirm).and_throw(:section, "I am not here any more")
+
+      arg = catch :section do
+        user.confirm
+        fail "should not get here"
+      end
+
+      expect(arg).to eq("I am not here any more")
+    end
   </script>
 </section>

@@ -2,7 +2,7 @@
   <h2>Hooks run in order</h2>
   spec/callbacks_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-  describe "before and after callbacks" do
+  RSpec.describe "before and after callbacks" do
     before(:all) do
       puts "global before all"
     end
@@ -55,7 +55,7 @@
   end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-  rspec spec/callbacks_spec.rb 
+  rspec spec/callbacks_spec.rb
   global before all
   global before each
   global test 1

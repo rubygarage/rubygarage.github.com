@@ -8,12 +8,12 @@
       chain :with_message do |message|
         @message = message
       end
-     
+
       match do |model|
         model.valid?
-     
+
         @has_errors = model.errors.key?(attribute)
-     
+
         if @message
           @has_errors && model.errors[attribute].include?(@message)
         else
@@ -25,9 +25,9 @@
 
   <p>And now it can be used as follows:</p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    describe User do
+    RSpec.describe User do
       before { subject.email = "foobar" }
-     
+
       it { expect(subject).to have_errors_on(:email).with_message("Email has an invalid format") }
     end
   </script>

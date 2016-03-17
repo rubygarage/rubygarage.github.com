@@ -12,7 +12,7 @@
       end
     end
 
-    describe Burger do
+    RSpec.describe Burger do
       it "should be with ketchup" do
         burger = Burger.new(ketchup: true)
         expect(burger).to be_with_ketchup
@@ -25,7 +25,7 @@
     end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-    rspec spec/burger_spec.rb 
+    rspec spec/burger_spec.rb
     ..
 
     Finished in 0.0114 seconds

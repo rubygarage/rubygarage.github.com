@@ -12,7 +12,7 @@
       end
     end
 
-    describe Actor do
+    RSpec.describe Actor do
       let(:name) { "Ivan" }
 
       context "without subject redefenition" do
@@ -21,10 +21,10 @@
         its(:name) { should == 'John' }
       end
 
-      context "with subject redefinition" do 
-        let(:actor) {  Actor.new(name) } 
+      context "with subject redefinition" do
+        let(:actor) {  Actor.new(name) }
         subject { actor }
-         
+
         it { should_not be_nil }
 
         it "has name" do

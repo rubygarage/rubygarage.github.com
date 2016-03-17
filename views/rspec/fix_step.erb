@@ -7,7 +7,7 @@ told it to expect “Welcome to Codebreaker!” It doesn’t know anything about
   spec/codebreaker/game_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
     module Codebreaker
-      describe Game do
+      RSpec.describe Game do
         describe "#start" do
           it "sends a welcome message" do
             output = double('output').as_null_object

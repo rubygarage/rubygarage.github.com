@@ -5,12 +5,12 @@
   <p>When specifying interactions with a test double, the order of the calls is rarely important. In fact, the ideal situation is to specify only a single call. But sometimes, we need to specify that messages are sent in a specific order.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    describe Roster do
+    dRSpec.escribe Roster do
       it "asks database for count before adding" do
         database = double()
         student = double()
 
-        expect(database).to receive(:count).with('Roster', :course_id => 37).ordered
+        expect(database).to receive(:count).with('Roster', course_id: 37).ordered
         expect(database).to receive(:add).with(student).ordered
 
         roster = Roster.new(37, database)

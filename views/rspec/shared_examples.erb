@@ -3,10 +3,26 @@
   <p>
     Shared examples let you describe behaviour of types or modules. When declared, a shared group's content is stored. It is only realized in the context of another example group, which provides any context the shared group needs to run.
   </p>
+
+ <p>
+   <b>include_examples "name"</b>     # include the examples in the current context
+ </p>
+ <p>
+   <b>it_behaves_like "name"</b>       # include the examples in a nested context
+ </p>
+ <p>
+   <b>it_should_behave_like "name"</b> # include the examples in a nested context
+ </p>
+ <p>
+   <b>matching metadata<b>             # include the examples in the current context
+</p>
+  <p>You can use any of these methods to use shared examples. Filewith share examples should be loaded before the files that
+use them </p>
+
   <script type="syntaxhighlighter" class="brush: ruby">
     require "set"
 
-    shared_examples "a collection object" do
+    RSpec.shared_examples "a collection object" do
       describe "<<" do
         it "adds objects to the end of the collection" do
           collection << 1
@@ -16,13 +32,13 @@
       end
     end
 
-    describe Array do
+    RSpec.describe Array do
       it_behaves_like "a collection object" do
         let(:collection) { Array.new }
       end
     end
 
-    describe Set do
+    RSpec.describe Set do
       it_behaves_like "a collection object" do
         let(:collection) { Set.new }
       end
@@ -31,7 +47,7 @@
   <h3>Including helper to each test</h3>
   <script type="syntaxhighlighter" class="brush: bash">
     rspec spec/collection_spec.rb --format documentation
-    
+
     Array
       behaves like a collection object
         <<

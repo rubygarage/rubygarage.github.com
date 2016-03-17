@@ -1,13 +1,44 @@
 <section id="hooks" class="slide">
-  <h2>Before and after hooks</h2>
-  <p>
-    Use before and after hooks to execute arbitrary code before and/or after the body of an example is run
-  </p>
-  <script type="syntaxhighlighter" class="brush: ruby">
-    before(:all)  # run one time only, before all of the examples in a group
-    before(:each) # run before each example
+  <h2>Hooks</h2>
+  <p><b>before/after/around</b></p>
 
-    after(:each)  # run after each example
-    after(:all)   # run one time only, after all of the examples in a group
+  <p>
+    Use before, after, around hooks to execute arbitrary code before and/or after the body of an example is run
+  </p>
+  <p><b>:each/:example</b> - runs before/after/around each example </p>
+  <p><b>:all/:context</b>  - runs before/after/around top level group </p>
+  <p><b>:suite </b>  - run once before the first example or/and after the last example </p>
+
+  <h2>Using</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    # Inside spec
+    describe MyClass do
+      before {}
+      before(:each) { }
+      before(:all)  { }
+
+      after {}
+      after(:each) {}
+      after(:all)  {}
+
+      around{}
+      around(:each){}
+    end
+
+    # Inside configuration
+    # spec/spec_helper.rb
+    RSpec.configure do |c|
+      c.before(:each)  {}
+      c.before(:all)   {}
+      c.before(:suite) {}
+
+      c.after(:each)  {}
+      c.after(:all)   {}
+      c.after(:suite) {}
+
+      c.around(:each) {}
+      c.around(:all)  {}
+      c.around(:suite)  {}
+    end
   </script>
 </section>

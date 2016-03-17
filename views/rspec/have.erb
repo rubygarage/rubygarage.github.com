@@ -1,6 +1,11 @@
 <section id="have" class="slide">
   <h2>Spec::Matchers</h2>
-  <h3>Have</h3>
+  <h3>New syntax</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    expect(obj.size).to eq(num)
+  </script>
+  <h3>Old syntax</h3>
+  <h4>Have</h4>
   <p>
     RSpec provides several matchers that make it easy to set expectations about the size of a collection. There are three basic forms:
   </p>
@@ -20,7 +25,7 @@
     You can also use this matcher on a non-collection object that returns a collection from one of its methods. For example, Dir#entries returns an array, so you could set an expectation using the following:
   </p>
   <p>expect(Dir.new("my/directory")).to have(7).entries</p>
-  <h4>A receiver IS a collection </h4>
+  <h5>A receiver IS a collection </h5>
   <script type="syntaxhighlighter" class="brush: ruby">
     describe [1, 2, 3, 4, 5, 6, 7, 8, 9, 0] do
       it { expect(subject).to have(10).items }
@@ -32,7 +37,7 @@
       it { expect(subject).to have_at_most(15).items }
     end
   </script>
-  <h4>A receiver OWNS a collection </h4>
+  <h5>A receiver OWNS a collection </h5>
   <script type="syntaxhighlighter" class="brush: ruby">
     class String
       def words

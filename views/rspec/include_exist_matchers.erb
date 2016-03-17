@@ -15,7 +15,26 @@
     <script type="syntaxhighlighter" class="brush: ruby">
       expect(obj).to exist
       expect(obj).not_to exist
-    </script>  
-    <p>Passes if given.exist?</p>
+      expect(obj).to exist(*args)
+      expect(obj).not_to exist(*args)
+    </script>
+    <p>Passes if given.exist? or given.exists?</p>
+  </div>
+  <div id="true-false" class="slide">
+    <h3>True/False</h3>
+    <h4>New Syntax</h4>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      expect(obj).to be_truthy    # passes if obj is truthy (not nil or false)
+      expect(obj).to be true      # passes if obj == true
+      expect(obj).to be_falsey    # passes if obj is falsy (nil or false)
+      expect(obj).to be false     # passes if obj == false
+      expect(obj).to be_nil       # passes if obj is nil
+    </script>
+
+    <h4>Old Syntax</h4>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      expect(obj).to be_true
+      expect(obj).to be_false   
+    </script>
   </div>
 </section>

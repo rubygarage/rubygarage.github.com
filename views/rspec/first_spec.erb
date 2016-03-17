@@ -14,7 +14,7 @@
     require 'spec_helper'
 
     module Codebreaker
-      describe Game do
+      RSpec.describe Game do
         describe "#start" do
           it "generates secret code"
           it "saves 4 numbers secret code"
@@ -27,10 +27,8 @@
   <script type="syntaxhighlighter" class="brush: bash">
     rspec spec/codebreaker/game_spec.rb --format doc
 
-    /home/alony/projects/rspec-example/spec/codebreaker/game_spec.rb:4:in '<module:Codebreaker>': 
+    /Users/ty/Projects/codebreaker/game_spec.rb:4:in '<module:Codebreaker>':
       uninitialized constant Codebreaker::Game (NameError)
-    from /home/alony/projects/rspec-example/spec/codebreaker/game_spec.rb:3:in '<top (required)>'
-    from /home/alony/.rvm/gems/ruby-1.9.2-p320/gems/rspec-core-2.11.1/lib/rspec/core/configuration.rb:780:in 'load'
     ...
   </script>
 </section>
