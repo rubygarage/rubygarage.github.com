@@ -1,4 +1,13 @@
 <section id="rvmrc" class="slide">
+  <div id="supported-files" class="slide">
+    <h2>Supported files</h2>
+    <ul>
+      <li><b>.rvmrc</b> - shell script allowing full customization of the environment</li>
+      <li><b>.versions.conf</b> - key=value configuration file</li>
+      <li><b>.ruby-version</b> - single line ruby-version only</li>
+      <li><b>Gemfile</b> - comment: #ruby=2.3.0 and directive: ruby "2.3.0"</li>
+    </ul>
+  </div>
   <h2>.rvmrc file</h2>
   <script type="syntaxhighlighter" class="brush: bash">
     rvm use 2.0.0@project_name --create
@@ -7,13 +16,13 @@
     <h2>.ruby-version file</h2>
     <script type="syntaxhighlighter" class="brush: bash">
       2.0.0-p247
-    </script>    
+    </script>
   </div>
   <div id="ruby-gemset-file" class="slide">
     <h2>.ruby-gemset file</h2>
     <script type="syntaxhighlighter" class="brush: bash">
       project_name
-    </script>    
+    </script>
   </div>
   <div id="rvm-best-practices" class="slide">
     <h2>RVM Best Practices</h2>

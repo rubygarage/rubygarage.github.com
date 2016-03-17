@@ -6,9 +6,10 @@
     <a href="https://rvm.io" target="_blank">https://rvm.io</a> for more details.
   </p>
   <script type="syntaxhighlighter" class="brush: bash">
-    curl -L https://get.rvm.io | bash -s stable --autolibs=3
-    rvm install 2.0.0
-    rvm use 2.0.0
+    gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+    \curl -sSL https://get.rvm.io | bash -s stable
+    rvm install 2.3.0
+    rvm use 2.3.0
     rvm gemset create project_name
     rvm gemset use project_name
   </script>

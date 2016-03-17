@@ -1,9 +1,21 @@
 <section id="time" class="slide">
   <h2>Time</h2>
   <p>
-    Follow by <a href="http://www.ruby-doc.org/core-2.0.0/Time.html" target="_blank">http://www.ruby-doc.org/core-2.0.0/Time.html</a> for more information.
+    Follow by <a href="http://www.ruby-doc.org/core-2.3.0/Time.html" target="_blank">http://www.ruby-doc.org/core-2.3.0/Time.html</a> for more information.
   </p>
   <script type="syntaxhighlighter" class="brush: ruby">
+    Time.new(2016)
+    => 2016-01-01 00:00:00 +0200
+
+    Time.new(2016, 10)
+    => 2016-10-01 00:00:00 +0300
+
+    Time.new(2016, 10, 30, 2, 2, 2, "+03:00")
+    => 2016-10-30 02:02:02 +0300
+
+    Time.at(628232400)
+    => 1989-11-28 08:00:00 +0300
+
     t = Time.new
     => 2013-05-09 18:50:25 +0300
 

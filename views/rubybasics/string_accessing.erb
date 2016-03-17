@@ -2,24 +2,24 @@
   <h2>String</h2>
   <h3>Accessing</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-    str = "Programming, Motherfucker. Do you speak it?"
-    => "Programming, Motherfucker. Do you speak it?"
+    str = "Programming! I love it! What about you?"
+    => "Programming! I love it! What about you?"
 
     str[13]
-    => "M"
+    => "I"
     str.slice(13)
-    => "M"
+    => "I"
 
-    str[13, 12]
-    => "Motherfucker"
+    str[13, 10]
+    => "I love it!"
     str.slice(13, 12)
-    => "Motherfucker"
+    => "I love it!"
 
-    str[13..-19]
-    => "Motherfucker"
+    str[13..-17]
+    => "I love it!"
 
-    str["Motherfucker"]
-    => "Motherfucker"
+    str["I love it!"]
+    => "I love it!"
 
     str[/[abc](.)\1/]
     => "amm"
