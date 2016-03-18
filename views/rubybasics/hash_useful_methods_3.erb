@@ -10,7 +10,7 @@
 
     h.delete("a")
     => 200
-    
+
     h.length
     => 3
   </script>
@@ -18,7 +18,7 @@
   <script type="syntaxhighlighter" class="brush: ruby">
     h1 = { "a" => 100, "b" => 200 }
     h2 = { "b" => 254, "c" => 300 }
-    
+
     h1.merge(h2)
     => {"a"=>100, "b"=>254, "c"=>300}
   </script>
@@ -28,5 +28,23 @@
 
     h.select {|key, value| value > 100}
     => {"b" => 200, "c" => 300}
+  </script>
+  dig (2.3.0 only)
+  <script type="syntaxhighlighter" class="brush: ruby">
+    h = { a: { b: { c: 1 } } }
+
+    h.dig(:a, :b, :c)
+    => 1
+
+    h.dig(:a, :some, :c)
+    => nil
+
+    h[:a][:some][:c]
+    => NoMethodError: undefined method '[]' for nil:NilClass
+
+    h = { a: [10, 11, 12] }
+
+    h.dig(:a, 1)
+    => 11
   </script>
 </section>

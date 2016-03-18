@@ -1,12 +1,21 @@
 <section id="hash" class="slide">
   <h2>Hash</h2>
   <p>
-    Follow by <a href="http://www.ruby-doc.org/core-2.0.0/Hash.html" target="_blank">http://www.ruby-doc.org/core-2.0.0/Hash.html</a> for more information.
+    A Hash is a collection of key-value pairs.
+    It is similar to an Array (sometimes it is called an associative array),
+    except that indexing is done via arbitrary keys of any object type, not an integer index.
+  </p>
+  <p>
+    Follow by <a href="http://www.ruby-doc.org/core-2.3.0/Hash.html" target="_blank">http://www.ruby-doc.org/core-2.3.0/Hash.html</a> for more information.
   </p>
   <h3>Creating</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-    > {:font_size => 10, :font_family => "Arial"}
+    > { :font_size => 10, :font_family => "Arial" }
     => {:font_size=>10, :font_family=>"Arial"}
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    > {"font_size" => 10, "font_family" => "Arial"}
+    => {"font_size"=>10, "font_family"=>"Arial"}
   </script>
   <script type="syntaxhighlighter" class="brush: ruby">
     > {font_size: 10, font_family: "Arial"}
@@ -15,5 +24,9 @@
   <script type="syntaxhighlighter" class="brush: ruby">
     > Hash.new
     => {}
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    > Hash["a" => 100, "b" => 200]
+    => {"a"=>100, "b"=>200}
   </script>
 </section>

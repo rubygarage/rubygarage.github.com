@@ -2,14 +2,14 @@
   <h2>String</h2>
   <h3>Useful methods</h3>
   <p>
-    Follow by <a href="http://ruby-doc.org/core-2.0/String.html" target="_blank">http://ruby-doc.org/core-2.0/String.html</a> for more information
+    Follow by <a href="http://ruby-doc.org/core-2.3.0/String.html" target="_blank">http://ruby-doc.org/core-2.3.0/String.html</a> for more information
   </p>
   <script type="syntaxhighlighter" class="brush: ruby">
     "pROgraMMing".capitalize
     => "Programming"
   </script>
   <script type="syntaxhighlighter" class="brush: ruby">
-    "Programming".downcase   
+    "Programming".downcase
     => "programming"
   </script>
   <script type="syntaxhighlighter" class="brush: ruby">
@@ -37,10 +37,10 @@
     => "gnimmargorP"
   </script>
   <script type="syntaxhighlighter" class="brush: ruby">
-    "Programming, Motherfucker. Do you speak it?".split
-    => ["Programming,", "Motherfucker.", "Do", "you", "speak", "it?"]
+    "Programming! I love it! What about you?".split
+    => ["Programming!", "I", "love", "it!", "What", "about", "you?"]
 
-    "Programming,_Motherfucker._Do you speakit?".split('_')
-    => ["Programming,", "Motherfucker.", "Do you speakit?"]
+    "Programming!_I love it!_What about you?".split("_")
+    => ["Programming!", "I love it!", "What about you?"]
   </script>
 </section>
