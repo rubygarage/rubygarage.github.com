@@ -92,14 +92,17 @@
   <h2>Installation</h2>
   <h3>Setup envirepment</h3>
   <script type="syntaxhighlighter" class="brush: bash">
-    rvm use 1.9.3-head@hello-rspec --create
-    Using /Users/sparrow/.rvm/gems/ruby-1.9.3-head with gemset hello-rspec
+  $ rvm use 2.3.0@hello-rspec --create
+    ruby-2.3.0 - #gemset created /Users/ty/.rvm/gems/ruby-2.3.0@hello-rspec
+    ruby-2.3.0 - #generating hello-rspec wrappers - please wait
+    Using /Users/ty/.rvm/gems/ruby-2.3.0 with gemset hello-rspec
   </script>
   <h3>Install rspec</h3>
   <script type="syntaxhighlighter" class="brush: bash">
     gem install rspec
   </script>
-</section><section id="running-specs" class="slide">
+</section>
+<section id="running-specs" class="slide">
   <h2>Running specs and formating output</h2>
   <h3>Running</h3>
   <p>All specs</p>
@@ -123,15 +126,50 @@
   <script type="syntaxhighlighter" class="brush: bash">
     rspec spec/arrays/push_spec.rb --color
   </script>
+  <p>Progress format (default)</p>
+  <script type="syntaxhighlighter" class="brush: bash">
+    rspec spec/arrays/push_spec.rb
+  </script>
+  <p>or</p>
+  <script type="syntaxhighlighter" class="brush: bash">
+    rspec spec/arrays/push_spec.rb  --format progress
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    ....F.....*.....
+  </script>
   <p>Documentation format</p>
   <script type="syntaxhighlighter" class="brush: bash">
     rspec spec/arrays/push_spec.rb --format documentation
   </script>
-</section><section id="first-test" class="slide">
+  <script type="syntaxhighlighter" class="brush: bash">
+    Array
+       #last
+         should return the last element
+         should not remove the last element
+       #pop
+         should return the last element
+         should remove the last element
+
+    Finished in 0.00212 seconds
+    4 examples, 0 failures
+  </script>
+  <p>Additional tools for formatting</p>
+  <script type="syntaxhighlighter" class="brush: bash">
+    gem install fuubar
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    rspec spec/arrays/push_spec.rb  --format Fuubar
+  </script>
+  <p>Output to file</p>
+  <script type="syntaxhighlighter" class="brush: bash">
+    rspec spec --format documentation --out rspec.txt
+  </script>
+</section>
+<section id="first-test" class="slide">
   <h2>First test</h2>
   spec/burger_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    describe Burger do
+    RSpec.describe Burger do
       it "should be with ketchup" do
         burger = Burger.new(ketchup: true)
         expect(burger).to be_with_ketchup
@@ -146,7 +184,7 @@
   <h3>Old syntax</h3>
   spec/burger_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    describe Burger do
+    RSpec.describe Burger do
       it "should be with ketchup" do
         burger = Burger.new(ketchup: true)
         burger.should be_with_ketchup
@@ -159,10 +197,11 @@
     end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-    rspec spec/burger_spec.rb 
+    rspec spec/burger_spec.rb
     spec/burger_spec.rb:1:in '<top (required)>': uninitialized constant Burger (NameError)
   </script>
-</section><section id="first-implementation" class="slide">
+</section>
+<section id="first-implementation" class="slide">
   <h2>First implementation</h2>
   spec/burger_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
@@ -176,7 +215,7 @@
       end
     end
 
-    describe Burger do
+    RSpec.describe Burger do
       it "should be with ketchup" do
         burger = Burger.new(ketchup: true)
         expect(burger).to be_with_ketchup
@@ -189,13 +228,14 @@
     end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-    rspec spec/burger_spec.rb 
+    rspec spec/burger_spec.rb
     ..
 
     Finished in 0.0114 seconds
     2 examples, 0 failures
   </script>
-</section><section id="describe" class="slide">
+</section>
+<section id="describe" class="slide">
   <h2>Describe</h2>
   <p>
     We use the describe() method to define an example group.
@@ -219,39 +259,41 @@
 </section><section id="nested-groups" class="slide">
   <h2>Nested groups</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-    describe User
+    RSpec.describe User
       describe "with no roles assigned" do
         it "is not allowed to view protected content" do
-        end  
+        end
       end
     end
 
-    # =>  User 
+    # =>  User
     # =>    with no roles assigned
     # =>      is not allowed to view protected content
   </script>
-</section><section id="context" class="slide">
+</section>
+<section id="context" class="slide">
   <h2>Context</h2>
   <p>The context() method is an alias for describe().</p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    describe User
+    RSpec.describe User
       context "with no roles assigned" do
         it "is not allowed to view protected content" do
-        end  
+        end
       end
     end
 
-    # =>  User 
+    # =>  User
     # =>    with no roles assigned
     # =>      is not allowed to view protected content
   </script>
-</section><section id="it" class="slide">
+</section>
+<section id="it" class="slide">
   <h2>What’s it() All About?</h2>
   <p>The it() method takes a single String, an optional Hash and an optional block.</p>
   <p>String with 'it' represents the detail that will be expressed in code within the block.</p>
   spec/array_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    describe Array do
+    RSpec.describe Array do
       context "#last" do
         it "should return the last element" do
           array = [:first, :second, :third]
@@ -280,7 +322,7 @@
     end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-    rspec spec/array_spec.rb 
+    rspec spec/array_spec.rb
     ....
 
     Finished in 0.00759 seconds
@@ -300,9 +342,88 @@
     Finished in 0.00212 seconds
     4 examples, 0 failures
   </script>
-</section><section id="pending" class="slide">
+
+  <h2>Specify</h2>
+  <p>Alias for 'it'. Can be used when decsription can be leaved </p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    specify { expect(product).not_to be_featured }
+  </script>
+</section>
+<section id="pending" class="slide">
   <h2>Pending</h2>
   spec/array_spec.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+  RSpec.describe Array do
+    skip 'not implemented yet' do
+    end
+
+    context "#last" do
+      it "should return the last element", skip: true do
+        array = [:first, :second, :third]
+        expect(array.last).to eq(:third)
+      end
+
+      it "should not remove the last element", skip: 'reason explanation' do
+        array = [:first, :second, :third]
+        array.last
+        expect(array.size).to eq(3)
+      end
+    end
+
+    it 'does something else' do
+      skip
+    end
+
+    it 'does something else' do
+      skip 'reason explanation'
+    end
+
+    context "#first" do
+      it "return the first element"
+    end
+  end
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    rspec spec/array_spec.rb --format documentation
+
+    Array
+      not implemented yet (PENDING: No reason given)
+      does something else (PENDING: No reason given)
+      does something else (PENDING: reason explanation)
+      #last
+        should return the last element (PENDING: No reason given)
+        should not remove the last element (PENDING: reason explanation)
+      #first
+        return the first element (PENDING: Not yet implemented)
+
+    Pending:
+      Array not implemented yet
+        # No reason given
+        # ./spec/models/test_spec.rb:2
+      Array does something else
+        # No reason given
+        # ./spec/models/test_spec.rb:18
+      Array does something else
+        # reason explanation
+        # ./spec/models/test_spec.rb:22
+      Array#last should return the last element
+        # No reason given
+        # ./spec/models/test_spec.rb:6
+      Array#last should not remove the last element
+        # reason explanation
+        # ./spec/models/test_spec.rb:11
+      Array#first return the first element
+        # Not yet implemented
+        # ./spec/models/test_spec.rb:27
+
+    Finished in 0.00138 seconds
+    6 examples, 0 failures, 6 pending
+  </script>
+
+  <p>New example group aliases: xdescribe/xcontext, like xit for examples, can be used to temporarily skip an example group.<p>
+
+  <p>Old syntax </p>
   <script type="syntaxhighlighter" class="brush: ruby">
   describe Array do
     context "#last" do
@@ -319,7 +440,7 @@
       end
     end
 
-    context "#first" do 
+    context "#first" do
       it "return the first element"
     end
   end
@@ -348,116 +469,202 @@
     Finished in 1.23 seconds
     3 examples, 0 failures, 3 pending
   </script>
-</section><section id="hooks" class="slide">
-  <h2>Before and after hooks</h2>
-  <p>
-    Use before and after hooks to execute arbitrary code before and/or after the body of an example is run
-  </p>
-  <script type="syntaxhighlighter" class="brush: ruby">
-    before(:all)  # run one time only, before all of the examples in a group
-    before(:each) # run before each example
+</section>
+<section id="hooks" class="slide">
+  <h2>Hooks</h2>
+  <p><b>before/after/around</b></p>
 
-    after(:each)  # run after each example
-    after(:all)   # run one time only, after all of the examples in a group
+  <p>
+    Use before, after, around hooks to execute arbitrary code before and/or after the body of an example is run
+  </p>
+  <p><b>:each/:example</b> - runs before/after/around each example </p>
+  <p><b>:all/:context</b>  - runs before/after/around top level group </p>
+  <p><b>:suite </b>  - run once before the first example or/and after the last example </p>
+
+  <h2>Using</h2>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    # Inside spec
+    describe MyClass do
+      before {}
+      before(:each) { }
+      before(:all)  { }
+
+      after {}
+      after(:each) {}
+      after(:all)  {}
+
+      around{}
+      around(:each){}
+    end
+
+    # Inside configuration
+    # spec/spec_helper.rb
+    RSpec.configure do |c|
+      c.before(:each)  {}
+      c.before(:all)   {}
+      c.before(:suite) {}
+
+      c.after(:each)  {}
+      c.after(:all)   {}
+      c.after(:suite) {}
+
+      c.around(:each) {}
+      c.around(:all)  {}
+      c.around(:suite)  {}
+    end
   </script>
-</section><section id="before-each" class="slide">
+</section>
+<section id="before-each" class="slide">
   <h2>before(:each)</h2>
   <p>Run before each example</p>
   spec/array_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-  describe Array, "before each" do
-    context "#size" do
-      before(:each) do
-        @array = Array.new  # We can share object variables (started with '@') between tests
-      end
-
-      context "when empty" do
-        it "should return zero" do
-          expect(@array.size).to eq(0)
-        end
-
-        it "should return one" do
-          @array.push 100
-          expect(@array.size).to eq(1)
-        end
-      end
-
-      context "when full" do
+    RSpec.describe Array, "before each" do
+      context "#size" do
         before(:each) do
-          (0...10).each { |n| @array.push n }
+          @array = Array.new  # We can share object variables (started with '@') between tests
         end
 
-        it "should return zero" do
-          @array = []
-          expect(@array.size).to eq(0)
+        context "when empty" do
+          it "should return zero" do
+            expect(@array.size).to eq(0)
+          end
+
+          it "should return one" do
+            @array.push 100
+            expect(@array.size).to eq(1)
+          end
         end
 
-        it "should return ten" do
-          expect(@array.size).to eq(10)
+        context "when full" do
+          before(:each) do
+            (0...10).each { |n| @array.push n }
+          end
+
+          it "should return zero" do
+            @array = []
+            expect(@array.size).to eq(0)
+          end
+
+          it "should return ten" do
+            expect(@array.size).to eq(10)
+          end
         end
       end
     end
-  end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-  rspec spec/array_spec.rb 
+  rspec spec/array_spec.rb
   ....
 
   Finished in 0.01025 seconds
   4 examples, 0 failures
   </script>
-</section><section id="before-all" class="slide">
+</section>
+<section id="before-all" class="slide">
   <h2>before(:all)</h2>
   <p>Run one time only, before all of the examples in a group</p>
   spec/array_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-  describe Array, "before all" do
-    context "#size" do
-      context "when empty" do
-        before(:all) do
-          @array = Array.new
+    RSpec.describe Array, "before all" do
+      context "#size" do
+        context "when empty" do
+          before(:all) do
+            @array = Array.new
+          end
+
+          it "should return one" do
+            @array.push 100
+            expect(@array.size).to eq(1)
+          end
+
+          it "should return one again" do
+            expect(@array.size).to eq(1)
+          end
         end
 
-        it "should return one" do
-          @array.push 100
-          expect(@array.size).to eq(1)
-        end
+        context "when full" do
+          before(:all) do
+            @array = Array.new
+            (0...10).each { |n| @array.push n }
+          end
 
-        it "should return one again" do
-          expect(@array.size).to eq(1)
-        end
-      end
+          it "should return nine" do
+            @array.pop
+            expect(@array.size).to eq(9)
+          end
 
-      context "when full" do
-        before(:all) do
-          @array = Array.new
-          (0...10).each { |n| @array.push n }
-        end
-
-        it "should return nine" do
-          @array.pop
-          expect(@array.size).to eq(9)
-        end
-
-        it "should return nine again" do
-          expect(@array.size).to eq(9)
+          it "should return nine again" do
+            expect(@array.size).to eq(9)
+          end
         end
       end
     end
-  end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-  rspec spec/array_spec.rb 
+  rspec spec/array_spec.rb
   ....
 
   Finished in 0.01025 seconds
   4 examples, 0 failures
   </script>
-</section><section id="hooks-run-in-order" class="slide">
+</section>
+<section id="around-each" class="slide">
+  <h2>around(:each)</h2>
+  <p>Run before and after each example</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class User
+      def self.communication
+        puts "Hello!"
+        yield
+        puts "Bye!"
+      end
+    end
+
+    RSpec.describe "around filter" do
+      around(:each) do |example|
+        User.communication(&example)
+      end
+
+      it "first test" do
+        puts "run the example"
+      end
+    end
+
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    rspec spec
+
+    Hello!
+    run the example
+    Bye!
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    RSpec.describe "test around hook" do
+      around(:each) do |example|
+        puts "around each before"
+        example.run
+        puts "around each after"
+      end
+
+      it "run" do
+        puts "inside the example"
+      end
+    end
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    around each before
+    inside the example
+    around each after
+  </script>
+</section>
+<section id="hooks-run-in-order" class="slide">
   <h2>Hooks run in order</h2>
   spec/callbacks_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-  describe "before and after callbacks" do
+  RSpec.describe "before and after callbacks" do
     before(:all) do
       puts "global before all"
     end
@@ -510,7 +717,7 @@
   end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-  rspec spec/callbacks_spec.rb 
+  rspec spec/callbacks_spec.rb
   global before all
   global before each
   global test 1
@@ -532,60 +739,62 @@
   group after all
   global after all
   </script>
-</section><section id="hooks-in-configuration" class="slide">
+</section>
+<section id="hooks-in-configuration" class="slide">
   <h2>Define hooks in configuration</h2>
   file spec/callbacks_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-  RSpec.configure do |config|
-    config.before(:suite) do
-      puts "before suite"
+    RSpec.configure do |config|
+      config.before(:suite) do
+        puts "before suite"
+      end
+
+      config.before(:all) do
+        puts "before all"
+      end
+
+      config.before(:each) do
+        puts "before each"
+      end
+
+      config.after(:each) do
+        puts "after each"
+      end
+
+      config.after(:all) do
+        puts "after all"
+      end
+
+      config.after(:suite) do
+        puts "after suite"
+      end
     end
 
-    config.before(:all) do
-      puts "before all"
-    end
+    RSpec.describe "before and after callbacks in config" do
+      it "run" do
+        puts "test 1"
+      end
 
-    config.before(:each) do
-      puts "before each"
+      it "run" do
+        puts "test 2"
+      end
     end
-
-    config.after(:each) do
-      puts "after each"
-    end
-
-    config.after(:all) do
-      puts "after all"
-    end
-
-    config.after(:suite) do
-      puts "after suite"
-    end
-  end
-
-  describe "before and after callbacks in config" do
-    it "run" do
-      puts "test 1"
-    end
-
-    it "run" do
-      puts "test 2"
-    end
-  end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-  rspec spec/callbacks_spec.rb 
-  before suite
-  before all
-  before each
-  test 1
-  after each
-  before each
-  test 2
-  after each
-  after all
-  after suite
+    rspec spec/callbacks_spec.rb
+    before suite
+    before all
+    before each
+    test 1
+    after each
+    before each
+    test 2
+    after each
+    after all
+    after suite
   </script>
-</section><section id="let" class="slide">
+</section>
+<section id="let" class="slide">
   <h2>Let</h2>
   <p>
     Use <i>let</i> to define a memoized helper method. The value will be cached across multiple calls in the same example but not across examples.
@@ -616,12 +825,19 @@
   <p>
     Use subject in the group scope to explicitly define the value that is returned by the subject method in the example scope.
   </p>
+  <p>
+    If you don't define subject it is set as an object of described class (for example Array.new)
+  </p>
+  <p>
+    Use subject! can be used for calling method before each example
+  </p>
   spec/array_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    describe Array, "with some elements" do
+    RSpec.describe Array, "with some elements" do
       subject { [1,2,3] }
 
       it { expect(subject).not_to be_empty }
+      it { is_expected.not_to be_empty }
 
       it "should have the prescribed elements" do
         expect(subject).to eq([1,2,3])
@@ -633,12 +849,43 @@
 
     Array with some elements
       should not be empty
+      should not be empty
       should have the prescribed elements
 
-    Finished in 0.03275 seconds
+    Finished in 0.00495 seconds
     3 examples, 0 failures
   </script>
-</section><section id="helper-methods" class="slide">
+  <script type="syntaxhighlighter" class="brush: ruby">
+    RSpec.describe Array, "with some elements" do
+      subject(:array) { [1,2,3] }
+
+      it { expect(array).not_to be_empty }
+      it { is_expected.not_to be_empty }
+
+      it "should have the prescribed elements" do
+        expect(array).to eq([1,2,3])
+      end
+    end
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    RSpec.describe User, "with some elements" do
+      subject(:user) { User.create(params) }
+      let(:params) { { name: "David", position: "HR" } }
+
+      it { expect(user.name).to eql("David") }
+
+      describe "with another name" do
+        let(:params) { { name: "Mark", position: "PM" } }
+        it { expect(user.name).to eql("Mark") }
+      end
+    end
+  </script>
+
+
+
+
+</section>
+<section id="helper-methods" class="slide">
   <h2>Sharing helper methods</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
     module UserHelpers
@@ -651,7 +898,7 @@
       end
     end
 
-    describe User do
+    RSpec.describe User do
       include UserHelpers
 
       it "does something when it is valid" do
@@ -671,30 +918,51 @@
       config.include(UserHelpers)
     end
   </script>
-</section><section id="described-class" class="slide">
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    RSpec.configure do |config|
+      config.include(UserHelpers), foo: :bar
+      config.include Helpers, :include_helpers
+      config.extend  Helpers, :extend_helpers
+    end
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    it "first test", foo: :bar do
+    end
+
+    it "second test", :include_helpers do
+    end
+
+    it "third test", :extend_helpers do
+    end
+  </script>
+</section>
+<section id="described-class" class="slide">
   <h2>Described class</h2>
   <p>
     If the first argument to the outermost example group is a class, the class is exposed to each example via the described_class() method.
   </p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    describe Fixnum do
+    RSpec.describe Fixnum do
       it "is available as described_class" do
         expect(described_class).to eq(Fixnum)
       end
     end
   </script>
-</section><section id="filters" class="slide">
+</section>
+<section id="filters" class="slide">
   <h2>Filters</h2>
   spec/subject_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
     describe Actor do
       let(:name) { "Ivan" }
 
-      context "with subject redefinition", focus: true do 
-        let(:actor) {  Actor.new(name) } 
+      context "with subject redefinition", :focus do # or focus: true
+        let(:actor) {  Actor.new(name) }
         subject { actor }
-         
-        it "has name", slow: true do
+
+        it "has name", :slow do # or slow: true
           expect(subject.name).to eq(name)
         end
       end
@@ -720,6 +988,8 @@
     end
   </script>
 
+  <p>You can also use fit/fdescription/fcontext methods instead of using focus: true</p>
+
   <script type="syntaxhighlighter" class="brush: bash">
     rspec spec/subject_spec.rb --tag ~slow --format documentation
 
@@ -734,15 +1004,32 @@
       config.run_all_with_everything_filtered = true
     end
   </script>
-</section><section id="shared-examples" class="slide">
+</section>
+<section id="shared-examples" class="slide">
   <h2>Shared Examples</h2>
   <p>
     Shared examples let you describe behaviour of types or modules. When declared, a shared group's content is stored. It is only realized in the context of another example group, which provides any context the shared group needs to run.
   </p>
+
+ <p>
+   <b>include_examples "name"</b>     # include the examples in the current context
+ </p>
+ <p>
+   <b>it_behaves_like "name"</b>       # include the examples in a nested context
+ </p>
+ <p>
+   <b>it_should_behave_like "name"</b> # include the examples in a nested context
+ </p>
+ <p>
+   <b>matching metadata<b>             # include the examples in the current context
+</p>
+  <p>You can use any of these methods to use shared examples. Filewith share examples should be loaded before the files that
+use them </p>
+
   <script type="syntaxhighlighter" class="brush: ruby">
     require "set"
 
-    shared_examples "a collection object" do
+    RSpec.shared_examples "a collection object" do
       describe "<<" do
         it "adds objects to the end of the collection" do
           collection << 1
@@ -752,13 +1039,13 @@
       end
     end
 
-    describe Array do
+    RSpec.describe Array do
       it_behaves_like "a collection object" do
         let(:collection) { Array.new }
       end
     end
 
-    describe Set do
+    RSpec.describe Set do
       it_behaves_like "a collection object" do
         let(:collection) { Set.new }
       end
@@ -767,7 +1054,7 @@
   <h3>Including helper to each test</h3>
   <script type="syntaxhighlighter" class="brush: bash">
     rspec spec/collection_spec.rb --format documentation
-    
+
     Array
       behaves like a collection object
         <<
@@ -781,27 +1068,28 @@
     Finished in 0.00443 seconds
     2 examples, 0 failures
   </script>
-</section><section id="shared-context" class="slide">
+</section>
+<section id="shared-context" class="slide">
   <h2>Shared context</h2>
   <p>
     Use shared_context to define a block that will be evaluated in the context of example groups either explicitly, using include_context, or implicitly by matching metadata.
   </p>
   <script type="syntaxhighlighter" class="brush: ruby">
-  shared_context "shared stuff", a: :b do
+  RSpec.shared_context "shared stuff", a: :b do
     before { @some_var = :some_value }
 
     def shared_method
       "it works"
     end
-    
+
     let(:shared_let) { {'arbitrary' => 'object'} }
-    
+
     subject do
       'this is the subject'
     end
   end
 
-  describe "group that includes a shared context using 'include_context'" do
+  RSpec.describe "group that includes a shared context using 'include_context'" do
     include_context "shared stuff"
 
     it "has access to methods defined in shared context" do
@@ -821,7 +1109,7 @@
     end
   end
 
-  describe "group that includes a shared context using metadata", a: :b do
+  RSpec.describe "group that includes a shared context using metadata", a: :b do
     it "has access to methods defined in shared context" do
       expect(shared_method).to eq("it works")
     end
@@ -840,13 +1128,14 @@
   end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-  rspec spec/shared_stuff_spec.rb 
+  rspec spec/shared_stuff_spec.rb
   ........
 
   Finished in 0.00758 seconds
   8 examples, 0 failures
   </script>
-</section><section id="expectations" class="slide">
+</section>
+<section id="expectations" class="slide">
   <h2>Expectations</h2>
   <p>
     For checking the expectations, <strong>expect(obj).to</strong> and <strong>expect(obj).not_to</strong> methods are used.
@@ -900,7 +1189,7 @@
     Passes if given and expected are of equal value, but not necessarily the same object.
   </p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    describe "a string" do
+    RSpec.describe "a string" do
       context "#eq" do
         it "is equal to another string of the same value" do
           expect("this string").to eq("this string")
@@ -918,7 +1207,7 @@
       Passes if given and expected are the same object (object identity).
     </p>
     <script type="syntaxhighlighter" class="brush: ruby">
-      describe "a string" do
+      RSpec.describe "a string" do
         context "#equal" do
           it "is equal to itself" do
             string = "this string"
@@ -928,26 +1217,85 @@
       end
     </script>
   </div>
-</section><section id="floating-point" class="slide">
+
+  <p>Note: expect syntax doesn't support '==' matcher</p>
+</section>
+<section id="comparisons" class="slide">
+  <h2>Comparisons</h2>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    expect(obj).to be >  expected
+    expect(obj).to be >= expected
+    expect(obj).to be <= expected
+    expect(obj).to be <  expected
+  </script>
+
+  <h3>Between</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    expect(obj).to be_between(minimum, maximum).inclusive
+    expect(obj).to be_between(minimum, maximum).exclusive
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    expect(10).to be_between(1, 10).inclusive
+    expect(10).to be_between(1, 11).exclusive
+  </script>
+
+  <h3>Start/End</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    expect(obj).to start_with expected
+    expect(obj).to end_with expected
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    eexpect("first string").to start_with("first")
+    expect("first string").not_to start_with("second")
+    expect([1,3,5]).to start_with(1,3)
+  </script>
+</section>
+<section id="floating-point" class="slide">
   <h2>Spec::Matchers</h2>
   <h3>Floating point numbers</h3>
+  <p>Passes if given == expected +/- delta</p>
+  <h4> New syntax </h4>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    expect(obj).to be_within(delta).of(expected)
+    expect(obj).not_to be_within(delta).of(expected)
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    expect(result).to be_within(0.01).of(expected)
+  </script>
+  <p>Note: that the difference between the actual and expected values must be smaller than your delta; if it is equal, the matcher will fail.</p>
+
+  <h4> Old syntax </h4>
   <script type="syntaxhighlighter" class="brush: ruby">
     expect(obj).to be_close(expected, delta)
     expect(obj).not_to be_close(expected, delta)
   </script>
-  <p>Passes if given == expected +/- delta</p>
+
   <p>When dealing with floating points, it's convenient to use matcher be_close(), which takes two arguments: the floating point number you are expecting and the precision you require.</p>
   <script type="syntaxhighlighter" class="brush: ruby">
     expect(result).to be_close(3.14, 0.005)
   </script>
-</section><section id="regexps" class="slide">
+</section>
+<section id="regexps" class="slide">
   <h2>Spec::Matchers</h2>
   <h3>Regular Expressions</h3>
   <p>For checking strings to match regular expressions, the <strong>match</strong> is used. This can be very useful when dealing with multiple-line expectations.</p>
   <script type="syntaxhighlighter" class="brush: ruby">
     expect(result).to match(/this regexp/)
   </script>
-</section><section id="predicate_matchers" class="slide">
+</section><section id="types" class="slide">
+  <h2>Types and responses</h2>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    expect(obj).to respond_to(expected)
+    expect(obj).to be_instance_of(expected)
+    expect(obj).to be_kind_of(expected)
+  </script>
+</section>
+<section id="predicate_matchers" class="slide">
   <h2>Spec::Matchers</h2>
   <h3>Predicate Matchers</h3>
   <p>A Ruby predicate method is a method that ends with a “?” and returns a boolean value, like <strong>string.empty?</strong> or <strong>regexp.match?</strong> methods. For these cases Rspec allows us to describe expectations with <strong>be_something</strong> matcher. When using a be_something matcher, RSpec removes the “be_”, appends a “?” and calls the resulting method in the receiver.</p>
@@ -989,10 +1337,45 @@
     <script type="syntaxhighlighter" class="brush: ruby">
       expect(obj).to exist
       expect(obj).not_to exist
-    </script>  
-    <p>Passes if given.exist?</p>
+      expect(obj).to exist(*args)
+      expect(obj).not_to exist(*args)
+    </script>
+    <p>Passes if given.exist? or given.exists?</p>
   </div>
-</section><section id="changes" class="slide">
+  <div id="true-false" class="slide">
+    <h3>True/False</h3>
+    <h4>New Syntax</h4>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      expect(obj).to be_truthy    # passes if obj is truthy (not nil or false)
+      expect(obj).to be true      # passes if obj == true
+      expect(obj).to be_falsey    # passes if obj is falsy (nil or false)
+      expect(obj).to be false     # passes if obj == false
+      expect(obj).to be_nil       # passes if obj is nil
+    </script>
+
+    <h4>Old Syntax</h4>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      expect(obj).to be_true
+      expect(obj).to be_false   
+    </script>
+  </div>
+</section>
+<section id="membership" class="slide">
+  <h2>Membership</h2>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    expect(obj).to include(expected)
+    expect(obj).to match_array(expected_array)
+    expect(obj).to contain_exactly(one_element, another_element)
+  </script>
+  <h3>Examples</h3>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    expect([1, 3, 5]).to     contain_exactly(3, 1, 5)
+    expect([1, 3, 5]).to     match_array([5, 3, 1])
+  </script>
+</section>
+<section id="changes" class="slide">
   <h2>Spec::Matchers</h2>
   <h3>Changes</h3>
   <p>Sometimens you expect some code (wrapped in a proc) to change the state of some object. There is a convenient way to check it with rspec:</p>
@@ -1002,24 +1385,38 @@
     end
   </script>
   <div id="by-to-from" class="slide">
-    <h6>by(), to(), from()</h6>
+    <h6>by(), to(), from(), by_at_least(), by_at_most()</h6>
     <script type="syntaxhighlighter" class="brush: ruby">
-      it "should remove the last element" do
+      it "removes the last element" do
         expect { @array.pop }.to change{ @array.size }.by(1)
       end
 
-      it "should remove the last element" do
+      it "removes the last element" do
         expect { @array.pop }.to change{ @array.size }.to(2)
       end
 
-      it "should remove the last element" do
+      it "removes the last element" do
         expect { @array.pop }.to change{ @array.size }.from(3).to(2)
+      end
+
+      it "changes size by at least 1" do
+        expect { 2.times { @array.pop } }.to change{ @array.size }.by_at_least(1)
+      end
+
+      it "changes size by at most 2" do
+        expect { 2.times { @array.pop } }.to change{ @array.size }.by_at_most(2)
       end
     </script>
   </div>
-</section><section id="have" class="slide">
+</section>
+<section id="have" class="slide">
   <h2>Spec::Matchers</h2>
-  <h3>Have</h3>
+  <h3>New syntax</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    expect(obj.size).to eq(num)
+  </script>
+  <h3>Old syntax</h3>
+  <h4>Have</h4>
   <p>
     RSpec provides several matchers that make it easy to set expectations about the size of a collection. There are three basic forms:
   </p>
@@ -1039,7 +1436,7 @@
     You can also use this matcher on a non-collection object that returns a collection from one of its methods. For example, Dir#entries returns an array, so you could set an expectation using the following:
   </p>
   <p>expect(Dir.new("my/directory")).to have(7).entries</p>
-  <h4>A receiver IS a collection </h4>
+  <h5>A receiver IS a collection </h5>
   <script type="syntaxhighlighter" class="brush: ruby">
     describe [1, 2, 3, 4, 5, 6, 7, 8, 9, 0] do
       it { expect(subject).to have(10).items }
@@ -1051,7 +1448,7 @@
       it { expect(subject).to have_at_most(15).items }
     end
   </script>
-  <h4>A receiver OWNS a collection </h4>
+  <h5>A receiver OWNS a collection </h5>
   <script type="syntaxhighlighter" class="brush: ruby">
     class String
       def words
@@ -1070,7 +1467,21 @@
       it { expect(subject).to have_at_most(6).words }
     end
   </script>
-</section><section id="custom-matchers" class="slide">
+</section>
+<section id="output" class="slide">
+  <h2>Output</h2>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    expect { obj }.to output("some output").to_stdout
+    expect { actual }.to output("some error").to_stderr
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    expect { puts('output') }.to output("output").to_stdout
+    expect { warn('error') }.to output("error").to_stderr
+  </script>
+</section>
+<section id="custom-matchers" class="slide">
   <h2>Spec::Matchers</h2>
   <h3>Custom matchers</h3>
   <p>
@@ -1124,12 +1535,12 @@
       chain :with_message do |message|
         @message = message
       end
-     
+
       match do |model|
         model.valid?
-     
+
         @has_errors = model.errors.key?(attribute)
-     
+
         if @message
           @has_errors && model.errors[attribute].include?(@message)
         else
@@ -1141,13 +1552,14 @@
 
   <p>And now it can be used as follows:</p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    describe User do
+    RSpec.describe User do
       before { subject.email = "foobar" }
-     
+
       it { expect(subject).to have_errors_on(:email).with_message("Email has an invalid format") }
     end
   </script>
-</section><section id="mocks-and-stubs" class="slide">
+</section>
+<section id="mocks-and-stubs" class="slide">
   <h2>Doubles</h2>
 
   <p>A <strong>test double</strong> is an object that stands in for another object in an example.</p>
@@ -1157,57 +1569,138 @@
   </script>
 
   <p>The argument is a name, used for failure reporting, so you should use the role that the double is playing in the example.</p>
-</section><section id="as_null_object" class="slide">
+
+  <h2>Verifying doubles</h2>
+
+  <p>Verifying doubles are a stricter alternative to normal doubles that provide guarantees about
+     what is being verified. When using verifying doubles, RSpec will check that the methods
+     being stubbed are actually present on the underlying object if it is available. Prefer using
+     verifying doubles over normal doubles.
+  </p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    # app/models/user.rb
+
+    class User
+      MIN_AGE = 18
+
+      def notify(msg)
+        puts msg
+      end
+    end
+
+    def call_user(user)
+     "Hey!" if user.valid
+    end
+
+    # spec/models/user_spec.rb
+
+    user = instance_double("User", name: "Peter")
+    expect(user).to receive(:notify).with("Warning!")
+
+    notifier = class_double("User").
+     as_stubbed_const(transfer_nested_constants: true)
+
+    expect(ConsoleNotifier::MIN_AGE).to eq(18)
+
+    user = object_double(User.new, valid: true)
+    expect(call_user(user)).to eq("Hey!")
+  </script>
+
+  <h2>Partial test doubles</h2>
+
+  <p>A partial test double is an extension of a real object in a system that is instrumented with
+test-double like behaviour in the context of a test. </p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    person = double("person")
+    allow(Person).to receive(:find) { person }
+  </script>
+</section>
+<section id="as_null_object" class="slide">
   <h2>Doubles, as_null_object</h2>
+
+  <p>
+    Test doubles are strict by default, raising errors when they receive messages that have not
+    been allowed or expected. You can chain as_null_object off of double in order to make
+    the double "loose". For any message that has not explicitly allowed or expected, the double
+    will return itself. It acts as a black hole null object, allowing arbitrarily deep method chains.
+  </p>
 
   <p>Use the as_null_object method to ignore any messages that aren't explicitly set as stubs or message expectations.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    describe 'null object' do
+    RSpec.describe 'null object' do
       specify {
         null_object = double('null object').as_null_object
         expect(null_object).to respond_to(:any_undefined_method)
       }
     end
   </script>
-</section><section id="method_stubs" class="slide">
+</section>
+<section id="method_stubs" class="slide">
   <h2>Method stubs</h2>
 
-  <p>A <strong>method stub</strong> is a method that we can program to return predefined responses during the execution of a code example.</p>
+  <p>Test doubles are "strict" by default -- messages that have not been specifically
+allowed or expected will trigger an error.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    describe Statement do
+    class EmailConfirmationJob
+      include Sidekiq::Worker
+
+      def perform(user_id)
+        user = User.find(user_id)
+        UserMailer.send_confirmation_email(user)
+      end
+    end
+
+    describe "#perform" do
+      it "finds the user by id" do
+        allow(UserMailer).to receive(:send_confirmation_email)
+        expect(User).to receive(:find).with(12)
+
+        EmailConfirmationJob.new.perform(12)
+      end
+    end
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class Statement
+      def initialize(name)
+        @name = name
+      end
+
+      def generate
+        "Statement for #{@name}"
+      end
+    end
+
+    RSpec.describe Statement do
       it "uses the customer's name in the header" do
         customer = double('customer')
-        customer.stub(:name).and_return('Aslak')
+        allow(customer).to receive(:name).and_return('Aslak')
         statement = Statement.new(customer)
         expect(statement.generate).to match(/^Statement for Aslak/)
       end
     end
   </script>
 
-  <p>Method stubs can return different values on different calls: this will return 5.5% when a message for interest_rate is received <strong>for the first time</strong>, but will return 3% for subsequent calls/messages.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    HomeLoan.stub(interest_rate).and_return('5.5%', '3%')
+    RSpec.describe "receive_messages" do
+      it "returns first and last names" do
+        user = double("User")
+        allow(user).to receive_messages(first_name: 'David', last_name: 'Masterson')
+        expect(user.first_name).to eq('David')
+        expect(user.last_name).to eq('Masterson')
+      end
+    end
   </script>
 
   <p>The mock object can be created with stubbed methods at once.</p>
   <script type="syntaxhighlighter" class="brush: ruby">
     customer = double('customer', name: 'Aslak')
     obj = double('object', created_at: -> { Time.now })
-  </script>
-
-  <p>Stub methods can return values depending on the arguments.</p>
-  <script type="syntaxhighlighter" class="brush: ruby">
-    ages = double('ages')
-    ages.stub(:age_for) do |what|
-      if what == 'drinking'
-        21
-      elsif what == 'voting'
-        18
-      end
-    end
   </script>
 </section>
 
@@ -1223,58 +1716,164 @@
       end
     end
 
-    triviality.stub(:one_two_three).and_yield(triviality)
+    allow(triviality).to receive(:one_two_three).and_yield(triviality)
     triviality.one_two_three { }
   </script>
 
-  <script type="syntaxhighlighter" class="brush: ruby">
-    double.stub(:msg).and_raise(NoMethodError)
-    double.stub(:msg).and_throw(:msg)
-  </script>
-</section><section id="unstub" class="slide">
-  <h2>unstub (or unstub!)</h2>
+  <p>and_raise(ExceptionClass)</p>
+  <p>and_raise("message")</p>
+  <p>and_raise(ExceptionClass, "message") </p>
+  <p>and_raise(instance_of_an_exception_class)</p>
 
-  <p>Removes a stub. On a double, the object will no longer respond to message. On a real object, the original method (if it exists) is restored.</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    allow(user).to receive(:some_method).and_raise(NoMethodError)
+  </script>
+
+  <p>and_throw(:symbol)</p>
+  <p>and_throw(:symbol, argument)</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    it "includes the provided argument when throwing" do
+      user = double
+      allow(user).to receive(:confirm).and_throw(:section, "I am not here any more")
+
+      arg = catch :section do
+        user.confirm
+        fail "should not get here"
+      end
+
+      expect(arg).to eq("I am not here any more")
+    end
+  </script>
+</section>
+<section id="unstub" class="slide">
+  <h2>Removing stubs</h2>
+  Removes a stub. On a double, the object will no longer respond to message. On a real object, the original method (if it exists) is restored.
+  <h3>New syntax</h3>
+  <h4>and_call_original</h4>
+  When working with a partial double object, you may occasionally want to set a message expecation without interfering with how the object responds to the message.
+  <script type="syntaxhighlighter" class="brush: ruby">
+    RSpec.describe "call original" do
+      it "calls original method" do
+        allow(Modifier).to receive(:sum).and_call_original
+        allow(Modifier).to receive(:sum).with(3, 4).and_return(-10)
+
+        expect(Modifier.sum(1, 2)).to eq(3)
+        expect(Modifier.sum(3, 4)).to eq(-10)
+      end
+    end
+  </script>
+
+  <h3>Old syntax</h3>
+  <h4>unstub (or unstub!)</h4>
 
   <script type="syntaxhighlighter" class="brush: ruby">
     describe String do
       before(:each) { String.stub(:new).and_return("hello") }
-     
+
       it "can restore it's own behavior" do
         expect(String.new("initial string")).to eq("hello")
         String.unstub(:new)
-     
+
         expect(String.new("initial string")).to eq("initial string")
       end
     end
   </script>
 
-</section><section id="stub-const" class="slide">
+</section>
+<section id="stub-const" class="slide">
   <h2>Stubbing constants</h2>
 
-  <p>Support is provided for stubbing constants. Stubbed constant names must be fully qualified; the current module nesting is not considered.</p>
+  <p> When the constant is already defined, the stubbed value
+will replace the original value for the duration of the example.</p>
+
+  <h3>Stub top-level constant</h3>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    module MyGem
-      class SomeClass; end
+    TOP_LEVEL_CONST = 100
+
+    RSpec.describe "stubbing TOP_LEVEL_CONST" do
+      it "can stub TOP_LEVEL_CONST with a different value" do
+        stub_const("TOP_LEVEL_CONST", 20)
+        expect(TOP_LEVEL_CONST).to eq(20)
+      end
+
+      it "restores the stubbed constant when the example completes" do
+        expect(TOP_LEVEL_CONST).to eq(100)
+      end
+    end
+  </script>
+
+  <h3>Stub nested constant</h3>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    module Calculation
+      class Statistic
+        LEVEL = 15
+      end
     end
 
-    module MyGem
-      describe "Something" do
-        it "accidentally stubs the wrong constant" do
-          # this stubs ::SomeClass (in the top-level namespace),
-          # not MyGem::SomeClass like you probably mean.
-          stub_const("SomeClass", Class.new)
-        end
-
-        it "stubs the right constant" do
-          stub_const("MyGem::SomeClass", Class.new)
+    module Calculation
+      RSpec.describe Statistic do
+        it "stubs the nested constant when it is fully qualified" do
+          stub_const("Calculation::Statistic::LEVEL", 52)
+          expect(Statistic::LEVEL).to eq(52)
         end
       end
     end
   </script>
-</section><section id="any-instance" class="slide">
+
+  <h3>Transfer nested constants</h3>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    module Calculation
+      class Statistic
+        LEVEL = 15
+      end
+    end
+
+    module Calculation
+      RSpec.describe Statistic do
+        let(:new_class) { Class.new }
+
+        it "does not transfer nested constants by default" do
+          stub_const("Calculation::Statistic", new_class)
+          expect { Statistic::LEVEL }.to raise_error(NameError)
+        end
+
+        it "transfers nested constants when using transfer_nested_constants: true" do
+          stub_const("Calculation::Statistic", new_class, transfer_nested_constants: true)
+          expect(Statistic::LEVEL).to eq(15)
+        end
+
+        it "can specify a list of nested constants to transfer" do
+          stub_const("Calculation::Statistic", new_class, transfer_nested_constants:  [:LEVEL])
+          expect(Statistic::LEVEL).to eq(15)
+        end
+      end
+  </script>
+</section>
+<section id="any-instance" class="slide">
   <h2>Stub on any instance of a class</h2>
+  <h3> New syntax </h3>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+     allow_any_instance_of(User).to receive(:name).and_return("User")
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    RSpec.describe "allow_any_instance_of" do
+      it 'yields the receiver to the block implementation' do
+        allow_any_instance_of(String).to receive(:slice) do |value, start, length|
+          value[start, length]
+        end
+
+        expect('string'.slice(2, 3)).to eq('rin')
+      end
+    end
+  </script>
+
+  <h3> Old syntax </h3>
 
   <p>Use any_instance.stub on a class to tell any instance of that class to
 return a value (or values) in response to a given message. If no instance
@@ -1292,11 +1891,32 @@ receives the message, nothing happens.</p>
       end
     end
   </script>
-
-</section><section id="stub-chain" class="slide">
+</section>
+<section id="stub-chain" class="slide">
   <h2>Stub a chain of methods</h2>
 
-  <p>The <strong>stub_chain</strong> method lets you to stub a chain of methods in one statement - and there is no need to stub each method in the dependency chain represented by a chain of messages to different objects.</p>
+  <p>Stubbing methods chain lets you to stub a chain of methods in one statement - and there is no need to stub each method in the dependency chain represented by a chain of messages to different objects.</p>
+
+  <h3>New syntax</h3>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class User
+      scope :admins, -> { where(role: 'admin').order("created_at DESC") }
+    end
+
+    RSpec.describe "stubs method chain" do
+      it "returns admin" do
+        admin = double('Admin')
+        allow(User).to receive_message_chain(:where, :order).and_return([admin])
+        // allow(User).to receive_message_chain("where.order") { [admin] }
+        // allow(User).to receive_message_chain(:where, order:  [admin])
+        // allow(User).to receive_message_chain(:where, :order) { [admin] }
+        expect(User.admins).to include(admin)
+      end
+    end
+  </script>
+
+  <h3>Old syntax</h3>
 
   <script type="syntaxhighlighter" class="brush: ruby">
     Article.recent.published.authored_by(params[:author_id])
@@ -1317,41 +1937,37 @@ receives the message, nothing happens.</p>
     article = double()
     Article.stub_chain(:recent, :published, :authored_by).and_return(article)
   </script>
-</section><section id="stub_before_all" class="slide">
-  <h2>Stubs and before(:all)</h2>
+</section>
+<section id="stub_before_all" class="slide">
+  <h2>Stubs and before(:context)</h2>
 
-  <h3>Use before(:each), not before(:all)</h3>
-
-  <p>Stubs in before(:all) are not supported. The reason is that all stubs and mocks get cleared out after each example, so any stub that is set in before(:all) would work in the first example that happens to run in that group, but not for any others.</p>
+  <p>Since before(:context) runs outside the scope of any individual example, usage of
+rspec-mocks features is not supported there. You can, however, create a temporary scope in
+any arbitrary context, including in a before(:context) hook, using
+RSpec::Mocks.with_temporary_scope { }.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    module RSpec
-      module Mocks
-        ...
-        def teardown
-          space.reset_all
+    RSpec.describe "Creating a double in a before(:context) hook" do
+      before(:context) do
+        RSpec::Mocks.with_temporary_scope do
+          user = double(name: 'Alex')
+          @result = user.name
         end
-        ...
       end
-    end
 
-    class Space
-      def reset_all
-        receivers.each do |mock|
-          mock.rspec_reset
-        end
-        receivers.clear
-        expectation_ordering.clear
+      it "allows a double to be created and used from within a with_temporary_scope block" do
+        expect(@result).to eq('Alex')
       end
     end
-</script>
-</section><section id="should-receive" class="slide">
+  </script>
+</section>
+<section id="should-receive" class="slide">
   <h2>Message expectations</h2>
 
   <p>A message expectation is an expectation that the test double will receive a message some time before the example ends. If the message is received, the expectation is satisfied. If not, the example fails.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    describe Zipcode do
+    RSpec.describe Zipcode do
       context "when created" do
         it "validates a record with provided validator" do
           validator = double("validator")
@@ -1370,7 +1986,8 @@ receives the message, nothing happens.</p>
     network_double.stub(:ping).and_return(false)
     expect(network_double).not_to receive(:open_connection)
   </script>
-</section><section id="with" class="slide">
+</section>
+<section id="with" class="slide">
   <h2>Message expectations</h2>
   <h3>Expecting Arguments</h3>
 
@@ -1381,16 +1998,23 @@ receives the message, nothing happens.</p>
   <p>Arguments that are passed to with are compared with actual arguments received using ==. In cases in which you want to specify things about the arguments rather than the arguments themselves, you can use any of the matchers that ship with rspec-expectations.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    expect(double).to receive(:msg).with(no_args())
-    expect(double).to receive(:msg).with(any_args())
-    expect(double).to receive(:msg).with(1, kind_of(Numeric), "b") #2nd argument can be any kind of Numeric
-    expect(double).to receive(:msg).with(1, boolean(), "b") #2nd argument can be true or false
-    expect(double).to receive(:msg).with(1, /abc/, "b") #2nd argument can be any String matching the submitted Regexp
-    expect(double).to receive(:msg).with(1, anything(), "b") #2nd argument can be anything at all
-    expect(double).to receive(:msg).with(1, duck_type(:abs, :div), "b")
-                        #2nd argument can be object that responds to #abs and #div
+      expect(double).to receive(:msg).with(1, true)
+      expect(double).to receive(:msg).with(/bar/)                   # any String matching the submitted Regexp
+      expect(double).to receive(:msg).with(any_args)                # msg(), msg(1), msg(:bar, 2)
+      expect(double).to receive(:msg).with(1, any_args)             # msg(1), msg(1, :bar, 2)
+      expect(double).to receive(:msg).with(no_args)                 # msg()
+      expect(double).to receive(:msg).with(3, anything)             # msg(3, nil), msg(3, :bar)
+      expect(double).to receive(:msg).with(duck_type(:each))        # argument can be object that responds to #each
+      expect(double).to receive(:msg).with(3, boolean)              # msg(3, true), msg(3, false)
+      expect(double).to receive(:msg).with(hash_including(a: 1))    # msg(a: 1, b: 2)
+      expect(double).to receive(:msg).with(hash_excluding(a: 1))    # msg(b: 2)
+      expect(double).to receive(:msg).with(array_including(:a, :b)) # msg([:a, :b, :c])
+      expect(double).to receive(:msg).with(instance_of(Fixnum))     # any instance of Fixnum
+      expect(double).to receive(:msg).with(1, kind_of(Numeric))     #2nd argument can be any kind of Numeric
+      expect(double).to receive(:msg).with(<matcher>)               #msg(<object that matches>)
   </script>
-</section><section id="receive-counts" class="slide">
+</section>
+<section id="receive-counts" class="slide">
   <h2>Message expectations</h2>
   <h3>Receive Counts</h3>
 
@@ -1406,22 +2030,21 @@ receives the message, nothing happens.</p>
     expect(double).to receive(:msg).at_most(:once)
     expect(double).to receive(:msg).at_most(:twice)
     expect(double).to receive(:msg).at_most(n).times
-    expect(double).to receive(:msg).any_number_of_times
-    expect(double).to receive(:msg).never
   </script>
-</section><section id="ordering" class="slide">
+</section>
+<section id="ordering" class="slide">
   <h2>Message expectations</h2>
   <h3>Ordering</h3>
 
   <p>When specifying interactions with a test double, the order of the calls is rarely important. In fact, the ideal situation is to specify only a single call. But sometimes, we need to specify that messages are sent in a specific order.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    describe Roster do
+    dRSpec.escribe Roster do
       it "asks database for count before adding" do
         database = double()
         student = double()
 
-        expect(database).to receive(:count).with('Roster', :course_id => 37).ordered
+        expect(database).to receive(:count).with('Roster', course_id: 37).ordered
         expect(database).to receive(:add).with(student).ordered
 
         roster = Roster.new(37, database)
@@ -1431,7 +2054,8 @@ receives the message, nothing happens.</p>
   </script>
 
   <p>This example will pass only if the <strong>count( )</strong> and <strong>add( )</strong> messages are sent with the correct arguments and in the same order.</p>
-</section><section id="responses" class="slide">
+</section>
+<section id="responses" class="slide">
   <h2>Message expectations</h2>
   <h3>Setting responses</h3>
 
@@ -1456,13 +2080,74 @@ receives the message, nothing happens.</p>
     expect(double).to receive(:msg).and_yield(values,to,yield).and_yield(some,other,values,this,time)
       # for methods that yield to a block multiple times
   </script>
+</section>
+<section id="spies" class="slide">
+  <h2>Spies</h2>
 
-  <p>When working with a partial mock object, you may occasionally want to set a message expecation without interfering with how the object responds to the message. </p>
+  <p> Spies are an alternate type of test double that support act-arrange-assert (or given-when-then)
+    pattern for structuring tests by allowing you to expect that a message has been received after the fact, using
+    <b>have_received</b>.
+  </p>
+
+  <h3>Using a spy</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-    expect(Person).to receive(:find).and_call_original
-    Person.find # => executes the original find method and returns the result
+    RSpec.describe "have_received" do
+      it "passes when the message has been received" do
+        email = spy('email')
+        email.deliver
+        expect(email).to have_received(:deliver)
+      end
+    end
   </script>
-</section><section id="example" class="slide">
+
+  <h3>Spy on a method on a partial double</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class Email
+      def self.deliver; end
+    end
+
+    RSpec.describe "have_received" do
+      it "passes when the expectation is met" do
+        allow(Email).to receive(:deliver)
+        Email.deliver
+        expect(Email).to have_received(:deliver)
+      end
+    end
+  </script>
+
+  <h3>Failure when the message has not been received</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class Email
+      def self.deliver; end
+    end
+
+    RSpec.describe "failure when the message has not been received" do
+      example "for a spy" do
+        email = spy('email')
+        expect(email).to have_received(:deliver)
+      end
+
+      example "for a partial double" do
+        allow(Email).to receive(:deliver)
+        expect(Email).to have_received(:deliver)
+      end
+    end
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+   1) failure when the message has not been received for a spy
+      Failure/Error: expect(email).to have_received(:deliver)
+        (Double "email").deliver(*(any args))
+            expected: 1 time with any arguments
+            received: 0 times with any arguments
+    2) failure when the message has not been received for a partial double
+       Failure/Error: expect(Email).to have_received(:deliver)
+        (Email (class)).deliver(*(any args))
+            expected: 1 time with any arguments
+            received: 0 times with any arguments
+  </script>
+</section>
+<section id="example" class="slide">
   <h2>So, let's create an application</h2>
   <h3>Introducing Codebreaker</h3>
   <p>
@@ -1522,8 +2207,10 @@ receives the message, nothing happens.</p>
 </section><section id="codebreaker-gem" class="slide">
   <h2>Creating codebreaker gem</h2>
   <script type="syntaxhighlighter" class="brush: bash">
-    rvm use 2.0.0-p247@codebreaker --create
-    Using /Users/sparrow/.rvm/gems/ruby-2.0.0-p247 with gemset codebreaker
+    rvm use 2.3.0@codebreaker --create
+    ruby-2.3.0 - #gemset created /Users/ty/.rvm/gems/ruby-2.3.0@codebreaker
+    ruby-2.3.0 - #generating codebreaker wrappers - please wait
+    Using /Users/ty/.rvm/gems/ruby-2.3.0 with gemset codebreaker
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
     gem install bundler
@@ -1538,21 +2225,22 @@ receives the message, nothing happens.</p>
       create  codebreaker/codebreaker.gemspec
       create  codebreaker/lib/codebreaker.rb
       create  codebreaker/lib/codebreaker/version.rb
-      Initializating git repo in /Users/sparrow/Www/codebreaker
+      Initializing git repo in /Users/ty/Projects/codebreaker
   </script>
   codebreaker.gemspec
   <script type="syntaxhighlighter" class="brush: ruby">
     # ...
     Gem::Specification.new do |spec|
       # ...
-    
+
       spec.add_development_dependency "rspec"
     end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
     bundle install
   </script>
-</section><section id="first-spec" class="slide">
+</section>
+<section id="first-spec" class="slide">
   <h2>Describing Code with RSpec</h2>
 
   <p>Now we're going to describe the expected behavior of instances of the Game class.</p>
@@ -1568,11 +2256,11 @@ receives the message, nothing happens.</p>
     require 'spec_helper'
 
     module Codebreaker
-      describe Game do
+      RSpec.describe Game do
         describe "#start" do
           it "generates secret code"
           it "saves 4 numbers secret code"
-          it "saves secret code with numbers from 1 to 6" do
+          it "saves secret code with numbers from 1 to 6"
         end
       end
     end
@@ -1581,13 +2269,12 @@ receives the message, nothing happens.</p>
   <script type="syntaxhighlighter" class="brush: bash">
     rspec spec/codebreaker/game_spec.rb --format doc
 
-    /home/alony/projects/rspec-example/spec/codebreaker/game_spec.rb:4:in '<module:Codebreaker>': 
+    /Users/ty/Projects/codebreaker/game_spec.rb:4:in '<module:Codebreaker>':
       uninitialized constant Codebreaker::Game (NameError)
-    from /home/alony/projects/rspec-example/spec/codebreaker/game_spec.rb:3:in '<top (required)>'
-    from /home/alony/.rvm/gems/ruby-1.9.2-p320/gems/rspec-core-2.11.1/lib/rspec/core/configuration.rb:780:in 'load'
     ...
   </script>
-</section><section id="addig-code" class="slide">
+</section>
+<section id="addig-code" class="slide">
   <h2>Describing Code with RSpec</h2>
 
   <p>So let's add some code structure</p>
@@ -1705,7 +2392,7 @@ receives the message, nothing happens.</p>
     require 'spec_helper'
 
     module Codebreaker
-      describe Game do
+      RSpec.describe Game do
         describe "#start" do
           it "saves secret code" do
             game = Game.new
@@ -1726,7 +2413,7 @@ receives the message, nothing happens.</p>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    rspec spec/codebreaker/game_spec.rb 
+    rspec spec/codebreaker/game_spec.rb
     .F*
 
     Pending:
@@ -1748,7 +2435,8 @@ receives the message, nothing happens.</p>
 
     rspec ./spec/codebreaker/game_spec.rb:35 # Codebreaker::Game#start saves 4 numbers secret code
   </script>
-</section><section id="resolve-step" class="slide">
+</section>
+<section id="resolve-step" class="slide">
   <h2>Trying to get green again</h2>
 
   lib/codebreaker/game.rb
@@ -1786,7 +2474,7 @@ receives the message, nothing happens.</p>
     require 'spec_helper'
 
     module Codebreaker
-      describe Game do
+      RSpec.describe Game do
         describe "#start" do
           it "saves secret code" do
             game = Game.new
@@ -1811,7 +2499,7 @@ receives the message, nothing happens.</p>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    rspec spec/codebreaker/game_spec.rb 
+    rspec spec/codebreaker/game_spec.rb
     ..F
 
     Failures:
@@ -1832,7 +2520,8 @@ receives the message, nothing happens.</p>
 
     rspec ./spec/codebreaker/game_spec.rb:40 # Codebreaker::Game#start saves secret code with numbers from 1 to 6
   </script>
-</section><section id="resolve-another-step" class="slide">
+</section>
+<section id="resolve-another-step" class="slide">
   <h2>Trying to get green again</h2>
 
   lib/codebreaker/game.rb
@@ -1867,7 +2556,7 @@ receives the message, nothing happens.</p>
   spec/codebreaker/game_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
     module Codebreaker
-      describe Game do
+      RSpec.describe Game do
         context "#start" do
           let(:game) { Game.new }
 
@@ -1892,18 +2581,19 @@ receives the message, nothing happens.</p>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    rspec spec/codebreaker/game_spec.rb 
+    rspec spec/codebreaker/game_spec.rb
     ...
 
     Finished in 0.00409 seconds
     3 examples, 0 failures
-    MacBookPro-C8BCC89CA02E-2:codebreaker sparrow$ rspec spec/codebreaker/game_spec.rb 
+    MacBookPro-C8BCC89CA02E-2:codebreaker sparrow$ rspec spec/codebreaker/game_spec.rb
     ...
 
     Finished in 0.00412 seconds
     3 examples, 0 failures
   </script>
-</section><!-- End slides. -->
+</section>
+<!-- End slides. -->
 
 <!-- deck.navigation snippet -->
 <a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
