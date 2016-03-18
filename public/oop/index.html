@@ -31,7 +31,9 @@
     <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
       book = BookInStock.new
       book.class # => BookInStock
-      book.is_a? BookInStock # => true
+      book.is_a? BookInStock # => true # this method returna true if object is an instance a subclass
+      book.kind_of? BookInStock # => true  # this method returna true if object is an instance a subclass
+      book.instance_of? BookInStock # => true
     ]]></script></div>
   <div class="slide" id="initializing-class">
     <h3>Initializing the class</h3>
@@ -43,7 +45,7 @@
           @price = Float(price)
         end
       end
-      
+
       BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99)
     ]]></script></div>
 </section><section id="to_s-method" class="slide"><h2>Defining a to_s method</h2>
@@ -158,7 +160,7 @@
     books_collection.title  # => The Great Gatsby, The Old Man and the Sea
     books_collection.author # => F. Scott Fitzgerald and Ernest Hemingway
     books_collection.price  # => 16.59
-  ]]></script></section><section id="objects-comparasions" class="slide"><h2>Objects comparasion</h2>
+  ]]></script></section><section id="objects-comparasions" class="slide"><h2>Objects comparison</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     book1 = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99) # => BookInStock:0x00000000e71cb0
     book2 = BookInStock.new("The Great Gatsby", "F. Scott Fitzgerald", 8.99) # => BookInStock:0x00000000e553f8

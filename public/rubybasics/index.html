@@ -25,12 +25,20 @@
     <a href="https://rvm.io" target="_blank">https://rvm.io</a> for more details.
   </p>
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-    curl -L https://get.rvm.io | bash -s stable --autolibs=3
-    rvm install 2.0.0
-    rvm use 2.0.0
+    gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+    \curl -sSL https://get.rvm.io | bash -s stable
+    rvm install 2.3.0
+    rvm use 2.3.0
     rvm gemset create project_name
     rvm gemset use project_name
-  ]]></script></section><section id="rvmrc" class="slide"><h2>.rvmrc file</h2>
+  ]]></script></section><section id="rvmrc" class="slide"><div id="supported-files" class="slide">
+    <h2>Supported files</h2>
+    <ul><li><b>.rvmrc</b> - shell script allowing full customization of the environment</li>
+      <li><b>.versions.conf</b> - key=value configuration file</li>
+      <li><b>.ruby-version</b> - single line ruby-version only</li>
+      <li><b>Gemfile</b> - comment: #ruby=2.3.0 and directive: ruby "2.3.0"</li>
+    </ul></div>
+  <h2>.rvmrc file</h2>
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     rvm use 2.0.0@project_name --create
   ]]></script><div id="ruby-version-file" class="slide">
@@ -136,6 +144,9 @@
       </tr><tr><td>/=</td><td>Divide AND assignment operator, It divides left operand with the right operand and assign the result to left operand</td><td> c /= a is equivalent to c = c / a</td>
       </tr><tr><td>%=</td><td>Modulus AND assignment operator, It takes modulus using two operands and assign the result to  left operand</td><td> c %= a is equivalent to c = c % a</td>
       </tr><tr><td>**=</td><td>Exponent AND assignment operator, Performs exponential (power) calculation on operators and assign value to the left operand</td><td> c **= a is equivalent to c = c ** a</td>
+      </tr></tbody></table><h2>Safe navigation Operator (only 2.3.0)</h2>
+  <table><tbody><tr><th>Operator</th><th>Description</th><th>Example</th>
+      </tr><tr><td>&amp;.</td><td>Makes it safer to chain multiple methods together. Execution stopes if method doesn't exist or returns nil</td><td> a&amp;.b&amp;.c</td>
       </tr></tbody></table></section><section id="string" class="slide"><h2>String</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     > "New string"
@@ -170,48 +181,48 @@
     > 'Con' + "cat" + 'ena' + "te"
     => "Concatenate"
   ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    > str = "Programming"
-    => "Programming"
+    > str = "Programming!"
+    => "Programming!"
 
-    > str << ", Motherfucker."
-    => "Programming, Motherfucker."
+    > str << ", I love it!"
+    => "Programming! I love it!"
 
-    > str.concat(" Do you speak it?")
-    => "Programming, Motherfucker. Do you speak it?"
+    > str.concat(" What about you?")
+    => "Programming! I love it! What about you?"
   ]]></script></section><section id="string-concatenation" class="slide"><h2>String</h2>
   <h3>Accessing</h3>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    str = "Programming, Motherfucker. Do you speak it?"
-    => "Programming, Motherfucker. Do you speak it?"
+    str = "Programming! I love it! What about you?"
+    => "Programming! I love it! What about you?"
 
     str[13]
-    => "M"
+    => "I"
     str.slice(13)
-    => "M"
+    => "I"
 
-    str[13, 12]
-    => "Motherfucker"
+    str[13, 10]
+    => "I love it!"
     str.slice(13, 12)
-    => "Motherfucker"
+    => "I love it!"
 
-    str[13..-19]
-    => "Motherfucker"
+    str[13..-17]
+    => "I love it!"
 
-    str["Motherfucker"]
-    => "Motherfucker"
+    str["I love it!"]
+    => "I love it!"
 
     str[/[abc](.)\1/]
     => "amm"
   ]]></script></section><section id="string-useful-methods" class="slide"><h2>String</h2>
   <h3>Useful methods</h3>
   <p>
-    Follow by <a href="http://ruby-doc.org/core-2.0/String.html" target="_blank">http://ruby-doc.org/core-2.0/String.html</a> for more information
+    Follow by <a href="http://ruby-doc.org/core-2.3.0/String.html" target="_blank">http://ruby-doc.org/core-2.3.0/String.html</a> for more information
   </p>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     "pROgraMMing".capitalize
     => "Programming"
   ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    "Programming".downcase   
+    "Programming".downcase
     => "programming"
   ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     "Programming".chars
@@ -232,13 +243,19 @@
     "Programming".reverse
     => "gnimmargorP"
   ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    "Programming, Motherfucker. Do you speak it?".split
-    => ["Programming,", "Motherfucker.", "Do", "you", "speak", "it?"]
+    "Programming! I love it! What about you?".split
+    => ["Programming!", "I", "love", "it!", "What", "about", "you?"]
 
-    "Programming,_Motherfucker._Do you speakit?".split('_')
-    => ["Programming,", "Motherfucker.", "Do you speakit?"]
+    "Programming!_I love it!_What about you?".split("_")
+    => ["Programming!", "I love it!", "What about you?"]
   ]]></script></section><section id="array" class="slide"><h2>Array</h2>
-  Follow by <a href="http://ruby-doc.org/core-2.0/Array.html" target="_blank">http://ruby-doc.org/core-2.0/Array.html</a> for more information
+  <p>
+    Arrays are ordered, integer-indexed collections of any object.
+  </p>
+  <p>
+    Array indexing starts at 0, as in C or Java. A negative index is assumed to be relative to the end of the array---that is, an index of -1 indicates the last element of the array
+  </p>
+  Follow by <a href="http://ruby-doc.org/core-2.3.0/Array.html" target="_blank">http://ruby-doc.org/core-2.3.0/Array.html</a> for more information
   <h3>Creating</h3>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     > [[1, 2, 3], 10, 3.14, "This is a string", barnet("pebbles")]
@@ -246,16 +263,16 @@
   ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     > Array.new
     => []
-    
-    > Array.new(3)       
+
+    > Array.new(3)
     => [nil, nil, nil]
-    
+
     > Array.new(3, true)
     => [true, true, true]
 
-    > Array.new(4) { Hash.new } 
+    > Array.new(4) { Hash.new }
     => [{}, {}, {}, {}]
-    
+
     > Array({:a => "a", :b => "b"})
     => [[:a, "a"], [:b, "b"]]
   ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
@@ -290,8 +307,26 @@
 
     > languages[1] = "CoffeeScript"
     => "CoffeeScript"
+    
     > languages
     => ["Ruby", "CoffeeScript", "Python", "PHP"]
+
+    #Extracts the nested value (only from 2.3.0)
+
+    > a = [[1, [2, 3]]]
+
+    > a.dig(0, 1, 1)
+    => 3
+
+    > a.dig(1, 2, 3)
+    => nil
+
+    > a.dig(0, 0, 0)
+    => NoMethodError, undefined method 'dig' for 1:Fixnum
+
+    > [42, {foo: :bar}].dig(1, :foo)
+    => :bar
+
   ]]></script></section><section id="array-adding-items" class="slide"><h2>Array</h2>
   <h3>Adding items</h3>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
@@ -449,7 +484,14 @@
     [2] => c
   ]]></script></section><section id="symbol" class="slide"><h2>Symbol</h2>
   <p>
-    Follow by <a href="http://www.ruby-doc.org/core-2.0.0/Symbol.html" target="_blank">http://www.ruby-doc.org/core-2.0.0/Symbol.html</a> for more information.
+    Ruby uses symbols, and maintains a Symbol Table to hold them.
+    Symbols are names - names of instance variables, names of methods, names of classes.
+    A Symbol object is created by prefixing an operator, string, variable, constant, method, class, module name with a colon.
+    Symbols are immutable.
+    The symbol object will be unique for each different name but does not refer to a particular instance of the name, for the duration of a program's execution.
+  </p>
+  <p>
+    Follow by <a href="http://www.ruby-doc.org/core-2.3.0/Symbol.html" target="_blank">http://www.ruby-doc.org/core-2.3.0/Symbol.html</a> for more information.
   </p>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     > :ruby_rules
@@ -473,18 +515,29 @@
     => 70200985514360
   ]]></script></section><section id="hash" class="slide"><h2>Hash</h2>
   <p>
-    Follow by <a href="http://www.ruby-doc.org/core-2.0.0/Hash.html" target="_blank">http://www.ruby-doc.org/core-2.0.0/Hash.html</a> for more information.
+    A Hash is a collection of key-value pairs.
+    It is similar to an Array (sometimes it is called an associative array),
+    except that indexing is done via arbitrary keys of any object type, not an integer index.
+  </p>
+  <p>
+    Follow by <a href="http://www.ruby-doc.org/core-2.3.0/Hash.html" target="_blank">http://www.ruby-doc.org/core-2.3.0/Hash.html</a> for more information.
   </p>
   <h3>Creating</h3>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    > {:font_size => 10, :font_family => "Arial"}
+    > { :font_size => 10, :font_family => "Arial" }
     => {:font_size=>10, :font_family=>"Arial"}
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    > {"font_size" => 10, "font_family" => "Arial"}
+    => {"font_size"=>10, "font_family"=>"Arial"}
   ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     > {font_size: 10, font_family: "Arial"}
     => {:font_size=>10, :font_family=>"Arial"}
   ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     > Hash.new
     => {}
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    > Hash["a" => 100, "b" => 200]
+    => {"a"=>100, "b"=>200}
   ]]></script></section><section id="hash-default" class="slide"><h2>Hash</h2>
   <h3>Default value</h3>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
@@ -618,7 +671,7 @@
 
     h.delete("a")
     => 200
-    
+
     h.length
     => 3
   ]]></script>
@@ -626,7 +679,7 @@
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     h1 = { "a" => 100, "b" => 200 }
     h2 = { "b" => 254, "c" => 300 }
-    
+
     h1.merge(h2)
     => {"a"=>100, "b"=>254, "c"=>300}
   ]]></script>
@@ -636,14 +689,35 @@
 
     h.select {|key, value| value > 100}
     => {"b" => 200, "c" => 300}
+  ]]></script>
+  dig (2.3.0 only)
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    h = { a: { b: { c: 1 } } }
+
+    h.dig(:a, :b, :c)
+    => 1
+
+    h.dig(:a, :some, :c)
+    => nil
+
+    h[:a][:some][:c]
+    => NoMethodError: undefined method '[]' for nil:NilClass
+
+    h = { a: [10, 11, 12] }
+
+    h.dig(:a, 1)
+    => 11
   ]]></script></section><section id="range" class="slide"><h2>Range</h2>
   <p>
-    Follow by <a href="http://www.ruby-doc.org/core-2.0.0/Range.html" target="_blank">http://www.ruby-doc.org/core-2.0.0/Range.html</a> for more information.
+    A Range represents an interval—a set of values with a beginning and an end. 
+  </p>
+  <p>
+    Follow by <a href="http://www.ruby-doc.org/core-2.3.0/Range.html" target="_blank">http://www.ruby-doc.org/core-2.3.0/Range.html</a> for more information.
   </p>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     # Creates a range from 1 to 10 inclusive
     1..10
-    
+
     (1..10).to_a
     => [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
@@ -652,14 +726,26 @@
 
     (1...10).to_a
     => [1, 2, 3, 4, 5, 6, 7, 8, 9]
-    
-    ('a'..'e').to_a    
+
+    ('a'..'e').to_a
     => ["a", "b", "c", "d", "e"]
   ]]></script></section><section id="time" class="slide"><h2>Time</h2>
   <p>
-    Follow by <a href="http://www.ruby-doc.org/core-2.0.0/Time.html" target="_blank">http://www.ruby-doc.org/core-2.0.0/Time.html</a> for more information.
+    Follow by <a href="http://www.ruby-doc.org/core-2.3.0/Time.html" target="_blank">http://www.ruby-doc.org/core-2.3.0/Time.html</a> for more information.
   </p>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    Time.new(2016)
+    => 2016-01-01 00:00:00 +0200
+
+    Time.new(2016, 10)
+    => 2016-10-01 00:00:00 +0300
+
+    Time.new(2016, 10, 30, 2, 2, 2, "+03:00")
+    => 2016-10-30 02:02:02 +0300
+
+    Time.at(628232400)
+    => 1989-11-28 08:00:00 +0300
+
     t = Time.new
     => 2013-05-09 18:50:25 +0300
 
@@ -694,7 +780,7 @@
     => "2013-05-09 18:50:25"
   ]]></script></section><section id="file" class="slide"><h2>File</h2>
   <p>
-    Follow by <a href="http://www.ruby-doc.org/core-2.0.0/File.html" target="_blank">http://www.ruby-doc.org/core-2.0.0/File.html</a> for more information.
+    Follow by <a href="http://www.ruby-doc.org/core-2.3.0/File.html" target="_blank">http://www.ruby-doc.org/core-2.3.0/File.html</a> for more information.
   </p>
   new
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
@@ -710,7 +796,7 @@
     => false
 
     f.close
-    
+
     f.closed?
     => true
   ]]></script></section><section id="file-read" class="slide"><h2>File</h2>
@@ -784,7 +870,7 @@
     File.expand_path(__FILE__)
     => "/home/oracle/bin"
   ]]></script></section><section id="dir" class="slide"><h2>Dir</h2>
-  <p>Follow by <a href="http://ruby-doc.org/core-2.0/Dir.html" target="_blank">http://ruby-doc.org/core-2.0/Dir.html</a> for more information.</p>
+  <p>Follow by <a href="http://ruby-doc.org/core-2.3.0/Dir.html" target="_blank">http://ruby-doc.org/core-2.3.0/Dir.html</a> for more information.</p>
   entries
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     Dir.entries("testdir")
@@ -861,6 +947,41 @@
     end
   ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     a = 7 unless a == 4
+  ]]></script></section><section id="if-unless" class="slide"><h2>Using</h2>
+  <p>Bad</p>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    unless some_condition?
+      # do something
+    else
+      # do something else
+    end
+  ]]></script><p>Good</p>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    if some_condition?
+      # do something else
+    else
+      # do something
+    end
+  ]]></script><p>Bad</p>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    unless some.nil?
+      # do something
+    end
+  ]]></script><p>Good</p>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    if some
+      # do something
+    end
+  ]]></script><p>Bad</p>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    unless first_condition? && second_condition?
+      # do something
+    end
+  ]]></script><p>Good</p>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    if !first_condition? || !second_condition?
+      # do something
+    end
   ]]></script></section><section id="if-else" class="slide"><h2>If, else</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     a = 1
@@ -901,6 +1022,35 @@
 
     "cat" || 99
     => "cat"
+  ]]></script><p>
+    At first glance it appears to be synonyms for &amp;&amp; and || and and or.
+    You will then be tempted to use these them  in place of &amp;&amp; and || to improve readability.
+    But and and or don’t behave like their symbolic kin.
+  </p>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    one = :one
+    two = nil
+
+    t = one and two
+    => nil
+    t
+    => :one
+
+    t = one && two
+    => nil
+    t
+    => nil
+
+    t = (one and two)
+    => nil
+    t
+    => nil
+
+    (t = one) && two
+    => nil
+    t
+    => :one
+
   ]]></script></section><section id="case" class="slide"><h2>Case, when</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     a = 1
@@ -1026,19 +1176,26 @@
   ]]></script></section><section id="method-arguments" class="slide"><h2>Methods</h2>
   <h3>Arguments</h3>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    def var_args(arg1, *rest)
-      "arg1=#{arg1}, rest=#{rest.inspect}"
+    def var_args(a, b, c=1, *d, e, f)
+      puts "required a #{a}"
+      puts "required b #{b}"
+      puts "optional c #{c}"
+      puts "argument array d #{d.inspect}"
     end
 
-    var_args("one")
-    => "arg1=one, rest=[]"
+    var_args(1,2,3,4,5,6,7,8,9)
+    required a 1
+    required b 2
+    optional c 3
+    argument array d [4, 5, 6, 7]
+    => nil
+  ]]></script><h4>Invalid order</h4>
+  <p>sponge arguments (*) should be always after optional </p>
 
-    var_args("one", "two")
-    => "arg1=one, rest=['two']"
-
-    var_args("one", "two", "three")
-    => "arg1=one, rest=['two', 'three']"
-  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    def invalid_args(x,*y,z=1)  end
+  ]]></script><h4>More examples</h4>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     def split_apart(first, *split, last)
       "first: #{first.inspect}, split: #{split.inspect}, last: #{last.inspect}"
     end
@@ -1092,6 +1249,22 @@
     => 32
   ]]></script></section><section id="method-blocks" class="slide"><h2>Methods</h2>
   <h3>Blocks</h3>
+  <p>
+    A block is code that is passed to a method by using of either curly braces, {...}, or do...end syntax.
+    It's common convention to use {...} for single line blocks, and do...end for multi-line blocks,
+    but curly braces have higher precedence.
+  </p>
+
+  <h4>Using</h4>
+  <p> 1. Passed as a method argument ,using the special &amp; last-argument syntax sugar operator or a block_given?/yield pair. </p>
+  <p> 2. As a Proc object (or the lambda). </p>
+  <b>Important:</b>
+  <p> 1. You can pass only one block to method.</p>
+  <p> 2. Block should follow method arguments braces.</p>
+  <p> 3. Block hasn't access to method local variables but we can pass them to block. And They can be changed inside block.</p>
+  <p> 4. If method local variable has te same name as block local variable then method local variable is not availaba inside block.</p>
+  <p> 5. Arguments number is important for method and not important for block.</p>
+  <p> 6. if you want to pass as method argument you must use braces otherwise it is treated as block and rises an error.</p>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     def double(p1)
       yield(p1*2)
