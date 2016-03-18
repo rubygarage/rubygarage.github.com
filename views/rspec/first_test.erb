@@ -2,7 +2,7 @@
   <h2>First test</h2>
   spec/burger_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    describe Burger do
+    RSpec.describe Burger do
       it "should be with ketchup" do
         burger = Burger.new(ketchup: true)
         expect(burger).to be_with_ketchup
@@ -17,7 +17,7 @@
   <h3>Old syntax</h3>
   spec/burger_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    describe Burger do
+    RSpec.describe Burger do
       it "should be with ketchup" do
         burger = Burger.new(ketchup: true)
         burger.should be_with_ketchup
@@ -30,7 +30,7 @@
     end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-    rspec spec/burger_spec.rb 
+    rspec spec/burger_spec.rb
     spec/burger_spec.rb:1:in '<top (required)>': uninitialized constant Burger (NameError)
   </script>
 </section>

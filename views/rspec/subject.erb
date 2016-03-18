@@ -3,12 +3,19 @@
   <p>
     Use subject in the group scope to explicitly define the value that is returned by the subject method in the example scope.
   </p>
+  <p>
+    If you don't define subject it is set as an object of described class (for example Array.new)
+  </p>
+  <p>
+    Use subject! can be used for calling method before each example
+  </p>
   spec/array_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    describe Array, "with some elements" do
+    RSpec.describe Array, "with some elements" do
       subject { [1,2,3] }
 
       it { expect(subject).not_to be_empty }
+      it { is_expected.not_to be_empty }
 
       it "should have the prescribed elements" do
         expect(subject).to eq([1,2,3])
@@ -20,9 +27,39 @@
 
     Array with some elements
       should not be empty
+      should not be empty
       should have the prescribed elements
 
-    Finished in 0.03275 seconds
+    Finished in 0.00495 seconds
     3 examples, 0 failures
   </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    RSpec.describe Array, "with some elements" do
+      subject(:array) { [1,2,3] }
+
+      it { expect(array).not_to be_empty }
+      it { is_expected.not_to be_empty }
+
+      it "should have the prescribed elements" do
+        expect(array).to eq([1,2,3])
+      end
+    end
+  </script>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    RSpec.describe User, "with some elements" do
+      subject(:user) { User.create(params) }
+      let(:params) { { name: "David", position: "HR" } }
+
+      it { expect(user.name).to eql("David") }
+
+      describe "with another name" do
+        let(:params) { { name: "Mark", position: "PM" } }
+        it { expect(user.name).to eql("Mark") }
+      end
+    end
+  </script>
+
+
+
+
 </section>

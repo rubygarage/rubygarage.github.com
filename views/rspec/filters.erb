@@ -5,11 +5,11 @@
     describe Actor do
       let(:name) { "Ivan" }
 
-      context "with subject redefinition", focus: true do 
-        let(:actor) {  Actor.new(name) } 
+      context "with subject redefinition", :focus do # or focus: true
+        let(:actor) {  Actor.new(name) }
         subject { actor }
-         
-        it "has name", slow: true do
+
+        it "has name", :slow do # or slow: true
           expect(subject.name).to eq(name)
         end
       end
@@ -34,6 +34,8 @@
       config.run_all_with_everything_filtered = true
     end
   </script>
+
+  <p>You can also use fit/fdescription/fcontext methods instead of using focus: true</p>
 
   <script type="syntaxhighlighter" class="brush: bash">
     rspec spec/subject_spec.rb --tag ~slow --format documentation

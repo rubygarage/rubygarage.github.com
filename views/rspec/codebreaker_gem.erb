@@ -1,8 +1,10 @@
 <section id="codebreaker-gem" class="slide">
   <h2>Creating codebreaker gem</h2>
   <script type="syntaxhighlighter" class="brush: bash">
-    rvm use 2.0.0-p247@codebreaker --create
-    Using /Users/sparrow/.rvm/gems/ruby-2.0.0-p247 with gemset codebreaker
+    rvm use 2.3.0@codebreaker --create
+    ruby-2.3.0 - #gemset created /Users/ty/.rvm/gems/ruby-2.3.0@codebreaker
+    ruby-2.3.0 - #generating codebreaker wrappers - please wait
+    Using /Users/ty/.rvm/gems/ruby-2.3.0 with gemset codebreaker
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
     gem install bundler
@@ -17,14 +19,14 @@
       create  codebreaker/codebreaker.gemspec
       create  codebreaker/lib/codebreaker.rb
       create  codebreaker/lib/codebreaker/version.rb
-      Initializating git repo in /Users/sparrow/Www/codebreaker
+      Initializing git repo in /Users/ty/Projects/codebreaker
   </script>
   codebreaker.gemspec
   <script type="syntaxhighlighter" class="brush: ruby">
     # ...
     Gem::Specification.new do |spec|
       # ...
-    
+
       spec.add_development_dependency "rspec"
     end
   </script>

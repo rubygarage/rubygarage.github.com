@@ -1,0 +1,51 @@
+<section id="around-each" class="slide">
+  <h2>around(:each)</h2>
+  <p>Run before and after each example</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class User
+      def self.communication
+        puts "Hello!"
+        yield
+        puts "Bye!"
+      end
+    end
+
+    RSpec.describe "around filter" do
+      around(:each) do |example|
+        User.communication(&example)
+      end
+
+      it "first test" do
+        puts "run the example"
+      end
+    end
+
+  </script>
+  <script type="syntaxhighlighter" class="brush: bash">
+    rspec spec
+
+    Hello!
+    run the example
+    Bye!
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    RSpec.describe "test around hook" do
+      around(:each) do |example|
+        puts "around each before"
+        example.run
+        puts "around each after"
+      end
+
+      it "run" do
+        puts "inside the example"
+      end
+    end
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    around each before
+    inside the example
+    around each after
+  </script>
+</section>

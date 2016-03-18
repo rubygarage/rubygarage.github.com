@@ -9,7 +9,7 @@
     Passes if given and expected are of equal value, but not necessarily the same object.
   </p>
   <script type="syntaxhighlighter" class="brush: ruby">
-    describe "a string" do
+    RSpec.describe "a string" do
       context "#eq" do
         it "is equal to another string of the same value" do
           expect("this string").to eq("this string")
@@ -27,7 +27,7 @@
       Passes if given and expected are the same object (object identity).
     </p>
     <script type="syntaxhighlighter" class="brush: ruby">
-      describe "a string" do
+      RSpec.describe "a string" do
         context "#equal" do
           it "is equal to itself" do
             string = "this string"
@@ -37,4 +37,6 @@
       end
     </script>
   </div>
+
+  <p>Note: expect syntax doesn't support '==' matcher</p>
 </section>

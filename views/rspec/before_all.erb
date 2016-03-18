@@ -3,43 +3,43 @@
   <p>Run one time only, before all of the examples in a group</p>
   spec/array_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-  describe Array, "before all" do
-    context "#size" do
-      context "when empty" do
-        before(:all) do
-          @array = Array.new
+    RSpec.describe Array, "before all" do
+      context "#size" do
+        context "when empty" do
+          before(:all) do
+            @array = Array.new
+          end
+
+          it "should return one" do
+            @array.push 100
+            expect(@array.size).to eq(1)
+          end
+
+          it "should return one again" do
+            expect(@array.size).to eq(1)
+          end
         end
 
-        it "should return one" do
-          @array.push 100
-          expect(@array.size).to eq(1)
-        end
+        context "when full" do
+          before(:all) do
+            @array = Array.new
+            (0...10).each { |n| @array.push n }
+          end
 
-        it "should return one again" do
-          expect(@array.size).to eq(1)
-        end
-      end
+          it "should return nine" do
+            @array.pop
+            expect(@array.size).to eq(9)
+          end
 
-      context "when full" do
-        before(:all) do
-          @array = Array.new
-          (0...10).each { |n| @array.push n }
-        end
-
-        it "should return nine" do
-          @array.pop
-          expect(@array.size).to eq(9)
-        end
-
-        it "should return nine again" do
-          expect(@array.size).to eq(9)
+          it "should return nine again" do
+            expect(@array.size).to eq(9)
+          end
         end
       end
     end
-  end
   </script>
   <script type="syntaxhighlighter" class="brush: bash">
-  rspec spec/array_spec.rb 
+  rspec spec/array_spec.rb
   ....
 
   Finished in 0.01025 seconds

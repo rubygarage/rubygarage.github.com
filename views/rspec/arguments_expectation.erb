@@ -9,13 +9,19 @@
   <p>Arguments that are passed to with are compared with actual arguments received using ==. In cases in which you want to specify things about the arguments rather than the arguments themselves, you can use any of the matchers that ship with rspec-expectations.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    expect(double).to receive(:msg).with(no_args())
-    expect(double).to receive(:msg).with(any_args())
-    expect(double).to receive(:msg).with(1, kind_of(Numeric), "b") #2nd argument can be any kind of Numeric
-    expect(double).to receive(:msg).with(1, boolean(), "b") #2nd argument can be true or false
-    expect(double).to receive(:msg).with(1, /abc/, "b") #2nd argument can be any String matching the submitted Regexp
-    expect(double).to receive(:msg).with(1, anything(), "b") #2nd argument can be anything at all
-    expect(double).to receive(:msg).with(1, duck_type(:abs, :div), "b")
-                        #2nd argument can be object that responds to #abs and #div
+      expect(double).to receive(:msg).with(1, true)
+      expect(double).to receive(:msg).with(/bar/)                   # any String matching the submitted Regexp
+      expect(double).to receive(:msg).with(any_args)                # msg(), msg(1), msg(:bar, 2)
+      expect(double).to receive(:msg).with(1, any_args)             # msg(1), msg(1, :bar, 2)
+      expect(double).to receive(:msg).with(no_args)                 # msg()
+      expect(double).to receive(:msg).with(3, anything)             # msg(3, nil), msg(3, :bar)
+      expect(double).to receive(:msg).with(duck_type(:each))        # argument can be object that responds to #each
+      expect(double).to receive(:msg).with(3, boolean)              # msg(3, true), msg(3, false)
+      expect(double).to receive(:msg).with(hash_including(a: 1))    # msg(a: 1, b: 2)
+      expect(double).to receive(:msg).with(hash_excluding(a: 1))    # msg(b: 2)
+      expect(double).to receive(:msg).with(array_including(:a, :b)) # msg([:a, :b, :c])
+      expect(double).to receive(:msg).with(instance_of(Fixnum))     # any instance of Fixnum
+      expect(double).to receive(:msg).with(1, kind_of(Numeric))     #2nd argument can be any kind of Numeric
+      expect(double).to receive(:msg).with(<matcher>)               #msg(<object that matches>)
   </script>
 </section>

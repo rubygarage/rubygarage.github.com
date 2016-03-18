@@ -4,7 +4,7 @@
   <p>A message expectation is an expectation that the test double will receive a message some time before the example ends. If the message is received, the expectation is satisfied. If not, the example fails.</p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    describe Zipcode do
+    RSpec.describe Zipcode do
       context "when created" do
         it "validates a record with provided validator" do
           validator = double("validator")

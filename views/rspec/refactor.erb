@@ -8,7 +8,7 @@
   spec/codebreaker/game_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
     module Codebreaker
-      describe Game do
+      RSpec.describe Game do
         context "#start" do
           let(:game) { Game.new }
 
@@ -33,12 +33,12 @@
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    rspec spec/codebreaker/game_spec.rb 
+    rspec spec/codebreaker/game_spec.rb
     ...
 
     Finished in 0.00409 seconds
     3 examples, 0 failures
-    MacBookPro-C8BCC89CA02E-2:codebreaker sparrow$ rspec spec/codebreaker/game_spec.rb 
+    MacBookPro-C8BCC89CA02E-2:codebreaker sparrow$ rspec spec/codebreaker/game_spec.rb
     ...
 
     Finished in 0.00412 seconds

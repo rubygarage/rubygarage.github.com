@@ -1,7 +1,28 @@
 <section id="stub-chain" class="slide">
   <h2>Stub a chain of methods</h2>
 
-  <p>The <strong>stub_chain</strong> method lets you to stub a chain of methods in one statement - and there is no need to stub each method in the dependency chain represented by a chain of messages to different objects.</p>
+  <p>Stubbing methods chain lets you to stub a chain of methods in one statement - and there is no need to stub each method in the dependency chain represented by a chain of messages to different objects.</p>
+
+  <h3>New syntax</h3>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class User
+      scope :admins, -> { where(role: 'admin').order("created_at DESC") }
+    end
+
+    RSpec.describe "stubs method chain" do
+      it "returns admin" do
+        admin = double('Admin')
+        allow(User).to receive_message_chain(:where, :order).and_return([admin])
+        // allow(User).to receive_message_chain("where.order") { [admin] }
+        // allow(User).to receive_message_chain(:where, order:  [admin])
+        // allow(User).to receive_message_chain(:where, :order) { [admin] }
+        expect(User.admins).to include(admin)
+      end
+    end
+  </script>
+
+  <h3>Old syntax</h3>
 
   <script type="syntaxhighlighter" class="brush: ruby">
     Article.recent.published.authored_by(params[:author_id])

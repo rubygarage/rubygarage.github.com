@@ -2,6 +2,78 @@
   <h2>Pending</h2>
   spec/array_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby">
+  RSpec.describe Array do
+    skip 'not implemented yet' do
+    end
+
+    context "#last" do
+      it "should return the last element", skip: true do
+        array = [:first, :second, :third]
+        expect(array.last).to eq(:third)
+      end
+
+      it "should not remove the last element", skip: 'reason explanation' do
+        array = [:first, :second, :third]
+        array.last
+        expect(array.size).to eq(3)
+      end
+    end
+
+    it 'does something else' do
+      skip
+    end
+
+    it 'does something else' do
+      skip 'reason explanation'
+    end
+
+    context "#first" do
+      it "return the first element"
+    end
+  end
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    rspec spec/array_spec.rb --format documentation
+
+    Array
+      not implemented yet (PENDING: No reason given)
+      does something else (PENDING: No reason given)
+      does something else (PENDING: reason explanation)
+      #last
+        should return the last element (PENDING: No reason given)
+        should not remove the last element (PENDING: reason explanation)
+      #first
+        return the first element (PENDING: Not yet implemented)
+
+    Pending:
+      Array not implemented yet
+        # No reason given
+        # ./spec/models/test_spec.rb:2
+      Array does something else
+        # No reason given
+        # ./spec/models/test_spec.rb:18
+      Array does something else
+        # reason explanation
+        # ./spec/models/test_spec.rb:22
+      Array#last should return the last element
+        # No reason given
+        # ./spec/models/test_spec.rb:6
+      Array#last should not remove the last element
+        # reason explanation
+        # ./spec/models/test_spec.rb:11
+      Array#first return the first element
+        # Not yet implemented
+        # ./spec/models/test_spec.rb:27
+
+    Finished in 0.00138 seconds
+    6 examples, 0 failures, 6 pending
+  </script>
+
+  <p>New example group aliases: xdescribe/xcontext, like xit for examples, can be used to temporarily skip an example group.<p>
+
+  <p>Old syntax </p>
+  <script type="syntaxhighlighter" class="brush: ruby">
   describe Array do
     context "#last" do
       it "should return the last element" do
@@ -17,7 +89,7 @@
       end
     end
 
-    context "#first" do 
+    context "#first" do
       it "return the first element"
     end
   end

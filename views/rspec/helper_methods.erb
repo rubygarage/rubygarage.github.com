@@ -11,7 +11,7 @@
       end
     end
 
-    describe User do
+    RSpec.describe User do
       include UserHelpers
 
       it "does something when it is valid" do
@@ -29,6 +29,25 @@
   <script type="syntaxhighlighter" class="brush: ruby">
     RSpec.configure do |config|
       config.include(UserHelpers)
+    end
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    RSpec.configure do |config|
+      config.include(UserHelpers), foo: :bar
+      config.include Helpers, :include_helpers
+      config.extend  Helpers, :extend_helpers
+    end
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    it "first test", foo: :bar do
+    end
+
+    it "second test", :include_helpers do
+    end
+
+    it "third test", :extend_helpers do
     end
   </script>
 </section>
