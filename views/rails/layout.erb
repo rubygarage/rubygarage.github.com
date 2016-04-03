@@ -2,19 +2,21 @@
   <h2>Layout</h2>
   app/views/layouts/application.html.erb
   <script type="syntaxhighlighter" class="brush: ruby">
-    <!DOCTYPE html>
+  <!DOCTYPE html>
     <html>
-    <head>
-      <title>Community</title>
-      &lt;%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %&gt;
-      &lt;%= javascript_include_tag "application", "data-turbolinks-track" => true %&gt;
-      &lt;%= csrf_meta_tags %&gt;
-    </head>
-    <body>
+      <head>
+        <title>Blog</title>
+        &lt;%= csrf_meta_tags %&gt;
+        &lt;%= action_cable_meta_tag %&gt;
 
-      &lt;%= yield %&gt;
+        &lt;%= stylesheet_link_tag  'application', media: 'all', 'data-turbolinks-track' => true %&gt;
+        &lt;%= javascript_include_tag 'application', 'data-turbolinks-track' => true %&gt;
+      </head>
 
-    </body>
+      <body>
+        &lt;%= yield %&gt;
+      </body>
     </html>
+
   </script>
 </section>
