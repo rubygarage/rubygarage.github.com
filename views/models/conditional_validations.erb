@@ -1,7 +1,7 @@
 <section id="conditional-validations" class="slide">
   <h2>Condional validations</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-      class User < ActiveRecord::Base
+      class User < ApplicationRecord
         validates :card_number, presence: true, if: :paid_with_card?
 
         def paid_with_card?
@@ -24,5 +24,16 @@
         admin.validates :email, presence: true
       end
   </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class User < ApplicationRecord
+      validates :password, confirmation: true
+                           if: ["editor?", :api_user?],
+                           unless: Proc.new { |u| u.admin? }
+    end
+  </script>
+
+
+
 
 </section>

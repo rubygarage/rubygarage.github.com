@@ -4,20 +4,20 @@
   <script type="syntaxhighlighter" class="brush: bash">
     rails g model User email:text name:text admin:boolena
       invoke  active_record
-      create    db/migrate/20131223130327_create_users.rb
+      create    db/migrate/20160410131731_create_users.rb
       create    app/models/user.rb
       invoke    rspec
       create      spec/models/user_spec.rb
       invoke      factory_girl
-      create        spec/factories/users.rb  
+      create        spec/factories/users.rb
   </script>
 
   app/models/user.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       validates :email, :first_name, presence: true
       validates :email, uniqueness: true
-      
+
       has_many :posts
 
       scope :admins, -> { where(admin: true) }
@@ -34,9 +34,8 @@
 
   app/mailers/user_mailer.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    class UserMailer < ActionMailer::Base
-      default from: "from@example.com"
-
+    class UserMailer < ApplicationMailer
+    
       def email_changed(user)
         # Sending email
       end
@@ -47,7 +46,7 @@
   <script type="syntaxhighlighter" class="brush: ruby">
     require 'spec_helper'
 
-    describe User do 
+    describe User do
       it "is invalid without an email"
       it "has unique email"
       it "is invalid without a name"

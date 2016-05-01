@@ -2,7 +2,7 @@
   <h2>ActiveRecord functions</h2>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    rails c  # rails console
+    bin/rails c  # rails console
   </script>
 
   <h3>new</h3>
@@ -18,9 +18,9 @@
 
     > user.email = "happy_ann@gmail.com"
       => "happy_ann@gmail.com"
-    
+
     > user.save
-      INSERT INTO "users" ("created_at", "email", "first_name", "last_name", "password", "receive_news", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 17:23:02 UTC +00:00], ["email", "happy_ann@gmail.com"], ["first_name", "Anna"], ["last_name", nil], ["password", nil], ["receive_news", false], ["updated_at", Sun, 02 Jun 2013 17:23:02 UTC +00:00]]
+      INSERT INTO "users" ("created_at", "email", "first_name", "last_name", "password", "receive_news", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)  [["created_at", Sun, 10 Apr 2016 19:00:01 UTC +00:00], ["email", "happy_ann@gmail.com"], ["first_name", "Anna"], ["last_name", nil], ["password", nil], ["receive_news", false], ["updated_at", Sun, 10 Apr 2016 19:00:01 UTC +00:00]]
       => true
   </script>
 
@@ -28,7 +28,7 @@
   <script type="syntaxhighlighter" class="brush: bash">
     > User.all
       SELECT "users".* FROM "users"
-      => [#<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>]
+      => #<ActiveRecord::Relation [#<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2016-04-10 19:00:01", updated_at: "2016-04-10 19:00:01", receive_news: nil, last_name: nil>]>
   </script>
 
   <h3>Rails 3</h3>

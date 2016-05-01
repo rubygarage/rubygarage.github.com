@@ -1,11 +1,11 @@
 <section id="faker" class="slide">
-  <h2>Faker</h2>
-  <p><a href="https://github.com/stympy/faker" target="_blank">Faker</a> is used to easily generate fake data: names, addresses, phone numbers, etc.</p>
+  <h2>FFaker (Faker refactored)</h2>
+  <p><a href="https://github.com/ffaker/ffaker" target="_blank">Faker</a> is used to easily generate fake data: names, addresses, phone numbers, etc.</p>
   <script type="syntaxhighlighter" class="brush: ruby">
     FactoryGirl.define do
       factory :user do
-        email { Faker::Internet.email } 
-        name { Faker::Name.name }
+        email { FFaker::Internet.email }
+        name { FFaker::Name.name }
         admin false
 
         factory :admin do
@@ -24,7 +24,7 @@
       end
 
       factory :post do
-        title { Faker::Lorem.sentence }
+        title { FFaker::Lorem.sentence }
         user
       end
     end

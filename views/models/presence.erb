@@ -1,13 +1,34 @@
 <section id="presence" class="slide">
   <h2>Presence</h2>
-<script type="syntaxhighlighter" class="brush: ruby">
-    class User < ActiveRecord::Base
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class User < ApplicationRecord
       attr_accessible :email, :first_name, :password
 
       has_many :posts
       validates :email, :first_name, presence: true
     end
   </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+      class Post < ApplicationRecord
+
+        belongs_to :user
+        validates :user, presence: true
+      end
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class User < ApplicationRecord
+      attr_accessible :email, :first_name, :password
+
+      has_many :posts, inverse_of: :user
+    end
+  </script>
+
+  <p>
+    Can be used for the presence of an object associated validation via a has_one or has_many relationship,
+    it will check that the object is neither <code>blank?</code> nor <code>marked_for_destruction?</code>.
+  </p>
 
   <script type="syntaxhighlighter" class="brush: ruby">
     validates :field_name, inclusion: { in:  [true, false] }. # for fields with boolean type

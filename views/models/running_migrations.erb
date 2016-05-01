@@ -3,18 +3,15 @@
   <h3>Running Migrations</h3>
 
   <script type="syntaxhighlighter" class="brush: bash">
-        rake db:migrate
+        bin/rails db:migrate
   </script>
 
   <h3>Rollback Migrations</h3>
   <script type="syntaxhighlighter" class="brush: bash">
-        rake db:rollback
-        rake db:rollback STEP=3
-        rake db:migrate:down VERSION=20111214211749
-        rake db:migrate:up VERSION=20111214211749
-        rake db:migrate:redo STEP=3
-
+        bin/rails db:rollback
+        bin/rails db:rollback STEP=3
+        bin/rails db:migrate:down VERSION=20160410211749
+        bin/rails db:migrate:up VERSION=20160410211749
+        bin/rails db:migrate:redo STEP=3
   </script>
-
-
 </section>

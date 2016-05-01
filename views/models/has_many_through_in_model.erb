@@ -1,9 +1,9 @@
 <section id="has-many-through-in-model" class="slide">
   <h2>has_many :through</h2>
   <script type="syntaxhighlighter" class="brush: bash">
-      rails g model Blog title:string description:text
+      bin/rails g model Blog title:string description:text
       invoke  active_record
-      create    db/migrate/20130615195018_create_blogs.rb
+      create    db/migrate/20160410194224_create_blogs.rb
       create    app/models/blog.rb
       invoke    test_unit
       create      test/models/blog_test.rb
@@ -11,9 +11,9 @@
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-      rails g model Subscription user:belongs_to blog:belongs_to receive_news:boolean
+      bin/rails g model Subscription user:belongs_to blog:belongs_to receive_news:boolean
       invoke  active_record
-      create    db/migrate/20130615200154_create_subscriptions.rb
+      create    db/migrate/20160410194832_create_subscriptions.rb
       create    app/models/subscription.rb
       invoke    test_unit
       create      test/models/subscription_test.rb
@@ -21,14 +21,14 @@
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-      rails g migration AddBlogRefToPosts blog:references
+      bin/rails g migration AddBlogRefToPosts blog:references
       invoke  active_record
-      create    db/migrate/20130616200237_add_blog_ref_to_posts.rb
+      create    db/migrate/20160410195621_add_blog_ref_to_posts.rb
   </script>
 
-  db/migrate/20130615195018_create_blogs.rb
+  db/migrate/20160410194224_create_blogs.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-      class CreateBlogs < ActiveRecord::Migration
+      class CreateBlogs < ActiveRecord::Migration[5.0]
         def change
           create_table :blogs do |t|
             t.string :title
@@ -40,9 +40,9 @@
       end
   </script>
 
-  db/migrate/20130615200154_create_subscriptions.rb
+  db/migrate/20160410194832_create_subscriptions.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-      class CreateSubscriptions < ActiveRecord::Migration
+      class CreateSubscriptions < ActiveRecord::Migration[5.0]
         def change
           create_table :subscriptions do |t|
             t.belongs_to :user, index: true
@@ -55,9 +55,9 @@
       end
   </script>
 
-  db/migrate/20130616200237_add_blog_ref_to_posts.rb
+  db/migrate/20160410195621_add_blog_ref_to_posts.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-      class AddBlogRefToPosts < ActiveRecord::Migration
+      class AddBlogRefToPosts < ActiveRecord::Migration[5.0]
         def change
           add_reference :posts, :blog, index: true
         end
@@ -66,7 +66,7 @@
 
   app/models/user.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-      class User < ActiveRecord::Base
+      class User < ApplicationRecord
         has_many :posts
         has_many :subscriptions
         has_many :blogs, through: :subscriptions
@@ -75,7 +75,7 @@
 
   app/models/blog.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-      class Blog < ActiveRecord::Base
+      class Blog < ApplicationRecord
         has_many :subscriptions
         has_many :users, through: :subscriptions
       end
@@ -83,7 +83,7 @@
 
   app/models/subscription.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-      class Subscription < ActiveRecord::Base
+      class Subscription < ApplicationRecord
         belongs_to :user
         belongs_to :blog
       end
@@ -91,7 +91,7 @@
 
   app/models/post.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-      class Post < ActiveRecord::Base
+      class Post < ApplicationRecord
         belongs_to :user
         belongs_to :blog
         has_one :post_info

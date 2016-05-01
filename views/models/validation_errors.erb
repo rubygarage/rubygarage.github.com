@@ -2,7 +2,7 @@
   <h2>Validation Errors</h2>
   <h3>errors.add</h3>
   <script type="syntaxhighlighter" class="brush: ruby">
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       def a_method_used_for_validation_purposes
         errors.add(:first_name, "cannot contain the characters !@#%*()_-+=")
         # errors[:first_name] = "cannot contain the characters !@#%*()_-+="
@@ -17,7 +17,7 @@
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       def a_method_used_for_validation_purposes
         errors[:base] << "This user is invalid because ..."
       end

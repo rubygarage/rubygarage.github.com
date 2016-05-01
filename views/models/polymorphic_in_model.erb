@@ -2,18 +2,18 @@
   <h2>Polymorphic Assosiations</h2>
 
   <script type="syntaxhighlighter" class="brush: bash">
-      rails g model Picture imageable:references{polymorphic} file:string
+      bin/rails g model Picture imageable:references{polymorphic} file:string
       invoke  active_record
-      create    db/migrate/20130616213914_create_pictures.rb
+      create    db/migrate/20160414231322_create_pictures.rb
       create    app/models/picture.rb
       invoke    test_unit
       create      test/models/picture_test.rb
       create      test/fixtures/pictures.yml
   </script>
 
-  db/migrate/20130616213914_create_pictures.rb
+  db/migrate/20160414231322_create_pictures.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    class CreatePictures < ActiveRecord::Migration
+    class CreatePictures < ActiveRecord::Migration[5.0]
       def change
         create_table :pictures do |t|
           t.references :imageable, polymorphic: true, index: true
@@ -27,14 +27,14 @@
 
   app/models/picture.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    class Picture < ActiveRecord::Base
+    class Picture < ApplicationRecord
       belongs_to :imageable, polymorphic: true
     end
   </script>
 
   app/models/user.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       has_many :posts
       has_many :subscriptions
       has_many :blogs, through: :subscriptions
@@ -46,7 +46,7 @@
 
   app/models/post.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    class Post < ActiveRecord::Base
+    class Post < ApplicationRecord
       belongs_to :user
       belongs_to :blog
       has_one :post_info
@@ -57,17 +57,17 @@
 
   <script type="syntaxhighlighter" class="brush: bash">
     > user.create_picture(file: 'public/picture/photo.png')
-      
-      INSERT INTO "pictures" ("created_at", "file", "imageable_id", "imageable_type", "updated_at") VALUES (?, ?, ?, ?, ?)  [["created_at", Sun, 16 Jun 2013 21:46:37 UTC +00:00], ["file", "public/picture/photo.png"], ["imageable_id", 1], ["imageable_type", "User"], ["updated_at", Sun, 16 Jun 2013 21:46:37 UTC +00:00]]
-      
-      => #<Picture id: 1, imageable_id: 1, imageable_type: "User", file: "public/picture/photo.png", created_at: "2013-06-16 21:46:37", updated_at: "2013-06-16 21:46:37">
+
+      INSERT INTO "pictures" ("created_at", "file", "imageable_id", "imageable_type", "updated_at") VALUES (?, ?, ?, ?, ?)  [["created_at", Fri, 15 Apr 2016 17:35:01 UTC +00:00], ["file", "public/picture/photo.png"], ["imageable_id", 1], ["imageable_type", "User"], ["updated_at", Fri, 15 Apr 2016 17:35:01 UTC +00:00]]
+
+      => #<Picture id: 1, imageable_id: 1, imageable_type: "User", file: "public/picture/photo.png", created_at: "2016-04-15 17:35:01", updated_at: "2016-04-15 17:35:01">
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
     > post.pictures.create(file: 'public/picture/image.png')
-      
-      INSERT INTO "pictures" ("created_at", "file", "imageable_id", "imageable_type", "updated_at") VALUES (?, ?, ?, ?, ?)  [["created_at", Sun, 16 Jun 2013 21:51:25 UTC +00:00], ["file", "public/picture/image.png"], ["imageable_id", 1], ["imageable_type", "Post"], ["updated_at", Sun, 16 Jun 2013 21:51:25 UTC +00:00]]
-      
-      => #<Picture id: 2, imageable_id: 1, imageable_type: "Post", file: "public/picture/image.png", created_at: "2013-06-16 21:51:25", updated_at: "2013-06-16 21:51:25">
+
+      INSERT INTO "pictures" ("created_at", "file", "imageable_id", "imageable_type", "updated_at") VALUES (?, ?, ?, ?, ?)  [["created_at", Fri, 15 Apr 2016 17:45:21 UTC +00:00], ["file", "public/picture/image.png"], ["imageable_id", 1], ["imageable_type", "Post"], ["updated_at", Fri, 15 Apr 2016 17:45:21 UTC +00:00]]
+
+      => #<Picture id: 2, imageable_id: 1, imageable_type: "Post", file: "public/picture/image.png", created_at: "2016-04-15 17:45:21", updated_at: "2016-04-15 17:45:21">
   </script>
 </section>

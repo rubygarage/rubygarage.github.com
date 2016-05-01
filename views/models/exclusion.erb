@@ -1,7 +1,7 @@
 <section id="exclusion" class="slide">
   <h2>Exclusion</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       ...
       validates :first_name, exclusion: { in:  %w(Admin BadDog),  message:  "First name %{value} is reserved." }
     end

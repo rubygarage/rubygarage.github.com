@@ -1,11 +1,12 @@
 <section id="format" class="slide">
   <h2>Format</h2>
 <script type="syntaxhighlighter" class="brush: ruby">
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       ...
       validates :email, :first_name, presence: true
       validates :email, confirmation: true
-      validates :email, format: { with: /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/, :message => "Only emails allowed" }
+      validates :email, format: { with: /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/, message: "Only emails allowed" }
+      validates :email, format: { without: /test.com$/, message: "Test emails are not allowed" } #default message "is invalid"
     end
   </script>
 

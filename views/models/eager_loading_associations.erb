@@ -71,4 +71,5 @@
     > p = Post.includes(:tags).where("tags.name != 'nil'").references(:tags)
     SQL (0.7ms)  SELECT "posts"."id" AS t0_r0, "posts"."text" AS t0_r1, "posts"."user_id" AS t0_r2, "posts"."created_at" AS t0_r3, "posts"."updated_at" AS t0_r4, "posts"."title" AS t0_r5, "posts"."published" AS t0_r6, "posts"."blog_id" AS t0_r7, "tags"."id" AS t1_r0, "tags"."name" AS t1_r1, "tags"."created_at" AS t1_r2, "tags"."updated_at" AS t1_r3 FROM "posts" LEFT OUTER JOIN "posts_tags" ON "posts_tags"."post_id" = "posts"."id" LEFT OUTER JOIN "tags" ON "tags"."id" = "posts_tags"."tag_id" WHERE (tags.name != 'nil')
   </script>
+
 </section>

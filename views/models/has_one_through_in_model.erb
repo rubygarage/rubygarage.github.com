@@ -2,9 +2,9 @@
   <h2>has_one :through</h2>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    rails g model Plan name:string description:text price:decimal{8.2}
+    bin/rails g model Plan name:string description:text price:decimal{8.2}
       invoke  active_record
-      create    db/migrate/20130616211135_create_plans.rb
+      create    db/migrate/20160410202622_create_plans.rb
       create    app/models/plan.rb
       invoke    test_unit
       create      test/models/plan_test.rb
@@ -12,18 +12,18 @@
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    rails g model UserPlan user:belongs_to plan:belongs_to
+    bin/rails g model UserPlan user:belongs_to plan:belongs_to
       invoke  active_record
-      create    db/migrate/20130616211306_create_user_plans.rb
+      create    db/migrate/20160410203824_create_user_plans.rb
       create    app/models/user_plan.rb
       invoke    test_unit
       create      test/models/user_plan_test.rb
       create      test/fixtures/user_plans.yml
   </script>
 
-  db/migrate/20130616211135_create_plans.rb
+  db/migrate/20160410202622_create_plans.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    class CreatePlans < ActiveRecord::Migration
+    class CreatePlans < ActiveRecord::Migration[5.0]
       def change
         create_table :plans do |t|
           t.string :name
@@ -37,9 +37,9 @@
   </script>
 
 
-  db/migrate/20130616211306_create_user_plans.rb
+  db/migrate/20160410203824_create_user_plans.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    class CreateUserPlans < ActiveRecord::Migration
+    class CreateUserPlans < ActiveRecord::Migration[5.0]
       def change
         create_table :user_plans do |t|
           t.belongs_to :user, index: true
@@ -53,7 +53,7 @@
 
   app/models/user.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       has_many :posts
       has_many :subscriptions
       has_many :blogs, through: :subscriptions
@@ -64,7 +64,7 @@
 
   app/models/user_plan.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    class UserPlan < ActiveRecord::Base
+    class UserPlan < ApplicationRecord
       belongs_to :user
       belongs_to :plan
     end
@@ -72,7 +72,7 @@
 
   app/models/plan.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    class Plan < ActiveRecord::Base
+    class Plan < ApplicationRecord
       has_many :user_plans
       has_many :users, through: :user_plans
     end

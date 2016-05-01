@@ -2,10 +2,10 @@
   <h2>Length</h2>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    rails g migration AddCardNumberToUsers card_number:string
+    bin/rails g migration AddCardNumberToUsers card_number:string
   </script>
   <script type="syntaxhighlighter" class="brush: ruby">
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       ...
       validates :first_name, length: {
         minimum: 2,

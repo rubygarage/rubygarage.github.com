@@ -17,6 +17,14 @@
      => 5
   </script>
 
+  left_outer_joins
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    > User.left_outer_joins(:posts).distinct
+      User Load (1.4ms)  SELECT DISTINCT "users".* FROM "users" LEFT OUTER JOIN "posts" ON "posts"."user_id" = "users"."id"
+    => #<ActiveRecord::Relation [#<User id: 1, first_name: "Marta", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-23 21:02:23", last_name: nil, receive_news: false>, #<User id: 1, first_name: "Marta", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-23 21:02:23", last_name: nil, receive_news: false>, #<User id: 1, first_name: "Marta", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-23 21:02:23", last_name: nil, receive_news: false>, #<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>, #<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>]>
+  </script>
+
   Joining a Single Association
 
   <script type="syntaxhighlighter" class="brush: bash">
@@ -34,16 +42,16 @@
 
   Joining Nested Associations (Single Level)
 
-   <script type="syntaxhighlighter" class="brush: bash">
-       > Post.joins(blog: :users)
-        Post Load (0.2ms)  SELECT "posts".* FROM "posts" INNER JOIN "blogs" ON "blogs"."id" = "posts"."blog_id" INNER JOIN "subscriptions" ON "subscriptions"."blog_id" = "blogs"."id" INNER JOIN "users" ON "users"."id" = "subscriptions"."user_id"
+  <script type="syntaxhighlighter" class="brush: bash">
+     > Post.joins(blog: :users)
+       Post Load (0.2ms)  SELECT "posts".* FROM "posts" INNER JOIN "blogs" ON "blogs"."id" = "posts"."blog_id" INNER JOIN "subscriptions" ON "subscriptions"."blog_id" = "blogs"."id" INNER JOIN "users" ON "users"."id" = "subscriptions"."user_id"
   </script>
 
   Joining Nested Associations (Multiple Level)
 
-   <script type="syntaxhighlighter" class="brush: bash">
-       > User.joins(posts: [{blog: :subscriptions}, :tags])
-        User Load (0.8ms)  SELECT "users".* FROM "users" INNER JOIN "posts" ON "posts"."user_id" = "users"."id" INNER JOIN "blogs" ON "blogs"."id" = "posts"."blog_id" INNER JOIN "subscriptions" ON "subscriptions"."blog_id" = "blogs"."id" INNER JOIN "posts_tags" ON "posts_tags"."post_id" = "posts"."id" INNER JOIN "tags" ON "tags"."id" = "posts_tags"."tag_id" WHERE "users"."state" = 'pending'
+  <script type="syntaxhighlighter" class="brush: bash">
+     > User.joins(posts: [{blog: :subscriptions}, :tags])
+       User Load (0.8ms)  SELECT "users".* FROM "users" INNER JOIN "posts" ON "posts"."user_id" = "users"."id" INNER JOIN "blogs" ON "blogs"."id" = "posts"."blog_id" INNER JOIN "subscriptions" ON "subscriptions"."blog_id" = "blogs"."id" INNER JOIN "posts_tags" ON "posts_tags"."post_id" = "posts"."id" INNER JOIN "tags" ON "tags"."id" = "posts_tags"."tag_id" WHERE "users"."state" = 'pending'
   </script>
 
   Specifying Conditions on the Joined Tables
@@ -52,9 +60,5 @@
     > User.joins(:posts).where('posts.created_at' => (Time.now.midnight - 1.day)..Time.now.midnight)
       User Load (0.5ms)  SELECT "users".* FROM "users" INNER JOIN "posts" ON "posts"."user_id" = "users"."id" WHERE ("posts"."created_at" BETWEEN '2013-06-22 21:00:00.000000' AND '2013-06-23 21:00:00.000000')
      => #<ActiveRecord::Relation [#<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>, #<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>]>
-      </script>
-
-
-
-
+  </script>
 </section>

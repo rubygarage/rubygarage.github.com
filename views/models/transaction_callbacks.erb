@@ -1,27 +1,34 @@
 <section id="transaction-callbacks" class="slide">
   <h2>Transaction Callbacks</h2>
+
+  <ul>
+    <li><code>after_commit</code></li>
+    <li><code>after_rollback</code></li>
+  </ul>
+
   <script type="syntaxhighlighter" class="brush: ruby">
       PictureFile.transaction do
         picture_file_1.destroy
         picture_file_2.save!
       end
   </script>
-   <script type="syntaxhighlighter" class="brush: ruby">
-    class PictureFile < ActiveRecord::Base
-      attr_accessor :delete_file
 
-      after_destroy do |picture_file|
-        picture_file.delete_file = picture_file.filepath
-      end
+  <script type="syntaxhighlighter" class="brush: ruby">
+   class PictureFile < ApplicationRecord
+     after_commit :delete_picture_file_from_disk, on: [:destroy]
 
-      after_commit do |picture_file|
-        if picture_file.delete_file && File.exist?(picture_file.delete_file)
-          File.delete(picture_file.delete_file)
-          picture_file.delete_file = nil
-        end
-      end
+     def delete_picture_file_from_disk
+       if File.exist?(filepath)
+         File.delete(filepath)
+       end
+     end
     end
   </script>
 
+  <ul>
+    <li><code>after_create_commit</code></li>
+    <li><code>after_update_commit</code></li>
+    <li><code>after_destroy_commit</code></li>
+  </ul>
 
 </section>

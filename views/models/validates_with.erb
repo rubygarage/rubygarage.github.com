@@ -1,7 +1,7 @@
 <section id="validates-with" class="slide">
   <h2>validates_with</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       validates_with GoodnessValidator
     end
 
@@ -15,7 +15,7 @@
   </script>
 
    <script type="syntaxhighlighter" class="brush: ruby">
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       validates_with GoodnessValidator, fields: [:first_name, :last_name]
     end
 

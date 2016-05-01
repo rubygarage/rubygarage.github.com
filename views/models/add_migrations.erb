@@ -2,46 +2,47 @@
   <h2>Add Migrations</h2>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    rails g migration AddLastNameToUsers last_name:string
+    bin/rails g migration AddLastNameToUsers last_name:string:index
       invoke  active_record
-      create    db/migrate/20130602150030_add_last_name_to_users.rb
+      create    db/migrate/20160410133524_add_last_name_to_users.rb
 
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
     YYYYMMDDHHMMSS UTC timestamp
-    20130602150030_add_last_name_to_users.rb
+    20160410133524_add_last_name_to_users.rb
   </script>
 
   <h3>Change</h3>
-  db/migrate/20130602150030_add_last_name_to_users.rb
+  db/migrate/20160410133524_add_last_name_to_users.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-     class AddLastNameToUsers < ActiveRecord::Migration
+     class AddLastNameToUsers < ActiveRecord::Migration[5.0]
       def change
         add_column :users, :last_name, :string
+        add_index :users, :last_name
       end
     end
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    rails g migration AddReceiveNewsToUsers receive_news:boolean
+    bin/rails g migration AddReceiveNewsToUsers receive_news:boolean
       invoke  active_record
-      create    db/migrate/20130602151002_add_receive_news_to_users.rb
+      create    db/migrate/20160410133746_add_receive_news_to_users.rb
   </script>
 
-  db/migrate/20130602151002_add_receive_news_to_users.rb
+  db/migrate/20160410133746_add_receive_news_to_users.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    class AddReceiveNewsToUsers < ActiveRecord::Migration
+    class AddReceiveNewsToUsers < ActiveRecord::Migration[5.0]
       def change
         add_column :users, :receive_news, :boolean
       end
     end
   </script>
 
-  <h3>Up and down</h3>
-  db/migrate/20130602151002_add_receive_news_to_users.rb
+  <h3>Up and down (old style)</h3>
+  db/migrate/20160410133746_add_receive_news_to_users.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    class AddReceiveNewsToUsers < ActiveRecord::Migration
+    class AddReceiveNewsToUsers < ActiveRecord::Migration[5.0]
       def up
         change_table :users do |t|
           t.boolean :receive_news, default: true
@@ -56,4 +57,38 @@
       end
     end
   </script>
+
+  <h3>Reversible</h3>
+  db/migrate/20160410133746_change_user_number.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class ChangeUsersNumber < ActiveRecord::Migration[5.0]
+      def change
+        reversible do |dir|
+          change_table :users do |t|
+            dir.up   { t.change :user_number, :string }
+            dir.down { t.change :user_number, :integer }
+          end
+        end
+      end
+    end
+
+    class ChangeUsersNumber < ActiveRecord::Migration[5.0]
+      def up
+        change_table :users do |t|
+          t.change :user_number, :string
+        end
+      end
+
+      def down
+        change_table :users do |t|
+          t.change :user_number, :integer
+        end
+      end
+    end
+  </script>
+
+  <p>
+    If your migration is irreversible, you should raise ActiveRecord::IrreversibleMigration from your down method.
+    If someone tries to revert your migration, an error message will be displayed saying that it can't be done.
+  </p>
 </section>
