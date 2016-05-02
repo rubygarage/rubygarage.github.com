@@ -6,7 +6,7 @@
 
       context "change email" do
         it "sends email changed notification" do
-          user.email = Faker::Internet.email
+          user.email = FFaker::Internet.email
           expect(UserMailer).to receive(:email_changed).with(user).and_return(double("meil", deliver: true))
           user.save
         end

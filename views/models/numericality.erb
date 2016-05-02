@@ -1,7 +1,7 @@
 <section id="numericality" class="slide">
   <h2>Numericality</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-    class PostInfo < ActiveRecord::Base
+    class PostInfo < ApplicationRecord
       ...
       validates :views, numericality: true
       validates :rate, numericality: { only_integer: true, greater_than: 5 }
@@ -17,4 +17,8 @@
     <li><code>:odd</code></li>
     <li><code>:even</code></li>
   </ul>
+
+  <p>
+    By default, numericality doesn't allow nil values. You can use <code>allow_nil: true</code> option to permit it.
+  </p>
 </section>

@@ -3,18 +3,18 @@
   <h3>create</h3>
   <script type="syntaxhighlighter" class="brush: bash">
     > new_user = User.create(first_name: "Ivan", email: "ivan.melechov@gmail.com")
-  
-      INSERT INTO "users" ("created_at", "email", "first_name", "last_name", "password", "receive_news", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 18:18:40 UTC +00:00], ["email", "ivan.melechov@gmail.com"], ["first_name", "Ivan"], ["last_name", nil], ["password", nil], ["receive_news", false], ["updated_at", Sun, 02 Jun 2013 18:18:40 UTC +00:00]]
-  
-      => #<User id: 2, first_name: "Ivan", email: "ivan.melechov@gmail.com", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:18:40", last_name: nil, receive_news: false>
-  </script>
+
+    (0.1ms)  begin transaction
+    SQL (1.5ms)  INSERT INTO "users" ("first_name", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["first_name", "Ivan"], ["email", "ivan.melechov@gmail.com"], ["created_at", 2016-04-10 19:09:42 UTC], ["updated_at", 2016-04-10 19:09:42 UTC]]
+    (0.8ms)  commit transaction
+    => #<User id: 2, first_name: "Ivan", email: "ivan.melechov@gmail.com", password: nil, created_at: "2016-04-10 19:09:42", updated_at: "2016-04-10 19:09:42", receive_news: nil, last_name: nil>  </script>
 
   <h3>count</h3>
   <script type="syntaxhighlighter" class="brush: bash">
     > User.count
-      
+
       SELECT COUNT(*) FROM "users"
-      
+
       => 2
   </script>
 
@@ -22,9 +22,10 @@
   <h3>update</h3>
   <script type="syntaxhighlighter" class="brush: bash">
     > new_user.update(first_name: "Van'ka", email: "vanka@yandex.ru")
-      
-      UPDATE "users" SET "first_name" = 'Van''ka', "email" = 'vanka@yandex.ru', "updated_at" = '2013-06-02 18:20:00.982364' WHERE "users"."id" = 2
-      
-      => true
+
+    (0.1ms)  begin transaction
+    SQL (0.4ms)  UPDATE "users" SET "first_name" = ?, "email" = ?, "updated_at" = ? WHERE "users"."id" = ?  [["first_name", "Van'ka"], ["email", "vanka@yandex.ru"], ["updated_at", 2016-04-10 19:11:53 UTC], ["id", 2]]
+     (0.7ms)  commit transaction
+    => true
   </script>
 </section>

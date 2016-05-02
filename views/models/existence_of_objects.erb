@@ -13,7 +13,7 @@
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    > User.where(:first_name => 'Ryan').exists?
+    > User.where(first_name: 'Ryan').exists?
       User Exists (0.4ms)  SELECT 1 AS one FROM "users" WHERE "users"."first_name" = 'Ryan' LIMIT 1
      => false
   </script>
@@ -39,8 +39,8 @@
   </script>
   via a relation
   <script type="syntaxhighlighter" class="brush: ruby">
-    Post.where(:published => true).any?
-    Post.where(:published => true).many?
+    Post.where(published: true).any?
+    Post.where(published: true).many?
   </script>
   via an association
   <script type="syntaxhighlighter" class="brush: ruby">

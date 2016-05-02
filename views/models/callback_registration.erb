@@ -2,11 +2,11 @@
   <h2>Callback registrations</h2>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    rails g migration AddLoginToUsers login:string
+    bin/rails g migration AddLoginToUsers login:string
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       ...
       validates :login, :email, presence: true
 

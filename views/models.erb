@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8"/> 
+  <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>Models</title>
   <link href="assets/models.css" rel="stylesheet" />
@@ -16,6 +16,7 @@
 <%= partial :'models/migrations_topic' %>
 <%= partial :'models/migrations' %>
 <%= partial :'models/add_migrations' %>
+<%= partial :'models/revert_previous_migration' %>
 <%= partial :'models/db_changing_methods' %>
 <%= partial :'models/column_types' %>
 <%= partial :'models/example_migration' %>
@@ -43,6 +44,7 @@
 <%= partial :'models/valid_invalid' %>
 <%= partial :'models/errors' %>
 <%= partial :'models/presence' %>
+<%= partial :'models/absence' %>
 <%= partial :'models/acceptance' %>
 <%= partial :'models/confirmation' %>
 <%= partial :'models/inclusion' %>
@@ -55,6 +57,7 @@
 <%= partial :'models/validates_with' %>
 <%= partial :'models/validate_each' %>
 <%= partial :'models/general_options' %>
+<%= partial :'models/strict_validations' %>
 <%= partial :'models/conditional_validations' %>
 <%= partial :'models/custom_validators' %>
 <%= partial :'models/custom_methods' %>
@@ -68,6 +71,7 @@
 <%= partial :'models/relational_callbacks' %>
 <%= partial :'models/conditional_callbacks' %>
 <%= partial :'models/callback_classes' %>
+<%= partial :'models/transaction_callbacks' %>
 <%= partial :'models/topic_query_interface' %>
 <%= partial :'models/retrieving_methods' %>
 <%= partial :'models/retrieving_single_object' %>
@@ -87,10 +91,12 @@
 <%= partial :'models/joining_tables' %>
 <%= partial :'models/eager_loading_associations' %>
 <%= partial :'models/scopes' %>
+<%= partial :'models/dynamic_finders' %>
 <%= partial :'models/find_or_build' %>
 <%= partial :'models/finding_by_sql' %>
 <%= partial :'models/existence_of_objects' %>
 <%= partial :'models/calculations' %>
+<%= partial :'models/running_explain' %>
 <%= partial :'models/topic_testing_models' %>
 <%= partial :'models/tests_configuration' %>
 <%= partial :'models/testing_basic_structure' %>

@@ -1,9 +1,9 @@
 <section id="habtm-in-model" class="slide">
   <h2>has_and_belongs_to_many</h2>
   <script type="syntaxhighlighter" class="brush: bash">
-    rails g model Tag name:string
+    bin/rails g model Tag name:string
       invoke  active_record
-      create    db/migrate/20130615203349_create_tags.rb
+      create    db/migrate/20160414211322_create_tags.rb
       create    app/models/tag.rb
       invoke    test_unit
       create      test/models/tag_test.rb
@@ -11,9 +11,9 @@
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    rails g migration create_posts_tags post:references tag:references --no-timestamp
+    bin/rails g migration create_posts_tags post:references tag:references --no-timestamp
       invoke  active_record
-      create    db/migrate/20130615205723_create_posts_tags.rb
+      create    db/migrate/20160414213342_create_posts_tags.rb
   </script>
 
 <h3>Rails 4</h3>
@@ -26,12 +26,12 @@
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-      create_join_table :posts, :tags, column_options:  {null:  true}
+    create_join_table :posts, :tags, column_options:  {null:  true}
   </script>
 
-  db/migrate/20130615205723_create_posts_tags.rb
+  db/migrate/20160414213342_create_posts_tags.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    class CreatePostsTags < ActiveRecord::Migration
+    class CreatePostsTags < ActiveRecord::Migration[5.0]
       def change
         create_table :posts_tags do |t|
           t.references :post, index: true
@@ -42,9 +42,9 @@
   </script>
 
   <h4>Change migration. Add common index and remove id.</h4>
-  db/migrate/20130615205723_create_posts_tags.rb
+  db/migrate/20160414213342_create_posts_tags.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    class CreatePostsTags < ActiveRecord::Migration
+    class CreatePostsTags < ActiveRecord::Migration[5.0]
       def change
         create_table :posts_tags, id: false do |t|
           t.references :post, index: true
@@ -57,7 +57,7 @@
 
   app/models/post.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-      class Post < ActiveRecord::Base
+      class Post < ApplicationRecord
         belongs_to :user
         has_and_belongs_to_many :tags
       end
@@ -65,7 +65,7 @@
 
   app/models/tag.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    class Tag < ActiveRecord::Base
+    class Tag < ApplicationRecord
       has_and_belongs_to_many :posts
     end
 </script>

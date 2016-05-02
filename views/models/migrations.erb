@@ -1,7 +1,7 @@
 <section id="migrations" class="slide">
   <h2>Overview</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-      class CreateUsers < ActiveRecord::Migration
+      class CreateUsers < ActiveRecord::Migration[5.0]
         def change
           create_table :users do |t|
             t.string :first_name

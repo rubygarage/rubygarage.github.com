@@ -2,11 +2,11 @@
   <h2>Uniqueness</h2>
 
   <script type="syntaxhighlighter" class="brush: bash">
-    rails g AddPageAddressToUsers page_address:string
+    bin/rails g AddPageAddressToUsers page_address:string
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       ...
       validates :email, uniqueness: true
       validates :first_name, uniqueness: { scope: :email,  message: "should only one user with name and email" }

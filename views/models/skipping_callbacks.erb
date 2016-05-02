@@ -5,13 +5,20 @@
     <li><code>decrement_counter</code></li>
     <li><code>delete</code></li>
     <li><code>delete_all</code></li>
-    <li><code>find_by_sql</code></li>
     <li><code>increment</code></li>
     <li><code>increment_counter</code></li>
     <li><code>toggle</code></li>
     <li><code>touch</code></li>
     <li><code>update_column</code></li>
+    <li><code>update_columns</code></li>
     <li><code>update_all</code></li>
     <li><code>update_counters</code></li>
   </ul>
+
+  <p>
+    The whole callback chain is wrapped in a transaction.
+    If any before callback method returns exactly false or raises an exception,
+    the execution chain gets halted and a ROLLBACK is issued;
+    after callbacks can only accomplish that by raising an exception.
+  </p>
 </section>

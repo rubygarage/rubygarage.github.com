@@ -2,14 +2,14 @@
   <h2>Scopes</h2>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    class Post < ActiveRecord::Base
+    class Post < ApplicationRecord
       ...
       scope :published, -> { where(published: true) }
     end
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    class Post < ActiveRecord::Base
+    class Post < ApplicationRecord
       ...
       def self.published
         where(published: true)
@@ -18,7 +18,7 @@
   </script>
 
    <script type="syntaxhighlighter" class="brush: ruby">
-    class Post < ActiveRecord::Base
+    class Post < ApplicationRecord
       scope :published,               -> { where(published: true) }
       scope :published_with_tags, -> { published.where("tags_count > 0") }
     end
@@ -34,7 +34,7 @@
 
   Passing in arguments
   <script type="syntaxhighlighter" class="brush: ruby">
-    class Post < ActiveRecord::Base
+    class Post < ApplicationRecord
       ...
       scope :created_before, ->(time) { where("created_at < ?", time) }
     end
@@ -47,11 +47,11 @@
   Merging of scopes
 
   <script type="syntaxhighlighter" class="brush: bash">
-    rails g migration AddStateToUser state:string
+    bin/rails g migration AddStateToUser state:string
   </script>
 
    <script type="syntaxhighlighter" class="brush: ruby">
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       scope :active, -> { where state: 'active' }
       scope :inactive, -> { where state: 'inactive' }
     end
@@ -77,7 +77,7 @@ default_scope
 - will be applied across all queries
 - will be overridden by scope and where conditions
 <script type="syntaxhighlighter" class="brush: ruby">
-  class User < ActiveRecord::Base
+  class User < ApplicationRecord
     default_scope { where state: 'pending' }
     scope :active, -> { where state: 'active' }
     scope :inactive, -> { where state: 'inactive' }

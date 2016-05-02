@@ -30,7 +30,7 @@ except
 
   reorder
   <script type="syntaxhighlighter" class="brush: ruby">
-    class User <  ActiveRecord::Base
+    class User <  ApplicationRecord
       ...
       has_many :posts, -> { order('created_at DESC') }
     end
@@ -55,4 +55,17 @@ except
     User Load (0.6ms)  SELECT "users".* FROM "users" ORDER BY "users".created_at DESC
       => #<ActiveRecord::Relation [#<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>, #<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>]>
   </script>
+
+  rewhere
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    > User.where(admin: true).rewhere(admin: false)
+      SELECT * FROM users WHERE `admin` = 0
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: bash">
+    > User.where(admin: true).where(admin: false)
+      SELECT * FROM users WHERE `admin` = 1 AND `admin` = 0
+  </script>
+
 </section>

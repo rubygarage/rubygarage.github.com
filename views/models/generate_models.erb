@@ -2,14 +2,13 @@
   <h2>Models generation</h2>
 
   <script type="syntaxhighlighter" class="brush: bash">
-     rails generate model User first_name:string email:string password:string
-      invoke  active_record
-      create    db/migrate/20130602143931_create_users.rb
-      create    app/models/user.rb
-      invoke    test_unit
-      create      test/unit/user_test.rb
-      create      test/fixtures/users.yml
-
+    bin/rails generate model User first_name:string email:string password:string
+     invoke  active_record
+     create    db/migrate/20160410131731_create_users.rb
+     create    app/models/user.rb
+     invoke    test_unit
+     create      test/models/user_test.rb
+     create      test/fixtures/users.yml
   </script>
 
   <h3>Naming Conventions</h3>

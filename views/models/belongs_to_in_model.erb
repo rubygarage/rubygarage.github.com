@@ -1,14 +1,14 @@
 <section id="belongs-to-in-model" class="slide">
   <h2>belongs_to</h2>
   <script type="syntaxhighlighter" class="brush: bash">
-      rails g migration AddUserRefToPosts user:references
+      bin/rails g migration AddUserRefToPosts user:references
       invoke  active_record
-      create    db/migrate/20130615164224_add_user_ref_to_posts.rb
+      create    db/migrate/20160410164224_add_user_ref_to_posts.rb
   </script>
 
-  db/migrate/20130615164224_add_user_ref_to_posts.rb
+  db/migrate/20160410164224_add_user_ref_to_posts.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-      class AddUserRefToPosts < ActiveRecord::Migration
+      class AddUserRefToPosts < ActiveRecord::Migration[5.0]
         def change
           add_reference :posts, :user, index: true
         end
@@ -24,7 +24,7 @@
 
   app/models/post.rb
   <script type="syntaxhighlighter" class="brush: ruby">
-    class Post < ActiveRecord::Base
+    class Post < ApplicationRecord
       belongs_to :user
     end
   </script>
@@ -33,24 +33,32 @@
     > user = User.first
 
       SELECT "users".* FROM "users" LIMIT 1
-      
-      => #<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>
+
+      => #<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2016-04-10 16:53:04", updated_at: "2016-04-10 16:53:04", last_name: nil, receive_news: false>
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
     > post = Post.create(text: "I'm so happy today", title: "So happy", user_id: user.id)
-      
-      INSERT INTO "posts" ("created_at", "text", "title", "updated_at", "user_id") VALUES (?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 18:43:10 UTC +00:00], ["text", "I'm so happy today"], "So happy", ["updated_at", Sun, 02 Jun 2013 18:43:10 UTC +00:00], ["user_id", 1]]
+
+      INSERT INTO "posts" ("created_at", "text", "title", "updated_at", "user_id") VALUES (?, ?, ?, ?)  [["created_at", Sun, 10 Apr 2016 16:55:11 UTC +00:00], ["text", "I'm so happy today"], "So happy", ["updated_at",Sun, 10 Apr 2016 16:55:11 UTC +00:00], ["user_id", 1]]
       (126.0ms)  commit transaction
-      
-      => #<Post id: 1, text: "I'm so happy today", title: "So happy", user_id: 1, created_at: "2013-06-02 18:43:10", updated_at: "2013-06-02 18:43:10">
+
+      => #<Post id: 1, text: "I'm so happy today", title: "So happy", user_id: 1, created_at: "2016-04-10 16:55:11", updated_at: "2016-06-02 16:55:11">
   </script>
 
   <script type="syntaxhighlighter" class="brush: bash">
     > post.user
-      
+
       SELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1
-      
-      => #<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>
+
+      => #<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2016-04-10 16:55:11", updated_at: "2016-04-10 16:55:11", last_name: nil, receive_news: false>
+  </script>
+
+  <p> From Rails 5 on every Rails application will have a new configuration option </p>
+  <code>config.active_record.belongs_to_required_by_default = true</code>
+  <p>, it will trigger a validation error when trying to save a model where belongs_to associations are not present.</p>
+  <p>or</p>
+  <script type="syntaxhighlighter" class="brush: ruby">
+     belongs_to :user, optional: true
   </script>
 </section>

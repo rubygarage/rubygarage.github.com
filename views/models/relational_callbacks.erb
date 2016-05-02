@@ -1,12 +1,12 @@
 <section id="relational-callbacks" class="slide">
   <h2>Relational Callbacks</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       ...
       has_many :posts, dependent: :destroy
     end
 
-    class Post < ActiveRecord::Base
+    class Post < ApplicationRecord
       ...
       after_destroy :log_destroy_action
 

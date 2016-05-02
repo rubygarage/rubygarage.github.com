@@ -79,6 +79,3 @@ DEPENDENCIES
   sprockets
   sprockets-helpers
   sprockets-sass
-
-BUNDLED WITH
-   1.10.6

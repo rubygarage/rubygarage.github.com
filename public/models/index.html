@@ -26,14 +26,13 @@
 </section><section id="models-generation" class="slide"><h2>Models generation</h2>
 
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-     rails generate model User first_name:string email:string password:string
-      invoke  active_record
-      create    db/migrate/20130602143931_create_users.rb
-      create    app/models/user.rb
-      invoke    test_unit
-      create      test/unit/user_test.rb
-      create      test/fixtures/users.yml
-
+    bin/rails generate model User first_name:string email:string password:string
+     invoke  active_record
+     create    db/migrate/20160410131731_create_users.rb
+     create    app/models/user.rb
+     invoke    test_unit
+     create      test/models/user_test.rb
+     create      test/fixtures/users.yml
   ]]></script><h3>Naming Conventions</h3>
   <ul><li>Database Table - Plural with underscores separating words (e.g., book_clubs)</li>
     <li>Model Class - Singular with the first letter of each word capitalized (e.g., BookClub)</li>
@@ -57,7 +56,7 @@
   </div>
 </section><section id="migrations" class="slide"><h2>Overview</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      class CreateUsers < ActiveRecord::Migration
+      class CreateUsers < ActiveRecord::Migration[5.0]
         def change
           create_table :users do |t|
             t.string :first_name
@@ -80,38 +79,39 @@
   </ul></section><section id="add-migrations" class="slide"><h2>Add Migrations</h2>
 
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-    rails g migration AddLastNameToUsers last_name:string
+    bin/rails g migration AddLastNameToUsers last_name:string:index
       invoke  active_record
-      create    db/migrate/20130602150030_add_last_name_to_users.rb
+      create    db/migrate/20160410133524_add_last_name_to_users.rb
 
   ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     YYYYMMDDHHMMSS UTC timestamp
-    20130602150030_add_last_name_to_users.rb
+    20160410133524_add_last_name_to_users.rb
   ]]></script><h3>Change</h3>
-  db/migrate/20130602150030_add_last_name_to_users.rb
+  db/migrate/20160410133524_add_last_name_to_users.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-     class AddLastNameToUsers < ActiveRecord::Migration
+     class AddLastNameToUsers < ActiveRecord::Migration[5.0]
       def change
         add_column :users, :last_name, :string
+        add_index :users, :last_name
       end
     end
   ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-    rails g migration AddReceiveNewsToUsers receive_news:boolean
+    bin/rails g migration AddReceiveNewsToUsers receive_news:boolean
       invoke  active_record
-      create    db/migrate/20130602151002_add_receive_news_to_users.rb
+      create    db/migrate/20160410133746_add_receive_news_to_users.rb
   ]]></script>
 
-  db/migrate/20130602151002_add_receive_news_to_users.rb
+  db/migrate/20160410133746_add_receive_news_to_users.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class AddReceiveNewsToUsers < ActiveRecord::Migration
+    class AddReceiveNewsToUsers < ActiveRecord::Migration[5.0]
       def change
         add_column :users, :receive_news, :boolean
       end
     end
-  ]]></script><h3>Up and down</h3>
-  db/migrate/20130602151002_add_receive_news_to_users.rb
+  ]]></script><h3>Up and down (old style)</h3>
+  db/migrate/20160410133746_add_receive_news_to_users.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class AddReceiveNewsToUsers < ActiveRecord::Migration
+    class AddReceiveNewsToUsers < ActiveRecord::Migration[5.0]
       def up
         change_table :users do |t|
           t.boolean :receive_news, default: true
@@ -125,6 +125,67 @@
         remove_column :users, :receive_news
       end
     end
+  ]]></script><h3>Reversible</h3>
+  db/migrate/20160410133746_change_user_number.rb
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    class ChangeUsersNumber < ActiveRecord::Migration[5.0]
+      def change
+        reversible do |dir|
+          change_table :users do |t|
+            dir.up   { t.change :user_number, :string }
+            dir.down { t.change :user_number, :integer }
+          end
+        end
+      end
+    end
+
+    class ChangeUsersNumber < ActiveRecord::Migration[5.0]
+      def up
+        change_table :users do |t|
+          t.change :user_number, :string
+        end
+      end
+
+      def down
+        change_table :users do |t|
+          t.change :user_number, :integer
+        end
+      end
+    end
+  ]]></script><p>
+    If your migration is irreversible, you should raise ActiveRecord::IrreversibleMigration from your down method.
+    If someone tries to revert your migration, an error message will be displayed saying that it can't be done.
+  </p>
+</section><section id="reverse-previous-migration" class="slide"><h2>Reverse previous migration</h2>
+
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    require_relative '20160410133746_change_user_number'
+
+    class FixupChangeUserNumberMigration < ActiveRecord::Migration[5.0]
+      def change
+       revert ChangeUsersNumber
+
+       create_table(:users) do |t|
+         t.string :variety
+       end
+      end
+    end
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    class FixupChangeUserNumberMigration < ActiveRecord::Migration[5.0]
+      def change
+        revert do
+          # copy-pasted code from ChangeUsersNumber
+          reversible do |dir|
+            change_table :users do |t|
+              dir.up   { t.change :user_number, :string }
+              dir.down { t.change :user_number, :integer }
+            end
+          end
+
+          # The rest of the migration was ok
+        end
+      end
+   end
   ]]></script></section><section id="db-changing-methods" class="slide"><h2>Methods for db structure changing</h2>
 
   <code>create_table</code>
@@ -146,9 +207,28 @@
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     add_column :friends, :first_name, :string
     add_column :friends, :last_name, :integer
+  ]]></script><code>add_foreign_key</code>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    #If the column names can not be derived from the table names, use the :column and :primary_key options.
+    add_foreign_key :friends, :users
   ]]></script><code>change_column</code>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     change_column :friends, :last_name, :string
+  ]]></script><code>change_column_null</code>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    change_column_null :users, :receive_news, false
+  ]]></script><code>change_column_default</code>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    change_column_default :users, :receive_news, from: true, to: false
+  ]]></script><code>create_join_table</code>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    create_join_table :users, :friends do |t|
+       # t.index [:user_id, :friend_id]
+       # t.index [:friend_id, :user_id]
+    end
+  ]]></script><code>drop_join_table</code>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    drop_join_table :users, :friends
   ]]></script><code>rename_column</code>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     rename_column :friends, :last_name, :surname
@@ -158,12 +238,41 @@
   ]]></script><code>add_index</code>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     add_index :friends, :email
+  ]]></script><code>add_reference</code>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    add_reference :friends, :user, index: true, foreign_key: true
+  ]]></script><code>add_timestamps</code>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    add_timestamps :users
   ]]></script><code>remove_index</code>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     remove_index :friends, :email
   ]]></script><code>drop_table</code>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     drop_table :friends
+  ]]></script><code>enable_extension</code>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    enable_extension "hstore"
+  ]]></script><code>disable_extension</code>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    disable_extension "hstore"
+  ]]></script><code>remove_foreign_key</code>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+     remove_foreign_key :users, :friends
+     remove_foreign_key :users, column: :my_friend_id
+     remove_foreign_key :users, name: :special_fk_name
+  ]]></script><code>remove_reference</code>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+     remove_reference :users, :client
+  ]]></script><code>remove_timestamps</code>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+     remove_timestamps :users
+  ]]></script><code>rename_index</code>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+     rename_index :users, :index_first_name, :index_first_user_name
+  ]]></script><code>rename_table</code>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+     rename_table :users, :customers
   ]]></script></section><section id="column-types" class="slide"><h2>Column Types</h2>
   <ul><li><code>:binary</code></li>
     <li><code>:boolean</code></li>
@@ -207,26 +316,91 @@
         drop_table :users
       end
     end
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    class ExampleMigration < ActiveRecord::Migration[5.0]
+      def change
+        create_table :distributors do |t|
+          t.string :zipcode
+        end
+
+        reversible do |dir|
+          dir.up do
+            # add a CHECK constraint
+            execute <<-SQL
+              ALTER TABLE distributors
+                ADD CONSTRAINT zipchk
+                  CHECK (char_length(zipcode) = 5) NO INHERIT;
+            SQL
+          end
+          dir.down do
+            execute <<-SQL
+              ALTER TABLE distributors
+                DROP CONSTRAINT zipchk
+            SQL
+          end
+        end
+
+        add_column :users, :home_page_url, :string
+        rename_column :users, :email, :email_address
+      end
+    end
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    require_relative '20121212123456_example_migration'
+
+    class FixupExampleMigration < ActiveRecord::Migration[5.0]
+      def change
+        revert ExampleMigration
+
+        create_table(:apples) do |t|
+          t.string :variety
+        end
+      end
+    end
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    class DontUseConstraintForZipcodeValidationMigration < ActiveRecord::Migration[5.0]
+      def change
+        revert do
+          # copy-pasted code from ExampleMigration
+          reversible do |dir|
+            dir.up do
+              # add a CHECK constraint
+              execute <<-SQL
+                ALTER TABLE distributors
+                  ADD CONSTRAINT zipchk
+                    CHECK (char_length(zipcode) = 5);
+              SQL
+            end
+            dir.down do
+              execute <<-SQL
+                ALTER TABLE distributors
+                  DROP CONSTRAINT zipchk
+              SQL
+            end
+          end
+
+          # The rest of the migration was ok
+        end
+      end
+    end
   ]]></script></section><section id="running-migrations" class="slide"><h2>Run run run ruuuuuuuuun</h2>
   <h3>Running Migrations</h3>
 
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-        rake db:migrate
+        bin/rails db:migrate
   ]]></script><h3>Rollback Migrations</h3>
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-        rake db:rollback
-        rake db:rollback STEP=3
-        rake db:migrate:down VERSION=20111214211749
-        rake db:migrate:up VERSION=20111214211749
-        rake db:migrate:redo STEP=3
-
+        bin/rails db:rollback
+        bin/rails db:rollback STEP=3
+        bin/rails db:migrate:down VERSION=20160410211749
+        bin/rails db:migrate:up VERSION=20160410211749
+        bin/rails db:migrate:redo STEP=3
   ]]></script></section><section id="topic-active-record-objects" class="slide"><div class="vcenter">
     <h1>Active Record Objects</h1>
   </div>
 </section><section id="activerecord-functions" class="slide"><h2>ActiveRecord functions</h2>
 
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-    rails c  # rails console
+    bin/rails c  # rails console
   ]]></script><h3>new</h3>
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     > user = User.new
@@ -238,15 +412,15 @@
 
     > user.email = "happy_ann@gmail.com"
       => "happy_ann@gmail.com"
-    
+
     > user.save
-      INSERT INTO "users" ("created_at", "email", "first_name", "last_name", "password", "receive_news", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 17:23:02 UTC +00:00], ["email", "happy_ann@gmail.com"], ["first_name", "Anna"], ["last_name", nil], ["password", nil], ["receive_news", false], ["updated_at", Sun, 02 Jun 2013 17:23:02 UTC +00:00]]
+      INSERT INTO "users" ("created_at", "email", "first_name", "last_name", "password", "receive_news", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)  [["created_at", Sun, 10 Apr 2016 19:00:01 UTC +00:00], ["email", "happy_ann@gmail.com"], ["first_name", "Anna"], ["last_name", nil], ["password", nil], ["receive_news", false], ["updated_at", Sun, 10 Apr 2016 19:00:01 UTC +00:00]]
       => true
   ]]></script><h3>all</h3>
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     > User.all
       SELECT "users".* FROM "users"
-      => [#<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>]
+      => #<ActiveRecord::Relation [#<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2016-04-10 19:00:01", updated_at: "2016-04-10 19:00:01", receive_news: nil, last_name: nil>]>
   ]]></script><h3>Rails 3</h3>
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     > User.all.class
@@ -261,38 +435,39 @@
   <h3>create</h3>
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     > new_user = User.create(first_name: "Ivan", email: "ivan.melechov@gmail.com")
-  
-      INSERT INTO "users" ("created_at", "email", "first_name", "last_name", "password", "receive_news", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 18:18:40 UTC +00:00], ["email", "ivan.melechov@gmail.com"], ["first_name", "Ivan"], ["last_name", nil], ["password", nil], ["receive_news", false], ["updated_at", Sun, 02 Jun 2013 18:18:40 UTC +00:00]]
-  
-      => #<User id: 2, first_name: "Ivan", email: "ivan.melechov@gmail.com", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:18:40", last_name: nil, receive_news: false>
-  ]]></script><h3>count</h3>
+
+    (0.1ms)  begin transaction
+    SQL (1.5ms)  INSERT INTO "users" ("first_name", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["first_name", "Ivan"], ["email", "ivan.melechov@gmail.com"], ["created_at", 2016-04-10 19:09:42 UTC], ["updated_at", 2016-04-10 19:09:42 UTC]]
+    (0.8ms)  commit transaction
+    => #<User id: 2, first_name: "Ivan", email: "ivan.melechov@gmail.com", password: nil, created_at: "2016-04-10 19:09:42", updated_at: "2016-04-10 19:09:42", receive_news: nil, last_name: nil>  ]]></script><h3>count</h3>
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     > User.count
-      
+
       SELECT COUNT(*) FROM "users"
-      
+
       => 2
   ]]></script><h3>update</h3>
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     > new_user.update(first_name: "Van'ka", email: "vanka@yandex.ru")
-      
-      UPDATE "users" SET "first_name" = 'Van''ka', "email" = 'vanka@yandex.ru', "updated_at" = '2013-06-02 18:20:00.982364' WHERE "users"."id" = 2
-      
-      => true
+
+    (0.1ms)  begin transaction
+    SQL (0.4ms)  UPDATE "users" SET "first_name" = ?, "email" = ?, "updated_at" = ? WHERE "users"."id" = ?  [["first_name", "Van'ka"], ["email", "vanka@yandex.ru"], ["updated_at", 2016-04-10 19:11:53 UTC], ["id", 2]]
+     (0.7ms)  commit transaction
+    => true
   ]]></script></section><section id="topic-associations" class="slide"><div class="vcenter">
     <h1>Active Record Associations</h1>
   </div>
 </section><section id="belongs-to" class="slide"><h2>belongs_to</h2>
   <img src="/public/models/assets/belongs_to.png" /></section><section id="belongs-to-in-model" class="slide"><h2>belongs_to</h2>
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-      rails g migration AddUserRefToPosts user:references
+      bin/rails g migration AddUserRefToPosts user:references
       invoke  active_record
-      create    db/migrate/20130615164224_add_user_ref_to_posts.rb
+      create    db/migrate/20160410164224_add_user_ref_to_posts.rb
   ]]></script>
 
-  db/migrate/20130615164224_add_user_ref_to_posts.rb
+  db/migrate/20160410164224_add_user_ref_to_posts.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      class AddUserRefToPosts < ActiveRecord::Migration
+      class AddUserRefToPosts < ActiveRecord::Migration[5.0]
         def change
           add_reference :posts, :user, index: true
         end
@@ -306,137 +481,143 @@
 
   app/models/post.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class Post < ActiveRecord::Base
+    class Post < ApplicationRecord
       belongs_to :user
     end
   ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     > user = User.first
 
       SELECT "users".* FROM "users" LIMIT 1
-      
-      => #<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>
+
+      => #<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2016-04-10 16:53:04", updated_at: "2016-04-10 16:53:04", last_name: nil, receive_news: false>
   ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     > post = Post.create(text: "I'm so happy today", title: "So happy", user_id: user.id)
-      
-      INSERT INTO "posts" ("created_at", "text", "title", "updated_at", "user_id") VALUES (?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 18:43:10 UTC +00:00], ["text", "I'm so happy today"], "So happy", ["updated_at", Sun, 02 Jun 2013 18:43:10 UTC +00:00], ["user_id", 1]]
+
+      INSERT INTO "posts" ("created_at", "text", "title", "updated_at", "user_id") VALUES (?, ?, ?, ?)  [["created_at", Sun, 10 Apr 2016 16:55:11 UTC +00:00], ["text", "I'm so happy today"], "So happy", ["updated_at",Sun, 10 Apr 2016 16:55:11 UTC +00:00], ["user_id", 1]]
       (126.0ms)  commit transaction
-      
-      => #<Post id: 1, text: "I'm so happy today", title: "So happy", user_id: 1, created_at: "2013-06-02 18:43:10", updated_at: "2013-06-02 18:43:10">
+
+      => #<Post id: 1, text: "I'm so happy today", title: "So happy", user_id: 1, created_at: "2016-04-10 16:55:11", updated_at: "2016-06-02 16:55:11">
   ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     > post.user
-      
+
       SELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1
-      
-      => #<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>
+
+      => #<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2016-04-10 16:55:11", updated_at: "2016-04-10 16:55:11", last_name: nil, receive_news: false>
+  ]]></script><p> From Rails 5 on every Rails application will have a new configuration option </p>
+  <code>config.active_record.belongs_to_required_by_default = true</code>
+  <p>, it will trigger a validation error when trying to save a model where belongs_to associations are not present.</p>
+  <p>or</p>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+     belongs_to :user, optional: true
   ]]></script></section><section id="has-many" class="slide"><h2>has_many</h2>
   <img src="/public/models/assets/has_many.png" /></section><section id="has_many_in_model" class="slide"><h2>has_many</h2>
 
   app/models/user.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       has_many :posts
     end
   ]]></script><h3>Get</h3>
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     > user.posts
-      
+
       SELECT "posts".* FROM "posts" WHERE "posts"."user_id" = 1
-      
-      => [#<Post id: 1, text: "I'm so happy today", title: "So happy", user_id: 1, created_at: "2013-06-02 18:43:10", updated_at: "2013-06-02 18:43:10">]
+
+      => [#<Post id: 1, text: "I'm so happy today", title: "So happy", user_id: 1, created_at: "2016-04-10 16:55:11", updated_at: "2016-04-10 16:55:11">]
   ]]></script><h3>Create</h3>
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     > user.posts << Post.new(text: "I'm waiting")
-      
-      INSERT INTO "posts" ("created_at", "text",  "updated_at", "user_id") VALUES (?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 19:01:45 UTC +00:00], ["text", "I'm waiting"], ["updated_at", Sun, 02 Jun 2013 19:01:45 UTC +00:00], ["user_id", 1]]
-      
-      => [#<Post id: 1, text: "I'm so happy today", title: "So happy", user_id: 1, created_at: "2013-06-02 18:43:10", updated_at: "2013-06-02 18:43:10">, #<Post id: 2, text: "I'm waiting", title: nil, user_id: 1, created_at: "2013-06-02 19:01:45", updated_at: "2013-06-02 19:01:45">]
+
+      INSERT INTO "posts" ("created_at", "text",  "updated_at", "user_id") VALUES (?, ?, ?, ?)  [["created_at", Sun, 10 Apr 2016 19:20:23 UTC +00:00], ["text", "I'm waiting"], ["updated_at", Sun, 10 Apr 2016 19:20:23 UTC +00:00], ["user_id", 1]]
+
+      => [#<Post id: 1, text: "I'm so happy today", title: "So happy", user_id: 1, created_at: "2016-04-10 16:55:11", updated_at: "2016-04-10 16:55:11">, #<Post id: 2, text: "I'm waiting", title: nil, user_id: 1, created_at: "2016-04-10 19:20:23", updated_at: "2016-04-10 19:20:23">]
   ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     > user.posts.create(text: "New post")
-      
-      INSERT INTO "posts" ("created_at", "text","updated_at", "user_id") VALUES (?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 19:06:35 UTC +00:00], ["text", "New post"], ["updated_at", Sun, 02 Jun 2013 19:06:35 UTC +00:00], ["user_id", 1]]
-      
-      => #<Post id: 3, text: "New post", title: nil, user_id: 1, created_at: "2013-06-02 19:06:35", updated_at: "2013-06-02 19:06:35">
+
+      INSERT INTO "posts" ("created_at", "text","updated_at", "user_id") VALUES (?, ?, ?, ?)  [["created_at", Sun, 10 Jun 2016 19:25:27 UTC +00:00], ["text", "New post"], ["updated_at", Sun, 10 Jun 2016 19:25:27 UTC +00:00], ["user_id", 1]]
+
+      => #<Post id: 3, text: "New post", title: nil, user_id: 1, created_at: "2016-04-10 19:25:27", updated_at: "2016-04-10 19:25:27">
   ]]></script><h3>Count</h3>
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     > user.posts.count
-      
+
       SELECT COUNT(*) FROM "posts" WHERE "posts"."user_id" = 1
-      
+
       => 2
   ]]></script></section><section id="has-one" class="slide"><h2>has_one</h2>
   <img src="/public/models/assets/has_one.png" /></section><section id="has-one-in-model" class="slide"><h2>has_one</h2>
 
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-    rails g model PostInfo post_id:integer views:integer likes:integer rating:integer
+    bin/rails g model PostInfo post_id:integer views:integer likes:integer rating:integer
   ]]></script>
 
   app/models/post_info.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class PostInfo < ActiveRecord::Base
+    class PostInfo < ApplicationRecord
       belongs_to :post
     end
   ]]></script>
 
   app/models/post.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class Post < ActiveRecord::Base
+    class Post < ApplicationRecord
       belongs_to :user
       has_one :post_info
     end
   ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     > post = Post.first
-      
+
       SELECT "posts".* FROM "posts" LIMIT 1
-      
-      => #<Post id: 1, text: "I'm so happy today", user_id: 1, created_at: "2013-06-02 18:43:10", updated_at: "2013-06-02 18:43:10">
+
+      => #<Post id: 1, text: "I'm so happy today", user_id: 1, created_at: "2016-04-10 16:55:11", updated_at: "2016-04-10 16:55:11">
   ]]></script><h3>Creation PostInfo</h3>
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     > PostInfo.create(post_id: post.id, views: 40, likes: 5, rating: 10)
-      
-      INSERT INTO "post_infos" ("created_at", "likes", "post_id", "rating", "updated_at", "views") VALUES (?, ?, ?, ?, ?, ?)  [["created_at", Sun, 02 Jun 2013 19:37:08 UTC +00:00], ["likes", 5], ["post_id", 1], ["rating", 10], ["updated_at", Sun, 02 Jun 2013 19:37:08 UTC +00:00], ["views", 40]]
-      
-      => #<PostInfo id: 2, post_id: 1, views: 40, likes: 5, rating: 10, created_at: "2013-06-02 19:37:08", updated_at: "2013-06-02 19:37:08">
+
+      INSERT INTO "post_infos" ("created_at", "likes", "post_id", "rating", "updated_at", "views") VALUES (?, ?, ?, ?, ?, ?)  [["created_at", Sun, 10 Apr 2016 19:50:10 UTC +00:00], ["likes", 5], ["post_id", 1], ["rating", 10], ["updated_at", Sun, 10 Apr 2016 19:50:10 UTC +00:00], ["views", 40]]
+
+      => #<PostInfo id: 2, post_id: 1, views: 40, likes: 5, rating: 10, created_at: "2016-04-10 19:50:10", updated_at: "2016-04-10 19:50:10">
   ]]></script><h3>Getting using the association</h3>
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     > post.post_info
-      
+
       SELECT "post_infos".* FROM "post_infos" WHERE "post_infos"."post_id" = 1 LIMIT 1
-      
-      => #<PostInfo id: 1, post_id: 1, views: 40, likes: 5, rating: 10, created_at: "2013-06-02 19:34:38", updated_at: "2013-06-02 19:34:38">
+
+      => #<PostInfo id: 1, post_id: 1, views: 40, likes: 5, rating: 10, created_at: "2016-04-10 19:50:10", updated_at: "2016-04-10 19:50:10">
   ]]></script><h3>Creation using the association</h3>
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     > post.create_post_info(views: 40, likes: 5, rating: 10)
-      
-      INSERT INTO "post_infos" ("created_at", "likes", "post_id", "rating", "updated_at", "views") VALUES (?, ?, ?, ?, ?, ?)  [["created_at", Sun, 16 Jun 2013 20:21:58 UTC +00:00], ["likes", 5], ["post_id", 1], ["rating", 10], ["updated_at", Sun, 16 Jun 2013 20:21:58 UTC +00:00], ["views", 40]]
-      
-      => #<PostInfo id: 1, post_id: 1, views: 40, likes: 5, rating: 10, created_at: "2013-06-16 20:21:58", updated_at: "2013-06-16 20:21:58">
+
+      INSERT INTO "post_infos" ("created_at", "likes", "post_id", "rating", "updated_at", "views") VALUES (?, ?, ?, ?, ?, ?)  [["created_at", Sun, 10 Apr 2016 19:50:10 UTC +00:00], ["likes", 5], ["post_id", 1], ["rating", 10], ["updated_at", Sun, 10 Apr 2016 19:50:10 UTC +00:00], ["views", 40]]
+
+      => #<PostInfo id: 1, post_id: 1, views: 40, likes: 5, rating: 10, created_at: "2016-04-10 19:50:10", updated_at: "2016-04-10 19:50:10">
   ]]></script></section><section id="has-many-through" class="slide"><h2>has_many :through</h2>
   <img src="/public/models/assets/has_many_through.png" /></section><section id="has-many-through-in-model" class="slide"><h2>has_many :through</h2>
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-      rails g model Blog title:string description:text
+      bin/rails g model Blog title:string description:text
       invoke  active_record
-      create    db/migrate/20130615195018_create_blogs.rb
+      create    db/migrate/20160410194224_create_blogs.rb
       create    app/models/blog.rb
       invoke    test_unit
       create      test/models/blog_test.rb
       create      test/fixtures/blogs.yml
   ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-      rails g model Subscription user:belongs_to blog:belongs_to receive_news:boolean
+      bin/rails g model Subscription user:belongs_to blog:belongs_to receive_news:boolean
       invoke  active_record
-      create    db/migrate/20130615200154_create_subscriptions.rb
+      create    db/migrate/20160410194832_create_subscriptions.rb
       create    app/models/subscription.rb
       invoke    test_unit
       create      test/models/subscription_test.rb
       create      test/fixtures/subscriptions.yml
   ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-      rails g migration AddBlogRefToPosts blog:references
+      bin/rails g migration AddBlogRefToPosts blog:references
       invoke  active_record
-      create    db/migrate/20130616200237_add_blog_ref_to_posts.rb
+      create    db/migrate/20160410195621_add_blog_ref_to_posts.rb
   ]]></script>
 
-  db/migrate/20130615195018_create_blogs.rb
+  db/migrate/20160410194224_create_blogs.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      class CreateBlogs < ActiveRecord::Migration
+      class CreateBlogs < ActiveRecord::Migration[5.0]
         def change
           create_table :blogs do |t|
             t.string :title
@@ -448,9 +629,9 @@
       end
   ]]></script>
 
-  db/migrate/20130615200154_create_subscriptions.rb
+  db/migrate/20160410194832_create_subscriptions.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      class CreateSubscriptions < ActiveRecord::Migration
+      class CreateSubscriptions < ActiveRecord::Migration[5.0]
         def change
           create_table :subscriptions do |t|
             t.belongs_to :user, index: true
@@ -463,9 +644,9 @@
       end
   ]]></script>
 
-  db/migrate/20130616200237_add_blog_ref_to_posts.rb
+  db/migrate/20160410195621_add_blog_ref_to_posts.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      class AddBlogRefToPosts < ActiveRecord::Migration
+      class AddBlogRefToPosts < ActiveRecord::Migration[5.0]
         def change
           add_reference :posts, :blog, index: true
         end
@@ -474,7 +655,7 @@
 
   app/models/user.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      class User < ActiveRecord::Base
+      class User < ApplicationRecord
         has_many :posts
         has_many :subscriptions
         has_many :blogs, through: :subscriptions
@@ -483,7 +664,7 @@
 
   app/models/blog.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      class Blog < ActiveRecord::Base
+      class Blog < ApplicationRecord
         has_many :subscriptions
         has_many :users, through: :subscriptions
       end
@@ -491,7 +672,7 @@
 
   app/models/subscription.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      class Subscription < ActiveRecord::Base
+      class Subscription < ApplicationRecord
         belongs_to :user
         belongs_to :blog
       end
@@ -499,7 +680,7 @@
 
   app/models/post.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      class Post < ActiveRecord::Base
+      class Post < ApplicationRecord
         belongs_to :user
         belongs_to :blog
         has_one :post_info
@@ -508,26 +689,26 @@
   <img src="/public/models/assets/has_one_through.png" /></section><section id="has-one-through-in-model" class="slide"><h2>has_one :through</h2>
 
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-    rails g model Plan name:string description:text price:decimal{8.2}
+    bin/rails g model Plan name:string description:text price:decimal{8.2}
       invoke  active_record
-      create    db/migrate/20130616211135_create_plans.rb
+      create    db/migrate/20160410202622_create_plans.rb
       create    app/models/plan.rb
       invoke    test_unit
       create      test/models/plan_test.rb
       create      test/fixtures/plans.yml
   ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-    rails g model UserPlan user:belongs_to plan:belongs_to
+    bin/rails g model UserPlan user:belongs_to plan:belongs_to
       invoke  active_record
-      create    db/migrate/20130616211306_create_user_plans.rb
+      create    db/migrate/20160410203824_create_user_plans.rb
       create    app/models/user_plan.rb
       invoke    test_unit
       create      test/models/user_plan_test.rb
       create      test/fixtures/user_plans.yml
   ]]></script>
 
-  db/migrate/20130616211135_create_plans.rb
+  db/migrate/20160410202622_create_plans.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class CreatePlans < ActiveRecord::Migration
+    class CreatePlans < ActiveRecord::Migration[5.0]
       def change
         create_table :plans do |t|
           t.string :name
@@ -541,9 +722,9 @@
   ]]></script>
 
 
-  db/migrate/20130616211306_create_user_plans.rb
+  db/migrate/20160410203824_create_user_plans.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class CreateUserPlans < ActiveRecord::Migration
+    class CreateUserPlans < ActiveRecord::Migration[5.0]
       def change
         create_table :user_plans do |t|
           t.belongs_to :user, index: true
@@ -557,7 +738,7 @@
 
   app/models/user.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       has_many :posts
       has_many :subscriptions
       has_many :blogs, through: :subscriptions
@@ -568,7 +749,7 @@
 
   app/models/user_plan.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class UserPlan < ActiveRecord::Base
+    class UserPlan < ApplicationRecord
       belongs_to :user
       belongs_to :plan
     end
@@ -576,36 +757,36 @@
 
   app/models/plan.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class Plan < ActiveRecord::Base
+    class Plan < ApplicationRecord
       has_many :user_plans
       has_many :users, through: :user_plans
     end
   ]]></script></section><section id="has_and_belongs_to_many" class="slide"><h2>has_and_belongs_to_many</h2>
   <img src="/public/models/assets/has_and_belongs_to_many.png" /></section><section id="habtm-in-model" class="slide"><h2>has_and_belongs_to_many</h2>
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-    rails g model Tag name:string
+    bin/rails g model Tag name:string
       invoke  active_record
-      create    db/migrate/20130615203349_create_tags.rb
+      create    db/migrate/20160414211322_create_tags.rb
       create    app/models/tag.rb
       invoke    test_unit
       create      test/models/tag_test.rb
       create      test/fixtures/tags.yml
   ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-    rails g migration create_posts_tags post:references tag:references --no-timestamp
+    bin/rails g migration create_posts_tags post:references tag:references --no-timestamp
       invoke  active_record
-      create    db/migrate/20130615205723_create_posts_tags.rb
+      create    db/migrate/20160414213342_create_posts_tags.rb
   ]]></script><h3>Rails 4</h3>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     create_join_table :posts, :tags
   ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     create_join_table :posts, :tags, table_name: :tags_for_posts
   ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      create_join_table :posts, :tags, column_options:  {null:  true}
+    create_join_table :posts, :tags, column_options:  {null:  true}
   ]]></script>
 
-  db/migrate/20130615205723_create_posts_tags.rb
+  db/migrate/20160414213342_create_posts_tags.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class CreatePostsTags < ActiveRecord::Migration
+    class CreatePostsTags < ActiveRecord::Migration[5.0]
       def change
         create_table :posts_tags do |t|
           t.references :post, index: true
@@ -614,9 +795,9 @@
       end
     end
   ]]></script><h4>Change migration. Add common index and remove id.</h4>
-  db/migrate/20130615205723_create_posts_tags.rb
+  db/migrate/20160414213342_create_posts_tags.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class CreatePostsTags < ActiveRecord::Migration
+    class CreatePostsTags < ActiveRecord::Migration[5.0]
       def change
         create_table :posts_tags, id: false do |t|
           t.references :post, index: true
@@ -629,7 +810,7 @@
 
   app/models/post.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      class Post < ActiveRecord::Base
+      class Post < ApplicationRecord
         belongs_to :user
         has_and_belongs_to_many :tags
       end
@@ -637,25 +818,25 @@
 
   app/models/tag.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class Tag < ActiveRecord::Base
+    class Tag < ApplicationRecord
       has_and_belongs_to_many :posts
     end
 ]]></script></section><section id="polymorphic" class="slide"><h2>Polymorphic Associations</h2>
   <img src="/public/models/assets/polymorphic.png" /></section><section id="polymorphic-in-model" class="slide"><h2>Polymorphic Assosiations</h2>
 
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-      rails g model Picture imageable:references{polymorphic} file:string
+      bin/rails g model Picture imageable:references{polymorphic} file:string
       invoke  active_record
-      create    db/migrate/20130616213914_create_pictures.rb
+      create    db/migrate/20160414231322_create_pictures.rb
       create    app/models/picture.rb
       invoke    test_unit
       create      test/models/picture_test.rb
       create      test/fixtures/pictures.yml
   ]]></script>
 
-  db/migrate/20130616213914_create_pictures.rb
+  db/migrate/20160414231322_create_pictures.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class CreatePictures < ActiveRecord::Migration
+    class CreatePictures < ActiveRecord::Migration[5.0]
       def change
         create_table :pictures do |t|
           t.references :imageable, polymorphic: true, index: true
@@ -669,14 +850,14 @@
 
   app/models/picture.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class Picture < ActiveRecord::Base
+    class Picture < ApplicationRecord
       belongs_to :imageable, polymorphic: true
     end
   ]]></script>
 
   app/models/user.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       has_many :posts
       has_many :subscriptions
       has_many :blogs, through: :subscriptions
@@ -688,7 +869,7 @@
 
   app/models/post.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class Post < ActiveRecord::Base
+    class Post < ApplicationRecord
       belongs_to :user
       belongs_to :blog
       has_one :post_info
@@ -697,20 +878,20 @@
     end
   ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     > user.create_picture(file: 'public/picture/photo.png')
-      
-      INSERT INTO "pictures" ("created_at", "file", "imageable_id", "imageable_type", "updated_at") VALUES (?, ?, ?, ?, ?)  [["created_at", Sun, 16 Jun 2013 21:46:37 UTC +00:00], ["file", "public/picture/photo.png"], ["imageable_id", 1], ["imageable_type", "User"], ["updated_at", Sun, 16 Jun 2013 21:46:37 UTC +00:00]]
-      
-      => #<Picture id: 1, imageable_id: 1, imageable_type: "User", file: "public/picture/photo.png", created_at: "2013-06-16 21:46:37", updated_at: "2013-06-16 21:46:37">
+
+      INSERT INTO "pictures" ("created_at", "file", "imageable_id", "imageable_type", "updated_at") VALUES (?, ?, ?, ?, ?)  [["created_at", Fri, 15 Apr 2016 17:35:01 UTC +00:00], ["file", "public/picture/photo.png"], ["imageable_id", 1], ["imageable_type", "User"], ["updated_at", Fri, 15 Apr 2016 17:35:01 UTC +00:00]]
+
+      => #<Picture id: 1, imageable_id: 1, imageable_type: "User", file: "public/picture/photo.png", created_at: "2016-04-15 17:35:01", updated_at: "2016-04-15 17:35:01">
   ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     > post.pictures.create(file: 'public/picture/image.png')
-      
-      INSERT INTO "pictures" ("created_at", "file", "imageable_id", "imageable_type", "updated_at") VALUES (?, ?, ?, ?, ?)  [["created_at", Sun, 16 Jun 2013 21:51:25 UTC +00:00], ["file", "public/picture/image.png"], ["imageable_id", 1], ["imageable_type", "Post"], ["updated_at", Sun, 16 Jun 2013 21:51:25 UTC +00:00]]
-      
-      => #<Picture id: 2, imageable_id: 1, imageable_type: "Post", file: "public/picture/image.png", created_at: "2013-06-16 21:51:25", updated_at: "2013-06-16 21:51:25">
+
+      INSERT INTO "pictures" ("created_at", "file", "imageable_id", "imageable_type", "updated_at") VALUES (?, ?, ?, ?, ?)  [["created_at", Fri, 15 Apr 2016 17:45:21 UTC +00:00], ["file", "public/picture/image.png"], ["imageable_id", 1], ["imageable_type", "Post"], ["updated_at", Fri, 15 Apr 2016 17:45:21 UTC +00:00]]
+
+      => #<Picture id: 2, imageable_id: 1, imageable_type: "Post", file: "public/picture/image.png", created_at: "2016-04-15 17:45:21", updated_at: "2016-04-15 17:45:21">
   ]]></script></section><section id="topic-validations" class="slide"><div class="vcenter">
     <h1>Active Record Validations</h1>
   </div>
-</section><section id="when-does-validation-happen" class="slide"><h2>When Does Validations Happen?</h2>
+</section><section id="when-do-validation-happen" class="slide"><h2>When Do Validations Happen?</h2>
   <ul><li><code>create</code></li>
     <li><code>create!</code></li>
     <li><code>save</code></li>
@@ -718,11 +899,22 @@
     <li><code>update</code></li>
     <li><code>update!</code></li>
   </ul><h2>Skiping Validations</h2>
-  <code>save(validate: false)</code>
+  <ul><li><code>decrement!</code></li>
+    <li><code>decrement_counter</code></li>
+    <li><code>increment!</code></li>
+    <li><code>increment_counter</code></li>
+    <li><code>toggle!</code></li>
+    <li><code>touch</code></li>
+    <li><code>update_all</code></li>
+    <li><code>update_attribute</code></li>
+    <li><code>update_column</code></li>
+    <li><code>update_columns</code></li>
+    <li><code>update_counters</code></li>
+  </ul><code>save(validate: false)</code>
 </section><section id="valid-invalid" class="slide"><h2>valid? and invalid?</h2>
 
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       has_many :posts
       validates :email, presence: true
     end
@@ -740,17 +932,17 @@
 
     > u.errors
       => #<ActiveModel::Errors:0x00000003001970 @base=#<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>, @messages={}>
-    
+
     > u.valid?
       => false
-    
+
     > u.errors
       => #<ActiveModel::Errors:0x00000003001970 @base=#<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>, @messages={:email=>["can't be blank"]}>
   ]]></script><h3>On create</h3>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     > u = User.create
       => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>
-    
+
     > u.errors
       => #<ActiveModel::Errors:0x00000003172db8 @base=#<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>, @messages={:email=>["can't be blank"]}>
   ]]></script><h3>On create!</h3>
@@ -761,10 +953,10 @@
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     > u = User.new
       => #<User id: nil, first_name: nil, email: nil, password: nil, created_at: nil, updated_at: nil, last_name: nil, receive_news: false>
-    
+
     > u.save
       => false
-    
+
     > u.save!
       ActiveRecord::RecordInvalid: Validation failed: Email cant be blank
   ]]></script></section><section id="errors" class="slide"><h2>errors[]</h2>
@@ -775,26 +967,66 @@
 
     > User.create.errors[:email].any?
       => true
+
+    > User.create.errors.messages
+      => {email:["can't be blank"]}
+
+    > User.create.errors.details[:email]
+      =>  [{error: :blank}]
+
+    > User.create.errors.full_messages
+      => ["Email can't be blank"]
   ]]></script></section><section id="presence" class="slide"><h2>Presence</h2>
-<script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class User < ActiveRecord::Base
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    class User < ApplicationRecord
       attr_accessible :email, :first_name, :password
 
       has_many :posts
       validates :email, :first_name, presence: true
     end
   ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    validates :field_name, inclusion: { in:  [true, false] }. # for fields with boolean type
-  ]]></script></section><section id="acceptance" class="slide"><h2>Acceptance</h2>
-  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    rails g migration AddTermsOfServiceToUsers terms_of_service:boolean
+      class Post < ApplicationRecord
+
+        belongs_to :user
+        validates :user, presence: true
+      end
   ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
+      attr_accessible :email, :first_name, :password
+
+      has_many :posts, inverse_of: :user
+    end
+  ]]></script><p>
+    Can be used for the presence of an object associated validation via a has_one or has_many relationship,
+    it will check that the object is neither <code>blank?</code> nor <code>marked_for_destruction?</code>.
+  </p>
+
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    validates :field_name, inclusion: { in:  [true, false] }. # for fields with boolean type
+  ]]></script></section><section id="absence" class="slide"><h2>Presence</h2>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    class User < ApplicationRecord
+      attr_accessible :email, :first_name, :password
+
+      has_many :posts
+      validates :archived, absence: true
+    end
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+      class Post < ApplicationRecord
+
+        belongs_to :user
+        validates :user, absence: true
+      end
+  ]]></script></section><section id="acceptance" class="slide"><h2>Acceptance</h2>
+  <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+    bin/rails g migration AddTermsOfServiceToUsers terms_of_service:boolean
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    class User < ApplicationRecord
       ...
       validates :terms_of_service, acceptance: true  # get accept: 1
     end
   ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       ...
       validates :terms_of_service, acceptance: { accept: 'yes' }
     end
@@ -802,37 +1034,38 @@
 
 </section><section id="confirmation" class="slide"><h2>Confirmation</h2>
 <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       ...
       validates :email, :first_name, presence: true
       validates :email, confirmation: true
     end
   ]]></script></section><section id="inclusion" class="slide"><h2>Inclusion</h2>
 <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class Tag < ActiveRecord::Base
+    class Tag < ApplicationRecord
       ...
       validates :name, inclusion: { in: %w(reading cooking programming), message: "%{value} is not a valid value" }
     end
   ]]></script></section><section id="exclusion" class="slide"><h2>Exclusion</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       ...
       validates :first_name, exclusion: { in:  %w(Admin BadDog),  message:  "First name %{value} is reserved." }
     end
   ]]></script></section><section id="format" class="slide"><h2>Format</h2>
 <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       ...
       validates :email, :first_name, presence: true
       validates :email, confirmation: true
-      validates :email, format: { with: /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/, :message => "Only emails allowed" }
+      validates :email, format: { with: /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/, message: "Only emails allowed" }
+      validates :email, format: { without: /test.com$/, message: "Test emails are not allowed" } #default message "is invalid"
     end
   ]]></script></section><section id="length" class="slide"><h2>Length</h2>
 
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-    rails g migration AddCardNumberToUsers card_number:string
+    bin/rails g migration AddCardNumberToUsers card_number:string
   ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       ...
       validates :first_name, length: {
         minimum: 2,
@@ -850,7 +1083,7 @@
     <li><code>:is</code> – The attribute length must be equal to the given value.</li>
   </ul></section><section id="numericality" class="slide"><h2>Numericality</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class PostInfo < ActiveRecord::Base
+    class PostInfo < ApplicationRecord
       ...
       validates :views, numericality: true
       validates :rate, numericality: { only_integer: true, greater_than: 5 }
@@ -862,12 +1095,15 @@
     <li><code>:less_than_or_equal_to</code></li>
     <li><code>:odd</code></li>
     <li><code>:even</code></li>
-  </ul></section><section id="uniqueness" class="slide"><h2>Uniqueness</h2>
+  </ul><p>
+    By default, numericality doesn't allow nil values. You can use <code>allow_nil: true</code> option to permit it.
+  </p>
+</section><section id="uniqueness" class="slide"><h2>Uniqueness</h2>
 
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-    rails g AddPageAddressToUsers page_address:string
+    bin/rails g AddPageAddressToUsers page_address:string
   ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       ...
       validates :email, uniqueness: true
       validates :first_name, uniqueness: { scope: :email,  message: "should only one user with name and email" }
@@ -876,14 +1112,14 @@
 
   ]]></script></section><section id="validates-associated" class="slide"><h2>Validates Assosiated</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       ...
       has_many :posts
       validates_associated :posts
     end
   ]]></script></section><section id="validates-with" class="slide"><h2>validates_with</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       validates_with GoodnessValidator
     end
 
@@ -895,7 +1131,7 @@
       end
     end
   ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       validates_with GoodnessValidator, fields: [:first_name, :last_name]
     end
 
@@ -908,24 +1144,39 @@
     end
   ]]></script></section><section id="validate-each" class="slide"><h2>validate_each</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       validates_each :first_name, :last_name do |record, attr, value|
         record.errors.add(attr, 'must start with upper case') if value =~ /\A[a-z]/
       end
     end
   ]]></script></section><section id="general-options" class="slide"><h2>General options</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class Post < ActiveRecord::Base
+    class Post < ApplicationRecord
       validates :title, allow_nil: true
     end
   ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       validates :last_name, allow_blank: true
+    end
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    class User < ApplicationRecord
+      validates :last_name, presence: { message: "is mandatory" }
+      validates :age, numericality: { message: "%{attribute} for %{model} has %{value} that seems wrong" }
+
+      # Proc
+      validates :username,
+        uniqueness: {
+          # object = person object being validated
+          # data = { model: "User", attribute: "Username", value: <username> }
+          message: ->(object, data) do
+            "Hey #{object.name}!, #{data[:value]} is taken already! Try again #{Time.zone.tomorrow}"
+          end
+        }
     end
   ]]></script><p>:allow_nil and :allow_blank are ignored by :presence</p>
 
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       # it will be possible to update email with a duplicated value
       validates :email, uniqueness: true, on: :create
 
@@ -934,10 +1185,23 @@
 
       # the default (validates on both create and update)
       validates :first_name, presence: true, on: :save
+
+      validates :email, uniqueness: true, on: :registration
+      #Custom contexts need to be triggered explicitly by passing name of the context to valid?, invalid? or save.
     end
+  ]]></script></section><section id="strict-validations" class="slide"><h2>Strict validations</h2>
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    class User < ApplicationRecord
+      attr_accessible :email, :first_name, :password
+
+      has_many :posts
+      validates :email, presence: { strict: true }
+    end
+
+    User.new.valid?  # => ActiveModel::StrictValidationFailed: "Email can't be blank"
   ]]></script></section><section id="conditional-validations" class="slide"><h2>Condional validations</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-      class User < ActiveRecord::Base
+      class User < ApplicationRecord
         validates :card_number, presence: true, if: :paid_with_card?
 
         def paid_with_card?
@@ -953,6 +1217,12 @@
         admin.validates :password, length: { minimum: 10 }
         admin.validates :email, presence: true
       end
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    class User < ApplicationRecord
+      validates :password, confirmation: true
+                           if: ["editor?", :api_user?],
+                           unless: Proc.new { |u| u.admin? }
+    end
   ]]></script></section><section id="custom-validators" class="slide"><h2>Custom Validators</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     class MyValidator < ActiveModel::Validator
@@ -982,7 +1252,7 @@
   ]]></script></section><section id="custom-methods" class="slide"><h2>Custom Methods</h2>
 
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-      rails g model Payment discount:decimal{8.2} total_value:decimal{8.2} expiration_date:date
+      bin/rails g model Payment discount:decimal{8.2} total_value:decimal{8.2} expiration_date:date
   ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     class Payment < ActiveRecord::Base
       belongs_to :user_plan
@@ -1004,7 +1274,7 @@
   ]]></script></section><section id="validation-errors" class="slide"><h2>Validation Errors</h2>
   <h3>errors.add</h3>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       def a_method_used_for_validation_purposes
         errors.add(:first_name, "cannot contain the characters !@#%*()_-+=")
         # errors[:first_name] = "cannot contain the characters !@#%*()_-+="
@@ -1015,7 +1285,7 @@
     user.errors[:first_name] # => ["cannot contain the characters !@#%*()_-+="]
     user.errors.full_messages  # => ["Name cannot contain the characters !@#%*()_-+="]
   ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       def a_method_used_for_validation_purposes
         errors[:base] << "This user is invalid because ..."
       end
@@ -1030,9 +1300,9 @@
 </section><section id="callback-registrations" class="slide"><h2>Callback registrations</h2>
 
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-    rails g migration AddLoginToUsers login:string
+    bin/rails g migration AddLoginToUsers login:string
   ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       ...
       validates :login, :email, presence: true
 
@@ -1060,6 +1330,7 @@
     <li><code>around_create</code></li>
     <li><code>after_create</code></li>
     <li><code>after_save</code></li>
+    <li><code>after_commit/after_rollback</code></li>
   </ol><h3>Updating an Object</h3>
   <ol><li><code>before_validation</code></li>
     <li><code>after_validation</code></li>
@@ -1069,14 +1340,16 @@
     <li><code>around_update</code></li>
     <li><code>after_update</code></li>
     <li><code>after_save</code></li>
+    <li><code>after_commit/after_rollback</code></li>
   </ol><h3>Destroying an Object</h3>
   <ol><li><code>before_destroy</code></li>
     <li><code>around_destroy</code></li>
     <li><code>after_destroy</code></li>
+    <li><code>after_commit/after_rollback</code></li>
   </ol></section><section id="after-callbacks" class="slide"><h2>After_find and after_initialize</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
 
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       after_initialize do |user|
         puts "You have initialized an object!"
       end
@@ -1095,51 +1368,99 @@
     You have initialized an object!
     => #<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>
 
+  ]]></script><h2>After_touch</h2>
+
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    class User < ApplicationRecord
+      after_touch do |user|
+        puts "You have touched an object"
+      end
+    end
+
+    >> u = User.create(name: 'Martin')
+    => #<User id: 1, name: "Martin", created_at: "2016-04-14 21:17:49", updated_at: "2016-04-14 21:17:49">
+
+    >> u.touch
+    You have touched an object
+    => true
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    class Post < ApplicationRecord
+      belongs_to :user, touch: true
+      after_touch do
+        puts 'An Post was touched'
+      end
+    end
+
+    class User < ApplicationRecord
+      has_many :posts
+      after_touch :notify
+
+      private
+      def notify
+        puts 'User was touched'
+      end
+    end
+
+    >> @post = Post.last
+    => #<Post id: 1, user_id: 1, created_at: "2016-04-15 17:08:32", updated_at:  "2016-04-15 17:08:32">
+
+    # triggers @post.user.touch
+    >> @post.touch
+    User was touched
+    An Post was touched
+    => true
   ]]></script></section><section id="running-callbacks" class="slide"><h2>Running Callbacks</h2>
   <ul><li><code>create</code></li>
     <li><code>create!</code></li>
     <li><code>decrement!</code></li>
     <li><code>destroy</code></li>
+    <li><code>destroy!</code></li>
     <li><code>destroy_all</code></li>
     <li><code>increment!</code></li>
     <li><code>save</code></li>
     <li><code>save!</code></li>
-    <li><code>save(:validate =&gt; false)</code></li>
+    <li><code>save(validate: false)</code></li>
     <li><code>toggle!</code></li>
     <li><code>update</code></li>
     <li><code>update_attribute</code></li>
-    <li><code>update_attributes</code></li>
-    <li><code>update_attributes!</code></li>
+    <li><code>update</code></li>
+    <li><code>update!</code></li>
     <li><code>valid?</code></li>
   </ul><h2>after_find</h2>
   <ul><li><code>all</code></li>
     <li><code>first</code></li>
     <li><code>find</code></li>
-    <li><code>find_all_by_attribute</code></li>
-    <li><code>find_by_attribute</code></li>
-    <li><code>find_by_attribute!</code></li>
+    <li><code>find_by_*</code></li>
+    <li><code>find_by_*!</code></li>
+    <li><code>find_by_sql</code></li>
     <li><code>last</code></li>
   </ul></section><section id="skipping-callbacks" class="slide"><h2>Skipping callbacks</h2>
   <ul><li><code>decrement</code></li>
     <li><code>decrement_counter</code></li>
     <li><code>delete</code></li>
     <li><code>delete_all</code></li>
-    <li><code>find_by_sql</code></li>
     <li><code>increment</code></li>
     <li><code>increment_counter</code></li>
     <li><code>toggle</code></li>
     <li><code>touch</code></li>
     <li><code>update_column</code></li>
+    <li><code>update_columns</code></li>
     <li><code>update_all</code></li>
     <li><code>update_counters</code></li>
-  </ul></section><section id="relational-callbacks" class="slide"><h2>Relational Callbacks</h2>
+  </ul><p>
+    The whole callback chain is wrapped in a transaction.
+    If any before callback method returns exactly false or raises an exception,
+    the execution chain gets halted and a ROLLBACK is issued;
+    after callbacks can only accomplish that by raising an exception.
+  </p>
+</section><section id="relational-callbacks" class="slide"><h2>Relational Callbacks</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       ...
       has_many :posts, dependent: :destroy
     end
 
-    class Post < ActiveRecord::Base
+    class Post < ApplicationRecord
       ...
       after_destroy :log_destroy_action
 
@@ -1172,7 +1493,7 @@
       end
     end
 ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class PictureFile < ActiveRecord::Base
+    class PictureFile < ApplicationRecord
       after_destroy PictureFileCallbacks.new
     end
 ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
@@ -1184,16 +1505,39 @@
       end
     end
 ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-     class PictureFile < ActiveRecord::Base
+     class PictureFile < ApplicationRecord
       after_destroy PictureFileCallbacks
     end
-]]></script></section><section id="topic-query-interface" class="slide"><div class="vcenter">
+]]></script></section><section id="transaction-callbacks" class="slide"><h2>Transaction Callbacks</h2>
+
+  <ul><li><code>after_commit</code></li>
+    <li><code>after_rollback</code></li>
+  </ul><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+      PictureFile.transaction do
+        picture_file_1.destroy
+        picture_file_2.save!
+      end
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+   class PictureFile < ApplicationRecord
+     after_commit :delete_picture_file_from_disk, on: [:destroy]
+
+     def delete_picture_file_from_disk
+       if File.exist?(filepath)
+         File.delete(filepath)
+       end
+     end
+    end
+  ]]></script><ul><li><code>after_create_commit</code></li>
+    <li><code>after_update_commit</code></li>
+    <li><code>after_destroy_commit</code></li>
+  </ul></section><section id="topic-query-interface" class="slide"><div class="vcenter">
     <h1>Query Interface</h1>
   </div>
 </section><section id="retrieving-methods" class="slide"><h2>Retrieving Objects from the Database</h2>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    bind
+    find
     create_with
+    distinct
     eager_load
     extending
     from
@@ -1201,6 +1545,7 @@
     having
     includes
     joins
+    left_outer_joins
     limit
     lock
     none
@@ -1212,8 +1557,6 @@
     reorder
     reverse_order
     select
-    distinct
-    uniq
     where
   ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
       ActiveRecord::Relation
@@ -1496,7 +1839,7 @@ except
 
   reorder
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class User <  ActiveRecord::Base
+    class User <  ApplicationRecord
       ...
       has_many :posts, -> { order('created_at DESC') }
     end
@@ -1516,6 +1859,16 @@ except
     > User.order(:created_at).reverse_order
     User Load (0.6ms)  SELECT "users".* FROM "users" ORDER BY "users".created_at DESC
       => #<ActiveRecord::Relation [#<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>, #<User id: 1, first_name: "Anna", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-02 17:23:02", last_name: nil, receive_news: false>]>
+  ]]></script>
+
+  rewhere
+
+  <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+    > User.where(admin: true).rewhere(admin: false)
+      SELECT * FROM users WHERE `admin` = 0
+  ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+    > User.where(admin: true).where(admin: false)
+      SELECT * FROM users WHERE `admin` = 1 AND `admin` = 0
   ]]></script></section><section id="null-relation" class="slide"><h2>Null Relation</h2>
 
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
@@ -1584,6 +1937,14 @@ except
      => 5
   ]]></script>
 
+  left_outer_joins
+
+  <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+    > User.left_outer_joins(:posts).distinct
+      User Load (1.4ms)  SELECT DISTINCT "users".* FROM "users" LEFT OUTER JOIN "posts" ON "posts"."user_id" = "users"."id"
+    => #<ActiveRecord::Relation [#<User id: 1, first_name: "Marta", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-23 21:02:23", last_name: nil, receive_news: false>, #<User id: 1, first_name: "Marta", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-23 21:02:23", last_name: nil, receive_news: false>, #<User id: 1, first_name: "Marta", email: "happy_ann@gmail.com", password: nil, created_at: "2013-06-02 17:23:02", updated_at: "2013-06-23 21:02:23", last_name: nil, receive_news: false>, #<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>, #<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>]>
+  ]]></script>
+
   Joining a Single Association
 
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
@@ -1601,16 +1962,16 @@ except
 
   Joining Nested Associations (Single Level)
 
-   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-       > Post.joins(blog: :users)
-        Post Load (0.2ms)  SELECT "posts".* FROM "posts" INNER JOIN "blogs" ON "blogs"."id" = "posts"."blog_id" INNER JOIN "subscriptions" ON "subscriptions"."blog_id" = "blogs"."id" INNER JOIN "users" ON "users"."id" = "subscriptions"."user_id"
+  <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+     > Post.joins(blog: :users)
+       Post Load (0.2ms)  SELECT "posts".* FROM "posts" INNER JOIN "blogs" ON "blogs"."id" = "posts"."blog_id" INNER JOIN "subscriptions" ON "subscriptions"."blog_id" = "blogs"."id" INNER JOIN "users" ON "users"."id" = "subscriptions"."user_id"
   ]]></script>
 
   Joining Nested Associations (Multiple Level)
 
-   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-       > User.joins(posts: [{blog: :subscriptions}, :tags])
-        User Load (0.8ms)  SELECT "users".* FROM "users" INNER JOIN "posts" ON "posts"."user_id" = "users"."id" INNER JOIN "blogs" ON "blogs"."id" = "posts"."blog_id" INNER JOIN "subscriptions" ON "subscriptions"."blog_id" = "blogs"."id" INNER JOIN "posts_tags" ON "posts_tags"."post_id" = "posts"."id" INNER JOIN "tags" ON "tags"."id" = "posts_tags"."tag_id" WHERE "users"."state" = 'pending'
+  <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+     > User.joins(posts: [{blog: :subscriptions}, :tags])
+       User Load (0.8ms)  SELECT "users".* FROM "users" INNER JOIN "posts" ON "posts"."user_id" = "users"."id" INNER JOIN "blogs" ON "blogs"."id" = "posts"."blog_id" INNER JOIN "subscriptions" ON "subscriptions"."blog_id" = "blogs"."id" INNER JOIN "posts_tags" ON "posts_tags"."post_id" = "posts"."id" INNER JOIN "tags" ON "tags"."id" = "posts_tags"."tag_id" WHERE "users"."state" = 'pending'
   ]]></script>
 
   Specifying Conditions on the Joined Tables
@@ -1619,7 +1980,7 @@ except
     > User.joins(:posts).where('posts.created_at' => (Time.now.midnight - 1.day)..Time.now.midnight)
       User Load (0.5ms)  SELECT "users".* FROM "users" INNER JOIN "posts" ON "posts"."user_id" = "users"."id" WHERE ("posts"."created_at" BETWEEN '2013-06-22 21:00:00.000000' AND '2013-06-23 21:00:00.000000')
      => #<ActiveRecord::Relation [#<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>, #<User id: 2, first_name: "Van'ka", email: "vanka@yandex.ru", password: nil, created_at: "2013-06-02 18:18:40", updated_at: "2013-06-02 18:20:00", last_name: nil, receive_news: false>]>
-      ]]></script></section><section id="eager-loading-associations" class="slide"><h2>Eager Loading Associations</h2>
+  ]]></script></section><section id="eager-loading-associations" class="slide"><h2>Eager Loading Associations</h2>
 
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     users = User.limit(10)
@@ -1687,19 +2048,19 @@ except
   ]]></script></section><section id="scopes" class="slide"><h2>Scopes</h2>
 
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class Post < ActiveRecord::Base
+    class Post < ApplicationRecord
       ...
       scope :published, -> { where(published: true) }
     end
   ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class Post < ActiveRecord::Base
+    class Post < ApplicationRecord
       ...
       def self.published
         where(published: true)
       end
     end
   ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class Post < ActiveRecord::Base
+    class Post < ApplicationRecord
       scope :published,               -> { where(published: true) }
       scope :published_with_tags, -> { published.where("tags_count > 0") }
     end
@@ -1711,7 +2072,7 @@ except
 
   Passing in arguments
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class Post < ActiveRecord::Base
+    class Post < ApplicationRecord
       ...
       scope :created_before, ->(time) { where("created_at < ?", time) }
     end
@@ -1722,9 +2083,9 @@ except
   Merging of scopes
 
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-    rails g migration AddStateToUser state:string
+    bin/rails g migration AddStateToUser state:string
   ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       scope :active, -> { where state: 'active' }
       scope :inactive, -> { where state: 'inactive' }
     end
@@ -1746,7 +2107,7 @@ default_scope
 - will be applied across all queries
 - will be overridden by scope and where conditions
 <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-  class User < ActiveRecord::Base
+  class User < ApplicationRecord
     default_scope { where state: 'pending' }
     scope :active, -> { where state: 'active' }
     scope :inactive, -> { where state: 'inactive' }
@@ -1767,7 +2128,10 @@ Removing All Scoping
 <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
   > User.unscoped.all
     SELECT "users".* FROM "users"
-]]></script></section><section id="find-or-build" class="slide"><h2>Find or Build a New Object</h2>
+]]></script></section><section id="dynamic-finders" class="slide"><h2>Dynamic finders</h2>
+
+<code>first_name -&gt; find_by_first_name or find_by_first_name! </code>
+</section><section id="find-or-build" class="slide"><h2>Find or Build a New Object</h2>
 
   find_or_create_by
 
@@ -1859,7 +2223,7 @@ Removing All Scoping
       User Exists (0.4ms)  SELECT 1 AS one FROM "users" WHERE "users"."id" = 3 LIMIT 1
      => false
   ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
-    > User.where(:first_name => 'Ryan').exists?
+    > User.where(first_name: 'Ryan').exists?
       User Exists (0.4ms)  SELECT 1 AS one FROM "users" WHERE "users"."first_name" = 'Ryan' LIMIT 1
      => false
   ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
@@ -1881,8 +2245,8 @@ Removing All Scoping
   ]]></script>
   via a relation
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    Post.where(:published => true).any?
-    Post.where(:published => true).many?
+    Post.where(published: true).any?
+    Post.where(published: true).many?
   ]]></script>
   via an association
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
@@ -1930,6 +2294,54 @@ Removing All Scoping
     > PostInfo.sum(:views)
       (0.4ms)  SELECT SUM("post_infos"."views") AS sum_id FROM "post_infos"
      => 11
+  ]]></script></section><section id="running-explain" class="slide"><h2>Running EXPLAIN</h2>
+
+  <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+    > User.where(id: 1).joins(:posts).explain
+    User Load (6.0ms)  SELECT "users".* FROM "users" INNER JOIN "posts" ON "posts"."user_id" = "users"."id" WHERE "users"."id" = ?  [["id", 1]]
+  ]]></script>
+
+  sqlite3
+
+  <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+    => EXPLAIN for: SELECT "users".* FROM "users" INNER JOIN "posts" ON "posts"."user_id" = "users"."id" WHERE "users"."id" = ? [["id", nil]]
+    0|0|0|SEARCH TABLE users USING INTEGER PRIMARY KEY (rowid=?)
+    0|1|1|SCAN TABLE posts
+  ]]></script>
+
+  MySQL and MariaDB
+
+  <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+    EXPLAIN for: SELECT `users`.* FROM `users` INNER JOIN `posts` ON `posts`.`user_id` = `users`.`id` WHERE `users`.`id` = 1
+    +----+-------------+----------+-------+---------------+
+    | id | select_type | table    | type  | possible_keys |
+    +----+-------------+----------+-------+---------------+
+    |  1 | SIMPLE      | users    | const | PRIMARY       |
+    |  1 | SIMPLE      | posts    | ALL   | NULL          |
+    +----+-------------+----------+-------+---------------+
+    +---------+---------+-------+------+-------------+
+    | key     | key_len | ref   | rows | Extra       |
+    +---------+---------+-------+------+-------------+
+    | PRIMARY | 4       | const |    1 |             |
+    | NULL    | NULL    | NULL  |    1 | Using where |
+    +---------+---------+-------+------+-------------+
+
+    2 rows in set (0.00 sec)
+  ]]></script>
+
+  PostgreSQL
+
+  <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
+      EXPLAIN for: SELECT "users".* FROM "users" INNER JOIN "posts" ON "posts"."user_id" = "users"."id" WHERE "users"."id" = 1
+                                      QUERY PLAN
+    ------------------------------------------------------------------------------
+     Nested Loop Left Join  (cost=0.00..37.24 rows=8 width=0)
+       Join Filter: (posts.user_id = users.id)
+       ->  Index Scan using users_pkey on users  (cost=0.00..8.27 rows=1 width=4)
+             Index Cond: (id = 1)
+       ->  Seq Scan on posts  (cost=0.00..28.88 rows=8 width=4)
+             Filter: (posts.user_id = 1)
+    (6 rows)
   ]]></script></section><section id="topic-testing-models" class="slide"><div class="vcenter">
     <h1>Testing Models</h1>
     <div class="about">
@@ -1943,13 +2355,13 @@ Removing All Scoping
 </section><section id="tests-configuration" class="slide"><h2>Tests configuration</h2>
   Gemfile
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    group :development, :test do 
-      gem 'rspec-rails' 
+    group :development, :test do
+      gem 'rspec-rails'
       gem 'factory_girl_rails'
-    end 
+    end
 
-    group :test do 
-      gem 'faker'
+    group :test do
+      gem 'ffaker'
       gem 'database_cleaner'
     end
   ]]></script><script type="syntaxhighlighter" class="brush: bash"><![CDATA[
@@ -1972,20 +2384,20 @@ Removing All Scoping
   <script type="syntaxhighlighter" class="brush: bash"><![CDATA[
     rails g model User email:text name:text admin:boolena
       invoke  active_record
-      create    db/migrate/20131223130327_create_users.rb
+      create    db/migrate/20160410131731_create_users.rb
       create    app/models/user.rb
       invoke    rspec
       create      spec/models/user_spec.rb
       invoke      factory_girl
-      create        spec/factories/users.rb  
+      create        spec/factories/users.rb
   ]]></script>
 
   app/models/user.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       validates :email, :first_name, presence: true
       validates :email, uniqueness: true
-      
+
       has_many :posts
 
       scope :admins, -> { where(admin: true) }
@@ -2002,9 +2414,8 @@ Removing All Scoping
 
   app/mailers/user_mailer.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
-    class UserMailer < ActionMailer::Base
-      default from: "from@example.com"
-
+    class UserMailer < ApplicationMailer
+    
       def email_changed(user)
         # Sending email
       end
@@ -2015,7 +2426,7 @@ Removing All Scoping
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     require 'spec_helper'
 
-    describe User do 
+    describe User do
       it "is invalid without an email"
       it "has unique email"
       it "is invalid without a name"
@@ -2111,13 +2522,13 @@ Removing All Scoping
     user = FactoryGirl.create(:user) do |user|
       user.posts.create(FactoryGirl.attributes_for(:post))
     end
-  ]]></script></section><section id="faker" class="slide"><h2>Faker</h2>
-  <p><a href="https://github.com/stympy/faker" target="_blank">Faker</a> is used to easily generate fake data: names, addresses, phone numbers, etc.</p>
+  ]]></script></section><section id="faker" class="slide"><h2>FFaker (Faker refactored)</h2>
+  <p><a href="https://github.com/ffaker/ffaker" target="_blank">Faker</a> is used to easily generate fake data: names, addresses, phone numbers, etc.</p>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     FactoryGirl.define do
       factory :user do
-        email { Faker::Internet.email } 
-        name { Faker::Name.name }
+        email { FFaker::Internet.email }
+        name { FFaker::Name.name }
         admin false
 
         factory :admin do
@@ -2136,7 +2547,7 @@ Removing All Scoping
       end
 
       factory :post do
-        title { Faker::Lorem.sentence }
+        title { FFaker::Lorem.sentence }
         user
       end
     end
@@ -2191,7 +2602,7 @@ Removing All Scoping
 
       context "change email" do
         it "sends email changed notification" do
-          user.email = Faker::Internet.email
+          user.email = FFaker::Internet.email
           expect(UserMailer).to receive(:email_changed).with(user).and_return(double("meil", deliver: true))
           user.save
         end

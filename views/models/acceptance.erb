@@ -1,18 +1,18 @@
 <section id="acceptance" class="slide">
   <h2>Acceptance</h2>
-  <script type="syntaxhighlighter" class="brush: ruby">
-    rails g migration AddTermsOfServiceToUsers terms_of_service:boolean
+  <script type="syntaxhighlighter" class="brush: bash">
+    bin/rails g migration AddTermsOfServiceToUsers terms_of_service:boolean
   </script>
 
 <script type="syntaxhighlighter" class="brush: ruby">
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       ...
       validates :terms_of_service, acceptance: true  # get accept: 1
     end
   </script>
 
   <script type="syntaxhighlighter" class="brush: ruby">
-    class User < ActiveRecord::Base
+    class User < ApplicationRecord
       ...
       validates :terms_of_service, acceptance: { accept: 'yes' }
     end
