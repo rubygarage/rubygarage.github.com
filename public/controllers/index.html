@@ -456,7 +456,32 @@
         end
       end
     ]]></script></div>
-</section><section id="request-object" class="slide"><h2>Request object</h2>
+</section><section id="request-forgery-protection" class="slide"><h2>Request forgery protection</h2>
+
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    &lt;%= form_for @user do |f| %&gt;
+      &lt;%= f.text_field :username %&gt;
+      &lt;%= f.text_field :password %&gt;
+    &lt;% end %&gt;
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    <form accept-charset="UTF-8" action="/users/1" method="post">
+      <input type="hidden"
+           value="12350adcf5eb5ad13451c00a5621854a23af5489"
+           name="authenticity_token"/>
+      <!-- fields -->
+    </form>
+  ]]></script><code> form_authenticity_token </code>
+  
+  
+  app/controllers/application_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    protect_from_forgery with: :exception
+  ]]></script>
+
+  for apis
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    protect_from_forgery with: :null_session
+  ]]></script></section><section id="request-object" class="slide"><h2>Request object</h2>
   app/controllers/application_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     class ApplicationController < ActionController::Base
@@ -598,7 +623,46 @@
   config/initializers/mime_types.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     Mime::Type.register "application/pdf", :pdf
-  ]]></script></section><section id="log-filtering" class="slide"><h2>Log Filtering</h2>
+  ]]></script></section><section id="live-streaming" class="slide"><h2>Live streaming of arbitrary data</h2>
+
+  <p>ActionController::Live module allows to create a persistent connection with a browser.</p>
+  <h3>Incorporating live streaming</h3>
+
+  <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    class PostsController < ActionController::Base
+      include ActionController::Live
+
+      def stream
+        response.headers['Content-Type'] = 'text/event-stream'
+        100.times {
+          response.stream.write Post.first.text
+          sleep 1
+        }
+      ensure
+        response.stream.close
+      end
+    end
+  ]]></script><script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
+    class PostsController < ActionController::Base
+      include ActionController::Live
+
+      def show
+        response.headers['Content-Type'] = 'text/event-stream'
+        post = Post.find(params[:id])
+
+        post.text.each do |line|
+          response.stream.write line
+          sleep 10
+        end
+      ensure
+        response.stream.close
+      end
+    end
+  ]]></script><h3>Streaming considerations</h3>
+  <ul><li>Each response stream creates a new thread and copies over the thread local variables from the original thread. Having too many thread local variables can negatively impact performance. Similarly, a large number of threads can also hinder performance.</li>
+    <li>Failing to close the response stream will leave the corresponding socket open forever. Make sure to call close whenever you are using a response stream.</li>
+    <li>WEBrick servers buffer all responses, and so including ActionController::Live will not work. You must use a web server which does not automatically buffer responses.</li>
+  </ul></section><section id="log-filtering" class="slide"><h2>Log Filtering</h2>
 
   <h3>Parameters Filtering</h3>
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
@@ -699,7 +763,7 @@
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     FactoryGirl.define do
       factory :user do
-        email { Faker::Internet.email } 
+        email { Faker::Internet.email }
         name { Faker::Name.name }
       end
     end
@@ -719,27 +783,27 @@
   spec/controllers/posts_controller_spec.rb
   <script type="syntaxhighlighter" class="brush: ruby"><![CDATA[
     require 'spec_helper'
- 
+
     describe PostsController do
       let(:post_params) { FactoryGirl.attributes_for(:post).stringify_keys }
       let(:post) { FactoryGirl.build_stubbed(:post) }
       let(:user) { FactoryGirl.create(:user) }
-     
+
       describe "GET #show" do
         before do
-          Post.stub(:find).and_return post
+          allow(Post).to receive(:find).and_return post
         end
-     
+
         it "receives find and return post" do
           expect(Post).to receive(:find).with(post.id.to_s)
           get :show, id: post.id
         end
-     
+
         it "assigns @post" do
           get :show, id: post.id
           expect(assigns(:post)).not_to be_nil
         end
-     
+
         it "renders :show template" do
           get :show, id: post.id
           expect(response).to render_template :show
@@ -749,8 +813,8 @@
       describe "PUT #update" do
         context "without ability to update" do
           before do
-            user.stub_chain(:posts, :find).and_return nil
-            controller.stub(:current_user).and_return user
+            allow(user).to receive_message_chain(:posts, :find).and_return nil
+            allow(controller).to receive(:current_user).and_return user
             put :update, id: post.id, post: post_params
           end
 
@@ -765,26 +829,26 @@
 
         context "with valid attributes" do
           before do
-            post.stub(:update).and_return true
-            user.stub_chain(:posts, :find).and_return post
-            controller.stub(:current_user).and_return user
+            allow(post).to receive(:update).and_return true
+            allow(user).to receive_message_chain(:posts, :find).and_return post
+            allow(controller).to receive(:current_user).and_return user
           end
-     
+
           it "assigns @post" do
             put :update, id: post.id, post: post_params
             expect(assigns(:post)).not_to be_nil
           end
-     
+
           it "receives update for @post" do
             expect(post).to receive(:update).with(post_params)
             put :update, id: post.id, post: post_params
           end
-     
+
           it "sends success notice" do
             put :update, id: post.id, post: post_params
             expect(flash[:notice]).to eq 'Post was successfully updated.'
           end
-     
+
           it "redirects to post page" do
             put :update, id: post.id, post: post_params
             expect(response).to redirect_to post
@@ -793,13 +857,13 @@
 
         context "with forbidden attributes" do
           before do
-            post.stub(:update).and_return true
-            user.stub_chain(:posts, :find).and_return post
-            controller.stub(:current_user).and_return user
+            allow(post).to receive(:update).and_return true
+            allow(user).to receive_message_chain(:posts, :find).and_return post
+            allow(controller).to receive(:current_user).and_return user
           end
 
           it "generates ParameterMissing error without post params" do
-            expect { put :update, id: post.id }.to raise_error(ActionController::ParameterMissing) 
+            expect { put :update, id: post.id }.to raise_error(ActionController::ParameterMissing)
           end
 
           it "filters forbidden params" do
@@ -810,9 +874,9 @@
 
         context "with invalid attributes" do
           before do
-            post.stub(:update).and_return false
-            user.stub_chain(:posts, :find).and_return post
-            controller.stub(:current_user).and_return user
+            allow(post).to receive(:update).and_return false
+            allow(user).to receive_message_chain(:posts, :find).and_return post
+            allow(controller).to receive(:current_user).and_return user
           end
 
           it "sends error flash" do

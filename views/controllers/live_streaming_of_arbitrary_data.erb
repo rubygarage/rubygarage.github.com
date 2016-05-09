@@ -1,0 +1,46 @@
+<section id="live-streaming" class="slide">
+  <h2>Live streaming of arbitrary data</h2>
+
+  <p>ActionController::Live module allows to create a persistent connection with a browser.</p>
+  <h3>Incorporating live streaming</h3>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class PostsController < ActionController::Base
+      include ActionController::Live
+
+      def stream
+        response.headers['Content-Type'] = 'text/event-stream'
+        100.times {
+          response.stream.write Post.first.text
+          sleep 1
+        }
+      ensure
+        response.stream.close
+      end
+    end
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class PostsController < ActionController::Base
+      include ActionController::Live
+
+      def show
+        response.headers['Content-Type'] = 'text/event-stream'
+        post = Post.find(params[:id])
+
+        post.text.each do |line|
+          response.stream.write line
+          sleep 10
+        end
+      ensure
+        response.stream.close
+      end
+    end
+  </script>
+  <h3>Streaming considerations</h3>
+  <ul>
+    <li>Each response stream creates a new thread and copies over the thread local variables from the original thread. Having too many thread local variables can negatively impact performance. Similarly, a large number of threads can also hinder performance.</li>
+    <li>Failing to close the response stream will leave the corresponding socket open forever. Make sure to call close whenever you are using a response stream.</li>
+    <li>WEBrick servers buffer all responses, and so including ActionController::Live will not work. You must use a web server which does not automatically buffer responses.</li>
+  </ul>
+</section>
