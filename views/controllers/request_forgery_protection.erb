@@ -1,0 +1,32 @@
+<section id="request-forgery-protection" class="slide">
+  <h2>Request forgery protection</h2>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    &lt;%= form_for @user do |f| %&gt;
+      &lt;%= f.text_field :username %&gt;
+      &lt;%= f.text_field :password %&gt;
+    &lt;% end %&gt;
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    <form accept-charset="UTF-8" action="/users/1" method="post">
+      <input type="hidden"
+           value="12350adcf5eb5ad13451c00a5621854a23af5489"
+           name="authenticity_token"/>
+      <!-- fields -->
+    </form>
+  </script>
+
+  <code> form_authenticity_token </code>
+  </br>
+  </br>
+  app/controllers/application_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    protect_from_forgery with: :exception
+  </script>
+
+  for apis
+  <script type="syntaxhighlighter" class="brush: ruby">
+    protect_from_forgery with: :null_session
+  </script>
+</section>
