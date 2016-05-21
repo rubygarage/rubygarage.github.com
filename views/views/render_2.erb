@@ -4,6 +4,7 @@
       def show
         @post = Post.find(params[:id])
         render 'posts/show'
+        #render template: "posts/show"
       end
   </script>
 
@@ -32,7 +33,18 @@
     <script type="syntaxhighlighter" class="brush: ruby">
         def index
           @posts = Post.all
-          render text: "Ok"
+          render plain: "Ok"
+        end
+    </script>
+  </div>
+
+  <div class="slide" id="render-text">
+    <h2>Rendering a string in the current layout</h2>
+    .txt.erb extension should be used for layout
+    <script type="syntaxhighlighter" class="brush: ruby">
+        def index
+          @posts = Post.all
+          render plain: "Ok", layout: true
         end
     </script>
   </div>

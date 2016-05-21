@@ -1,0 +1,35 @@
+<section id="head" class="slide">
+  <h2>head</h2>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    head :bad_request
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    HTTP/1.1 400 Bad Request
+    Connection: close
+    Date: Sun, 24 Jan 2010 12:15:53 GMT
+    Transfer-Encoding: chunked
+    Content-Type: text/html; charset=utf-8
+    X-Runtime: 0.013483
+    Set-Cookie: _blog_session=...snip...; path=/; HttpOnly
+    Cache-Control: no-cache
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    head :created, location: post_path(@post)
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    HTTP/1.1 201 Created
+    Connection: close
+    Date: Sun, 24 Jan 2010 12:16:44 GMT
+    Transfer-Encoding: chunked
+    Location: /posts/1
+    Content-Type: text/html; charset=utf-8
+    X-Runtime: 0.083496
+    Set-Cookie: _blog_session=...snip...; path=/; HttpOnly
+    Cache-Control: no-cache
+  </script>
+
+</section>

@@ -1,0 +1,135 @@
+<section id="asset-tags" class="slide">
+  <h2>Asset tags </h2>
+
+  <ul>
+    <li>auto_discovery_link_tag</li>
+    <li>javascript_include_tag</li>
+    <li>stylesheet_link_tag</li>
+    <li>image_tag</li>
+    <li>video_tag</li>
+    <li>audio_tag</li>
+  </ul>
+
+  <h3>Linking to Feeds</h3>
+  <script type="syntaxhighlighter" class="brush: ruby">
+    &lt;%= auto_discovery_link_tag(:rss, {action: "feed"}, {title: "RSS Feed"}) %&gt;
+  </script>
+
+  <h4>Options</h4>
+  <ul>
+    <li><b>:rel</b> specifies the rel value in the link. The default value is "alternate".</li>
+    <li><b>:type</b> specifies an explicit MIME type. Rails will generate an appropriate MIME type automatically.</li>
+    <li><b>:title</b> specifies the title of the link. The default value is the uppercase :type value, for example, "ATOM" or "RSS".</li>
+  </ul>
+
+  <h3>Linking to JavaScript Files</h3>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    &lt;%= javascript_include_tag "application" %&gt;
+    <!-- '/assets/application.js' -->
+    &lt;%= javascript_include_tag "application", "posts" %&gt;
+    &lt;%= javascript_include_tag "http://example.com/application.js" %&gt;
+  </script>
+
+  <h4>Paths</h4>
+
+  <p>/assets/javascripts/</p>
+  <p>/public/javascripts/ (for older versions)</p>
+  <h4>Files can be placed into <b>javascripts</b> directory inside:</h4>
+  <ul>
+    <li>app/assets</li>
+    <li>lib/assets</li>
+    <li>vendor/assets</li>
+  </ul>
+
+  <h3>Linking to CSS Files</h3>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    &lt;%= stylesheet_link_tag "application" %&gt;
+    <!-- 'app/assets/stylesheets/application.css' -->
+    &lt;%= stylesheet_link_tag "application", "posts" %&gt;
+    &lt;%= stylesheet_link_tag "application", "posts/comments" %&gt;
+    <!-- 'app/assets/stylesheets/posts/comments.css' -->
+    &lt;%= stylesheet_link_tag "http://example.com/application.css" %&gt;
+    <!-- can accept options :rel and :media -->
+    &lt;%=  stylesheet_link_tag "application_tablet", media: "tablet" %&gt;
+  </script>
+
+  <p>by default <b>:rel</b> is 'stylesheet' and <b>:media</b> is 'screen'<p>
+
+  <h4>Paths</h4>
+  <p>/assets/stylesheets/</p>
+
+  <h4>Files can be placed into <b>stylesheets</b> inside:</h4>
+  <ul>
+    <li>app/assets</li>
+    <li>lib/assets</li>
+    <li>vendor/assets</li>
+  </ul>
+
+  <h3>Linking to images</h3>
+
+  <h4>Paths</h4>
+  <p>public/images/</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    &lt;%= image_tag "header.png" %&gt;
+    &lt;%= image_tag "icons/delete.gif" %&gt;
+    &lt;%= image_tag "icons/delete.gif", {height: 45} %&gt;
+    &lt;%= image_tag "home.gif" %&gt;
+    <!-- ads alt - capitalized file name without extension -->
+    &lt;%= image_tag "home.gif", alt: "Home" %&gt;
+    &lt;%= image_tag "home.gif", size: "50x20" %&gt;
+    &lt;%= image_tag "home.gif", alt: "Go Home", id: "HomeImage", class: "nav_bar" %&gt;
+    <!-- possible options :class, :id or :name -->
+    &lt;%=  stylesheet_link_tag "application_tablet", media: "tablet" %&gt;
+    <!-- can accept options :rel and :media -->
+  </script>
+
+  <h3>Linking to videos</h3>
+
+  <h4>Paths</h4>
+  <p>public/videos/</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    &lt;%= video_tag "movie.ogg" %&gt;
+    <!-- result -->
+    &lt; video src="/videos/movie.ogg" /&gt;
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    &lt;%= video_tag ["trailer.ogg", "movie.ogg"] %&gt;
+    <!-- result -->
+    &lt;video&gt;
+      &lt;source src="/videos/trailer.ogg"&gt;
+      &lt;source src="/videos/movie.ogg"&gt;
+    &lt;/video&gt;
+  </script>
+
+  <h4>Options</h4>
+  <ul>
+    <li><b>poster: "image_name.png"</b> provides an image to put in place of the video before it starts playing</li>
+    <li><b>autoplay: true</b> starts playing the video on page load</li>
+    <li><b>loop: true</b> loops the video once it gets to the end</li>
+    <li><b>controls: true</b> provides browser supplied controls for the user to interact with the video</li>
+    <li><b>autobuffer: true</b> the video will pre load the file for the user on page load</li>
+  </ul>
+
+  <h3> Linking to audio files</h3>
+
+  <h4>Paths</h4>
+  <p>public/audios/</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+    &lt;%= audio_tag "music.mp3" %&gt;
+    &lt;%= audio_tag "music/first_song.mp3" %&gt;
+  </script>
+
+  <h4>Options</h4>
+  <ul>
+    <li><b>autoplay: true</b> starts playing the audio on page load</li>
+    <li><b>controls: true</b> provides browser supplied controls for the user to interact with the audio</li>
+    <li><b>autobuffer: true</b> the audio will pre load the file for the user on page load</li>
+  </ul>
+
+</section>

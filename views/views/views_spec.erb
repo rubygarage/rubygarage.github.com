@@ -6,7 +6,7 @@
         it "renders _post partial for each post" do
           assign(:posts, [stub_model(Post), stub_model(Post)])
           render
-          view.should render_template(:partial => "_post", :count => 2)
+          view.should render_template(partial: "_post", count: 2)
         end
       end
   </script>
@@ -30,7 +30,7 @@
     <script type="syntaxhighlighter" class="brush: ruby">
         describe "posts/show.html.erb" do
           it "displays the post's title" do
-            assign(:post, stub_model(Post, :title => "Cool title"))
+            assign(:post, stub_model(Post, title: "Cool title"))
             render
             expect(rendered).to contain("Cool title")
           end
@@ -53,7 +53,7 @@
     spec/views/posts/show_spec.rb
     <script type="syntaxhighlighter" class="brush: ruby">
       require 'spec_helper'
-      
+
       describe "posts/index.html.erb" do
         it "has posts list selector" do
           assign(:posts, [stub_model(Post), stub_model(Post)])

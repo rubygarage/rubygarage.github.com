@@ -26,6 +26,16 @@
       &lt;%= render @posts %&gt;
   </script>
 
+  <p>Rails will try to determine partial name from variable name. _post.html.erb and _user.html.erb will be used</p>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+      &lt;%= render [post1, user1, post2, user2] %&gt;
+  </script>
+
+  <script type="syntaxhighlighter" class="brush: ruby">
+      &lt;%= render(@posts) || "There are no posts available." %&gt;
+  </script>
+
   <script type="syntaxhighlighter" class="brush: ruby">
       &lt;%= render partial: "post", collection: @posts, as: :article %&gt;
   </script>

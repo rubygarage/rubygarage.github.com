@@ -1,8 +1,9 @@
-<section id="form-helpers" class="slide">
-  <h2>Form helpers</h2>
+<section id="form-tag-helper" class="slide">
+  <h2>FormTagHelper</h2>
+  <p>Provides a number of methods for creating form tags that don't rely on an Active Record object assigned to the template like FormHelper does. Instead, names and values should be provided manually.</p>
   <p>form_tag, label_tag, text_field_tag, hidden_field_tag, submit_tag</p>
   <script type="syntaxhighlighter" class="brush: ruby">
-      &lt;%= form_tag("/posts/search", :method => 'get') do %&gt;
+      &lt;%= form_tag("/posts/search", method: 'get') do %&gt;
         &lt;%= label_tag(:q, "Search for:") %&gt;
         &lt;%= text_field_tag(:q) %&gt;
         &lt;%= hidden_field_tag(:special_id, "11") %&gt;
