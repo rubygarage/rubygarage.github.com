@@ -15,7 +15,8 @@
   <div class = "slide" id ="status-option">
     <h2>The :status option</h2>
     <script type="syntaxhighlighter" class="brush: ruby">
-      render status: 404
+      render status: 404          # by code
+      render status: :not_found   # by symbol
     </script>
   </div>
 
@@ -41,6 +42,14 @@
           @post = Post.find(params[:id])
           render template: 'pages/post', layout: 'post'
         end
+    </script>
+  </div>
+
+  <div class = "slide" id ="formats-option">
+    <h2>The :formats option</h2>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      render formats: [:json, :xml]
+      #render formats: :xml
     </script>
   </div>
 </section>

@@ -3,6 +3,18 @@
   app/controllers/posts_controller.rb
   <script type="syntaxhighlighter" class="brush: ruby">
       class PostsController < ApplicationController
+        layout :layout_name
+
+        private
+
+        def layout_name
+          @current_user.admin? ? 'admin' : 'application'
+        end
+      end
+  </script>
+  app/controllers/posts_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+      class PostsController < ApplicationController
         layout Proc.new{ |controller| controller.request.xhr? ? 'popup' : 'application'}
       end
   </script>

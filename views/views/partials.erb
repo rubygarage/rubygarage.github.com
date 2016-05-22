@@ -1,23 +1,66 @@
 <section id="partials" class="slide">
   <h2>Partials</h2>
   <script type="syntaxhighlighter" class="brush: ruby">
-      &lt;% = render 'form' %&gt;
       <!-- views/posts/_form.html.erb -->
+      &lt;% = render 'form' %&gt;
 
-      &lt;% = render 'shared/menu' %&gt;
       <!-- views/shared/_menu.html.erb -->
+      &lt;% = render 'shared/menu' %&gt;
 
-      &lt;% = render @post %&gt;
       <!-- views/posts/_post.html.erb -->
+      &lt;% = render @post %&gt;
+
+      <!-- views/posts/index.html.erb -->
+      &lt;%= render "shared/search_filters", search: @q do |f| %&gt;
+        &lt;p&gt;
+          Post contains: &lt;%= f.text_field :post_contains %&gt;
+        &lt;/p&gt;
+      &lt;% end %&gt;
+      &lt;%= render partial: "footer", layout: "bar" %&gt;
+
+      <!-- shared/_search_filters.html.erb -->
+      &lt;%= form_for(@q) do |f| %&gt;
+        &lt;h1&gt;Search form:&lt;/h1&gt;
+        &lt;fieldset&gt;
+          &lt;%= yield f %&gt;
+        &lt;/fieldset&gt;
+        &lt;p&gt;
+          &lt;%= f.submit "Search" %&gt;
+        &lt;/p&gt;
+      &lt;% end %&gt;
   </script>
 
   <div class = "slide" id= "partials-variables">
     <h2>Locals</h2>
     <script type="syntaxhighlighter" class="brush: ruby">
-        &lt;% = render partial: 'form', locals: {post: @post} %&gt;
+       &lt;% = render partial: 'form', locals: {post: @post} %&gt;
     </script>
+
     <script type="syntaxhighlighter" class="brush: ruby">
-        &lt;% = render 'form', post: @post %&gt;
+       &lt;% = render 'form', post: @post %&gt;
+    </script>
+
+    <script type="syntaxhighlighter" class="brush: ruby">
+      &lt;%= render @post, full: true %&gt;
+
+      <!-- views/posts/_post.html.erb -->
+      &lt;h2&gt;&lt;%= post.title %&gt;&lt;/h2&gt;
+
+      &lt;% if local_assigns[:full] %&gt;
+        &lt;%= simple_format post.text %&gt;
+      &lt;% else %&gt;
+        &lt;%= truncate post.text %&gt;
+      &lt;% end %&gt;
+    </script>
+
+    <p>Every partial also has a local variable with the same name as the partial (minus the underscore). Object can be passed in to this local variable via the :object option</p>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      &lt;%= render partial: "post", object: @new_post %&gt;
+    </script>
+
+    <p>If you have an instance of a model to render into a partial, you can use a shorthand syntax. Assuming that you have _post.html.erb partial</p>
+    <script type="syntaxhighlighter" class="brush: ruby">
+      &lt;%= render @customer %&gt;
     </script>
   </div>
 </section>

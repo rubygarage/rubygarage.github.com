@@ -12,4 +12,21 @@
         layout "post"
       end
   </script>
+
+  app/controllers/posts_controller.rb
+  <script type="syntaxhighlighter" class="brush: ruby">
+    class ItemsController < PostsController
+      layout false
+
+      def show
+        @item = Item.find(params[:id])
+      end
+
+      def index
+        @items = Item.old
+        render layout: "item"
+      end
+      # ...
+    end
+  </script>
 </section>

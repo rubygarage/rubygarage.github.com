@@ -7,9 +7,7 @@
     <script type="syntaxhighlighter" class="brush: ruby">
         def index
           @posts = Post.all
-          respond_to do |format|
-            format.html{ render nothing: true}
-          end
+          render nothing: true
         end
     </script>
   </div>
@@ -19,12 +17,12 @@
     <script type="syntaxhighlighter" class="brush: ruby">
         def update
           @post = Post.find(params[:id])
-          respond_to do |format|
-            if @post.update(params[:post])
-              format.html{ redirect_to @post, notice: 'Post was successfully updated.'}
-            else
-              format.html{ render action: 'edit'}
-            end
+          if @post.update(params[:post])
+            redirect_to @post, notice: 'Post was successfully updated.'
+          else
+            render :edit
+            #render 'edit'
+            #render action: 'edit'
           end
         end
     </script>
