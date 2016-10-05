@@ -1,0 +1,27 @@
+digraph d {
+  bgcolor = transparent
+
+  node  [ fontname = "Gotham Pro", margin = 0.2, shape = box, style = "filled, rounded", color = black, fillcolor = cornsilk ]
+  edge  [ color = black, dir = back, headport = n ]
+
+  object   [ label = "Object" ]
+  module   [ label = "Module"]
+  array    [ label = "Array" ]
+  class    [ label = "Class" ]
+  numeric  [ label = "Numeric" ]
+  integer  [ label = "Integer" ]
+  bignum   [ label = "Bignum" ]
+  fixnum   [ label = "Fixnum" ]
+  float    [ label = "Float" ]
+  hash     [ label = "Hash" ]
+  regexp   [ label = "Regexp" ]
+  io       [ label = "IO" ]
+  file     [ label = "File" ]
+  string   [ label = "String" ]
+
+  object -> { module array numeric hash regexp io string }
+  module -> { class }
+  numeric -> { integer float }
+  integer -> { bignum fixnum }
+  io -> { file }
+}

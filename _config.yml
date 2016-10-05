@@ -1,0 +1,38 @@
+title: RubyGarage Slides
+email: info@rubygarage.org
+description: >
+baseurl: ""
+url: "https://timlar.github.io"
+repository: "timlar/slides"
+twitter_username: timlar_ua
+github_username: timlar
+
+######################################################################################################################
+#                                           DO NOT EDIT SETTINGS BELOW !!!                                           #
+######################################################################################################################
+
+lsi: false
+safe: true
+incremental: false
+source: "."
+markdown_ext: "markdown"
+
+gist:
+  noscript: false
+
+markdown: kramdown
+kramdown:
+  auto_ids: true
+  input: GFM
+  hard_wrap: false
+  math_engine: mathjax
+
+gems:
+  - jekyll-coffeescript
+  - jekyll-paginate
+
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - feed.xml

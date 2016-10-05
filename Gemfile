@@ -1,19 +1,10 @@
 source 'https://rubygems.org'
+ruby RUBY_VERSION
 
-gem 'rake'
-gem 'sinatra', :require => 'sinatra/base'
-gem 'sinatra-support'
-gem 'sinatra-partial'
-gem 'sinatra-advanced-routes'
-gem 'rack-test'
+gem 'jekyll'
 
-gem 'sprockets'
-gem 'sprockets-sass'
-gem 'sprockets-helpers'
-gem 'shotgun'
-
-gem 'compass'
-gem 'bootstrap-sass'
-gem 'coffee-script'
-gem 'htmlentities'
-gem 'nokogiri'
+group :jekyll_plugins do
+  gem 'github-pages'
+  gem 'jekyll-coffeescript'
+  gem 'jekyll-github-metadata'
+end

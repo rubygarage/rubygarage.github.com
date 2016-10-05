@@ -1,0 +1,29 @@
+digraph d {
+  bgcolor = transparent size = "3,3"
+
+  node  [
+    fontname = "Gotham Pro",
+    margin = 0.2,
+    shape = box,
+    style = "filled, rounded",
+    color = black,
+    fillcolor = cornsilk
+    fontsize = 26
+  ]
+
+  edge  [ color = black, dir = back, headport = n ]
+
+  basic_object [ label = "Basic Object"]
+  kernel_bg    [ label = "______", fontcolor = cornsilk, style = "filled, rounded, dashed" ]
+  kernel       [ label = "Kernel", pos = "5,0" ]
+  object       [ label = "Object" ]
+  m_bg         [ label = "_", fontcolor = cornsilk, style = "filled, rounded, dashed" ]
+  m            [ label = "M" ]
+  c            [ label = "C" ]
+  d            [ label = "D" ]
+
+  basic_object -> kernel_bg -> object -> m_bg -> c -> d
+
+  { rank = same kernel_bg kernel }
+  { rank = same m_bg m }
+}

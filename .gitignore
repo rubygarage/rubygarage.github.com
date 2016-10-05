@@ -1,5 +1,5 @@
-.DS_Store
-.sass-cache/
-.rvmrc
-*.swp
-.ruby-gemset
+_site
+.sass-cache
+.asset-cache
+.jekyll-metadata
+tmp/
