@@ -1,0 +1,20 @@
+<head>
+  <meta charset="utf-8">
+  <title>{% if page.title %}{{ page.title | escape }}{% else %}{{ site.title | escape }}{% endif %}</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="{{ page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 160 | escape }}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="author" content="Dmitriy Grechukha @ RubyGarage">
+
+  <!--[if lt IE 9]>
+    <script src="{{ '/vendor/reveal.js/lib/js/html5shiv.js' | prepend: site.url }}"></script>
+  <![endif]-->
+
+  <link rel="stylesheet" href="{{ '/assets/stylesheets/fonts.css' | prepend: site.url }}">
+  <link rel="stylesheet" href="{{ '/vendor/reveal.js/css/reveal.css' | prepend: site.url }}">
+  <link rel="stylesheet" href="{{ '/assets/stylesheets/theme.css' | prepend: site.url }}" id="theme">
+  <link rel="stylesheet" href="{{ '/assets/stylesheets/highlight.css' | prepend: site.url }}">
+</head>

@@ -1,0 +1,80 @@
+digraph d {
+  bgcolor = transparent
+
+  node  [ fontname = "Gotham Pro", margin = 0.2, shape = box, style = "filled, rounded", color = black, fillcolor = gold ]
+  edge  [ color = black, dir = back ]
+
+  // Exception           [ label = "Exception" ]
+  // fatal               [ label = "fatal\n(impossible to rescue)" ]
+  // NoMemoryError       [ label = "NoMemoryError" ]
+  // ScriptError         [ label = "ScriptError" ]
+  // LoadError           [ label = "LoadError" ]
+  // NotImplementedError [ label = "NotImplementedError" ]
+  // SyntaxError         [ label = "SyntaxError" ]
+  // SignalException     [ label = "SignalException" ]
+  // Interrupt           [ label = "Interrupt" ]
+  // StandardError       [ label = "StandardError\n(default for rescue)" ]
+  // ArgumentError       [ label = "ArgumentError" ]
+  // IndexError          [ label = "IndexError" ]
+  // StopIteration       [ label = "StopIteration" ]
+  // IOError             [ label = "IOError" ]
+  // EOFError            [ label = "EOFError" ]
+  // LocalJumpError      [ label = "LocalJumpError" ]
+  // NameError           [ label = "NameError" ]
+  // NoMethodError       [ label = "NoMethodError" ]
+  // RangeError          [ label = "RangeError" ]
+  // FloatDomainError    [ label = "FloatDomainError" ]
+  // RegexpError         [ label = "RegexpError" ]
+  // RuntimeError        [ label = "RuntimeError\n(default for raise)" ]
+  // SecurityError       [ label = "SecurityError" ]
+  // SystemCallError     [ label = "SystemCallError" ]
+  // Errno               [ label = "Errno::\*" ]
+  // SystemStackError    [ label = "SystemStackError" ]
+  // ThreadError         [ label = "ThreadError" ]
+  // TypeError           [ label = "TypeError" ]
+  // ZeroDivisionError   [ label = "ZeroDivisionError" ]
+  // SystemExit          [ label = "SystemExit" ]
+
+  Exception -> {
+    fatal
+    NoMemoryError
+    ScriptError
+    SignalException
+    StandardError
+    SystemExit
+  };
+
+  node [ group=a ];
+
+  ScriptError -> {
+    LoadError
+    NotImplementedError
+    SyntaxError
+  };
+
+  node [ group=b ];
+
+  StandardError -> {
+    ArgumentError
+    IndexError
+    IOError
+    LocalJumpError
+    NameError
+    RangeError
+    RegexpError
+    RuntimeError
+    SecurityError
+    SystemCallError
+    SystemStackError
+    ThreadError
+    TypeError
+    ZeroDivisionError
+  };
+
+  SignalException -> Interrupt;
+  IndexError -> StopIteration;
+  IOError -> EOFError;
+  NameError -> NoMethodError;
+  RangeError -> FloatDomainError;
+  SystemCallError -> Errno
+}

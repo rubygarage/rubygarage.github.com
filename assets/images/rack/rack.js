@@ -46,7 +46,7 @@ window.Modernizr = (function( window, document, undefined ) {
 
     slice = classes.slice,
 
-    featureName, 
+    featureName,
 
 
     injectElementWithStyles = function( rule, callback, nodes, testnames ) {
@@ -135,7 +135,7 @@ window.Modernizr = (function( window, document, undefined ) {
       };
     }
     else {
-      hasOwnProp = function (object, property) { 
+      hasOwnProp = function (object, property) {
         return ((property in object) && is(object.constructor.prototype[property], 'undefined'));
       };
     }
@@ -603,7 +603,7 @@ window.Modernizr = (function( window, document, undefined ) {
 
        }
 
-       return Modernizr; 
+       return Modernizr;
      };
 
 
@@ -10309,7 +10309,7 @@ that use the API provided by core.
   var slides, // Array of all the uh, slides...
   current, // Array index of the current slide
   $container, // Keeping this cached
-  
+
   events = {
     /*
     This event fires whenever the current slide changes, whether by way of
@@ -10317,27 +10317,27 @@ that use the API provided by core.
     and to, equal to the indices of the old slide and the new slide
     respectively. If preventDefault is called on the event within this handler
     the slide change does not occur.
-    
+
     $(document).bind('deck.change', function(event, from, to) {
        alert('Moving from slide ' + from + ' to ' + to);
     });
     */
     change: 'deck.change',
-    
+
     /*
     This event fires at the beginning of deck initialization, after the options
     are set but before the slides array is created.  This event makes a good hook
     for preprocessing extensions looking to modify the deck.
     */
     beforeInitialize: 'deck.beforeInit',
-    
+
     /*
     This event fires at the end of deck initialization. Extensions should
     implement any code that relies on user extensible options (key bindings,
     element selectors, classes) within a handler for this event. Native
     events associated with Deck JS should be scoped under a .deck event
     namespace, as with the example below:
-    
+
     var $d = $(document);
     $.deck.defaults.keys.myExtensionKeycode = 70; // 'h'
     $d.bind('deck.init', function() {
@@ -10348,12 +10348,12 @@ that use the API provided by core.
        });
     });
     */
-    initialize: 'deck.init' 
+    initialize: 'deck.init'
   },
-  
+
   options = {},
   $d = $(document),
-  
+
   /*
   Internal function. Updates slide and container classes based on which
   slide is the current slide.
@@ -10363,16 +10363,16 @@ that use the API provided by core.
     osc = options.selectors.container,
     old = $container.data('onSlide'),
     $all = $();
-    
+
     // Container state
     $container.removeClass(oc.onPrefix + old)
       .addClass(oc.onPrefix + current)
       .data('onSlide', current);
-    
+
     // Remove and re-add child-current classes for nesting
     $('.' + oc.current).parentsUntil(osc).removeClass(oc.childCurrent);
     slides[current].parentsUntil(osc).addClass(oc.childCurrent);
-    
+
     // Remove previous states
     $.each(slides, function(i, el) {
       $all = $all.add(el);
@@ -10384,7 +10384,7 @@ that use the API provided by core.
       oc.next,
       oc.after
     ].join(" "));
-    
+
     // Add new states back in
     slides[current].addClass(oc.current);
     if (current > 0) {
@@ -10404,51 +10404,51 @@ that use the API provided by core.
       });
     }
   },
-  
+
   /* Methods exposed in the jQuery.deck namespace */
   methods = {
-    
+
     /*
     jQuery.deck(selector, options)
-    
+
     selector: string | jQuery | array
     options: object, optional
-        
+
     Initializes the deck, using each element matched by selector as a slide.
     May also be passed an array of string selectors or jQuery objects, in
     which case each selector in the array is considered a slide. The second
     parameter is an optional options object which will extend the default
     values.
-    
+
     $.deck('.slide');
-    
+
     or
-    
+
     $.deck([
        '#first-slide',
        '#second-slide',
        '#etc'
     ]);
-    */  
+    */
     init: function(elements, opts) {
       var startTouch,
       tolerance,
       esp = function(e) {
         e.stopPropagation();
       };
-      
+
       options = $.extend(true, {}, $[deck].defaults, opts);
       slides = [];
       current = 0;
       $container = $(options.selectors.container);
       tolerance = options.touch.swipeTolerance;
-      
+
       // Pre init event for preprocessing hooks
       $d.trigger(events.beforeInitialize);
-      
+
       // Hide the deck while states are being applied to kill transitions
       $container.addClass(options.classes.loading);
-      
+
       // Fill slides array depending on parameter type
       if ($.isArray(elements)) {
         $.each(elements, function(i, e) {
@@ -10460,7 +10460,7 @@ that use the API provided by core.
           slides.push($(e));
         });
       }
-      
+
       /* Remove any previous bindings, and rebind key events */
       $d.unbind('keydown.deck').bind('keydown.deck', function(e) {
         if (e.which === options.keys.next || $.inArray(e.which, options.keys.next) > -1) {
@@ -10475,7 +10475,7 @@ that use the API provided by core.
       /* Stop propagation of key events within editable elements */
       .undelegate('input, textarea, select, button, meter, progress, [contentEditable]', 'keydown', esp)
       .delegate('input, textarea, select, button, meter, progress, [contentEditable]', 'keydown', esp);
-      
+
       /* Bind touch events for swiping between slides on touch devices */
       $container.unbind('touchstart.deck').bind('touchstart.deck', function(e) {
         if (!startTouch) {
@@ -10506,7 +10506,7 @@ that use the API provided by core.
         });
       })
       .scrollLeft(0).scrollTop(0);
-      
+
       /*
       Kick iframe videos, which dont like to redraw w/ transforms.
       Remove this if Webkit ever fixes it.
@@ -10522,21 +10522,21 @@ that use the API provided by core.
           }
         });
       });
-      
+
       if (slides.length) {
         updateStates();
       }
-      
+
       // Show deck again now that slides are in place
       $container.removeClass(options.classes.loading);
       $d.trigger(events.initialize);
     },
-    
+
     /*
     jQuery.deck('go', index)
-    
+
     index: integer | string
-    
+
     Moves to the slide at the specified index if index is a number. Index is
     0-based, so $.deck('go', 0); will move to the first slide. If index is a
     string this will move to the slide with the specified id. If index is out
@@ -10545,7 +10545,7 @@ that use the API provided by core.
     go: function(index) {
       var e = $.Event(events.change),
       ndx;
-      
+
       /* Number index, easy. */
       if (typeof index === 'number' && index >= 0 && index < slides.length) {
         ndx = index;
@@ -10559,10 +10559,10 @@ that use the API provided by core.
           }
         });
       };
-      
+
       /* Out of bounds, id doesn't exist, illegal input, eject */
       if (typeof ndx === 'undefined') return;
-      
+
       $d.trigger(e, [current, ndx]);
       if (e.isDefaultPrevented()) {
         /* Trigger the event again and undo the damage done by extensions. */
@@ -10573,32 +10573,32 @@ that use the API provided by core.
         updateStates();
       }
     },
-    
+
     /*
     jQuery.deck('next')
-    
+
     Moves to the next slide. If the last slide is already active, the call
     is ignored.
     */
     next: function() {
       methods.go(current+1);
     },
-    
+
     /*
     jQuery.deck('prev')
-    
+
     Moves to the previous slide. If the first slide is already active, the
     call is ignored.
     */
     prev: function() {
       methods.go(current-1);
     },
-    
+
     /*
     jQuery.deck('getSlide', index)
-    
+
     index: integer, optional
-    
+
     Returns a jQuery object containing the slide at index. If index is not
     specified, the current slide is returned.
     */
@@ -10607,47 +10607,47 @@ that use the API provided by core.
       if (typeof i != 'number' || i < 0 || i >= slides.length) return null;
       return slides[i];
     },
-    
+
     /*
     jQuery.deck('getSlides')
-    
+
     Returns all slides as an array of jQuery objects.
     */
     getSlides: function() {
       return slides;
     },
-    
+
     /*
     jQuery.deck('getContainer')
-    
+
     Returns a jQuery object containing the deck container as defined by the
     container option.
     */
     getContainer: function() {
       return $container;
     },
-    
+
     /*
     jQuery.deck('getOptions')
-    
+
     Returns the options object for the deck, including any overrides that
     were defined at initialization.
     */
     getOptions: function() {
       return options;
     },
-    
+
     /*
     jQuery.deck('extend', name, method)
-    
+
     name: string
     method: function
-    
+
     Adds method to the deck namespace with the key of name. This doesn’t
     give access to any private member data — public methods must still be
     used within method — but lets extension authors piggyback on the deck
     namespace rather than pollute jQuery.
-    
+
     $.deck('extend', 'alert', function(msg) {
        alert(msg);
     });
@@ -10659,7 +10659,7 @@ that use the API provided by core.
       methods[name] = method;
     }
   };
-  
+
   /* jQuery extension */
   $[deck] = function(method, arg) {
     if (methods[method]) {
@@ -10669,26 +10669,26 @@ that use the API provided by core.
       return methods.init(method, arg);
     }
   };
-  
+
   /*
   The default settings object for a deck. All deck extensions should extend
   this object to add defaults for any of their options.
-  
+
   options.classes.after
     This class is added to all slides that appear after the 'next' slide.
-  
+
   options.classes.before
     This class is added to all slides that appear before the 'previous'
     slide.
-    
+
   options.classes.childCurrent
     This class is added to all elements in the DOM tree between the
     'current' slide and the deck container. For standard slides, this is
     mostly seen and used for nested slides.
-    
+
   options.classes.current
     This class is added to the current slide.
-    
+
   options.classes.loading
     This class is applied to the deck container during loading phases and is
     primarily used as a way to short circuit transitions between states
@@ -10696,31 +10696,31 @@ that use the API provided by core.
     class is applied during deck initialization and then removed to prevent
     all the slides from appearing stacked and transitioning into place
     on load.
-    
+
   options.classes.next
     This class is added to the slide immediately following the 'current'
     slide.
-    
+
   options.classes.onPrefix
     This prefix, concatenated with the current slide index, is added to the
     deck container as you change slides.
-    
+
   options.classes.previous
     This class is added to the slide immediately preceding the 'current'
     slide.
-    
+
   options.selectors.container
     Elements matched by this CSS selector will be considered the deck
     container. The deck container is used to scope certain states of the
     deck, as with the onPrefix option, or with extensions such as deck.goto
     and deck.menu.
-    
+
   options.keys.next
     The numeric keycode used to go to the next slide.
-    
+
   options.keys.previous
     The numeric keycode used to go to the previous slide.
-    
+
   options.touch.swipeTolerance
     The number of pixels the users finger must travel to produce a swipe
     gesture.
@@ -10736,27 +10736,27 @@ that use the API provided by core.
       onPrefix: 'on-slide-',
       previous: 'deck-previous'
     },
-    
+
     selectors: {
       container: '.deck-container'
     },
-    
+
     keys: {
       // enter, space, page down, right arrow, down arrow,
       next: [13, 32, 34, 39, 40],
       // backspace, page up, left arrow, up arrow
       previous: [8, 33, 37, 38]
     },
-    
+
     touch: {
       swipeTolerance: 60
     }
   };
-  
+
   $d.ready(function() {
     $('html').addClass('ready');
   });
-  
+
   /*
   FF + Transforms + Flash video don't get along...
   Firefox will reload and start playing certain videos after a
@@ -10766,20 +10766,20 @@ that use the API provided by core.
   $d.bind('deck.change', function(e, from, to) {
     var oldFrames = $[deck]('getSlide', from).find('iframe'),
     newFrames = $[deck]('getSlide', to).find('iframe');
-    
+
     oldFrames.each(function() {
         var $this = $(this),
         curSrc = $this.attr('src');
-            
+
             if(curSrc) {
               $this.data('deck-src', curSrc).attr('src', '');
             }
     });
-    
+
     newFrames.each(function() {
       var $this = $(this),
       originalSrc = $this.data('deck-src');
-      
+
       if (originalSrc) {
         $this.attr('src', originalSrc);
       }
@@ -10806,128 +10806,128 @@ slide.
 */
 
 (function ($, deck, window, undefined) {
-	var $d = $(document),
-	$window = $(window),
-	
-	/* Collection of internal fragment links in the deck */
-	$internals,
-	
-	/*
-	Internal only function.  Given a string, extracts the id from the hash,
-	matches it to the appropriate slide, and navigates there.
-	*/
-	goByHash = function(str) {
-		var id = str.substr(str.indexOf("#") + 1),
-		slides = $[deck]('getSlides');
-		
-		$.each(slides, function(i, $el) {
-			if ($el.attr('id') === id) {
-				$[deck]('go', i);
-				return false;
-			}
-		});
-		
-		// If we don't set these to 0 the container scrolls due to hashchange
-		$[deck]('getContainer').scrollLeft(0).scrollTop(0);
-	};
-	
-	/*
-	Extends defaults/options.
-	
-	options.selectors.hashLink
-		The element matching this selector has its href attribute updated to
-		the hash of the current slide as the user navigates through the deck.
-		
-	options.hashPrefix
-		Every slide that does not have an id is assigned one at initialization.
-		Assigned ids take the form of hashPrefix + slideIndex, e.g., slide-0,
-		slide-12, etc.
+  var $d = $(document),
+  $window = $(window),
 
-	options.preventFragmentScroll
-		When deep linking to a hash of a nested slide, this scrolls the deck
-		container to the top, undoing the natural browser behavior of scrolling
-		to the document fragment on load.
-	*/
-	$.extend(true, $[deck].defaults, {
-		selectors: {
-			hashLink: '.deck-permalink'
-		},
-		
-		hashPrefix: 'slide-',
-		preventFragmentScroll: true
-	});
-	
-	
-	$d.bind('deck.init', function() {
-	   var opts = $[deck]('getOptions');
-		$internals = $(),
-		slides = $[deck]('getSlides');
-		
-		$.each(slides, function(i, $el) {
-			var hash;
-			
-			/* Hand out ids to the unfortunate slides born without them */
-			if (!$el.attr('id') || $el.data('deckAssignedId') === $el.attr('id')) {
-				$el.attr('id', opts.hashPrefix + i);
-				$el.data('deckAssignedId', opts.hashPrefix + i);
-			}
-			
-			hash ='#' + $el.attr('id');
-			
-			/* Deep link to slides on init */
-			if (hash === window.location.hash) {
-				$[deck]('go', i);
-			}
-			
-			/* Add internal links to this slide */
-			$internals = $internals.add('a[href="' + hash + '"]');
-		});
-		
-		if (!Modernizr.hashchange) {
-			/* Set up internal links using click for the poor browsers
-			without a hashchange event. */
-			$internals.unbind('click.deckhash').bind('click.deckhash', function(e) {
-				goByHash($(this).attr('href'));
-			});
-		}
-		
-		/* Set up first id container state class */
-		if (slides.length) {
-			$[deck]('getContainer').addClass(opts.classes.onPrefix + $[deck]('getSlide').attr('id'));
-		};
-	})
-	/* Update permalink, address bar, and state class on a slide change */
-	.bind('deck.change', function(e, from, to) {
-		var hash = '#' + $[deck]('getSlide', to).attr('id'),
-		hashPath = window.location.href.replace(/#.*/, '') + hash,
-		opts = $[deck]('getOptions'),
-		osp = opts.classes.onPrefix,
-		$c = $[deck]('getContainer');
-		
-		$c.removeClass(osp + $[deck]('getSlide', from).attr('id'));
-		$c.addClass(osp + $[deck]('getSlide', to).attr('id'));
-		
-		$(opts.selectors.hashLink).attr('href', hashPath);
-		if (Modernizr.history) {
-			window.history.replaceState({}, "", hashPath);
-		}
-	});
-	
-	/* Deals with internal links in modern browsers */
-	$window.bind('hashchange.deckhash', function(e) {
-		if (e.originalEvent && e.originalEvent.newURL) {
-			goByHash(e.originalEvent.newURL);
-		}
-		else {
-			goByHash(window.location.hash);
-		}
-	})
-	/* Prevent scrolling on deep links */
-	.bind('load', function() {
-		if ($[deck]('getOptions').preventFragmentScroll) {
-			$[deck]('getContainer').scrollLeft(0).scrollTop(0);
-		}
-	});
+  /* Collection of internal fragment links in the deck */
+  $internals,
+
+  /*
+  Internal only function.  Given a string, extracts the id from the hash,
+  matches it to the appropriate slide, and navigates there.
+  */
+  goByHash = function(str) {
+    var id = str.substr(str.indexOf("#") + 1),
+    slides = $[deck]('getSlides');
+
+    $.each(slides, function(i, $el) {
+      if ($el.attr('id') === id) {
+        $[deck]('go', i);
+        return false;
+      }
+    });
+
+    // If we don't set these to 0 the container scrolls due to hashchange
+    $[deck]('getContainer').scrollLeft(0).scrollTop(0);
+  };
+
+  /*
+  Extends defaults/options.
+
+  options.selectors.hashLink
+    The element matching this selector has its href attribute updated to
+    the hash of the current slide as the user navigates through the deck.
+
+  options.hashPrefix
+    Every slide that does not have an id is assigned one at initialization.
+    Assigned ids take the form of hashPrefix + slideIndex, e.g., slide-0,
+    slide-12, etc.
+
+  options.preventFragmentScroll
+    When deep linking to a hash of a nested slide, this scrolls the deck
+    container to the top, undoing the natural browser behavior of scrolling
+    to the document fragment on load.
+  */
+  $.extend(true, $[deck].defaults, {
+    selectors: {
+      hashLink: '.deck-permalink'
+    },
+
+    hashPrefix: 'slide-',
+    preventFragmentScroll: true
+  });
+
+
+  $d.bind('deck.init', function() {
+     var opts = $[deck]('getOptions');
+    $internals = $(),
+    slides = $[deck]('getSlides');
+
+    $.each(slides, function(i, $el) {
+      var hash;
+
+      /* Hand out ids to the unfortunate slides born without them */
+      if (!$el.attr('id') || $el.data('deckAssignedId') === $el.attr('id')) {
+        $el.attr('id', opts.hashPrefix + i);
+        $el.data('deckAssignedId', opts.hashPrefix + i);
+      }
+
+      hash ='#' + $el.attr('id');
+
+      /* Deep link to slides on init */
+      if (hash === window.location.hash) {
+        $[deck]('go', i);
+      }
+
+      /* Add internal links to this slide */
+      $internals = $internals.add('a[href="' + hash + '"]');
+    });
+
+    if (!Modernizr.hashchange) {
+      /* Set up internal links using click for the poor browsers
+      without a hashchange event. */
+      $internals.unbind('click.deckhash').bind('click.deckhash', function(e) {
+        goByHash($(this).attr('href'));
+      });
+    }
+
+    /* Set up first id container state class */
+    if (slides.length) {
+      $[deck]('getContainer').addClass(opts.classes.onPrefix + $[deck]('getSlide').attr('id'));
+    };
+  })
+  /* Update permalink, address bar, and state class on a slide change */
+  .bind('deck.change', function(e, from, to) {
+    var hash = '#' + $[deck]('getSlide', to).attr('id'),
+    hashPath = window.location.href.replace(/#.*/, '') + hash,
+    opts = $[deck]('getOptions'),
+    osp = opts.classes.onPrefix,
+    $c = $[deck]('getContainer');
+
+    $c.removeClass(osp + $[deck]('getSlide', from).attr('id'));
+    $c.addClass(osp + $[deck]('getSlide', to).attr('id'));
+
+    $(opts.selectors.hashLink).attr('href', hashPath);
+    if (Modernizr.history) {
+      window.history.replaceState({}, "", hashPath);
+    }
+  });
+
+  /* Deals with internal links in modern browsers */
+  $window.bind('hashchange.deckhash', function(e) {
+    if (e.originalEvent && e.originalEvent.newURL) {
+      goByHash(e.originalEvent.newURL);
+    }
+    else {
+      goByHash(window.location.hash);
+    }
+  })
+  /* Prevent scrolling on deep links */
+  .bind('load', function() {
+    if ($[deck]('getOptions').preventFragmentScroll) {
+      $[deck]('getContainer').scrollLeft(0).scrollTop(0);
+    }
+  });
 })(jQuery, 'deck', this);
 /*!
 Deck JS - deck.navigation
@@ -10942,84 +10942,84 @@ This module adds clickable previous and next links to the deck.
 */
 
 (function($, deck, undefined) {
-	var $d = $(document),
-	
-	/* Updates link hrefs, and disabled states if last/first slide */
-	updateButtons = function(e, from, to) {
-		var opts = $[deck]('getOptions'),
-		last = $[deck]('getSlides').length - 1,
-		prevSlide = $[deck]('getSlide', to - 1),
-		nextSlide = $[deck]('getSlide', to + 1),
-		hrefBase = window.location.href.replace(/#.*/, ''),
-		prevId = prevSlide ? prevSlide.attr('id') : undefined,
-		nextId = nextSlide ? nextSlide.attr('id') : undefined;
-		
-		$(opts.selectors.previousLink)
-			.toggleClass(opts.classes.navDisabled, !to)
-			.attr('href', hrefBase + '#' + (prevId ? prevId : ''));
-		$(opts.selectors.nextLink)
-			.toggleClass(opts.classes.navDisabled, to === last)
-			.attr('href', hrefBase + '#' + (nextId ? nextId : ''));
-	};
-	
-	/*
-	Extends defaults/options.
-	
-	options.classes.navDisabled
-		This class is added to a navigation link when that action is disabled.
-		It is added to the previous link when on the first slide, and to the
-		next link when on the last slide.
-		
-	options.selectors.nextLink
-		The elements that match this selector will move the deck to the next
-		slide when clicked.
-		
-	options.selectors.previousLink
-		The elements that match this selector will move to deck to the previous
-		slide when clicked.
-	*/
-	$.extend(true, $[deck].defaults, {
-		classes: {
-			navDisabled: 'deck-nav-disabled'
-		},
-		
-		selectors: {
-			nextLink: '.deck-next-link',
-			previousLink: '.deck-prev-link'
-		}
-	});
+  var $d = $(document),
 
-	$d.bind('deck.init', function() {
-		var opts = $[deck]('getOptions'),
-		slides = $[deck]('getSlides'),
-		$current = $[deck]('getSlide'),
-		ndx;
-		
-		// Setup prev/next link events
-		$(opts.selectors.previousLink)
-		.unbind('click.decknavigation')
-		.bind('click.decknavigation', function(e) {
-			$[deck]('prev');
-			e.preventDefault();
-		});
-		
-		$(opts.selectors.nextLink)
-		.unbind('click.decknavigation')
-		.bind('click.decknavigation', function(e) {
-			$[deck]('next');
-			e.preventDefault();
-		});
-		
-		// Find where we started in the deck and set initial states
-		$.each(slides, function(i, $slide) {
-			if ($slide === $current) {
-				ndx = i;
-				return false;
-			}
-		});
-		updateButtons(null, ndx, ndx);
-	})
-	.bind('deck.change', updateButtons);
+  /* Updates link hrefs, and disabled states if last/first slide */
+  updateButtons = function(e, from, to) {
+    var opts = $[deck]('getOptions'),
+    last = $[deck]('getSlides').length - 1,
+    prevSlide = $[deck]('getSlide', to - 1),
+    nextSlide = $[deck]('getSlide', to + 1),
+    hrefBase = window.location.href.replace(/#.*/, ''),
+    prevId = prevSlide ? prevSlide.attr('id') : undefined,
+    nextId = nextSlide ? nextSlide.attr('id') : undefined;
+
+    $(opts.selectors.previousLink)
+      .toggleClass(opts.classes.navDisabled, !to)
+      .attr('href', hrefBase + '#' + (prevId ? prevId : ''));
+    $(opts.selectors.nextLink)
+      .toggleClass(opts.classes.navDisabled, to === last)
+      .attr('href', hrefBase + '#' + (nextId ? nextId : ''));
+  };
+
+  /*
+  Extends defaults/options.
+
+  options.classes.navDisabled
+    This class is added to a navigation link when that action is disabled.
+    It is added to the previous link when on the first slide, and to the
+    next link when on the last slide.
+
+  options.selectors.nextLink
+    The elements that match this selector will move the deck to the next
+    slide when clicked.
+
+  options.selectors.previousLink
+    The elements that match this selector will move to deck to the previous
+    slide when clicked.
+  */
+  $.extend(true, $[deck].defaults, {
+    classes: {
+      navDisabled: 'deck-nav-disabled'
+    },
+
+    selectors: {
+      nextLink: '.deck-next-link',
+      previousLink: '.deck-prev-link'
+    }
+  });
+
+  $d.bind('deck.init', function() {
+    var opts = $[deck]('getOptions'),
+    slides = $[deck]('getSlides'),
+    $current = $[deck]('getSlide'),
+    ndx;
+
+    // Setup prev/next link events
+    $(opts.selectors.previousLink)
+    .unbind('click.decknavigation')
+    .bind('click.decknavigation', function(e) {
+      $[deck]('prev');
+      e.preventDefault();
+    });
+
+    $(opts.selectors.nextLink)
+    .unbind('click.decknavigation')
+    .bind('click.decknavigation', function(e) {
+      $[deck]('next');
+      e.preventDefault();
+    });
+
+    // Find where we started in the deck and set initial states
+    $.each(slides, function(i, $slide) {
+      if ($slide === $current) {
+        ndx = i;
+        return false;
+      }
+    });
+    updateButtons(null, ndx, ndx);
+  })
+  .bind('deck.change', updateButtons);
 })(jQuery, 'deck');
 
 /*!
@@ -11035,87 +11035,87 @@ This module adds a (current)/(total) style status indicator to the deck.
 */
 
 (function($, deck, undefined) {
-	var $d = $(document),
-	
-	updateCurrent = function(e, from, to) {
-		var opts = $[deck]('getOptions');
-		
-		$(opts.selectors.statusCurrent).text(opts.countNested ?
-			to + 1 :
-			$[deck]('getSlide', to).data('rootSlide')
-		);
-	};
-	
-	/*
-	Extends defaults/options.
-	
-	options.selectors.statusCurrent
-		The element matching this selector displays the current slide number.
-		
-	options.selectors.statusTotal
-		The element matching this selector displays the total number of slides.
-		
-	options.countNested
-		If false, only top level slides will be counted in the current and
-		total numbers.
-	*/
-	$.extend(true, $[deck].defaults, {
-		selectors: {
-			statusCurrent: '.deck-status-current',
-			statusTotal: '.deck-status-total'
-		},
-		
-		countNested: true
-	});
-	
-	$d.bind('deck.init', function() {
-		var opts = $[deck]('getOptions'),
-		slides = $[deck]('getSlides'),
-		$current = $[deck]('getSlide'),
-		ndx;
-		
-		// Set total slides once
-		if (opts.countNested) {
-			$(opts.selectors.statusTotal).text(slides.length);
-		}
-		else {
-			/* Determine root slides by checking each slide's ancestor tree for
-			any of the slide classes. */
-			var rootIndex = 1,
-			slideTest = $.map([
-				opts.classes.before,
-				opts.classes.previous,
-				opts.classes.current,
-				opts.classes.next,
-				opts.classes.after
-			], function(el, i) {
-				return '.' + el;
-			}).join(', ');
-			
-			/* Store the 'real' root slide number for use during slide changes. */
-			$.each(slides, function(i, $el) {
-				var $parentSlides = $el.parentsUntil(opts.selectors.container, slideTest);
+  var $d = $(document),
 
-				$el.data('rootSlide', $parentSlides.length ?
-					$parentSlides.last().data('rootSlide') :
-					rootIndex++
-				);
-			});
-			
-			$(opts.selectors.statusTotal).text(rootIndex - 1);
-		}
-		
-		// Find where we started in the deck and set initial state
-		$.each(slides, function(i, $el) {
-			if ($el === $current) {
-				ndx = i;
-				return false;
-			}
-		});
-		updateCurrent(null, ndx, ndx);
-	})
-	/* Update current slide number with each change event */
-	.bind('deck.change', updateCurrent);
+  updateCurrent = function(e, from, to) {
+    var opts = $[deck]('getOptions');
+
+    $(opts.selectors.statusCurrent).text(opts.countNested ?
+      to + 1 :
+      $[deck]('getSlide', to).data('rootSlide')
+    );
+  };
+
+  /*
+  Extends defaults/options.
+
+  options.selectors.statusCurrent
+    The element matching this selector displays the current slide number.
+
+  options.selectors.statusTotal
+    The element matching this selector displays the total number of slides.
+
+  options.countNested
+    If false, only top level slides will be counted in the current and
+    total numbers.
+  */
+  $.extend(true, $[deck].defaults, {
+    selectors: {
+      statusCurrent: '.deck-status-current',
+      statusTotal: '.deck-status-total'
+    },
+
+    countNested: true
+  });
+
+  $d.bind('deck.init', function() {
+    var opts = $[deck]('getOptions'),
+    slides = $[deck]('getSlides'),
+    $current = $[deck]('getSlide'),
+    ndx;
+
+    // Set total slides once
+    if (opts.countNested) {
+      $(opts.selectors.statusTotal).text(slides.length);
+    }
+    else {
+      /* Determine root slides by checking each slide's ancestor tree for
+      any of the slide classes. */
+      var rootIndex = 1,
+      slideTest = $.map([
+        opts.classes.before,
+        opts.classes.previous,
+        opts.classes.current,
+        opts.classes.next,
+        opts.classes.after
+      ], function(el, i) {
+        return '.' + el;
+      }).join(', ');
+
+      /* Store the 'real' root slide number for use during slide changes. */
+      $.each(slides, function(i, $el) {
+        var $parentSlides = $el.parentsUntil(opts.selectors.container, slideTest);
+
+        $el.data('rootSlide', $parentSlides.length ?
+          $parentSlides.last().data('rootSlide') :
+          rootIndex++
+        );
+      });
+
+      $(opts.selectors.statusTotal).text(rootIndex - 1);
+    }
+
+    // Find where we started in the deck and set initial state
+    $.each(slides, function(i, $el) {
+      if ($el === $current) {
+        ndx = i;
+        return false;
+      }
+    });
+    updateCurrent(null, ndx, ndx);
+  })
+  /* Update current slide number with each change event */
+  .bind('deck.change', updateCurrent);
 })(jQuery, 'deck');
 
 // XRegExp 1.5.1
@@ -11785,7 +11785,7 @@ if (XRegExp) {
 //
 // Begin anonymous function. This is used to contain local scope variables without polutting global scope.
 //
-if (typeof(SyntaxHighlighter) == 'undefined') var SyntaxHighlighter = function() { 
+if (typeof(SyntaxHighlighter) == 'undefined') var SyntaxHighlighter = function() {
 
 // CommonJS
 if (typeof(require) != 'undefined' && typeof(XRegExp) == 'undefined')
@@ -11794,16 +11794,16 @@ if (typeof(require) != 'undefined' && typeof(XRegExp) == 'undefined')
 }
 
 // Shortcut object which will be assigned to the SyntaxHighlighter variable.
-// This is a shorthand for local reference in order to avoid long namespace 
+// This is a shorthand for local reference in order to avoid long namespace
 // references to SyntaxHighlighter.whatever...
 var sh = {
   defaults : {
     /** Additional CSS class names to be added to highlighter elements. */
     'class-name' : '',
-    
+
     /** First line number. */
     'first-line' : 1,
-    
+
     /**
      * Pads line numbers. Possible values are:
      *
@@ -11812,74 +11812,74 @@ var sh = {
      *   [int] - length up to which pad line numbers.
      */
     'pad-line-numbers' : false,
-    
+
     /** Lines to highlight. */
     'highlight' : null,
-    
+
     /** Title to be displayed above the code block. */
     'title' : null,
-    
+
     /** Enables or disables smart tabs. */
     'smart-tabs' : true,
-    
+
     /** Gets or sets tab size. */
     'tab-size' : 4,
-    
+
     /** Enables or disables gutter. */
     'gutter' : true,
-    
+
     /** Enables or disables toolbar. */
     'toolbar' : true,
-    
+
     /** Enables quick code copy and paste from double click. */
     'quick-code' : true,
-    
+
     /** Forces code view to be collapsed. */
     'collapse' : false,
-    
+
     /** Enables or disables automatic links. */
     'auto-links' : true,
-    
+
     /** Gets or sets light mode. Equavalent to turning off gutter and toolbar. */
     'light' : false,
 
     'unindent' : true,
-    
+
     'html-script' : false
   },
-  
+
   config : {
     space : '&nbsp;',
-    
+
     /** Enables use of <SCRIPT type="syntaxhighlighter" /> tags. */
     useScriptTags : true,
-    
+
     /** Blogger mode flag. */
     bloggerMode : false,
-    
+
     stripBrs : false,
-    
+
     /** Name of the tag that SyntaxHighlighter will automatically look for. */
     tagName : 'pre',
-    
+
     strings : {
       expandSource : 'expand source',
       help : '?',
       alert: 'SyntaxHighlighter\n\n',
       noBrush : 'Can\'t find brush for: ',
       brushNotHtmlScript : 'Brush wasn\'t configured for html-script option: ',
-      
+
       // this is populated by the build script
       aboutDialog : '@ABOUT@'
     }
   },
-  
+
   /** Internal 'global' variables. */
   vars : {
     discoveredBrushes : null,
     highlighters : {}
   },
-  
+
   /** This object is populated by user included external brush files. */
   brushes : {},
 
@@ -11894,13 +11894,13 @@ var sh = {
     multiLineSingleQuotedString : new XRegExp("'([^\\\\']|\\\\.)*'", 'gs'),
     xmlComments         : /(&lt;|<)!--[\s\S]*?--(&gt;|>)/gm,
     url             : /\w+:\/\/[\w-.\/?%&=:@;#]*/g,
-    
+
     /** <?= ?> tags. */
     phpScriptTags         : { left: /(&lt;|<)\?(?:=|php)?/g, right: /\?(&gt;|>)/g, 'eof' : true },
-    
+
     /** <%= %> tags. */
     aspScriptTags       : { left: /(&lt;|<)%=?/g, right: /%(&gt;|>)/g },
-    
+
     /** <script> tags. */
     scriptScriptTags      : { left: /(&lt;|<)\s*script.*?(&gt;|>)/gi, right: /(&lt;|<)\/\s*script\s*(&gt;|>)/gi }
   },
@@ -11917,20 +11917,20 @@ var sh = {
         items = sh.toolbar.items,
         list = items.list
         ;
-      
+
       function defaultGetHtml(highlighter, name)
       {
         return sh.toolbar.getButtonHtml(highlighter, name, sh.config.strings[name]);
       };
-      
+
       for (var i = 0; i < list.length; i++)
         html += (items[list[i]].getHtml || defaultGetHtml)(highlighter, list[i]);
-      
+
       html += '</div>';
-      
+
       return html;
     },
-    
+
     /**
      * Generates HTML markup for a regular button in the toolbar.
      * @param {Highlighter} highlighter Highlighter instance.
@@ -11946,7 +11946,7 @@ var sh = {
         + '">' + label + '</a></span>'
         ;
     },
-    
+
     /**
      * Event handler for a toolbar anchor.
      */
@@ -11964,11 +11964,11 @@ var sh = {
 
         return match ? match[1] : null;
       };
-      
+
       var highlighter = getHighlighterById(findParentElement(target, '.syntaxhighlighter').id),
         commandName = getValue('command')
         ;
-      
+
       // execute the toolbar command
       if (highlighter && commandName)
         sh.toolbar.items[commandName].execute(highlighter);
@@ -11976,7 +11976,7 @@ var sh = {
       // disable default A click behaviour
       e.preventDefault();
     },
-    
+
     /** Collection of toolbar items. */
     items : {
       // Ordered lis of items in the toolbar. Can't expect `for (var n in items)` to be consistent.
@@ -11987,11 +11987,11 @@ var sh = {
         {
           if (highlighter.getParam('collapse') != true)
             return '';
-            
+
           var title = highlighter.getParam('title');
           return sh.toolbar.getButtonHtml(highlighter, 'expandSource', title ? title : sh.config.strings.expandSource);
         },
-      
+
         execute: function(highlighter)
         {
           var div = getHighlighterDivById(highlighter.id);
@@ -12002,11 +12002,11 @@ var sh = {
       /** Command to display the about dialog window. */
       help: {
         execute: function(highlighter)
-        { 
+        {
           var wnd = popup('', '_blank', 500, 250, 'scrollbars=0'),
             doc = wnd.document
             ;
-          
+
           doc.write(sh.config.strings.aboutDialog);
           doc.close();
           wnd.focus();
@@ -12018,18 +12018,18 @@ var sh = {
   /**
    * Finds all elements on the page which should be processes by SyntaxHighlighter.
    *
-   * @param {Object} globalParams   Optional parameters which override element's 
+   * @param {Object} globalParams   Optional parameters which override element's
    *                  parameters. Only used if element is specified.
-   * 
+   *
    * @param {Object} element  Optional element to highlight. If none is
-   *              provided, all elements in the current document 
+   *              provided, all elements in the current document
    *              are returned which qualify.
    *
    * @return {Array}  Returns list of <code>{ target: DOMElement, params: Object }</code> objects.
    */
   findElements: function(globalParams, element)
   {
-    var elements = element ? [element] : toArray(document.getElementsByTagName(sh.config.tagName)), 
+    var elements = element ? [element] : toArray(document.getElementsByTagName(sh.config.tagName)),
       conf = sh.config,
       result = []
       ;
@@ -12038,49 +12038,49 @@ var sh = {
     if (conf.useScriptTags)
       elements = elements.concat(getSyntaxHighlighterScriptTags());
 
-    if (elements.length === 0) 
+    if (elements.length === 0)
       return result;
-  
-    for (var i = 0; i < elements.length; i++) 
+
+    for (var i = 0; i < elements.length; i++)
     {
       var item = {
-        target: elements[i], 
+        target: elements[i],
         // local params take precedence over globals
         params: merge(globalParams, parseParams(elements[i].className))
       };
 
       if (item.params['brush'] == null)
         continue;
-        
+
       result.push(item);
     }
-    
+
     return result;
   },
 
   /**
-   * Shorthand to highlight all elements on the page that are marked as 
+   * Shorthand to highlight all elements on the page that are marked as
    * SyntaxHighlighter source code.
-   * 
-   * @param {Object} globalParams   Optional parameters which override element's 
+   *
+   * @param {Object} globalParams   Optional parameters which override element's
    *                  parameters. Only used if element is specified.
-   * 
+   *
    * @param {Object} element  Optional element to highlight. If none is
-   *              provided, all elements in the current document 
+   *              provided, all elements in the current document
    *              are highlighted.
-   */ 
+   */
   highlight: function(globalParams, element)
   {
     var elements = this.findElements(globalParams, element),
-      propertyName = 'innerHTML', 
+      propertyName = 'innerHTML',
       highlighter = null,
       conf = sh.config
       ;
 
-    if (elements.length === 0) 
+    if (elements.length === 0)
       return;
-  
-    for (var i = 0; i < elements.length; i++) 
+
+    for (var i = 0; i < elements.length; i++)
     {
       var element = elements[i],
         target = element.target,
@@ -12093,7 +12093,7 @@ var sh = {
         continue;
 
       // Instantiate a brush
-      if (params['html-script'] == 'true' || sh.defaults['html-script'] == true) 
+      if (params['html-script'] == 'true' || sh.defaults['html-script'] == true)
       {
         highlighter = new sh.HtmlScript(brushName);
         brushName = 'htmlscript';
@@ -12101,31 +12101,31 @@ var sh = {
       else
       {
         var brush = findBrush(brushName);
-        
+
         if (brush)
           highlighter = new brush();
         else
           continue;
       }
-      
+
       code = target[propertyName];
-      
+
       // remove CDATA from <SCRIPT/> tags if it's present
       if (conf.useScriptTags)
         code = stripCData(code);
-        
+
       // Inject title if the attribute is present
       if ((target.title || '') != '')
         params.title = target.title;
-        
+
       params['brush'] = brushName;
       highlighter.init(params);
       element = highlighter.getDiv(code);
-      
+
       // carry over ID
       if ((target.id || '') != '')
         element.id = target.id;
-      
+
       target.parentNode.replaceChild(element, target);
     }
   },
@@ -12177,7 +12177,7 @@ function removeClass(target, className)
 };
 
 /**
- * Converts the source to array object. Mostly used for function arguments and 
+ * Converts the source to array object. Mostly used for function arguments and
  * lists returned by getElementsByTagName() which aren't Array objects.
  * @param {List} source Source list.
  * @return {Array} Returns array.
@@ -12185,10 +12185,10 @@ function removeClass(target, className)
 function toArray(source)
 {
   var result = [];
-  
-  for (var i = 0; i < source.length; i++) 
+
+  for (var i = 0; i < source.length; i++)
     result.push(source[i]);
-    
+
   return result;
 };
 
@@ -12255,7 +12255,7 @@ function findElement(target, search, reverse /* optional */)
 {
   if (target == null)
     return null;
-    
+
   var nodes     = reverse != true ? target.childNodes : [ target.parentNode ],
     propertyToFind  = { '#' : 'id', '.' : 'className' }[search.substr(0, 1)] || 'nodeName',
     expectedValue,
@@ -12266,14 +12266,14 @@ function findElement(target, search, reverse /* optional */)
     ? search.substr(1)
     : search.toUpperCase()
     ;
-    
+
   // main return of the found node
   if ((target[propertyToFind] || '').indexOf(expectedValue) != -1)
     return target;
-  
+
   for (var i = 0; nodes && i < nodes.length && found == null; i++)
     found = findElement(nodes[i], search, reverse);
-  
+
   return found;
 };
 
@@ -12303,7 +12303,7 @@ function indexOf(array, searchElement, fromIndex)
   for (var i = fromIndex; i < array.length; i++)
     if(array[i] == searchElement)
       return i;
-  
+
   return -1;
 };
 
@@ -12326,12 +12326,12 @@ function merge(obj1, obj2)
 {
   var result = {}, name;
 
-  for (name in obj1) 
+  for (name in obj1)
     result[name] = obj1[name];
-  
-  for (name in obj2) 
+
+  for (name in obj2)
     result[name] = obj2[name];
-    
+
   return result;
 };
 
@@ -12360,8 +12360,8 @@ function popup(url, name, width, height, options)
   var x = (screen.width - width) / 2,
     y = (screen.height - height) / 2
     ;
-    
-  options +=  ', left=' + x + 
+
+  options +=  ', left=' + x +
         ', top=' + y +
         ', width=' + width +
         ', height=' + height
@@ -12384,7 +12384,7 @@ function attachEvent(obj, type, func, scope)
   function handler(e)
   {
     e = e || window.event;
-    
+
     if (!e.target)
     {
       e.target = e.srcElement;
@@ -12393,15 +12393,15 @@ function attachEvent(obj, type, func, scope)
         this.returnValue = false;
       };
     }
-      
+
     func.call(scope || window, e);
   };
-  
-  if (obj.attachEvent) 
+
+  if (obj.attachEvent)
   {
     obj.attachEvent('on' + type, handler);
   }
-  else 
+  else
   {
     obj.addEventListener(type, handler, false);
   }
@@ -12428,36 +12428,36 @@ function findBrush(alias, showAlert)
   var brushes = sh.vars.discoveredBrushes,
     result = null
     ;
-  
-  if (brushes == null) 
+
+  if (brushes == null)
   {
     brushes = {};
-    
+
     // Find all brushes
-    for (var brush in sh.brushes) 
+    for (var brush in sh.brushes)
     {
       var info = sh.brushes[brush],
         aliases = info.aliases
         ;
-      
-      if (aliases == null) 
+
+      if (aliases == null)
         continue;
-      
+
       // keep the brush name
       info.brushName = brush.toLowerCase();
-      
-      for (var i = 0; i < aliases.length; i++) 
+
+      for (var i = 0; i < aliases.length; i++)
         brushes[aliases[i]] = brush;
     }
-    
+
     sh.vars.discoveredBrushes = brushes;
   }
-  
+
   result = sh.brushes[brushes[alias]];
 
   if (result == null && showAlert)
     alert(sh.config.strings.noBrush + alias);
-  
+
   return result;
 };
 
@@ -12469,10 +12469,10 @@ function findBrush(alias, showAlert)
 function eachLine(str, callback)
 {
   var lines = splitLines(str);
-  
+
   for (var i = 0; i < lines.length; i++)
     lines[i] = callback(lines[i], i);
-    
+
   // include \r to enable copy-paste on windows (ie8) without getting everything on one line
   return lines.join('\r\n');
 };
@@ -12480,7 +12480,7 @@ function eachLine(str, callback)
 /**
  * This is a special trim which only removes first and last empty lines
  * and doesn't affect valid leading space on the first line.
- * 
+ *
  * @param {String} str   Input string
  * @return {String}      Returns string without empty first and last lines.
  */
@@ -12491,22 +12491,22 @@ function trimFirstAndLastLines(str)
 
 /**
  * Parses key/value pairs into hash object.
- * 
+ *
  * Understands the following formats:
  * - name: word;
  * - name: [word, word];
  * - name: "string";
  * - name: 'string';
- * 
+ *
  * For example:
  *   name1: value; name2: [value, value]; name3: 'value'
- *   
+ *
  * @param {String} str    Input string.
  * @return {Object}       Returns deserialized object.
  */
 function parseParams(str)
 {
-  var match, 
+  var match,
     result = {},
     arrayRegex = new XRegExp("^\\[(?<values>(.*?))\\]$"),
     regex = new XRegExp(
@@ -12522,35 +12522,35 @@ function parseParams(str)
     )
     ;
 
-  while ((match = regex.exec(str)) != null) 
+  while ((match = regex.exec(str)) != null)
   {
     var value = match.value
       .replace(/^['"]|['"]$/g, '') // strip quotes from end of strings
       ;
-    
+
     // try to parse array value
     if (value != null && arrayRegex.test(value))
     {
       var m = arrayRegex.exec(value);
       value = m.values.length > 0 ? m.values.split(/\s*,\s*/) : [];
     }
-    
+
     result[match.name] = value;
   }
-  
+
   return result;
 };
 
 /**
  * Wraps each line of the string into <code/> tag with given style applied to it.
- * 
+ *
  * @param {String} str   Input string.
  * @param {String} css   Style name to apply to the string.
  * @return {String}      Returns input string with each line surrounded by <span/> tag.
  */
 function wrapLinesWithCode(str, css)
 {
-  if (str == null || str.length == 0 || str == '\n') 
+  if (str == null || str.length == 0 || str == '\n')
     return str;
 
   str = str.replace(/</g, '&lt;');
@@ -12559,32 +12559,32 @@ function wrapLinesWithCode(str, css)
   str = str.replace(/ {2,}/g, function(m)
   {
     var spaces = '';
-    
+
     for (var i = 0; i < m.length - 1; i++)
       spaces += sh.config.space;
-    
+
     return spaces + ' ';
   });
 
   // Split each line and apply <span class="...">...</span> to them so that
   // leading spaces aren't included.
-  if (css != null) 
+  if (css != null)
     str = eachLine(str, function(line)
     {
-      if (line.length == 0) 
+      if (line.length == 0)
         return '';
-      
+
       var spaces = '';
-      
+
       line = line.replace(/^(&nbsp;| )+/, function(s)
       {
         spaces = s;
         return '';
       });
-      
-      if (line.length == 0) 
+
+      if (line.length == 0)
         return spaces;
-      
+
       return spaces + '<code class="' + css + '">' + line + '</code>';
     });
 
@@ -12593,7 +12593,7 @@ function wrapLinesWithCode(str, css)
 
 /**
  * Pads number with zeros until it's length is the same as given length.
- * 
+ *
  * @param {Number} number Number to pad.
  * @param {Number} length Max string length with.
  * @return {String}     Returns a string padded with proper amount of '0'.
@@ -12601,16 +12601,16 @@ function wrapLinesWithCode(str, css)
 function padNumber(number, length)
 {
   var result = number.toString();
-  
+
   while (result.length < length)
     result = '0' + result;
-  
+
   return result;
 };
 
 /**
  * Replaces tabs with spaces.
- * 
+ *
  * @param {String} code   Source code.
  * @param {Number} tabSize  Size of the tab.
  * @return {String}     Returns code with all tabs replaces by spaces.
@@ -12618,7 +12618,7 @@ function padNumber(number, length)
 function processTabs(code, tabSize)
 {
   var tab = '';
-  
+
   for (var i = 0; i < tabSize; i++)
     tab += ' ';
 
@@ -12627,7 +12627,7 @@ function processTabs(code, tabSize)
 
 /**
  * Replaces tabs with smart spaces.
- * 
+ *
  * @param {String} code    Code to fix the tabs in.
  * @param {Number} tabSize Number of spaces in a column.
  * @return {String}        Returns code with all tabs replaces with roper amount of spaces.
@@ -12638,12 +12638,12 @@ function processSmartTabs(code, tabSize)
     tab = '\t',
     spaces = ''
     ;
-  
-  // Create a string with 1000 spaces to copy spaces from... 
+
+  // Create a string with 1000 spaces to copy spaces from...
   // It's assumed that there would be no indentation longer than that.
-  for (var i = 0; i < 50; i++) 
+  for (var i = 0; i < 50; i++)
     spaces += '                    '; // 20 spaces * 50
-      
+
   // This function inserts specified amount of spaces in the string
   // where a tab is while removing that given tab.
   function insertSpaces(line, pos, count)
@@ -12657,12 +12657,12 @@ function processSmartTabs(code, tabSize)
   // Go through all the lines and do the 'smart tabs' magic.
   code = eachLine(code, function(line)
   {
-    if (line.indexOf(tab) == -1) 
+    if (line.indexOf(tab) == -1)
       return line;
-    
+
     var pos = 0;
-    
-    while ((pos = line.indexOf(tab)) != -1) 
+
+    while ((pos = line.indexOf(tab)) != -1)
     {
       // This is pretty much all there is to the 'smart tabs' logic.
       // Based on the position within the line and size of a tab,
@@ -12670,10 +12670,10 @@ function processSmartTabs(code, tabSize)
       var spaces = tabSize - pos % tabSize;
       line = insertSpaces(line, pos, spaces);
     }
-    
+
     return line;
   });
-  
+
   return code;
 };
 
@@ -12683,19 +12683,19 @@ function processSmartTabs(code, tabSize)
 function fixInputString(str)
 {
   var br = /<br\s*\/?>|&lt;br\s*\/?&gt;/gi;
-  
+
   if (sh.config.bloggerMode == true)
     str = str.replace(br, '\n');
 
   if (sh.config.stripBrs == true)
     str = str.replace(br, '');
-    
+
   return str;
 };
 
 /**
  * Removes all white space at the begining and end of a string.
- * 
+ *
  * @param {String} str   String to trim.
  * @return {String}      Returns string without leading and following white space characters.
  */
@@ -12716,37 +12716,37 @@ function unindent(str)
     regex = /^\s*/,
     min = 1000
     ;
-  
+
   // go through every line and check for common number of indents
-  for (var i = 0; i < lines.length && min > 0; i++) 
+  for (var i = 0; i < lines.length && min > 0; i++)
   {
     var line = lines[i];
-    
-    if (trim(line).length == 0) 
+
+    if (trim(line).length == 0)
       continue;
-    
+
     var matches = regex.exec(line);
-    
+
     // In the event that just one line doesn't have leading white space
     // we can't unindent anything, so bail completely.
-    if (matches == null) 
+    if (matches == null)
       return str;
-      
+
     min = Math.min(matches[0].length, min);
   }
-  
+
   // trim minimum common number of white space from the begining of every line
-  if (min > 0) 
-    for (var i = 0; i < lines.length; i++) 
+  if (min > 0)
+    for (var i = 0; i < lines.length; i++)
       lines[i] = lines[i].substr(min);
-  
+
   return lines.join('\n');
 };
 
 /**
  * Callback method for Array.sort() which sorts matches by
  * index position and then by length.
- * 
+ *
  * @param {Match} m1  Left object.
  * @param {Match} m2    Right object.
  * @return {Number}     Returns -1, 0 or -1 as a comparison result.
@@ -12766,41 +12766,41 @@ function matchesSortCallback(m1, m2)
     else if(m1.length > m2.length)
       return 1;
   }
-  
+
   return 0;
 };
 
 /**
  * Executes given regular expression on provided code and returns all
  * matches that are found.
- * 
+ *
  * @param {String} code    Code to execute regular expression on.
  * @param {Object} regex   Regular expression item info from <code>regexList</code> collection.
  * @return {Array}         Returns a list of Match objects.
- */ 
+ */
 function getMatches(code, regexInfo)
 {
   function defaultAdd(match, regexInfo)
   {
     return match[0];
   };
-  
+
   var index = 0,
     match = null,
     matches = [],
     func = regexInfo.func ? regexInfo.func : defaultAdd
     ;
-  
+
   while((match = regexInfo.regex.exec(code)) != null)
   {
     var resultMatch = func(match, regexInfo);
-    
+
     if (typeof(resultMatch) == 'string')
       resultMatch = [new sh.Match(resultMatch, match.index, regexInfo.css)];
 
     matches = matches.concat(resultMatch);
   }
-  
+
   return matches;
 };
 
@@ -12812,23 +12812,23 @@ function getMatches(code, regexInfo)
 function processUrls(code)
 {
   var gt = /(.*)((&gt;|&lt;).*)/;
-  
+
   return code.replace(sh.regexLib.url, function(m)
   {
     var suffix = '',
       match = null
       ;
-    
+
     // We include &lt; and &gt; in the URL for the common cases like <http://google.com>
     // The problem is that they get transformed into &lt;http://google.com&gt;
     // Where as &gt; easily looks like part of the URL string.
-  
+
     if (match = gt.exec(m))
     {
       m = match[1];
       suffix = match[2];
     }
-    
+
     return '<a href="' + m + '">' + m + '</a>' + suffix;
   });
 };
@@ -12842,11 +12842,11 @@ function getSyntaxHighlighterScriptTags()
   var tags = document.getElementsByTagName('script'),
     result = []
     ;
-  
+
   for (var i = 0; i < tags.length; i++)
     if (tags[i].type == 'syntaxhighlighter')
       result.push(tags[i]);
-      
+
   return result;
 };
 
@@ -12866,21 +12866,21 @@ function stripCData(original)
     leftLength = left.length,
     rightLength = right.length
     ;
-  
+
   if (copy.indexOf(left) == 0)
   {
     copy = copy.substring(leftLength);
     changed = true;
   }
-  
+
   var copyLength = copy.length;
-  
+
   if (copy.indexOf(right) == copyLength - rightLength)
   {
     copy = copy.substring(0, copyLength - rightLength);
     changed = true;
   }
-  
+
   return changed ? copy : original;
 };
 
@@ -12901,7 +12901,7 @@ function quickCodeHandler(e)
     return;
 
   highlighter = getHighlighterById(highlighterDiv.id);
-  
+
   // add source class name
   addClass(highlighterDiv, 'source');
 
@@ -12910,24 +12910,24 @@ function quickCodeHandler(e)
   var lines = container.childNodes,
     code = []
     ;
-  
+
   for (var i = 0; i < lines.length; i++)
     code.push(lines[i].innerText || lines[i].textContent);
-  
+
   // using \r instead of \r or \r\n makes this work equally well on IE, FF and Webkit
   code = code.join('\r');
 
     // For Webkit browsers, replace nbsp with a breaking space
     code = code.replace(/\u00a0/g, " ");
-  
+
   // inject <textarea/> tag
   textarea.appendChild(document.createTextNode(code));
   container.appendChild(textarea);
-  
+
   // preselect all text
   textarea.focus();
   textarea.select();
-  
+
   // set up handler for lost focus
   attachEvent(textarea, 'blur', function(e)
   {
@@ -12955,7 +12955,7 @@ sh.Match.prototype.toString = function()
 
 /**
  * Simulates HTML code with a scripting language embedded.
- * 
+ *
  * @param {String} scriptBrushName Brush name of the scripting language.
  */
 sh.HtmlScript = function(scriptBrushName)
@@ -12970,36 +12970,36 @@ sh.HtmlScript = function(scriptBrushName)
 
   if (brushClass == null)
     return;
-  
+
   scriptBrush = new brushClass();
-  
+
   for(var i = 0; i < methodsToExpose.length; i++)
     // make a closure so we don't lose the name after i changes
     (function() {
       var name = methodsToExpose[i];
-      
+
       ref[name] = function()
       {
         return xmlBrush[name].apply(xmlBrush, arguments);
       };
     })();
-  
+
   if (scriptBrush.htmlScript == null)
   {
     alert(sh.config.strings.brushNotHtmlScript + scriptBrushName);
     return;
   }
-  
+
   xmlBrush.regexList.push(
     { regex: scriptBrush.htmlScript.code, func: process }
   );
-  
+
   function offsetMatches(matches, offset)
   {
-    for (var j = 0; j < matches.length; j++) 
+    for (var j = 0; j < matches.length; j++)
       matches[j].index += offset;
   }
-  
+
   function process(match, info)
   {
     var code = match.code,
@@ -13017,7 +13017,7 @@ sh.HtmlScript = function(scriptBrushName)
       offsetMatches(result, offset);
       matches = matches.concat(result);
     }
-    
+
     // add left script bracket
     if (htmlScript.left != null && match.left != null)
     {
@@ -13025,7 +13025,7 @@ sh.HtmlScript = function(scriptBrushName)
       offsetMatches(result, match.index);
       matches = matches.concat(result);
     }
-    
+
     // add right script bracket
     if (htmlScript.right != null && match.right != null)
     {
@@ -13033,10 +13033,10 @@ sh.HtmlScript = function(scriptBrushName)
       offsetMatches(result, match.index + match[0].lastIndexOf(match.right));
       matches = matches.concat(result);
     }
-    
+
     for (var j = 0; j < matches.length; j++)
       matches[j].brushName = brushClass.brushName;
-      
+
     return matches;
   }
 };
@@ -13062,7 +13062,7 @@ sh.Highlighter.prototype = {
     var result = this.params[name];
     return toBoolean(result == null ? defaultValue : result);
   },
-  
+
   /**
    * Shortcut to document.createElement().
    * @param {String} name   Name of the element to create (DIV, A, etc).
@@ -13072,7 +13072,7 @@ sh.Highlighter.prototype = {
   {
     return document.createElement(name);
   },
-  
+
   /**
    * Applies all regular expression to the code and stores all found
    * matches in the `this.matches` array.
@@ -13083,52 +13083,52 @@ sh.Highlighter.prototype = {
   findMatches: function(regexList, code)
   {
     var result = [];
-    
+
     if (regexList != null)
-      for (var i = 0; i < regexList.length; i++) 
+      for (var i = 0; i < regexList.length; i++)
         // BUG: length returns len+1 for array if methods added to prototype chain (oising@gmail.com)
         if (typeof (regexList[i]) == "object")
           result = result.concat(getMatches(code, regexList[i]));
-    
+
     // sort and remove nested the matches
     return this.removeNestedMatches(result.sort(matchesSortCallback));
   },
-  
+
   /**
-   * Checks to see if any of the matches are inside of other matches. 
-   * This process would get rid of highligted strings inside comments, 
+   * Checks to see if any of the matches are inside of other matches.
+   * This process would get rid of highligted strings inside comments,
    * keywords inside strings and so on.
    */
   removeNestedMatches: function(matches)
   {
     // Optimized by Jose Prado (http://joseprado.com)
-    for (var i = 0; i < matches.length; i++) 
-    { 
+    for (var i = 0; i < matches.length; i++)
+    {
       if (matches[i] === null)
         continue;
-      
+
       var itemI = matches[i],
         itemIEndPos = itemI.index + itemI.length
         ;
-      
-      for (var j = i + 1; j < matches.length && matches[i] !== null; j++) 
+
+      for (var j = i + 1; j < matches.length && matches[i] !== null; j++)
       {
         var itemJ = matches[j];
-        
-        if (itemJ === null) 
+
+        if (itemJ === null)
           continue;
-        else if (itemJ.index > itemIEndPos) 
+        else if (itemJ.index > itemIEndPos)
           break;
         else if (itemJ.index == itemI.index && itemJ.length > itemI.length)
           matches[i] = null;
-        else if (itemJ.index >= itemI.index && itemJ.index < itemIEndPos) 
+        else if (itemJ.index >= itemI.index && itemJ.index < itemIEndPos)
           matches[j] = null;
       }
     }
-    
+
     return matches;
   },
-  
+
   /**
    * Creates an array containing integer line numbers starting from the 'first-line' param.
    * @return {Array} Returns array of integers.
@@ -13138,28 +13138,28 @@ sh.Highlighter.prototype = {
     var lines = [],
       firstLine = parseInt(this.getParam('first-line'))
       ;
-    
+
     eachLine(code, function(line, index)
     {
       lines.push(index + firstLine);
     });
-    
+
     return lines;
   },
-  
+
   /**
    * Determines if specified line number is in the highlighted list.
    */
   isLineHighlighted: function(lineNumber)
   {
     var list = this.getParam('highlight', []);
-    
-    if (typeof(list) != 'object' && list.push == null) 
+
+    if (typeof(list) != 'object' && list.push == null)
       list = [ list ];
-    
+
     return indexOf(list, lineNumber.toString()) != -1;
   },
-  
+
   /**
    * Generates HTML markup for a single line of code while determining alternating line style.
    * @param {Integer} lineNumber  Line number.
@@ -13174,16 +13174,16 @@ sh.Highlighter.prototype = {
       'index' + lineIndex,
       'alt' + (lineNumber % 2 == 0 ? 1 : 2).toString()
     ];
-    
+
     if (this.isLineHighlighted(lineNumber))
       classes.push('highlighted');
-    
+
     if (lineNumber == 0)
       classes.push('break');
-      
+
     return '<div class="' + classes.join(' ') + '">' + code + '</div>';
   },
-  
+
   /**
    * Generates HTML markup for line number column.
    * @param {String} code     Complete code HTML markup.
@@ -13197,24 +13197,24 @@ sh.Highlighter.prototype = {
       firstLine = parseInt(this.getParam('first-line')),
       pad = this.getParam('pad-line-numbers')
       ;
-    
+
     if (pad == true)
       pad = (firstLine + count - 1).toString().length;
     else if (isNaN(pad) == true)
       pad = 0;
-      
+
     for (var i = 0; i < count; i++)
     {
       var lineNumber = lineNumbers ? lineNumbers[i] : firstLine + i,
         code = lineNumber == 0 ? sh.config.space : padNumber(lineNumber, pad)
         ;
-        
+
       html += this.getLineHtml(i, lineNumber, code);
     }
-    
+
     return html;
   },
-  
+
   /**
    * Splits block of text into individual DIV lines.
    * @param {String} code     Code to highlight.
@@ -13224,7 +13224,7 @@ sh.Highlighter.prototype = {
   getCodeLinesHtml: function(html, lineNumbers)
   {
     html = trim(html);
-    
+
     var lines = splitLines(html),
       padLength = this.getParam('pad-line-numbers'),
       firstLine = parseInt(this.getParam('first-line')),
@@ -13248,20 +13248,20 @@ sh.Highlighter.prototype = {
       }
 
       line = trim(line);
-      
+
       if (line.length == 0)
         line = sh.config.space;
-      
+
       html += this.getLineHtml(
         i,
-        lineNumber, 
+        lineNumber,
         (spaces != null ? '<code class="' + brushName + ' spaces">' + spaces + '</code>' : '') + line
       );
     }
-    
+
     return html;
   },
-  
+
   /**
    * Returns HTML for the table title or empty string if title is null.
    */
@@ -13269,7 +13269,7 @@ sh.Highlighter.prototype = {
   {
     return title ? '<caption>' + title + '</caption>' : '';
   },
-  
+
   /**
    * Finds all matches in the source code.
    * @param {String} code   Source code to process matches in.
@@ -13278,30 +13278,30 @@ sh.Highlighter.prototype = {
    */
   getMatchesHtml: function(code, matches)
   {
-    var pos = 0, 
+    var pos = 0,
       result = '',
       brushName = this.getParam('brush', '')
       ;
-    
+
     function getBrushNameCss(match)
     {
       var result = match ? (match.brushName || brushName) : brushName;
       return result ? result + ' ' : '';
     };
-    
+
     // Finally, go through the final list of matches and pull the all
     // together adding everything in between that isn't a match.
-    for (var i = 0; i < matches.length; i++) 
+    for (var i = 0; i < matches.length; i++)
     {
       var match = matches[i],
         matchBrushName
         ;
-      
-      if (match === null || match.length === 0) 
+
+      if (match === null || match.length === 0)
         continue;
-      
+
       matchBrushName = getBrushNameCss(match);
-      
+
       result += wrapLinesWithCode(code.substr(pos, match.index - pos), matchBrushName + 'plain')
           + wrapLinesWithCode(match.value, matchBrushName + match.css)
           ;
@@ -13314,7 +13314,7 @@ sh.Highlighter.prototype = {
 
     return result;
   },
-  
+
   /**
    * Generates HTML markup for the whole syntax highlighter.
    * @param {String} code Source code.
@@ -13328,7 +13328,7 @@ sh.Highlighter.prototype = {
       matches,
       lineNumbers
       ;
-    
+
     // process light mode
     if (this.getParam('light') == true)
       this.params.toolbar = this.params.gutter = false;
@@ -13337,7 +13337,7 @@ sh.Highlighter.prototype = {
 
     if (this.getParam('collapse') == true)
       classes.push('collapsed');
-    
+
     if ((gutter = this.getParam('gutter')) == false)
       classes.push('nogutter');
 
@@ -13365,7 +13365,7 @@ sh.Highlighter.prototype = {
 
     if (gutter)
       lineNumbers = this.figureOutLineNumbers(code);
-    
+
     // find matches in the code using brushes regex list
     matches = this.findMatches(this.regexList, code);
     // processes found matches into the html
@@ -13376,11 +13376,11 @@ sh.Highlighter.prototype = {
     // finally, process the links
     if (this.getParam('auto-links'))
       html = processUrls(html);
-    
+
     if (typeof(navigator) != 'undefined' && navigator.userAgent && navigator.userAgent.match(/MSIE/))
       classes.push('ie');
-    
-    html = 
+
+    html =
       '<div id="' + getHighlighterId(this.id) + '" class="' + classes.join(' ') + '">'
         + (this.getParam('toolbar') ? sh.toolbar.getHtml(this) : '')
         + '<table border="0" cellpadding="0" cellspacing="0">'
@@ -13398,10 +13398,10 @@ sh.Highlighter.prototype = {
         + '</table>'
       + '</div>'
       ;
-      
+
     return html;
   },
-  
+
   /**
    * Highlights the code and returns complete HTML.
    * @param {String} code     Code to highlight.
@@ -13409,26 +13409,26 @@ sh.Highlighter.prototype = {
    */
   getDiv: function(code)
   {
-    if (code === null) 
+    if (code === null)
       code = '';
-    
+
     this.code = code;
 
     var div = this.create('div');
 
     // create main HTML
     div.innerHTML = this.getHtml(code);
-    
+
     // set up click handlers
     if (this.getParam('toolbar'))
       attachEvent(findElement(div, '.toolbar'), 'click', sh.toolbar.handler);
-    
+
     if (this.getParam('quick-code'))
       attachEvent(findElement(div, '.code'), 'dblclick', quickCodeHandler);
-    
+
     return div;
   },
-  
+
   /**
    * Initializes the highlighter/brush.
    *
@@ -13440,18 +13440,18 @@ sh.Highlighter.prototype = {
   init: function(params)
   {
     this.id = guid();
-    
+
     // register this instance in the highlighters list
     storeHighlighter(this);
-    
+
     // local params take precedence over defaults
     this.params = merge(sh.defaults, params || {})
-    
+
     // process light mode
     if (this.getParam('light') == true)
       this.params.toolbar = this.params.gutter = false;
   },
-  
+
   /**
    * Converts space separated list of keywords into a regular expression string.
    * @param {String} str    Space separated keywords.
@@ -13463,10 +13463,10 @@ sh.Highlighter.prototype = {
       .replace(/^\s+|\s+$/g, '')
       .replace(/\s+/g, '|')
       ;
-    
+
     return '\\b(?:' + str + ')\\b';
   },
-  
+
   /**
    * Makes a brush compatible with the `html-script` functionality.
    * @param {Object} regexGroup Object containing `left` and `right` regular expressions.
@@ -13477,7 +13477,7 @@ sh.Highlighter.prototype = {
 
     if(regexGroup.eof)
       regex.end = "(?:(?:" + regex.end + ")|$)";
-    
+
     this.htmlScript = {
       left : { regex: regexGroup.left, css: 'script' },
       right : { regex: regexGroup.right, css: 'script' },
@@ -13498,75 +13498,75 @@ return sh;
 typeof(exports) != 'undefined' ? exports.SyntaxHighlighter = SyntaxHighlighter : null;
 ;(function()
 {
-	// CommonJS
-	SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
+  // CommonJS
+  SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
 
-	function Brush()
-	{
-	};
+  function Brush()
+  {
+  };
 
-	Brush.prototype	= new SyntaxHighlighter.Highlighter();
-	Brush.aliases	= ['text', 'plain'];
+  Brush.prototype = new SyntaxHighlighter.Highlighter();
+  Brush.aliases = ['text', 'plain'];
 
-	SyntaxHighlighter.brushes.Plain = Brush;
+  SyntaxHighlighter.brushes.Plain = Brush;
 
-	// CommonJS
-	typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
+  // CommonJS
+  typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
 })();
 ;(function()
 {
-	// CommonJS
-	SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
+  // CommonJS
+  SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
 
-	function Brush()
-	{
-		function process(match, regexInfo)
-		{
-			var constructor = SyntaxHighlighter.Match,
-				code = match[0],
-				tag = XRegExp.exec(code, XRegExp('(&lt;|<)[\\s\\/\\?!]*(?<name>[:\\w-\\.]+)', 'xg')),
-				result = []
-				;
+  function Brush()
+  {
+    function process(match, regexInfo)
+    {
+      var constructor = SyntaxHighlighter.Match,
+        code = match[0],
+        tag = XRegExp.exec(code, XRegExp('(&lt;|<)[\\s\\/\\?!]*(?<name>[:\\w-\\.]+)', 'xg')),
+        result = []
+        ;
 
-			if (match.attributes != null)
-			{
-				var attributes,
-					pos = 0,
-					regex = XRegExp('(?<name> [\\w:.-]+)' +
-									'\\s*=\\s*' +
-									'(?<value> ".*?"|\'.*?\'|\\w+)',
-									'xg');
+      if (match.attributes != null)
+      {
+        var attributes,
+          pos = 0,
+          regex = XRegExp('(?<name> [\\w:.-]+)' +
+                  '\\s*=\\s*' +
+                  '(?<value> ".*?"|\'.*?\'|\\w+)',
+                  'xg');
 
-				while ((attributes = XRegExp.exec(code, regex, pos)) != null)
-				{
-					result.push(new constructor(attributes.name, match.index + attributes.index, 'color1'));
-					result.push(new constructor(attributes.value, match.index + attributes.index + attributes[0].indexOf(attributes.value), 'string'));
-					pos = attributes.index + attributes[0].length;
-				}
-			}
+        while ((attributes = XRegExp.exec(code, regex, pos)) != null)
+        {
+          result.push(new constructor(attributes.name, match.index + attributes.index, 'color1'));
+          result.push(new constructor(attributes.value, match.index + attributes.index + attributes[0].indexOf(attributes.value), 'string'));
+          pos = attributes.index + attributes[0].length;
+        }
+      }
 
-			if (tag != null)
-				result.push(
-					new constructor(tag.name, match.index + tag[0].indexOf(tag.name), 'keyword')
-				);
+      if (tag != null)
+        result.push(
+          new constructor(tag.name, match.index + tag[0].indexOf(tag.name), 'keyword')
+        );
 
-			return result;
-		}
+      return result;
+    }
 
-		this.regexList = [
-			{ regex: XRegExp('(\\&lt;|<)\\!\\[[\\w\\s]*?\\[(.|\\s)*?\\]\\](\\&gt;|>)', 'gm'),			css: 'color2' },	// <![ ... [ ... ]]>
-			{ regex: SyntaxHighlighter.regexLib.xmlComments,												css: 'comments' },	// <!-- ... -->
-			{ regex: XRegExp('(&lt;|<)[\\s\\/\\?!]*(\\w+)(?<attributes>.*?)[\\s\\/\\?]*(&gt;|>)', 'sg'), func: process }
-		];
-	};
+    this.regexList = [
+      { regex: XRegExp('(\\&lt;|<)\\!\\[[\\w\\s]*?\\[(.|\\s)*?\\]\\](\\&gt;|>)', 'gm'),     css: 'color2' },  // <![ ... [ ... ]]>
+      { regex: SyntaxHighlighter.regexLib.xmlComments,                        css: 'comments' },  // <!-- ... -->
+      { regex: XRegExp('(&lt;|<)[\\s\\/\\?!]*(\\w+)(?<attributes>.*?)[\\s\\/\\?]*(&gt;|>)', 'sg'), func: process }
+    ];
+  };
 
-	Brush.prototype	= new SyntaxHighlighter.Highlighter();
-	Brush.aliases	= ['xml', 'xhtml', 'xslt', 'html', 'plist'];
+  Brush.prototype = new SyntaxHighlighter.Highlighter();
+  Brush.aliases = ['xml', 'xhtml', 'xslt', 'html', 'plist'];
 
-	SyntaxHighlighter.brushes.Xml = Brush;
+  SyntaxHighlighter.brushes.Xml = Brush;
 
-	// CommonJS
-	typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
+  // CommonJS
+  typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
 })();
 ;(function()
 {
@@ -13576,7 +13576,7 @@ typeof(exports) != 'undefined' ? exports.SyntaxHighlighter = SyntaxHighlighter :
   function Brush()
   {
     // Contributed by Erik Peterson.
-  
+
     var keywords =  'alias and BEGIN begin break case class def define_method defined do each else elsif ' +
             'END end ensure false for if in module new next nil not or raise redo rescue retry return ' +
             'self super then throw true undef unless until when while yield';
@@ -13665,7 +13665,7 @@ typeof(exports) != 'undefined' ? exports.SyntaxHighlighter = SyntaxHighlighter :
         'this throw true try typeof var while with yield';
 
     var r = SyntaxHighlighter.regexLib;
-    
+
     this.regexList = [
       { regex: r.multiLineDoubleQuotedString,         css: 'string' },      // double quoted strings
       { regex: r.multiLineSingleQuotedString,         css: 'string' },      // single quoted strings
@@ -13674,7 +13674,7 @@ typeof(exports) != 'undefined' ? exports.SyntaxHighlighter = SyntaxHighlighter :
       { regex: /\s*#.*/gm,                  css: 'preprocessor' },    // preprocessor tags like #region and #endregion
       { regex: new RegExp(this.getKeywords(keywords), 'gm'),  css: 'keyword' }      // keywords
       ];
-  
+
     this.forHtmlScript(r.scriptScriptTags);
   };
 
@@ -13688,161 +13688,161 @@ typeof(exports) != 'undefined' ? exports.SyntaxHighlighter = SyntaxHighlighter :
 })();
 ;(function()
 {
-	// CommonJS
-	SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
+  // CommonJS
+  SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
 
-	function Brush()
-	{
-		function getKeywordsCSS(str)
-		{
-			return '\\b([a-z_]|)' + str.replace(/ /g, '(?=:)\\b|\\b([a-z_\\*]|\\*|)') + '(?=:)\\b';
-		};
-	
-		function getValuesCSS(str)
-		{
-			return '\\b' + str.replace(/ /g, '(?!-)(?!:)\\b|\\b()') + '\:\\b';
-		};
+  function Brush()
+  {
+    function getKeywordsCSS(str)
+    {
+      return '\\b([a-z_]|)' + str.replace(/ /g, '(?=:)\\b|\\b([a-z_\\*]|\\*|)') + '(?=:)\\b';
+    };
 
-		var keywords =	'ascent azimuth background-attachment background-color background-image background-position ' +
-						'background-repeat background baseline bbox border-collapse border-color border-spacing border-style border-top ' +
-						'border-right border-bottom border-left border-top-color border-right-color border-bottom-color border-left-color ' +
-						'border-top-style border-right-style border-bottom-style border-left-style border-top-width border-right-width ' +
-						'border-bottom-width border-left-width border-width border bottom cap-height caption-side centerline clear clip color ' +
-						'content counter-increment counter-reset cue-after cue-before cue cursor definition-src descent direction display ' +
-						'elevation empty-cells float font-size-adjust font-family font-size font-stretch font-style font-variant font-weight font ' +
-						'height left letter-spacing line-height list-style-image list-style-position list-style-type list-style margin-top ' +
-						'margin-right margin-bottom margin-left margin marker-offset marks mathline max-height max-width min-height min-width orphans ' +
-						'outline-color outline-style outline-width outline overflow padding-top padding-right padding-bottom padding-left padding page ' +
-						'page-break-after page-break-before page-break-inside pause pause-after pause-before pitch pitch-range play-during position ' +
-						'quotes right richness size slope src speak-header speak-numeral speak-punctuation speak speech-rate stemh stemv stress ' +
-						'table-layout text-align top text-decoration text-indent text-shadow text-transform unicode-bidi unicode-range units-per-em ' +
-						'vertical-align visibility voice-family volume white-space widows width widths word-spacing x-height z-index';
+    function getValuesCSS(str)
+    {
+      return '\\b' + str.replace(/ /g, '(?!-)(?!:)\\b|\\b()') + '\:\\b';
+    };
 
-		var values =	'above absolute all always aqua armenian attr aural auto avoid baseline behind below bidi-override black blink block blue bold bolder '+
-						'both bottom braille capitalize caption center center-left center-right circle close-quote code collapse compact condensed '+
-						'continuous counter counters crop cross crosshair cursive dashed decimal decimal-leading-zero default digits disc dotted double '+
-						'embed embossed e-resize expanded extra-condensed extra-expanded fantasy far-left far-right fast faster fixed format fuchsia '+
-						'gray green groove handheld hebrew help hidden hide high higher icon inline-table inline inset inside invert italic '+
-						'justify landscape large larger left-side left leftwards level lighter lime line-through list-item local loud lower-alpha '+
-						'lowercase lower-greek lower-latin lower-roman lower low ltr marker maroon medium message-box middle mix move narrower '+
-						'navy ne-resize no-close-quote none no-open-quote no-repeat normal nowrap n-resize nw-resize oblique olive once open-quote outset '+
-						'outside overline pointer portrait pre print projection purple red relative repeat repeat-x repeat-y rgb ridge right right-side '+
-						'rightwards rtl run-in screen scroll semi-condensed semi-expanded separate se-resize show silent silver slower slow '+
-						'small small-caps small-caption smaller soft solid speech spell-out square s-resize static status-bar sub super sw-resize '+
-						'table-caption table-cell table-column table-column-group table-footer-group table-header-group table-row table-row-group teal '+
-						'text-bottom text-top thick thin top transparent tty tv ultra-condensed ultra-expanded underline upper-alpha uppercase upper-latin '+
-						'upper-roman url visible wait white wider w-resize x-fast x-high x-large x-loud x-low x-slow x-small x-soft xx-large xx-small yellow';
+    var keywords =  'ascent azimuth background-attachment background-color background-image background-position ' +
+            'background-repeat background baseline bbox border-collapse border-color border-spacing border-style border-top ' +
+            'border-right border-bottom border-left border-top-color border-right-color border-bottom-color border-left-color ' +
+            'border-top-style border-right-style border-bottom-style border-left-style border-top-width border-right-width ' +
+            'border-bottom-width border-left-width border-width border bottom cap-height caption-side centerline clear clip color ' +
+            'content counter-increment counter-reset cue-after cue-before cue cursor definition-src descent direction display ' +
+            'elevation empty-cells float font-size-adjust font-family font-size font-stretch font-style font-variant font-weight font ' +
+            'height left letter-spacing line-height list-style-image list-style-position list-style-type list-style margin-top ' +
+            'margin-right margin-bottom margin-left margin marker-offset marks mathline max-height max-width min-height min-width orphans ' +
+            'outline-color outline-style outline-width outline overflow padding-top padding-right padding-bottom padding-left padding page ' +
+            'page-break-after page-break-before page-break-inside pause pause-after pause-before pitch pitch-range play-during position ' +
+            'quotes right richness size slope src speak-header speak-numeral speak-punctuation speak speech-rate stemh stemv stress ' +
+            'table-layout text-align top text-decoration text-indent text-shadow text-transform unicode-bidi unicode-range units-per-em ' +
+            'vertical-align visibility voice-family volume white-space widows width widths word-spacing x-height z-index';
 
-		var fonts =		'[mM]onospace [tT]ahoma [vV]erdana [aA]rial [hH]elvetica [sS]ans-serif [sS]erif [cC]ourier mono sans serif';
-	
-		this.regexList = [
-			{ regex: SyntaxHighlighter.regexLib.multiLineCComments,		css: 'comments' },	// multiline comments
-			{ regex: SyntaxHighlighter.regexLib.doubleQuotedString,		css: 'string' },	// double quoted strings
-			{ regex: SyntaxHighlighter.regexLib.singleQuotedString,		css: 'string' },	// single quoted strings
-			{ regex: /\#[a-fA-F0-9]{3,6}/g,								css: 'value' },		// html colors
-			{ regex: /(-?\d+)(\.\d+)?(px|em|pt|\:|\%|)/g,				css: 'value' },		// sizes
-			{ regex: /!important/g,										css: 'color3' },	// !important
-			{ regex: new RegExp(getKeywordsCSS(keywords), 'gm'),		css: 'keyword' },	// keywords
-			{ regex: new RegExp(getValuesCSS(values), 'g'),				css: 'value' },		// values
-			{ regex: new RegExp(this.getKeywords(fonts), 'g'),			css: 'color1' }		// fonts
-			];
+    var values =  'above absolute all always aqua armenian attr aural auto avoid baseline behind below bidi-override black blink block blue bold bolder '+
+            'both bottom braille capitalize caption center center-left center-right circle close-quote code collapse compact condensed '+
+            'continuous counter counters crop cross crosshair cursive dashed decimal decimal-leading-zero default digits disc dotted double '+
+            'embed embossed e-resize expanded extra-condensed extra-expanded fantasy far-left far-right fast faster fixed format fuchsia '+
+            'gray green groove handheld hebrew help hidden hide high higher icon inline-table inline inset inside invert italic '+
+            'justify landscape large larger left-side left leftwards level lighter lime line-through list-item local loud lower-alpha '+
+            'lowercase lower-greek lower-latin lower-roman lower low ltr marker maroon medium message-box middle mix move narrower '+
+            'navy ne-resize no-close-quote none no-open-quote no-repeat normal nowrap n-resize nw-resize oblique olive once open-quote outset '+
+            'outside overline pointer portrait pre print projection purple red relative repeat repeat-x repeat-y rgb ridge right right-side '+
+            'rightwards rtl run-in screen scroll semi-condensed semi-expanded separate se-resize show silent silver slower slow '+
+            'small small-caps small-caption smaller soft solid speech spell-out square s-resize static status-bar sub super sw-resize '+
+            'table-caption table-cell table-column table-column-group table-footer-group table-header-group table-row table-row-group teal '+
+            'text-bottom text-top thick thin top transparent tty tv ultra-condensed ultra-expanded underline upper-alpha uppercase upper-latin '+
+            'upper-roman url visible wait white wider w-resize x-fast x-high x-large x-loud x-low x-slow x-small x-soft xx-large xx-small yellow';
 
-		this.forHtmlScript({ 
-			left: /(&lt;|<)\s*style.*?(&gt;|>)/gi, 
-			right: /(&lt;|<)\/\s*style\s*(&gt;|>)/gi 
-			});
-	};
+    var fonts =   '[mM]onospace [tT]ahoma [vV]erdana [aA]rial [hH]elvetica [sS]ans-serif [sS]erif [cC]ourier mono sans serif';
 
-	Brush.prototype	= new SyntaxHighlighter.Highlighter();
-	Brush.aliases	= ['css'];
+    this.regexList = [
+      { regex: SyntaxHighlighter.regexLib.multiLineCComments,   css: 'comments' },  // multiline comments
+      { regex: SyntaxHighlighter.regexLib.doubleQuotedString,   css: 'string' },  // double quoted strings
+      { regex: SyntaxHighlighter.regexLib.singleQuotedString,   css: 'string' },  // single quoted strings
+      { regex: /\#[a-fA-F0-9]{3,6}/g,               css: 'value' },   // html colors
+      { regex: /(-?\d+)(\.\d+)?(px|em|pt|\:|\%|)/g,       css: 'value' },   // sizes
+      { regex: /!important/g,                   css: 'color3' },  // !important
+      { regex: new RegExp(getKeywordsCSS(keywords), 'gm'),    css: 'keyword' }, // keywords
+      { regex: new RegExp(getValuesCSS(values), 'g'),       css: 'value' },   // values
+      { regex: new RegExp(this.getKeywords(fonts), 'g'),      css: 'color1' }   // fonts
+      ];
 
-	SyntaxHighlighter.brushes.CSS = Brush;
+    this.forHtmlScript({
+      left: /(&lt;|<)\s*style.*?(&gt;|>)/gi,
+      right: /(&lt;|<)\/\s*style\s*(&gt;|>)/gi
+      });
+  };
 
-	// CommonJS
-	typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
+  Brush.prototype = new SyntaxHighlighter.Highlighter();
+  Brush.aliases = ['css'];
+
+  SyntaxHighlighter.brushes.CSS = Brush;
+
+  // CommonJS
+  typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
 })();
 ;(function()
 {
-	// CommonJS
-	SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
+  // CommonJS
+  SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
 
-	function Brush()
-	{
-		function getKeywordsCSS(str)
-		{
-			return '\\b([a-z_]|)' + str.replace(/ /g, '(?=:)\\b|\\b([a-z_\\*]|\\*|)') + '(?=:)\\b';
-		};
-	
-		function getValuesCSS(str)
-		{
-			return '\\b' + str.replace(/ /g, '(?!-)(?!:)\\b|\\b()') + '\:\\b';
-		};
-		
-		function getKeywordsPrependedBy(keywords, by)
-		{
-			return '(?:' + keywords.replace(/^\s+|\s+$/g, '').replace(/\s+/g, '|' + by + '\\b').replace(/^/, by + '\\b') + ')\\b';
-		}
+  function Brush()
+  {
+    function getKeywordsCSS(str)
+    {
+      return '\\b([a-z_]|)' + str.replace(/ /g, '(?=:)\\b|\\b([a-z_\\*]|\\*|)') + '(?=:)\\b';
+    };
 
-		var keywords =	'ascent azimuth background-attachment background-color background-image background-position ' +
-						'background-repeat background baseline bbox border-collapse border-color border-spacing border-style border-top ' +
-						'border-right border-bottom border-left border-top-color border-right-color border-bottom-color border-left-color ' +
-						'border-top-style border-right-style border-bottom-style border-left-style border-top-width border-right-width ' +
-						'border-bottom-width border-left-width border-width border bottom cap-height caption-side centerline clear clip color ' +
-						'content counter-increment counter-reset cue-after cue-before cue cursor definition-src descent direction display ' +
-						'elevation empty-cells float font-size-adjust font-family font-size font-stretch font-style font-variant font-weight font ' +
-						'height left letter-spacing line-height list-style-image list-style-position list-style-type list-style margin-top ' +
-						'margin-right margin-bottom margin-left margin marker-offset marks mathline max-height max-width min-height min-width orphans ' +
-						'outline-color outline-style outline-width outline overflow padding-top padding-right padding-bottom padding-left padding page ' +
-						'page-break-after page-break-before page-break-inside pause pause-after pause-before pitch pitch-range play-during position ' +
-						'quotes right richness size slope src speak-header speak-numeral speak-punctuation speak speech-rate stemh stemv stress ' +
-						'table-layout text-align top text-decoration text-indent text-shadow text-transform unicode-bidi unicode-range units-per-em ' +
-						'vertical-align visibility voice-family volume white-space widows width widths word-spacing x-height z-index zoom';
-		
-		var values =	'above absolute all always aqua armenian attr aural auto avoid baseline behind below bidi-override black blink block blue bold bolder '+
-						'both bottom braille capitalize caption center center-left center-right circle close-quote code collapse compact condensed '+
-						'continuous counter counters crop cross crosshair cursive dashed decimal decimal-leading-zero digits disc dotted double '+
-						'embed embossed e-resize expanded extra-condensed extra-expanded fantasy far-left far-right fast faster fixed format fuchsia '+
-						'gray green groove handheld hebrew help hidden hide high higher icon inline-table inline inset inside invert italic '+
-						'justify landscape large larger left-side left leftwards level lighter lime line-through list-item local loud lower-alpha '+
-						'lowercase lower-greek lower-latin lower-roman lower low ltr marker maroon medium message-box middle mix move narrower '+
-						'navy ne-resize no-close-quote none no-open-quote no-repeat normal nowrap n-resize nw-resize oblique olive once open-quote outset '+
-						'outside overline pointer portrait pre print projection purple red relative repeat repeat-x repeat-y rgb ridge right right-side '+
-						'rightwards rtl run-in screen scroll semi-condensed semi-expanded separate se-resize show silent silver slower slow '+
-						'small small-caps small-caption smaller soft solid speech spell-out square s-resize static status-bar sub super sw-resize '+
-						'table-caption table-cell table-column table-column-group table-footer-group table-header-group table-row table-row-group teal '+
-						'text-bottom text-top thick thin top transparent tty tv ultra-condensed ultra-expanded underline upper-alpha uppercase upper-latin '+
-						'upper-roman url visible wait white wider w-resize x-fast x-high x-large x-loud x-low x-slow x-small x-soft xx-large xx-small yellow';
-		
-		var fonts =		'[mM]onospace [tT]ahoma [vV]erdana [aA]rial [hH]elvetica [sS]ans-serif [sS]erif [cC]ourier mono sans serif';
-		
-		var statements		= 'important default';
-		var preprocessor	= 'import extend debug warn if else for while mixin function include content media';
-		
-		var r = SyntaxHighlighter.regexLib;
-		
-		this.regexList = [
-			{ regex: r.multiLineCComments,											css: 'comments' },		// multiline comments
-			{ regex: r.singleLineCComments,											css: 'comments' },		// singleline comments
-			{ regex: r.doubleQuotedString,											css: 'string' },		// double quoted strings
-			{ regex: r.singleQuotedString,											css: 'string' },		// single quoted strings
-			{ regex: /\#[a-fA-F0-9]{3,6}/g,											css: 'value' },			// html colors
-			{ regex: /\b(-?\d+)(\.\d+)?(px|em|rem|pt|\:|\%|)\b/g,					css: 'value' },			// sizes
-			{ regex: /\$[\w-]+/g,													css: 'variable' },		// variables
-			{ regex: new RegExp(getKeywordsPrependedBy(statements, '!'), 'g'),		css: 'color3' },		// statements
-			{ regex: new RegExp(getKeywordsPrependedBy(preprocessor, '@'), 'g'),	css: 'preprocessor' },	// preprocessor
-			{ regex: new RegExp(getKeywordsCSS(keywords), 'gm'),					css: 'keyword' },		// keywords
-			{ regex: new RegExp(getValuesCSS(values), 'g'),							css: 'value' },			// values
-			{ regex: new RegExp(this.getKeywords(fonts), 'g'),						css: 'color1' }			// fonts
-			];
-	};
+    function getValuesCSS(str)
+    {
+      return '\\b' + str.replace(/ /g, '(?!-)(?!:)\\b|\\b()') + '\:\\b';
+    };
 
-	Brush.prototype	= new SyntaxHighlighter.Highlighter();
-	Brush.aliases	= ['sass', 'scss'];
+    function getKeywordsPrependedBy(keywords, by)
+    {
+      return '(?:' + keywords.replace(/^\s+|\s+$/g, '').replace(/\s+/g, '|' + by + '\\b').replace(/^/, by + '\\b') + ')\\b';
+    }
 
-	SyntaxHighlighter.brushes.Sass = Brush;
+    var keywords =  'ascent azimuth background-attachment background-color background-image background-position ' +
+            'background-repeat background baseline bbox border-collapse border-color border-spacing border-style border-top ' +
+            'border-right border-bottom border-left border-top-color border-right-color border-bottom-color border-left-color ' +
+            'border-top-style border-right-style border-bottom-style border-left-style border-top-width border-right-width ' +
+            'border-bottom-width border-left-width border-width border bottom cap-height caption-side centerline clear clip color ' +
+            'content counter-increment counter-reset cue-after cue-before cue cursor definition-src descent direction display ' +
+            'elevation empty-cells float font-size-adjust font-family font-size font-stretch font-style font-variant font-weight font ' +
+            'height left letter-spacing line-height list-style-image list-style-position list-style-type list-style margin-top ' +
+            'margin-right margin-bottom margin-left margin marker-offset marks mathline max-height max-width min-height min-width orphans ' +
+            'outline-color outline-style outline-width outline overflow padding-top padding-right padding-bottom padding-left padding page ' +
+            'page-break-after page-break-before page-break-inside pause pause-after pause-before pitch pitch-range play-during position ' +
+            'quotes right richness size slope src speak-header speak-numeral speak-punctuation speak speech-rate stemh stemv stress ' +
+            'table-layout text-align top text-decoration text-indent text-shadow text-transform unicode-bidi unicode-range units-per-em ' +
+            'vertical-align visibility voice-family volume white-space widows width widths word-spacing x-height z-index zoom';
 
-	// CommonJS
-	typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
+    var values =  'above absolute all always aqua armenian attr aural auto avoid baseline behind below bidi-override black blink block blue bold bolder '+
+            'both bottom braille capitalize caption center center-left center-right circle close-quote code collapse compact condensed '+
+            'continuous counter counters crop cross crosshair cursive dashed decimal decimal-leading-zero digits disc dotted double '+
+            'embed embossed e-resize expanded extra-condensed extra-expanded fantasy far-left far-right fast faster fixed format fuchsia '+
+            'gray green groove handheld hebrew help hidden hide high higher icon inline-table inline inset inside invert italic '+
+            'justify landscape large larger left-side left leftwards level lighter lime line-through list-item local loud lower-alpha '+
+            'lowercase lower-greek lower-latin lower-roman lower low ltr marker maroon medium message-box middle mix move narrower '+
+            'navy ne-resize no-close-quote none no-open-quote no-repeat normal nowrap n-resize nw-resize oblique olive once open-quote outset '+
+            'outside overline pointer portrait pre print projection purple red relative repeat repeat-x repeat-y rgb ridge right right-side '+
+            'rightwards rtl run-in screen scroll semi-condensed semi-expanded separate se-resize show silent silver slower slow '+
+            'small small-caps small-caption smaller soft solid speech spell-out square s-resize static status-bar sub super sw-resize '+
+            'table-caption table-cell table-column table-column-group table-footer-group table-header-group table-row table-row-group teal '+
+            'text-bottom text-top thick thin top transparent tty tv ultra-condensed ultra-expanded underline upper-alpha uppercase upper-latin '+
+            'upper-roman url visible wait white wider w-resize x-fast x-high x-large x-loud x-low x-slow x-small x-soft xx-large xx-small yellow';
+
+    var fonts =   '[mM]onospace [tT]ahoma [vV]erdana [aA]rial [hH]elvetica [sS]ans-serif [sS]erif [cC]ourier mono sans serif';
+
+    var statements    = 'important default';
+    var preprocessor  = 'import extend debug warn if else for while mixin function include content media';
+
+    var r = SyntaxHighlighter.regexLib;
+
+    this.regexList = [
+      { regex: r.multiLineCComments,                      css: 'comments' },    // multiline comments
+      { regex: r.singleLineCComments,                     css: 'comments' },    // singleline comments
+      { regex: r.doubleQuotedString,                      css: 'string' },    // double quoted strings
+      { regex: r.singleQuotedString,                      css: 'string' },    // single quoted strings
+      { regex: /\#[a-fA-F0-9]{3,6}/g,                     css: 'value' },     // html colors
+      { regex: /\b(-?\d+)(\.\d+)?(px|em|rem|pt|\:|\%|)\b/g,         css: 'value' },     // sizes
+      { regex: /\$[\w-]+/g,                         css: 'variable' },    // variables
+      { regex: new RegExp(getKeywordsPrependedBy(statements, '!'), 'g'),    css: 'color3' },    // statements
+      { regex: new RegExp(getKeywordsPrependedBy(preprocessor, '@'), 'g'),  css: 'preprocessor' },  // preprocessor
+      { regex: new RegExp(getKeywordsCSS(keywords), 'gm'),          css: 'keyword' },   // keywords
+      { regex: new RegExp(getValuesCSS(values), 'g'),             css: 'value' },     // values
+      { regex: new RegExp(this.getKeywords(fonts), 'g'),            css: 'color1' }     // fonts
+      ];
+  };
+
+  Brush.prototype = new SyntaxHighlighter.Highlighter();
+  Brush.aliases = ['sass', 'scss'];
+
+  SyntaxHighlighter.brushes.Sass = Brush;
+
+  // CommonJS
+  typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
 })();
 
 
@@ -13861,10 +13861,10 @@ typeof(exports) != 'undefined' ? exports.SyntaxHighlighter = SyntaxHighlighter :
 
 
 
-$(function() {  
+$(function() {
   // Init deck
   $.deck('.slide');
-  
+
   // SyntaxHighlighter init
   SyntaxHighlighter.all();
 });

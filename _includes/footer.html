@@ -1,0 +1,31 @@
+<script src="{{ site.url }}/vendor/reveal.js/lib/js/head.min.js"></script>
+<script src="{{ site.url }}/vendor/reveal.js/js/reveal.js"></script>
+
+<script>
+Reveal.initialize({
+  slideNumber: 'c/t',
+  history: true,
+  embedded: true,
+  transition: 'slide',
+  transitionSpeed: 'fast',
+  backgroundTransition: 'slide',
+  width: 1440,
+  height: 900,
+  margin: 0.01,
+  minScale: 0.2,
+  maxScale: 1.5,
+  dependencies: [
+    {
+      src: '{{ "/vendor/reveal.js/lib/js/classList.js" | prepend: site.url }}',
+      condition: function() { return !document.body.classList; }
+    },
+    { src: '{{ "/vendor/reveal.js/plugin/markdown/marked.js" | prepend: site.url }}' },
+    { src: '{{ "/vendor/reveal.js/plugin/markdown/markdown.js" | prepend: site.url }}' },
+    {
+      src: '{{ "/vendor/reveal.js/plugin/highlight/highlight.js" | prepend: site.url }}',
+      async: true,
+      callback: function() { hljs.initHighlightingOnLoad() }
+    }
+  ]
+});
+</script>

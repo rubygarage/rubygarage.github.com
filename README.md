@@ -1,14 +1,47 @@
 # Slides for RubyGarage course
 
-## Development
+## How to start Jakyll in development mode
 
-Presentations are based on Deck.JS: http://imakewebthings.com/deck.js/introduction
+Execute the command:
 
-1. Add presentations to `./views` and amend `./app.rb` (`./views/awesome`, for example)
-2. Run `rackup` and open browser to preview `open http://127.0.0.1:9292/awesome`
-3. Add all the slides. Put images to `./assets/images/awesome` dir
-4. Generate static files for it `rake static:generate path='/awesome'`
-5. Run server to see if everything compiled `rackup` and preview `open http://127.0.0.1:9292/public/awesome/index.html`
+```bash
+$ jekyll s --config _config.yml,_config_dev.yml --trace
+```
+
+Visit this URL: http://localhost:4000
+
+
+## How to generate diagrams
+
+### Install graphviz.
+
+For Ubuntu execute this command:
+
+```bash
+$ sudo apt-get install graphviz
+```
+
+For macOS execute this command:
+
+```bash
+$ brew install graphviz --with-freetype --with-librsvg
+```
+
+### Generate diagram
+
+Next run following command:
+
+```bash
+$ dot -T svg -O filename.dot
+```
+
+
+## Documentation
+
+- [Markwown](https://help.github.com/categories/writing-on-github/)
+- [Jekyll](https://jekyllrb.com/docs/home/)
+- [Reveal.js](https://github.com/hakimel/reveal.js)
+- [Graphviz](http://www.graphviz.org/Documentation.php)
 
 
 ## License

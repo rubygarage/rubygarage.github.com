@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+  {% include header.html %}
+  <body>
+    <a class="rubygarage-logo" href="/"></a>
+    <div class="reveal">
+      <div class="slides">
+        <section data-markdown data-separator="^---$" data-separator-vertical="^--$" data-notes="^Note:">
+          <script type="text/template">
+{{ page.content }}
+          </script>
+        </section>
+      </div>
+    </div>
+    {% include footer.html %}
+  </body>
+</html>
