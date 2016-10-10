@@ -65,8 +65,8 @@ project_name
 --
 
 ## RVM Best Practices
-- Use `.rvmrc` files for each of your individual projects
-- Check your `.rvmrc` into source control
+- Use `.ruby-version` and `.ruby-gemset` files for each of your individual projects
+- Check your `.ruby-version` file into source control
 - Use per-project gemsets
 - Deploy with rvm when possible
 
@@ -132,6 +132,9 @@ false.class
 
 [5, 12, 4].sort
 # => [4, 5, 12]
+
+Object.methods
+# => [:new, :allocate, :superclass, :<=>, :module_exec, :class_exec, :<=, :>=, :==, :===, :include?, ... ]
 ```
 
 ---
@@ -453,7 +456,7 @@ a.dig(0, 0, 0)
 ## Adding items
 
 ```ruby
-languages = 'Ruby', 'JavaScript', 'Python', 'PHP'
+languages = ['Ruby', 'JavaScript', 'Python', 'PHP']
 # => ["Ruby", "JavaScript", "Python", "PHP"]
 
 languages.push('Closure')
@@ -477,7 +480,7 @@ languages.insert(4, 'Haml', 'Sass')
 ## Removing items
 
 ```ruby
-languages = 'C++', 'Ruby', 'JavaScript', 'CoffeeScript', 'Haml', 'Sass', 'Python', 'PHP', 'Closure', 'Haskell'
+languages = ['C++', 'Ruby', 'JavaScript', 'CoffeeScript', 'Haml', 'Sass', 'Python', 'PHP', 'Closure', 'Haskell']
 # => ["C++", "Ruby", "JavaScript", "CoffeeScript", "Haml", "Sass", "Python", "PHP", "Closure", "Haskell"]
 
 languages.pop
@@ -510,13 +513,13 @@ languages.delete('PHP')
 languages
 # => ["Ruby", "JavaScript", "Haml", "Sass", "Python", "Closure"]
 
-languages = 'Ruby', 'JavaScript', nil, 0, 'Python', nil
+languages = ['Ruby', 'JavaScript', nil, 0, 'Python', nil]
 # => ["Ruby", "JavaScript", nil, 0, "Python", nil]
 
 languages.compact
 # => ["Ruby", "JavaScript", 0, "Python"]
 
-languages = 'Ruby', 'JavaScript', 'PHP', 'Python', 'PHP'
+languages = ['Ruby', 'JavaScript', 'PHP', 'Python', 'PHP']
 languages.uniq
 # => ["Ruby", "JavaScript", "PHP", "Python"]
 ```
@@ -526,7 +529,7 @@ languages.uniq
 ## Obtaining information
 
 ```ruby
-languages = 'Ruby', 'JavaScript', 'PHP', 'Python', 'PHP'
+languages = ['Ruby', 'JavaScript', 'PHP', 'Python', 'PHP']
 # => ["Ruby", "JavaScript", "PHP", "Python", "PHP"]
 
 languages.length
@@ -757,10 +760,10 @@ delete
 
 ```ruby
 h = { a: 100, b: 200 }
-h.delete('a')
+h.delete(:a)
 # => 100
 
-h.delete('z')
+h.delete(:z)
 # => nil
 ```
 
@@ -1252,6 +1255,12 @@ v.class
 # => String
 
 v.kind_of? String
+# => true
+
+v.is_a? String
+# => true
+
+v.instance_of? String
 # => true
 
 defined? v
