@@ -1,6 +1,6 @@
 # Slides for RubyGarage course
 
-## How to start Jakyll in development mode
+## How to start Jekyll in development mode
 
 Execute the command:
 
