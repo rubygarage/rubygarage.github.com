@@ -18,12 +18,12 @@ your controller is responsible for making sense of the request and producing the
 
 # Methods and Actions
 
-`config/routes.rb`  <!-- .element: class="filename" -->
+config/routes.rb <!-- .element: class="filename" -->
 ```ruby
 resources :posts, only: [:index] # GET /posts
 ```
 
-`app/controllers/posts_controller.rb`  <!-- .element: class="filename" -->
+app/controllers/posts_controller.rb <!-- .element: class="filename" -->
 ```ruby
 class PostsController < ApplicationController
   def index
@@ -36,14 +36,14 @@ end
 
 # CRUD actions
 
-`config/routes.rb` <!-- .element: class="filename" -->
+config/routes.rb <!-- .element: class="filename" -->
 ```ruby
 resources :posts
 ```
 
 --
 
-`app/controllers/posts_controller.rb` <!-- .element: class="filename" -->
+app/controllers/posts_controller.rb <!-- .element: class="filename" -->
 ```ruby
 class PostsController < ApplicationController
   def index # GET /posts
@@ -81,7 +81,7 @@ end
 
 # Parameters
 
-`app/controllers/posts_controller.rb` <!-- .element: class="filename" -->
+app/controllers/posts_controller.rb <!-- .element: class="filename" -->
 ```ruby
 class PostsController < ApplicationController
   ...
@@ -111,7 +111,7 @@ end
 
 ## Hash and Array Parameters
 
-`app/controllers/posts_controller.rb` <!-- .element: class="filename" -->
+app/controllers/posts_controller.rb <!-- .element: class="filename" -->
 ```ruby
 class PostsController < ApplicationController
   ...
@@ -124,7 +124,7 @@ class PostsController < ApplicationController
 end
 ```
 
-`app/views/posts/_form.html.erb` <!-- .element: class="filename" -->
+app/views/posts/_form.html.erb <!-- .element: class="filename" -->
 ```html
 <form accept-charset=\"UTF-8\" action=\"/posts\" method=\"post\">
   <input type=\"text\" name=\"post[title]\" value=\"Title\" />
@@ -133,7 +133,7 @@ end
 </form>
 ```
 
-`app/controllers/posts_controller.rb` <!-- .element: class="filename" -->
+app/controllers/posts_controller.rb <!-- .element: class="filename" -->
 ```ruby
 class PostsController < ApplicationController
   ...
@@ -149,7 +149,7 @@ end
 
 # JSON parameters
 
-`app/controllers/posts_controller.rb` <!-- .element: class="filename" -->
+app/controllers/posts_controller.rb <!-- .element: class="filename" -->
 ```ruby
 class PostsController < ApplicationController
   ...
@@ -173,12 +173,12 @@ end
 
 # Routing parameters
 
-`config/routes.rb` <!-- .element: class="filename" -->
+config/routes.rb <!-- .element: class="filename" -->
 ```ruby
 get '/posts/:state' => 'posts#index', my: true
 ```
 
-`app/controllers/posts_controller.rb` <!-- .element: class="filename" -->
+app/controllers/posts_controller.rb <!-- .element: class="filename" -->
 ```ruby
 class PostsController < ApplicationController
   ...
@@ -196,7 +196,7 @@ end
 
 # Default URL options
 
-`app/controllers/application_controller.rb` <!-- .element: class="filename" -->
+app/controllers/application_controller.rb <!-- .element: class="filename" -->
 ```ruby
 class ApplicationController < ActionController::Base
 
@@ -210,7 +210,7 @@ end
 
 # Strong parameters
 
-`app/controllers/posts_controller.rb` <!-- .element: class="filename" -->
+app/controllers/posts_controller.rb <!-- .element: class="filename" -->
 ```ruby
 class PostsController < ActionController::Base
   def create # ActiveModel::ForbiddenAttributes exception
@@ -266,7 +266,7 @@ consider using CacheStore instead)
 
 --
 
-`config/initializers/session_store.rb` <!-- .element: class="filename" -->
+config/initializers/session_store.rb <!-- .element: class="filename" -->
 ```ruby
 YourApp::Application.config.session_store :active_record_store
 ```
@@ -279,7 +279,7 @@ YourApp::Application.config.session_store :cookie_store, key: '_your_app_session
 YourApp::Application.config.session_store :cookie_store, key: '_your_app_session', domain: ".example.com"
 ```
 
-`config/initializers/secret_token.rb` <!-- .element: class="filename" -->
+config/initializers/secret_token.rb <!-- .element: class="filename" -->
 ```ruby
 YourApp::Application.config.secret_key_base = '49d3f3de9ed86c74b94ad6bd0...'
 ```
@@ -292,7 +292,7 @@ browser sends, and hence difficult to rely on session based authentication.
 
 # Accessing the session
 
-`app/controllers/application_controller.rb` <!-- .element: class="filename" -->
+app/controllers/application_controller.rb <!-- .element: class="filename" -->
 ```ruby
 class ApplicationController < ActionController::Base
   ...
@@ -309,7 +309,7 @@ end
 --
 
 
-`app/controllers/logins_controller.rb` <!-- .element: class="filename" -->
+app/controllers/logins_controller.rb <!-- .element: class="filename" -->
 ```ruby
 class LoginsController < ApplicationController
 
@@ -335,7 +335,7 @@ reset_session
 
 # The Flash
 
-`app/controllers/logins_controller.rb` <!-- .element: class="filename" -->
+app/controllers/logins_controller.rb <!-- .element: class="filename" -->
 ```ruby
 class LoginsController < ApplicationController
   def destroy
@@ -356,7 +356,7 @@ redirect_to root_url, flash: { just_signed_up: true }
 
 ## Show messages
 
-`app/views/layouts/application.html.erb` <!-- .element: class="filename" -->
+app/views/layouts/application.html.erb <!-- .element: class="filename" -->
 ```html
 <body>
   <% flash.each do |name, msg| -%>
@@ -375,7 +375,7 @@ redirect_to root_url, flash: { just_signed_up: true }
 
 ## Keep to another request
 
-`app/controllers/posts_controller.rb` <!-- .element: class="filename" -->
+app/controllers/posts_controller.rb <!-- .element: class="filename" -->
 ```ruby
 class PostsController < ApplicationController
   def index
@@ -389,7 +389,7 @@ end
 
 ## Use now
 
-`app/controllers/posts_controller.rb` <!-- .element: class="filename" -->
+app/controllers/posts_controller.rb <!-- .element: class="filename" -->
 ```ruby
 class PostsController < ApplicationController
   def create
@@ -408,7 +408,7 @@ end
 
 # Cookies
 
-`app/controllers/comments_controller.rb` <!-- .element: class="filename" -->
+app/controllers/comments_controller.rb <!-- .element: class="filename" -->
 ```ruby
 class CommentsController < ApplicationController
   def new
@@ -455,7 +455,7 @@ cookies.permanent[:login] = 'XJ-122'
 
 ## Rendering XML and JSON data
 
-`app/controllers/posts_controller.rb` <!-- .element: class="filename" -->
+app/controllers/posts_controller.rb <!-- .element: class="filename" -->
 ```ruby
 class PostsController < ApplicationController
   def index
@@ -473,7 +473,7 @@ end
 
 ## Before/after actions
 
-`app/controllers/application_controller.rb` <!-- .element: class="filename" -->
+app/controllers/application_controller.rb <!-- .element: class="filename" -->
 ```ruby
 class ApplicationController < ActionController::Base
   before_action :require_login
@@ -489,7 +489,7 @@ class ApplicationController < ActionController::Base
 end
 ```
 
-`app/controllers/posts_controller.rb`
+app/controllers/posts_controller.rb <!-- .element: class="filename" -->
 ```ruby
 class PostsController < ApplicationController
   after_action :last_open_page
@@ -508,7 +508,7 @@ end
 
 ## Skip before/after action
 
-`app/controllers/posts_controller.rb` <!-- .element: class="filename" -->
+app/controllers/posts_controller.rb <!-- .element: class="filename" -->
 ```ruby
 class PostsController < ApplicationController
   skip_before_action :require_login, only: [:index, :show]
@@ -519,7 +519,7 @@ end
 
 # Around actions
 
-`app/controllers/posts_controller.rb` <!-- .element: class="filename" -->
+app/controllers/posts_controller.rb <!-- .element: class="filename" -->
 ```ruby
 class PostsController < ApplicationController
   around_action :wrap_actions
@@ -540,7 +540,7 @@ end
 
 ## Filter block
 
-`app/controllers/application_controller.rb` <!-- .element: class="filename" -->
+app/controllers/application_controller.rb <!-- .element: class="filename" -->
 ```ruby
 class ApplicationController < ActionController::Base
   before_action do |controller|
@@ -551,7 +551,7 @@ end
 
 ## Filter class
 
-`app/controllers/application_controller.rb` <!-- .element: class="filename" -->
+app/controllers/application_controller.rb <!-- .element: class="filename" -->
 ```ruby
 class ApplicationController < ActionController::Base
   before_action LoginFilter
@@ -588,7 +588,7 @@ end
 
 ` form_authenticity_token `
 
-`app/controllers/application_controller.rb` <!-- .element: class="filename" -->
+app/controllers/application_controller.rb <!-- .element: class="filename" -->
 ```ruby
 protect_from_forgery with: :exception
 ```
@@ -602,7 +602,7 @@ protect_from_forgery with: :null_session
 
 # Request object
 
-`app/controllers/application_controller.rb` <!-- .element: class="filename" -->
+app/controllers/application_controller.rb <!-- .element: class="filename" -->
 ```ruby
 class ApplicationController < ActionController::Base
   before_action :current_city
@@ -635,7 +635,7 @@ end
 
 # Response object
 
-`app/controllers/application_controller.rb` <!-- .element: class="filename" -->
+app/controllers/application_controller.rb <!-- .element: class="filename" -->
 ```ruby
 class ApplicationController < ActionController::Base
   after_action :check_response
@@ -671,7 +671,7 @@ end
 
 ## Basic Authentication
 
-`app/controllers/admins_controller.rb` <!-- .element: class="filename" -->
+app/controllers/admins_controller.rb <!-- .element: class="filename" -->
 ```ruby
 class AdminsController < ApplicationController
   http_basic_authenticate_with name: 'foo', password: 'bar'
@@ -680,7 +680,7 @@ end
 
 ## Digest Authentication
 
-`app/controllers/admins_controller.rb` <!-- .element: class="filename" -->
+app/controllers/admins_controller.rb <!-- .element: class="filename" -->
 ```ruby
 class AdminsController < ApplicationController
   USERS = { "foo" => "bar" }
@@ -701,9 +701,10 @@ end
 
 # Streaming
 
-`app/controllers/posts_controller.rb` <!-- .element: class="filename" -->
+app/controllers/posts_controller.rb <!-- .element: class="filename" -->
 ```ruby
 require 'prawn'
+
 class PostsController < ApplicationController
   def download_pdf
     post = Post.find(params[:id])
@@ -730,7 +731,7 @@ end
 If you want to send a file that already exists on disk, use the send_file method.
 
 
-`app/controllers/posts_controller.rb` <!-- .element: class="filename" -->
+app/controllers/posts_controller.rb <!-- .element: class="filename" -->
 ```ruby
 class PostsController < ApplicationController
   def download_pdf
@@ -746,7 +747,7 @@ end
 
 # RESTful Downloads
 
-`app/controllers/posts_controller.rb` <!-- .element: class="filename" -->
+app/controllers/posts_controller.rb <!-- .element: class="filename" -->
 ```ruby
 class PostsController < ApplicationController
   def show # GET /posts/1.pdf
@@ -760,7 +761,7 @@ class PostsController < ApplicationController
 end
 ```
 
-`config/initializers/mime_types.rb` <!-- .element: class="filename" -->
+config/initializers/mime_types.rb <!-- .element: class="filename" -->
 ```ruby
 Mime::Type.register 'application/pdf', :pdf
 ```
@@ -847,7 +848,7 @@ config.filter_redirect.concat ['s3.amazonaws.com', /private_path/]
 
 # rescue_from
 
-`app/controllers/application_controller.rb` <!-- .element: class="filename" -->
+app/controllers/application_controller.rb <!-- .element: class="filename" -->
 ```ruby
 class ApplicationController < ActionController::Base
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
@@ -862,7 +863,7 @@ end
 
 --
 
-`app/controllers/application_controller.rb` <!-- .element: class="filename" -->
+app/controllers/application_controller.rb <!-- .element: class="filename" -->
 ```ruby
 class ApplicationController < ActionController::Base
   rescue_from User::NotAuthorized, with: :user_not_authorized
@@ -876,7 +877,7 @@ class ApplicationController < ActionController::Base
 end
 ```
 
-`app/controllers/posts_controller.rb` <!-- .element: class="filename" -->
+app/controllers/posts_controller.rb <!-- .element: class="filename" -->
 ```ruby
 class PostsController < ApplicationController
   before_action :check_authorization
@@ -897,14 +898,14 @@ end
 
 # Force HTTPS protocol
 
-`app/controllers/posts_controller.rb` <!-- .element: class="filename" -->
+app/controllers/posts_controller.rb <!-- .element: class="filename" -->
 ```ruby
 class PostsController
   force_ssl
 end
 ```
 
-`app/controllers/posts_controller.rb` <!-- .element: class="filename" -->
+app/controllers/posts_controller.rb <!-- .element: class="filename" -->
 ```ruby
 class PostsController
   force_ssl only: [:new, :create, :update, :edit]
@@ -921,7 +922,7 @@ end
 
 # Example
 
-`app/controllers/posts_controller.rb` <!-- .element: class="filename" -->
+app/controllers/posts_controller.rb <!-- .element: class="filename" -->
 ```ruby
 class PostsController < ApplicationController
   def show
@@ -953,7 +954,7 @@ end
 
 # Testing
 
-`spec/factories/users.rb` <!-- .element: class="filename" -->
+spec/factories/users.rb <!-- .element: class="filename" -->
 ```ruby
 FactoryGirl.define do
   factory :user do
@@ -963,7 +964,7 @@ FactoryGirl.define do
 end
 ```
 
-`spec/factories/posts.rb` <!-- .element: class="filename" -->
+spec/factories/posts.rb <!-- .element: class="filename" -->
 ```ruby
 FactoryGirl.define do
   factory :post do
@@ -976,8 +977,7 @@ end
 
 --
 
-
-`spec/controllers/posts_controller_spec.rb` <!-- .element: class="filename" -->
+spec/controllers/posts_controller_spec.rb <!-- .element: class="filename" -->
 ```ruby
 require 'spec_helper'
 
