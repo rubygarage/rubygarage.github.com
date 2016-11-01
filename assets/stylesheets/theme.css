@@ -435,3 +435,7 @@ small * {
   top: 26px;
   z-index: 10;
 }
+
+.reveal .small-table-font {
+  font-size: 0.9em;
+}
