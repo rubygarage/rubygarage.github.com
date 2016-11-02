@@ -1936,17 +1936,42 @@ square.call(2)
 square.call(4)
 # => 16
 ```
+<!-- .element: class="left width-50" -->
+
+```ruby
+square = proc do |n|
+  n ** 2
+end
+
+square.call(2)
+# => 4
+
+square.call(4)
+# => 16
+```
+<!-- .element: class="right width-50" -->
 
 --
 
 ## Anonymous
 
 ```ruby
-bo = lambda { |param| "You called me with #{param}"}
+bo = lambda do |param|
+  "You called me with #{param}"
+end
 
-bo.call 99
+bo.call(99)
 # => "You called me with 99"
 ```
+<!-- .element: class="left width-50" -->
+
+```ruby
+bo = ->(param) { "You called me with #{param}" }
+
+bo.call(99)
+# => "You called me with 99"
+```
+<!-- .element: class="right width-50" -->
 
 --
 

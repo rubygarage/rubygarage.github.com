@@ -874,7 +874,8 @@ global after all
 
 ## Define hooks in configuration
 
-file `spec/callbacks_spec.rb`
+spec/callbacks_spec.rb <!-- .element class="filename" -->
+
 ```ruby
 RSpec.configure do |config|
   config.before(:suite) do
@@ -987,7 +988,8 @@ Use `subject!` can be used for calling method before each example
 
 --
 
-`spec/array_spec.rb`
+spec/array_spec.rb <!-- .element class="filename" -->
+
 ```ruby
 RSpec.describe Array, 'with some elements' do
   subject { [1,2,3] }
@@ -1126,7 +1128,8 @@ end
 
 --
 
-`spec/subject_spec.rb`
+spec/subject_spec.rb <!-- .element class="filename" -->
+
 ```ruby
 describe Actor do
   let(:name) { 'Ivan' }
@@ -1155,7 +1158,8 @@ Finished in 1.22 seconds
 
 --
 
-`spec/spec_helper.rb`
+spec/spec_helper.rb <!-- .element class="filename" -->
+
 ```ruby
 Rspec.configure do |config|
   config.filter_run focus: true
@@ -1173,7 +1177,8 @@ Finished in 1.39 seconds
 0 example, 0 failures
 ```
 
-`spec/spec_helper.rb`
+spec/spec_helper.rb <!-- .element class="filename" -->
+
 ```ruby
 Rspec.configure do |config|
   config.filter_run_excluding slow: true
@@ -1553,7 +1558,9 @@ expect(''.empty?).to eq(true)
 expect('').to be_empty
 ```
 
-###### How it works
+--
+
+### How it works
 
 - `be_`      -> '?'
 - `be_zero`  -> 'zero?'
@@ -1647,8 +1654,6 @@ it 'should remove the last element' do
 end
 ```
 
-<br>
-
 `by()`, `to()`, `from()`, `by_at_least()`, `by_at_most()`
 
 ```ruby
@@ -1688,31 +1693,21 @@ expect(obj.size).to eq(num)
 RSpec provides several matchers that make it easy to set expectations about the size of a collection. There are three
 basic forms:
 
-<br>
-
-  - expect(collection).to have(x).items
-  - expect(collection).to have_at_least(x).items
-  - expect(collection).to have_at_most(x).items
-
-<br>
+- `expect(collection).to have(x).items`
+- `expect(collection).to have_at_least(x).items`
+- `expect(collection).to have_at_most(x).items`
 
 These work on any collection-like object-the object just needs to respond to #size or #length (or both). When the
 matcher is called directly on a collection object, the #items call is pure syntactic sugar. You can use anything you
 want here. These are equivalent:
 
-<br>
-
-  - expect(collection).to have(x).items
-  - expect(collection).to have(x).things
-
-<br>
+- `expect(collection).to have(x).items`
+- `expect(collection).to have(x).things`
 
 You can also use this matcher on a non-collection object that returns a collection from one of its methods. For
 example, Dir#entries returns an array, so you could set an expectation using the following:
 
-<br>
-
-  - expect(Dir.new("my/directory")).to have(7).entries
+- `expect(Dir.new("my/directory")).to have(7).entries`
 
 --
 
@@ -1846,9 +1841,8 @@ RSpec::Matchers.define :have_errors_on do |attribute|
 end
 ```
 
-<br>
-
 And now it can be used as follows:
+
 ```ruby
 RSpec.describe User do
   before { subject.email = 'foobar' }
@@ -1878,6 +1872,7 @@ example.
 Verifying doubles are a stricter alternative to normal doubles that provide guarantees about what is being verified.
 When using verifying doubles, RSpec will check that the methods being stubbed are actually present on the underlying
 object if it is available. Prefer using verifying doubles over normal doubles.
+
 ```ruby
 # app/models/user.rb
 
@@ -2023,17 +2018,21 @@ allow(triviality).to receive(:one_two_three).and_yield(triviality)
 triviality.one_two_three { }
 ```
 
- - and_raise(ExceptionClass)
- - and_raise('message')
- - and_raise(ExceptionClass, 'message')
- - and_raise(instance_of_an_exception_class)
+--
+
+- `and_raise(ExceptionClass)`
+- `and_raise('message')`
+- `and_raise(ExceptionClass, 'message')`
+- `and_raise(instance_of_an_exception_class)`
 
 ```ruby
 allow(user).to receive(:some_method).and_raise(NoMethodError)
 ```
 
- - and_throw(:symbol)
- - and_throw(:symbol, argument)
+--
+
+- `and_throw(:symbol)`
+- `and_throw(:symbol, argument)`
 
 ```ruby
 it 'includes the provided argument when throwing' do
@@ -2531,26 +2530,19 @@ in a different position.
 A great way to get started gathering user stories is to do a high-level brain dump of the sorts of things we might like
 to do. Here are some titles to get started:
 
-1. `Start game`
-  - When a new game was started, the game generates secret code. The code should have 4 items.
+1. `Start game` - When a new game was started, the game generates secret code. The code should have 4 items.
 
-2. `Code-breaker submits guess`
-  - The code-breaker propose a guess, and the system replies by marking the guess according to the marking algorithm.
+2. `Code-breaker submits guess` - The code-breaker propose a guess, and the system replies by marking the guess according to the marking algorithm.
 
-3. `Code-breaker wins game`
-  - The code-breaker propose a guess that matches the secret code exactly. The system responds by marking the guess with four `+` signs.
+3. `Code-breaker wins game` - The code-breaker propose a guess that matches the secret code exactly. The system responds by marking the guess with four `+` signs.
 
-4. `Code-breaker loses game`
-  - After some number of turns, the game tells the code-breaker that the game is over (need to decide how many turns and whether to reveal the code).
+4. `Code-breaker loses game` - After some number of turns, the game tells the code-breaker that the game is over (need to decide how many turns and whether to reveal the code).
 
-5. `Code-breaker plays again`
-  - After the game is won or lost, the system prompts the code-breaker to play again. If the code-breaker indicates yes, a new game begins. If the code-breaker indicates no, the system shuts down.
+5. `Code-breaker plays again` - After the game is won or lost, the system prompts the code-breaker to play again. If the code-breaker indicates yes, a new game begins. If the code-breaker indicates no, the system shuts down.
 
-6. `Code-breaker requests hint`
-  - At any time during a game, the code-breaker can request a hint, at which point the system reveals one of the numbers in the secret code.
+6. `Code-breaker requests hint` - At any time during a game, the code-breaker can request a hint, at which point the system reveals one of the numbers in the secret code.
 
-7. `Code-breaker saves score`
-  - After the game is won or lost, the code-breaker can opt to save information about the game: who (initials?), how many turns, and so on.
+7. `Code-breaker saves score` - After the game is won or lost, the code-breaker can opt to save information about the game: who (initials?), how many turns, and so on.
 
 ---
 
@@ -2584,7 +2576,8 @@ $ bundle gem codebreaker
 
 --
 
-`codebreaker.gemspec`
+codebreaker.gemspec <!-- .element class="filename" -->
+
 ```ruby
 # ...
 Gem::Specification.new do |spec|
@@ -2606,13 +2599,15 @@ $ bundle install
 
 ### Now we're going to describe the expected behavior of instances of the Game class.
 
-`spec/spec_helper.rb`
+spec/spec_helper.rb <!-- .element class="filename" -->
+
 ```ruby
 require 'bundler/setup'
 require 'codebreaker'
 ```
 
-`spec/codebreaker/game_spec.rb`
+spec/codebreaker/game_spec.rb <!-- .element class="filename" -->
+
 ```ruby
 require 'spec_helper'
 
@@ -2639,12 +2634,14 @@ $ rspec spec/codebreaker/game_spec.rb --format doc
 
 ### So let's add some code structure
 
-`lib/codebreaker.rb`
+lib/codebreaker.rb <!-- .element class="filename" -->
+
 ```ruby
 require 'codebreaker/game'
 ```
 
-`lib/codebreaker/game.rb`
+lib/codebreaker/game.rb <!-- .element class="filename" -->
+
 ```ruby
 module Codebreaker
   class Game
@@ -2668,7 +2665,8 @@ Codebreaker::Game
 
 ## Red: Start with a Failing Code Example
 
-`spec/codebreaker/game_spec.rb`
+spec/codebreaker/game_spec.rb <!-- .element class="filename" -->
+
 ```ruby
 require 'spec_helper'
 
@@ -2690,7 +2688,7 @@ end
 --
 
 ```bash
-rspec spec/codebreaker/game_spec.rb
+$ rspec spec/codebreaker/game_spec.rb
 F**
 
 Pending:
@@ -2720,7 +2718,8 @@ rspec ./spec/codebreaker/game_spec.rb:30 # Codebreaker::Game#start saves secret 
 
 ## Green: Get the Example to Pass
 
-`lib/codebreaker/game.rb`
+lib/codebreaker/game.rb <!-- .element class="filename" -->
+
 ```ruby
 module Codebreaker
   class Game
@@ -2755,7 +2754,8 @@ Finished in 0.00215 seconds
 
 ## Next step
 
-`spec/codebreaker/game_spec.rb`
+spec/codebreaker/game_spec.rb <!-- .element class="filename" -->
+
 ```ruby
 require 'spec_helper'
 
@@ -2810,7 +2810,8 @@ rspec ./spec/codebreaker/game_spec.rb:35 # Codebreaker::Game#start saves 4 numbe
 
 ## Trying to get green again
 
-`lib/codebreaker/game.rb`
+lib/codebreaker/game.rb <!-- .element class="filename" -->
+
 ```ruby
 module Codebreaker
   class Game
@@ -2842,7 +2843,8 @@ Finished in 0.00314 seconds
 
 ## Next step
 
-`spec/codebreaker/game_spec.rb`
+spec/codebreaker/game_spec.rb <!-- .element class="filename" -->
+
 ```ruby
 require 'spec_helper'
 
@@ -2900,7 +2902,8 @@ rspec ./spec/codebreaker/game_spec.rb:40 # Codebreaker::Game#start saves secret 
 
 ## Trying to get green again
 
-`lib/codebreaker/game.rb`
+lib/codebreaker/game.rb <!-- .element class="filename" -->
+
 ```ruby
 module Codebreaker
   class Game
@@ -2935,9 +2938,8 @@ of the code yet improves its internal structure.
 In this case, we have a very clear break between what is context and what is behavior, so let’s take advantage of that
 and move the context to a block that is executed before each of the examples.
 
-<br>
+spec/codebreaker/game_spec.rb <!-- .element class="filename" -->
 
-`spec/codebreaker/game_spec.rb`
 ```ruby
 module Codebreaker
   RSpec.describe Game do
