@@ -1887,20 +1887,24 @@ end
 def call_user(user)
  "Hey!" if user.valid
 end
+```
+<!-- .element: class="left width-50" -->
 
+```ruby
 # spec/models/user_spec.rb
 
 user = instance_double('User', name: 'Peter')
 expect(user).to receive(:notify).with('Warning!')
 
-notifier = class_double('User').
- as_stubbed_const(transfer_nested_constants: true)
+notifier = class_double('User')
+  .as_stubbed_const(transfer_nested_constants: true)
 
-expect(ConsoleNotifier::MIN_AGE).to eq(18)
+expect(User::MIN_AGE).to eq(18)
 
 user = object_double(User.new, valid: true)
 expect(call_user(user)).to eq('Hey!')
 ```
+<!-- .element: class="right width-50" -->
 
 --
 
