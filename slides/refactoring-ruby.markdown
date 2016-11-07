@@ -73,11 +73,11 @@ too much it may also be difficult to create fixtures that contain enough context
 
 ## What to Do
 
-* If no prob with params use [Extract Method](refactoring-ruby#/6) to break up the method into smaller pieces. Look
+* If no prob with params use [Extract Method](refactoring-ruby#/21) to break up the method into smaller pieces. Look
 for comments or white space delineating interesting fragments. You want to extract methods that are semantically
 meaningful, not just introduce a function call every seven lines.
 * If the method doesn't separate easily into pieces, consider [Replace Method with Method Object](refactoring-ruby#/39) to turn the method into a separate object, or [Replace Temp with Query](refactoring-ruby#/40)
-* If has loops and conditionals [Decompose Conditional](refactoring-ruby#/45) or Replace Loop with [Collection Closure Method](#collection-closure-method-before)
+* If has loops and conditionals [Decompose Conditional](refactoring-ruby#/45) or Replace Loop with [Collection Closure Method](refactoring-ruby#/46)
 
 ---
 
@@ -96,7 +96,7 @@ objects it uses, doesn’t represent a meaningful and cohesive abstraction in th
 * Flexibility: A Long Parameter List represents a large number of pieces of shared information between the caller and
 called code. If either changes, the parameter list is likely to need changing too.
 * Communication: A lot of parameters represent a lot to remember—the programmer has to remember not only what objects
-to pass, but in which order. More suc- cinct APIs are easier and quicker to use.
+to pass, but in which order. More succinct APIs are easier and quicker to use.
 
 --
 
@@ -111,8 +111,9 @@ to pass, but in which order. More suc- cinct APIs are easier and quicker to use.
 
 # Uncommunicative Name
 
-> A name doesn't communicate its intent well enough. Examples of this can include: * One or two character names (mn, ts, sc).
+> A name doesn't communicate its intent well enough. Examples of this can include:
 
+* One or two character names (mn, ts, sc).
 * Names with vowels omitted (lgn, psh).
 * Numbered variables (pane1, pane2).
 * Odd abbreviations (par, dis, mov).
@@ -324,13 +325,13 @@ paths.
 * Communication: A code fragment that has two responsibilities intertwined is harder to read, and harder to name.
 * Flexibility: If one of the method's responsibilities must change, or has a defect, you often have to work hard to
 sidestep the method's other responsibilities - it can therefore be a challenge to avoid breaking other code.
-* Testability: A method that does two things will be harder to test than if the responsi - bilities were separated.
+* Testability: A method that does two things will be harder to test than if the responsibilities were separated.
 
 --
 
 ## What to Do
 
-* Consider the approaches todealing with a [Long Method](#long-method) they will often work here just as well. Use
+* Consider the approaches to dealing with a [Long Method](#long-method) they will often work here just as well. Use
 [Extract Method](refactoring-ruby#/21) to hide detail behind an intention revealing name.
 * If the method makes extensive use of another object, treat and fix the [Feature Envy](#feature-envy).
 
@@ -356,8 +357,9 @@ useful domain abstraction.
 * If the module has too many (i.e., more than one) responsibilities use [Extract Class](refactoring-ruby#/23) or
 [Extract Module](refactoring-ruby#/25) to separate the responsibilities.
 * If several classes share the same decisions or variation points, you may be able to consolidate them into new classes
-(e.g., by [Hide Delegate](refactoring-ruby#/32), [Pull Up Method](refactoring-ruby#/26), [Form Template Method](#form-template-method), Extract Superclass or Extract Subclass) or extract a common module to serve as a
-mix-in. In the limit, these extracted classes or modules can form a layer (e.g., a persistence layer).
+(e.g., by [Hide Delegate](refactoring-ruby#/32), [Pull Up Method](refactoring-ruby#/26), [Form Template Method](#form-template-method),
+Extract Superclass or Extract Subclass) or extract a common module to serve as a
+mixin. In the limit, these extracted classes or modules can form a layer (e.g., a persistence layer).
 
 ---
 
@@ -447,7 +449,7 @@ You see calls of the form a.b.c.d.
 
 ## What to Do
 
-* If the manipulations actually belong on the target object (the one at the end of the chain), use [Extract Method](refactoring-ruby#/21) and [Move Method / Move Feild](refactoring-ruby#/28) to put them there.
+* If the manipulations actually belong on the target object (the one at the end of the chain), use [Extract Method](refactoring-ruby#/21) and [Move Method / Move Field](refactoring-ruby#/28) to put them there.
 * Use [Hide Delegate](refactoring-ruby#/32) and [Inline Class](refactoring-ruby#/24) to make the caller depend only on
 the object at the head of the chain. (So, rather than a.b.c.d, put a d method on the a object. That may require
 adding a d method to the b and c objects as well.)
@@ -459,20 +461,20 @@ adding a d method to the b and c objects as well.)
 ```ruby
 class Post
   attr_reader :title, :body, :date
- 
+
   def initialize(title, body, date)
     @title  = title
     @body   = body
     @date   = date
   end
- 
+
   def condensed_format
     result = ''
     result << "Title: #{title}"
     result << "Date: #{date.strftime "%Y/%m/%d"}"
     result
   end
- 
+
   def full_format
     result = ''
     result << "Title: #{title}"
@@ -487,25 +489,25 @@ end
 ```ruby
 class Post
   attr_reader :title, :body, :date
- 
+
   def initialize(title, body, date)
     @title  = title
     @body   = body
     @date   = date
   end
- 
+
   def condensed_format
     metadata
   end
- 
+
   def full_format
     result = metadata
     result << "--\n#{body}"
     result
   end
- 
+
   private
-   
+
   def metadata
     result = ''
     result << "Title: #{title}"
@@ -525,7 +527,7 @@ class Rating
   def get_rating
     more_than_five_late_deliveries ? 2 : 1
   end
- 
+
   def more_than_five_late_deliveries
     @number_of_late_deliveries > 5
   end
@@ -551,7 +553,7 @@ class Student
   attr_accessor :first_term_assiduity, :first_term_test, :first_term_behavior
   attr_accessor :second_term_assiduity, :second_term_test, :second_term_behavior
   attr_accessor :third_term_assiduity, :third_term_test, :third_term_behavior
- 
+
   def set_all_grades_to grade
     %w(first second third).each do |which_term|
       %w(assiduity test behavior).each do |criteria|
@@ -559,27 +561,26 @@ class Student
       end
     end
   end
- 
+
   def first_term_grade
     (first_term_assiduity + first_term_test + first_term_behavior) / 3
   end
- 
+
   def second_term_grade
     (second_term_assiduity + second_term_test + second_term_behavior) / 3
   end
- 
+
   def third_term_grade
     (third_term_assiduity + third_term_test + third_term_behavior) / 3
   end
 end
 ```
-
---
+<!-- .element: class="left width-50" -->
 
 ```ruby
 class Student
   attr_reader :terms
- 
+
   def initialize
     @terms = [
       Term.new(:first),
@@ -587,77 +588,78 @@ class Student
       Term.new(:third)
     ]
   end
- 
+
   def set_all_grades_to(grade)
     terms.each { |term| term.set_all_grades_to(grade) }
   end
- 
+
   def first_term_grade
     term(:first).grade
   end
- 
+
   def second_term_grade
     term(:second).grade
   end
- 
+
   def third_term_grade
     term(:third).grade
   end
- 
+
   def term(reference)
     terms.find { |term| term.name == reference }
   end
 end
- 
+
 class Term
   attr_reader :name, :assiduity, :test, :behavior
- 
+
   def initialize(name)
     @name      = name
     @assiduity = 0
     @test      = 0
     @behavior  = 0
   end
- 
+
   def set_all_grades_to(grade)
     @assiduity = grade
     @test      = grade
     @behavior  = grade
   end
- 
+
   def grade
     (assiduity + test + behavior) / 3
   end
 end
 ```
+<!-- .element: class="right width-50" -->
 
 ---
 
-## Inline Class 
+## Inline Class
 
 ```ruby
 class Person
   def initialize
     @office_telephone = TelephoneNumber.new
   end
- 
+
   def telephone_number
     @office_telephone.telephone_number
   end
- 
+
   def office_telephone
     @office_telephone
   end
 end
- 
+
 class TelephoneNumber
   attr_accessor :area_code, :number
- 
+
   def telephone_number
     '(' + area_code + ') ' + number
   end
 end
- 
+
 martin = Person.new
 martin.office_telephone.area_code = "781"
 ```
@@ -668,32 +670,32 @@ class Person
   def initialize
     @office_telephone = TelephoneNumber.new
   end
- 
+
   def area_code
     @office_telephone.area_code
   end
- 
+
   def area_code=(arg)
     @office_telephone.area_code = arg
   end
-   
+
   def number
     @office_telephone.number
   end
-   
+
   def number=(arg)
     @office_telephone.number = arg
   end
 end
- 
+
 class TelephoneNumber
   attr_accessor :area_code, :number
- 
+
   def telephone_number
     '(' + area_code + ') ' + number
   end
 end
- 
+
 martin = Person.new
 martin.area_code = "781"
 ```
@@ -706,15 +708,15 @@ martin.area_code = "781"
 ```ruby
 class Bid
   before_save :capture_account_number
-     
+
   def capture_account_number
     self.account_number = buyer.preferred_account_number
   end
 end
-       
+
 class Sale
   before_save :capture_account_number
-         
+
   def capture_account_number
     self.account_number = buyer.preferred_account_number
   end
@@ -729,16 +731,16 @@ module AccountNumberCapture
       before_save :capture_account_number
     end
   end
- 
+
   def capture_account_number
     self.account_number = buyer.preferred_account_number
   end
 end
- 
+
 class Bid
   include AccountNumberCapture
 end
-       
+
 class Sale
   include AccountNumberCapture
 end
@@ -752,28 +754,28 @@ end
 ```ruby
 class Person
   attr_reader :first_name, :last_name
- 
+
   def initialize first_name, last_name
     @first_name = first_name
     @last_name = last_name
   end
 end
- 
+
 class MalePerson < Person
   def full_name
     first_name + " " + last_name
   end
- 
+
   def gender
     "M"
   end
 end
- 
+
 class FemalePerson < Person
   def full_name
     first_name + " " + last_name
   end
- 
+
   def gender
     "F"
   end
@@ -784,23 +786,23 @@ end
 ```ruby
 class Person
   attr_reader :first_name, :last_name
- 
+
   def initialize first_name, last_name
     @first_name = first_name
     @last_name = last_name
   end
- 
+
   def full_name
     first_name + " " + last_name
   end
 end
- 
+
 class MalePerson < Person
   def gender
     "M"
   end
 end
- 
+
 class FemalePerson < Person
   def gender
     "F"
@@ -817,7 +819,7 @@ end
 class UserService
   USERNAME = "josemota"
   PASSWORD = "secret"
- 
+
   class << self
     def lgn username, password
       username == USERNAME && password == PASSWORD
@@ -831,7 +833,7 @@ end
 class UserService
   USERNAME = "josemota"
   PASSWORD = "secret"
- 
+
   class << self
     def sign_in username, password
       username == USERNAME && password == PASSWORD
@@ -850,27 +852,27 @@ PHONE_CODES = {
   en_gb: "44",
   en_us: "541"
 }
- 
+
 class Phone
   attr_reader :number
- 
+
   def initialize number
     @number = number
   end
- 
+
   def to_s
     number
   end
 end
- 
+
 class Person
   attr_reader :locale, :phone
- 
+
   def initialize(locale: :en_gb, phone: nil)
     @locale = locale
     @phone = Phone.new phone
   end
- 
+
   def full_phone
     ["+", PHONE_CODES[locale], " ", phone].join
   end
@@ -883,27 +885,27 @@ PHONE_CODES = {
   en_gb: "44",
   en_us: "541"
 }
- 
+
 class Phone
   attr_reader :number, :locale
- 
+
   def initialize number, locale
     @number = number
     @locale = locale
   end
- 
+
   def to_s
     PHONE_CODES[locale] + " " + number
   end
 end
- 
+
 class Person
   attr_reader :phone
- 
+
   def initialize(locale: :en_gb, phone: nil)
     @phone = Phone.new phone, locale
   end
- 
+
   def full_phone
     ["+", phone].join
   end
@@ -918,18 +920,18 @@ end
 ```ruby
 class Ticket
   attr_reader :price
- 
+
   def initialize
     @price = 2.0
   end
 end
- 
+
 class SeniorTicket < Ticket
   def price
     @price * 0.75
   end
 end
- 
+
 class JuniorTicket < Ticket
   def price
     @price * 0.5
@@ -943,22 +945,22 @@ class Ticket
   def initialize
     @price = 2.0
   end
- 
+
   def price
     @price * discount
   end
- 
+
   def discount
     1
   end
 end
- 
+
 class SeniorTicket < Ticket
   def discount
     0.75
   end
 end
- 
+
 class JuniorTicket < Ticket
   def discount
     0.5
@@ -976,11 +978,11 @@ class Student
   def first_term_grade
     10
   end
- 
+
   def second_term_grade
     11
   end
- 
+
   def third_term_grade
     12
   end
@@ -995,7 +997,7 @@ class Student
     second: 11,
     third: 12
   }
- 
+
   def term_grade index
     GRADES[index]
   end
@@ -1010,7 +1012,7 @@ end
 ```ruby
 class Post
   attr_reader :id, :title, :body, :created_at
-   
+
   def initialize id, title, body, created_at
     @id         = id
     @title      = title
@@ -1018,30 +1020,30 @@ class Post
     @created_at = created_at
     @published = false
   end
- 
+
   def self.find id
-    # database operation to retrieve data. 
+    # database operation to retrieve data.
     # We will simulate it for now.
     post = POSTS.find { |post| post.id == id }
   end
- 
+
   def publish
     @published = true
     return POSTS.count { |post| !post.published? }
   end
- 
+
   def unpublish
     @published = false
   end
- 
+
   def published?
     @published
   end
- 
+
 end
- 
+
 # Sample data
- 
+
 POSTS = [
   Post.new(
     1,
@@ -1074,7 +1076,7 @@ POSTS = [
 ```ruby
 class Post
   attr_reader :id, :title, :body, :created_at
-   
+
   def initialize id, title, body, created_at
     @id         = id
     @title      = title
@@ -1082,33 +1084,33 @@ class Post
     @created_at = created_at
     @published = false
   end
- 
+
   def self.find id
-    # database operation to retrieve data. 
+    # database operation to retrieve data.
     # We will simulate it for now.
     post = POSTS.find { |post| post.id == id }
   end
- 
+
   def self.unpublished
     return POSTS.count { |post| !post.published? }
   end
- 
+
   def publish
     @published = true
   end
- 
+
   def unpublish
     @published = false
   end
- 
+
   def published?
     @published
   end
- 
+
 end
- 
+
 # Sample data
- 
+
 POSTS = [
   Post.new(
     1,
@@ -1145,32 +1147,32 @@ POSTS = [
 ```ruby
 class Client
   attr_reader :department, :clerk
- 
+
   def initialize department, clerk
     @department = department
     @clerk = clerk
   end
 end
- 
+
 class Manager
   attr_accessor :department
 end
- 
+
 class Clerk
   attr_reader :department
- 
+
   def initialize(department)
     @department = department
   end
- 
+
   def manager
     department.manager
   end
 end
- 
+
 class Department
   attr_reader :manager
- 
+
   def initialize manager
     @manager = manager
     manager.department = self
@@ -1182,28 +1184,28 @@ end
 ```ruby
 class Client
   attr_reader :clerk
- 
+
   def initialize clerk
     @clerk = clerk
   end
 end
- 
+
 class Clerk
   attr_reader :department
- 
+
   def initialize (department)
     @department = department
   end
- 
+
   def manager
     department.manager
   end
 end
- 
+
 class Manager
   attr_accessor :department
 end
- 
+
 class Department
   attr_reader :manager
   def initialize manager
@@ -1237,10 +1239,10 @@ module Assertions
     raise ArgumentError unless block.call
   end
 end
- 
+
 class SquareRootCalculator
   extend Assertions
- 
+
   def self.calculate number
     assert { number > 0 }
     Math.sqrt number
@@ -1256,7 +1258,7 @@ end
 ```ruby
 class Post
   attr_reader :id, :title, :body, :created_at
- 
+
   def initialize(id, title, body, created_at)
     @id         = id
     @title      = title
@@ -1264,20 +1266,20 @@ class Post
     @created_at = created_at
     @published = false
   end
- 
+
   def self.find_and_publish(id)
-    # database operation to retrieve data. 
+    # database operation to retrieve data.
     # We will simulate it for now.
     post = POSTS.find { |post| post.id == id }
     post.publish unless post.nil?
   end
- 
+
   def publish
     @published = true
   end
- 
+
 end
- 
+
 POSTS = [
   Post.new(
     1,
@@ -1292,7 +1294,7 @@ POSTS = [
 ```ruby
 class Post
   attr_reader :id, :title, :body, :created_at
-   
+
   def initialize(id, title, body, created_at)
     @id         = id
     @title      = title
@@ -1300,25 +1302,25 @@ class Post
     @created_at = created_at
     @published = false
   end
- 
+
   def self.find_and_publish(id)
-    # database operation to retrieve data. 
+    # database operation to retrieve data.
     # We will simulate it for now.
     post = POSTS.find { |post| post.id == id } || NullPost.new
     post.publish
   end
- 
+
   def publish
     @published = true
   end
 end
- 
+
 class NullPost
   def publish
     # noop
   end
 end
- 
+
 POSTS = [
   Post.new(
     1,
@@ -1340,14 +1342,14 @@ class CartItem
     @product  = product
     @quantity = quantity
   end
- 
+
   def price
     base_price = @quantity * @product.price
     level_of_discount = 1
     level_of_discount = 2 if @quantity > 100
     discounted_price(base_price, level_of_discount)
   end
- 
+
   def discounted_price(base_price, level_of_discount)
     return base_price * 0.9 if level_of_discount == 2
     base_price * 0.95
@@ -1362,15 +1364,15 @@ class CartItem
     @product  = product
     @quantity = quantity
   end
- 
+
   def price
     base_price * discount_coefficient
   end
- 
+
   def base_price
     @quantity * @product.price
   end
- 
+
   def discount_level
     if @quantity > 100
       2
@@ -1378,7 +1380,7 @@ class CartItem
       1
     end
   end
- 
+
   def discount_coefficient
     if discount_level == 2
       0.9
@@ -1402,7 +1404,7 @@ class Room
     plan.within_range?(low, high)
   end
 end
- 
+
 class HeatingPlan
   def within_range?(low, high)
     (low >= @range.low) && (high <= @range.high)
@@ -1417,7 +1419,7 @@ class Room
     plan.within_range?(days_temperature_range)
   end
 end
- 
+
 class HeatingPlan
   def within_range?(room_range)
     (room_range.low >= @range.low) && (room_range.high <= @range.high)
@@ -1437,12 +1439,12 @@ class Account
     total += base_price * 0.1 if imported
     @charges << total
   end
-           
+
   def total_charge
     @charges.inject(0) { |total, charge| total + charge }
   end
 end
- 
+
 account = Account.new
 account.add_charge(5, 0.1, true)
 account.add_charge(12, 0.125, false)
@@ -1455,28 +1457,28 @@ class Account
   def add_charge(charge)
     @charges << charge
   end
- 
+
   def total_charge
     @charges.inject(0) do |total_for_account, charge|
       total_for_account + charge.total
     end
   end
 end
- 
+
 class Charge
   def initialize(base_price, tax_rate, imported)
     @base_price = base_price
     @tax_rate = tax_rate
     @imported = imported
   end
- 
+
   def total
     result = @base_price + @base_price * @tax_rate
     result += @base_price * 0.1 if @imported
     result
   end
 end
- 
+
 account = Account.new
 account.add_charge(Charge.new(9.0, 0.1, true))
 account.add_charge(Charge.new(12.0, 0.125, true))
@@ -1491,16 +1493,16 @@ total = account.total_charge
 ```ruby
 class Cart
   attr_reader :products
- 
+
   def initialize(products)
     @products = products
   end
- 
+
   def total
     products.inject(0) { |sum, product| sum + product[2] }
   end
 end
- 
+
 Cart.new([
   [ "Sweater"   , "Pink" , 5.0  ],
   [ "Trousers"  , "Blue" , 8.0  ],
@@ -1512,27 +1514,27 @@ Cart.new([
 ```ruby
 class Cart
   attr_reader :products
- 
+
   def initialize(products)
     @products = products.map { |product| Product.new *product }
   end
- 
+
   def total
     products.inject(0) { |sum, product| sum + product.price }
   end
- 
+
 end
- 
+
 class Product
   attr_reader :name, :color, :price
- 
+
   def initialize(name, color, price)
     @name  = name
     @color = color
     @price = price
   end
 end
- 
+
 Cart.new([
   [ "Sweater"   , "Pink" , 5.0  ],
   [ "Trousers"  , "Blue" , 8.0  ],
@@ -1550,21 +1552,21 @@ class Person
   def tax(income: nil, expenses: 0, type: :dependent_worker)
     return_value = 0
     number_of_people_under_roof = 1
- 
+
     if type == :dependent_worker
       return_value += income * 0.02
     else
       return_value += income * 0.04
     end
- 
+
     if number_of_people_under_roof > 2
       return_value *= 1.10
     end
- 
+
     if income - expenses > income * 0.05
       return_value += expenses * 0.05
     end
- 
+
     return_value -= expenses * 0.30
   end
 end
@@ -1581,14 +1583,14 @@ class TaxAlgorithm
     @return_value = 0
     @number_of_people_under_roof = 1
   end
- 
+
   def compute
     process_type
     process_number_of_people
     process_income_expense_difference
     deduct_expenses
   end
- 
+
   def process_type
     if @type == :dependent_worker
       @return_value += @income * 0.02
@@ -1596,20 +1598,20 @@ class TaxAlgorithm
       @return_value += @income * 0.04
     end
   end
- 
+
   def process_number_of_people
     @return_value *= 1.10 if @number_of_people_under_roof > 2
   end
- 
+
   def process_income_expense_difference
     @return_value += @expenses * 0.05 if @income - @expenses > @income * 0.05
   end
- 
+
   def deduct_expenses
     @return_value -= @expenses * 0.30
   end
 end
- 
+
 class Person
   def tax(income: nil, expenses: 0, type: :dependent_worker)
     TaxAlgorithm.new(income: income, expenses: expenses, type: type).compute
@@ -1624,13 +1626,13 @@ end
 ```ruby
 class Cuboid
   attr_reader :length, :width, :height
-   
+
   def initialize(length, width, height)
     @length = length
     @width  = width
     @height = height
   end
- 
+
   def volume
     area = length * width
     area * height
@@ -1642,17 +1644,17 @@ end
 ```ruby
 class Cuboid
   attr_reader :length, :width, :height
-   
+
   def initialize(length, width, height)
     @length = length
     @width  = width
     @height = height
   end
- 
+
   def volume
     area * height
   end
- 
+
   def area
     length * width
   end
@@ -1669,21 +1671,21 @@ class Employee
   def initialize(type: :regular)
     @type = type
   end
- 
+
   def base_salary
     500.0
   end
- 
+
   def salary
     base_salary + bonus
   end
- 
+
   def self.build(type: :regular)
     new type: type
   end
- 
+
   private
- 
+
   def bonus
     value = case @type
       when :regular then 0
@@ -1700,30 +1702,30 @@ class Employee
   def initialize(type: :regular)
     @type = type
   end
- 
+
   def base_salary
     500.0
   end
- 
+
   def salary
     base_salary + bonus
   end
- 
+
   def self.build(type: :employee)
     const_get(type.capitalize).new
   end
- 
+
   def bonus
     0
   end
 end
- 
+
 class Manager < Employee
   def bonus
     800
   end
 end
- 
+
 class Boss < Employee
   def bonus
     1500
@@ -1741,21 +1743,21 @@ class Employee
   def initialize(type: :regular)
     @type = type
   end
- 
+
   def base_salary
     500.0
   end
- 
+
   def salary
     base_salary + bonus
   end
- 
+
   private
- 
+
   def self.build(type: :regular)
     new type: type
   end
- 
+
   def bonus
     value = case @type
       when :regular then 0
@@ -1772,34 +1774,34 @@ class Employee
   def initialize(type: :regular)
     @type = type
   end
- 
+
   def base_salary
     500.0
   end
- 
+
   def salary
     base_salary + bonus
   end
- 
+
   def self.build(type: :regular)
     instance = new
     instance.extend const_get(type.capitalize)
   end
- 
+
 end
- 
+
 module Regular
   def bonus
     0
   end
 end
- 
+
 module Manager
   def bonus
     800
   end
 end
- 
+
 module Boss
   def bonus
     1500
@@ -1815,27 +1817,27 @@ end
 ```ruby
 class User
   attr_reader :name, :type, :options
- 
+
   def initialize(name, type, options = {})
     @name    = name
     @type    = type
     @options = options
   end
-   
+
   def public_key_matches?
     # Do some logic
     true
   end
- 
+
   def oauth_authenticates?
     # Do some logic
     true
   end
- 
+
   class << self
     def login(name, options = {})
       user = USERS.find { |u| u.name == name }
- 
+
       case user.type
         when :password
           return user.options[:password] == options[:password]
@@ -1853,12 +1855,12 @@ end
 ```ruby
 class User
   attr_reader :name, :type, :options
- 
+
   def initialize(name, type, options = {})
     @name    = name
     @type    = type
     @options = options
- 
+
     @strategy = case @type
       when :password
         Auth::Password.new self
@@ -1868,52 +1870,52 @@ class User
         Auth::OAuth.new self
     end
   end
-   
+
   def auth! options
     @strategy.auth? options
   end
- 
+
   class << self
     def login(name, options = {})
       user = USERS.find { |u| u.name == name }
- 
+
       user.auth! options
     end
   end
 end
- 
+
 module Auth
   class Password
     def initialize user
       @user = user
     end
- 
+
     def auth? options
       @user.options[:password] == options[:password]
     end
   end
- 
+
   class PublicKey
     def initialize user
       @user = user
     end
- 
+
     def auth? options
       # Do some logic
       true
     end
   end
- 
+
   class OAuth
     def initialize user
       @user = user
     end
-   
+
     def auth? options
       # Do some logic
       true
     end
-   
+
   end
 end
 ```
@@ -1930,11 +1932,11 @@ def found_friends(people)
     if(person == "Don")
       friends << "Don"
     end
-     
+
     if(person == "John")
       friends << "John"
     end
-     
+
     if(person == "Kent")
       friends << "Kent"
     end
@@ -1974,15 +1976,15 @@ def final_charge
     summer_charge(quantity)
   end
 end
- 
+
 def summer?(date)
   date >= SUMMER_START && date <= SUMMER_END
 end
- 
+
 def winter_charge(quantity)
   quantity * @winter_rate + @winter_service_charge
 end
- 
+
 def summer_charge(quantity)
   quantity * @summer_rate
 end
@@ -1998,10 +2000,10 @@ managers = []
 employees.each do |e|
   managers << e if e.manager?
 end
- 
+
 offices = []
 employees.each {|e| offices << e.office}
- 
+
 manager_offices = []
 employees.each do |e|
   manager_offices << e.office if e.manager?
@@ -2010,9 +2012,9 @@ end
 
 ```ruby
 managers = employees.select {|e| e.manager?}
- 
+
 offices = employees.collect {|e| e.office}
- 
+
 manager_offices = employees.select {|e| e.manager?}.collect {|e| e.office}
 ```
 
@@ -2028,7 +2030,7 @@ class SearchCriteria
     @publisher_id = publisher_id
   end
 end
- 
+
 criteria = SearchCriteria.new("Metaprogramming Ruby", 5, 8)
 ```
 
@@ -2040,7 +2042,7 @@ class SearchCriteria
     @publisher_id = publisher_id
   end
 end
- 
+
 criteria = SearchCriteria.new(title: "Metaprogramming Ruby", author_id: 5)
 ```
 
