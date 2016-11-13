@@ -49,6 +49,8 @@ use Ruby syntax. You don't have to learn new complicated build tool syntax.
 $ gem install rake
 ```
 
+--
+
 ## First Rake Task
 
 Rake tasks should always be located in file named `rakefile`, `Rakefile`, `rakefile.rb` or `Rakefile.rb`. First
@@ -87,7 +89,7 @@ Let’s say I wanted to get ready in the morning. My process would be something 
 
 In rake I might express my morning as follows:
 
-Rakefile
+Rakefile <!-- .element: class="filename" -->
 
 ```ruby
 task :turn_off_alarm do
@@ -137,7 +139,7 @@ Dog walked.
 
 # Expressing dependencies
 
-Rakefile
+Rakefile <!-- .element: class="filename" -->
 
 ```ruby
 # ...
@@ -168,7 +170,7 @@ runs them all in the appropriate order.
 Dependencies can be specified not only when defining the task, but also later, depending on the run
 time conditions.
 
-Rakefile
+Rakefile <!-- .element: class="filename" -->
 
 ```ruby
 # ...
@@ -189,7 +191,7 @@ Rake supports the concept of namespaces which essentially lets you group togethe
 inside of one namespace. You’d then specify the namespace when you call a task inside it. It keeps
 things tidy while still being quite effective.
 
-Rakefile
+Rakefile <!-- .element: class="filename" -->
 
 ```ruby
 namespace :morning do
@@ -210,7 +212,7 @@ $ rake morning:ready_for_the_day
 Rake has the concept of a default task. This is essentially the task that will be run if you type rake without any
 arguments. If we wanted our default task to be turning off the alarm from the example above, we'd do this:
 
-Rakefile
+Rakefile <!-- .element: class="filename" -->
 
 ```ruby
 task :default => 'morning:turn_off_alarm'
@@ -230,7 +232,7 @@ You can use the desc method to describe your tasks. This is done on the line rig
 what gives you that nice output when you run `rake -T` to get a list of tasks. Tasks are displayed in alphabetical
 order.
 
-Rakefile
+Rakefile <!-- .element: class="filename" -->
 
 ```ruby
 desc 'Make coffee'
@@ -253,7 +255,7 @@ Let’s say you want to add on to an existing task. Perhaps you have another ite
 routine like styling your hair. You could write another task and slip it in as a dependency for
 `groom_myself` but you could also redefine `groom_myself`.
 
-Rakefile
+Rakefile <!-- .element: class="filename" -->
 
 ```ruby
 namespace :morning do
@@ -287,7 +289,7 @@ You may at some point want to invoke a task from inside another task. Let’s sa
 wanted to make coffee in the afternoon, too. If you need an extra upper after lunch you could do
 that the following way:
 
-Rakefile
+Rakefile <!-- .element: class="filename" -->
 
 ```ruby
 namespace :afternoon do
@@ -308,6 +310,8 @@ Ready for the rest of the day!
 
 # Invoking and executing
 
+--
+
 ## Invoke
 
 ```ruby
@@ -315,6 +319,8 @@ Rake::Task['morning:make_coffee'].invoke
 ```
 
 This one executes the dependencies, but it only executes the task if it has not already been invoked.
+
+--
 
 ## Reenable
 
@@ -325,6 +331,8 @@ Rake::Task['morning:make_coffee'].invoke
 
 This first resets the task's `already_invoked` state, allowing the task to then be executed again,
 dependencies and all.
+
+--
 
 ## Execute
 
@@ -338,9 +346,11 @@ This always executes the task, but it doesn't execute its dependencies.
 
 # Passing parameters to tasks
 
+--
+
 ## Using a named variable
 
-Rakefile
+Rakefile <!-- .element: class="filename" -->
 
 ```ruby
 namespace :morning do
@@ -357,13 +367,11 @@ $ rake morning:make_coffee cups=2
 Made 2 cups of coffee. Shakes are gone.
 ```
 
----
-
-# Passing parameters to tasks
+--
 
 ## Using arguments
 
-Rakefile
+Rakefile <!-- .element: class="filename" -->
 
 ```ruby
 namespace :morning do
@@ -380,13 +388,11 @@ $ rake morning:make_coffee[2]
 Made 2 cups of coffee. Shakes are gone.
 ```
 
----
-
-# Passing parameters to tasks
+--
 
 ## Custom black magic
 
-Rakefile
+Rakefile <!-- .element: class="filename" -->
 
 ```ruby
 namespace :morning do
@@ -420,6 +426,8 @@ we don’t do this, rake will attempt to invoke a task for each command line arg
 
 # How to test it
 
+--
+
 ## Write a test
 
 Some notable aspects of testing Rake tasks:
@@ -429,7 +437,7 @@ Some notable aspects of testing Rake tasks:
 
 --
 
-spec/morning_rake_spec.rb
+spec/morning_rake_spec.rb <!-- .element: class="filename" -->
 
 ```ruby
 require 'rake'
@@ -472,13 +480,11 @@ describe 'morning namespace rake task' do
 end
 ```
 
----
-
-# How to test it
+--
 
 ## Implementation
 
-Rakefile
+Rakefile <!-- .element: class="filename" -->
 
 ```ruby
 class Coffee

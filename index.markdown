@@ -3,88 +3,135 @@ layout: page
 title: Ruby presentations
 ---
 
-# Ruby presentations
+# Ruby
 
-1. [Ruby Basics](/slides/ruby-basics)
+- [Ruby Basics](/slides/ruby-basics)
   <br>
-  Start working with Ruby!
+  <small>Start working with Ruby!</small>
 
-2. [OOP in Ruby](/slides/oop)
+
+- [OOP in Ruby](/slides/oop)
   <br>
-  How works OOP model in Ruby.
+  <small>How works OOP model in Ruby.</small>
 
-3. [Metaprogramming](/slides/metaprogramming)
+
+- [Metaprogramming](/slides/metaprogramming)
   <br>
-  Metaprogramming... it sounds cool! It doesn’t just sound cool; it is cool.
+  <small>Metaprogramming... it sounds cool! It doesn’t just sound cool; it is cool.</small>
 
-4. [Ruby gems](/slides/ruby-gems)
+
+- [Ruby gems](/slides/ruby-gems)
   <br>
-  How to use Ruby gems and write your own.
+  <small>How to use Ruby gems and write your own.</small>
 
-5. [RSpec](/slides/rspec)
+
+- [RSpec](/slides/rspec)
   <br>
-  Testing Ruby code with RSpec.
+  <small>Testing Ruby code with RSpec.</small>
 
-6. [Refactoring in Ruby](/slides/refactoring-ruby)
+
+- [Refactoring in Ruby](/slides/refactoring-ruby)
   <br>
-  Learn how to do refactoring in Ruby.
+  <small>Learn how to do refactoring in Ruby.</small>
 
-7. [Rake](/slides/rake)
+
+- [Rake](/slides/rake)
   <br>
-  Rake is a Make-like program implemented in Ruby, build tool for Ruby developers.
+  <small>Rake is a Make-like program implemented in Ruby, build tool for Ruby developers.</small>
 
-8. [Rack](/slides/rack)
+
+- [Rack](/slides/rack)
   <br>
-  Where only web-requests dare to go.
+  <small>Where only web-requests dare to go.</small>
 
-9. [Rails](/slides/rails)
+
+
+# Ruby on Rails
+
+- [Rails](/slides/rails)
   <br>
-  The first meet.
+  <small>The first meet.</small>
 
-10. [Models](/slides/models)
+
+- [Models](/slides/models)
   <br>
-  Models and ActiveRecord
+  <small>Models and ActiveRecord</small>
 
-11. [Routes](/slides/routes)
+
+- [Routes](/slides/routes)
   <br>
-  Features of Rails routing.
+  <small>Features of Rails routing.</small>
 
-12. [Controllers](/slides/controllers)
+
+- [Controllers](/slides/controllers)
   <br>
-  How controllers work and how they fit into the request cycle in your application.
+  <small>How controllers work and how they fit into the request cycle in your application.</small>
 
-13. [Refactoring in Rails controllers](/slides/refactoring-rails)
+
+- [Refactoring in Rails controllers](/slides/refactoring-rails)
   <br>
-  Let's refactor Rails controllers
+  <small>Let's refactor Rails controllers</small>
 
-14. [Views](/slides/views)
+
+- [Views](/slides/views)
   <br>
-  Views in Rails
+  <small>Views in Rails</small>
 
-15. [HTML/CSS](/slides/html-css)
 
-16. [CSS architecture](/slides/css-architecture)
+- [HTML & CSS](/slides/html-css)
 
-17. [BDD in Rails](/slides/bdd)
+
+- [CSS architecture](/slides/css-architecture)
+
+
+- [BDD in Rails](/slides/bdd)
   <br>
-  Learn how to do behavior-driven development in Rails.
+  <small>Learn how to do behavior-driven development in Rails.</small>
 
-18. [Devise](/slides/devise)
+
+- [Devise](/slides/devise)
   <br>
-  Flexible authentication solution for Rails with Warden.
+  <small>Flexible authentication solution for Rails with Warden.</small>
 
-19. [Rails Engine](/slides/rails-engine)
+
+- [Rails Engine](/slides/rails-engine)
   <br>
-  Meet Rails Engines.
+  <small>Meet Rails Engines.</small>
 
-20. [API](/slides/api)
 
-21. [Static code analysis](/slides/static-code-analysis)
+- [API](/slides/api)
 
-22. [AngularJS](/slides/angular-js)
 
-23. [Chef](/slides/chef)
 
-24. [Capistrano](/slides/capistrano)
+# Frontend
 
-25. [Functional Programming](/slides/functional-programming)
+- [AngularJS](/slides/angular-js)
+
+
+
+# Utils
+
+- [Static code analysis](/slides/static-code-analysis)
+  <br>
+  <small>Write your code clean and beautiful.</small>
+
+
+- [Chef](/slides/chef)
+  <br>
+  <small>Prepare and configure server environment.</small>
+
+
+- [Capistrano](/slides/capistrano)
+  <br>
+  <small>Application deploy.</small>
+
+
+
+# Additional
+
+- [Functional Programming](/slides/functional-programming)
+
+
+<br>
+<br>
+<br>
