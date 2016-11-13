@@ -1,5 +1,5 @@
 @font-face {
-  font-family: 'gp_r';
+  font-family: 'Gotham Pro';
   src: url('/assets/fonts/gothaproreg-webfont.eot');
   src: url('/assets/fonts/gothaproreg-webfont.eot?#iefix') format('embedded-opentype'),
        url('/assets/fonts/gothaproreg-webfont.woff') format('woff'),
@@ -18,48 +18,46 @@
        url('/assets/fonts/ptf55f_w.svg#PTSerif-Regular') format('svg');
 }
 
-@font-face {
-  font-family: 'Fantasque Sans Mono';
-  src: url('/assets/fonts/FantasqueSansMono-Italic.eot'); /* IE 9 Compatibility Mode */
-  src: url('/assets/fonts/FantasqueSansMono-Italic.eot?#iefix') format('embedded-opentype'), /* IE < 9 */
-       url('/assets/fonts/FantasqueSansMono-Italic.woff2') format('woff2'),
-       url('/assets/fonts/FantasqueSansMono-Italic.woff') format('woff'), /* Firefox >= 3.6, any other modern browser */
-       url('/assets/fonts/FantasqueSansMono-Italic.ttf') format('truetype'), /* Safari, Android, iOS */
-       url('/assets/fonts/FantasqueSansMono-Italic.svg#FantasqueSansMono-Italic') format('svg'); /* Chrome < 4, Legacy iOS */
-  font-weight: 400;
-  font-style: italic;
-}
-@font-face {
-  font-family: 'Fantasque Sans Mono';
-  src: url('/assets/fonts/FantasqueSansMono-Regular.eot'); /* IE 9 Compatibility Mode */
-  src: url('/assets/fonts/FantasqueSansMono-Regular.eot?#iefix') format('embedded-opentype'), /* IE < 9 */
-       url('/assets/fonts/FantasqueSansMono-Regular.woff2') format('woff2'),
-       url('/assets/fonts/FantasqueSansMono-Regular.woff') format('woff'), /* Firefox >= 3.6, any other modern browser */
-       url('/assets/fonts/FantasqueSansMono-Regular.ttf') format('truetype'), /* Safari, Android, iOS */
-       url('/assets/fonts/FantasqueSansMono-Regular.svg#FantasqueSansMono-Regular') format('svg'); /* Chrome < 4, Legacy iOS */
-  font-weight: 400;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Fantasque Sans Mono';
-  src: url('/assets/fonts/FantasqueSansMono-BoldItalic.eot'); /* IE 9 Compatibility Mode */
-  src: url('/assets/fonts/FantasqueSansMono-BoldItalic.eot?#iefix') format('embedded-opentype'), /* IE < 9 */
-       url('/assets/fonts/FantasqueSansMono-BoldItalic.woff2') format('woff2'),
-       url('/assets/fonts/FantasqueSansMono-BoldItalic.woff') format('woff'), /* Firefox >= 3.6, any other modern browser */
-       url('/assets/fonts/FantasqueSansMono-BoldItalic.ttf') format('truetype'), /* Safari, Android, iOS */
-       url('/assets/fonts/FantasqueSansMono-BoldItalic.svg#FantasqueSansMono-BoldItalic') format('svg'); /* Chrome < 4, Legacy iOS */
-  font-weight: 700;
-  font-style: italic;
-}
-@font-face {
-  font-family: 'Fantasque Sans Mono';
-  src: url('/assets/fonts/FantasqueSansMono-Bold.eot'); /* IE 9 Compatibility Mode */
-  src: url('/assets/fonts/FantasqueSansMono-Bold.eot?#iefix') format('embedded-opentype'), /* IE < 9 */
-       url('/assets/fonts/FantasqueSansMono-Bold.woff2') format('woff2'),
-       url('/assets/fonts/FantasqueSansMono-Bold.woff') format('woff'), /* Firefox >= 3.6, any other modern browser */
-       url('/assets/fonts/FantasqueSansMono-Bold.ttf') format('truetype'), /* Safari, Android, iOS */
-       url('/assets/fonts/FantasqueSansMono-Bold.svg#FantasqueSansMono-Bold') format('svg'); /* Chrome < 4, Legacy iOS */
-  font-weight: 700;
-  font-style: normal;
+@font-face{
+    font-family: 'Fira Code';
+    src: url('/assets/fonts/eot/FiraCode-Light.eot');
+    src: url('/assets/fonts/eot/FiraCode-Light.eot') format('embedded-opentype'),
+         url('/assets/fonts/woff2/FiraCode-Light.woff2') format('woff2'),
+         url('/assets/fonts/woff/FiraCode-Light.woff') format('woff'),
+         url('/assets/fonts/ttf/FiraCode-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
 }
 
+@font-face{
+    font-family: 'Fira Code';
+    src: url('/assets/fonts/eot/FiraCode-Regular.eot');
+    src: url('/assets/fonts/eot/FiraCode-Regular.eot') format('embedded-opentype'),
+         url('/assets/fonts/woff2/FiraCode-Regular.woff2') format('woff2'),
+         url('/assets/fonts/woff/FiraCode-Regular.woff') format('woff'),
+         url('/assets/fonts/ttf/FiraCode-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face{
+    font-family: 'Fira Code';
+    src: url('/assets/fonts/eot/FiraCode-Medium.eot');
+    src: url('/assets/fonts/eot/FiraCode-Medium.eot') format('embedded-opentype'),
+         url('/assets/fonts/woff2/FiraCode-Medium.woff2') format('woff2'),
+         url('/assets/fonts/woff/FiraCode-Medium.woff') format('woff'),
+         url('/assets/fonts/ttf/FiraCode-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face{
+    font-family: 'Fira Code';
+    src: url('/assets/fonts/eot/FiraCode-Bold.eot');
+    src: url('/assets/fonts/eot/FiraCode-Bold.eot') format('embedded-opentype'),
+         url('/assets/fonts/woff2/FiraCode-Bold.woff2') format('woff2'),
+         url('/assets/fonts/woff/FiraCode-Bold.woff') format('woff'),
+         url('/assets/fonts/ttf/FiraCode-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}

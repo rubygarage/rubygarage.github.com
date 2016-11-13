@@ -5,16 +5,17 @@ title:  Rack
 
 # Rack
 
-> `Rack` provides a minimal interface between webservers supporting Ruby and Ruby frameworks. This might seem a fairly simple thing, but it gives us a lot of power. One of the things it enables is Rack Middleware which is a filter that can be used to intercept a request and alter the response as a request is made to an application. 
+`Rack` provides a minimal interface between webservers supporting Ruby and Ruby frameworks. This
+might seem a fairly simple thing, but it gives us a lot of power. One of the things it enables is
+Rack Middleware which is a filter that can be used to intercept a request and alter the response
+as a request is made to an application. 
 
-<br>
+To use `Rack`, provide an `app`: an object that responds to the call method, taking the environment
+hash as a parameter, and returning an Array with three elements:
 
-> To use Rack, provide an "app": an object that responds to the call method, taking the environment hash as a parameter, and returning an Array with three elements:
-
-
-* The HTTP response code
-* A Hash of headers
-* The response body, which must respond to each
+- The HTTP response code
+- A Hash of headers
+- The response body, which must respond to each
 
 <br>
 
@@ -22,19 +23,22 @@ title:  Rack
 
 ---
 
-## Init enviropment
+# Init enviropment
 
 Create gemset
+
 ```bash
 $ rvm use ruby-2.1.2@rack --create
 ```
 
 Install Rack
+
 ```bash
 $ gem install rack
 ```
 
 Create Application
+
 ```bash
 $ mkdir racker
 $ cd racker/
@@ -42,9 +46,10 @@ $ cd racker/
 
 ---
 
-## Config.ru file
+# Config.ru file
 
 config.ru <!-- .element: class="filename" -->
+
 ```ruby
 class Racker
   def call(env)
@@ -66,9 +71,10 @@ Something happens!
 
 ---
 
-## Response
+# Response
 
 config.ru <!-- .element: class="filename" -->
+
 ```ruby
 class Racker
   def call(env)
@@ -90,15 +96,17 @@ We use Rack::Response! Yay!
 
 ---
 
-## Just make it useful
+# Just make it useful
 
 config.ru <!-- .element: class="filename" -->
+
 ```ruby
 require './lib/racker'
 run Racker.new
 ```
 
 lib/racker.rb <!-- .element: class="filename" -->
+
 ```ruby
 require 'erb'
 
@@ -117,6 +125,7 @@ end
 --
 
 lib/views/index.html.erb <!-- .element: class="filename" -->
+
 ```html
 <!DOCTYPE html>
 <html>
@@ -153,9 +162,10 @@ $ curl http://localhost:9292
 
 ---
 
-## Request
+# Request
 
 lib/racker.rb <!-- .element: class="filename" -->
+
 ```ruby
 require 'erb'
 
@@ -203,9 +213,10 @@ Not Found
 
 ---
 
-## Just do it a little complicated
+# Just do it a little complicated
 
 config.ru <!-- .element: class="filename" -->
+
 ```ruby
 require './lib/racker'
 run Racker
@@ -214,6 +225,7 @@ run Racker
 --
 
 lib/racker.rb <!-- .element: class="filename" -->
+
 ```ruby
 require 'erb'
 
@@ -252,6 +264,7 @@ end
 --
 
 lib/views/index.html.erb <!-- .element: class="filename" -->
+
 ```html
 <!DOCTYPE html>
 <html>
@@ -273,33 +286,21 @@ lib/views/index.html.erb <!-- .element: class="filename" -->
 
 --
 
+## rackup
+
 ```bash
 $ rackup
 ```
 
-#### Go to http://localhost:9292
+Go to http://localhost:9292
 
-<div id="container">
-  <p>You said 'Nothing'</p>
-  <p>Say something new</p>
-  <form method="post" action="/update_word">
-    <input name="word" type="text" value="Hello!">
-    <input type="submit" value="Say!">
-  </form>
-</div>
+![](/assets/images/rack/form.png)
 
-<br>
+--
 
-#### After submit
+# After submit
 
-<div id="container">
-  <p>You said 'Hello!'</p>
-  <p>Say something new</p>
-  <form method="post" action="/update_word">
-    <input name="word" type="text">
-    <input type="submit" value="Say!">
-  </form>
-</div>
+![](/assets/images/rack/form-2.png)
 
 ---
 

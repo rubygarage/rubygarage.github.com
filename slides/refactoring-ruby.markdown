@@ -1571,8 +1571,8 @@ class Person
   end
 end
 ```
+<!-- .element: class="left width-50" -->
 
---
 
 ```ruby
 class TaxAlgorithm
@@ -1618,6 +1618,7 @@ class Person
   end
 end
 ```
+<!-- .element: class="right width-50" -->
 
 ---
 
@@ -2002,7 +2003,7 @@ employees.each do |e|
 end
 
 offices = []
-employees.each {|e| offices << e.office}
+employees.each { |e| offices << e.office }
 
 manager_offices = []
 employees.each do |e|
@@ -2011,11 +2012,11 @@ end
 ```
 
 ```ruby
-managers = employees.select {|e| e.manager?}
+managers = employees.select { |e| e.manager? }
 
-offices = employees.collect {|e| e.office}
+offices = employees.collect { |e| e.office }
 
-manager_offices = employees.select {|e| e.manager?}.collect {|e| e.office}
+manager_offices = employees.select { |e| e.manager? }.collect { |e| e.office }
 ```
 
 ---
