@@ -139,6 +139,14 @@ h6,
   text-shadow: none;
 }
 
+.reveal h1 code,
+.reveal h2 code,
+.reveal h3 code,
+.reveal h4 code {
+  color: #df5000;
+  background: transparent;
+}
+
 img,
 video,
 iframe {
@@ -244,9 +252,9 @@ pre code,
 .reveal pre code {
   border-radius: 5px;
   display: block;
-  padding: 15px;
-  overflow: auto;
   max-height: 690px;
+  overflow: auto;
+  padding: 15px;
   word-wrap: normal;
 }
 
@@ -437,4 +445,40 @@ small * {
 
 .reveal .small-table-font {
   font-size: 0.9em;
+}
+
+
+
+/********************************************************************************************************************
+ *                                                HTML example block                                                *
+ ********************************************************************************************************************/
+
+.reveal div.html-example {
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.3);
+  display: block;
+  font-size: 1.2rem;
+  margin: 20px auto;
+  max-height: 690px;
+  overflow: auto;
+  padding: 15px;
+  position: relative;
+  text-align: left;
+  text-rendering: inherit;
+  width: 96%;
+  word-wrap: normal;
+}
+
+.reveal .form-group {
+  margin-bottom: 15px;
+}
+
+.reveal .form-control {
+  font-size: 1.2rem;
+}
+
+.reveal label {
+  font-weight: bold;
+  margin-bottom: 5px;
 }

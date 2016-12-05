@@ -7,7 +7,13 @@ title:  Rails
 
 David Heinemeier Hansson (DHH), [37signals](http://37signals.com)
 
-### The Rails philosophy includes two major guiding principles
+<br>
+
+[Go to Table of Contents](/)
+
+--
+
+## The Rails philosophy includes two major guiding principles
 
 `DRY` - "Don't Repeat Yourself" - suggests that writing the same code over and over again is a bad thing.
 
@@ -25,21 +31,24 @@ $ rvm use 2.3.0@blog --create
 Using /Users/ty/.rvm/gems/ruby-2.3.0 with gemset blog
 ```
 
-### Installing Rails
+--
 
-#### The latest stable version
+## Installing Rails
+
+### The latest stable version
 
 ```bash
 $ gem install rails
 ```
 
 ```bash
-$ gem install rails -v 5.0.0.beta1.1
+$ gem install rails -v 5.0
 ```
 
 ---
 
 ## Creating rails application
+
 ```bash
 $ rails new -h
 Usage:
@@ -81,7 +90,8 @@ Rails options:
 
 --
 
-### Rails new
+## Rails new
+
 ```bash
 $ rails new blog
 create
@@ -191,19 +201,20 @@ run  bundle exec spring binstub --all
 
 --
 
-### Goto directory
+## Add `.ruby-version` and `.ruby-gemset`
 
 ```bash
 $ cd blog
 ```
 
-### Add .ruby-version and .ruby-gemset
-
 .ruby-version <!-- .element: class="filename" -->
+
 ```ruby
 2.3.0
 ```
+
 .ruby-gemset <!-- .element: class="filename" -->
+
 ```ruby
 blog
 ```
@@ -212,23 +223,29 @@ blog
 
 ## Directories structure
 
-| File/Folder | Purpose |
-|-------------|---------|
-| app/ | Contains the controllers, models, views, helpers, mailers and assets for your application. You'll focus on this folder for the remainder of this guide. |
-| bin/ | Contains the rails script that starts your app and can contain other scripts you use to deploy or run your application. |
-| config/ | Configure your application's runtime rules, routes, database, and more. This is covered in more detail in [Configuring Rails Applications](configuring.html) |
-| config.ru | Rack configuration for Rack based servers used to start the application. |
-| db/ | Contains your current database schema, as well as the database migrations. |
-| Gemfile Gemfile.lock | These files allow you to specify what gem dependencies are needed for your Rails application. These files are used by the Bundler gem. For more information about Bundler, see [the Bundler website](http://gembundler.com) |
-| lib/ | Extended modules for your application. |
-| log/ | Application log files. |
-| public/ | The only folder seen to the world as-is. Contains the static files and compiled assets. |
-| Rakefile | This file locates and loads tasks that can be run from the command line. The task definitions are defined throughout the components of Rails. Rather than changing Rakefile, you should add your own tasks by adding files to the lib/tasks directory of your application. |
-| README.rdoc | This is a brief instruction manual for your application. You should edit this file to tell others what your application does, how to set it up, and so on. |
-| test/ | Unit tests, fixtures, and other test apparatus. These are covered in [Testing Rails Applications](testing.html) |
-| tmp/ | Temporary files (like cache, pid and session files) |
-| vendor/ | A place for all third-party code. In a typical Rails application, this includes Ruby Gems and the Rails source code (if you optionally install it into your project). |
-<!-- .element: class="small-table-font" -->
+| File/Folder          | Purpose                                                                                                                                                                                                                                                                    |
+| -------------        | ---------                                                                                                                                                                                                                                                                  |
+| app/                 | Contains the controllers, models, views, helpers, mailers and assets for your application. You'll focus on this folder for the remainder of this guide.                                                                                                                    |
+| bin/                 | Contains the rails script that starts your app and can contain other scripts you use to deploy or run your application.                                                                                                                                                    |
+| config/              | Configure your application's runtime rules, routes, database, and more. This is covered in more detail in [Configuring Rails Applications](configuring.html)                                                                                                               |
+| config.ru            | Rack configuration for Rack based servers used to start the application.                                                                                                                                                                                                   |
+| db/                  | Contains your current database schema, as well as the database migrations.                                                                                                                                                                                                 |
+| Gemfile Gemfile.lock | These files allow you to specify what gem dependencies are needed for your Rails application. These files are used by the Bundler gem. For more information about Bundler, see [the Bundler website](http://gembundler.com)                                                |
+| lib/                 | Extended modules for your application.                                                                                                                                                                                                                                     |
+| log/                 | Application log files.                                                                                                                                                                                                                                                     |
+
+--
+
+## Directories structure
+
+| File/Folder          | Purpose                                                                                                                                                                                                                                                                    |
+| -------------        | ---------                                                                                                                                                                                                                                                                  |
+| public/              | The only folder seen to the world as-is. Contains the static files and compiled assets.                                                                                                                                                                                    |
+| Rakefile             | This file locates and loads tasks that can be run from the command line. The task definitions are defined throughout the components of Rails. Rather than changing Rakefile, you should add your own tasks by adding files to the lib/tasks directory of your application. |
+| README.rdoc          | This is a brief instruction manual for your application. You should edit this file to tell others what your application does, how to set it up, and so on.                                                                                                                 |
+| test/                | Unit tests, fixtures, and other test apparatus. These are covered in [Testing Rails Applications](testing.html)                                                                                                                                                            |
+| tmp/                 | Temporary files (like cache, pid and session files)                                                                                                                                                                                                                        |
+| vendor/              | A place for all third-party code. In a typical Rails application, this includes Ruby Gems and the Rails source code (if you optionally install it into your project).                                                                                                      |
 
 ---
 
@@ -237,52 +254,52 @@ blog
 ```ruby
 source 'https://rubygems.org'
 
-  # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-  gem 'rails', '>= 5.0.0.beta1.1', '< 5.1'
-  # Use sqlite3 as the database for Active Record
-  gem 'sqlite3'
-  # Use Uglifier as compressor for JavaScript assets
-  gem 'uglifier', '>= 1.3.0'
-  # Use CoffeeScript for .coffee assets and views
-  gem 'coffee-rails', '~> 4.1.0'
-  # See https://github.com/rails/execjs#readme for more supported runtimes
-  # gem 'therubyracer', platforms: :ruby
+# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+gem 'rails', '>= 5.0.0.beta1.1', '< 5.1'
+# Use sqlite3 as the database for Active Record
+gem 'sqlite3'
+# Use Uglifier as compressor for JavaScript assets
+gem 'uglifier', '>= 1.3.0'
+# Use CoffeeScript for .coffee assets and views
+gem 'coffee-rails', '~> 4.1.0'
+# See https://github.com/rails/execjs#readme for more supported runtimes
+# gem 'therubyracer', platforms: :ruby
 
-  # Use jquery as the JavaScript library
-  gem 'jquery-rails'
-  # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-  gem 'turbolinks'
-  # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-  gem 'jbuilder', '~> 2.0'
-  # Use Puma as the app server
-  gem 'puma'
+# Use jquery as the JavaScript library
+gem 'jquery-rails'
+# Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
+gem 'turbolinks'
+# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
+gem 'jbuilder', '~> 2.0'
+# Use Puma as the app server
+gem 'puma'
 
-  # Use ActiveModel has_secure_password
-  # gem 'bcrypt', '~> 3.1.7'
+# Use ActiveModel has_secure_password
+# gem 'bcrypt', '~> 3.1.7'
 
-  # Use Capistrano for deployment
-  # gem 'capistrano-rails', group: :development
+# Use Capistrano for deployment
+# gem 'capistrano-rails', group: :development
 
-  group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug'
-  end
+group :development, :test do
+# Call 'byebug' anywhere in the code to stop execution and get a debugger console
+gem 'byebug'
+end
 
-  group :development do
-  # Access an IRB console on exception pages or by using console in views
-  gem 'web-console', '~> 3.0'
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
-  end
+group :development do
+# Access an IRB console on exception pages or by using console in views
+gem 'web-console', '~> 3.0'
+# Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+gem 'spring'
+end
 
-  # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-  gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-  #gem 'rails', git: 'https://github.com/rails/rails.git'
-  #gem 'rails', git: 'git@github.com:rails/rails.git'
-  #gem 'rails', git: 'git://github.com/rails/rails.git'
-  #gem 'rails', github: 'rails'
-  #gem 'rails', path: 'vendor/rails'
+#gem 'rails', git: 'https://github.com/rails/rails.git'
+#gem 'rails', git: 'git@github.com:rails/rails.git'
+#gem 'rails', git: 'git://github.com/rails/rails.git'
+#gem 'rails', github: 'rails'
+#gem 'rails', path: 'vendor/rails'
 ```
 
 ---
@@ -290,6 +307,7 @@ source 'https://rubygems.org'
 ## Database config
 
 config/database.yml <!-- .element: class="filename" -->
+
 ```ruby
 # SQLite version 3.x
 #   gem install sqlite3
@@ -320,7 +338,18 @@ production:
 
 --
 
-### MySQL
+## Postgresql
+
+```ruby
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: community_development
+  username: root
+  password:
+```
+
+## MySQL
 
 ```ruby
 development:
@@ -330,16 +359,6 @@ development:
   username: root
   password:
   socket: /tmp/mysql.sock
-```
-### Postgresql
-
-```ruby
-development:
-  adapter: postgresql
-  encoding: unicode
-  database: community_development
-  username: root
-  password:
 ```
 
 ---
@@ -419,6 +438,7 @@ $ rails generate scaffold Post title:string text:text
 ## Migrations
 
 db/migrate/20160403144910_create_posts.rb <!-- .element: class="filename" -->
+
 ```ruby
 class CreatePosts < ActiveRecord::Migration
   def change
@@ -432,7 +452,9 @@ class CreatePosts < ActiveRecord::Migration
 end
 ```
 
-### Run migration
+--
+
+## Run migration
 
 ```bash
 $ rake db:migrate
@@ -448,6 +470,7 @@ $ rake db:migrate
 ## DB schema
 
 db/schema.rb <!-- .element: class="filename" -->
+
 ```ruby
 ActiveRecord::Schema.define(version: 20160403144910) do
 
@@ -466,6 +489,7 @@ end
 ## Routes
 
 config/routes.rb <!-- .element: class="filename" -->
+
 ```ruby
 Community::Application.routes.draw do
   resources :posts
@@ -489,7 +513,9 @@ edit_post   GET    /posts/:id/edit(.:format) posts#edit
 ---
 
 ## Models
+
 app/models/post.rb before v5.0.0.beta1 <!-- .element: class="filename" -->
+
 ```ruby
 class Post < ActiveRecord::Base
 end
@@ -512,6 +538,7 @@ end
 ## Controllers
 
 app/controllers/posts_controller.rb <!-- .element: class="filename" -->
+
 ```ruby
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy]
@@ -593,33 +620,73 @@ end
 
 ## Listing posts
 
-GET localhost:3000/posts
+GET localhost:3000/posts <!-- .element: class="filename" -->
 
-| Title | Text |  |  |  |
-|-------|------|--|--|--|
-| Facebook’s New Colocation And Image Recognition Patents Tease The Future Of Sharing | Facebook’s empire was built on photo tags and sharing, but it’s a grueling process many neglect. Luckily, new Facebook patents give it tech to continuously capture video whenever your camera is open, rank and surface the best images, and auto-tag them with people, places, and businesses. They tease a future where pattern, facial, and audio recognition identify what you’re seeing for easy sharing. | [Show](/posts/1) | [Edit](/posts/1/edit) | [Destroy](/posts/1)
-| [New Post](/posts/new)
+<div class="html-example">
+<table>
+<thead>
+<tr>
+<th>Title</th>
+<th>Text</th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Facebook’s New Colocation And Image Recognition Patents Tease The Future Of Sharing</td>
+<td>Facebook’s empire was built on photo tags and sharing, but it’s a grueling process many neglect. Luckily, new Facebook patents give it tech to continuously capture video whenever your camera is open, rank and surface the best images, and auto-tag them with people, places, and businesses. They tease a future where pattern, facial, and audio recognition identify what you’re seeing for easy sharing.</td>
+<td><a href="/posts/1">Show</a></td>
+<td><a href="/posts/1/edit">Edit</a></td>
+<td><a href="/posts/1">Destroy</a></td>
+</tr>
+</tbody>
+</table>
+<br />
+<a href="/posts/new">New Post</a>
+</div>
 
-GET localhost:3000/posts.json
-```javascript
-[{"title":"Facebook’s New Colocation And Image Recognition Patents Tease The Future Of Sharing ","text":"Facebook’s empire was built on photo tags and sharing, but it’s a grueling process many neglect. Luckily, new Facebook patents give it tech to continuously capture video whenever your camera is open, rank and surface the best images, and auto-tag them with people, places, and businesses. They tease a future where pattern, facial, and audio recognition identify what you’re seeing for easy sharing.","url":"http://localhost:3000/posts/1.json"}]
+GET localhost:3000/posts.json <!-- .element: class="filename" -->
+
+```json
+[
+  {
+    "title": "Facebook’s New Colocation And Image Recognition Patents Tease The Future Of Sharing",
+    "text": "Facebook’s empire was built on photo tags and sharing, but it’s a grueling process many neglect. Luckily, new Facebook patents give it tech to continuously capture video whenever your camera is open, rank and surface the best images, and auto-tag them with people, places, and businesses. They tease a future where pattern, facial, and audio recognition identify what you’re seeing for easy sharing.",
+    "url": "http://localhost:3000/posts/1.json"
+  }
+]
 ```
 
+--
+
+## Post Controller
+
 app/controllers/posts_controller.rb <!-- .element: class="filename" -->
+
 ```ruby
 class PostsController < ApplicationController
-  ...
+
+  # ...
+
   # GET /posts
   # GET /posts.json
   def index
     @posts = Post.all
   end
-  ...
+
+  # ...
+
+end
 ```
 
 --
 
+## Post Index View
+
 app/views/posts/index.html.erb <!-- .element: class="filename" -->
+
 ```html
 <h1>Listing posts</h1>
 
@@ -654,7 +721,10 @@ app/views/posts/index.html.erb <!-- .element: class="filename" -->
 
 --
 
+## Post Index JBuilder
+
 app/views/posts/index.json.jbuilder <!-- .element: class="filename" -->
+
 ```ruby
 json.array!(@posts) do |post|
   json.extract! post, :id, :title, :text
@@ -666,40 +736,54 @@ end
 
 ## New post
 
-GET localhost:3000/posts/new
+GET localhost:3000/posts/new <!-- .element: class="filename" -->
 
 <div class="html-example">
-  <form accept-charset="UTF-8" action="/posts" class="new_post" id="new_post" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="n4Djzu/hPGSd5oMdGdfJ3sqePMR+E/1fs2679AMHLE0=" /></div>
-    <div class="field">
-      <label for="post_title">Title</label>
-      <input id="post_title" name="post[title]" type="text" />
-    </div>
-    <div class="field">
-      <label for="post_text">Text</label>
-      <textarea id="post_text" name="post[text]"></textarea>
-    </div>
-    <div class="actions">
-      <input name="commit" type="submit" value="Create Post" />
-    </div>
-  </form>
-  <a href="/posts">Back</a>
+<form accept-charset="UTF-8" action="/posts" class="new_post" id="new_post" method="post">
+<div>
+<input name="utf8" type="hidden" value="&#x2713;" />
+<input name="authenticity_token" type="hidden" value="n4Djzu/hPGSd5oMdGdfJ3sqePMR+E/1fs2679AMHLE0=" />
+</div>
+<div class="form-group">
+<label for="post_title">Title</label>
+<input id="post_title" class="form-control" name="post[title]" type="text" />
+</div>
+<div class="form-group">
+<label for="post_text">Text</label>
+<textarea id="post_text" class="form-control" name="post[text]"></textarea>
+</div>
+<div class="actions">
+<input class="btn btn-default" name="commit" type="submit" value="Create Post" />
+</div>
+</form>
+<br />
+<a href="/posts">Back</a>
 </div>
 
 app/controllers/posts_controller.rb <!-- .element: class="filename" -->
+
 ```ruby
 class PostsController < ApplicationController
-  ...
+
+  # ...
+
   # GET /posts/new
   def new
     @post = Post.new
   end
-  ...
+
+  # ...
+
+end
 ```
 
 --
 
+## Post Form
+
 app/views/posts/index.html.erb <!-- .element: class="filename" -->
-```ruby
+
+```html
 <h1>New post</h1>
 
 <%= render 'form' %>
@@ -708,6 +792,7 @@ app/views/posts/index.html.erb <!-- .element: class="filename" -->
 ```
 
 app/views/posts/_form.html.erb <!-- .element: class="filename" -->
+
 ```html
 <%= form_for(@post) do |f| %>
   <% if @post.errors.any? %>
@@ -740,9 +825,12 @@ app/views/posts/_form.html.erb <!-- .element: class="filename" -->
 ## Create post
 
 app/controllers/posts_controller.rb <!-- .element: class="filename" -->
+
 ```ruby
 class PostsController < ApplicationController
-  ...
+
+  # ...
+
   # POST /posts
   # POST /posts.json
   def create
@@ -758,7 +846,9 @@ class PostsController < ApplicationController
       end
     end
   end
-  ...
+
+  # ...
+
 end
 ```
 
@@ -766,40 +856,59 @@ end
 
 ## Show post
 
-GET localhost:3000/posts/1
+GET localhost:3000/posts/1 <!-- .element: class="filename" -->
 
+<div class="html-example">
 Post was successfully created.
 <br>
-**Title:** Facebook’s New Colocation And Image Recognition Patents Tease The Future Of Sharing
 <br>
-**Text:** Facebook’s empire was built on photo tags and sharing, but it’s a grueling process many neglect. Luckily, new Facebook patents give it tech to continuously capture video whenever your camera is open, rank and surface the best images, and auto-tag them with people, places, and businesses. They tease a future where pattern, facial, and audio recognition identify what you’re seeing for easy sharing.
+<b>Title:<b> Facebook’s New Colocation And Image Recognition Patents Tease The Future Of Sharing
+<br>
+<br>
+<b>Text:</b> Facebook’s empire was built on photo tags and sharing, but it’s a grueling process many neglect. Luckily, new Facebook patents give it tech to continuously capture video whenever your camera is open, rank and surface the best images, and auto-tag them with people, places, and businesses. They tease a future where pattern, facial, and audio recognition identify what you’re seeing for easy sharing.
+<br>
 <br>
 [Edit](/posts/1/edit) \| [Back](/posts)
+</div>
 
 GET localhost:3000/posts/1.json <!-- .element: class="filename" -->
-```javascript
-{"title":"Facebook’s New Colocation And Image Recognition Patents Tease The Future Of Sharing ","text":"Facebook’s
-empire was built on photo tags and sharing, but it’s a grueling process many neglect. Luckily, new Facebook patents
-give it tech to continuously capture video whenever your camera is open, rank and surface the best images, and auto-tag
-them with people, places, and businesses. They tease a future where pattern, facial, and audio recognition identify
-what you’re seeing for easy sharing.","created_at":"2013-06-09T17:07:29.179Z","updated_at":"2013-06-09T17:07:29.179Z"}
+
+```json
+{
+  "title": "Facebook’s New Colocation And Image Recognition Patents Tease The Future Of Sharing ",
+  "text": "Facebook’s empire was built on photo tags and sharing, but it’s a grueling process many neglect. Luckily, new Facebook patents give it tech to continuously capture video whenever your camera is open, rank and surface the best images, and auto-tag them with people, places, and businesses. They tease a future where pattern, facial, and audio recognition identify what you’re seeing for easy sharing.",
+  "created_at": "2013-06-09T17:07:29.179Z",
+  "updated_at": "2013-06-09T17:07:29.179Z"
+}
 ```
 
 --
 
+## Post Controller
+
 app/controllers/posts_controller.rb <!-- .element: class="filename" -->
+
 ```ruby
 class PostsController < ApplicationController
-  ...
+
+  # ...
+
   # GET /posts/1
   # GET /posts/1.json
   def show
   end
-  ...
+
+  # ...
+
 end
 ```
 
+--
+
+## Post View
+
 app/views/posts/show.html.erb <!-- .element: class="filename" -->
+
 ```html
 <p id="notice"><%= notice %></p>
 
@@ -818,6 +927,7 @@ app/views/posts/show.html.erb <!-- .element: class="filename" -->
 ```
 
 app/views/posts/show.json.jbuilder <!-- .element: class="filename" -->
+
 ```ruby
 json.extract! @post, :title, :text, :created_at, :updated_at
 ```
@@ -826,40 +936,51 @@ json.extract! @post, :title, :text, :created_at, :updated_at
 
 ## Edit post
 
-GET localhost:3000/posts/1/edit
+GET localhost:3000/posts/1/edit <!-- .element: class="filename" -->
 
 <div class="html-example">
-  <form accept-charset="UTF-8" action="/posts/1" class="edit_post" id="edit_post_1" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="_method" type="hidden" value="patch" /><input name="authenticity_token" type="hidden" value="n4Djzu/hPGSd5oMdGdfJ3sqePMR+E/1fs2679AMHLE0=" /></div>
-    <div class="field">
-      <label for="post_title">Title</label>
-      <input id="post_title" name="post[title]" type="text" value="Facebook’s New Colocation And Image Recognition Patents Tease The Future Of Sharing " />
-    </div>
-    <div class="field">
-      <label for="post_text">Text</label>
-      <textarea id="post_text" name="post[text]">Facebook’s empire was built on photo tags and sharing, but it’s a grueling process many neglect. Luckily, new Facebook patents give it tech to continuously capture video whenever your camera is open, rank and surface the best images, and auto-tag them with people, places, and businesses. They tease a future where pattern, facial, and audio recognition identify what you’re seeing for easy sharing.</textarea>
-    </div>
-    <div class="actions">
-      <input name="commit" type="submit" value="Update Post" />
-    </div>
-  </form>
-  <a href="/posts/1">Show</a> |
-  <a href="/posts">Back</a>
+<form accept-charset="UTF-8" action="/posts" class="new_post" id="new_post" method="post">
+<div>
+<input name="utf8" type="hidden" value="&#x2713;" />
+<input name="authenticity_token" type="hidden" value="n4Djzu/hPGSd5oMdGdfJ3sqePMR+E/1fs2679AMHLE0=" />
+</div>
+<div class="form-group">
+<label for="post_title">Title</label>
+<input id="post_title" class="form-control" name="post[title]" type="text" value="Facebook’s New Colocation And Image Recognition Patents Tease The Future Of Sharing" />
+</div>
+<div class="form-group">
+<label for="post_text">Text</label>
+<textarea id="post_text" class="form-control" name="post[text]" rows="4">Facebook’s empire was built on photo tags and sharing, but it’s a grueling process many neglect. Luckily, new Facebook patents give it tech to continuously capture video whenever your camera is open, rank and surface the best images, and auto-tag them with people, places, and businesses. They tease a future where pattern, facial, and audio recognition identify what you’re seeing for easy sharing.</textarea>
+</div>
+<div class="actions">
+<input class="btn btn-default" name="commit" type="submit" value="Update Post" />
+</div>
+</form>
+<br />
+<a href="/posts/1">Show</a> |
+<a href="/posts">Back</a>
 </div>
 
 app/controllers/posts_controller.rb <!-- .element: class="filename" -->
+
 ```ruby
 class PostsController < ApplicationController
-  ...
+
+  # ...
+
   # GET /posts/1/edit
   def edit
   end
-  ...
+
+  # ...
+
 end
 ```
 
 --
 
 app/views/posts/edit.html.erb <!-- .element: class="filename" -->
+
 ```html
 <%= render 'form' %>
 <%= link_to 'Show', @post %> |
@@ -867,6 +988,7 @@ app/views/posts/edit.html.erb <!-- .element: class="filename" -->
 ```
 
 app/views/posts/_form.html.erb <!-- .element: class="filename" -->
+
 ```html
 <%= form_for(@post) do |f| %>
   <% if @post.errors.any? %>
@@ -895,12 +1017,15 @@ app/views/posts/_form.html.erb <!-- .element: class="filename" -->
 
 ---
 
-## Update post
+## Update Post
 
 app/controllers/posts_controller.rb <!-- .element: class="filename" -->
+
 ```ruby
 class PostsController < ApplicationController
-  ...
+
+  # ...
+
   # PATCH/PUT /posts/1
   # PATCH/PUT /posts/1.json
   def update
@@ -914,20 +1039,23 @@ class PostsController < ApplicationController
       end
     end
   end
-  ...
+
+  # ...
+
 end
 ```
 
 ```html
-<form accept-charset="UTF-8"
-  action="/posts/1" class="edit_post" id="edit_post_1"
-  method="post">
-
-  <div style="margin:0;padding:0;display:inline">
+<form accept-charset="UTF-8" action="/posts/1" class="edit_post" id="edit_post_1" method="post">
+  <div>
     <input name="utf8" type="hidden" value="✓" />
     <input name="_method" type="hidden" value="patch" />
     <input name="authenticity_token" type="hidden" value="n4Djzu/hPGSd5oMdGdfJ3sqePMR+E/1fs2679AMHLE0=" />
   </div>
+
+  ...
+
+</form>
 ```
 
 ---
@@ -935,9 +1063,12 @@ end
 ## Delete post
 
 app/controllers/posts_controller.rb <!-- .element: class="filename" -->
+
 ```ruby
 class PostsController < ApplicationController
-  ...
+
+  # ...
+
   # DELETE /posts/1
   # DELETE /posts/1.json
   def destroy
@@ -947,16 +1078,19 @@ class PostsController < ApplicationController
       format.json { head :no_content }
     end
   end
-  ...
+
+  # ...
+
 end
 ```
 
 ```html
-<form accept-charset="UTF-8"
-  action="/posts/1" class="edit_post" id="edit_post_1"
-  method="post">
-
+<form accept-charset="UTF-8" action="/posts/1" class="edit_post" id="edit_post_1" method="post">
   <input name="_method" type="hidden" value="delete" />
+
+  ...
+
+</form>
 ```
 
 ---
@@ -964,29 +1098,32 @@ end
 ## Layout
 
 app/views/layouts/application.html.erb <!-- .element: class="filename" -->
+
 ```html
 <!DOCTYPE html>
-  <html>
-    <head>
-      <title>Blog</title>
-      <%= csrf_meta_tags %>
-      <%= action_cable_meta_tag %>
+<html>
+  <head>
+    <title>Blog</title>
 
-      <%= stylesheet_link_tag  'application', media: 'all', 'data-turbolinks-track' => true %>
-      <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-    </head>
+    <%= csrf_meta_tags %>
+    <%= action_cable_meta_tag %>
 
-    <body>
-      <%= yield %>
-    </body>
-  </html>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  </head>
+
+  <body>
+    <%= yield %>
+  </body>
+</html>
 ```
 
 ---
 
-## ApplicationController
+## Application Controller
 
 app/controllers/application_controller.rb <!-- .element: class="filename" -->
+
 ```ruby
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
@@ -1000,6 +1137,7 @@ end
 ## Helpers
 
 app/helpers/posts_helper.rb <!-- .element: class="filename" -->
+
 ```ruby
 module PostsHelper
   def post_short_description(post)
@@ -1014,6 +1152,7 @@ end
 ```
 
 app/views/posts/index.html.erb <!-- .element: class="filename" -->
+
 ```html
 <h1>Posts</h1>
 
@@ -1027,7 +1166,9 @@ app/views/posts/index.html.erb <!-- .element: class="filename" -->
       <th colspan="3"></th>
     </tr>
   </thead>
+
   ...
+
 </table>
 ```
 
@@ -1036,6 +1177,7 @@ app/views/posts/index.html.erb <!-- .element: class="filename" -->
 ## Assets
 
 app/assets/javascripts/application.js <!-- .element: class="filename" -->
+
 ```javascript
 //= require jquery
 //= require jquery_ujs
@@ -1044,6 +1186,7 @@ app/assets/javascripts/application.js <!-- .element: class="filename" -->
 ```
 
 app/assets/stylesheets/application.css <!-- .element: class="filename" -->
+
 ```css
 /*
  *= require_self
@@ -1051,24 +1194,37 @@ app/assets/stylesheets/application.css <!-- .element: class="filename" -->
  */
 ```
 
+--
+
+## Layout
+
 ```html
-<!-- <!DOCTYPE html>
+<!--
+<!DOCTYPE html>
 <html>
   <head>
     <title>Community</title>
+
     <link data-turbolinks-track="true" href="/assets/application.css?body=1" media="all" rel="stylesheet" />
     <link data-turbolinks-track="true" href="/assets/posts.css?body=1" media="all" rel="stylesheet" />
     <link data-turbolinks-track="true" href="/assets/scaffolds.css?body=1" media="all" rel="stylesheet" />
+
     <script data-turbolinks-track="true" src="/assets/jquery.js?body=1"></script>
     <script data-turbolinks-track="true" src="/assets/jquery_ujs.js?body=1"></script>
     <script data-turbolinks-track="true" src="/assets/turbolinks.js?body=1"></script>
     <script data-turbolinks-track="true" src="/assets/posts.js?body=1"></script>
     <script data-turbolinks-track="true" src="/assets/application.js?body=1"></script>
+
     <meta content="authenticity_token" name="csrf-param" />
     <meta content="n4Djzu/hPGSd5oMdGdfJ3sqePMR+E/1fs2679AMHLE0=" name="csrf-token" />
   </head>
   <body>
-  ... -->
+
+    ...
+
+  </body>
+</html>
+-->
 ```
 
 ---
