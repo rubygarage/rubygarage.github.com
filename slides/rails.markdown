@@ -227,7 +227,7 @@ blog
 | -------------        | ---------                                                                                                                                                                                                                                                                  |
 | app/                 | Contains the controllers, models, views, helpers, mailers and assets for your application. You'll focus on this folder for the remainder of this guide.                                                                                                                    |
 | bin/                 | Contains the rails script that starts your app and can contain other scripts you use to deploy or run your application.                                                                                                                                                    |
-| config/              | Configure your application's runtime rules, routes, database, and more. This is covered in more detail in [Configuring Rails Applications](configuring.html)                                                                                                               |
+| config/              | Configure your application's runtime rules, routes, database, and more. This is covered in more detail in Configuring Rails Applications
 | config.ru            | Rack configuration for Rack based servers used to start the application.                                                                                                                                                                                                   |
 | db/                  | Contains your current database schema, as well as the database migrations.                                                                                                                                                                                                 |
 | Gemfile Gemfile.lock | These files allow you to specify what gem dependencies are needed for your Rails application. These files are used by the Bundler gem. For more information about Bundler, see [the Bundler website](http://gembundler.com)                                                |
@@ -243,7 +243,7 @@ blog
 | public/              | The only folder seen to the world as-is. Contains the static files and compiled assets.                                                                                                                                                                                    |
 | Rakefile             | This file locates and loads tasks that can be run from the command line. The task definitions are defined throughout the components of Rails. Rather than changing Rakefile, you should add your own tasks by adding files to the lib/tasks directory of your application. |
 | README.rdoc          | This is a brief instruction manual for your application. You should edit this file to tell others what your application does, how to set it up, and so on.                                                                                                                 |
-| test/                | Unit tests, fixtures, and other test apparatus. These are covered in [Testing Rails Applications](testing.html)                                                                                                                                                            |
+| test/                | Unit tests, fixtures, and other test apparatus. These are covered in Testing Rails Applications
 | tmp/                 | Temporary files (like cache, pid and session files)                                                                                                                                                                                                                        |
 | vendor/              | A place for all third-party code. In a typical Rails application, this includes Ruby Gems and the Rails source code (if you optionally install it into your project).                                                                                                      |
 
@@ -522,6 +522,7 @@ end
 ```
 
 v5.0.0.beta1 <!-- .element: class="filename" -->
+
 ```ruby
 class Post < ApplicationRecord
 end
@@ -637,14 +638,14 @@ GET localhost:3000/posts <!-- .element: class="filename" -->
 <tr>
 <td>Facebook’s New Colocation And Image Recognition Patents Tease The Future Of Sharing</td>
 <td>Facebook’s empire was built on photo tags and sharing, but it’s a grueling process many neglect. Luckily, new Facebook patents give it tech to continuously capture video whenever your camera is open, rank and surface the best images, and auto-tag them with people, places, and businesses. They tease a future where pattern, facial, and audio recognition identify what you’re seeing for easy sharing.</td>
-<td><a href="/posts/1">Show</a></td>
-<td><a href="/posts/1/edit">Edit</a></td>
-<td><a href="/posts/1">Destroy</a></td>
+<td><a href="">Show</a></td>
+<td><a href="">Edit</a></td>
+<td><a href="">Destroy</a></td>
 </tr>
 </tbody>
 </table>
 <br />
-<a href="/posts/new">New Post</a>
+<a href="">New Post</a>
 </div>
 
 GET localhost:3000/posts.json <!-- .element: class="filename" -->
@@ -739,7 +740,7 @@ end
 GET localhost:3000/posts/new <!-- .element: class="filename" -->
 
 <div class="html-example">
-<form accept-charset="UTF-8" action="/posts" class="new_post" id="new_post" method="post">
+<form accept-charset="UTF-8" action="" class="new_post" id="new_post" method="post">
 <div>
 <input name="utf8" type="hidden" value="&#x2713;" />
 <input name="authenticity_token" type="hidden" value="n4Djzu/hPGSd5oMdGdfJ3sqePMR+E/1fs2679AMHLE0=" />
@@ -757,7 +758,7 @@ GET localhost:3000/posts/new <!-- .element: class="filename" -->
 </div>
 </form>
 <br />
-<a href="/posts">Back</a>
+<a href="">Back</a>
 </div>
 
 app/controllers/posts_controller.rb <!-- .element: class="filename" -->
@@ -814,9 +815,7 @@ app/views/posts/_form.html.erb <!-- .element: class="filename" -->
     <%= f.label :text %><br>
     <%= f.text_area :text %>
   </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+  <div class="actions"><%= f.submit %></div>
 <% end %>
 ```
 
@@ -868,7 +867,7 @@ Post was successfully created.
 <b>Text:</b> Facebook’s empire was built on photo tags and sharing, but it’s a grueling process many neglect. Luckily, new Facebook patents give it tech to continuously capture video whenever your camera is open, rank and surface the best images, and auto-tag them with people, places, and businesses. They tease a future where pattern, facial, and audio recognition identify what you’re seeing for easy sharing.
 <br>
 <br>
-[Edit](/posts/1/edit) \| [Back](/posts)
+[Edit]() \| [Back]()
 </div>
 
 GET localhost:3000/posts/1.json <!-- .element: class="filename" -->
@@ -957,8 +956,8 @@ GET localhost:3000/posts/1/edit <!-- .element: class="filename" -->
 </div>
 </form>
 <br />
-<a href="/posts/1">Show</a> |
-<a href="/posts">Back</a>
+<a href="">Show</a> |
+<a href="">Back</a>
 </div>
 
 app/controllers/posts_controller.rb <!-- .element: class="filename" -->

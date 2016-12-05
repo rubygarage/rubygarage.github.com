@@ -119,24 +119,21 @@ h6,
   word-wrap: break-word;
 }
 
-.reveal h1 {
+.reveal h1, h1 {
   font-size: 3.77em;
+  text-shadow: none;
 }
 
-.reveal h2 {
+.reveal h2, h2 {
   font-size: 2.11em;
 }
 
-.reveal h3 {
+.reveal h3, h3 {
   font-size: 1.55em;
 }
 
-.reveal h4 {
+.reveal h4, h4 {
   font-size: 1em;
-}
-
-.reveal h1 {
-  text-shadow: none;
 }
 
 .reveal h1 code,
