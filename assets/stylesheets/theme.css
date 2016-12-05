@@ -253,6 +253,7 @@ pre code,
   overflow: auto;
   padding: 15px;
   word-wrap: normal;
+  white-space: pre;
 }
 
 .reveal table {
