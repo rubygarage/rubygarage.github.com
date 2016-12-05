@@ -79,9 +79,13 @@ title: Ruby presentations
 
 
 - [HTML & CSS](/slides/html-css)
+  <br>
+  <small>Coding layouts</small>
 
 
 - [CSS architecture](/slides/css-architecture)
+  <br>
+  <small>Modules, Semantics and Grids</small>
 
 
 - [BDD in Rails](/slides/bdd)
@@ -99,13 +103,15 @@ title: Ruby presentations
   <small>Meet Rails Engines.</small>
 
 
-- [API](/slides/api)
+- [Application Programming Interface (API)](/slides/api)
 
 
 
 # Frontend
 
 - [AngularJS](/slides/angular-js)
+  <br>
+  <small>AngularJS is a structural JavaScript framework for dynamic web apps.</small>
 
 
 
@@ -130,6 +136,8 @@ title: Ruby presentations
 # Additional
 
 - [Functional Programming](/slides/functional-programming)
+  <br>
+  <small>Functional programming is a style of programming which models computations as the evaluation of expressions.</small>
 
 
 <br>
