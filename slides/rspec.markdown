@@ -593,31 +593,31 @@ example is run
 # Inside spec
 describe MyClass do
   before {}
-  before(:each) { }
-  before(:all)  { }
+  before(:each) {}
+  before(:all) {}
 
   after {}
   after(:each) {}
-  after(:all)  {}
+  after(:all) {}
 
-  around{}
-  around(:each){}
+  around {}
+  around(:each) {}
 end
 
 # Inside configuration
 # spec/spec_helper.rb
 RSpec.configure do |c|
-  c.before(:each)  {}
-  c.before(:all)   {}
+  c.before(:each) {}
+  c.before(:all) {}
   c.before(:suite) {}
 
-  c.after(:each)  {}
-  c.after(:all)   {}
+  c.after(:each) {}
+  c.after(:all) {}
   c.after(:suite) {}
 
   c.around(:each) {}
-  c.around(:all)  {}
-  c.around(:suite)  {}
+  c.around(:all) {}
+  c.around(:suite) {}
 end
 ```
 

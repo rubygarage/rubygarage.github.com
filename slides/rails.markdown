@@ -308,7 +308,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 config/database.yml <!-- .element: class="filename" -->
 
-```ruby
+```yaml
 # SQLite version 3.x
 #   gem install sqlite3
 #
@@ -340,7 +340,7 @@ production:
 
 ## Postgresql
 
-```ruby
+```yaml
 development:
   adapter: postgresql
   encoding: unicode
@@ -351,7 +351,7 @@ development:
 
 ## MySQL
 
-```ruby
+```yaml
 development:
   adapter: mysql2
   encoding: utf8
@@ -1051,9 +1051,6 @@ end
     <input name="_method" type="hidden" value="patch" />
     <input name="authenticity_token" type="hidden" value="n4Djzu/hPGSd5oMdGdfJ3sqePMR+E/1fs2679AMHLE0=" />
   </div>
-
-  ...
-
 </form>
 ```
 
