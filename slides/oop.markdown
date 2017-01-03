@@ -85,7 +85,7 @@ book.to_s # => Book: The Great Gatsby / F. Scott Fitzgerald, 8.99
 
 ---
 
-# Creating methods for set and get attributes
+## Creating methods for set and get attributes
 
 ```ruby
 class BookInStock
@@ -115,7 +115,7 @@ book.price = 10                      # => NoMethodError: undefined method `price
 
 ---
 
-# Accessor and attributes
+## Accessor and attributes
 
 ```ruby
 class BookInStock
@@ -142,7 +142,7 @@ book.price = 10                      # => NoMethodError: undefined method 'price
 
 ---
 
-# Virtual attributes
+## Virtual attributes
 
 ```ruby
 class BookInStock
@@ -170,7 +170,7 @@ book.price_in_cents       # => 100
 
 ---
 
-# Defining operators
+## Defining operators
 
 ```ruby
 class BookInStock
@@ -199,7 +199,7 @@ books_collection.price  # => 16.59
 
 ---
 
-# Objects comparison
+## Objects comparison
 
 ```ruby
 book1 = BookInStock.new('The Great Gatsby', 'F. Scott Fitzgerald', 8.99)
@@ -214,7 +214,7 @@ book1 == book2
 
 ---
 
-# Define equality method
+## Define equality method
 
 ```ruby
 class BookInStock
@@ -244,6 +244,8 @@ book1 == book2 # => true
 
 > The keyword `self` in Ruby gives you access to the current object – the object that is receiving the current message.
 
+--
+
 ## Self in instance method definitions
 
 > At the time the method definition is executed, the most you can say is that self inside this method will be some future
@@ -263,7 +265,7 @@ s.m # => <S:0x007ff4fa038a58>
 
 ---
 
-# Self
+## Self
 
 ```ruby
 class BookInStock
@@ -312,7 +314,7 @@ end
 
 ---
 
-# Class method
+## Class method
 
 ```ruby
 class BookInStock
@@ -349,7 +351,7 @@ end
 
 ---
 
-# Class variables
+## Class variables
 
 ```ruby
 class BookInStock
@@ -378,7 +380,7 @@ book.count # => NoMethodError: undefined method 'count'
 
 ---
 
-# Class instance variables
+## Class instance variables
 
 ```ruby
 class BookInStock
@@ -409,7 +411,7 @@ BookInStock.statistics # => Count of add method call: 5
 
 ---
 
-# Class constants
+## Class constants
 
 ```ruby
 class BookInStock
@@ -426,7 +428,7 @@ BookInStock::MIN_PRICE      # => 20
 
 ---
 
-# Scope
+## Scope
 
 ```ruby
 v1 = 1
@@ -453,7 +455,7 @@ local_variables     # => [:v1, :obj]
 
 ---
 
-# Method visibility
+## Method visibility
 
 ```ruby
 class BookInStock
@@ -500,7 +502,7 @@ fitzgerald_book.tax_for_two hemigway_book # => NoMethodError: private method 'ta
 
 ---
 
-# Inheritance
+## Inheritance
 
 ```ruby
 class PrintPublication
@@ -520,7 +522,7 @@ BookInStock.superclass # => PrintPublication
 
 ---
 
-# Methods inheritance
+## Methods inheritance
 
 ```ruby
 class PrintPublication
@@ -569,7 +571,7 @@ book.call_private_and_protected # => "protected method calledprivate method call
 
 ---
 
-# Method super
+## Method `super`
 
 ```ruby
 class PrintPublication
@@ -600,7 +602,7 @@ end
 
 ---
 
-# Inheritance class variables
+## Inheritance class variables
 
 ```ruby
 class A
@@ -626,7 +628,7 @@ B.value # => 3
 
 ---
 
-# Class constants inheritance
+## Class constants inheritance
 
 ```ruby
 class A
@@ -645,13 +647,13 @@ B::NUM     # => 3
 
 ---
 
-# Class hierarchy
+## Class hierarchy
 
 ![](/assets/images/class-hierarchy.dot.svg)
 
 ---
 
-# Class as object
+## Class as object
 
 ```ruby
 BookInStock = Class.new do
@@ -677,6 +679,8 @@ book.cover # => "The Great Gatsby, F. Scott Fitzgerald"
 
 # Singleton methods and eigenclass
 
+--
+
 ## Ways to create singleton methods
 
 ```ruby
@@ -698,9 +702,7 @@ class << BookInStock
 end
 ```
 
----
-
-# Singleton methods and eigenclass
+--
 
 ## Ways to add a custom behaviour to an instance
 
@@ -726,7 +728,7 @@ another.title             # => NoMethodError: undefined method 'title'
 
 ---
 
-# Module
+## Module
 
 ```ruby
 module AudioConverter
@@ -754,7 +756,7 @@ AudioConverter::Decoder.new('music.mp3')
 
 ---
 
-# Module constants, paths
+## Module constants, paths
 
 ```ruby
 module M
@@ -788,7 +790,7 @@ end
 
 ---
 
-# Mixins
+## Mixins
 
 ```ruby
 module AudioConverter
@@ -811,7 +813,7 @@ audio_upload.compare_formats('video.avi')
 
 --
 
-# require
+## require
 
 ```ruby
 require 'audio_converter'
@@ -827,7 +829,7 @@ end
 
 ---
 
-# Extend with module
+## Extend with module
 
 ```ruby
 module AudioConverter
@@ -858,7 +860,7 @@ audio.formats # => ["mp3", "avi", "ogg"]
 
 ---
 
-# Class and modules hierarchy, ancestors
+## Class and modules hierarchy, ancestors
 
 ```ruby
 module M
@@ -880,7 +882,7 @@ D.ancestors # => [D, C, M, Object, Kernel, BasicObject]
 
 ---
 
-# Method lookup
+## Method lookup
 
 - Сhecks the eigenclass of `foo` for singleton methods named `bar`.
 
@@ -908,7 +910,7 @@ foo.bar # singleton: no -> String class: no -> Comparable module: no ->
 
 --
 
-# begin, rescue, raise
+## begin, rescue, raise
 
 ```ruby
 begin
@@ -928,7 +930,7 @@ puts 'I am after the begin block.'
 
 --
 
-# Exception type, else, ensure
+## Exception type, else, ensure
 
 ```ruby
 begin
@@ -964,7 +966,7 @@ end
 
 --
 
-# Throw and catch
+## Throw and catch
 
 ```ruby
 def try_throw_if(act)
@@ -993,9 +995,9 @@ puts try_throw_if('Makes four')
 
 --
 
-# Exceptions hierarchy
+## Exceptions hierarchy
 
-```sh
+```text
 Exception
   - fatal # impossible to rescue
   - NoMemoryError
@@ -1032,6 +1034,8 @@ Exception
 
 # Tasks
 
+--
+
 ## Library
 
 - Book: title, author
@@ -1040,9 +1044,7 @@ Exception
 - Author: name, biography
 - Library: books, orders, readers, authors
 
----
-
-# Tasks
+--
 
 ## Write program that determines:
 
@@ -1060,19 +1062,19 @@ Exception
 
 The [Ruby Koans](http://rubykoans.com/) are a great way to learn about the Ruby language.
 
-```sh
+```bash
 $ git clone git://github.com/edgecase/ruby_koans.git ruby_koans
 $ cd ruby_koans
 ```
 
-```sh
+```bash
 $ rake gen
 $ mkdir -p koans
 $ cp src/edgecase.rb koans/edgecase.rb
 $ cp README.rdoc koans/README.rdoc
 ```
 
-```sh
+```bash
 $ rake
 
 The Master says:

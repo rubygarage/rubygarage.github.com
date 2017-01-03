@@ -467,7 +467,7 @@ MyClass.methods == obj.methods          # => false
 
 ---
 
-# Hook methods
+## Hook methods
 
 ```ruby
 class String

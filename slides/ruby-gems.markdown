@@ -186,7 +186,7 @@ Initializating git repo in /Users/sparrow/Www/new_gem
 
 # Gem structure
 
-```bash
+```text
 new_gem/
 |-- lib/
 |   |-- new_gem/

@@ -2111,19 +2111,19 @@ num.*(2)
 
 The [Ruby Koans](http://rubykoans.com/) are a great way to learn about the Ruby language.
 
-```sh
+```bash
 $ git clone git://github.com/edgecase/ruby_koans.git ruby_koans
 $ cd ruby_koans
 ```
 
-```sh
+```bash
 $ rake gen
 $ mkdir -p koans
 $ cp src/edgecase.rb koans/edgecase.rb
 $ cp README.rdoc koans/README.rdoc
 ```
 
-```sh
+```bash
 $ rake
 
 The Master says:

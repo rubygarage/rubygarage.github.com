@@ -21,11 +21,7 @@ Reveal.initialize({
     },
     { src: '{{ "/vendor/reveal.js/plugin/markdown/marked.js" | prepend: site.url }}' },
     { src: '{{ "/vendor/reveal.js/plugin/markdown/markdown.js" | prepend: site.url }}' },
-    {
-      src: '{{ "/vendor/reveal.js/plugin/highlight/highlight.js" | prepend: site.url }}',
-      async: true,
-      callback: function() { hljs.initHighlightingOnLoad() }
-    }
+    { src: '{{ "/assets/javascript/reveal.js/plugin/prism.js" | prepend: site.url }}', async: true }
   ]
 });
 </script>

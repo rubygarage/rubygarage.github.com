@@ -229,7 +229,7 @@ em {
 pre,
 .reveal pre {
   border-radius: 5px;
-  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);
   display: block;
   font-family: 'Fira Code', monospace;
   font-feature-settings: "liga" off, "calt" off;
@@ -251,7 +251,7 @@ pre code,
   display: block;
   max-height: 690px;
   overflow: auto;
-  padding: 15px;
+  padding: 5px 15px;
   word-wrap: normal;
 }
 
@@ -429,7 +429,7 @@ small * {
 .reveal .filename {
   background: #383d3d;
   border-radius: 5px;
-  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);
   color: #fff;
   display: inline;
   font-family: 'Fantasque Sans Mono', monospace;
@@ -453,7 +453,7 @@ small * {
 .reveal div.html-example {
   background: #fff;
   border-radius: 5px;
-  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);
   display: block;
   font-size: 1.2rem;
   margin: 20px auto;
