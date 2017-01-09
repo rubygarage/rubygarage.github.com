@@ -251,7 +251,7 @@ pre code,
   display: block;
   max-height: 690px;
   overflow: auto;
-  padding: 5px 15px;
+  padding: 10px 15px;
   word-wrap: normal;
 }
 
@@ -432,9 +432,9 @@ small * {
   box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);
   color: #fff;
   display: inline;
-  font-family: 'Fantasque Sans Mono', monospace;
-  font-size: 1.4rem;
-  padding: 4px 8px;
+  font-family: 'Fira Code', monospace;
+  font-size: 1.2rem;
+  padding: 2px 6px 2px;
   position: relative;
   top: 26px;
   z-index: 10;
