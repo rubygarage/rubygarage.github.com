@@ -16,19 +16,22 @@ title:  Routes
 ## Routes
 
 When your Rails application receives an incoming request for:
-```
+
+```output
 GET /posts/17
 ```
 
 it asks the router to match it to a controller action. If the first matching route is:
 
 config/routes.rb <!-- .element: class="filename" -->
+
 ```ruby
 get '/posts/:id', to: 'posts#show', as: 'post'
 ```
 the request is dispatched to the posts controller's show action with { id: '17' } in params.
 
 app/controllers/posts_controller.rb <!-- .element: class="filename" -->
+
 ```ruby
 def show
   @post = Post.find(params[:id])
@@ -36,6 +39,7 @@ end
 ```
 
 app/views/posts/show.html.erb <!-- .element: class="filename" -->
+
 ```html
 <%= link_to 'Post Record', post_path(@post) %>
 ```
@@ -47,6 +51,7 @@ app/views/posts/show.html.erb <!-- .element: class="filename" -->
 Resource routing allows you to quickly declare all of the common routes for a given resourceful controller. Instead of declaring separate routes for your index, show, new, edit, create, update and destroy actions, a resourceful route declares them in a single line of code.
 
 config/routes.rb <!-- .element: class="filename" -->
+
 ```ruby
 Community::Application.routes.draw do
   resources :posts
@@ -81,6 +86,7 @@ resources :posts
 resources :comments
 ```
 or
+
 ```ruby
 resources :users, :posts, :comments
 ```
@@ -92,11 +98,12 @@ resources :users, :posts, :comments
 ```ruby
 get 'user', to: 'users#show'
 ```
+
 This resourceful route:
+
 ```ruby
 resource :user
 ```
-
 
 | Prefix    |                     Verb                     | URI Pattern                                                                                              | Controller#Action                                                         |
 |-----------|:--------------------------------------------:|----------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------|
@@ -126,6 +133,7 @@ end
 ## Controller Namespaces and Routing
 
 app/controllers/admin/posts_controller.rb <!-- .element: class="filename" -->
+
 ```ruby
 class Admin::PostsController
   # ...
@@ -133,6 +141,7 @@ end
 ```
 
 config/routes.rb <!-- .element: class="filename" -->
+
 ```ruby
 scope module: 'admin' do
   resources :posts, :comments
@@ -142,6 +151,7 @@ end
 or for a single case
 
 config/routes.rb <!-- .element: class="filename" -->
+
 ```ruby
 resources :posts, module: 'admin'
 ```
@@ -151,6 +161,7 @@ resources :posts, module: 'admin'
 ## Route without a module prefix
 
 config/routes.rb <!-- .element: class="filename" -->
+
 ```ruby
 scope '/admin' do
   resources :posts, :comments
@@ -160,6 +171,7 @@ end
 or for a single case:
 
 config/routes.rb <!-- .element: class="filename" -->
+
 ```ruby
 resources :posts, path: '/admin/posts'
 ```
@@ -176,6 +188,7 @@ resources :posts, path: '/admin/posts'
 ## Nested Resources
 
 app/models/user.rb <!-- .element: class="filename" -->
+
 ```ruby
 class User < ActiveRecord::Base
   has_many :posts
@@ -183,6 +196,7 @@ end
 ```
 
 app/models/post.rb <!-- .element: class="filename" -->
+
 ```ruby
 class Post < ActiveRecord::Base
   belongs_to :user
@@ -190,6 +204,7 @@ end
 ```
 
 config/routes.rb <!-- .element: class="filename" -->
+
 ```ruby
 resources :users do
   resources :posts
@@ -210,6 +225,7 @@ end
 ## Nested Resources
 
 config/routes.rb <!-- .element: class="filename" -->
+
 ```ruby
 resources :users do
   resources :posts do
@@ -217,7 +233,8 @@ resources :users do
   end
 end
 ```
-```bash
+
+```output
 user_post_comments     GET        /users/:user_id/posts/:post_id/comments(.:format)          comments#index
                        POST       /users/:user_id/posts/:post_id/comments(.:format)          comments#create
 new_user_post_comment  GET        /users/:user_id/posts/:post_id/comments/new(.:format)      comments#new
@@ -246,6 +263,7 @@ user                   GET        /users/:id(.:format)                          
 ## Shallow Nesting
 
 config/routes.rb <!-- .element: class="filename" -->
+
 ```ruby
 resources :posts do
   resources :comments, only: [:index, :new, :create]
@@ -259,6 +277,7 @@ resources :comments, only: [:show, :edit, :update, :destroy]
 There exists shorthand syntax to achieve just that, via the :shallow option:
 
 config/routes.rb <!-- .element: class="filename" -->
+
 ```ruby
 resources :posts do
   resources :comments, shallow: true
@@ -320,19 +339,19 @@ end
 
 ```ruby
 = link_to 'Post details', user_post_path(@user, @post)
-#=> 'Post details'
+# => 'Post details'
 
 = link_to 'Post details', url_for([@user, @post])
-#=> 'Post details'
+# => 'Post details'
 
 = link_to 'Post details', [@user, @post]
-#=> 'Post details'
+# => 'Post details'
 
 = link_to 'User details', @user
-#=> 'User details'
+# => 'User details'
 
 = link_to 'Edit Post', [:edit, @user, @post]
-#=> 'Edit Post'
+# => 'Edit Post'
 ```
 
 ---
@@ -395,6 +414,7 @@ POST   /posts(.:format)     posts#create
 ## Naming Routes
 
 config/routes.rb <!-- .element: class="filename" -->
+
 ```ruby
 get 'exit', to: 'sessions#destroy', as: :logout
 get ':username', to: 'users#show', as: :user
@@ -413,6 +433,7 @@ user_path(username: 'ruby')
 ## HTTP Verb Constraints
 
 config/routes.rb <!-- .element: class="filename" -->
+
 ```ruby
 match 'posts', to: 'posts#show', via: [:get, :post]
 ```
@@ -472,7 +493,7 @@ Example:
 get 'posts/*other', to: 'posts#unknown'
 ```
 
-```ruby
+```output
 /posts/12               => params[:other] == "12"
 /posts/long/path/to/12  => params[:other] == "long/path/to/12"
 ```
@@ -567,6 +588,7 @@ resources :posts, only: [:index, :show]
 Routing specs live in spec/routing.
 
 spec/routing/users_spec.rb <!-- .element: class="filename" -->
+
 ```ruby
 require 'rails_helper'
 
