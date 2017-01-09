@@ -1,4 +1,3 @@
-code[class*="language-"],
 pre[class*="language-"] {
   color: black;
   background: none;
@@ -23,14 +22,17 @@ pre[class*="language-"] {
   hyphens: none;
 }
 
-pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
-code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
+code[class*="language-"] {
+  white-space: pre;
+}
+
+
+pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection {
   text-shadow: none;
   background: #b3d4fc;
 }
 
-pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
-code[class*="language-"]::selection, code[class*="language-"] ::selection {
+pre[class*="language-"]::selection, pre[class*="language-"] ::selection {
   text-shadow: none;
   background: tomato;
   color: #fff;
@@ -224,10 +226,9 @@ pre.code-toolbar {
 
 pre.code-toolbar > .toolbar {
   position: absolute;
-  top: -0.1em;
-  right: -0.1em;
-  line-height: 1.5;
-  transition: opacity 0.3s ease-in-out;
+  top: .2em;
+  right: .2em;
+  line-height: 1;
 }
 
 pre.code-toolbar:hover > .toolbar {
@@ -258,12 +259,14 @@ pre.code-toolbar > .toolbar button {
 pre.code-toolbar > .toolbar a,
 pre.code-toolbar > .toolbar button,
 pre.code-toolbar > .toolbar span {
+  font-family: 'Gotham Pro';
+  letter-spacing: normal;
   background: tomato;
   border-radius: 3px;
   color: #fff;
   cursor: default;
-  font-size: 0.8em;
-  padding: 4px 8px;
+  font-size: 0.6em;
+  padding: 4px 6px;
   text-shadow: none;
 }
 
@@ -274,6 +277,12 @@ pre.code-toolbar > .toolbar button:focus,
 pre.code-toolbar > .toolbar span:hover,
 pre.code-toolbar > .toolbar span:focus {
   text-decoration: none;
+}
+
+pre.code-toolbar:hover > .toolbar a,
+pre.code-toolbar:hover > .toolbar button,
+pre.code-toolbar:hover > .toolbar span {
+  opacity: .2;
 }
 
 .command-line-prompt {
