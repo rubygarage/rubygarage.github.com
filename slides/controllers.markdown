@@ -133,10 +133,10 @@ end
 app/views/posts/_form.html.erb <!-- .element: class="filename" -->
 
 ```html
-<form accept-charset=\"UTF-8\" action=\"/posts\" method=\"post\">
-  <input type=\"text\" name=\"post[title]\" value=\"Title\" />
-  <input type=\"text\" name=\"post[images_attributes][id]\" value=\"12345\" />
-  <input type=\"text\" name=\"post[images_attributes][title]\" value=\"Image\" />
+<form accept-charset="UTF-8" action="/posts" method="post">
+  <input type="text" name="post[title]" value="Title" />
+  <input type="text" name="post[images_attributes][id]" value="12345" />
+  <input type="text" name="post[images_attributes][title]" value="Image" />
 </form>
 ```
 
@@ -245,6 +245,8 @@ end
 
 --
 
+## Use cases
+
 ```ruby
 params.permit(:id)
 params.permit(:id => [])
@@ -278,6 +280,8 @@ activerecord-session_store gem)
 consider using CacheStore instead)
 
 --
+
+## Configuration
 
 config/initializers/session_store.rb <!-- .element: class="filename" -->
 
@@ -604,9 +608,8 @@ end
 
 ```html
 <form accept-charset="UTF-8" action="/users/1" method="post">
-  <input type="hidden"
-       value="12350adcf5eb5ad13451c00a5621854a23af5489"
-       name="authenticity_token"/>
+  <input type="hidden" value="12350adcf5eb5ad13451c00a5621854a23af5489" name="authenticity_token"/>
+
   <!-- fields -->
 </form>
 ```
