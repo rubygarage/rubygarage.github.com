@@ -251,8 +251,7 @@ end
 params.permit(:id)
 params.permit(:id => [])
 params.require(:post).permit!
-params.permit(:title, {:comments => []},
-        :images_attributes => [:id, :name, :_destroy])
+params.permit(:title, { comments: [] }, images_attributes: [:id, :name, :_destroy])
 
 params.fetch(:post, {}).permit(:title, :text)
 ```
@@ -323,12 +322,10 @@ end
 
 --
 
-
 app/controllers/logins_controller.rb <!-- .element: class="filename" -->
 
 ```ruby
 class LoginsController < ApplicationController
-
   def create
     if user = User.authenticate(params[:username], params[:password])
       session[:current_user_id] = user.id
@@ -414,6 +411,7 @@ app/controllers/posts_controller.rb <!-- .element: class="filename" -->
 class PostsController < ApplicationController
   def create
     @post = Post.new(post_params)
+
     if @post.save
       # ...
     else
@@ -438,6 +436,7 @@ class CommentsController < ApplicationController
 
   def create
     @comment = Comment.new(params[:comment])
+
     if @comment.save
       flash[:notice] = 'Thanks for your comment!'
       if params[:remember_name]
@@ -482,6 +481,7 @@ app/controllers/posts_controller.rb <!-- .element: class="filename" -->
 class PostsController < ApplicationController
   def index
     @posts = Post.all
+
     respond_to do |format|
       format.html # index.html.erb
       format.json # index.json.jbuilder
