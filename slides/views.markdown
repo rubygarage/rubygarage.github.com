@@ -401,7 +401,7 @@ redirect_to photos_path, status: 301 #status can be both numeric or symbolic
 
 ```ruby
 def index
-  @post = Post.all
+  @posts = Post.all
 end
 
 def show
@@ -420,7 +420,7 @@ view will probably require.
 
 ```ruby
 def index
-  @post = Post.all
+  @posts = Post.all
 end
 
 def show
@@ -949,7 +949,7 @@ If you have an instance of a model to render into a partial, you can use a short
 `_post.html.erb` partial
 
 ```html
-<%= render @customer %>
+<%= render @post %>
 ```
 
 ---
@@ -1373,7 +1373,7 @@ The principles of Haml:
 
 views/posts/post.html.erb <!-- .element: class="filename" -->
 
-```ruby
+```html
 <tr>
   <td><%= post.name %></td>
   <td><%= post.title %></td>
@@ -1410,20 +1410,25 @@ views/posts/post.html.haml <!-- .element: class="filename" -->
 ## Boolean attributes
 
 Haml
-```html
+
+```ruby
 %input{selected: true}
 ```
+
 HTML
+
 ```html
 <input selected = "selected">
 ```
 
 Haml
-```html
+
+```ruby
 %input{selected: false}
 ```
 
 HTML
+
 ```html
 <input>
 ```
@@ -1442,7 +1447,8 @@ HTML
 ## Class and ID: . and \#
 
 Haml
-```html
+
+```ruby
 %div#elems
   %span.green= 'Green Label'
   %p.firstclass.secondclass
@@ -1464,7 +1470,7 @@ HTML
 
 ## Haml
 
-```html
+```ruby
 #container
   .box
     %h2 Some Headline
@@ -1479,7 +1485,7 @@ HTML
     %ul.mainList
       %li One
       %li Two
-      %li Three​​​
+      %li Three
 ```
 
 --
