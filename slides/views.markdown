@@ -438,7 +438,7 @@ fresh request for the index page will be done and @posts variable will be set up
 
 ```ruby
 def index
-  @posts = Book.all
+  @posts = Post.all
 end
 
 def show
