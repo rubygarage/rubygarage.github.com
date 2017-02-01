@@ -16,16 +16,18 @@ title:  Views
 `Action View` is the `V`  in MVC. View responsible for displaying data. It doesn't make any logic
 operations. Only displaying data.
 
-![](/assets/images/mvc.png)
+--
+
+![](/assets/images/mvc.svg)
 
 ---
 
 # Responses
 
- From the controller's point of view, there are three ways to create an HTTP response:
- - Call render to create a full response to send back to the browser
- - Call redirect_to to send an HTTP redirect status code to the browser
- - Call head to create a response consisting solely of HTTP headers to send back to the browser
+From the controller's point of view, there are three ways to create an HTTP response:
+- Call render to create a full response to send back to the browser
+- Call redirect_to to send an HTTP redirect status code to the browser
+- Call head to create a response consisting solely of HTTP headers to send back to the browser
 
 ---
 
@@ -38,12 +40,14 @@ Blog::Application.routes.draw do
   resources :posts
 end
 ```
+
 app/controllers/posts_controller.rb <!-- .element: class="filename" -->
 
 ```ruby
 class PostsController<ApplicationController
   def index
     @posts = Post.all
+
     respond_to do |format|
       format.html # app/views/posts/index.html.erb
       format.json # app/views/posts/index.json.jbuilder
@@ -55,7 +59,7 @@ end
 
 ---
 
-# .erb
+## .erb
 
 app/views/posts/index.html.erb <!-- .element: class="filename" -->
 
@@ -93,7 +97,7 @@ app/views/posts/index.html.erb <!-- .element: class="filename" -->
 
 ---
 
-# .jbuilder
+## .jbuilder
 
 app/views/posts/index.json.jbuilder <!-- .element: class="filename" -->
 
@@ -103,11 +107,12 @@ json.array!(@posts) do |post|
   json.url post_url(post, format: :json)
 end
 ```
+
 see [jbuilder docs](https://github.com/rails/jbuilder)
 
 ---
 
-# ActionController::Base#render method
+## ActionController::Base#render method
 
 In most cases, the `ActionController::Base#render` method does the heavy lifting of rendering your application's content
 for use by a browser. There are a variety of ways to customize the behavior of render. You can render the default view
@@ -121,6 +126,7 @@ or XML. You can specify the content type or HTTP status of the rendered response
 ```ruby
 def index
   @posts = Post.all
+
   render nothing: true
 end
 ```
@@ -132,6 +138,7 @@ end
 ```ruby
 def update
   @post = Post.find(params[:id])
+
   if @post.update(params[:post])
     redirect_to @post, notice: 'Post was successfully updated.'
   else
@@ -149,8 +156,9 @@ end
 ```ruby
 def show
   @post = Post.find(params[:id])
-    render 'posts/show'
-    #render template: 'posts/show'
+
+  render 'posts/show'
+  #render template: 'posts/show'
 end
 ```
 
@@ -161,6 +169,7 @@ end
 ```ruby
 def show
   @post = Post.find(params[:id])
+
   render '/var/www/blog/app/views/posts/show'
 end
 ```
@@ -172,6 +181,7 @@ end
 ```ruby
 def index
   @posts = Post.all
+
   render inline: "<% @posts.each do |p| %><p><%= p.title %></p><% end %>"
 end
 ```
@@ -183,6 +193,7 @@ end
 ```ruby
 def index
   @posts = Post.all
+
   render plain: 'Ok'
 end
 ```
@@ -191,10 +202,12 @@ end
 
 ## Rendering a string in the current layout
 
-.txt.erb extension should be used for layout
+`.txt.erb` extension should be used for layout
+
 ```ruby
 def index
   @posts = Post.all
+
   render plain: 'Ok', layout: true
 end
 ```
@@ -206,6 +219,7 @@ end
 ```ruby
 def index
   @posts = Post.all
+
   respond_to do |format|
     format.html {render html: "Count <strong>#{@posts.length}</strong>".html_safe}
     format.json {render json: @posts}
@@ -214,7 +228,8 @@ def index
   end
 end
 ```
-to_json, to_xml methods
+
+`to_json`, `to_xml` methods
 
 ## Rendering raw data
 
@@ -229,6 +244,7 @@ render body: 'raw'
 ```ruby
 def update
   @post = Post.find(params[:id])
+
   if @post.update(params[:post])
     redirect_to @post, notice: 'Past was successfully updated'
   else
@@ -257,6 +273,7 @@ end
 ```ruby
 def index
   @post = Post.all
+
   respond_to do |format|
     format.html
     format.xml do
@@ -282,6 +299,7 @@ render status: :not_found   # by symbol
 ```ruby
 def index
   @post = Post.all
+
   respond_to do |format|
     format.html
     format.xml do
@@ -298,6 +316,7 @@ end
 ```ruby
 def show
   @post = Post.find(params[:id])
+
   render template: 'pages/post', layout: 'post'
 end
 ```
@@ -320,19 +339,26 @@ Rails 5 only!
 ```ruby
 # render template
 ApplicationController.render 'templates/name'
+
 # render action
 PostController.render :index
+
 # render file
 ApplicationController.render file: 'path'
+
 # render inline
 ApplicationController.render inline: '<%= posts_url %>'
+
 # render partial
 PostsController.render :_post, locals: { post: Post.last }
+
 #render json
 PostsController.render json: Post.all
 ```
 
-#### Assigning variables
+--
+
+### Assigning variables
 
 ```ruby
 ApplicationController.render(
@@ -341,12 +367,14 @@ ApplicationController.render(
 )
 ```
 
-#### Request environment
+### Request environment
+
 ```ruby
 renderer = ApplicationController.renderer.new(
   http_host: 'best_post.host',
   https:      true
 )
+
 renderer.render inline: '<%= posts_url %>'
 # => 'https://best_post.host/posts'
 ```
@@ -369,7 +397,7 @@ redirect_to photos_path, status: 301 #status can be both numeric or symbolic
 
 --
 
-# render and redirect_to difference
+## `render` and `redirect_to` difference
 
 ```ruby
 def index
@@ -378,6 +406,7 @@ end
 
 def show
   @post = Post.find_by(id: params[:id])
+
   if @post.nil?
     render action: 'index'
   end
@@ -396,6 +425,7 @@ end
 
 def show
   @post = Post.find_by(id: params[:id])
+
   if @post.nil?
     redirect_to action: :index
   end
@@ -409,10 +439,11 @@ fresh request for the index page will be done and @posts variable will be set up
 ```ruby
 def index
   @posts = Book.all
-  end
+end
 
-  def show
+def show
   @post = Post.find_by(id: params[:id])
+
   if @post.nil?
     @posts = Post.all
     flash.now[:alert] = "Your post was not found"
@@ -547,16 +578,18 @@ end
 
 ---
 
-# Avoiding Double Render Errors
+## Avoiding Double Render Errors
 
 app/controllers/posts_controller.rb <!-- .element: class="filename" -->
 
 ```ruby
 def show
   @post = Post.find(params[:id])
+
   if @post.archived?
     render action: 'archived'
   end
+
   render action: 'updated'
 end
 ```
@@ -568,9 +601,11 @@ app/controllers/posts_controller.rb <!-- .element: class="filename" -->
 ```ruby
 def show
   @post = Post.find(params[:id])
+
   if @post.archived?
     render action: 'archived' and return
   end
+
   render action: 'updated'
 end
 ```
@@ -582,6 +617,7 @@ app/controllers/posts_controller.rb <!-- .element: class="filename" -->
 ```ruby
 def show
   @post = Post.find(params[:id])
+
   if @post.archived?
     render action: 'archived'
   end
@@ -625,7 +661,7 @@ Cache-Control: no-cache
 
 ---
 
-# Layouts structuring
+## Layouts structuring
 
 * Asset tags
 * `yield` and `content_for`
@@ -633,7 +669,7 @@ Cache-Control: no-cache
 
 ---
 
-# Asset tags
+## Asset tags
 
 * auto_discovery_link_tag
 * javascript_include_tag
@@ -916,7 +952,6 @@ If you have an instance of a model to render into a partial, you can use a short
 <%= render @customer %>
 ```
 
-
 ---
 
 # Collection
@@ -1054,7 +1089,7 @@ You can find more details [here](http://api.rubyonrails.org/classes/ActionView/H
 
 ---
 
-# Nested attributes
+## Nested attributes
 
 app/modals/post.rb <!-- .element: class="filename" -->
 
@@ -1468,7 +1503,7 @@ HTML
     <ul class='mainList'>
       <li>One</li>
       <li>Two</li>
-      <li>Three​​​</li>
+      <li>Three</li>
     </ul>
   </div>
 </div>
