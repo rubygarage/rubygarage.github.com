@@ -17,6 +17,24 @@ reasons and agrees on the direction of the code changes.
 
 ---
 
+# DRY
+
+### Don't repeat yourself
+
+---
+
+# KISS
+
+### Keep it simple, stupid
+
+---
+
+# SOLID principles
+
+![](/assets/images/solid.jpg)
+
+---
+
 ## Inline controller filters
 
 > Using controller filters is a very popular approach in Rails apps. This technique is used for implementing
@@ -32,7 +50,7 @@ makes the coupling worse, as it’s difficult to extract a service object from a
 
 ```ruby
 class TimelogController < ApplicationController
-  before_filter :find_project_for_new_time_entry, only: [:create]
+  before_action :find_project_for_new_time_entry, only: [:create]
 
   def create
     @time_entry ||= TimeEntry.new(project: @project,
@@ -176,7 +194,7 @@ class FollowingController < ApplicationController
 
   def following
     @presenter = Users::FollowedUsersPresenter.new(params[:id], params[:page])
-    render '/users/followers'
+    render '/users/following'
   end
 end
 ```
@@ -208,7 +226,7 @@ class FollowingController < ApplicationController
 
   def following
     @presenter = Users::FollowedUsersPresenter.new(params[:id], params[:page])
-    render '/users/followers'
+    render '/users/following'
   end
 end
 ```
@@ -250,7 +268,7 @@ class FollowingController < ApplicationController
 
   def following
     @presenter = Users::FollowedUsersPresenter.new(params[:id], params[:page])
-    render '/users/followers'
+    render '/users/following'
   end
 end
 ```
@@ -357,14 +375,12 @@ end
 
 ## Extract a delegator object
 
-#### Example
-
 app/controllers/payment_gateway_controller.rb <!-- .element: class="filename" -->
 
 ```ruby
 class PaymentGatewayController < ApplicationController
   ALLOWED_IPS = ["127.0.0.1"]
-  before_filter :whitelist_ip
+  before_action :whitelist_ip
 
   def callback
     order = Order.find(params[:order_id])
@@ -375,7 +391,9 @@ class PaymentGatewayController < ApplicationController
                                                                          :require_capture, :amount, :currency))
 
     if transaction.successful?
-      order.paid! OrderMailer.order_paid(order.id).deliver redirect_to successful_order_path(order.id)
+      order.paid!
+      OrderMailer.order_paid(order.id).deliver
+      redirect_to successful_order_path(order.id)
     else
       redirect_to retry_order_path(order.id)
     end
@@ -384,7 +402,8 @@ class PaymentGatewayController < ApplicationController
     redirect_to missing_order_path(params[:order_id])
 
   rescue => e
-    Honeybadger.notify(e) AdminOrderMailer.order_problem(order.id).deliver
+    Honeybadger.notify(e)
+    AdminOrderMailer.order_problem(order.id).deliver
     redirect_to failed_order_path(order.id), alert: t("order.problems")
   end
 
@@ -407,7 +426,7 @@ app/controllers/payment_gateway_controller.rb <!-- .element: class="filename" --
 ```ruby
 class PaymentGatewayController < ApplicationController
   ALLOWED_IPS = ["127.0.0.1"]
-  before_filter :whitelist_ip
+  before_action :whitelist_ip
 
   def callback
     PaymentGatewayCallback.new(self).callback
@@ -465,7 +484,7 @@ app/controllers/payment_gateway_controller.rb <!-- .element: class="filename" --
 ```ruby
 class PaymentGatewayController < ApplicationController
   ALLOWED_IPS = ["127.0.0.1"]
-  before_filter :whitelist_ip
+  before_action :whitelist_ip
 
   def callback
     if PaymentGatewayCallback.new.callback(
@@ -521,7 +540,8 @@ class PaymentGatewayCallback
     raise
 
   rescue => e
-    Honeybadger.notify(e) AdminOrderMailer.order_problem(order.id).deliver
+    Honeybadger.notify(e)
+    AdminOrderMailer.order_problem(order.id).deliver
     raise
   end
 end
@@ -559,12 +579,13 @@ class UsersController < ApplicationController
 end
 ```
 
+--
+
 app/models/user.rb <!-- .element: class="filename" -->
 
 ```ruby
 class User < ActiveRecord::Base
   attr_accessor :password
-
   validates :name, presence: true
   validates :email, presence: true
   validates :password, presence: { on: :create}, length: { within: 8..255, allow_blank: true }
@@ -675,7 +696,7 @@ class TicketsController < ApplicationController
     if @params['status_id'].present?
       @tickets = @tickets.where(ticket_status_id: @params['status_id'])
     end
-  end     
+  end
 end
 ```
 
@@ -689,7 +710,7 @@ app/controllers/tickets_controller.rb <!-- .element: class="filename" -->
 class TicketsController < ApplicationController
   def index
     @tickets = TicketSearch.new(current_user, params).call
-  end     
+  end
 end
 ```
 
@@ -734,6 +755,24 @@ class TicketSearchService
   end
 end
 ```
+
+---
+
+## Trailblazer
+
+https://github.com/trailblazer/trailblazer
+
+## Rectify
+
+https://github.com/andypike/rectify
+
+## MVC refactoring in Rails
+
+https://www.sitepoint.com/the-basics-of-mvc-in-rails-skinny-everything/
+
+https://www.sitepoint.com/7-design-patterns-to-refactor-mvc-components-in-rails/
+
+https://github.com/rubygarage/mvc-components-refactoring-in-rails
 
 ---
 
