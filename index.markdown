@@ -103,7 +103,7 @@ title: Ruby presentations
   <small>Meet Rails Engines.</small>
 
 
-- [Application Programming Interface (API)](/slides/api)
+- [RESTApi (Application Programming Interface)](/slides/api)
   <br>
   <small>Writing API in Rails.</small>
 
