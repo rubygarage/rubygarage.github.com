@@ -98,6 +98,11 @@ title: Ruby presentations
   <small>Flexible authentication solution for Rails with Warden.</small>
 
 
+- [CanCanCan](/slides/cancancan)
+  <br>
+  <small>The authorization Gem for Ruby on Rails.</small>
+
+
 - [Rails Engine](/slides/rails-engine)
   <br>
   <small>Meet Rails Engines.</small>
