@@ -26,7 +26,7 @@ Rails::Engine.
 ```bash
 $ rails plugin new shopping_cart --dummy-path=spec/dummy --skip-test-unit --mountable
     create
-    create  README.rdoc
+    create  README.md
     create  Rakefile
     create  shopping_cart.gemspec
     create  MIT-LICENSE
@@ -35,8 +35,9 @@ $ rails plugin new shopping_cart --dummy-path=spec/dummy --skip-test-unit --moun
     create  app
     create  app/controllers/shopping_cart/application_controller.rb
     create  app/helpers/shopping_cart/application_helper.rb
-    create  app/mailers
-    create  app/models
+    create  app/jobs/shopping_cart/application_job.rb
+    create  app/mailers/shopping_cart/application_mailer.rb
+    create  app/models/shopping_cart/application_record.rb
     create  app/views/layouts/shopping_cart/application.html.erb
     create  app/assets/images/shopping_cart
     create  app/assets/images/shopping_cart/.keep
@@ -45,10 +46,14 @@ $ rails plugin new shopping_cart --dummy-path=spec/dummy --skip-test-unit --moun
     create  lib/tasks/shopping_cart_tasks.rake
     create  lib/shopping_cart/version.rb
     create  lib/shopping_cart/engine.rb
+    create  app/assets/config/shopping_cart_manifest.js
     create  app/assets/stylesheets/shopping_cart/application.css
     create  app/assets/javascripts/shopping_cart/application.js
-    create  bin
     create  bin/rails
+    create  test/test_helper.rb
+    create  test/shopping_cart_test.rb
+    append  Rakefile
+    create  test/integration/navigation_test.rb
 vendor_app  spec/dummy
        run  bundle install
 ```
@@ -79,7 +84,7 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["test/**/*"]
  
-  s.add_dependency "rails", "~> 4.2.0"
+  s.add_dependency "rails", "~> 5.0.1"
  
   s.add_development_dependency "sqlite3"
 end
@@ -189,9 +194,9 @@ require 'rspec/core'
 require 'rspec/core/rake_task'
  
 desc "Run all specs in spec directory (excluding plugin specs)"
-RSpec::Core::RakeTask.new(:spec => 'app:db:test:prepare')
+RSpec::Core::RakeTask.new(spec: 'app:db:test:prepare')
  
-task :default => :spec
+task default: :spec
 ```
 
 --
@@ -225,8 +230,8 @@ Add this config to your engine file
 module ShoppingCart
   class Engine < ::Rails::Engine
     config.generators do |g|
-      g.test_framework      :rspec,        :fixture => false
-      g.fixture_replacement :factory_girl, :dir => 'spec/factories'
+      g.test_framework      :rspec,        fixture: false
+      g.fixture_replacement :factory_girl, dir: 'spec/factories'
       g.assets false
       g.helper false
     end
