@@ -5,7 +5,7 @@
 Execute the command:
 
 ```bash
-$ jekyll s --config _config.yml,_config_dev.yml --trace
+$ jekyll s --config _config.yml,_config_dev.yml --trace --profile --incremental
 ```
 
 Visit this URL: http://localhost:4000
