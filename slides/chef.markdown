@@ -11,13 +11,6 @@ title: Chef
 
 ---
 
-# What Is Orchestration?
-
-> `Orchestration` is the automated arrangement, coordination, and management of computer systems, middleware, and
-  services.
-
----
-
 # Why you should automate your web infrastructure?
 
 > Server setup is one of the most tedious and boring task, which we have to do again and again.
@@ -96,7 +89,6 @@ API server in Erlang.
 
 > - You have a master Chef server to which all Chef client nodes connect to understand what they are comprised of.
 > - Cookbooks are uploaded to the Chef server using the Knife command line tool.
-> - There is the concept of different environments (dev, test, prod).
 
 --
 
@@ -104,7 +96,6 @@ API server in Erlang.
 
 > - You only have a single Chef client which uses a local json file to understand what it is comprised of.
 > - Cookbooks are either saved locally to the client or referenced via URL to a tar archive.
-> - There is no concept of different environments.
 
 ---
 
@@ -197,7 +188,6 @@ Insert the following content into `Berksfile`
 source 'https://supermarket.chef.io'
 
 cookbook 'openssh'
-cookbook 'runit'
 cookbook 'sudo'
 cookbook 'swap_tuning'
 cookbook 'users'
@@ -620,7 +610,7 @@ Attributes are always applied by the chef-client in the following order:
 
 > The recipes directory contains the "recipes" that define how the service should be configured. Recipes are
   generally small files that configure specific aspects of the larger system. If a cookbook used to install and
-  configure a web server, a recipe may enable a module or set up a sane firewall default.
+  configure a web server, a recipe may enable a module or set up firewall.
 
 --
 
@@ -659,6 +649,29 @@ Add this line to the end of the `metadata.rb`
 ```ruby
 depends 'nginx'
 ```
+
+--
+
+## Add "nginx" cookbook
+
+Berksfile <!-- .element: class="filename" -->
+
+```ruby
+source 'https://supermarket.chef.io'
+
+cookbook 'openssh'
+cookbook 'sudo'
+cookbook 'swap_tuning'
+cookbook 'users'
+cookbook 'nginx'
+```
+
+and run
+
+```bash
+berks install
+```
+<!-- .element: class="command-line" -->
 
 --
 
@@ -782,7 +795,7 @@ nodes/XXX.XXX.XXX.XXX.json <!-- .element: class="filename" -->
 
 ## Examples
 
-[Simple Chef Configuration](https://github.com/timlar/chef-code-example-for-rubygarage-course)
+[Simple Chef Configuration](https://github.com/timlar/chef-example-for-rubygarage-course)
 
 ---
 
