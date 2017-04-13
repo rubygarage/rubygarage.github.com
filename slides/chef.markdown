@@ -418,23 +418,6 @@ nodes/XXX.XXX.XXX.XXX.json <!-- .element: class="filename" -->
 }
 ```
 
---
-
-## PostgreSQL Password
-
-This command returns an encrypted password
-
-```bash
-md5 -qs '1q2w3e4r5t6y'
-
-ede6b50e7b5826fe48fc1f0fe772c48f
-```
-<!-- .element: class="command-line" data-output="2-3" -->
-
-And in the end the password will be like this `md5ede6b50e7b5826fe48fc1f0fe772c48f`
-
-> Don't forget about 'md5' in the beginning of the line.
-
 ---
 
 ## Run Lists
@@ -450,45 +433,6 @@ And in the end the password will be like this `md5ede6b50e7b5826fe48fc1f0fe772c4
 > A Role is a way to define certain patterns and processes that exist across Nodes in an organization as belonging to a
   single job function. Each Role consists of zero (or more) attributes and a run-list. Each Node can have zero (or
   more) Roles assigned to it.
-
----
-
-# Time to cook!
-
---
-
-## Prepare the remote host
-
-Run these commands to prepare and cook remote host
-
-```bash
-knife solo prepare root@XXX.XXX.XXX.XXX
-knife solo cook root@XXX.XXX.XXX.XXX
-```
-<!-- .element: class="command-line" -->
-
-Or just run this one command. This is an alias for two previous ones.
-
-```bash
-knife solo bootstrap root@XXX.XXX.XXX.XXX
-```
-<!-- .element: class="command-line" -->
-
-And clean uploaded kitchen
-
-```bash
-knife solo clean root@XXX.XXX.XXX.XXX
-```
-<!-- .element: class="command-line" -->
-
---
-
-## What do these commands?
-
-> - `knife solo prepare` installs Chef on a given host. It's structured to auto-detect the target OS and change the installation process accordingly.
-> - `knife solo cook` uploads the current kitchen (Chef repo) to the target host and runs chef-solo on that host.
-> - `knife solo bootstrap` combines the two previous ones (prepare and cook).
-> - `knife solo clean` removes the uploaded kitchen from the target host.
 
 ---
 
@@ -554,7 +498,7 @@ tree -a -F --dirsfirst site-cookbooks/my_cookbook
 
 Attributes are always applied by the chef-client in the following order:
 
-1. A `default` ttribute located in an attribute file
+1. A `default` attribute located in an attribute file
 2. A `default` attribute located in a recipe
 3. A `default` attribute located in an environment
 4. A `default` attribute located in role
@@ -584,13 +528,6 @@ Attributes are always applied by the chef-client in the following order:
 > A library allows arbitrary Ruby code to be included in a cookbook, either as a way of extending the classes that are
   built-in to the chef-client — `Chef::Recipe`. Because a library is built using Ruby, anything that can be done with
   Ruby can be done in a library file.
-
---
-
-## Resources and Providers
-
-> Providers and resources are used to define new functionality to use in Chef recipes. A resource defines a set of
-  actions and attributes, whereas provider informs the chef-client how to commit each action.
 
 --
 
@@ -791,11 +728,67 @@ nodes/XXX.XXX.XXX.XXX.json <!-- .element: class="filename" -->
 }
 ```
 
+---
+
+# Time to cook!
+
 --
+
+## Prepare the remote host
+
+Run these commands to prepare and cook remote host
+
+```bash
+knife solo prepare root@XXX.XXX.XXX.XXX
+knife solo cook root@XXX.XXX.XXX.XXX
+```
+<!-- .element: class="command-line" -->
+
+Or just run this one command. This is an alias for two previous ones.
+
+```bash
+knife solo bootstrap root@XXX.XXX.XXX.XXX
+```
+<!-- .element: class="command-line" -->
+
+And clean uploaded kitchen
+
+```bash
+knife solo clean root@XXX.XXX.XXX.XXX
+```
+<!-- .element: class="command-line" -->
+
+--
+
+## What do these commands?
+
+> - `knife solo prepare` installs Chef on a given host. It's structured to auto-detect the target OS and change the installation process accordingly.
+> - `knife solo cook` uploads the current kitchen (Chef repo) to the target host and runs chef-solo on that host.
+> - `knife solo bootstrap` combines the two previous ones (prepare and cook).
+> - `knife solo clean` removes the uploaded kitchen from the target host.
+
+---
 
 ## Examples
 
 [Simple Chef Configuration](https://github.com/timlar/chef-example-for-rubygarage-course)
+
+---
+
+## Tip: How to generate password for PostgreSQL
+
+This command returns an encrypted password
+
+```bash
+md5 -qs '1q2w3e4r5t6y'
+
+ede6b50e7b5826fe48fc1f0fe772c48f
+```
+<!-- .element: class="command-line" data-output="2-3" -->
+
+And in the end the password will be like this `md5ede6b50e7b5826fe48fc1f0fe772c48f`
+
+> Don't forget about 'md5' in the beginning of the line.
 
 ---
 
