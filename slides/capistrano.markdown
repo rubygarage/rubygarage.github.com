@@ -534,6 +534,14 @@ cap production deploy
 
 ---
 
+# Example
+
+<br>
+
+[A simple example of setting up Capistrano](https://github.com/timlar/capistrano-example-for-rubygarage-course)
+
+---
+
 # Documentation
 
 - [Capistrano](http://capistranorb.com)
