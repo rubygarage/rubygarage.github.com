@@ -5,10 +5,6 @@ title:  Views
 
 # View
 
-<br>
-
-[Go to Table of Contents](/)
-
 ---
 
 # Action View
@@ -1518,7 +1514,3 @@ HTML
 ---
 
 # The End
-
-<br>
-
-[Go to Table of Contents](/)

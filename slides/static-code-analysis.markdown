@@ -5,11 +5,6 @@ title:  Static Code Analysis
 
 # Static Code Analysis
 
-
-<br>
-
-[Go to Table of Contents](/)
-
 ---
 
 # Static Code Analysis
@@ -400,7 +395,3 @@ When analysing code like the following:
 ---
 
 # The End
-
-<br>
-
-[Go to Table of Contents](/)

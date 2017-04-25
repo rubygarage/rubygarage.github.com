@@ -17,9 +17,6 @@ title:  BDD
   * Continuous Integration
 
 <!-- .element: style="display: block" -->
-<br>
-
-[Go to Table of Contents](/)
 
 ---
 

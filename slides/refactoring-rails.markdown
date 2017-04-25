@@ -11,10 +11,6 @@ refactoring.
 > Refactoring is an ongoing activity. Refactoring is a team activity. Refactoring is best when everyone understands the
 reasons and agrees on the direction of the code changes.
 
-<br>
-
-[Go to Table of Contents](/)
-
 ---
 
 # DRY
@@ -777,7 +773,3 @@ https://github.com/rubygarage/mvc-components-refactoring-in-rails
 ---
 
 # The End
-
-<br>
-
-[Go to Table of Contents](/)

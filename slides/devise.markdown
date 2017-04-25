@@ -5,10 +5,6 @@ title:  Devise
 
 # Devise
 
-<br>
-
-[Go to Table of Contents](/)
-
 ---
 
 ## Devise
@@ -259,7 +255,3 @@ end
 ---
 
 # The End
-
-<br>
-
-[Go to Table of Contents](/)

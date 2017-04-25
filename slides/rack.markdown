@@ -17,10 +17,6 @@ hash as a parameter, and returning an Array with three elements:
 - A Hash of headers
 - The response body, which must respond to each
 
-<br>
-
-[Go to Table of Contents](/)
-
 ---
 
 # Init enviropment
@@ -492,7 +488,3 @@ Url to Rails on Rack guides - http://guides.rubyonrails.org/rails_on_rack.html
 ---
 
 # The End
-
-<br>
-
-[Go to Table of Contents](/)

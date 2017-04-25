@@ -5,11 +5,6 @@ title:  API
 
 # RESTApi with Rails
 
-
-<br>
-
-[Go to Table of Contents](/)
-
 ---
 
 # API
@@ -755,7 +750,3 @@ end
 ---
 
 # The End
-
-<br>
-
-[Go to Table of Contents](/)

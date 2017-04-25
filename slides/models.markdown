@@ -5,10 +5,6 @@ title:  Models
 
 # Models
 
-<br>
-
-[Go to Table of Contents](/)
-
 ---
 
 # Active Record Models
@@ -3651,7 +3647,3 @@ Necessary to create a DB structure, models, associations and validations to mode
 ---
 
 # The End
-
-<br>
-
-[Go to Table of Contents](/)

@@ -5,10 +5,6 @@ title:  Rails Engine
 
 # RailsEngines
 
-<br>
-
-[Go to Table of Contents](/)
-
 ---
 
 ## RailsEngines
@@ -510,7 +506,3 @@ create lib/my_mountable_engine/engine.rb
 ---
 
 # The End
-
-<br>
-
-[Go to Table of Contents](/)

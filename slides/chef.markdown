@@ -5,10 +5,6 @@ title: Chef
 
 ![](/assets/images/chef.svg)
 
-<br>
-
-[Go to Table of Contents](/)
-
 ---
 
 # Why you should automate your web infrastructure?
@@ -807,7 +803,3 @@ And in the end the password will be like this `md5ede6b50e7b5826fe48fc1f0fe772c4
 ---
 
 # The End
-
-<br>
-
-[Go to Table of Contents](/)

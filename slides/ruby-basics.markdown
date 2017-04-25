@@ -10,10 +10,6 @@ title:  Ruby basics
 > A dynamic, open source programming language with a focus on simplicity and productivity.
 > It has an elegant syntax that is natural to read and easy to write.
 
-<br>
-
-[Go to Table of Contents](/)
-
 ---
 
 # RVM
@@ -2139,7 +2135,3 @@ your path thus far [X_________________________________________________] 0/280
 ---
 
 # The End
-
-<br>
-
-[Go to Table of Contents](/)

@@ -5,10 +5,6 @@ title:  RSpec
 
 # RSpec
 
-<br>
-
-[Go to Table of Contents](/)
-
 ---
 
 # The value of tests
@@ -2988,7 +2984,3 @@ Finished in 0.00412 seconds
 ---
 
 # The End
-
-<br>
-
-[Go to Table of Contents](/)

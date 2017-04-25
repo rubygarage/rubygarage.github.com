@@ -8,10 +8,6 @@ title:  Controllers
 `Action Controller` is the `C` in [MVC](http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller). After routing has determined which controller to use for a request,
 your controller is responsible for making sense of the request and producing the appropriate output.
 
-<br>
-
-[Go to Table of Contents](/)
-
 ---
 
 ### MVC
@@ -1138,7 +1134,3 @@ end
 ---
 
 # The End
-
-<br>
-
-[Go to Table of Contents](/)
