@@ -5,10 +5,6 @@ title:  Rake
 
 # Rake
 
-<br>
-
-[Go to Table of Contents](/)
-
 ---
 
 # The Build Tools
@@ -517,7 +513,3 @@ Finished in 0.97735 seconds
 ---
 
 # The End
-
-<br>
-
-[Go to Table of Contents](/)

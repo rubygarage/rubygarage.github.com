@@ -7,10 +7,6 @@ title:  Rails
 
 David Heinemeier Hansson (DHH), [37signals](http://37signals.com)
 
-<br>
-
-[Go to Table of Contents](/)
-
 --
 
 ## The Rails philosophy includes two major guiding principles
@@ -1226,7 +1222,3 @@ app/assets/stylesheets/application.css <!-- .element: class="filename" -->
 ---
 
 # The End
-
-<br>
-
-[Go to Table of Contents](/)

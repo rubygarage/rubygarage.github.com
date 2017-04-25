@@ -5,10 +5,6 @@ title:  Refactoring
 
 # Refactoring
 
-<br>
-
-[Go to Table of Contents](/)
-
 ---
 
 # Refactoring
@@ -2050,7 +2046,3 @@ criteria = SearchCriteria.new(title: "Metaprogramming Ruby", author_id: 5)
 ---
 
 # The End
-
-<br>
-
-[Go to Table of Contents](/)

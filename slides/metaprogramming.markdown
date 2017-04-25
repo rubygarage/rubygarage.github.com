@@ -5,10 +5,6 @@ title:  Metaprogramming
 
 # Metaprogramming in Ruby
 
-<br>
-
-[Go to Table of Contents](/)
-
 ---
 
 # Open Classes
@@ -881,7 +877,3 @@ MetaGuru.enlighten student
 ---
 
 # The End
-
-<br>
-
-[Go to Table of Contents](/)

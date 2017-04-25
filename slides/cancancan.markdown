@@ -5,10 +5,6 @@ title:  CanCanCan
 
 # CanCanCan
 
-<br>
-
-[Go to Table of Contents](/)
-
 ---
 
 # CanCanCan
@@ -390,7 +386,3 @@ and
 ---
 
 # The End
-
-<br>
-
-[Go to Table of Contents](/)

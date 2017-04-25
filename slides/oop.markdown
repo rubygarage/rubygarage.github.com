@@ -9,10 +9,6 @@ title:  Object-oriented programming
 data fields (attributes that describe the object) and associated procedures known as methods. Objects, which are
 usually instances of classes, are used to interact with one another to design applications and computer programs.
 
-<br>
-
-[Go to Table of Contents](/)
-
 ---
 
 # Object-oriented programming
@@ -1090,7 +1086,3 @@ your path thus far [X_________________________________________________] 0/280
 ---
 
 # The End
-
-<br>
-
-[Go to Table of Contents](/)

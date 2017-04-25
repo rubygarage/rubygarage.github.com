@@ -5,10 +5,6 @@ title:  Ruby Gems
 
 # Gem
 
-<br>
-
-[Go to Table of Contents](/)
-
 ---
 
 # Gem
@@ -367,7 +363,3 @@ new_gem 0.0.1 built to pkg/new_gem-0.0.1.gem
 ---
 
 # The End
-
-<br>
-
-[Go to Table of Contents](/)
