@@ -9,6 +9,9 @@ title: Ruby presentations
   <br>
   <small>Start working with Ruby!</small>
 
+- [Why Ruby?](/rubygarage/slides/why-ruby)
+  <br>
+  <small>Small introduction to Ruby's awsomeness.</small>
 
 - [OOP in Ruby](/rubygarage/slides/oop)
   <br>
