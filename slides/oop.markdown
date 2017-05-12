@@ -16,7 +16,7 @@ usually instances of classes, are used to interact with one another to design ap
 > A method call in Ruby is actually the sending of a message to a receiver. When you write `obj.meth`, you're sending
 the `meth` message to the object `obj`. `obj` will respond to `meth` if there is a method body defined for it.
 
-![](/assets/images/player_class.png)
+![](/rubygarage/assets/images/player_class.png)
 
 ---
 
@@ -645,7 +645,7 @@ B::NUM     # => 3
 
 ## Class hierarchy
 
-![](/assets/images/class-hierarchy.dot.svg)
+![](/rubygarage/assets/images/class-hierarchy.dot.svg)
 
 ---
 
@@ -873,7 +873,7 @@ D.ancestors # => [D, C, M, Object, Kernel, BasicObject]
 ```
 <!-- .element class="left width-70" -->
 
-![](/assets/images/modules-hierarchy.dot.svg)
+![](/rubygarage/assets/images/modules-hierarchy.dot.svg)
 <!-- .element class="right width-20" -->
 
 ---

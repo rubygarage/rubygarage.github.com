@@ -3,7 +3,7 @@ layout: slide
 title:  Ruby basics
 ---
 
-![](/assets/images/ruby.png)
+![](/rubygarage/assets/images/ruby.png)
 
 # Ruby is...
 
@@ -18,7 +18,7 @@ title:  Ruby basics
 
 ## RVM first
 
-![](/assets/images/rvm.png)
+![](/rubygarage/assets/images/rvm.png)
 
 Visit https://rvm.io for more details.
 

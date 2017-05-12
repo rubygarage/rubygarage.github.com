@@ -24,7 +24,7 @@ title:  BDD
 
 --
 
-![](/assets/images/bdd/bdd-cycle-around-tdd-cycles.png)
+![](/rubygarage/assets/images/bdd/bdd-cycle-around-tdd-cycles.png)
 
 1. Start with an Acceptance Test scenatio.
 2. Run the Acceptance Test scenatio.
@@ -143,7 +143,7 @@ require 'capybara/rspec'
 
 --
 
-![](/assets/images/bdd/capybara.jpg) <!-- .element: style="width: 700px" -->
+![](/rubygarage/assets/images/bdd/capybara.jpg) <!-- .element: style="width: 700px" -->
 
 `Capybara` is acceptance test framework for web applications.
 

@@ -3,7 +3,7 @@ layout: slide
 title: Chef
 ---
 
-![](/assets/images/chef.svg)
+![](/rubygarage/assets/images/chef.svg)
 
 ---
 

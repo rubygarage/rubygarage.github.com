@@ -14,7 +14,7 @@ operations. Only displaying data.
 
 --
 
-![](/assets/images/mvc.svg)
+![](/rubygarage/assets/images/mvc.svg)
 
 ---
 

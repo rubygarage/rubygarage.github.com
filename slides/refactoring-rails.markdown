@@ -27,7 +27,7 @@ reasons and agrees on the direction of the code changes.
 
 # SOLID principles
 
-![](/assets/images/solid.jpg)
+![](/rubygarage/assets/images/solid.jpg)
 
 ---
 

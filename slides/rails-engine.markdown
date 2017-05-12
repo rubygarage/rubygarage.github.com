@@ -35,8 +35,8 @@ $ rails plugin new shopping_cart --dummy-path=spec/dummy --skip-test-unit --moun
     create  app/mailers/shopping_cart/application_mailer.rb
     create  app/models/shopping_cart/application_record.rb
     create  app/views/layouts/shopping_cart/application.html.erb
-    create  app/assets/images/shopping_cart
-    create  app/assets/images/shopping_cart/.keep
+    create  app/rubygarage/assets/images/shopping_cart
+    create  app/rubygarage/assets/images/shopping_cart/.keep
     create  config/routes.rb
     create  lib/shopping_cart.rb
     create  lib/tasks/shopping_cart_tasks.rake
@@ -493,7 +493,7 @@ create app/helpers/my_mountable_engine/application_helper.rb
 create app/mailers
 create app/models
 create app/views/layouts/my_mountable_engine/application.html.erb
-create app/assets/images/my_mountable_engine
+create app/rubygarage/assets/images/my_mountable_engine
 create app/assets/stylesheets/my_mountable_engine/application.css
 create app/assets/javascripts/my_mountable_engine/application.js
 create config/routes.rb
