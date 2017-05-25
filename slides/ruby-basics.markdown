@@ -837,10 +837,10 @@ key?
 ```ruby
 h = { a: 100, b: 200 }
 
-h.key?('a')
+h.key?(:a)
 # => true
 
-h.key?('z')
+h.key?(:z)
 # => false
 ```
 
