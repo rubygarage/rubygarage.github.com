@@ -9,12 +9,12 @@ title:  BDD
 
 <!-- .element: style="display: block; text-align: left" -->
 
-* User stories
-* Domain-Driven Development
-* Extreme Programming
-  * Test-Driven Development
-  * Acceptance Driven Test Planning
-  * Continuous Integration
+> * User stories
+> * Domain-Driven Development
+> * Extreme Programming
+>   * Test-Driven Development
+>   * Acceptance Driven Test Planning
+>   * Continuous Integration
 
 <!-- .element: style="display: block" -->
 
@@ -43,25 +43,28 @@ title:  BDD
 ## Create gemset
 
 ```bash
-$ rvm use 2.0.0-p247@bookstore --create
-Using /Users/sparrow/.rvm/gems/ruby-2.0.0-p247 with gemset bookstore
+rvm use 2.3.4@bookstore --create
+Using /Users/sparrow/.rvm/gems/ruby-2.3.4 with gemset bookstore
 ```
+<!-- .element: class="command-line" data-output="2" -->
 
 --
 
 ## Install Rails
 
 ```bash
-$ gem install --no-rdoc --no-ri rails
+gem install --no-rdoc --no-ri rails
 ```
+<!-- .element: class="command-line" -->
 
 --
 
 ## Create Application
 
 ```bash
-$ rails new bookstore --skip-bundle -T
+rails new bookstore --skip-bundle -T
 ```
+<!-- .element: class="command-line" -->
 
 --
 
@@ -84,8 +87,9 @@ end
 ```
 
 ```bash
-$ bundle install
+bundle install
 ```
+<!-- .element: class="command-line" -->
 
 ---
 
@@ -96,11 +100,12 @@ $ bundle install
 ## Init RSpec
 
 ```bash
-$ rails g rspec:install
+rails g rspec:install
 create  .rspec
   create  spec
   create  spec/spec_helper.rb
 ```
+<!-- .element: class="command-line" data-output="2-4"-->
 
 config/application.rb <!-- .element: class="filename" -->
 ```ruby
@@ -158,8 +163,6 @@ Test your app with [Capybara](http://jnicklas.github.io/capybara/)
 specs/features/registration_spec.rb <!-- .element: class="filename" -->
 
 ```ruby
-require 'features/features_spec_helper'
-
 feature 'Registration' do
   scenario 'Visitor registers successfully via register form' do
     visit register_path
@@ -176,14 +179,15 @@ end
 ```
 
 ```bash
-$ rspec spec/features/registration_spec.rb
-  NameError:
-   undefined local variable or method 'register_path' for #<RSpec::Core::ExampleGroup::Nested_1:0x007fa4b2fb9538>
+rspec spec/features/registration_spec.rb
+NameError:
+  undefined local variable or method 'register_path' for #<RSpec::Core::ExampleGroup::Nested_1:0x007fa4b2fb9538>
 ```
+<!-- .element: class="command-line" data-output="2-3"-->
 
 ---
 
-# Fix 'register_path' error
+# Fix `register_path` error
 
 config/routes.rb <!-- .element: class="filename" -->
 ```ruby
@@ -193,10 +197,11 @@ end
 ```
 
 ```bash
-$ rspec spec/features/registration_spec.rb
-  ActionController::RoutingError:
-    uninitialized constant UsersController
+rspec spec/features/registration_spec.rb
+ActionController::RoutingError:
+  uninitialized constant UsersController
 ```
+<!-- .element: class="command-line" data-output="2-3"-->
 
 ---
 
@@ -209,10 +214,11 @@ end
 ```
 
 ```bash
-$ rspec spec/features/registration_spec.rb
-  AbstractController::ActionNotFound:
-   The action 'new' could not be found for UsersController
+rspec spec/features/registration_spec.rb
+AbstractController::ActionNotFound:
+  The action 'new' could not be found for UsersController
 ```
+<!-- .element: class="command-line" data-output="2-3"-->
 
 ---
 
@@ -227,9 +233,10 @@ end
 ```
 
 ```bash
-$ rspec spec/features/registration_spec.rb
-  Missing template users/new, application/new
+rspec spec/features/registration_spec.rb
+Missing template users/new, application/new
 ```
+<!-- .element: class="command-line" data-output="2"-->
 
 ---
 
@@ -238,10 +245,11 @@ $ rspec spec/features/registration_spec.rb
 `app/views/users/new.html.erb` created
 
 ```bash
-$ rspec spec/features/registration_spec.rb
-  Capybara::ElementNotFound:
-    Unable to find css "#new_user"
+rspec spec/features/registration_spec.rb
+Capybara::ElementNotFound:
+  Unable to find css "#new_user"
 ```
+<!-- .element: class="command-line" data-output="2-3"-->
 
 ---
 
@@ -249,8 +257,6 @@ $ rspec spec/features/registration_spec.rb
 
 spec/views/users/new_spec.rb <!-- .element: class="filename" -->
 ```ruby
-require 'spec_helper'
-
 describe 'users/new.html.erb' do
   it 'has new_user form' do
     user = mock_model("User").as_new_record
@@ -264,10 +270,11 @@ end
 --
 
 ```bash
-$ rspec spec/views/users/new_spec.rb
+rspec spec/views/users/new_spec.rb
 Capybara::ExpectationNotMet:
   expected to find css "form#new_user" but there were no matches
 ```
+<!-- .element: class="command-line" data-output="2-3"-->
 
 app/views/users/new.html.erb <!-- .element: class="filename" -->
 ```html
@@ -276,10 +283,11 @@ app/views/users/new.html.erb <!-- .element: class="filename" -->
 ```
 
 ```bash
-$ rspec spec/views/users/new_spec.rb
+rspec spec/views/users/new_spec.rb
 ActionView::Template::Error:
    undefined method 'users_path' for #<#<Class:0x007f91f5982a68>:0x007f91f5a36e78>
 ```
+<!-- .element: class="command-line" data-output="2-3"-->
 
 config/routes.rb <!-- .element: class="filename" -->
 ```ruby
@@ -290,9 +298,10 @@ end
 ```
 
 ```bash
-$ rspec spec/views/users/new_spec.rb
+rspec spec/views/users/new_spec.rb
 1 example, 0 failures
 ```
+<!-- .element: class="command-line" data-output="2-3"-->
 
 ---
 
@@ -301,8 +310,6 @@ $ rspec spec/views/users/new_spec.rb
 spec/views/users/new_spec.rb <!-- .element: class="filename" -->
 
 ```ruby
-require 'spec_helper'
-
 describe 'users/new.html.erb' do
   let(:user) { mock_model("User").as_new_record }
 
@@ -342,17 +349,21 @@ app/views/users/new.html.erb <!-- .element: class="filename" -->
 ```
 
 Run views
+
 ```bash
-$ rspec spec/views/users/new_spec.rb
+rspec spec/views/users/new_spec.rb
 4 examples, 0 failures
 ```
+<!-- .element: class="command-line" data-output="2"-->
 
 Run features
+
 ```bash
-$ rspec spec/features/registration_spec.rb
+rspec spec/features/registration_spec.rb
 ActionView::Template::Error:
   First argument in form cannot contain nil or be empty
 ```
+<!-- .element: class="command-line" data-output="2-3"-->
 
 ---
 
@@ -360,8 +371,6 @@ ActionView::Template::Error:
 
 spec/controllers/users_controller_spec.rb <!-- .element: class="filename" -->
 ```ruby
-require 'spec_helper'
-
 describe UsersController do
   describe 'GET new' do
     let(:user) { mock_model("User").as_new_record }
@@ -394,10 +403,11 @@ end
 ```
 
 ```bash
-$ rspec spec/controllers/users_controller_spec.rb
+rspec spec/controllers/users_controller_spec.rb
 NameError:
   uninitialized constant User
 ```
+<!-- .element: class="command-line" data-output="2-3"-->
 
 ---
 
@@ -405,8 +415,6 @@ NameError:
 
 spec/models/user_spec.rb <!-- .element: class="filename" -->
 ```ruby
-require 'spec_helper'
-
 describe User do
   let(:user) { User.new }
 
@@ -417,16 +425,17 @@ end
 ```
 
 ```bash
-$ rails g model User email:string password:string
-  invoke  active_record
-  create    db/migrate/20140121123310_create_users.rb
-  create    app/models/user.rb
-  invoke    rspec
-  conflict  spec/models/user_spec.rb
-  skip      spec/models/user_spec.rb
+rails g model User email:string password:string
+invoke  active_record
+create    db/migrate/20140121123310_create_users.rb
+create    app/models/user.rb
+invoke    rspec
+conflict  spec/models/user_spec.rb
+skip      spec/models/user_spec.rb
 
-$ rake db:migrage
+rake db:migrage
 ```
+<!-- .element: class="command-line" data-output="2-8"-->
 
 --
 
@@ -439,16 +448,17 @@ end
 ```
 
 ```bash
-$ rspec spec/models/user_spec.rb
+rspec spec/models/user_spec.rb
 3 examples, 0 failures
 
-$ rspec spec/controllers/users_controller_spec.rb
+rspec spec/controllers/users_controller_spec.rb
 2 examples, 0 failures
 
-$ rspec spec/features/registration_spec.rb
+rspec spec/features/registration_spec.rb
 AbstractController::ActionNotFound:
   The action 'create' could not be found for UsersController
 ```
+<!-- .element: class="command-line" data-output="2-3,5-6,8-9"-->
 
 ---
 
@@ -458,8 +468,6 @@ AbstractController::ActionNotFound:
 
 spec/controllers/users_controller_spec.rb <!-- .element: class="filename" -->
 ```ruby
-require 'spec_helper'
-
 describe UsersController do
 
   # ...
@@ -527,10 +535,11 @@ end
 ```
 
 ```bash
-$ rspec spec/controllers/users_controller_spec.rb
+rspec spec/controllers/users_controller_spec.rb
 NameError:
   undefined local variable or method 'root_url' for #<UsersController:0x007fbacc9f1918>
 ```
+<!-- .element: class="command-line" data-output="2-3"-->
 
 ---
 
@@ -557,13 +566,14 @@ end
 
 `app/views/pages/home.html.erb` created
 ```bash
-$ rspec spec/controllers/users_controller_spec.rb
+rspec spec/controllers/users_controller_spec.rb
 6 examples, 0 failures
 
-$ rspec spec/features/registration_spec.rb
+rspec spec/features/registration_spec.rb
 Failure/Error: expect(page).to have_content 'Sign out'
   expected to find text "Sign out" in ""
 ```
+<!-- .element: class="command-line" data-output="2-3,5-6"-->
 
 ---
 
@@ -585,10 +595,11 @@ app/views/lououts/application.html.erb <!-- .element: class="filename" -->
 ```
 
 ```bash$
-$ rspec spec/features/registration_spec.rb
-    Failure/Error: expect(page).to have_content 'You registered'
-      expected to find text "You registered" in "Sign out"
+rspec spec/features/registration_spec.rb
+Failure/Error: expect(page).to have_content 'You registered'
+  expected to find text "You registered" in "Sign out"
 ```
+<!-- .element: class="command-line" data-output="2-3"-->
 
 ---
 
@@ -608,9 +619,10 @@ app/views/lououts/application.html.erb <!-- .element: class="filename" -->
 ```
 
 ```bash
-$ rspec spec/features/registration_spec.rb
+rspec spec/features/registration_spec.rb
 1 example, 0 failures
 ```
+<!-- .element: class="command-line" data-output="2"-->
 
 ---
 
