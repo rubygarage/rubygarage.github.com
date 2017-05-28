@@ -25,3 +25,5 @@ title: React
 - [State and Lifecycle](slides/state)
   <br>
   <small>How to handle state in React way</small>
+
+- [React Patterns](slides/patterns)
