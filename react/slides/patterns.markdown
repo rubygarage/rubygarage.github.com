@@ -804,4 +804,664 @@ read about using `state hoisting` to move new state up the component tree.*
 
 ---
 
+# Component Organization
+
+--
+
+* class definition
+  * constructor
+    * event handlers
+  * 'component' lifecycle events
+  * getters
+  * render
+* defaultProps
+* proptypes
+
+--
+
+```javascript
+class Person extends React.Component {
+  constructor (props) {
+    super(props);
+
+    this.state = { smiling: false };
+
+    this.handleClick = () => {
+      this.setState({smiling: !this.state.smiling});
+    };
+  }
+
+  componentWillMount () {
+    // add event listeners (Flux Store, WebSocket, document, etc.)
+  }
+
+  componentDidMount () {
+    // React.getDOMNode()
+  }
+
+  componentWillUnmount () {
+    // remove event listeners (Flux Store, WebSocket, document, etc.)
+  }
+
+  get smilingMessage () {
+    return (this.state.smiling) ? "is smiling" : "";
+  }
+
+  render () {
+    return (
+      <div onClick={this.handleClick}>
+        {this.props.name} {this.smilingMessage}
+      </div>
+    );
+  }
+}
+
+Person.defaultProps = {
+  name: 'Guest'
+};
+
+Person.propTypes = {
+  name: React.PropTypes.string
+};
+```
+
+---
+
+# Formatting Props
+
+--
+
+Wrap props on newlines for exactly 2 or more.
+
+bad <!-- .element: class="filename" style="background-color: red" -->
+```html
+<Person
+ firstName="Michael" />
+ ```
+
+good <!-- .element: class="filename" style="background-color: green" -->
+ ```html
+<Person firstName="Michael" />
+```
+
+bad <!-- .element: class="filename" style="background-color: red" -->
+```html
+<Person firstName="Michael" lastName="Chan" occupation="Designer" favoriteFood="Drunken Noodles" />
+```
+
+good <!-- .element: class="filename" style="background-color: green" -->
+```html
+<Person
+ firstName="Michael"
+ lastName="Chan"
+ occupation="Designer"
+ favoriteFood="Drunken Noodles" />
+```
+
+---
+
+# Computed Props
+
+--
+
+Use getters to name computed properties.
+
+bad <!-- .element: class="filename" style="background-color: red" -->
+```javascript
+  firstAndLastName () {
+    return `${this.props.firstName} ${this.props.lastname}`;
+  }
+```
+
+good <!-- .element: class="filename" style="background-color: green" -->
+```javascript
+  get fullName () {
+    return `${this.props.firstName} ${this.props.lastname}`;
+  }
+```
+
+---
+
+# Compound State
+
+--
+
+Prefix compound state getters with a verb for readability.
+
+bad <!-- .element: class="filename" style="background-color: red" -->
+```javascript
+happyAndKnowsIt () {
+  return this.state.happy && this.state.knowsIt;
+}
+```
+
+good <!-- .element: class="filename" style="background-color: green" -->
+```javascript
+get isHappyAndKnowsIt () {
+  return this.state.happy && this.state.knowsIt;
+}
+```
+
+These methods *MUST* return a `boolean` value.
+
+---
+
+# Prefer Ternary to Sub-render
+
+--
+
+Keep logic inside the `render` function.
+
+bad <!-- .element: class="filename" style="background-color: red" -->
+```javascript
+renderSmilingStatement () {
+  return <strong>{(this.state.isSmiling) ? " is smiling." : ""}</strong>;
+},
+
+render () {
+  return <div>{this.props.name}{this.renderSmilingStatement()}</div>;
+}
+```
+
+good <!-- .element: class="filename" style="background-color: green" -->
+```javascript
+render () {
+  return (
+    <div>
+      {this.props.name}
+      {(this.state.smiling)
+        ? <span>is smiling</span>
+        : null
+      }
+    </div>
+  );
+}
+```
+
+---
+
+# View Components
+
+--
+
+Compose components into views. Don't create one-off components that merge layout
+and domain components.
+
+bad <!-- .element: class="filename" style="background-color: red" -->
+```javascript
+class PeopleWrappedInBSRow extends React.Component {
+  render () {
+    return (
+      <div className="row">
+        <People people={this.state.people} />
+      </div>
+    );
+  }
+}
+```
+
+good <!-- .element: class="filename" style="background-color: green" -->
+```javascript
+class BSRow extends React.Component {
+  render () {
+    return <div className="row">{this.props.children}</div>;
+  }
+}
+
+class SomeView extends React.Component {
+  render () {
+    return (
+      <BSRow>
+        <People people={this.state.people} />
+      </BSRow>
+    );
+  }
+}
+```
+
+---
+
+# Container Components
+
+--
+
+> A container does data fetching and then renders its corresponding
+> sub-component. That's it. &mdash; Jason Bonta
+
+--
+
+bad <!-- .element: class="filename" style="background-color: red" -->
+```javascript
+// CommentList.js
+
+class CommentList extends React.Component {
+  getInitialState () {
+    return { comments: [] };
+  }
+
+  componentDidMount () {
+    $.ajax({
+      url: "/my-comments.json",
+      dataType: 'json',
+      success: function(comments) {
+        this.setState({comments: comments});
+      }.bind(this)
+    });
+  }
+
+  render () {
+    return (
+      <ul>
+        {this.state.comments.map(({body, author}) => {
+          return <li>{body}—{author}</li>;
+        })}
+      </ul>
+    );
+  }
+}
+```
+
+--
+
+good <!-- .element: class="filename" style="background-color: green" -->
+```javascript
+// CommentList.js
+
+class CommentList extends React.Component {
+  render() {
+    return (
+      <ul>
+        {this.props.comments.map(({body, author}) => {
+          return <li>{body}—{author}</li>;
+        })}
+      </ul>
+    );
+  }
+}
+```
+
+--
+
+good <!-- .element: class="filename" style="background-color: green" -->
+```javascript
+// CommentListContainer.js
+
+class CommentListContainer extends React.Component {
+  getInitialState () {
+    return { comments: [] }
+  }
+
+  componentDidMount () {
+    $.ajax({
+      url: "/my-comments.json",
+      dataType: 'json',
+      success: function(comments) {
+        this.setState({comments: comments});
+      }.bind(this)
+    });
+  }
+
+  render () {
+    return <CommentList comments={this.state.comments} />;
+  }
+}
+```
+
+[Read more](https://medium.com/@learnreact/container-components-c0e67432e005)  
+[Watch more](https://www.youtube.com/watch?v=KYzlpRvWZ6c&t=1351)
+
+---
+
+# Cached State in render
+
+--
+
+Do not keep state in `render`
+
+bad <!-- .element: class="filename" style="background-color: red" -->
+```javascript
+render () {
+  let name = `Mrs. ${this.props.name}`;
+
+  return <div>{name}</div>;
+}
+```
+
+good <!-- .element: class="filename" style="background-color: green" -->
+```javascript
+render () {
+  return <div>{`Mrs. ${this.props.name}`}</div>;
+}
+```
+
+best <!-- .element: class="filename" style="background-color: green" -->
+```javascript
+get fancyName () {
+  return `Mrs. ${this.props.name}`;
+}
+
+render () {
+  return <div>{this.fancyName}</div>;
+}
+```
+
+*This is mostly stylistic and keeps diffs nice. I doubt that there's a significant perf reason to do this.*
+
+---
+
+# Compound Conditions
+
+--
+
+Don't put compound conditions in `render`.
+
+bad <!-- .element: class="filename" style="background-color: red" -->
+```javascript
+render () {
+  return <div>{if (this.state.happy && this.state.knowsIt) { return "Clapping hands" } }</div>;
+}
+```
+
+better <!-- .element: class="filename" style="background-color: green" -->
+```javascript
+get isTotesHappy() {
+  return this.state.happy && this.state.knowsIt;
+},
+
+render() {
+  return <div>{(this.isTotesHappy) && "Clapping hands"}</div>;
+}
+```
+
+The best solution for this would use a `Container component` to manage state and pass new state down as props.
+
+---
+
+# Existence Checking
+
+--
+
+Do not check existence of props at the root of a component.
+Components should not have two possible return types.
+
+bad <!-- .element: class="filename" style="background-color: red" -->
+```javascript
+const Person = props => {
+  if (this.props.firstName)
+    return <div>{this.props.firstName}</div>
+  else
+    return null
+}
+```
+
+--
+
+Components should *always* render. Consider adding `defaultProps`, where a sensible default is appropriate.
+
+better <!-- .element: class="filename" style="background-color: green" -->
+```javascript
+const Person = props =>
+  <div>{this.props.firstName}</div>
+
+Person.defaultProps = {
+  firstName: "Guest"
+}
+```
+
+If a component should be conditionally rendered, handle that in the owner component.
+
+best <!-- .element: class="filename" style="background-color: green" -->
+```javascript
+const TheOwnerComponent = props =>
+  <div>
+    {props.person && <Person {...props.person} />}
+  </div>
+```
+
+This is only where objects or arrays are used. Use PropTypes.shape to clarify
+the types of nested data expected by the component.
+
+---
+
+# Setting State from Props
+
+--
+
+Do not set state from props without obvious intent.
+
+bad <!-- .element: class="filename" style="background-color: red" -->
+```javascript
+getInitialState () {
+  return {
+    items: this.props.items
+  };
+}
+```
+
+good <!-- .element: class="filename" style="background-color: green" -->
+```javascript
+getInitialState () {
+  return {
+    items: this.props.initialItems
+  };
+}
+```
+
+---
+
+# Naming Handler Methods
+
+--
+
+Name the handler methods after their triggering event.
+
+bad <!-- .element: class="filename" style="background-color: red" -->
+```javascript
+punchABadger () { /*...*/ },
+
+render () {
+  return <div onClick={this.punchABadger} />;
+}
+```
+
+good <!-- .element: class="filename" style="background-color: green" -->
+```javascript
+handleClick () { /*...*/ },
+
+render () {
+  return <div onClick={this.handleClick} />;
+}
+```
+
+Handler names should:
+
+- begin with `handle`
+- end with the name of the event they handle (eg, `Click`, `Change`)
+- be present-tense
+
+If you need to disambiguate handlers, add additional information between
+`handle` and the event name. For example, you can distinguish between `onChange`
+handlers: `handleNameChange` and `handleAgeChange`. When you do this, ask
+yourself if you should be creating a new component.
+
+---
+
+# Naming Events
+
+--
+
+Use custom event names for ownee events.
+
+```javascript
+class Owner extends React.Component {
+  handleDelete () {
+    // handle Ownee's onDelete event
+  }
+
+  render () {
+    return <Ownee onDelete={this.handleDelete} />;
+  }
+}
+
+class Ownee extends React.Component {
+  render () {
+    return <div onChange={this.props.onDelete} />;
+  }
+}
+
+Ownee.propTypes = {
+  onDelete: React.PropTypes.func.isRequired
+};
+```
+
+---
+
+# Using PropTypes
+
+--
+
+Use PropTypes to communicate expectations and log meaningful warnings.
+
+```javascript
+MyValidatedComponent.propTypes = {
+  name: React.PropTypes.string
+};
+```
+`MyValidatedComponent` will log a warning if it receives `name` of a type other than `string`.
+
+
+```html
+<Person name=1337 />
+// Warning: Invalid prop `name` of type `number` supplied to `MyValidatedComponent`, expected `string`.
+```
+
+Components may also require `props`.
+
+```javascript
+MyValidatedComponent.propTypes = {
+  name: React.PropTypes.string.isRequired
+}
+```
+
+This component will now validate the presence of name.
+
+```html
+<Person />
+// Warning: Required prop `name` was not specified in `Person`
+```
+
+---
+
+# Using Entities
+
+--
+
+Use React's `String.fromCharCode()` for special characters.
+
+bad <!-- .element: class="filename" style="background-color: red" -->
+```javascript
+<div>PiCO · Mascot</div>
+```
+
+nope <!-- .element: class="filename" style="background-color: red" -->
+```javascript
+<div>PiCO &middot; Mascot</div>
+```
+
+good <!-- .element: class="filename" style="background-color: green" -->
+```javascript
+<div>{'PiCO ' + String.fromCharCode(183) + ' Mascot'}</div>
+```
+
+better <!-- .element: class="filename" style="background-color: green" -->
+```javascript
+<div>{`PiCO ${String.fromCharCode(183)} Mascot`}</div>
+```
+
+---
+
+# Tables
+
+--
+
+The browser thinks you're dumb. But React doesn't. Always use `tbody` in
+`table` components.
+
+bad <!-- .element: class="filename" style="background-color: red" -->
+```javascript
+render () {
+  return (
+    <table>
+      <tr>...</tr>
+    </table>
+  );
+}
+```
+
+good <!-- .element: class="filename" style="background-color: green" -->
+```javascript
+render () {
+  return (
+    <table>
+      <tbody>
+        <tr>...</tr>
+      </tbody>
+    </table>
+  );
+}
+```
+
+The browser is going to insert `tbody` if you forget. React will continue to
+insert new `tr`s into the `table` and confuse the heck out of you. Always use
+`tbody`.
+
+---
+
+# classNames
+
+--
+
+Use [classNames](https://www.npmjs.com/package/classnames) to manage conditional classes.
+
+bad <!-- .element: class="filename" style="background-color: red" -->
+```javascript
+get classes () {
+  let classes = ['MyComponent'];
+
+  if (this.state.active) {
+    classes.push('MyComponent--active');
+  }
+
+  return classes.join(' ');
+}
+
+render () {
+  return <div className={this.classes} />;
+}
+```
+
+good <!-- .element: class="filename" style="background-color: green" -->
+```javascript
+render () {
+  let classes = {
+    'MyComponent': true,
+    'MyComponent--active': this.state.active
+  };
+
+  return <div className={classnames(classes)} />;
+}
+```
+
+Read: [Class Name Manipulation](https://github.com/JedWatson/classnames/blob/master/README.md)
+
+---
+
+## References
+
+https://github.com/chantastic/reactpatterns.com
+
+https://github.com/planningcenter/react-patterns
+
+---
+
 # The End
