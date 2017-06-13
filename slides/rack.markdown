@@ -24,7 +24,7 @@ hash as a parameter, and returning an Array with three elements:
 Create gemset
 
 ```bash
-$ rvm use ruby-2.1.2@rack --create
+$ rvm use ruby-2.4.1@rack --create
 ```
 
 Install Rack
@@ -49,7 +49,7 @@ config.ru <!-- .element: class="filename" -->
 ```ruby
 class Racker
   def call(env)
-    [200, {'Content-Type' => 'text/plain'}, ['Something happens!']]
+    [200, { 'Content-Type' => 'text/plain' }, ['Something happens!']]
   end
 end
 
@@ -64,6 +64,21 @@ $ rackup
 $ curl http://localhost:9292
 Something happens!
 ```
+
+---
+
+# Rackup
+
+`rackup` is a useful tool for running Rack applications,
+which uses the `Rack::Builder` DSL to configure middleware and build up applications easily.
+
+Rackup automatically figures out the environment it is run in,
+and runs your application as FastCGI, CGI, or standalone with `Puma`, `Thin` or `WEBrick` from the same configuration.
+
+To `rackup` the application we need need to create a file with `.ru` file extension,
+then drop our simple application inside it and use the rackup command line tool to start it.
+
+Rack::Builder - https://github.com/rack/rack/blob/master/lib/rack/builder.rb
 
 ---
 
@@ -306,7 +321,7 @@ config.ru <!-- .element: class="filename" -->
 ```ruby
 require './lib/racker'
 
-use Rack::Static, :urls => ['/stylesheets'], :root => 'public'
+use Rack::Static, urls: ['/stylesheets'], root: 'public'
 run Racker
 ```
 
@@ -387,11 +402,9 @@ a {
 
 Url to Rack::Static - https://github.com/rack/rack/blob/master/lib/rack/static.rb
 
-Url to Rack::Builder - https://github.com/rack/rack/blob/master/lib/rack/builder.rb
-
 ---
 
-## In to Rails
+## Into Rails
 
 config.ru <!-- .element: class="filename" -->
 ```ruby
@@ -457,33 +470,32 @@ require 'bundler/setup' if File.exist?(ENV['BUNDLE_GEMFILE'])
 
 ```bash
 $ rake middleware
+
 use Rack::Sendfile
 use ActionDispatch::Static
-use Rack::Lock
-use #<ActiveSupport::Cache::Strategy::LocalCache::Middleware:0x007fcffbc69418>
+use ActionDispatch::Executor
+use ActiveSupport::Cache::Strategy::LocalCache::Middleware
 use Rack::Runtime
 use Rack::MethodOverride
 use ActionDispatch::RequestId
 use Rails::Rack::Logger
 use ActionDispatch::ShowExceptions
+use WebConsole::Middleware
 use ActionDispatch::DebugExceptions
 use ActionDispatch::RemoteIp
 use ActionDispatch::Reloader
 use ActionDispatch::Callbacks
 use ActiveRecord::Migration::CheckPending
-use ActiveRecord::ConnectionAdapters::ConnectionManagement
-use ActiveRecord::QueryCache
 use ActionDispatch::Cookies
 use ActionDispatch::Session::CookieStore
 use ActionDispatch::Flash
-use ActionDispatch::ParamsParser
 use Rack::Head
 use Rack::ConditionalGet
 use Rack::ETag
 run TestRailsRack::Application.routes
 ```
 
-Url to Rails on Rack guides - http://guides.rubyonrails.org/rails_on_rack.html
+Rails on Rack guides - http://guides.rubyonrails.org/rails_on_rack.html
 
 ---
 
