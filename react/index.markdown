@@ -10,6 +10,8 @@ title: React
 
 ---
 
+- [ECMAScript 6](slides/es6)
+
 - [Overview](slides/overview)
   <br>
   <small>Why it is good and what problems it solves</small>
