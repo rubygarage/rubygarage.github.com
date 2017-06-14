@@ -46,7 +46,7 @@ $ cd racker/
 
 ---
 
-# Config.ru file
+# Rack Application
 
 config.ru <!-- .element: class="filename" -->
 
@@ -79,10 +79,87 @@ which uses the `Rack::Builder` DSL to configure middleware and build up applicat
 Rackup automatically figures out the environment it is run in,
 and runs your application as FastCGI, CGI, or standalone with `Puma`, `Thin` or `WEBrick` from the same configuration.
 
-To `rackup` the application we need need to create a file with `.ru` file extension,
+To `rackup` the application we need to create a file with `.ru` file extension,
 then drop our simple application inside it and use the rackup command line tool to start it.
 
+rackup - https://github.com/rack/rack/blob/master/bin/rackup
+
 Rack::Builder - https://github.com/rack/rack/blob/master/lib/rack/builder.rb
+
+---
+
+# Accepted `env` hash
+
+{"GATEWAY_INTERFACE"=>"CGI/1.1", "PATH_INFO"=>"/", "QUERY_STRING"=>"", "REMOTE_ADDR"=>"::1", "REMOTE_HOST"=>"::1", "REQUEST_METHOD"=>"GET", "REQUEST_URI"=>"http://localhost:9292/", "SCRIPT_NAME"=>"", "SERVER_NAME"=>"localhost", "SERVER_PORT"=>"9292", "SERVER_PROTOCOL"=>"HTTP/1.1", "SERVER_SOFTWARE"=>"WEBrick/1.3.1 (Ruby/2.3.2/2016-11-15)", "HTTP_HOST"=>"localhost:9292", "HTTP_CONNECTION"=>"keep-alive", "HTTP_UPGRADE_INSECURE_REQUESTS"=>"1", "HTTP_USER_AGENT"=>"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36", "HTTP_ACCEPT"=>"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8", "HTTP_ACCEPT_ENCODING"=>"gzip, deflate, sdch, br", "HTTP_ACCEPT_LANGUAGE"=>"en-US,en;q=0.8,ru;q=0.6", "rack.version"=>[1, 3], "rack.multithread"=>true, "REQUEST_PATH"=>"/", "rack.tempfiles"=>[]}
+
+---
+
+# Rack Middleware
+
+Each middleware is responsible of calling the next.
+
+lib/custom_header.rb <!-- .element: class="filename" -->
+```ruby
+module Rack
+  class CustomHeader
+    def initialize(app)
+      @app = app
+    end
+
+    def call(env)
+      status, headers, body = @app.call(env)
+
+      headers['X-Custom-Header'] = 'content'
+
+      [status, headers, body]
+    end
+  end
+end
+```
+
+--
+
+lib/welcome.rb <!-- .element: class="filename" -->
+```ruby
+module Rack
+  class Welcome
+    def initialize(app)
+      @app = app
+    end
+
+    def call(env)
+      req = Rack::Request.new(env).path
+
+      if req == '/welcome'
+        [200, { 'Content-Type' => 'text/plain' }, ['Welcome!']]
+      else
+        @app.call(env)
+      end
+    end
+  end
+end
+```
+
+--
+
+config.ru <!-- .element: class="filename" -->
+
+```ruby
+require './lib/custom_header'
+require './lib/welcome'
+
+app = Rack::Builder.new do
+  use Rack::Welcome
+  use Rack::CustomHeader
+  run proc { |env| [200, { 'Content-Type' => 'text/plain' }, ['Hello!']] }
+end
+
+run app
+```
+
+```bash
+$ rackup
+```
 
 ---
 
@@ -129,7 +206,9 @@ class Racker
   def call(env)
     Rack::Response.new(render('index.html.erb'))
   end
-
+  
+  private
+  
   def render(template)
     path = File.expand_path("../views/#{template}", __FILE__)
     ERB.new(File.read(path)).result(binding)
@@ -192,7 +271,9 @@ class Racker
     else Rack::Response.new('Not Found', 404)
     end
   end
-
+  
+  private
+  
   def render(template)
     path = File.expand_path("../views/#{template}", __FILE__)
     ERB.new(File.read(path)).result(binding)
@@ -264,7 +345,7 @@ class Racker
     else Rack::Response.new('Not Found', 404)
     end
   end
-
+  
   def render(template)
     path = File.expand_path("../views/#{template}", __FILE__)
     ERB.new(File.read(path)).result(binding)
