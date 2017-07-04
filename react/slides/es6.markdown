@@ -3,18 +3,56 @@ layout: slide
 title:  ES6
 ---
 
-# Constants
+# Variables and Scoping
 
 --
 
-## Constants
+# let
+let works similarly to var, but the variable it declares is block-scoped
+\- only exists within the current block.
 
-Support for constants (also known as `immutable variables`), i.e., variables which cannot be re-assigned new content. Notice: this only makes the variable itself immutable, not its assigned content (for instance, in case the content is an object, this means the object itself can still be altered).
+ECMAScript 6 <!-- .element: class="filename" -->
+```javascript
+function order(x, y) {
+    if (x > y) {
+        let tmp = x;
+        x = y;
+        y = tmp;
+    }
+
+    console.log(tmp); // ReferenceError: tmp is not defined
+
+    return [x, y];
+}
+```
+
+ECMAScript 5 <!-- .element: class="filename" -->
+```javascript
+function order(x, y) {
+    if (x > y) {
+        var tmp = x;
+        x = y;
+        y = tmp;
+    }
+
+    console.log(tmp); // undefined
+    
+    return [x, y];
+}
+```
+--
+
+# const
+
+Variables which cannot be re-assigned new content. 
+<br />
+Notice: this only makes the variable itself immutable, 
+not its assigned content.
 
 ECMAScript 6 <!-- .element: class="filename" -->
 ```javascript
 const PI = 3.141593
-PI > 3.0
+PI = 2 // TypeError: Assignment to constant variable.
 ```
 
 ECMAScript 5 <!-- .element: class="filename" -->
@@ -27,18 +65,15 @@ Object.defineProperty(typeof global === "object" ? global : window, "PI", {
     writable:     false,
     configurable: false
 })
-PI > 3.0;
+global.PI = 2
+console.log(global.PI) // 3.141593
 ```
-
----
-
-# Scoping
 
 --
 
 ## Block-Scoped Variables
 
-Block-scoped variables (and constants) without hoisting.
+Variables declared via let and const are not hoisting and block scoped.
 
 ECMAScript 6 <!-- .element: class="filename" -->
 ```javascript
@@ -125,26 +160,6 @@ ECMAScript 5 <!-- .element: class="filename" -->
 
 --
 
-## Expression Bodies
-
-More expressive closure syntax.
-
-ECMAScript 6 <!-- .element: class="filename" -->
-```javascript
-odds  = evens.map(v => v + 1)
-pairs = evens.map(v => ({ even: v, odd: v + 1 }))
-nums  = evens.map((v, i) => v + i)
-```
-
-ECMAScript 5 <!-- .element: class="filename" -->
-```javascript
-odds  = evens.map(function (v) { return v + 1; });
-pairs = evens.map(function (v) { return { even: v, odd: v + 1 }; });
-nums  = evens.map(function (v, i) { return v + i; });
-```
-
---
-
 ## Statement Bodies
 
 More expressive closure syntax.
@@ -163,6 +178,25 @@ nums.forEach(function (v) {
    if (v % 5 === 0)
        fives.push(v);
 });
+```
+--
+
+## Expression Bodies
+
+More expressive closure syntax.
+
+ECMAScript 6 <!-- .element: class="filename" -->
+```javascript
+odds  = evens.map(v => v + 1)
+pairs = evens.map(v => ({ even: v, odd: v + 1 }))
+nums  = evens.map((v, i) => v + i)
+```
+
+ECMAScript 5 <!-- .element: class="filename" -->
+```javascript
+odds  = evens.map(function (v) { return v + 1; });
+pairs = evens.map(function (v) { return { even: v, odd: v + 1 }; });
+nums  = evens.map(function (v, i) { return v + i; });
 ```
 
 --
@@ -316,32 +350,66 @@ Flexible expression interpolation for arbitrary methods.
 
 ECMAScript 6 <!-- .element: class="filename" -->
 ```javascript
-get`http://example.com/foo?bar=${bar + baz}&quux=${quux}`
+function highlight(strings, ...interpolations) {
+  const highlighted = interpolations.map((value) =>
+    `<span class="highlighted">${value}</span>`
+  );
+
+  return strings.map((str, index) =>
+    `${str}${highlighted[index] ? highlighted[index] : ''}`
+  ).join('');
+}
+
+const user = {
+  name: 'John Travolta',
+  age: 63
+};
+
+highlight`Hi my name is ${user.name} and i'm ${user.age} years old`;
+// Hi my name is <span class="highlighted">John Travolta</span> 
+// and i'm <span class="highlighted">63</span> years old
 ```
+--
 
 ECMAScript 5 <!-- .element: class="filename" -->
 ```javascript
-get([ "http://example.com/foo?bar=", "&quux=", "" ],bar + baz, quux);
+function highlight(strings, interpolations) {
+  const highlighted = interpolations.map(function(value) {
+    return '<span class="highlighted">' + value + '</span>';
+  });
+
+  return strings.map(function(str, index) {
+    return str + (highlighted[index] ? highlighted[index] : '')
+  }).join('');
+}
+
+const user = {
+  name: 'John Travolta',
+  age: 63
+};
+
+highlight(
+  ['Hi my name is ', ' and i\'m ', ' years old'],
+  [user.name, user.age]
+)
+// Hi my name is <span class="highlighted">John Travolta</span> 
+// and i'm <span class="highlighted">63</span> years old
 ```
 
 --
 
 ## Raw String Access
 
-Access the raw template string content (backslashes are not interpreted).
+Access the raw string content (backslashes are not interpreted).
 
 ECMAScript 6 <!-- .element: class="filename" -->
 ```javascript
-function quux (strings, ...values) {
-    strings[0] === "foo\n"
-    strings[1] === "bar"
-    strings.raw[0] === "foo\\n"
-    strings.raw[1] === "bar"
-    values[0] === 42
-}
-quux `foo\n${ 42 }bar`
+`\n`
+// "
+// "
 
-String.raw `foo\n${ 42 }bar` === "foo\\n42bar"
+String.raw `\n`
+// "\n"
 ```
 
 ECMAScript 5 <!-- .element: class="filename" -->
@@ -406,60 +474,45 @@ ECMAScript 5 <!-- .element: class="filename" -->
 
 ## Regular Expression Sticky Matching
 
-Keep the matching position sticky between matches and this way support efficient parsing of arbitrary long input strings, even with an arbitrary number of distinct regular expressions.
+Add ability to change regular expression lastIndex attribute
 
 ECMAScript 6 <!-- .element: class="filename" -->
 ```javascript
-let parser = (input, match) => {
-    for (let pos = 0, lastPos = input.length; pos < lastPos; ) {
-        for (let i = 0; i < match.length; i++) {
-            match[i].pattern.lastIndex = pos
-            let found
-            if ((found = match[i].pattern.exec(input)) !== null) {
-                match[i].action(found)
-                pos = match[i].pattern.lastIndex
-                break
-            }
-        }
-    }
+const input = 'foo bar';
+
+function matcher(regex, input) {
+  return () => {
+    const match = regex.exec(input);
+    const lastIndex = regex.lastIndex;
+
+    return { lastIndex, match };
+  }
 }
 
-let report = (match) => {
-    console.log(JSON.stringify(match))
-}
-parser("Foo 1 Bar 7 Baz 42", [
-    { pattern: /^Foo\s+(\d+)/y, action: (match) => report(match) },
-    { pattern: /^Bar\s+(\d+)/y, action: (match) => report(match) },
-    { pattern: /^Baz\s+(\d+)/y, action: (match) => report(match) },
-    { pattern: /^\s*/y,         action: (match) => {}            }
-])
+const nextGlobal = matcher(/[a-z`]{3}/g, input)
+
+nextGlobal() // { lastIndex: 3, match: ['foo'] }
+nextGlobal() // { lastIndex: 7, match: ['bar'] }
+
+const nextSticky = matcher(/[a-z`]{3}/y, input)
+
+nextSticky() // { lastIndex: 3, match: ['foo'] }
+nextSticky() // { lastIndex: 0, match: [null] }
+
+const regularSticky = /[a-z`]{3}/y
+const anotherNextSticky = matcher(regularSticky, input)
+
+anotherNextSticky() // { lastIndex: 3, match: ['foo'] }
+regularSticky.lastIndex = 4;
+anotherNextSticky() // { lastIndex: 7, match: ['bar'] }
 ```
 
 --
 
 ECMAScript 5 <!-- .element: class="filename" -->
 ```javascript
-var parser = function (input, match) {
-    for (var i, found, inputTmp = input; inputTmp !== ""; ) {
-        for (i = 0; i < match.length; i++) {
-            if ((found = match[i].pattern.exec(inputTmp)) !== null) {
-                match[i].action(found);
-                inputTmp = inputTmp.substr(found[0].length);
-                break;
-            }
-        }
-    }
-}
-
-var report = function (match) {
-    console.log(JSON.stringify(match));
-};
-parser("Foo 1 Bar 7 Baz 42", [
-    { pattern: /^Foo\s+(\d+)/, action: function (match) { report(match); } },
-    { pattern: /^Bar\s+(\d+)/, action: function (match) { report(match); } },
-    { pattern: /^Baz\s+(\d+)/, action: function (match) { report(match); } },
-    { pattern: /^\s*/,         action: function (match) {}                 }
-]);
+// No equivalent in ES5 from performance perspective, 
+// but can be implemented via substr
 ```
 
 ---
