@@ -29,3 +29,7 @@ title: React
   <small>How to handle state in React way</small>
 
 - [React Patterns](slides/patterns)
+
+- [Flux](slides/flux)
+  <br>
+  <small>Application Architecture for Building User Interfaces</small>
