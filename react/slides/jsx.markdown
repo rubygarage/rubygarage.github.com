@@ -9,7 +9,7 @@ JSX is a preprocessor step that adds XML syntax to JavaScript. You can definitel
 
 ```js
 // This funny tag syntax is neither a string nor HTML
-const element = <h1>Hello, world!</h1>;
+const element = <h1>Hello, world!</h1>
 ```
 
 --
@@ -29,24 +29,24 @@ For example, class becomes className in JSX, and tabindex becomes tabIndex.
 
 ```js
 function formatName(user) {
-  return user.firstName + ' ' + user.lastName;
+  return user.firstName + ' ' + user.lastName
 }
 
 const user = {
   firstName: 'Harper',
   lastName: 'Perez'
-};
+}
 
 const element = (
   <h1>
     Hello, {formatName(user)}!
   </h1>
-);
+)
 
 ReactDOM.render(
   element,
   document.getElementById('root')
-);
+)
 ```
 
 ---
@@ -62,9 +62,9 @@ ReactDOM.render(
 ```js
 function getGreeting(user) {
   if (user) {
-    return <h1>Hello, {formatName(user)}!</h1>;
+    return <h1>Hello, {formatName(user)}!</h1>
   }
-  return <h1>Hello, Stranger.</h1>;
+  return <h1>Hello, Stranger.</h1>
 }
 ```
 
@@ -78,10 +78,10 @@ function getGreeting(user) {
 
 ```js
 // You may use quotes to specify string literals as attributes:
-const element = <div tabIndex="0"></div>;
+const element = <div tabIndex="0"></div>
 
 // You may also use curly braces to embed a JavaScript expression in an attribute:
-const element = <img src={user.avatarUrl}></img>;
+const element = <img src={user.avatarUrl}></img>
 ```
 
 ---
@@ -93,9 +93,9 @@ const element = <img src={user.avatarUrl}></img>;
 ## It is safe to embed user input in JSX
 
 ```js
-const title = response.potentiallyMaliciousInput;
+const title = response.potentiallyMaliciousInput
 // This is safe:
-const element = <h1>{title}</h1>;
+const element = <h1>{title}</h1>
 ```
 
 ---
@@ -111,7 +111,7 @@ const element = (
   <h1 className="greeting">
     Hello, world!
   </h1>
-);
+)
 ```
 
 ```js
@@ -119,7 +119,7 @@ const element = React.createElement(
   'h1',
   {className: 'greeting'},
   'Hello, world!'
-);
+)
 ```
 
 ---
@@ -135,12 +135,12 @@ Capitalized types indicate that the JSX tag is referring to a React component. T
 > Since JSX compiles into calls to `React.createElement`, the `React` library must also always be in scope from your JSX code.
 
 ```js
-import React from 'react';
-import CustomButton from './CustomButton';
+import React from 'react'
+import CustomButton from './CustomButton'
 
 function WarningButton() {
-  // return React.createElement(CustomButton, {color: 'red'}, null);
-  return <CustomButton color="red" />;
+  // return React.createElement(CustomButton, {color: 'red'}, null)
+  return <CustomButton color="red" />
 }
 ```
 
@@ -151,16 +151,16 @@ function WarningButton() {
 > You can refer to a React component using dot-notation from within JSX:
 
 ```js
-import React from 'react';
+import React from 'react'
 
 const MyComponents = {
   DatePicker: function DatePicker(props) {
-    return <div>Imagine a {props.color} datepicker here.</div>;
+    return <div>Imagine a {props.color} datepicker here.</div>
   }
 }
 
 function BlueDatePicker() {
-  return <MyComponents.DatePicker color="blue" />;
+  return <MyComponents.DatePicker color="blue" />
 }
 ```
 
@@ -169,32 +169,32 @@ function BlueDatePicker() {
 ## User-Defined Components Must Be Capitalized
 
 ```js
-import React from 'react';
+import React from 'react'
 
 // Wrong! This is a component and should have been capitalized:
 function hello(props) {
   // Correct! This use of <div> is legitimate because div is a valid HTML tag:
-  return <div>Hello {props.toWhat}</div>;
+  return <div>Hello {props.toWhat}</div>
 }
 
 function HelloWorld() {
   // Wrong! React thinks <hello /> is an HTML tag because it's not capitalized:
-  return <hello toWhat="World" />;
+  return <hello toWhat="World" />
 }
 ```
 
 ```js
-import React from 'react';
+import React from 'react'
 
 // Correct! This is a component and should be capitalized:
 function Hello(props) {
   // Correct! This use of <div> is legitimate because div is a valid HTML tag:
-  return <div>Hello {props.toWhat}</div>;
+  return <div>Hello {props.toWhat}</div>
 }
 
 function HelloWorld() {
   // Correct! React knows <Hello /> is a component because it's capitalized.
-  return <Hello toWhat="World" />;
+  return <Hello toWhat="World" />
 }
 ```
 
@@ -203,33 +203,33 @@ function HelloWorld() {
 ## Choosing the Type at Runtime
 
 ```js
-import React from 'react';
-import { PhotoStory, VideoStory } from './stories';
+import React from 'react'
+import { PhotoStory, VideoStory } from './stories'
 
 const components = {
   photo: PhotoStory,
   video: VideoStory
-};
+}
 
 function Story(props) {
   // Wrong! JSX type can't be an expression.
-  return <components[props.storyType] story={props.story} />;
+  return <components[props.storyType] story={props.story} />
 }
 ```
 
 ```js
-import React from 'react';
-import { PhotoStory, VideoStory } from './stories';
+import React from 'react'
+import { PhotoStory, VideoStory } from './stories'
 
 const components = {
   photo: PhotoStory,
   video: VideoStory
-};
+}
 
 function Story(props) {
   // Correct! JSX type can be a capitalized variable.
-  const SpecificStory = components[props.storyType];
-  return <SpecificStory story={props.story} />;
+  const SpecificStory = components[props.storyType]
+  return <SpecificStory story={props.story} />
 }
 ```
 
@@ -251,13 +251,13 @@ function Story(props) {
 
 ```js
 function NumberDescriber(props) {
-  let description;
+  let description
   if (props.number % 2 == 0) {
-    description = <strong>even</strong>;
+    description = <strong>even</strong>
   } else {
-    description = <i>odd</i>;
+    description = <i>odd</i>
   }
-  return <div>{props.number} is an {description} number</div>;
+  return <div>{props.number} is an {description} number</div>
 }
 ```
 
@@ -289,12 +289,12 @@ function NumberDescriber(props) {
 
 ```js
 function App1() {
-  return <Greeting firstName="Ben" lastName="Hector" />;
+  return <Greeting firstName="Ben" lastName="Hector" />
 }
 
 function App2() {
-  const props = {firstName: 'Ben', lastName: 'Hector'};
-  return <Greeting {...props} />;
+  const props = {firstName: 'Ben', lastName: 'Hector'}
+  return <Greeting {...props} />
 }
 ```
 
@@ -307,7 +307,7 @@ function App2() {
 ## If a tag is empty, you may close it immediately with `/>`, like XML
 
 ```js
-const element = <img src={user.avatarUrl} />;
+const element = <img src={user.avatarUrl} />
 ```
 
 --
@@ -320,7 +320,7 @@ const element = (
     <h1>Hello!</h1>
     <h2>Good to see you here.</h2>
   </div>
-);
+)
 ```
 
 --
@@ -368,16 +368,16 @@ const element = (
 
 ```js
 function Item(props) {
-  return <li>{props.message}</li>;
+  return <li>{props.message}</li>
 }
 
 function TodoList() {
-  const todos = ['finish doc', 'submit pr', 'nag dan to review'];
+  const todos = ['finish doc', 'submit pr', 'nag dan to review']
   return (
     <ul>
       {todos.map((message) => <Item key={message} message={message} />)}
     </ul>
-  );
+  )
 }
 ```
 
@@ -388,11 +388,11 @@ function TodoList() {
 ```js
 // Calls the children callback numTimes to produce a repeated component
 function Repeat(props) {
-  let items = [];
+  let items = []
   for (let i = 0; i < props.numTimes; i++) {
-    items.push(props.children(i));
+    items.push(props.children(i))
   }
-  return <div>{items}</div>;
+  return <div>{items}</div>
 }
 
 function ListOfTenThings() {
@@ -400,7 +400,7 @@ function ListOfTenThings() {
     <Repeat numTimes={10}>
       {(index) => <div key={index}>This is item {index} in the list</div>}
     </Repeat>
-  );
+  )
 }
 ```
 
