@@ -32,10 +32,10 @@ title:  React Overview
 
 --
 
-## Unidirectional data flow and Redux
+## React.js’ data flow in one way
 
-> React implements one way data flow which makes it easy to reason about your app.
-> Redux is a pattern that helps keeping your data unidirectional.
+> The major benefit of this approach is that data flows throughout your app in a single direction and you have better control over it.
+> Application state is contained in specific stores and as a result different components of your app remain loosely coupled.
 
 ---
 
