@@ -1294,209 +1294,319 @@ for (;;) {
 
 ---
 
-# Generators
+# Promises
 
 --
 
-## Generator Function, Iterator Protocol
+## Promise Usage
 
-Support for generators, a special case of Iterators containing a generator function, where the control flow can be paused and resumed, in order to produce sequence of values (either finite or infinite).
+First class representation of a value that may be made asynchronously and be available in the future.
 
 ECMAScript 6 <!-- .element: class="filename" -->
 ```javascript
-let fibonacci = {
-    *[Symbol.iterator]() {
-        let pre = 0, cur = 1
-        for (;;) {
-            [ pre, cur ] = [ cur, pre + cur ]
-            yield cur
-        }
-    }
-}
-
-for (let n of fibonacci) {
-    if (n > 1000)
-        break
-    console.log(n)
-}
-```
-
---
-
-ECMAScript 5 <!-- .element: class="filename" -->
-```javascript
-var fibonacci = {
-    next: (function () {
-        var pre = 0, cur = 1;
-        return function () {
-            tmp = pre;
-            pre = cur;
-            cur += tmp;
-            return cur;
-        };
-    })()
-};
-
-var n;
-for (;;) {
-    n = fibonacci.next();
-    if (n > 1000)
-        break;
-    console.log(n);
-}
-```
-
---
-
-## Generator Function, Direct Use
-
-Support for generator functions, a special variant of functions where the control flow can be paused and resumed, in order to produce sequence of values (either finite or infinite).
-
-ECMAScript 6 <!-- .element: class="filename" -->
-```javascript
-function* range (start, end, step) {
-    while (start < end) {
-        yield start
-        start += step
-    }
-}
-
-for (let i of range(0, 10, 2)) {
-    console.log(i) // 0, 2, 4, 6, 8
-}
-```
-
-ECMAScript 5 <!-- .element: class="filename" -->
-```javascript
-function range (start, end, step) {
-    var list = [];
-    while (start < end) {
-        list.push(start);
-        start += step;
-    }
-    return list;
-}
-
-var r = range(0, 10, 2);
-for (var i = 0; i < r.length; i++) {
-    console.log(r[i]); // 0, 2, 4, 6, 8
-}
-```
-
---
-
-## Generator Matching
-
-Support for generator functions, i.e., functions where the control flow can be paused and resumed, in order to produce and spread sequence of values (either finite or infinite).
-
-ECMAScript 6 <!-- .element: class="filename" -->
-```javascript
-let fibonacci = function* (numbers) {
-    let pre = 0, cur = 1
-    while (numbers-- > 0) {
-        [ pre, cur ] = [ cur, pre + cur ]
-        yield cur
-    }
-}
-
-for (let n of fibonacci(1000))
-    console.log(n)
-
-let numbers = [ ...fibonacci(1000) ]
-
-let [ n1, n2, n3, ...others ] = fibonacci(1000)
-```
-
-ECMAScript 5 <!-- .element: class="filename" -->
-```javascript
-//  no equivalent in ES5
-```
-
---
-
-## Generator Control-Flow
-
-Support for generators, a special case of Iterators where the control flow can be paused and resumed, in order to support asynchronous programming in the style of "co-routines" in combination with Promises (see below). [Notice: the generic async function usually is provided by a reusable library and given here just for better understanding. See co or Bluebird's coroutine in practice.]
-
---
-
-ECMAScript 6 <!-- .element: class="filename small-table-font" -->
-```javascript
-//  generic asynchronous control-flow driver
-function async (proc, ...params) {
-    var iterator = proc(...params)
+function msgAfterTimeout (msg, who, timeout) {
     return new Promise((resolve, reject) => {
-        let loop = (value) => {
-            let result
-            try {
-                result = iterator.next(value)
-            }
-            catch (err) {
-                reject(err)
-            }
-            if (result.done)
-                resolve(result.value)
-            else if (   typeof result.value      === "object"
-                     && typeof result.value.then === "function")
-                result.value.then((value) => {
-                    loop(value)
-                }, (err) => {
-                    reject(err)
-                })
-            else
-                loop(result.value)
-        }
-        loop()
+        setTimeout(() => resolve(`${msg} Hello ${who}!`), timeout)
     })
 }
-
-//  application-specific asynchronous builder
-function makeAsync (text, after) {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => resolve(text), after)
-    })
-}
-
-//  application-specific asynchronous procedure
-async(function* (greeting) {
-    let foo = yield makeAsync("foo", 300)
-    let bar = yield makeAsync("bar", 200)
-    let baz = yield makeAsync("baz", 100)
-    return `${greeting} ${foo} ${bar} ${baz}`
-}, "Hello").then((msg) => {
-    console.log("RESULT:", msg) // "Hello foo bar baz"
+msgAfterTimeout("", "Foo", 100).then((msg) =>
+    msgAfterTimeout(msg, "Bar", 200)
+).then((msg) => {
+    console.log(`done after 300ms:${msg}`)
 })
 ```
 
 ECMAScript 5 <!-- .element: class="filename" -->
 ```javascript
-//  no equivalent in ES5
+function msgAfterTimeout (msg, who, timeout, onDone) {
+    setTimeout(function () {
+        onDone(msg + " Hello " + who + "!");
+    }, timeout);
+}
+msgAfterTimeout("", "Foo", 100, function (msg) {
+    msgAfterTimeout(msg, "Bar", 200, function (msg) {
+        console.log("done after 300ms:" + msg);
+    });
+});
 ```
 
 --
 
-## Generator Methods
+## Promise Combination
 
-Support for generator methods, i.e., methods in classes and on objects, based on generator functions.
+Combine one or more promises into new promises without having to take care of ordering of the underlying asynchronous operations yourself.
 
 ECMAScript 6 <!-- .element: class="filename" -->
 ```javascript
-class Clz {
-    * bar () {
-        …
-    }
+function fetchAsync (url, timeout, onData, onError) {
+    …
 }
-let Obj = {
-    * foo () {
-        …
-    }
+let fetchPromised = (url, timeout) => {
+    return new Promise((resolve, reject) => {
+        fetchAsync(url, timeout, resolve, reject)
+    })
 }
+Promise.all([
+    fetchPromised("http://backend/foo.txt", 500),
+    fetchPromised("http://backend/bar.txt", 500),
+    fetchPromised("http://backend/baz.txt", 500)
+]).then((data) => {
+    let [ foo, bar, baz ] = data
+    console.log(`success: foo=${foo} bar=${bar} baz=${baz}`)
+}, (err) => {
+    console.log(`error: ${err}`)
+})
 ```
+
+--
 
 ECMAScript 5 <!-- .element: class="filename" -->
 ```javascript
-//  no equivalent in ES5
+function fetchAsync (url, timeout, onData, onError) {
+    …
+}
+function fetchAll (request, onData, onError) {
+    var result = [], results = 0;
+    for (var i = 0; i < request.length; i++) {
+        result[i] = null;
+        (function (i) {
+            fetchAsync(request[i].url, request[i].timeout, function (data) {
+                result[i] = data;
+                if (++results === request.length)
+                    onData(result);
+            }, onError);
+        })(i);
+    }
+}
+fetchAll([
+    { url: "http://backend/foo.txt", timeout: 500 },
+    { url: "http://backend/bar.txt", timeout: 500 },
+    { url: "http://backend/baz.txt", timeout: 500 }
+], function (data) {
+    var foo = data[0], bar = data[1], baz = data[2];
+    console.log("success: foo=" + foo + " bar=" + bar + " baz=" + baz);
+}, function (err) {
+    console.log("error: " + err);
+});
 ```
+
+---
+
+# Generators
+
+--
+
+## What
+
+Functions that can manage their own state.
+
+ECMAScript 6 <!-- .element: class="filename" -->
+```javascript
+function *simpleGeneratorFn() {
+  yield 1;
+  yield 2;
+  yield 3;
+}
+
+const simpleGenerator = simpleGeneratorFn();
+
+simpleGenerator.next(); // { value: 1, done: false }
+simpleGenerator.next(); // { value: 2, done: false }
+simpleGenerator.next(); // { value: 3, done: false }
+simpleGenerator.next(); // { value: undefined, done: true }
+
+for (let value of simpleGeneratorFn()) {
+  // Value will be 1, 2, 3
+}
+
+[...simpleGeneratorFn()] // [1, 2, 3]
+```
+
+--
+
+ECMAScript 6 <!-- .element: class="filename" -->
+```javascript
+function *simpleGeneratorFn() {
+  yield 1;
+  yield 2;
+  yield 3;
+
+  return 4;
+}
+
+const simpleGenerator = simpleGeneratorFn();
+
+simpleGenerator.next(); // { value: 1, done: false }
+simpleGenerator.next(); // { value: 2, done: false }
+simpleGenerator.next(); // { value: 3, done: false }
+simpleGenerator.next(); // { value: 4, done: true }
+
+for (let value of simpleGeneratorFn()) {
+  // Value will be 1, 2, 3
+}
+
+[...simpleGeneratorFn()] // [1, 2, 3]
+```
+
+--
+
+## Return 
+
+`generator.return(x)` executes return x at the location of paused yield.
+
+ECMAScript 6 <!-- .element: class="filename" -->
+```javascript
+function *simpleGeneratorFn() {
+  yield 1;
+  yield 2;
+  yield 3;
+
+  return 4;
+}
+
+const simpleGenerator = simpleGeneratorFn();
+
+simpleGenerator.next(); // { value: 1, done: false }
+simpleGenerator.return(5); // { value: 5, done: true }
+```
+
+--
+
+## Throw
+
+`generator.throw(x)` executes throw x at the location of paused yield.
+
+ECMAScript 6 <!-- .element: class="filename" -->
+```javascript
+function *simpleGeneratorFn() {
+  try {
+    yield 1;
+    yield 2;
+    yield 3;
+
+    return 4;
+  } catch (ex) {
+    return ex;
+  }
+}
+
+const simpleGenerator = simpleGeneratorFn();
+
+console.log(simpleGenerator.next()); // { value: 1, done: false }
+console.log(simpleGenerator.throw('Some error')); // { value: 'Some error', done: true }
+```
+
+--
+
+## Generators as Iterators
+
+ECMAScript 6 <!-- .element: class="filename" -->
+```javascript
+function* iterateObject(obj) {
+  const keys = Object.keys(obj);
+
+  for (let key of keys) {
+    yield [
+      key, obj[key]
+    ];
+  }
+}
+
+const user = {
+  name: 'John Travolta',
+  age: 63
+}
+
+for (let [key,value] of iterateObject(user)) {
+  console.log('%s: %s', key, value);
+  // name: John Travolta
+  // age: 63
+}
+```
+
+--
+
+ECMAScript 6 <!-- .element: class="filename" -->
+```javascript
+class Node {
+  constructor(value, left = null, right = null) {
+    this.value = value;
+    this.left = left;
+    this.right = right;
+  }
+
+  *[Symbol.iterator]() {
+    yield this.value;
+
+    if (this.left) { yield* this.left; }
+
+    if (this.right) { yield* this.right; }
+  }
+}
+
+const binaryTree = new Node('A',
+  new Node('B',
+    new Node('C'),
+    new Node('D')
+  ),
+  new Node('E')
+);
+
+for (let value of binaryTree) {
+  console.log(value);
+  // A, B, C, D, E
+}
+```
+
+--
+
+## Generators as Async Flow Controllers
+
+```javascript
+const apiCall = () => new Promise(
+  (resolve) => setTimeout(resolve.bind(null, 1), 250)
+);
+
+const asyncFunc = makeItSync(function* (initial) {
+  const first = yield apiCall();
+  const second = yield apiCall();
+  const third = yield apiCall();
+
+  yield initial + first + second + third;
+});
+
+asyncFunc(1).then((value) =>
+  console.log(value) // 4
+);
+```
+<!-- .element: class="left width-50" -->
+
+```javascript
+const makeItSync = (generatorFn) => (...params) => (
+  new Promise(
+    (resolve) => iterateGenerator(
+      generatorFn(...params), (value) => resolve(value)
+    )
+  )
+)
+
+const iterateGenerator = (generator, callback, prev) => {
+  const { done, value } = generator.next(prev);
+
+  if (done) {
+    return callback(prev);
+  };
+
+  if (value && typeof value.then === 'function') {
+    value.then((val) => (
+      iterateGenerator(generator, callback, val)
+    ));
+  } else {
+    iterateGenerator(generator, callback, value);
+  }
+};
+```
+<!-- .element: class="right width-50" -->
 
 ---
 
@@ -1610,44 +1720,19 @@ ECMAScript 5 <!-- .element: class="filename" -->
 
 ## Typed Arrays
 
-Support for arbitrary byte-based data structures to implement network protocols, cryptography algorithms, file format manipulations, etc.
+Support for arbitrary binary data structures to implement network protocols, cryptography algorithms, file format manipulations, etc.
 
---
-
-ECMAScript 6 <!-- .element: class="filename" -->
-```javascript
-//  ES6 class equivalent to the following C structure:
-//  struct Example { unsigned long id; char username[16]; float amountDue }
-class Example {
-    constructor (buffer = new ArrayBuffer(24)) {
-        this._buffer = buffer
-    }
-    set buffer (buffer) {
-        this._buffer    = buffer
-        this._id        = new Uint32Array (this._buffer,  0,  1)
-        this._username  = new Uint8Array  (this._buffer,  4, 16)
-        this._amountDue = new Float32Array(this._buffer, 20,  1)
-    }
-    get buffer ()     { return this._buffer       }
-    set id (v)        { this._id[0] = v           }
-    get id ()         { return this._id[0]        }
-    set username (v)  { this._username[0] = v     }
-    get username ()   { return this._username[0]  }
-    set amountDue (v) { this._amountDue[0] = v    }
-    get amountDue ()  { return this._amountDue[0] }
-}
-
-let example = new Example()
-example.id = 7
-example.username = "John Doe"
-example.amountDue = 42.0
-```
-
-ECMAScript 5 <!-- .element: class="filename" -->
-```javascript
-//  no equivalent in ES5
-//  (only an equivalent in HTML5)
-```
+Element type | Bytes | Description | C type
+------------ | ----- | ----------- | ------
+Int8 | 1 | 8-bit signed integer | signed char
+Uint8 | 1 | 8-bit unsigned integer | unsigned char
+Uint8C | 1 | 8-bit unsigned integer (clamped conversion) | unsigned char
+Int16 | 2 | 16-bit signed integer | short
+Uint16 | 2 | 16-bit unsigned integer | unsigned short
+Int32 | 4 | 32-bit signed integer | int
+Uint32 | 4 | 32-bit unsigned integer | unsigned int
+Float32 | 4 | 32-bit floating point | float
+Float64 | 8 | 64-bit floating point | double
 
 ---
 
@@ -1875,104 +1960,6 @@ console.log(mathSign(0))   // 0
 console.log(mathSign(-0))  // -0
 console.log(mathSign(-7))  // -1
 console.log(mathSign(NaN)) // NaN
-```
-
----
-
-# Promises
-
---
-
-## Promise Usage
-
-First class representation of a value that may be made asynchronously and be available in the future.
-
-ECMAScript 6 <!-- .element: class="filename" -->
-```javascript
-function msgAfterTimeout (msg, who, timeout) {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => resolve(`${msg} Hello ${who}!`), timeout)
-    })
-}
-msgAfterTimeout("", "Foo", 100).then((msg) =>
-    msgAfterTimeout(msg, "Bar", 200)
-).then((msg) => {
-    console.log(`done after 300ms:${msg}`)
-})
-```
-
-ECMAScript 5 <!-- .element: class="filename" -->
-```javascript
-function msgAfterTimeout (msg, who, timeout, onDone) {
-    setTimeout(function () {
-        onDone(msg + " Hello " + who + "!");
-    }, timeout);
-}
-msgAfterTimeout("", "Foo", 100, function (msg) {
-    msgAfterTimeout(msg, "Bar", 200, function (msg) {
-        console.log("done after 300ms:" + msg);
-    });
-});
-```
-
---
-
-## Promise Combination
-
-Combine one or more promises into new promises without having to take care of ordering of the underlying asynchronous operations yourself.
-
-ECMAScript 6 <!-- .element: class="filename" -->
-```javascript
-function fetchAsync (url, timeout, onData, onError) {
-    …
-}
-let fetchPromised = (url, timeout) => {
-    return new Promise((resolve, reject) => {
-        fetchAsync(url, timeout, resolve, reject)
-    })
-}
-Promise.all([
-    fetchPromised("http://backend/foo.txt", 500),
-    fetchPromised("http://backend/bar.txt", 500),
-    fetchPromised("http://backend/baz.txt", 500)
-]).then((data) => {
-    let [ foo, bar, baz ] = data
-    console.log(`success: foo=${foo} bar=${bar} baz=${baz}`)
-}, (err) => {
-    console.log(`error: ${err}`)
-})
-```
-
---
-
-ECMAScript 5 <!-- .element: class="filename" -->
-```javascript
-function fetchAsync (url, timeout, onData, onError) {
-    …
-}
-function fetchAll (request, onData, onError) {
-    var result = [], results = 0;
-    for (var i = 0; i < request.length; i++) {
-        result[i] = null;
-        (function (i) {
-            fetchAsync(request[i].url, request[i].timeout, function (data) {
-                result[i] = data;
-                if (++results === request.length)
-                    onData(result);
-            }, onError);
-        })(i);
-    }
-}
-fetchAll([
-    { url: "http://backend/foo.txt", timeout: 500 },
-    { url: "http://backend/bar.txt", timeout: 500 },
-    { url: "http://backend/baz.txt", timeout: 500 }
-], function (data) {
-    var foo = data[0], bar = data[1], baz = data[2];
-    console.log("success: foo=" + foo + " bar=" + bar + " baz=" + baz);
-}, function (err) {
-    console.log("error: " + err);
-});
 ```
 
 ---
