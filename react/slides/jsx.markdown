@@ -57,14 +57,41 @@ ReactDOM.render(
 
 --
 
-## Using JSX inside of `if` statements
+## Conditional Rendering using JSX
 
 ```js
 function getGreeting(user) {
   if (user) {
     return <h1>Hello, {formatName(user)}!</h1>
   }
+
   return <h1>Hello, Stranger.</h1>
+}
+```
+
+```js
+// Inline If with Logical && Operator
+function getGreeting(user) {
+  user && <h1>Hello, {formatName(user)}!</h1>
+}
+```
+
+```js
+// Inline Unless with Logical || Operator
+function getGreeting(user) {
+  user || <h1>Hello, Stranger.</h1>
+}
+```
+
+```js
+// Inline If-Else with Conditional Operator
+function getGreeting(user) {
+  user
+    ? (
+      return <h1>Hello, {formatName(user)}!</h1>
+    ) : (
+      return <h1>Hello, Stranger.</h1>
+    )
 }
 ```
 
@@ -200,6 +227,14 @@ function HelloWorld() {
 
 --
 
+## If a tag is empty, you may close it immediately with `/>`, like XML
+
+```js
+const element = <img src={user.avatarUrl} />
+```
+
+--
+
 ## Choosing the Type at Runtime
 
 ```js
@@ -229,6 +264,7 @@ const components = {
 function Story(props) {
   // Correct! JSX type can be a capitalized variable.
   const SpecificStory = components[props.storyType]
+
   return <SpecificStory story={props.story} />
 }
 ```
@@ -257,6 +293,7 @@ function NumberDescriber(props) {
   } else {
     description = <i>odd</i>
   }
+
   return <div>{props.number} is an {description} number</div>
 }
 ```
@@ -294,6 +331,7 @@ function App1() {
 
 function App2() {
   const props = {firstName: 'Ben', lastName: 'Hector'}
+
   return <Greeting {...props} />
 }
 ```
@@ -301,14 +339,6 @@ function App2() {
 ---
 
 # Children in JSX
-
---
-
-## If a tag is empty, you may close it immediately with `/>`, like XML
-
-```js
-const element = <img src={user.avatarUrl} />
-```
 
 --
 
@@ -353,13 +383,13 @@ const element = (
 > You can mix together different types of children, so you can use string literals together with JSX children. This is another way in which JSX is like HTML, so that this is both valid JSX and valid HTML
 
 ```js
-<div>
+<MyContainer>
   Here is a list:
   <ul>
     <li>Item 1</li>
     <li>Item 2</li>
   </ul>
-</div>
+</MyContainer>
 ```
 
 --
@@ -372,10 +402,16 @@ function Item(props) {
 }
 
 function TodoList() {
-  const todos = ['finish doc', 'submit pr', 'nag dan to review']
+  const todos = [
+    { id: 1, message: 'finish doc' },
+    { id: 2, message: 'submit pr' },
+    { id: 3, message: 'nag dan to review' }
+  ]
+
   return (
     <ul>
-      {todos.map((message) => <Item key={message} message={message} />)}
+      // Index as a key is an anti-pattern
+      {todos.map((todo) => <Item key={todo.id} message={todo.message} />)}
     </ul>
   )
 }
@@ -392,6 +428,7 @@ function Repeat(props) {
   for (let i = 0; i < props.numTimes; i++) {
     items.push(props.children(i))
   }
+
   return <div>{items}</div>
 }
 
