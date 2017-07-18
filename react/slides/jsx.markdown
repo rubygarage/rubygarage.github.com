@@ -69,8 +69,11 @@ function getGreeting(user) {
 }
 ```
 
+--
+
+## Inline If with Logical && Operator
+
 ```js
-// Inline If with Logical && Operator
 function getGreeting(user) {
   return (
     <div>
@@ -80,8 +83,11 @@ function getGreeting(user) {
 }
 ```
 
+--
+
+## Inline Unless with Logical || Operator
+
 ```js
-// Inline Unless with Logical || Operator
 function getGreeting(user) {
   return (
     <div>
@@ -91,8 +97,11 @@ function getGreeting(user) {
 }
 ```
 
+--
+
+## Inline If-Else with Ternary Operator
+
 ```js
-// Inline If-Else with Ternary Operator
 function getGreeting(user) {
   return (
     <div>
