@@ -29,7 +29,7 @@ For example, class becomes className in JSX, and tabindex becomes tabIndex.
 
 ```js
 function formatName(user) {
-  return user.firstName + ' ' + user.lastName
+  return `${user.firstName} ${user.lastName}`
 }
 
 const user = {
@@ -72,26 +72,37 @@ function getGreeting(user) {
 ```js
 // Inline If with Logical && Operator
 function getGreeting(user) {
-  user && <h1>Hello, {formatName(user)}!</h1>
+  return (
+    <div>
+      {user && <h1>Hello, {formatName(user)}!</h1>}
+    </div>
+  )
 }
 ```
 
 ```js
 // Inline Unless with Logical || Operator
 function getGreeting(user) {
-  user || <h1>Hello, Stranger.</h1>
+  return (
+    <div>
+      {user || <h1>Hello, Stranger.</h1>}
+    </div>
+  )
 }
 ```
 
 ```js
-// Inline If-Else with Conditional Operator
+// Inline If-Else with Ternary Operator
 function getGreeting(user) {
-  user
-    ? (
-      return <h1>Hello, {formatName(user)}!</h1>
-    ) : (
-      return <h1>Hello, Stranger.</h1>
-    )
+  return (
+    <div>
+      {user ? (
+        <h1>Hello, {formatName(user)}!</h1>
+      ) : (
+        <h1>Hello, Stranger.</h1>
+      )}
+    </div>
+  )
 }
 ```
 
@@ -352,12 +363,6 @@ const element = (
   </div>
 )
 ```
-
---
-
-## String Literals
-
-> You can put a string between the opening and closing tags and `props.children` will just be that string. This is useful for many of the built-in HTML elements. For example
 
 ```js
 <MyComponent>Hello world!</MyComponent>
