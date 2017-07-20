@@ -101,23 +101,23 @@ You can split components into smaller parts.
 ```js
 function Comment(props) {
   return (
-    <div className="Comment">
-      <div className="UserInfo">
-        <img className="Avatar"
+    <div className="comment">
+      <div className="user-info">
+        <img className="avatar"
           src={props.author.avatarUrl}
           alt={props.author.name}
         />
 
-        <div className="UserInfo-name">
+        <div className="user-info-name">
           {props.author.name}
         </div>
       </div>
 
-      <div className="Comment-text">
+      <div className="comment-text">
         {props.text}
       </div>
 
-      <div className="Comment-date">
+      <div className="comment-date">
         {formatDate(props.date)}
       </div>
     </div>
@@ -132,7 +132,7 @@ Extract `Avatar` component
 ```js
 function Avatar(props) {
   return (
-    <img className="Avatar"
+    <img className="avatar"
       src={props.user.avatarUrl}
       alt={props.user.name}
     />
@@ -147,10 +147,10 @@ Extract a `UserInfo` component that renders an `Avatar` next to user's name
 ```js
 function UserInfo(props) {
   return (
-    <div className="UserInfo">
+    <div className="user-info">
       <Avatar user={props.user} />
 
-      <div className="UserInfo-name">
+      <div className="user-info-name">
         {props.user.name}
       </div>
     </div>
@@ -165,14 +165,14 @@ Simplified `Comment` component
 ```js
 function Comment(props) {
   return (
-    <div className="Comment">
+    <div className="comment">
       <UserInfo user={props.author} />
 
-      <div className="Comment-text">
+      <div className="comment-text">
         {props.text}
       </div>
 
-      <div className="Comment-date">
+      <div className="comment-date">
         {formatDate(props.date)}
       </div>
     </div>
@@ -263,6 +263,8 @@ MyComponent.propTypes = {
   optionalElement: PropTypes.element
 }
 ```
+
+--
 
 Prop is an instance of a class
 
@@ -365,10 +367,7 @@ import PropTypes from 'prop-types'
 MyComponent.propTypes = {
   customProp: function(props, propName, componentName) {
     if (!/matchme/.test(props[propName])) {
-      return new Error(
-        'Invalid prop `' + propName + '` supplied to' +
-        ' `' + componentName + '`. Validation failed.'
-      )
+      return new Error('Invalid prop `' + propName + '` supplied to' + ' `' + componentName + '`. Validation failed.')
     }
   }
 }
@@ -384,10 +383,7 @@ import PropTypes from 'prop-types'
 MyComponent.propTypes = {
   customArrayProp: PropTypes.arrayOf(function(propValue, key, componentName, location, propFullName) {
     if (!/matchme/.test(propValue[key])) {
-      return new Error(
-        'Invalid prop `' + propFullName + '` supplied to' +
-        ' `' + componentName + '`. Validation failed.'
-      )
+      return new Error('Invalid prop `' + propFullName + '` supplied to' + ' `' + componentName + '`. Validation failed.')
     }
   })
 }

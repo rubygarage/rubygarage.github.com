@@ -32,14 +32,12 @@ title: State and Lifecycle
 class MyFancyComponent extends Component {
   constructor(props) {
     super(props)
+
     this.state = { currentTime: (new Date()).toLocaleString() }
   }
 
   render() {
-
-    return (
-      <div>{this.state.currentTime}</div>
-    )
+    return <div>{this.state.currentTime}</div>
   }
 }
 ```
@@ -48,7 +46,7 @@ class MyFancyComponent extends Component {
 
 ## Initial state as a Class Attribute
 
-> Available with transpilers: Babel, Traceur or TypeScript, which means no browser will run this feature natively
+> Available with Babel transpiler, which means no browser will run this feature natively
 
 ```js
 class MyFancyComponent extends Component {
@@ -57,10 +55,7 @@ class MyFancyComponent extends Component {
   }
 
   render() {
-
-    return (
-      <div>{this.state.currentTime}</div>
-    )
+    return <div>{this.state.currentTime}</div>
   }
 }
 ```
@@ -88,10 +83,12 @@ class MyFancyComponent extends Component {
 
 ```js
 class Counter extends Component {
-  state = { counter : 0 }
+  state = {
+    counter: 0
+  }
 
   onClick = () => {
-    this.setState({ counter : this.state.counter + 1 })
+    this.setState({ counter: this.state.counter + 1 })
   }
 
   render() {
@@ -135,6 +132,7 @@ The `constructor` for a React component is called before it is mounted. When imp
 class Clock extends Component {
   constructor(props) {
     super(props)
+
     this.state = { date: new Date() }
   }
 
@@ -162,6 +160,7 @@ class Scorecard extends Component {
     // Calling setState will usually trigger a re-render,
     // but calling it in componentWillMount won't
     // (since it hasn't rendered in the first place).
+
     this.setState({ score: 0 })
   }
 
@@ -169,6 +168,7 @@ class Scorecard extends Component {
     const { playerName} = this.props
     // `this.state` defaults to null, but since it'll be set in
     // `componentWillMount`, it can safely be destructured.
+
     const { score } = this.state
     const message = `Current Score: ${score}`
 
@@ -193,6 +193,7 @@ class Scorecard extends Component {
   componentDidMount() {
     // You'd probably want to send an AJAX call or something,
     // but let's say they get 1000 points after the first second.
+
     setTimeout(() => this.setState({ score: 1000 }), 1000)
   }
 }
@@ -211,10 +212,13 @@ class Scorecard extends Component {
 ```js
 class Scorecard extends Component {
   componentWillReceiveProps(nextProps) {
-    // `nextProps` is the new props, while `this.props` are the old ones.
+
+    // `nextProps` is the new props, while `this.props` are the old ones
     const { playerName } = this.props
+
     // It is entirely possible that the new `playerName` is the same as the old one.
     if (nextProps.playerName !== playerName) {
+
       // Changing your name resets the score to zero.
       this.setState({ score: 0 })
     }
@@ -231,11 +235,14 @@ Use `shouldComponentUpdate()` to let React know if a component's output is not a
 ```js
 class Scorecard extends Component {
   shouldComponentUpdate(nextProps, nextState) {
+
     // Same as `componentWillReceiveProps`, `nextProps` is the
     // new props and `this.props` is the old.
     const { playerName } = this.props
+
     // Same for `nextState` and `this.state`.
     const { score } = this.state
+
     // Only `playerName` and `score` affect the display.
     // If something else changes, re-rendering would be a waste.
     return !(nextProps.playerName === playerName && nextState.score === score)
@@ -253,8 +260,10 @@ class Scorecard extends Component {
 class Scorecard extends Component {
   componentWillUpdate(nextProps, nextState) {
     const { playerName } = this.props
+
     // If `playerName` changes, log a message.
     if (nextProps.playerName !== playerName) {
+
       // Note that even though `componentWillReceiveProps` called `setState`, `this.state` is still the original value.
       const { score } = this.state
       console.log(`${playerName} is now ${nextProps.playerName}.  His score of ${score} is forfeit.`);
@@ -272,7 +281,8 @@ class Scorecard extends Component {
 ```js
 class Scorecard extends Component {
   componentDidUpdate(prevProps, prevState) {
-    const { playerName} = this.props
+    const { playerName } = this.props
+
     // `prevProps` are the props as they used to be and `this.props` are what they are now.
     // Same for `prevState` and `this.state`.
     if (prevProps.playerName !== playerName) {
