@@ -159,6 +159,7 @@ class Clock extends Component {
 ```js
 class Scorecard extends Component {
   componentWillMount() {
+
     // Calling setState will usually trigger a re-render,
     // but calling it in componentWillMount won't
     // (since it hasn't rendered in the first place).
@@ -167,6 +168,7 @@ class Scorecard extends Component {
 
   render() {
     const { playerName} = this.props
+
     // `this.state` defaults to null, but since it'll be set in
     // `componentWillMount`, it can safely be destructured.
     const { score } = this.state
@@ -191,6 +193,7 @@ class Scorecard extends Component {
 ```js
 class Scorecard extends Component {
   componentDidMount() {
+
     // You'd probably want to send an AJAX call or something,
     // but let's say they get 1000 points after the first second.
     setTimeout(() => this.setState({ score: 1000 }), 1000)
