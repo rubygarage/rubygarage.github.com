@@ -445,7 +445,13 @@ small * {
   font-size: 0.9em;
 }
 
+.reveal section strong {
+  font-weight: bold;
+}
 
+.reveal section small {
+  font-size: 0.8em;
+}
 
 /********************************************************************************************************************
  *                                                HTML example block                                                *
