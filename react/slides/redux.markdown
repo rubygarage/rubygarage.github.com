@@ -51,7 +51,6 @@ https://github.com/GarrisonD/react-redux-example
 
 <br />
 
-
 We need to pass state from `Form` to `Graphics` component.
 
 ![](/assets/images/redux/first-example.png)
@@ -60,7 +59,11 @@ We need to pass state from `Form` to `Graphics` component.
 But unfortunately we can't pass state from one component to another 
 <br />
 on the same nesting level.
+<br />
 
+```bash
+git reset --hard '1651f002a092a8cbc2408040555cd3e7dcea2c02'
+```
 
 --
 
@@ -139,9 +142,8 @@ What about `...props` ?
 - **Advantages:**
   <br/>
   &nbsp;&nbsp;Much less LOC
-
   <br/>
-
+  
 - **Disadvantages:**
   <br/>
   &nbsp;&nbsp;Form's dependencies are implicit
@@ -304,5 +306,8 @@ git reset --hard 'dfb21e4a37f52e9f4d49453bee5d745b0d89dd02' && git reset --soft 
 - **The Complete Redux Book**
   <br/>
   https://leanpub.com/redux-book
+- **More**   
+  https://github.com/markerikson/react-redux-links/
+ 
 ---
 # Thank you.
