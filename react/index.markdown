@@ -29,3 +29,5 @@ title: React
   <small>How to handle state in React way</small>
 
 - [React Patterns](slides/patterns)
+
+- [Redux](slides/redux)
