@@ -30,6 +30,11 @@ title: React
 
 - [React Patterns](slides/patterns)
 
+
 - [Flux](slides/flux)
   <br>
   <small>Application Architecture for Building User Interfaces</small>
+
+- [Redux](slides/redux)
+  <br>
+  <small>A JavaScript library for managing and maintaining application state.</small>
