@@ -291,7 +291,355 @@ git reset --hard '5751c14eb5c5e3fb93721f877a8d1c2caaff8fd0' && git reset --soft 
 ```bash
 git reset --hard 'dfb21e4a37f52e9f4d49453bee5d745b0d89dd02' && git reset --soft HEAD~1
 ```
+---
+# State Normalization
+--
+## Why?
+Since the moment our application starts to expand, it becomes harder and harder to control state. Many of the data coming from the server is nested and relational in nature. For example, the Author can have many Posts, each Post can have a lot of comments and all comments can be written by different users. In order not to complicate the development in the future, we must correctly store our data in the state.
+--
+Data for this kind of application might look like:
+<br />
+This data structure is very complex, and some data is repeated.
+```JavaScript
+const blogPosts = [
+  {
+    id: "post1",
+    author: {username: "user1", name: "User 1"},
+    body: "......",
+    comments: [
+      {
+        id: "comment1",
+        author: {username: "user2", name: "User 2"},
+        comment: ".....",
+      },
+      {
+        id: "comment2",
+        author: {username: "user3", name: "User 3"},
+        comment: ".....",
+      }
+    ]
+  },
+  {
+    id: "post2",
+    author: {username: "user2", name: "User 2"},
+    body: "......",
+    comments: [
+      {
+        id: "comment3",
+        author: {username: "user3", name: "User 3"},
+        comment: ".....",
+      },
+      {
+        id: "comment4",
+        author: {username: "user1", name: "User 1"},
+        comment: ".....",
+      },
+      {
+        id: "comment5",
+        author: {username: "user3", name: "User 3"},
+        comment: ".....",
+      }
+    ]    
+  }
+  // and repeat many times
+]
+```
+<!-- .element: style="max-height: 400px;" -->
 
+####This is a problem for several reasons:
+<!-- .element:text-align: left" -->
+
+- When a piece of data is duplicated in several places, it becomes harder to make sure that it is updated appropriately.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+- Nested data means that the corresponding reducer logic has to be more nested or more complex. In particular, trying to update a deeply nested field can become very ugly very fast.
+- Since immutable data updates require all ancestors in the state tree to be copied and updated as well, and new object references will cause connected UI components to re-render, an update to a deeply nested data object could force totally unrelated UI components to re-render even if the data they're displaying hasn't actually changed.
+--
+## Designing a Normalized State
+
+<br />
+
+####The basic concepts of normalizing data are:
+
+- Each type of data gets its own "table" in the state.
+- Each "data table" should store the individual items in an object, with the IDs of the items as keys and the items themselves as the values.
+- Any references to individual items should be done by storing the item's ID.
+-Arrays of IDs should be used to indicate ordering.
+
+--
+####An example of a normalized state structure for the blog example above might look like:
+```JSON
+{
+  posts : {
+    byId : {
+      "post1" : {
+        id : "post1",
+        author : "user1",
+        body : "......",
+        comments : ["comment1", "comment2"]
+      },
+      "post2" : {
+        id : "post2",
+        author : "user2",
+        body : "......",
+        comments : ["comment3", "comment4", "comment5"]
+      }
+    }
+    allIds : ["post1", "post2"]
+  },
+  comments : {
+    byId : {
+      "comment1" : {
+        id : "comment1",
+        author : "user2",
+        comment : ".....",
+      },
+      "comment2" : {
+        id : "comment2",
+        author : "user3",
+        comment : ".....",
+      },
+      ...
+    },
+    allIds : ["comment1", "comment2", ...]
+  },
+  users : {
+    byId : {
+      "user1" : {
+        username : "user1",
+        name : "User 1",
+      }
+      "user2" : {
+        username : "user2",
+        name : "User 2",
+      }
+      ...
+    },
+    allIds : ["user1", "user2", ...]
+  }
+}
+```
+--
+This state structure is much flatter overall. 
+
+####Compared to the original nested format, this is an improvement in several ways:
+
+- Because each item is only defined in one place, we don't have to try to make changes in multiple places if that item is updated.
+
+- The reducer logic doesn't have to deal with deep levels of nesting, so it will probably be much simpler.
+
+- The logic for retrieving or updating a given item is now fairly simple and consistent. Given an item's type and its ID, we can directly look it up in a couple simple steps, without having to dig through other objects to find it.
+
+- Since each data type is separated, an update like changing the text of a comment would only require new copies of the `comments -> byId -> comment` portion of the tree. This will generally mean fewer portions of the UI that need to update because their data has changed. In contrast, updating a comment in the original nested shape would have required updating the comment object, the parent post object, the array of all post objects, and likely have caused all of the Post components and Comment components in the UI to re-render themselves.
+--
+## Organizing Normalized Data in State
+
+<br/>
+
+A typical application will likely have a mixture of relational data and non-relational data. While there is no single rule for exactly how those different types of data should be organized, one common pattern is to put the relational `tables` under a common parent key, such as `entities`.
+<br/>
+
+A state structure using this approach might look like:
+
+```JSON
+{
+  simpleDomainData1: {....},
+  simpleDomainData2: {....}
+  entities : {
+    entityType1 : {....},
+    entityType2 : {....}
+  }
+  ui : {
+    uiSection1 : {....},
+    uiSection2 : {....}
+  }
+}
+```
+--
+## Relationships and Tables
+<br/>
+Because we're treating a portion of our Redux store as a `database`, many of the principles of database design also apply here as well.
+<br/>
+For example, if we have a many-to-many relationship, we can model that using an intermediate table that stores the IDs of the corresponding items.
+For consistency, we would probably also want to use the same `byId` and `allIds` approach that we used for the actual item tables, like this:
+<!-- .element: style="text-align: left" -->
+
+```JSON
+{
+  entities: {
+    authors: { byId: {}, allIds: [] },
+    books: { byId: {}, allIds: [] },
+    authorBook: {
+      byId: {
+        1: {
+          id: 1,
+          authorId: 5,
+          bookId: 22
+        },
+        2: {
+          id: 2,
+          authorId: 5,
+          bookId: 15,
+        }
+      },
+      ...
+      allIds: [1, 2, ...]
+    }
+  }
+}
+```
+--
+##What to Put in the Redux Storage?
+<br/>
+A common issue when working with Redux is deciding what information goes inside our state and what is left outside, either in React’s state.
+
+<br />
+####There are a few questions to consider when deciding whether to add something to the state:
+
+- Should this data be persisted across page refresh?
+
+- Should this data be persisted across route changes?
+<!-- .element: style="text-align: left" -->
+
+- Is this data used in multiple places in the UI?
+<!-- .element: style="text-align: left" -->
+
+- If the answer to any of these questions is “yes,” the data should go into the state. If the answer to all of these questions is “no,” it could still go into the state, but it’s not a must.»
+<!-- .element: style="text-align: left" -->
+
+
+--
+####A few examples of data that can be kept outside of the redux storage:
+
+- Currently selected tab in a tab control on a page
+<!-- .element: style="margin-left:1px; text-align: left" -->
+
+- Hover visibility/invisibiity on a control
+<!-- .element: style="margin-left:1px; text-align: left" -->
+
+- Lightbox being open/closed
+<!-- .element: style="margin-left:1px; text-align: left" -->
+
+- Currently displayed errors
+<!-- .element: style="margin-left:1px; text-align: left" -->
+
+<br />
+Some information can be safely lost without affecting the user’s experience or corrupting his data.
+---
+# Middleware
+--
+Provides capability to 
+<br/>
+`put CODE`
+<br/>
+between
+<br/>
+dispatching an `action`
+<br/>
+and
+<br/>
+reaching the `reducer`
+--
+## Basic Redux life-cycle
+
+![](/assets/images/redux/redux-life-cycle.png)
+--
+## Redux life-cycle with middlewares
+![](/assets/images/redux/redux-middleware-lifecycle.png)
+--
+## Middleware benefits:
+
+- Composable
+- Independent
+--
+## Middleware stack example
+![](/assets/images/redux/middleware-stack-example.png)
+--
+## Middleware structure:
+
+- It is a `function` that receives the `store`
+
+- `It MUST return a function` with arg `next`
+
+- `That returns a function` with arg `action`
+
+  - Where we do our stuff
+  - And `return`
+
+    - `next(action)`
+    - `state.dispatch(action)`
+--
+## Middleware structure
+<br/>
+
+ES 5 middleware declaration<!-- .element: class="filename" -->
+```JavaScript
+  export default function(store) { 
+    return function(next) { 
+      return function(action) {
+        //do something
+        //use next(action) or
+        //state.dispatch(action) 
+      } 
+    } 
+  } 
+```
+--
+## Middleware structure ES6
+
+src/middleware/myMiddleware.js <!-- .element: class="filename" -->
+```JavaScript
+export default store => next => action => {
+  //do something 
+  //next(action); or state.dispatch(action); 
+  } 
+} 
+```
+In case we don’t need the store <!-- .element: class="filename" -->
+```JavaScript
+export default ({dispatch}) => next => action => { 
+  //our stuff 
+  } 
+}  
+```
+--
+## Simplest example - logger
+![](/assets/images/redux/middleware-logger-example.png)
+--
+## Using our middleware
+
+
+src/index.js <!-- .element: class="filename" -->
+```JavaScript
+import {createStore, applyMiddleware } from 'redux'; 
+import reducers from './reducers';
+import MyMid from './middlewares/my-middleware'; 
+
+const createStoreWithMiddleware = applyMiddleware(myMid)(createStore); 
+
+ReactDOM.render( 
+  <Provider store={createStoreWithMiddleware(reducers)}> 
+    <App /> 
+  </Provider> 
+  , document.querySelector('.container')); 
+```
+--
+
+## Modify action middleware workflow
+![](/assets/images/redux/middleware-workflow.png)
+
+--
+## Dispatch action example - superstitious counter
+![](/assets/images/redux/middleware-flow-example2.png)
+
+--
+## Popular middlewares
+
+- redux-promise https://github.com/acdlite/redux-promise
+
+- redux-thunk https://github.com/gaearon/redux-thunk
+
+- redux-saga https://github.com/redux-saga/redux-saga
+
+- redux-logger https://github.com/evgenyrodionov/redux-logger
 ---
 ## Useful resources:
 - **Redux Docs**
