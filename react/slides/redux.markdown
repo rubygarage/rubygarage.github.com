@@ -311,20 +311,26 @@ If the answer to any of these questions is “yes,” the data should go into th
 <!-- .element: style="text-align: left" -->
 --
 
-## Example 1 - Should this data be persisted across page refresh?
+### Example 1 - Should this data be persisted across page refresh?
+
+![](/assets/images/redux/persist-flow-example-img-1.png)
 
 
 --
 
-## Example 2 - Should this data be persisted across route changes?
+### Example 2 - Should this data be persisted across route changes?
+
+
+![](/assets/images/redux/routing-changes-example.png)
 
 --
 
-## Example 3 - Is this data used in multiple places in the UI?
+### Example 3 - Is this data used in multiple places in the UI?
 
+![](/assets/images/redux/multiply-places-ui-example.png)
 
 --
-####A few examples of data that can be kept outside of the redux storage:
+A few examples of data that can be kept outside of the redux storage:
 
 - Currently selected tab in a tab control on a page
 <!-- .element: style="margin-left:1px; text-align: left" -->
@@ -353,10 +359,6 @@ Provides capability to `put CODE` between dispatching an `action` and reaching t
 --
 ## Redux life-cycle with middlewares
 ![](/assets/images/redux/redux-middleware-lifecycle.png)
---
-
-## Middleware stack example
-![](/assets/images/redux/middleware-stack-example.png)
 
 --
 ## Simplest example - logger middleware
@@ -368,15 +370,33 @@ In case we need the store <!-- .element: class="filename" -->
 ```JavaScript
 export default store => next => action => {
   //do something 
-  //next(action); or state.dispatch(action); 
+  //next(action)
 } 
 ```
-In case we don’t need the store <!-- .element: class="filename" -->
+Simple logger implementation <!-- .element: class="filename" -->
+
 ```JavaScript
-export default ({ dispatch }) => next => action => { 
-  //our stuff 
-}  
+export default store => next => action => {
+  // log state before running reducers
+  console.log(`Before running reducers: `, store.getState())
+
+  // log action that will be processed by reducers
+  console.log(`${new Date()} ${action.type}`)
+
+  // run processing action by reducers
+  next(action)
+
+  // log state after running reducers
+  console.log(`After running reducers: `, store.getState())
+}
 ```
+
+<br/>
+
+```bash
+git reset --hard '5068bed26d9fc27f9017ef30cb1e38ad37b10022'
+```
+
 --
 
 ## Using our middleware
@@ -384,27 +404,21 @@ export default ({ dispatch }) => next => action => {
 
 src/index.js <!-- .element: class="filename" -->
 ```JavaScript
-import {createStore, applyMiddleware } from 'redux'; 
-import reducers from './reducers';
-import MyMid from './middlewares/my-middleware'; 
+export const configureStore = () => {
+  /* some configuration here */
 
-const createStoreWithMiddleware = applyMiddleware(myMid)(createStore); 
+  return createStore(
+    reducer,
 
-ReactDOM.render( 
-  <Provider store={createStoreWithMiddleware(reducers)}> 
-    <App /> 
-  </Provider> 
-  , document.querySelector('.container')); 
+    applyMiddleware(
+      middleware1,
+      middleware2,
+      middleware3
+    )
+  )
+}
+
 ```
---
-
-## Modify action middleware workflow
-![](/assets/images/redux/middleware-workflow.png)
-
---
-## Dispatch action example - superstitious counter
-![](/assets/images/redux/middleware-flow-example2.png)
-
 --
 ## Popular middlewares
 
@@ -415,6 +429,85 @@ ReactDOM.render(
 - redux-saga https://github.com/redux-saga/redux-saga
 
 - redux-logger https://github.com/evgenyrodionov/redux-logger
+
+---
+## React Redux
+--
+## Map State To Props
+
+When your selectors depend on nothing  <!-- .element: class="filename" -->
+
+```JavaScript
+const mapStateToProps = (state) => {
+  return {
+    data1: selector1(state),
+    data2: selector2(state)
+  }
+}
+```
+
+When your selectors depend on incoming props  <!-- .element: class="filename" -->
+```JavaScript
+const mapStateToProps = (state, ownProps) => {
+  return {
+    data1: selector1(state),
+    data2: selector2(state),
+
+    data3: selector3(state, ownProps.value)
+  }
+}
+```
+
+--
+
+## Map Dispatch To Props
+
+Action creator  <!-- .element: class="filename" -->
+```JavaScript
+const increaseCounter = () => ({
+  type: 'INCREASE_COUNTER'
+})
+```
+
+Light version  <!-- .element: class="filename" -->
+```JavaScript
+const mapDispatchToProps = {
+  increaseCounter
+}
+```
+
+Full version  <!-- .element: class="filename" -->
+```JavaScript
+const mapDispatchToProps = (dispatch) => ({
+  increaseCounter: () => dispatch(increaseCounter())
+})
+```
+
+<br />
+
+```JavaScript
+export connect(null, mapDispatchToProps)(CounterApp)
+
+/* if mapStateToProps is defined somewhere in context */
+export connect(mapStateToProps, mapDispatchToProps)(CounterApp)
+```
+
+--
+
+## Merge Props
+
+```JavaScript
+const mergeProps = (stateProps, dispatchProps, ownProps) => ({
+  ...ownProps,
+  ...stateProps,
+
+  action: () => doSomething(stateProps.value, ownProps.value)
+})
+
+/* if mapStateToProps and mapDispatchToProps are defined somewhere in context */
+export connect(mapStateToProps, mapDispatchToProps, mergeProps)(CounterApp)
+```
+
 ---
 ## Useful resources:
 - **Redux Docs**
