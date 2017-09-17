@@ -73,7 +73,7 @@ $ rails generate devise:install
 ## Generate Devise MODEL
 
 ```bash
-$ rails generate devise user
+$ rails generate devise User
 invoke  active_record
   create    db/migrate/20141211212008_devise_create_users.rb
   create    app/models/user.rb
@@ -144,11 +144,19 @@ end
 
 --
 
-config/routes.rb
+config/routes.rb <!-- .element: class="filename" -->
 
 ```ruby
 Bookstore::Application.routes.draw do
   devise_for :users
+end
+```
+
+for JSON format
+
+```ruby
+Bookstore::Application.routes.draw do
+  devise_for :users, defaults: { format: :json }
 end
 ```
 
@@ -162,42 +170,6 @@ $ rake db:migrate
 -- add_index(:users, :reset_password_token, {:unique=>true})
    -> 0.0008s
 ==  DeviseCreateUsers: migrated (0.0141s) =====================================
-```
-
----
-
-## Log In / Sign Up
-
-app/views/layouts/application.html.erb <!-- .element: class="filename" -->
-
-```html
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Bookstore</title>
-  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
-  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
-  <div id="user-nav">
-    <% if user_signed_in? %>
-      Logged in as <strong><%= current_user.email %></strong>.
-      <%= link_to 'Edit profile', edit_user_registration_path %> |
-      <%= link_to "Logout", destroy_user_session_path, method: :delete %>
-    <% else %>
-      <%= link_to "Sign up", new_user_registration_path %> |
-      <%= link_to "Login", new_user_session_path %>
-    <% end %>
-  </div>
-
-  <% flash.each do |name, msg| %>
-    <%= content_tag :div, msg, id: "flash-#{name}" %>
-  <% end %>
-
-  <%= yield %>
-</body>
-</html>
 ```
 
 ---
@@ -229,28 +201,171 @@ $ rails generate devise:views
   create    app/views/devise/mailer/unlock_instructions.html.erb
 ```
 
+--
+
+## Log In / Sign Up
+
+app/views/layouts/application.html.erb <!-- .element: class="filename" -->
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bookstore</title>
+  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+  <div id="user-nav">
+    <% if user_signed_in? %>
+      Logged in as <strong><%= current_user.email %></strong>.
+      <%= link_to 'Edit profile', edit_user_registration_path %> |
+      <%= link_to 'Logout', destroy_user_session_path, method: :delete %>
+    <% else %>
+      <%= link_to 'Sign up', new_user_registration_path %> |
+      <%= link_to 'Login', new_user_session_path %>
+    <% end %>
+  </div>
+
+  <% flash.each do |name, msg| %>
+    <%= content_tag :div, msg, id: "flash-#{name}" %>
+  <% end %>
+
+  <%= yield %>
+</body>
+</html>
+```
+
 ---
 
-## Facebook Authentication
+## Modules
+
+Devise composed of 10 modules:
+
+* [Database Authenticatable](http://www.rubydoc.info/github/plataformatec/devise/master/Devise/Models/DatabaseAuthenticatable): hashes and stores a password in the database to validate the authenticity of a user while signing in. The authentication can be done both through POST requests or HTTP Basic Authentication.
+
+* [Omniauthable](http://www.rubydoc.info/github/plataformatec/devise/master/Devise/Models/Omniauthable): adds OmniAuth support.
+Confirmable: sends emails with confirmation instructions and verifies whether an account is already confirmed during sign in.
+* [Confirmable](https://github.com/plataformatec/devise/wiki/How-To:-Add-:confirmable-to-Users): sends emails with confirmation instructions and verifies whether an account is already confirmed during sign in.
+* [Recoverable](http://rubydoc.info/github/plataformatec/devise/master/Devise/Models/Recoverable): resets the user password and sends reset instructions.
+
+* [Registerable](http://rubydoc.info/github/plataformatec/devise/master/Devise/Models/Registerable): handles signing up users through a registration process, also allowing them to edit and destroy their account.
+
+* [Rememberable](http://rubydoc.info/github/plataformatec/devise/master/Devise/Models/Rememberable): manages generating and clearing a token for remembering the user from a saved cookie.
+* [Trackable](http://rubydoc.info/github/plataformatec/devise/master/Devise/Models/Trackable): tracks sign in count, timestamps and IP address.
+* [Timeoutable](http://rubydoc.info/github/plataformatec/devise/master/Devise/Models/Timeoutable): expires sessions that have not been active in a specified period of time.
+* [Validatable](http://rubydoc.info/github/plataformatec/devise/master/Devise/Models/Validatable): provides validations of email and password. It's optional and can be customized, so you're able to define your own validations.
+* [Lockable](https://github.com/plataformatec/devise/wiki/How-To:-Add-:lockable-to-Users): locks an account after a specified number of failed sign-in attempts. Can unlock via email or after a specified time period.
+
+--
+
+## Default devise modules
+
+Enabled by default:
+
+* Database Authenticatable, Registerable, Recoverable, Rememberable, Trackable, Validatable
+
+Others:
+
+* Confirmable, Lockable, Timeoutable, Omniauthable
+
+---
+
+### OmniAuth
+
+OmniAuth is a library that standardizes multi-provider authentication for web applications. It was created to be powerful, flexible, and do as little as possible. Any developer can create strategies for OmniAuth that can authenticate users via disparate systems.
+
+[https://github.com/omniauth/omniauth](https://github.com/omniauth/omniauth)
+
+--
+
+## Github example
+
+The first step then is to add an OmniAuth gem to your application. This can be done in our Gemfile.
 
 Gemfile <!-- .element: class="filename" -->
 
 ```ruby
-gem 'devise'
-gem 'omniauth-facebook'
+gem 'omniauth-github'
 ```
 
+--
+
+Next up, you should add the columns "provider" (string) and "uid" (string) to your User model.
+
 ```bash
-$ bundle
+rails g migration AddOmniauthToUsers provider:string uid:string
+rake db:migrate
 ```
+
+--
+
+Declare the provider in your devise config.
 
 config/initializers/devise.rb <!-- .element: class="filename" -->
 
-```bash
-Devise.setup do |config|
-  # ...
+```ruby
+config.omniauth :github, ENV['GITHUB_APP_ID'], ENV['GITHUB_APP_SECRET'], scope: 'user,public_repo'
+```
+
+--
+
+After configuring your strategy, you need to make your model (e.g. app/models/user.rb) omniauthable:
+
+app/models/user.rb <!-- .element: class="filename" -->
+
+```ruby
+class User < ApplicationRecord
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable,
+         :omniauthable
+
+  def self.from_omniauth(auth)
+    where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
+      user.provider = auth.provider
+      user.uid = auth.uid
+      user.email = auth.info.email
+      user.password = Devise.friendly_token[0,20]
+    end
+  end
 end
 ```
+
+--
+
+## Callbacks Controller
+
+```ruby
+class CallbacksController < Devise::OmniauthCallbacksController
+  def github
+    @user = User.from_omniauth(request.env["omniauth.auth"])
+    sign_in_and_redirect @user
+  end
+end
+```
+
+Routes
+
+```ruby
+Rails.application.routes.draw do
+  devise_for :users, controllers: { omniauth_callbacks: "callbacks" }
+end
+```
+
+View
+
+```html
+  = link_to 'Sign up with GitHub', user_github_omniauth_authorize_path
+```
+
+---
+
+### Token Based Authentication
+
+* [devise_token_auth](https://github.com/lynndylanhurley/devise_token_auth)
+
+* [simple_token_authentication](https://github.com/gonzalo-bulnes/simple_token_authentication)
 
 ---
 
