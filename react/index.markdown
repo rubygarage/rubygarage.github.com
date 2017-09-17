@@ -38,3 +38,7 @@ title: React
 - [Redux](slides/redux)
   <br>
   <small>A JavaScript library for managing and maintaining application state.</small>
+
+- [Webpack](slides/webpack)
+  <br>
+  <small>Module bundler.</small>
