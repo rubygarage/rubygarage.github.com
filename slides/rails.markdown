@@ -111,7 +111,7 @@ create  app/models/application_record.rb
 create  app/views/layouts/application.html.erb
 create  app/views/layouts/mailer.html.erb
 create  app/views/layouts/mailer.text.erb
-create  app/assets/images/.keep
+create  app/rubygarage/assets/images/.keep
 create  app/assets/javascripts/channels/.keep
 create  app/controllers/concerns/.keep
 create  app/models/concerns/.keep

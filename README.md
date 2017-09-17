@@ -1,4 +1,14 @@
-# Slides for RubyGarage course
+# Slides for Skroutz's fork of the RubyGarage course
+
+## Prerequisites
+
+Install the following gems and system packages
+ (tested on debian + derilatives).
+
+```bash
+sudo gem install jekyll
+sudo apt install -yqq graphviz nodejs
+```
 
 ## How to start Jekyll in development mode
 

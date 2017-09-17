@@ -1,8 +1,8 @@
 title: RubyGarage Slides
 email: info@rubygarage.org
 description: >
-baseurl: ""
-url: "https://rubygarage.github.io"
+baseurl: "/rubygarage"
+url: "https://skroutz.github.io/rubygarage/"
 repository: "rubygarage/slides"
 twitter_username: timlar_ua
 github_username: timlar

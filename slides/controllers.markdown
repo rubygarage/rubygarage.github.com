@@ -12,7 +12,7 @@ your controller is responsible for making sense of the request and producing the
 
 ### MVC
 
-![](/assets/images/mvc.svg)
+![](/rubygarage/assets/images/mvc.svg)
 
 ---
 

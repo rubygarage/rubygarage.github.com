@@ -55,7 +55,7 @@ HTML Formatter
 rubocop app -R --format html -o result.html
 ```
 
-![](/assets/images/static_code_analysis/rubocop.png)
+![](/rubygarage/assets/images/static_code_analysis/rubocop.png)
 
 --
 ## Report example
@@ -162,7 +162,7 @@ brakeman -o output.html -o output.json
 
 ## Report example
 
-![](/assets/images/static_code_analysis/brakeman.png)
+![](/rubygarage/assets/images/static_code_analysis/brakeman.png)
 
 
 --
@@ -201,7 +201,7 @@ rails_best_practices -f html .
 Source Code: |=============================================================================================================================================================================================|
 ```
 
-![](/assets/images/static_code_analysis/rails_best_practices.png)
+![](/rubygarage/assets/images/static_code_analysis/rails_best_practices.png)
 --
 
 best practices here
@@ -264,7 +264,7 @@ demo.rb -- 2 warnings:
 reek app --format html > report.html
 ```
 
-![](/assets/images/static_code_analysis/reek.png)
+![](/rubygarage/assets/images/static_code_analysis/reek.png)
 
 ---
 

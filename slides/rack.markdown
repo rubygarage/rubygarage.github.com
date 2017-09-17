@@ -386,13 +386,13 @@ $ rackup
 
 Go to http://localhost:9292
 
-![](/assets/images/rack/form.png)
+![](/rubygarage/assets/images/rack/form.png)
 
 --
 
 # After submit
 
-![](/assets/images/rack/form-2.png)
+![](/rubygarage/assets/images/rack/form-2.png)
 
 ---
 

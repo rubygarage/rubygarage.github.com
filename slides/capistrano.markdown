@@ -3,7 +3,7 @@ layout: slide
 title: Capistrano
 ---
 
-![](/assets/images/capistrano.svg)
+![](/rubygarage/assets/images/capistrano.svg)
 
 # Capistrano
 

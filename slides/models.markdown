@@ -660,7 +660,7 @@ new_user.update(first_name: "Van'ka", email: "vanka@yandex.ru")
 
 ## belongs_to
 
-![](/assets/images/belongs_to.svg)
+![](/rubygarage/assets/images/belongs_to.svg)
 
 ```ruby
 class Post < ActiveRecord::Base
@@ -737,7 +737,7 @@ belongs_to :user, optional: true
 
 ## has_many
 
-![](/assets/images/has_many.svg)
+![](/rubygarage/assets/images/has_many.svg)
 
 ```ruby
 class User < ActiveRecord::Base
@@ -794,7 +794,7 @@ user.posts.create(text: "New post")
 
 ## has_one
 
-![](/assets/images/has_one.svg)
+![](/rubygarage/assets/images/has_one.svg)
 
 ```ruby
 class Post < ActiveRecord::Base
@@ -863,7 +863,7 @@ post.create_post_info(views: 40, likes: 5, rating: 10)
 
 ## has_many :through
 
-![](/assets/images/has_many_through.svg)
+![](/rubygarage/assets/images/has_many_through.svg)
 
 --
 
@@ -980,7 +980,7 @@ end
 
 ## has_one :through
 
-![](/assets/images/has_one_through.svg)
+![](/rubygarage/assets/images/has_one_through.svg)
 
 --
 
@@ -1073,7 +1073,7 @@ end
 
 ## has_and_belongs_to_many
 
-![](/assets/images/has_and_belongs_to_many.svg)
+![](/rubygarage/assets/images/has_and_belongs_to_many.svg)
 
 --
 
@@ -1159,7 +1159,7 @@ end
 
 ## Polymorphic Associations
 
-![](/assets/images/polymorphic.svg)
+![](/rubygarage/assets/images/polymorphic.svg)
 
 --
 
