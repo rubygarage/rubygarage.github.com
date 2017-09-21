@@ -406,7 +406,7 @@ it('should pass a selected value to the onChange handler', () => {
     target: { '5' },
   });
 
-  expect(onChange).toBeCalledWith(value);
+  expect(onChange).toBeCalledWith('5');
 });
 ```
 
@@ -490,7 +490,6 @@ Testing initial state
 
 ```js
 import reducer from '../reducers/todos'
-import * as types from '../constants/ActionTypes'
 
 describe('todos reducer', () => {
   it('should return the initial state', () => {
