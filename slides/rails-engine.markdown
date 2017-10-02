@@ -165,7 +165,7 @@ s.add_development_dependency 'factory_girl_rails'
 Add this line to your gemspec file
 
 ```ruby
-s.test_files = Dir["spec/`/*"]
+s.test_files = Dir["spec/**/*"]
 ```
 
 --
