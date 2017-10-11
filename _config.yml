@@ -27,7 +27,7 @@ kramdown:
   hard_wrap: false
   math_engine: mathjax
 
-gems:
+plugins:
   - jekyll-coffeescript
   - jekyll-paginate
 

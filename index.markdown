@@ -5,6 +5,10 @@ title: Ruby presentations
 
 # Ruby
 
+- [Introduction](/slides/introduction)
+  <br>
+  <small>Who we are and what we will do in this cource.</small>
+
 - [Ruby Basics](/slides/ruby-basics)
   <br>
   <small>Start working with Ruby!</small>

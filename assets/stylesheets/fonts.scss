@@ -1,0 +1,67 @@
+---
+# this is an empty front matter that instruct jekyll
+# to process this file with liquid
+---
+@font-face {
+  font-family: 'Gotham Pro';
+  src: url('{{ site.url }}/assets/fonts/gothaproreg-webfont.eot');
+  src: url('{{ site.url }}/assets/fonts/gothaproreg-webfont.eot?#iefix') format('embedded-opentype'),
+       url('{{ site.url }}/assets/fonts/gothaproreg-webfont.woff') format('woff'),
+       url('{{ site.url }}/assets/fonts/gothaproreg-webfont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'PT Serif';
+  src: url('{{ site.url }}/assets/fonts/ptf55f_w.eot');
+  src: local('PT Serif'),
+       url('{{ site.url }}/assets/fonts/ptf55f_w.eot?#iefix') format('embedded-opentype'),
+       url('{{ site.url }}/assets/fonts/ptf55f_w.woff') format('woff'),
+       url('{{ site.url }}/assets/fonts/ptf55f_w.ttf') format('truetype'),
+       url('{{ site.url }}/assets/fonts/ptf55f_w.svg#PTSerif-Regular') format('svg');
+}
+
+@font-face{
+    font-family: 'Fira Code';
+    src: url('{{ site.url }}/assets/fonts/eot/FiraCode-Light.eot');
+    src: url('{{ site.url }}/assets/fonts/eot/FiraCode-Light.eot') format('embedded-opentype'),
+         url('{{ site.url }}/assets/fonts/woff2/FiraCode-Light.woff2') format('woff2'),
+         url('{{ site.url }}/assets/fonts/woff/FiraCode-Light.woff') format('woff'),
+         url('{{ site.url }}/assets/fonts/ttf/FiraCode-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face{
+    font-family: 'Fira Code';
+    src: url('{{ site.url }}/assets/fonts/eot/FiraCode-Regular.eot');
+    src: url('{{ site.url }}/assets/fonts/eot/FiraCode-Regular.eot') format('embedded-opentype'),
+         url('{{ site.url }}/assets/fonts/woff2/FiraCode-Regular.woff2') format('woff2'),
+         url('{{ site.url }}/assets/fonts/woff/FiraCode-Regular.woff') format('woff'),
+         url('{{ site.url }}/assets/fonts/ttf/FiraCode-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face{
+    font-family: 'Fira Code';
+    src: url('{{ site.url }}/assets/fonts/eot/FiraCode-Medium.eot');
+    src: url('{{ site.url }}/assets/fonts/eot/FiraCode-Medium.eot') format('embedded-opentype'),
+         url('{{ site.url }}/assets/fonts/woff2/FiraCode-Medium.woff2') format('woff2'),
+         url('{{ site.url }}/assets/fonts/woff/FiraCode-Medium.woff') format('woff'),
+         url('{{ site.url }}/assets/fonts/ttf/FiraCode-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face{
+    font-family: 'Fira Code';
+    src: url('{{ site.url }}/assets/fonts/eot/FiraCode-Bold.eot');
+    src: url('{{ site.url }}/assets/fonts/eot/FiraCode-Bold.eot') format('embedded-opentype'),
+         url('{{ site.url }}/assets/fonts/woff2/FiraCode-Bold.woff2') format('woff2'),
+         url('{{ site.url }}/assets/fonts/woff/FiraCode-Bold.woff') format('woff'),
+         url('{{ site.url }}/assets/fonts/ttf/FiraCode-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
