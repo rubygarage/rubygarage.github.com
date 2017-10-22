@@ -3,7 +3,7 @@ layout: page
 title: Ruby presentations
 ---
 
-# Ruby
+## Ruby
 
 - [Introduction](/slides/introduction)
   <br>
@@ -50,7 +50,7 @@ title: Ruby presentations
 
 
 
-# Ruby on Rails
+## Ruby on Rails
 
 - [Rails](/slides/rails)
   <br>
@@ -81,7 +81,7 @@ title: Ruby presentations
   <br>
   <small>Views in Rails</small>
 
-
+<!--
 - [HTML & CSS](/slides/html-css)
   <br>
   <small>Coding layouts</small>
@@ -90,7 +90,7 @@ title: Ruby presentations
 - [CSS architecture](/slides/css-architecture)
   <br>
   <small>Modules, Semantics and Grids</small>
-
+-->
 
 - [BDD in Rails](/slides/bdd)
   <br>
@@ -112,20 +112,21 @@ title: Ruby presentations
   <small>Meet Rails Engines.</small>
 
 
-- [RESTApi (Application Programming Interface)](/slides/api)
+- [RESTApi (API)](/slides/api)
   <br>
   <small>Writing API in Rails.</small>
 
 
+<!--
 # Frontend
 
 - [AngularJS](/slides/angular-js)
   <br>
   <small>AngularJS is a structural JavaScript framework for dynamic web apps.</small>
+-->
 
 
-
-# Utils
+## Utils
 
 - [Static code analysis](/slides/static-code-analysis)
   <br>
@@ -142,13 +143,13 @@ title: Ruby presentations
   <small>Application deploy.</small>
 
 
-
+<!--
 # Additional
 
 - [Functional Programming](/slides/functional-programming)
   <br>
   <small>Functional programming is a style of programming which models computations as the evaluation of expressions.</small>
-
+-->
 
 <br>
 <br>
