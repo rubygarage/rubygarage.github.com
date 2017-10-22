@@ -455,20 +455,20 @@ a.dig(0, 0, 0)
 languages = ['Ruby', 'JavaScript', 'Python', 'PHP']
 # => ["Ruby", "JavaScript", "Python", "PHP"]
 
-languages.push('Closure')
-# => ["Ruby", "JavaScript", "Python", "PHP", "Closure"]
+languages.push('Clojure')
+# => ["Ruby", "JavaScript", "Python", "PHP", "Clojure"]
 
 languages << 'Haskell'
-# => ["Ruby", "JavaScript", "Python", "PHP", "Closure", "Haskell"]
+# => ["Ruby", "JavaScript", "Python", "PHP", "Clojure", "Haskell"]
 
 languages.unshift('C++')
-# => ["C++", "Ruby", "JavaScript", "Python", "PHP", "Closure", "Haskell"]
+# => ["C++", "Ruby", "JavaScript", "Python", "PHP", "Clojure", "Haskell"]
 
 languages.insert(3, 'CoffeeScript')
-# => ["C++", "Ruby", "JavaScript", "CoffeeScript", "Python", "PHP", "Closure", "Haskell"]
+# => ["C++", "Ruby", "JavaScript", "CoffeeScript", "Python", "PHP", "Clojure", "Haskell"]
 
 languages.insert(4, 'Haml', 'Sass')
-# => ["C++", "Ruby", "JavaScript", "CoffeeScript", "Haml", "Sass", "Python", "PHP", "Closure", "Haskell"]
+# => ["C++", "Ruby", "JavaScript", "CoffeeScript", "Haml", "Sass", "Python", "PHP", "Clojure", "Haskell"]
 ```
 
 --
@@ -476,26 +476,26 @@ languages.insert(4, 'Haml', 'Sass')
 ## Removing items
 
 ```ruby
-languages = ['C++', 'Ruby', 'JavaScript', 'CoffeeScript', 'Haml', 'Sass', 'Python', 'PHP', 'Closure', 'Haskell']
-# => ["C++", "Ruby", "JavaScript", "CoffeeScript", "Haml", "Sass", "Python", "PHP", "Closure", "Haskell"]
+languages = ['C++', 'Ruby', 'JavaScript', 'CoffeeScript', 'Haml', 'Sass', 'Python', 'PHP', 'Clojure', 'Haskell']
+# => ["C++", "Ruby", "JavaScript", "CoffeeScript", "Haml", "Sass", "Python", "PHP", "Clojure", "Haskell"]
 
 languages.pop
 # => "Haskell"
 
 languages
-# => ["C++", "Ruby", "JavaScript", "CoffeeScript", "Haml", "Sass", "Python", "PHP", "Closure"]
+# => ["C++", "Ruby", "JavaScript", "CoffeeScript", "Haml", "Sass", "Python", "PHP", "Clojure"]
 
 languages.shift
 # => "C++"
 
 languages
-# => ["Ruby", "JavaScript", "CoffeeScript", "Haml", "Sass", "Python", "PHP", "Closure"]
+# => ["Ruby", "JavaScript", "CoffeeScript", "Haml", "Sass", "Python", "PHP", "Clojure"]
 
 languages.delete_at(2)
 # => "CoffeeScript"
 
 languages
-# => ["Ruby", "JavaScript", "Haml", "Sass", "Python", "PHP", "Closure"]
+# => ["Ruby", "JavaScript", "Haml", "Sass", "Python", "PHP", "Clojure"]
 
 languages.delete('PHP')
 # => "PHP"
@@ -507,7 +507,7 @@ languages.delete('PHP')
 
 ```ruby
 languages
-# => ["Ruby", "JavaScript", "Haml", "Sass", "Python", "Closure"]
+# => ["Ruby", "JavaScript", "Haml", "Sass", "Python", "Clojure"]
 
 languages = ['Ruby', 'JavaScript', nil, 0, 'Python', nil]
 # => ["Ruby", "JavaScript", nil, 0, "Python", nil]
@@ -542,7 +542,7 @@ languages.any?
 languages.include?('Ruby')
 # => true
 
-languages.include?('Closure')
+languages.include?('Clojure')
 # => false
 ```
 
@@ -1815,12 +1815,12 @@ pair.
 
 3. Block hasn't access to method local variables but we can pass them to block. And They can be changed inside block.
 
-4. If method local variable has te same name as block local variable then method local variable is not availaba inside
+4. If method local variable has the same name as block local variable then method local variable is not available inside
 block.
 
 5. Arguments number is important for method and not important for block.
 
-6. if you want to pass as method argument you must use braces otherwise it is treated as block and rises an error.
+6. If you want to pass as method argument you must use braces otherwise it is treated as block and rises an error.
 
 --
 
