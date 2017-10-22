@@ -1,10 +1,11 @@
 source 'https://rubygems.org'
+
 ruby RUBY_VERSION
 
-gem 'jekyll'
+gem 'jekyll', '~> 3.6'
 
 group :jekyll_plugins do
-  gem 'github-pages'
-  gem 'jekyll-coffeescript'
-  gem 'jekyll-github-metadata'
+  gem 'github-pages', '~> 165'
+  gem 'jekyll-coffeescript', '~> 1.0', '>= 1.0.2'
+  gem 'jekyll-github-metadata', '~> 2.9', '>= 2.9.3'
 end
