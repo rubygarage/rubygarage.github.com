@@ -29,10 +29,26 @@ yarn add react-router-dom
 
 --
 
-If you are using `webpack-dev-server`, add `--history-api-fallback` flag:
+If you are using `webpack-dev-server`, add `--history-api-fallback`:
 
 ```bash
 webpack-dev-server ... --history-api-fallback
+```
+
+<br />
+
+Or update your Webpack config:
+
+```js
+{
+  ...
+
+  devServer: {
+    historyApiFallback: true
+  }
+
+  ...
+}
 ```
 
 ---
