@@ -320,6 +320,8 @@ Use `push` flag to create new entry in the `History`:
 
 Cool. But we need 404 fallback!
 
+<br />
+
 Import `Switch` from 'react-router-dom' package:
 
 ```js
@@ -342,3 +344,138 @@ And configure `Route` with fallback component:
   <Route component={() => '404 - Not Found'} />
 </Switch>
 ```
+
+---
+
+Cool. But we want to control everything programmatically!
+
+Add `react-router-redux` package to project dependencies:
+
+<br />
+
+To install with `yarn`, run:
+
+```bash
+yarn add react-router-redux@next
+```
+
+<br />
+
+To install with `npm`, run:
+
+```bash
+npm install --save react-router-redux@next
+```
+
+--
+
+Notify `Redux` store about new reducer:
+
+<br />
+
+```js
+import { combineReducers } from 'redux'
+
+import { routerReducer } from 'react-router-redux'
+
+export default combineReducers({
+  ..., router: routerReducer
+})
+```
+
+--
+
+Notify `Redux` store about new middleware:
+
+```js
+import { routerMiddleware as createRouterMiddleware } from 'react-router-redux'
+
+...
+
+const configureStore = history => {
+  ...
+
+  const routerMiddleware =
+    createRouterMiddleware(
+      history
+    )
+
+  const middlewares = applyMiddleware(
+    ..., routerMiddleware, ...
+  )
+
+  ...
+}
+```
+
+--
+
+Update entry point of your application:
+
+```js
+import { createBrowserHistory } from 'history'
+import { ConnectedRouter } from 'react-router-redux'
+
+...
+
+import { configureStore } from './redux-store'
+
+const history = createHashHistory()
+const store = configureStore(history)
+
+...
+
+ReactDOM.render(
+  <Provider store={store}>
+    <ConnectedRouter history={history}>
+      <Application />
+    </ConnectedRouter>
+  </Provider>,
+
+  document.getElementById('app')
+)
+
+...
+```
+
+---
+
+Dispatch `push` and `replace` actions:
+
+```js
+import { push, replace } from 'react-router-redux'
+
+const Page = props => (
+  <div>
+    ...
+
+    // acts as Link
+    <button onClick={() => props.push('/abc')}>
+      Click me!
+    <button>
+
+    // acts as Redirect
+    <button onClick={() => props.replace('/abc')}>
+      Click me!
+    <button>
+
+    ...
+  </div>
+)
+
+const mapDispatchToProps = {
+  push, replace
+}
+
+export default connect(null,)
+```
+
+--
+
+Except `push` and `replace` feel free to use:
+
+- `go` - Moves backwards or forwards a relative number of locations in history.
+
+- `goBack` - Moves backwards one location. Equivalent to go(-1)
+
+- `goForward` - Moves forward one location. Equivalent to go(1)
