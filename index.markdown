@@ -29,6 +29,11 @@ title: Ruby presentations
   <small>How to use Ruby gems and write your own.</small>
 
 
+- [Rake](/slides/rake)
+  <br>
+  <small>Rake is a Make-like program implemented in Ruby, build tool for Ruby developers.</small>
+
+
 - [RSpec](/slides/rspec)
   <br>
   <small>Testing Ruby code with RSpec.</small>
@@ -37,11 +42,6 @@ title: Ruby presentations
 - [Refactoring in Ruby](/slides/refactoring-ruby)
   <br>
   <small>Learn how to do refactoring in Ruby.</small>
-
-
-- [Rake](/slides/rake)
-  <br>
-  <small>Rake is a Make-like program implemented in Ruby, build tool for Ruby developers.</small>
 
 
 - [Rack](/slides/rack)
