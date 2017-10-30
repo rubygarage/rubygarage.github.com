@@ -149,18 +149,25 @@ store.dispatch({ type: 'DECREMENT' })
 
 ## Actions
 
-Actions are payloads of information that send data from your application to your store. They are the only source of information for the store. You send them to the store using `store.dispatch()`.
-Here's an example action which represents adding a new todo item:
+<br/>
 
+
+
+Actions are payloads of information that send data from your application to your store. They are the only source of information for the store. You send them to the store using `store.dispatch()`.
 ```javascript
 const ADD_TODO = 'ADD_TODO'
+
 {
   type: ADD_TODO,
   text: 'Build my first Redux app'
 }
 ```
 
+
+--
+
 Actions are plain JavaScript objects. Actions must have a type property that indicates the type of action being performed. Types should typically be defined as string constants. Once your app is large enough, you may want to move them into a separate module.
+
 
 ```javascript
 import { ADD_TODO, REMOVE_TODO } from '../actionTypes'
@@ -170,10 +177,15 @@ import { ADD_TODO, REMOVE_TODO } from '../actionTypes'
 
 ## Action Creators
 
-Action creators are exactly that—functions that create actions. It's easy to conflate the terms “action” and “action creator,” so do your best to use the proper term.
-In Redux action creators simply return an action:
-```javascript
+<br/>
+Action creators are exactly that—functions that create actions. 
+<br/>
+It's easy to conflate the terms `action` and `action creator`, so do your best to use the proper term.
+<br/>
+In Redux action creators simply return an action. This makes them portable and easy to test.
 
+
+```javascript
 function addTodo(text) {
   return {
     type: ADD_TODO,
@@ -181,11 +193,8 @@ function addTodo(text) {
   }
 }
 ```
-This makes them portable and easy to test.
 
---
-
- To actually initiate a dispatch, pass the result to the `dispatch()` function:
+To actually initiate a dispatch, pass the result to the `dispatch()` function:
 ```javascript
 dispatch(addTodo(text))
 dispatch(completeTodo(index))
@@ -206,10 +215,8 @@ Now you'll be able to call them directly:
 boundAddTodo(text)
 boundCompleteTodo(index)
 ```
-
---
-
-The `dispatch()` function can be accessed directly from the store as `store.dispatch()`, but more likely you'll access it using a helper like react-redux's `connect()`. You can use `bindActionCreators()` to automatically bind many action creators to a `dispatch()` function.
+<br/>
+The `dispatch()` function can be accessed directly from the store as `store.dispatch()`, but more likely you'll access it using a helper like react-redux's `connect()`. 
 
 Action creators can also be asynchronous and have side-effects.
 
@@ -222,6 +229,8 @@ Actions describe the fact that something happened, but don't specify how the app
 --
 
 In Redux, all the application state is stored as a single object. It's a good idea to think of its shape before writing any code. What's the minimal representation of your app's state as an object?
+
+
 For our todo app, we want to store two different things:
 * The currently selected visibility filter;
 * The actual list of todos.
@@ -251,28 +260,24 @@ Now that we've decided what our state object looks like, we're ready to write a 
 
 The reducer is a pure function that takes the previous state and an action, and returns the next state.
 
+
 ```javascript
-(previousState, action) => newState
+  (previousState, action) => newState
 ```
 
 It's called a reducer because it's the type of function you would pass to `Array.prototype.reduce(reducer, ?initialValue)`.
 
-It's very important that the reducer stays pure.
+--
+Just remember that the reducer must be pure.
+Given the same arguments, it should calculate the next state and return it.
+No surprises. No side effects. No API calls. No mutations. Just a calculation.
+
+
 Things you should never do inside a reducer:
 
 * Mutate its arguments;
 * Perform side effects like API calls and routing transitions;
 * Call non-pure functions, e.g. `Date.now()` or `Math.random()`.
-
-<br/>
-
-Just remember that the reducer must be pure.
-Given the same arguments, it should calculate the next state and return it.
-No surprises. No side effects. No API calls. No mutations. Just a calculation.
-
-<br/>
-
-With this out of the way, let's start writing our reducer by gradually teaching it to understand the actions we defined earlier.
 
 --
 
@@ -286,19 +291,6 @@ const initialState = {
   todos: []
 }
 
-function todoApp(state, action) {
-  if (typeof state === 'undefined') {
-    return initialState
-  }
-
-  // For now, don't handle any actions
-  // and just return the state given to us.
-  return state
-}
-```
-One neat trick is to use the ES6 default arguments syntax to write this in a more compact way:
-
-```javascript
 function todoApp(state = initialState, action) {
   // For now, don't handle any actions
   // and just return the state given to us.
@@ -308,15 +300,15 @@ function todoApp(state = initialState, action) {
 
 --
 
-Now let's handle `SET_VISIBILITY_FILTER`. All it needs to do is to change visibilityFilter on the state. Easy:
+Now let's handle `SET_VISIBILITY_FILTER`. 
+
+All it needs to do is to change `visibilityFilter` on the state.
 
 ```javascript
 function todoApp(state = initialState, action) {
   switch (action.type) {
     case SET_VISIBILITY_FILTER:
-      return Object.assign({}, state, {
-        visibilityFilter: action.filter
-      })
+      return { ...state, visibilityFilter: action.filter }
     default:
       return state
   }
@@ -324,10 +316,8 @@ function todoApp(state = initialState, action) {
 ```
 
 Note that:
-1. We don't mutate the state. We create a copy with `Object.assign()`.
-<br/>
-`Object.assign(state, { visibilityFilter: action.filter })` is also wrong: it will mutate the first argument. You must supply an empty object as the first parameter. You can also enable the object spread operator proposal to write `{ ...state, ...newState }` instead. 
-2. We return the previous state in the default case. It's important to return the previous state for any unknown action.
+* We don't mutate the state. We create a copy with `{ ...state, ...newState }`.
+* We return the previous state in the default case. It's important to return the previous state for any unknown action.
 
 --
 
@@ -377,18 +367,19 @@ All `combineReducers()` does is generate a function that calls your reducers wit
 
 ## Store
 
-In the previous sections, we defined the actions that represent the facts about “what happened” and the reducers that update the state according to those actions.
+The Store is the object that brings them together. 
 
---
-
-The Store is the object that brings them together. The store has the following responsibilities:
+The store has the following responsibilities:
 * Holds application state;
 * Allows access to state via `getState()`;
 * Allows state to be updated via `dispatch(action)`;
 * Registers listeners via `subscribe(listener)`;
 * Handles unregistering of listeners via the function returned by `subscribe(listener)`.
 
+<br/>
+
 It's important to note that you'll only have a single store in a Redux application.
+
 When you want to split your data handling logic, you'll use reducer composition instead of many stores.
 
 --
@@ -401,6 +392,7 @@ import todoApp from './reducers'
 let store = createStore(todoApp)
 ```
 
+<br />
 You may optionally specify the initial state as the second argument to `createStore()`. This is useful for hydrating the state of the client to match the state of a Redux application running on the server.
 
 ```javascript
@@ -445,23 +437,21 @@ This means that all data in an application follows the same lifecycle pattern, m
 
 --
 
-The data lifecycle in any Redux app follows these 4 steps:
-
---
-
-#### 1. You call `store.dispatch(action)`.    
-An action is a plain object describing what happened. For example: 
+### 1. You call `store.dispatch(action)`.    
+An action is a plain object describing what happened. For example: 
 ```json
 { type: 'LIKE_ARTICLE', articleId: 42 }
 { type: 'FETCH_USER_SUCCESS', response: { id: 3, name: 'Mary' } }
 { type: 'ADD_TODO', text: 'Read the Redux docs.' }
 ```
 
- Think of an action as a very brief snippet of news. “Mary liked article 42.” or “‘Read the Redux docs.' was added to the list of todos.” You can call `store.dispatch(action)` from anywhere in your app, including components and XHR callbacks, or even at scheduled intervals. 
+ Think of an action as a very brief snippet of news. “Mary liked article 42.” or “‘Read the Redux docs.' was added to the list of todos.” You can call `store.dispatch(action)` from anywhere in your app, including components and XHR callbacks, or even at scheduled intervals. 
 
 --
 
-#### 2. The Redux store calls the reducer function you gave it. The store will pass two arguments to the reducer: the current state tree and the action. For example, in the todo app, the root reducer might receive something like this: 
+### 2. The Redux store calls the reducer function you gave it. 
+
+The store will pass two arguments to the reducer: the current state tree and the action. For example, the root reducer might receive something like this: 
 ```javascript
 // The current application state (list of todos and chosen filter)
    let previousState = {
@@ -484,13 +474,15 @@ An action is a plain object describing what happened. For example: 
   let nextState = todoApp(previousState, action)
 ```
 
- Note that a reducer is a pure function. It only computes the next state. It should be completely predictable: calling it with the same inputs many times should produce the same outputs. It shouldn't perform any side effects like API calls or router transitions. These should happen before an action is dispatched.
+ Note that a reducer is a pure function. It only computes the next state. It should be completely predictable, calling it with the same inputs many times should produce the same outputs. It shouldn't perform any side effects like API calls or router transitions. These should happen before an action is dispatched.
 
 --
 
-#### 3. The root reducer may combine the output of multiple reducers into a single state tree. How you structure the root reducer is completely up to you. Redux ships with a `combineReducers()` helper function, useful for “splitting” the root reducer into separate functions that each manage one branch of the state tree. Here's how `combineReducers()` works.
+### 3. The root reducer may combine the output of multiple reducers into a single state tree. 
 
-Let's say you have two reducers, one for a list of todos, and another for the currently selected filter setting: 
+How you structure the root reducer is completely up to you. Redux ships with a `combineReducers()` helper function, useful for “splitting” the root reducer into separate functions that each manage one branch of the state tree. Here's how `combineReducers()` works.
+
+Let's say you have two reducers, one for a list of todos, and another for the currently selected filter setting: 
 ```javascript
 
 function todos(state = [], action) {
@@ -510,30 +502,29 @@ let todoApp = combineReducers({
 ```
 --
 
- When you emit an action, todoApp returned by combineReducers will call both reducers:
+ When you emit an action, todoApp returned by `combineReducers` will call both reducers:
 ```javascript
- let nextTodos = todos(state.todos, action)
-let nextVisibleTodoFilter = visibleTodoFilter(state.visibleTodoFilter, action)
+  let nextTodos = todos(state.todos, action)
+  let nextVisibleTodoFilter = visibleTodoFilter(state.visibleTodoFilter, action)
 ```
- It will then combine both sets of results into a single state tree: 
-```javascript
-  return {
-    todos: nextTodos,
-    visibleTodoFilter: nextVisibleTodoFilter
-  }
+ It will then combine both sets of results into a single state tree: 
+```JavaScript
+return {
+  todos: nextTodos, 
+  visibleTodoFilter: nextVisibleTodoFilter 
+}
 ```
- While `combineReducers()` is a handy helper utility, you don't have to use it; feel free to write your own root reducer!
+ While `combineReducers()` is a handy helper utility, you don't have to use it; feel free to write your own root reducer!
 
 --
 
-#### 4. The Redux store saves the complete state tree returned by the root reducer.
+### 4. The Redux store saves the complete state tree returned by the root reducer.
 
- This new tree is now the next state of your app!
+ This new tree is now the next state of your app!
 
-Every listener registered with `store.subscribe(listener)` will now be invoked;
-listeners may call `store.getState()` to get the current state.
+Every listener registered with `store.subscribe(listener)` will now be invoked, listeners may call `store.getState()` to get the current state.
 
- Now, the UI can be updated to reflect the new state. If you use bindings like React Redux, this is the point at which `component.setState(newState)` is called.
+ Now, the UI can be updated to reflect the new state. If you use bindings like React Redux, this is the point at which `component.setState(newState)` is called.
 
 
 ---
