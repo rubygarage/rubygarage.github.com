@@ -222,7 +222,9 @@ Installing bundler
 $ gem i bundler
 ```
 
-Creating gem with bundler
+---
+
+# Creating gem with bundler
 
 ```bash
 $ bundle gem new_gem
@@ -394,6 +396,10 @@ RSpec.configure do |config|
   end
 end
 ```
+
+---
+
+# Testing
 
 spec/new_gem_spec.rb <!-- .element class="filename" -->
 
