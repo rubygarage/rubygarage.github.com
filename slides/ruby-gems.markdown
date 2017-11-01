@@ -3,7 +3,7 @@ layout: slide
 title:  Ruby Gems
 ---
 
-# Gem
+# Ruby Gems
 
 ---
 
@@ -83,28 +83,85 @@ Writing new Gemfile to /Users/sparrow/Www/test-bundler/Gemfile
 Gemfile <!-- .element class="filename" -->
 
 ```ruby
-source 'http://rubygems.org'
-# Gemfiles require at least one gem source
+source 'http://rubygems.org' # Gemfile requires at least one gem source
 
-gem 'nokogiri'
-gem 'rack', '~>1.1'
-# => "~>1.1" is identical to ">=1.1" and " "spec"
-# => If a gem main file is different than the gem name, specify how to require it
+git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 
-gem "sinatra", :git => "git://github.com/sinatra/sinatra.git"
-# => Git repositories are also valid gem sources
+# These gems are in the :default group
+gem 'rack', '~> 2.0.1'
+gem 'my_gem', '1.0', source: 'https://gems.example.com'
+gem 'nokogiri', git: 'https://github.com/tenderlove/nokogiri.git', branch: '1.4'
+gem 'another_gem', github: 'username/another_gem'
+gem 'extracted_library', path: './vendor/extracted_library'
+
+gem 'pry', group: :development
+
+group :test do
+  gem 'faker'
+  gem 'rspec', require: false
+end
+
+group :test, :development do
+  gem 'capybara'
+  gem 'shoulda_matchers'
+end
 ```
-
-Bundle install
 
 ```bash
 $ bundle install
+$ bundle install --without test development
+$ bundle update
 ```
 
-Bundle update
+---
+
+# Semantic Versioning
+
+Given a version number `MAJOR.MINOR.PATCH`, increment the:
+
+- `MAJOR` version when you make incompatible changes
+- `MINOR` version when you add functionality in a backwards-compatible manner
+- `PATCH` version when you make backwards-compatible bug fixes
+
+--
+
+# Specifying versions
+
+```ruby
+gem 'nokogiri'
+gem 'rails', '3.0.0.beta3'
+gem 'rack',  '>= 1.0'
+gem 'thin',  '~> 2.0.3'
+```
+
+> Most of the version specifiers, like `>= 1.0`, are self-explanatory.
+  The specifier `~>` has a special meaning, best shown by example.
+
+- `~> 2.0.3` is identical to `>= 2.0.3` and `< 2.1`
+- `~> 2.1` is identical to `>= 2.1` and `< 3.0`
+- `~> 2.2.beta` will match prerelease versions like `2.2.beta.12`
+
+
+---
+
+# Recommended Workflow
 
 ```bash
-$ bundle update
+$ bundle init               # To init Bundler
+
+$ bundle install            # After you create your Gemfile for the first time
+
+$ git add Gemfile.lock      # Check the resulting Gemfile.lock into version control
+
+$ bundle install            # When checking out this repository on another development machine
+
+$ bundle install            # After changing the Gemfile to reflect a new or update dependency
+
+$ git add Gemfile.lock      # Make sure to check the updated Gemfile.lock into version control
+
+$ bundle update rails thin  # If bundle install reports a conflict, manually update the specific gems
+
+$ bundle update             # If you want to update all the gems to the latest possible versions
 ```
 
 ---
@@ -153,70 +210,106 @@ DEPENDENCIES
 Preparing environment
 
 ```bash
-$ rvm use 1.9.3-head@create-gem --create
-Using /Users/sparrow/.rvm/gems/ruby-1.9.3-head with gemset create-gem
+$ rvm use 2.4.2@create_gem --create
+ruby-2.4.2 - #gemset created ~/.rvm/gems/ruby-2.4.2@create-gem
+ruby-2.4.2 - #generating create-gem wrappers - please wait
+Using ~/.rvm/gems/ruby-2.4.2 with gemset create-gem
 ```
 
 Installing bundler
 
 ```bash
-$ gem install bundler
+$ gem i bundler
 ```
 
 Creating gem with bundler
 
 ```bash
 $ bundle gem new_gem
-create  new_gem/Gemfile
-create  new_gem/Rakefile
-create  new_gem/LICENSE
-create  new_gem/README.md
-create  new_gem/.gitignore
-create  new_gem/new_gem.gemspec
-create  new_gem/lib/new_gem.rb
-create  new_gem/lib/new_gem/version.rb
-Initializating git repo in /Users/sparrow/Www/new_gem
+Creating gem 'new_gem'...
+MIT License enabled in config
+      create  new_gem/Gemfile
+      create  new_gem/lib/new_gem.rb
+      create  new_gem/lib/new_gem/version.rb
+      create  new_gem/new_gem.gemspec
+      create  new_gem/Rakefile
+      create  new_gem/README.md
+      create  new_gem/bin/console
+      create  new_gem/bin/setup
+      create  new_gem/.gitignore
+      create  new_gem/.travis.yml
+      create  new_gem/.rspec
+      create  new_gem/spec/spec_helper.rb
+      create  new_gem/spec/new_gem_spec.rb
+      create  new_gem/LICENSE.txt
+Initializing git repo in ~/projects/create_gem/new_gem
 ```
 
 ---
 
 # Gem structure
 
-```text
-new_gem/
-|-- lib/
-|   |-- new_gem/
-|   |   |-- version.rb
-|   |-- new_gem.rb
-|-- .gitignore
-|-- Gemfile
-|-- LICENSE
-|-- new_gem.gemspec
-|-- Rakefile
-|-- README.md
+```bash
+$ tree -a -F -L 3 --dirsfirst
+.
+├── bin/
+├── lib/
+│   ├── new_gem/
+│   │   └── version.rb
+│   └── new_gem.rb
+├── spec/
+│   ├── new_gem_spec.rb
+│   └── spec_helper.rb
+├── .gitignore
+├── .rspec
+├── .travis.yml
+├── Gemfile
+├── LICENSE.txt
+├── README.md
+├── Rakefile
+└── new_gem.gemspec
 ```
 
 ---
 
-# Gemspec
+## Gemspec
 
 new_gem.gemspec <!-- .element class="filename" -->
 
 ```ruby
-require File.expand_path('../lib/new_gem/version', __FILE__)
+lib = File.expand_path("../lib", __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require "new_gem/version"
 
-Gem::Specification.new do |gem|
-  gem.authors       = ['Vladimir Vorobyov']
-  gem.email         = ['sparrowpublic@gmail.com']
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
-  gem.homepage      = ''
-  gem.files         = `git ls-files`.split($\)
-  gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
-  gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
-  gem.name          = 'new_gem'
-  gem.require_paths = ['lib']
-  gem.version       = NewGem::VERSION
+Gem::Specification.new do |spec|
+  spec.name          = "new_gem"
+  spec.version       = NewGem::VERSION
+  spec.authors       = ["Dmitriy Grechukha"]
+  spec.email         = ["dmitriy.grechukha@gmail.com"]
+
+  spec.summary       = %q{Write a short summary, because RubyGems requires one.}
+  spec.description   = %q{Write a longer description or delete this line.}
+  spec.homepage      = "https://rubygarage.org"
+  spec.license       = "MIT"
+
+  # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
+  # to allow pushing to a single host or delete this section to allow pushing to any host.
+  if spec.respond_to?(:metadata)
+    spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
+  else
+    raise "RubyGems 2.0 or newer is required to protect against public gem pushes."
+  end
+
+  spec.files         = `git ls-files -z`.split("\x0").reject do |f|
+    f.match(%r{^(test|spec|features)/})
+  end
+  spec.bindir        = "exe"
+  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
+  spec.require_paths = ["lib"]
+
+  spec.add_development_dependency "bundler", "~> 1.16"
+  spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_development_dependency "rspec", "~> 3.0"
 end
 ```
 
@@ -228,7 +321,7 @@ lib/new_gem/version.rb <!-- .element class="filename" -->
 
 ```ruby
 module NewGem
-  VERSION = "0.0.1"
+  VERSION = '0.1.0'
 end
 ```
 
@@ -236,7 +329,10 @@ Gemfile <!-- .element class="filename" -->
 
 ```ruby
 source 'https://rubygems.org'
-# Specify your gem dependencies in new_gem.gemspec
+
+git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
+
+# Specify your gem's dependencies in new_gem.gemspec
 gemspec
 ```
 
@@ -244,10 +340,10 @@ new_gem.gemspec <!-- .element class="filename" -->
 
 ```ruby
 # ...
-Gem::Specification.new do |gem|
+Gem::Specification.new do |spec|
   # ...
-  gem.add_dependency 'sqlite3'
-  gem.add_development_dependency 'rspec'
+  spec.add_dependency 'sqlite3'
+  spec.add_development_dependency 'rspec'
 end
 ```
 
@@ -268,42 +364,48 @@ end
 Rakefile <!-- .element class="filename" -->
 
 ```ruby
-#!/usr/bin/env rake
 require 'bundler/gem_tasks'
+require 'rspec/core/rake_task'
+
+RSpec::Core::RakeTask.new(:spec)
+
+task default: :spec
 ```
 
 ---
 
 # Testing
 
-Add rspec to `new_gem.gemspec`
-
-new_gem.gemspec <!-- .element class="filename" -->
-
-```ruby
-# ...
-Gem::Specification.new do |gem|
-  # ...
-  gem.add_development_dependency 'rspec'
-end
-```
-
 spec/spec_helper.rb <!-- .element class="filename" -->
 
 ```ruby
 require 'bundler/setup'
 require 'new_gem'
+
+RSpec.configure do |config|
+  # Enable flags like --only-failures and --next-failure
+  config.example_status_persistence_file_path = '.rspec_status'
+
+  # Disable RSpec exposing methods globally on `Module` and `main`
+  config.disable_monkey_patching!
+
+  config.expect_with :rspec do |c|
+    c.syntax = :expect
+  end
+end
 ```
 
 spec/new_gem_spec.rb <!-- .element class="filename" -->
 
 ```ruby
-require 'spec_helper'
+RSpec.describe NewGem do
+  it 'has a version number' do
+    expect(NewGem::VERSION).not_to be nil
+  end
 
-describe NewGem do
   context '#name' do
     it 'should return gem name' do
-      NewGem.name.should == 'New Gem'
+      expect(NewGem.name).to eq 'New Gem'
     end
   end
 end
@@ -328,10 +430,15 @@ end
 ## Running tests
 
 ```bash
-$ rspec spec/
-.
-Finished in 0.00051 seconds
-1 example, 0 failures
+$ rspec
+
+NewGem
+  has a version number
+  #name
+    should return gem name
+
+Finished in 0.00146 seconds (files took 0.0849 seconds to load)
+2 examples, 0 failures
 ```
 
 ---
@@ -341,8 +448,12 @@ Finished in 0.00051 seconds
 Rakefile <!-- .element class="filename" -->
 
 ```ruby
-#!/usr/bin/env rake
 require 'bundler/gem_tasks'
+require 'rspec/core/rake_task'
+
+RSpec::Core::RakeTask.new(:spec)
+
+task default: :spec
 ```
 
 Rake tasks
@@ -357,7 +468,7 @@ Build gem
 
 ```bash
 $ rake build
-new_gem 0.0.1 built to pkg/new_gem-0.0.1.gem
+new_gem 0.1.0 built to pkg/new_gem-0.1.0.gem
 ```
 
 ---
