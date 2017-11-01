@@ -55,7 +55,7 @@ Rakefile
 
 ```ruby
 task :default do
-  puts "Hello World!"
+  puts 'Hello World!'
 end
 ```
 
@@ -139,7 +139,7 @@ Rakefile <!-- .element: class="filename" -->
 
 ```ruby
 # ...
-task :ready_for_the_day => [:turn_off_alarm, :groom_myself, :make_coffee, :walk_dog] do
+task ready_for_the_day: %i[turn_off_alarm groom_myself make_coffee walk_dog] do
   puts 'Ready for the day!'
 end
 ```
@@ -174,7 +174,7 @@ task :ready_for_the_day do
   puts 'Ready for the day!'
 end
 
-task :ready_for_the_day => [:turn_off_alarm, :groom_myself, :make_coffee, :walk_dog]
+task ready_for_the_day: %i[turn_off_alarm groom_myself make_coffee walk_dog]
 ```
 
 Effect will be the same.
@@ -211,7 +211,7 @@ arguments. If we wanted our default task to be turning off the alarm from the ex
 Rakefile <!-- .element: class="filename" -->
 
 ```ruby
-task :default => 'morning:turn_off_alarm'
+task default: 'morning:turn_off_alarm'
 # ...
 ```
 
@@ -291,6 +291,7 @@ Rakefile <!-- .element: class="filename" -->
 namespace :afternoon do
   task :make_coffee do
     Rake::Task['morning:make_coffee'].invoke
+
     puts 'Ready for the rest of the day!'
   end
 end
@@ -353,6 +354,7 @@ namespace :morning do
   desc 'Make coffee'
   task :make_coffee do
     cups = ENV['cups']
+
     puts "Made #{cups} cups of coffee. Shakes are gone."
   end
 end
@@ -374,6 +376,7 @@ namespace :morning do
   desc 'Make coffee'
   task :make_coffee, :cups do |t, args|
     cups = args.cups
+
     puts "Made #{cups} cups of coffee. Shakes are gone."
   end
 end
@@ -392,12 +395,14 @@ Rakefile <!-- .element: class="filename" -->
 
 ```ruby
 namespace :morning do
-desc "Make coffee"
-task :make_coffee do
-cups = ARGV.last
-puts "Made #{cups} cups of coffee. Shakes are gone."
-task cups.to_sym do ; end
-end
+  desc 'Make coffee'
+  task :make_coffee do
+    cups = ARGV.last
+
+    puts "Made #{cups} cups of coffee. Shakes are gone."
+
+    task cups.to_sym do ; end
+  end
 end
 ```
 
