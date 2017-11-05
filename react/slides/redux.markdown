@@ -32,8 +32,8 @@ We also need to define the reducer and the initial state at startup time. Let’
 
 ```javascript
 function createStore(reducer, initialState) {
-    var currentReducer = reducer;
-    var currentState = initialState;
+  let currentReducer = reducer;
+  let currentState = initialState;
 }
 ```
 
@@ -48,14 +48,14 @@ Our store implementation
 
 ```javascript
 function createStore(reducer, initialState) {
-    var currentReducer = reducer;
-    var currentState = initialState;
+  let currentReducer = reducer;
+  let currentState = initialState;
  
-    return {
-        getState() {
-            return currentState;
-        }
-    };
+  return {
+    getState() {
+      return currentState;
+    }
+  };
 }
 ```
 We can now get the state object with `getState()`
@@ -66,18 +66,18 @@ We can now get the state object with `getState()`
 Next step is to implement support for dispatching an action.
 ```javascript
 function createStore(reducer, initialState) {
-    var currentReducer = reducer;
-    var currentState = initialState;
+  let currentReducer = reducer;
+  let currentState = initialState;
  
-    return {
-        getState() {
-            return currentState;
-        },
-        dispatch(action) {
-            currentState = currentReducer(currentState, action);
-            return action;
-        }
-    };
+  return {
+    getState() {
+      return currentState;
+    },
+    dispatch(action) {
+      currentState = currentReducer(currentState, action);
+      return action;
+    }
+  };
 }
 ```
 
@@ -90,23 +90,23 @@ The dispatch  function passes the current state and the dispatched Action throu
 Now we can both get current state and update the state! The last step is to be able to listen to changes:
 ```javascript
 function createStore(reducer, initialState) {
-    var currentReducer = reducer;
-    var currentState = initialState;
-    var listener = () => {};
+  let currentReducer = reducer;
+  let currentState = initialState;
+  let listener = () => {};
  
-    return {
-        getState() {
-            return currentState;
-        },
-        dispatch(action) {
-            currentState = currentReducer(currentState, action);
-            listener(); // Note that we added this line!
-            return action;
-        },
-        subscribe(newListener) {
-            listener = newListener;
-        }
-    };
+  return {
+    getState() {
+      return currentState;
+    },
+    dispatch(action) {
+      currentState = currentReducer(currentState, action);
+      listener(); // Note that we added this line!
+      return action;
+    },
+    subscribe(newListener) {
+      listener = newListener;
+    }
+  };
 }
 ```
 Now we can call subscribe with a callback function as parameter that will be called whenever an action is dispatched.
@@ -203,8 +203,7 @@ dispatch(completeTodo(index))
 --
 
 Alternatively, you can create a bound action creator that automatically dispatches:
-```javascript
-
+```javascriptcombineReducers
 const boundAddTodo = (text) => dispatch(addTodo(text))
 const boundCompleteTodo = (index) => dispatch(completeTodo(index))
 ```
@@ -321,7 +320,7 @@ Note that:
 
 --
 
-Finally, Redux provides a utility called combineReducers() that does the same boilerplate logic that the todoApp above currently does. With its help, we can rewrite todoApp like this:
+Finally, Redux provides a utility called `combineReducers()` that does the same boilerplate logic that the todoApp above currently does. With its help, we can rewrite todoApp like this:
 ```javascript
 import { combineReducers } from 'redux'
 
@@ -508,12 +507,14 @@ let todoApp = combineReducers({
   let nextVisibleTodoFilter = visibleTodoFilter(state.visibleTodoFilter, action)
 ```
  It will then combine both sets of results into a single state tree: 
-```JavaScript
+
+```javascript
 return {
-  todos: nextTodos, 
-  visibleTodoFilter: nextVisibleTodoFilter 
+  todos: nextTodos,
+  visibleTodoFilted: nextVisibleTodoFilter
 }
 ```
+
  While `combineReducers()` is a handy helper utility, you don't have to use it; feel free to write your own root reducer!
 
 --
