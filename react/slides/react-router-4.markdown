@@ -446,29 +446,38 @@ Dispatch `push` and `replace` actions:
 ```js
 import { push, replace } from 'react-router-redux'
 
-const Page = props => (
-  <div>
-    ...
+class Page extends React.Component {
+  constructor (props) {
+    super(props)
 
-    // acts as Link
-    <button onClick={() => props.push('/abc')}>
-      Click me!
-    <button>
+    this.handleSaveButtonClick = () => {
+      ...
 
-    // acts as Redirect
-    <button onClick={() => props.replace('/abc')}>
-      Click me!
-    <button>
+      this.props.push('/abc')    // acts as Link
+      this.props.replace('/abc') // acts as Redirect
+    }
+  }
 
-    ...
-  </div>
-)
+  render () {
+    return (
+      <div>
+        ...
+
+        <button onClick={this.handleSaveButtonClick}>
+          Save!
+        <button>
+
+        ...
+      </div>
+    )
+  }
+}
 
 const mapDispatchToProps = {
   push, replace
 }
 
-export default connect(null,)
+export default connect(null, mapDispatchToProps)(Page)
 ```
 
 --
