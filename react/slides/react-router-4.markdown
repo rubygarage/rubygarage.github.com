@@ -216,12 +216,13 @@ const Header = () => (
 
 <br />
 
-You can also use `replace` flag for your links:
+You can also use `replace` to replace the current entry in the history stack instead of adding a new one:
 
 ```js
-<Link to='/a'        >...</Link> // history after clicking: / -> /a
-<Link to='/b'        >...</Link> // history after clicking: / -> /a -> /b
-<Link to='/c' replace>...</Link> // history after clicking: / -> /a -> /c
+// Let's imagine it's out history before clicking: / -> /abc
+
+<Link to='/def'        >...</Link> // history after clicking: / -> /abc -> /def
+<Link to='/def' replace>...</Link> // history after clicking: / -> /def
 ```
 
 --
