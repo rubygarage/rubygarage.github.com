@@ -489,3 +489,27 @@ Except `push` and `replace` feel free to use:
 - `goBack` - Moves backwards one location. Equivalent to go(-1)
 
 - `goForward` - Moves forward one location. Equivalent to go(1)
+
+---
+
+What you should know about `match` object.
+
+```js
+...
+
+const RouteComponent = props => <div>... {props.match} ...</div>
+
+<Route to='/groups/:group/students/:student' component={RouteComponent}>
+
+...
+```
+
+<br />
+
+- `match.params` (object) - key/value pairs parsed from the URL corresponding to the dynamic segments of the path. For example, when location is `/groups/1/students/2` - `match.params` looks like: { group: '1', student: '2' }.
+
+- `match.isExact` (boolean) - true if the entire URL was matched (no trailing characters).
+
+- `match.path` (string) - the path pattern used to match. Useful for building nested `Route`s.
+
+- `match.url` (string) - the matched portion of the URL. Useful for building nested `Link`s.
