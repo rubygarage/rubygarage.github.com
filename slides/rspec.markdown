@@ -2011,8 +2011,8 @@ end
 
 ```ruby
 class Statement
-  def initialize(name)
-    @name = name
+  def initialize(customer)
+    @name = customer.name
   end
 
   def generate
@@ -2769,7 +2769,7 @@ lib/codebreaker/game.rb <!-- .element class="filename" -->
 module Codebreaker
   class Game
     def initialize
-      @secret_code = '
+      @secret_code = ''
     end
 
     def start
@@ -2816,7 +2816,7 @@ module Codebreaker
       it 'saves 4 numbers secret code' do
         game = Game.new
         game.start
-        expect(game.instance_variable_get(:@secret_code)).to have(4).items
+        expect(game.instance_variable_get(:@secret_code).size).to eq 4
       end
 
       it 'saves secret code with numbers from 1 to 6'
@@ -2839,7 +2839,7 @@ Pending:
 Failures:
 
   1) Codebreaker::Game#start saves 4 numbers secret code
-     Failure/Error: expect(game.instance_variable_get(:@secret_code)).to have(4).items
+     Failure/Error: expect(game.instance_variable_get(:@secret_code).size).to eq 4
        expected 4 items, got 19
      # ./spec/codebreaker/game_spec.rb:38:in `block (3 levels) in <module:Codebreaker>'
 
@@ -2905,7 +2905,7 @@ module Codebreaker
       it 'saves 4 numbers secret code' do
         game = Game.new
         game.start
-        expect(game.instance_variable_get(:@secret_code)).to have(4).items
+        expect(game.instance_variable_get(:@secret_code).size).to eq 4
       end
 
       it 'saves secret code with numbers from 1 to 6' do
@@ -3000,7 +3000,7 @@ module Codebreaker
       end
 
       it 'saves 4 numbers secret code' do
-        expect(game.instance_variable_get(:@secret_code)).to have(4).items
+        expect(game.instance_variable_get(:@secret_code).size).to eq 4
       end
 
       it 'saves secret code with numbers from 1 to 6' do
