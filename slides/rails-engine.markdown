@@ -129,29 +129,6 @@ config/locales/\*, and load tasks at lib/tasks/\*.
 
 ---
 
-## Mounting the Engine
-
-Specifying the engine inside the Gemfile would be done by specifying it as a normal, everyday gem Gemfile
-
-```ruby
-gem 'shopping_cart', path: "/path/to/shopping_cart"
-```
-
-By placing the gem in the Gemfile it will be loaded when Rails is loaded. It will first require lib/shopping_cart.rb
-from the engine, then lib/shopping_cart/engine.rb, which is the file that defines the major pieces of functionality
-for the engine.
-
-To make the engine's functionality accessible from within an application, it needs to be mounted in that
-application's config/routes.rb file.
-
-config/routes.rb <!-- .element: class="filename" -->
-
-```ruby
-mount ShoppingCart::Engine, at: "/cart"
-```
-
----
-
 ## Testing with RSpec, Capybara, and FactoryGirl
 
 Add these lines to the gemspec file
@@ -165,7 +142,7 @@ s.add_development_dependency 'factory_girl_rails'
 Add this line to your gemspec file
 
 ```ruby
-s.test_files = Dir["spec/`/*"]
+s.test_files = Dir["spec/**/*"]
 ```
 
 --
@@ -309,28 +286,82 @@ end
 
 ---
 
-## Routes and Mount
+## Full or mountable
 
-### Routes
+Both options will generate an engine. The difference is that `--mountable` will create the engine in an isolated
+namespace, whereas `--full` will create an engine that shares the namespace of the main app.
 
-If you don't specify an endpoint, routes will be used as the default endpoint. You can use them just like you use an
-application's routes
+The differences will be manifested in 3 ways.
+
+--
+
+### The engine class file will call isolate_namespace
+
+#### Full engine
+
+lib/my_full_engine/engine.rb <!-- .element: class="filename" -->
 
 ```ruby
-MyEngine::Engine.routes.draw do
-  get '/' => 'posts#index'
+module MyFullEngine
+  class Engine < Rails::Engine
+  end
 end
 ```
 
-### Mount
+#### Mounted engine
 
-Now you can mount your engine in application's routes
+lib/my_mountable_engine/engine.rb <!-- .element: class="filename" -->
+
+```ruby
+module MyMountableEngine
+  class Engine < Rails::Engine
+    isolate_namespace MyMountableEngine # --mountable option inserted this line
+  end
+end
+```
+
+--
+
+### The engine's config/routes.rb file will be namespaced
+
+#### Full engine
 
 ```ruby
 Rails.application.routes.draw do
-  mount MyEngine::Engine => '/blog'
-  get '/blog/omg' => 'main#omg'
 end
+```
+
+#### Mounted engine
+
+```ruby
+MyMountableEngine::Engine.routes.draw do
+end
+```
+
+The parent application could bundle it's functionality under a single route such as
+
+```ruby
+mount MyMountableEngine::Engine => '/engine', :as => 'namespaced'
+```
+
+--
+
+### The file structure for controllers, helpers, views, and assets will be namespaced
+
+```text
+create app/controllers/my_mountable_engine/application_controller.rb
+create app/helpers/my_mountable_engine/application_helper.rb
+create app/mailers
+create app/models
+create app/views/layouts/my_mountable_engine/application.html.erb
+create app/assets/images/my_mountable_engine
+create app/assets/stylesheets/my_mountable_engine/application.css
+create app/assets/javascripts/my_mountable_engine/application.js
+create config/routes.rb
+create lib/my_mountable_engine.rb
+create lib/tasks/my_mountable_engine.rake
+create lib/my_mountable_engine/version.rb
+create lib/my_mountable_engine/engine.rb
 ```
 
 ---
@@ -421,86 +452,6 @@ To use engine's seed
 
 ```ruby
 MyEngine::Engine.load_seed
-```
-
----
-
-## Full or mountable
-
-Both options will generate an engine. The difference is that `--mountable` will create the engine in an isolated
-namespace, whereas `--full` will create an engine that shares the namespace of the main app.
-
-The differences will be manifested in 3 ways.
-
---
-
-### The engine class file will call isolate_namespace
-
-#### Full engine
-
-lib/my_full_engine/engine.rb <!-- .element: class="filename" -->
-
-```ruby
-module MyFullEngine
-  class Engine < Rails::Engine
-  end
-end
-```
-
-#### Mounted engine
-
-lib/my_mountable_engine/engine.rb <!-- .element: class="filename" -->
-
-```ruby
-module MyMountableEngine
-  class Engine < Rails::Engine
-    isolate_namespace MyMountableEngine # --mountable option inserted this line
-  end
-end
-```
-
---
-
-### The engine's config/routes.rb file will be namespaced
-
-#### Full engine
-
-```ruby
-Rails.application.routes.draw do
-end
-```
-
-#### Mounted engine
-
-```ruby
-MyMountableEngine::Engine.routes.draw do
-end
-```
-
-The parent application could bundle it's functionality under a single route such as
-
-```ruby
-mount MyMountableEngine::Engine => '/engine', :as => 'namespaced'
-```
-
---
-
-### The file structure for controllers, helpers, views, and assets will be namespaced
-
-```text
-create app/controllers/my_mountable_engine/application_controller.rb
-create app/helpers/my_mountable_engine/application_helper.rb
-create app/mailers
-create app/models
-create app/views/layouts/my_mountable_engine/application.html.erb
-create app/assets/images/my_mountable_engine
-create app/assets/stylesheets/my_mountable_engine/application.css
-create app/assets/javascripts/my_mountable_engine/application.js
-create config/routes.rb
-create lib/my_mountable_engine.rb
-create lib/tasks/my_mountable_engine.rake
-create lib/my_mountable_engine/version.rb
-create lib/my_mountable_engine/engine.rb
 ```
 
 ---
