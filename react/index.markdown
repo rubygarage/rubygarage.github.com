@@ -30,7 +30,6 @@ title: React
 
 - [React Patterns](slides/patterns)
 
-
 - [Flux](slides/flux)
   <br>
   <small>Application Architecture for Building User Interfaces</small>
@@ -42,7 +41,9 @@ title: React
 - [Webpack](slides/webpack)
   <br>
   <small>Module bundler.</small>
-  
+
 - [React Router 4](slides/react-router-4)
   <br>
   <small>Declarative routing for React.</small>
+
+- [Testing](slides/testing)

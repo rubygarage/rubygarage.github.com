@@ -11,9 +11,9 @@ title: Webpack
 
 * Module bundler
 
-The `import` and `export` statements have been standardized in `ES2015`. 
+The `import` and `export` statements have been standardized in `ES2015`.
 
-Although they are not supported in most browsers yet, webpack does support them out of the box. 
+Although they are not supported in most browsers yet, webpack does support them out of the box.
 
 Webpack takes modules with dependencies and generates static assets representing those modules.
 
@@ -359,7 +359,7 @@ module.exports = function(env) {
 
 # Loaders
 
-Webpack enables use of loaders to preprocess files. 
+Webpack enables use of loaders to preprocess files.
 
 --
 

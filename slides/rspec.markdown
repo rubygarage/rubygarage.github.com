@@ -113,19 +113,64 @@ is exactly what TDD is about.
 
 # Installation
 
+--
+
 ## Setup envirepment
 
+Install ruby
+
 ```bash
-$ rvm use 2.3.0@hello-rspec --create
-ruby-2.3.0 - #gemset created /Users/ty/.rvm/gems/ruby-2.3.0@hello-rspec
-ruby-2.3.0 - #generating hello-rspec wrappers - please wait
-Using /Users/ty/.rvm/gems/ruby-2.3.0 with gemset hello-rspec
+$ rvm install ruby-2.4.2
 ```
 
-## Install rspec
+Create isolated gemset
 
 ```bash
-$ gem install rspec
+$ rvm use 2.4.2@hello-rspec --create
+ruby-2.4.2 - #gemset created /Users/ty/.rvm/gems/ruby-2.4.2@hello-rspec
+ruby-2.4.2 - #generating hello-rspec wrappers - please wait
+Using /Users/ty/.rvm/gems/ruby-2.4.2 with gemset hello-rspec
+```
+
+Prepare project directory
+
+```bash
+$ mkdir -p hello-rspec/lib && cd hello-rspec
+```
+
+Install bundler
+
+```bash
+$ gem install bundler
+```
+
+--
+
+Initialize Gemfile with rspec
+
+```bash
+$ bundle init
+Writing new Gemfile to /home/User/ty/hello-rspec/Gemfile
+
+$ bundle inject rspec 3.7
+Fetching gem metadata from https://rubygems.org/..........
+Resolving dependencies...
+Added to Gemfile:
+gem 'rspec', '~> 3.7.0'
+```
+
+Run bundle Install
+
+```bash
+$ bundle install
+```
+
+Generate conventional files for a RSpec project
+
+```bash
+$ rspec --init
+create   .rspec
+create   spec/spec_helper.rb
 ```
 
 ---
@@ -273,22 +318,22 @@ spec/burger_spec.rb <!-- .element class="filename" -->
 
 ```ruby
 class Burger
-  def initialize ingredients = {}
+  def initialize(ingredients = {})
     @ingredients = ingredients
   end
 
   def with_ketchup?
-    @ingredients.has_key?(:ketchup) && !!@ingredients[:ketchup]
+    @ingredients[:ketchup]
   end
 end
 
 RSpec.describe Burger do
-  it 'should be with ketchup' do
+  it 'is with ketchup' do
     burger = Burger.new(ketchup: true)
     expect(burger).to be_with_ketchup
   end
 
-  it 'should be without ketchup' do
+  it 'is without ketchup' do
     burger = Burger.new(ketchup: false)
     expect(burger).not_to be_with_ketchup
   end
@@ -331,8 +376,8 @@ subclass of `RSpec::Core::ExampleGroup`.
 # Nested groups
 
 ```ruby
-RSpec.describe User
-  describe 'with no roles assigned' do
+RSpec.describe User do
+  describe 'With no roles assigned' do
     it 'is not allowed to view protected content' do
     end
   end
@@ -378,12 +423,12 @@ spec/array_spec.rb <!-- .element class="filename" -->
 ```ruby
 RSpec.describe Array do
   context '#last' do
-    it 'should return the last element' do
+    it 'returns the last element' do
       array = [:first, :second, :third]
       expect(array.last).to eq(:third)
     end
 
-    it 'should not remove the last element' do
+    it 'does not remove the last element' do
       array = [:first, :second, :third]
       array.last
       expect(array.size).to eq(3)
@@ -391,12 +436,12 @@ RSpec.describe Array do
   end
 
   context '#pop' do
-    it 'should return the last element' do
+    it 'returns the last element' do
       array = [:first, :second, :third]
       expect(array.pop).to eq(:third)
     end
 
-    it 'should remove the last element' do
+    it 'removes the last element' do
       array = [:first, :second, :third]
       array.pop
       expect(array.size).to eq(2)
@@ -421,11 +466,11 @@ Finished in 0.00759 seconds
 $ rspec spec/array_spec.rb --format documentation
 Array
   #last
-    should return the last element
-    should not remove the last element
+    returns the last element
+    does not remove the last element
   #pop
-    should return the last element
-    should remove the last element
+    returns the last element
+    removes the last element
 
 Finished in 0.00212 seconds
 4 examples, 0 failures
@@ -449,12 +494,12 @@ RSpec.describe Array do
   end
 
   context '#last' do
-    it 'should return the last element', skip: true do
+    it 'returns the last element', skip: true do
       array = [:first, :second, :third]
       expect(array.last).to eq(:third)
     end
 
-    it 'should not remove the last element', skip: 'reason explanation' do
+    it 'does not remove the last element', skip: 'reason explanation' do
       array = [:first, :second, :third]
       array.last
       expect(array.size).to eq(3)
@@ -470,7 +515,7 @@ RSpec.describe Array do
   end
 
   context '#first' do
-    it 'return the first element'
+    it 'returns the first element'
   end
 end
 ```
@@ -484,10 +529,10 @@ Array
   does something else (PENDING: No reason given)
   does something else (PENDING: reason explanation)
   #last
-    should return the last element (PENDING: No reason given)
-    should not remove the last element (PENDING: reason explanation)
+    returns the last element (PENDING: No reason given)
+    does not remove the last element (PENDING: reason explanation)
   #first
-    return the first element (PENDING: Not yet implemented)
+    returns the first element (PENDING: Not yet implemented)
 
 Pending:
   Array not implemented yet
@@ -631,11 +676,11 @@ RSpec.describe Array, 'before each' do
     end
 
     context 'when empty' do
-      it 'should return zero' do
+      it 'returns zero' do
         expect(@array.size).to eq(0)
       end
 
-      it 'should return one' do
+      it 'returns one' do
         @array.push 100
         expect(@array.size).to eq(1)
       end
@@ -646,12 +691,12 @@ RSpec.describe Array, 'before each' do
         (0...10).each { |n| @array.push n }
       end
 
-      it 'should return zero' do
+      it 'returns zero' do
         @array = []
         expect(@array.size).to eq(0)
       end
 
-      it 'should return ten' do
+      it 'returns ten' do
         expect(@array.size).to eq(10)
       end
     end
@@ -684,12 +729,12 @@ RSpec.describe Array, 'before all' do
         @array = Array.new
       end
 
-      it 'should return one' do
+      it 'returns one' do
         @array.push 100
         expect(@array.size).to eq(1)
       end
 
-      it 'should return one again' do
+      it 'returns one again' do
         expect(@array.size).to eq(1)
       end
     end
@@ -700,12 +745,12 @@ RSpec.describe Array, 'before all' do
         (0...10).each { |n| @array.push n }
       end
 
-      it 'should return nine' do
+      it 'returns nine' do
         @array.pop
         expect(@array.size).to eq(9)
       end
 
-      it 'should return nine again' do
+      it 'returns nine again' do
         expect(@array.size).to eq(9)
       end
     end
@@ -727,7 +772,7 @@ Finished in 0.01025 seconds
 
 ## around(:each)
 
-Run before and after each example
+Around hooks receive the example as a block argument, extended to behave as a proc. This lets you define code that should be executed before and after the example.
 
 ```ruby
 class User
@@ -738,7 +783,7 @@ class User
   end
 end
 
-RSpec.describe 'around filter' do
+RSpec.describe 'Around filter' do
   around(:each) do |example|
     User.communication(&example)
   end
@@ -760,14 +805,14 @@ Bye!
 --
 
 ```ruby
-RSpec.describe 'test around hook' do
+RSpec.describe 'Test around hook' do
   around(:each) do |example|
     puts 'around each before'
     example.run
     puts 'around each after'
   end
 
-  it 'run' do
+  it 'runs' do
     puts "inside the example"
   end
 end
@@ -900,11 +945,11 @@ RSpec.configure do |config|
 end
 
 RSpec.describe 'before and after callbacks in config' do
-  it 'run' do
+  it 'runs' do
     puts 'test 1'
   end
 
-  it 'run' do
+  it 'runs' do
     puts 'test 2'
   end
 end
@@ -945,7 +990,7 @@ before do
   @empty_array = Array.new
 end
 
-it 'should be empty' do
+it 'is empty' do
   expect(@empty_array).to be_empty
 end
 ```
@@ -957,7 +1002,7 @@ end
 ```ruby
 let(:empty_array) { Array.new }
 
-it 'should be empty' do
+it 'is empty' do
   expect(empty_array).to be_empty
 end
 ```
@@ -993,7 +1038,7 @@ RSpec.describe Array, 'with some elements' do
   it { expect(subject).not_to be_empty }
   it { is_expected.not_to be_empty }
 
-  it 'should have the prescribed elements' do
+  it 'has the prescribed elements' do
     expect(subject).to eq([1,2,3])
   end
 end
@@ -1020,7 +1065,7 @@ RSpec.describe Array, 'with some elements' do
   it { expect(array).not_to be_empty }
   it { is_expected.not_to be_empty }
 
-  it 'should have the prescribed elements' do
+  it 'has the prescribed elements' do
     expect(array).to eq([1,2,3])
   end
 end
@@ -1406,11 +1451,11 @@ description               # optional
 
 --
 
-### Eql matcher
+### Eq matcher
 
 ```ruby
-expect(obj).to eql(expected)
-expect(obj).not_to eql(expected)
+expect(obj).to eq(expected)
+expect(obj).not_to eq(expected)
 ```
 
 Passes if given and expected are of equal value, but not necessarily the same object.
