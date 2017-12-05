@@ -126,7 +126,7 @@ You can override them to run code at particular times in the process. Methods pr
 
 ## `constructor(props)`
 
-The `constructor` for a React component is called before it is mounted. When implementing the constructor for a React.Component subclass, you should call `super(props)` before any other statement. Otherwise, `this.props` will be undefined in the constructor, which can lead to bugs.
+The `constructor` for a React component is called before it is mounted. When implementing the constructor for a React.Component subclass using ES6, you should call `super(props)` before any other statement. Otherwise, `this.props` will be undefined in the constructor, which can lead to bugs.
 
 ```js
 class Clock extends Component {
@@ -145,6 +145,35 @@ class Clock extends Component {
     )
   }
 }
+```
+
+--
+
+New syntax supports this state declaration:
+
+```js
+
+class Clock extends Component {
+
+  state = { date: new Date() }
+
+  updateDate = () => {
+    this.setState({
+      date: new Date()
+    })
+  }
+
+  render() {
+    return (
+      <div>
+        <h1>Hello, world!</h1>
+        <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+        <button onClick={() => this.updateDate()}>Update Date</button>
+      </div>
+    )
+  }
+}
+
 ```
 
 --
@@ -317,6 +346,75 @@ class Scorecard extends Component {
 ---
 
 ![](/assets/images/react/react-lifecycle.svg)
+
+---
+
+# Error Handling
+
+--
+
+## `componentDidCatch()`
+
+`componentDidCatch()` gets triggered if a child component render or lifecycle method throw an error. When error occurs, componentDidCatch catches the error and instead of crushing the entire app, the app continues to run as normal displaying all the UI except for the faulty component. You are able to provide a fallback component to replace component that crashed.
+
+```js
+class Scorecard extends Component {
+  state = {
+    componentHasError: false
+  }
+  componentDidCatch() {
+    this.setState({ componentHasError: true });
+  }
+
+  render() {
+    if (this.state.componentHasError) {
+      return <h1>Error occured.</h1>
+    }
+    return (
+      <div className="container">
+        ...
+      </div>
+    )
+  }
+}
+```
+https://reactjs.org/docs/error-boundaries.html#componentdidcatch-parameters
+
+--
+
+## `componentDidCatch() usage in Error Boundaries`
+
+`Error Boundary` is just a class component, which has a componentDidCatch lifecycle method.
+
+```js
+class ErrorBoundary extends Component {
+  state = {
+    hasError: false
+  }
+  componentDidCatch() {
+    this.setState({ hasError: true });
+  }
+
+  render() {
+    if (this.state.hasError) {
+      // You can render any custom fallback UI
+      return <h1>Something went wrong.</h1>;
+    }
+    return this.props.children;
+  }
+}
+```
+
+then you can use it as regular component:
+
+```js
+
+<ErrorBoundary>
+  <MyChildComponent />
+</ErrorBoundary>
+
+```
+https://reactjs.org/docs/error-boundaries.html
 
 ---
 
