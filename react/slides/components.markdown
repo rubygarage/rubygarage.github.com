@@ -43,22 +43,155 @@ class Welcome extends Component {
 
 --
 
-When React sees an element representing a user-defined component, it passes JSX attributes to this component as a single object.
-We call this object "props".
+## Returning types:
 
-Always start component names with a capital letter.
+1. React elements. Typically created via JSX. An element can either be a representation of a native DOM component (`<div />`), or a user-defined composite component (`<MyComponent />`).
+2. String and numbers. These are rendered as text nodes in the DOM.
+3. Portals. Created with ReactDOM.createPortal.
+4. null. Renders nothing.
+5. Booleans. Render nothing. (Mostly exists to support return `test && <Child />` pattern, where `test` is boolean.)
+
+--
+
+### React elements:
 
 ```js
-function Welcome(props) {
-  return <h1>Hello, {props.name}</h1>
+const FancyComponent = () => {
+  return (
+    <h1>Foo Bar</h1>
+  )
+}
+```
+
+### Strings:
+
+```js
+const FancyComponent = () => {
+  return 'Foo Bar'
+}
+```
+
+### Numbers:
+
+```js
+const FancyComponent = () => {
+  return 777
+}
+```
+
+### Booleans:
+
+```js
+const FancyComponent = () => {
+  return false && <SomeComponent />;
+}
+```
+
+--
+
+### Portals:
+
+Place a div outside your App component.
+
+```js
+...
+<body>
+  <div id="root"></div>
+  <div id="my-portal"></div>
+</body>
+...
+```
+--
+
+For example, we want to place a Modal which has overlay over the screen:
+
+```js
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+
+class Modal extends Component {
+  render() {
+    return (
+      ReactDOM.createPortal(
+        this.props.children,
+        document.getElementById('my-portal')
+      )
+    );
+  }
 }
 
-const element = <Welcome name="Sara" />
+```
 
-ReactDOM.render(
-  element,
-  document.getElementById('root')
-)
+```js
+class App extends Component {
+  render() {
+    return (
+      <div className="app">
+        <header>...</header>
+        <main>...</main>
+        <Modal>
+          <div className="modal">
+            <p>This is the modal window</p>
+            <button>Close</button>
+          </div>
+        </Modal>
+      </div>
+    );
+  }
+}
+
+```
+
+--
+
+### Fragments:
+
+```js
+const FancyComponent = () => {
+  return [
+    <li key="one">Item one</li>,
+    <li key="two">Item two</li>,
+    <li key="three">Item three</li>
+  ]
+}
+```
+
+### Improved Support for Fragments in React v16.2.0:
+
+```js
+const FancyComponent = () => {
+  return (
+    <>
+      <li>Item one</li>,
+      <li>Item two</li>,
+      <li>Item three</li>
+    </>
+  );
+}
+```
+
+--
+
+prevent unnecessary re-renders by returning null in setState
+
+```js
+
+class App extends Component {
+  state = {
+    tab: ''
+  };
+
+  updateTab = tab => {
+    const newTab = tab;
+    this.setState(() => {
+      if (state.tab === newTab) {
+        return null;
+      }
+      return { tab };
+    });
+  }
+}
+
 ```
 
 ---
