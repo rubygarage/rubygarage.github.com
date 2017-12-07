@@ -162,13 +162,17 @@ const FancyComponent = () => {
 const FancyComponent = () => {
   return (
     <>
-      <li>Item one</li>,
-      <li>Item two</li>,
+      <li>Item one</li>
+      <li>Item two</li>
       <li>Item three</li>
     </>
   );
 }
 ```
+
+<br />
+
+`WARNING!` Support for JSX fragments is available in `Babel v7.0.0-beta.31` and above!
 
 --
 
