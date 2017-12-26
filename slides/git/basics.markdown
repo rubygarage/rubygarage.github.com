@@ -11,7 +11,7 @@ title: Git
 
 # What is Git?
 
-It is a version control system for tracking changes in computer files and coordinating work on those files among multiple people.
+> It is a version control system for tracking changes in computer files and coordinating work on those files among multiple people.
 
 ---
 
@@ -30,19 +30,19 @@ It is a version control system for tracking changes in computer files and coordi
 
 # What is Git Repository?
 
-The purpose of Git is to manage a project, or a set of files, as they change over time. Git stores this information in a data structure called a repository.
+> The purpose of Git is to manage a project, or a set of files, as they change over time. Git stores this information in a data structure called a repository.
 
 ---
 
 # What is Remote Repo?
 
-To communicate with the outside world, git uses what are called remotes. These are repositories other than the one on your local disk which you can push your changes into (so that other people can see them) or pull from (so that you can get others changes).
+> To communicate with the outside world, git uses what are called remotes. These are repositories other than the one on your local disk which you can push your changes into (so that other people can see them) or pull from (so that you can get others changes).
 
 ---
 
 # What is Git Branch?
 
-A branch in Git is simply a lightweight movable pointer to commits. The default branch name in Git is `master`. As you initially make commits, you’re given a master branch that points to the last commit you made. Every time you commit, it moves forward automatically.
+> A branch in Git is simply a lightweight movable pointer to commits. The default branch name in Git is `master`. As you initially make commits, you’re given a master branch that points to the last commit you made. Every time you commit, it moves forward automatically.
 
 ---
 
@@ -54,72 +54,58 @@ A branch in Git is simply a lightweight movable pointer to commits. The default 
 
 # What is commit?
 
-A "commit" is a snapshot of your files. Stores the current contents of the index in a new commit along with a log message from the user describing the changes.
+> A "commit" is a snapshot of your files. Stores the current contents of the index in a new commit along with a log message from the user describing the changes.
 
 ---
 
 # What is commit hash?
 
-Unique ID for particular commit. Big cryptographic string that is directly generated based on the information it represents. Because it is generated based on the information contained in the commit, the hash cannot be changed.
+> Unique ID for particular commit. Big cryptographic string that is directly generated based on the information it represents. Because it is generated based on the information contained in the commit, the hash cannot be changed.
 
 ---
 
 # What is `HEAD`?
 
-A head is simply a reference to a commit object. Each head has a name (branch name or tag name, etc). By default, there is a head in every repository called master. A repository can contain any number of heads. At any given time, one head is selected as the “current head.” This head is aliased to HEAD, always in capitals".
+> A head is simply a reference to a commit object. Each head has a name (branch name or tag name, etc). By default, there is a head in every repository called master. A repository can contain any number of heads. At any given time, one head is selected as the “current head.” This head is aliased to HEAD, always in capitals".
 
 ---
 
 # Basic configuration
 
-Git comes with a tool called `git config` that lets you get and set configuration variables that control all aspects of how Git looks and operates.
+> Git comes with a tool called `git config` that lets you get and set configuration variables that control all aspects of how Git looks and operates.
 
-You can make Git read and write to `~/.gitconfig` file specifically by passing the --global option.
+> You can make Git read and write to `~/.gitconfig` file specifically by passing the --global option.
 
 --
 
-### Your Identity
+## Your Identity
 
-The first thing you should do when you install Git is to set your user name and email address. This is important because every Git commit uses this information, and it’s immutably baked into the commits you start creating:
+> The first thing you should do when you install Git is to set your user name and email address. This is important because every Git commit uses this information, and it’s immutably baked into the commits you start creating:
 
-```bash
-$ git config --global user.name "John Doe"
-$ git config --global user.email "johndoe@example.com"
+```shell
+$ git config --global user.name 'John Doe'
+$ git config --global user.email 'johndoe@example.com'
 ```
 
 ---
 
 # Useful basics commands
 
-### `git clone` - clone repository into a local directory
-<!-- .element: class="fragment" -->
-### `git init` - repository setup
-<!-- .element: class="fragment" -->
-### `git fetch` - download objects and refs from another repository
-<!-- .element: class="fragment" -->
-### `git merge` - join two or more development histories together
-<!-- .element: class="fragment" -->
-### `git pull` - shorthand for `git fetch` followed by `git merge FETCH_HEAD`
-<!-- .element: class="fragment" -->
-### `git add` - add files to queue for next commit
-<!-- .element: class="fragment" -->
-### `git commit` - commit queued files
-<!-- .element: class="fragment" -->
-
---
-
-### `git log` - view a log of commits
-<!-- .element: class="fragment" -->
-### `git diff` - generate a differences between multiple commits
-<!-- .element: class="fragment" -->
-### `git push` - push commit(s) to remote repository
-<!-- .element: class="fragment" -->
-### `git status` - show uncommited changes
-<!-- .element: class="fragment" -->
-### `git reset` - download objects and refs from another repository
-<!-- .element: class="fragment" -->
-### `git rebase` - download objects and refs from another repository
-<!-- .element: class="fragment" -->
+| Command      | Description                                                  |
+| ------------ | ------------------------------------------------------------ |
+| `git clone`  | clone repository into a local directory                      |
+| `git init`   | repository setup                                             |
+| `git fetch`  | download objects and refs from another repository            |
+| `git merge`  | join two or more development histories together              |
+| `git pull`   | shorthand for `git fetch` followed by `git merge FETCH_HEAD` |
+| `git add`    | add files to queue for next commit                           |
+| `git commit` | commit queued files                                          |
+| `git log`    | view a log of commits                                        |
+| `git diff`   | generate a differences between multiple commits              |
+| `git push`   | push commit(s) to remote repository                          |
+| `git status` | show uncommited changes                                      |
+| `git reset`  | download objects and refs from another repository            |
+| `git rebase` | download objects and refs from another repository            |
 
 ---
 
@@ -131,7 +117,7 @@ $ git config --global user.email "johndoe@example.com"
 
 Lets create our first repository
 
-```bash
+```shell
 $ mkdir ./repo-example && cd ./repo-example
 
 $ git init
@@ -142,7 +128,7 @@ Initialized empty Git repository in /home/root/repo-example/.git/
 
 # Commit
 
-```bash
+```shell
 $ echo "TEST" > README.md
 
 $ git add README.md
@@ -163,7 +149,7 @@ When you `commit`, git creates a new commit object using the files from the stag
 
 # Branches
 
-```bash
+```shell
 $ git checkout -b feature/my-new-branch
 Switched to a new branch 'feature/my-new-branch'
 
@@ -196,7 +182,7 @@ index 2a02d41..5674f35 100644
 
 # Status
 
-```bash
+```shell
 $ git status
 On branch feature/my-new-branch
 Changes to be committed:
@@ -209,7 +195,7 @@ Changes to be committed:
 
 # Log
 
-```bash
+```shell
 $ git commit -m 'Update Some File'
 [feature/my-new-branch 1308517] Update some file
  1 file changed, 1 insertion(+)
@@ -232,7 +218,7 @@ Date:   Sun Dec 3 20:55:09 2017 +0200
 
 # Checkout
 
-```bash
+```shell
 $ git checkout master
 Switched to branch 'master'
 
@@ -244,7 +230,7 @@ Switched to branch 'feature/my-new-branch'
 
 # Amend
 
-```bash
+```shell
 $ git commit --amend -m 'Update README.md'
 [feature/my-new-branch 0f005b6] Update Readme.md
  Date: Sun Dec 3 21:49:21 2017 +0200
@@ -261,7 +247,7 @@ Sometimes a mistake is made in a commit, but this is easy to correct with `git c
 
 # Merge
 
-```bash
+```shell
 $ git checkout master
 Switched to branch 'master'
 
@@ -271,6 +257,7 @@ Author: Rubygarage <info@rubygarage.org>
 Date:   Sun Dec 3 20:55:09 2017 +0200
 
     Add README.md
+
 $ git branch
 feature/my-new-branch
 * master
@@ -278,7 +265,7 @@ feature/my-new-branch
 $ git merge feature/my-new-branch master
 Updating 2b726fa..0f005b6
 Fast-forward
- README.md | 1 +
+README.md | 1 +
  1 file changed, 1 insertion(+)
 
 $ git log
@@ -305,7 +292,7 @@ A merge creates a new commit that incorporates changes from other commits. Befor
 
 # Deleting a Branch
 
-```bash
+```shell
 $ git branch -d feature/my-new-branch
 Deleted branch feature/my-new-branch (was 0f005b6).
 
@@ -319,7 +306,7 @@ The `-d` option is an alias for `--delete`, which only deletes the branch if it 
 
 # Reset
 
-```bash
+```shell
 $ echo '<?= "I love PHP" ?>' > index.php
 
 $ git add .
@@ -345,7 +332,7 @@ nothing added to commit but untracked files present (use "git add" to track)
 
 --
 
-```bash
+```shell
 $ git add .
 
 $ git commit -m 'Make terrible mistake'
@@ -375,7 +362,7 @@ Date:   Sun Dec 3 20:55:09 2017 +0200
 
 --
 
-```bash
+```shell
 $ git reset --hard HEAD~1
 HEAD is now at 0f005b6 Update Readme.md
 ```
@@ -386,7 +373,7 @@ HEAD is now at 0f005b6 Update Readme.md
 
 # Cherry pick
 
-```bash
+```shell
 $ git checkout -b feature/add-license
 Switched to a new branch 'feature/add-license'
 
@@ -432,7 +419,7 @@ Date:   Sun Dec 3 20:55:09 2017 +0200
 
 # Rebase
 
-```bash
+```shell
 $ echo 'v0.1.0 Some Improvements' > CHANGELOG.md
 
 $ git add .
@@ -466,7 +453,7 @@ Date:   Sun Dec 3 22:59:07 2017 +0200
 
 --
 
-```bash
+```shell
 $ git checkout feature/add-license
 Switched to branch 'feature/add-license'
 
@@ -499,7 +486,7 @@ Date:   Sun Dec 3 22:59:07 2017 +0200
 
 # Diff
 
-```bash
+```shell
 $ echo 'New Info' > README.md
 
 $ git diff
@@ -527,7 +514,7 @@ $ git checkout -- README.md
 
 `origin` is an alias on your system for a particular remote repository
 
-```bash
+```shell
 $ git remote add origin git@github.com:rubygarage/repo-example.git
 
 $ git push
@@ -546,7 +533,7 @@ Branch master set up to track remote branch master from origin.
 
 # Pull
 
-```bash
+```shell
 $ git pull
 remote: Counting objects: 3, done.
 remote: Compressing objects: 100% (3/3), done.
@@ -564,7 +551,7 @@ Fast-forward
 
 # Remotes
 
-```bash
+```shell
 $ git remote -v
 origin	git@github.com:rubygarage/repo-example.git (fetch)
 origin	git@github.com:rubygarage/repo-example.git (push)
@@ -574,7 +561,7 @@ origin	git@github.com:rubygarage/repo-example.git (push)
 
 # Conflicts
 
-Merge conflicts may occur if competing changes are made to the same line of a file or when a file is deleted that another person is attempting to edit.
+> Merge conflicts may occur if competing changes are made to the same line of a file or when a file is deleted that another person is attempting to edit.
 
 --
 
@@ -600,30 +587,25 @@ bar
 
 # Additinal Commands
 
-### `git blame` - show what revision and author last modified each line of a file
-<!-- .element: class="fragment" -->
-### `git stash ( pop | apply )` - stash the changes in a dirty working directory away
-<!-- .element: class="fragment" -->
-### `git show` - show various types of objects
-<!-- .element: class="fragment" -->
-### `git tag` - create, list, delete or verify a tag object signed with GPG
-<!-- .element: class="fragment" -->
-### `git bisect` - use binary search to find the commit that introduced a bug
-<!-- .element: class="fragment" -->
-### `git reflog` - manage reflog information
-<!-- .element: class="fragment" -->
-### `git prune` - prune all unreachable objects from the object database
-<!-- .element: class="fragment" -->
+| Command                   | Description                                                     |
+| ------------------------- | --------------------------------------------------------------- |
+| `git blame`               | show what revision and author last modified each line of a file |
+| `git stash (pop / apply)` | stash the changes in a dirty working directory away             |
+| `git show`                | show various types of objects                                   |
+| `git tag`                 | create, list, delete or verify a tag object signed with GPG     |
+| `git bisect`              | use binary search to find the commit that introduced a bug      |
+| `git reflog`              | manage reflog information                                       |
+| `git prune`               | prune all unreachable objects from the object database          |
 
 ---
 
 # `.gitignore` file
 
-If you create a file in your repository named `.gitignore`, Git uses it to determine which files and directories to ignore, before you make a commit.
+> If you create a file in your repository named `.gitignore`, Git uses it to determine which files and directories to ignore, before you make a commit.
 
 --
 
-### Example
+## Example of `.gitignore` file
 
 ```
 # Ignore bundler config.
@@ -650,6 +632,59 @@ config/secrets.yml.key
 
 # Ignore test coverage info
 /coverage/*
+```
+
+---
+
+# Useful configs
+
+```shell
+git config --global push.default current
+git config --global pull.rebase true
+
+git config --global core.quotepath false
+git config --global core.filemode false
+git config --global core.editor vim
+
+git config --global core.autocrlf input
+git config --global core.safecrlf true
+
+git config --global color.interactive true
+git config --global color.branch true
+git config --global color.status true
+git config --global color.diff true
+git config --global color.ui true
+
+git config --global color.branch.current 'yellow'
+git config --global color.branch.local 'yellow'
+git config --global color.branch.remote 'green'
+
+git config --global color.status.changed 'yellow'
+git config --global color.status.untracked 'red'
+git config --global color.status.added 'green'
+```
+
+You can find more config options on [Git Config](https://git-scm.com/docs/git-config) page.
+
+---
+
+# Useful git-aliases
+
+```shell
+git config --global alias.a 'add -A'
+git config --global alias.b 'branch'
+git config --global alias.ca 'commit --ammend --no-edit'
+git config --global alias.ci 'commit'
+git config --global alias.co 'checkout'
+git config --global alias.cp 'cherry-pick'
+git config --global alias.d 'diff'
+git config --global alias.dc '!git --no-pager diff --name-only --diff-filter=U'
+git config --global alias.ds '!git diff --staged'
+git config --global alias.dst '!git --no-pager diff --stat'
+git config --global alias.it '!git init && git commit -m "init" --allow-empty'
+git config --global alias.l 'log --graph --decorate --abbrev-commit --date="format:%d.%m.%Y" --pretty="format:%C(yellow)%h %C(blue)%ad%C(auto)%d %C(reset)%s %C(green)%aN%C(reset) %C(blue)(%ar)%C(reset)"'
+git config --global alias.s 'status --short --branch'
+git config --global alias.sup '!git branch --set-upstream-to=origin/`git symbolic-ref --short HEAD`'
 ```
 
 ---

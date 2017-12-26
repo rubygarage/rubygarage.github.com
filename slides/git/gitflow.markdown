@@ -118,8 +118,7 @@ title: GitFlow
 
 The central repo holds two main branches with an infinite lifetime:
 
-### `master`
-### `develop`
+### `master` and `develop`
 
 --
 
@@ -133,13 +132,13 @@ When the source code in the `develop` branch reaches a stable point and is ready
 
 # Supporting branches
 
-Next to the main branches `master` and `develop`, our development model uses a variety of supporting branches to aid parallel development between team members, ease tracking of features, prepare for production releases and to assist in quickly fixing live production problems.
+> Next to the main branches `master` and `develop`, our development model uses a variety of supporting branches to aid parallel development between team members, ease tracking of features, prepare for production releases and to assist in quickly fixing live production problems.
 
-Unlike the main branches, these branches always have a limited life time, since they will be removed eventually.
+> Unlike the main branches, these branches always have a limited life time, since they will be removed eventually.
 
 --
 
-### The main types of support branches
+## The main types of support branches
 
 - `Feature` branches
 - `Release` branches
@@ -149,45 +148,46 @@ Unlike the main branches, these branches always have a limited life time, since 
 
 # Feature branches
 
-## May branch off from
-### `develop`
+<br />
 
-## Must merge back into
-### `develop`
+- May branch off from `develop`
+- Must merge back into `develop`
 
-## Branch naming convention (anything except)
-### `master`
-### `develop`
-### `release/*`
-### `hotfix/*`
+<br />
+
+## Branch naming convention
+
+- Must begin with `feature/` (e.g. `feature/my-awesome-feature`)
 
 ---
 
 # Release branches
 
-## May branch off from
-### `develop`
+<br />
 
-## Must merge back into
-### `develop`
-### `master`
+- May branch off from `develop`
+- Must merge back into `master` and `develop`
+
+<br />
 
 ## Branch naming convention
-### `release/*`
+
+- Must begin with `release/*` (e.g. `release/0.1.0`)
 
 ---
 
 # Hotfix branches
 
-## May branch off from
-### `master`
+<br />
 
-## Must merge back into
-### `develop`
-### `master`
+- May branch off from `master`
+- Must merge back into `master` and `develop`
+
+<br />
 
 ## Branch naming convention
-### `hotfix/*`
+
+- Must begin with `hotfix/*` (e.g. `hotfix/v0.1.1`)
 
 ---
 
@@ -197,19 +197,22 @@ Unlike the main branches, these branches always have a limited life time, since 
 
 # Initialization
 
-### Regular git repository
+## Regular git repository
 
-```bash
+```shell
 $ mkdir gitflow-sandbox && cd gitflow-sandbox
+
 $ git init .
 Initialized empty Git repository in /home/rubygarage/www/gitflow-sandbox/.git/
+
 $ git branch # empty
 ```
 
-### Git flow
-`-d` - use default branch naming conventions
+--
 
-```bash
+## Git flow
+
+```shell
 $ git flow init -d
 No branches exist yet. Base branches must be created now.
 Branch name for production releases: [master]
@@ -223,21 +226,24 @@ Hotfix branches? [hotfix/]
 Support branches? [support/]
 Version tag prefix? []
 Hooks and filters directory? [/home/rubygarage/www/gitflow-sandbox/.git/hooks]
+
 $ git branch
 * develop
   master
 ```
 
+`-d` - use default branch naming conventions
+
 --
 
-### Comparison with `git` commands
+## Comparison with raw `git` commands
 
-```bash
+```shell
 $ git flow init
 ```
 <!-- .element: class="left width-50" -->
 
-```bash
+```shell
 $ git init
 $ git commit --allow-empty -m "Initial commit"
 $ git checkout -b develop master
@@ -248,9 +254,9 @@ $ git checkout -b develop master
 
 # Features
 
-Each new feature should reside in its own branch, which can be pushed to the central repository for backup/collaboration. But, instead of branching off of `master`, `feature` branches use `develop` as their parent branch.
+> Each new feature should reside in its own branch, which can be pushed to the central repository for backup/collaboration. But, instead of branching off of `master`, `feature` branches use `develop` as their parent branch.
 
-When a feature is complete, it gets merged back into `develop`. Features should never interact directly with `master`.
+> When a feature is complete, it gets merged back into `develop`. Features should never interact directly with `master`.
 
 --
 
@@ -258,9 +264,9 @@ When a feature is complete, it gets merged back into `develop`. Features should 
 
 --
 
-### Creating features
+## Creating features
 
-```bash
+```shell
 $ git flow feature start my-feature
 Switched to a new branch 'feature/my-feature'
 
@@ -275,23 +281,23 @@ Now, start committing on your feature. When done, use:
 
 --
 
-### Comparison with raw `git` command
+## Comparison with raw `git` command
 
-```bash
+```shell
 $ git flow feature start my-feature
 ```
 <!-- .element: class="left width-50" -->
 
-```bash
+```shell
 $ git checkout -b feature/my-feature develop
 ```
 <!-- .element: class="right width-50" -->
 
 --
 
-### Commit
+## Commit
 
-```bash
+```shell
 $ echo 'Add new feature' > README.md
 
 $ git add .
@@ -304,9 +310,9 @@ $ git commit -m 'Create README.md'
 
 --
 
-### Push
+## Push
 
-```bash
+```shell
 $ git flow feature publish my-feature
 Counting objects: 5, done.
 Delta compression using up to 4 threads.
@@ -327,14 +333,14 @@ Summary of actions:
 
 --
 
-### Comparison with raw `git` commands
+## Comparison with raw `git` commands
 
-```bash
+```shell
 $ git flow feature publish my-feature
 ```
 <!-- .element: class="left width-50" -->
 
-```bash
+```shell
 $ git checkout feature/my-feature
 $ git push origin feature/my-feature
 ```
@@ -344,7 +350,7 @@ $ git push origin feature/my-feature
 
 # Pull requests
 
-Create a pull request to propose and collaborate on changes to a repository. These changes are proposed in a branch, which ensures that the `develop` branch only contains finished and approved work.
+> Create a pull request to propose and collaborate on changes to a repository. These changes are proposed in a branch, which ensures that the `develop` branch only contains finished and approved work.
 
 ![](/assets/images/git/gitflow/pull-request-review-edit-branch.png)
 
@@ -352,7 +358,7 @@ Create a pull request to propose and collaborate on changes to a repository. The
 
 ## About pull request reviews
 
-Reviews allow collaborators to comment on the changes proposed in pull requests, approve the changes, or request further changes before the pull request is merged. Repository administrators can require that all pull requests are approved before being merged.
+> Reviews allow collaborators to comment on the changes proposed in pull requests, approve the changes, or request further changes before the pull request is merged. Repository administrators can require that all pull requests are approved before being merged.
 
 ![](/assets/images/git/gitflow/review-header-with-line-comment.png)
 
@@ -360,7 +366,7 @@ Reviews allow collaborators to comment on the changes proposed in pull requests,
 
 ## Merge to develop
 
-Merge a pull request into the `develop` branch when work is completed. Anyone with push access to the repository can complete the merge.
+> Merge a pull request into the `develop` branch when work is completed. Anyone with push access to the repository can complete the merge.
 
 ![](/assets/images/git/gitflow/pullrequest-mergebutton.png)
 
@@ -368,7 +374,7 @@ Merge a pull request into the `develop` branch when work is completed. Anyone wi
 
 ## Sync `develop` branch
 
-```bash
+```shell
 $ git checkout develop
 Switched to branch 'develop'
 
@@ -390,7 +396,7 @@ Fast-forward
 
 ## Remove merged `feature` branch locally
 
-```bash
+```shell
 $ git flow feature delete my-feature
 Deleted branch feature/my-feature (was c40e454).
 
@@ -401,14 +407,14 @@ Summary of actions:
 
 --
 
-### Comparison with raw `git` commands
+## Comparison with raw `git` commands
 
-```bash
+```shell
 $ git flow feature delete my-feature
 ```
 <!-- .element: class="left width-50" -->
 
-```bash
+```shell
 $ git checkout develop
 $ git branch -d feature/my-feature
 ```
@@ -418,7 +424,7 @@ $ git branch -d feature/my-feature
 
 # Release
 
-Once `develop` has acquired enough features for a release (or a predetermined release date is approaching), you create a release branch off of `develop`. Creating this branch starts the next release cycle, so no new features can be added after this point—only bug fixes, documentation generation, and other release-oriented tasks should go in this branch.
+> Once `develop` has acquired enough features for a release (or a predetermined release date is approaching), you create a release branch off of `develop`. Creating this branch starts the next release cycle, so no new features can be added after this point—only bug fixes, documentation generation, and other release-oriented tasks should go in this branch.
 
 --
 
@@ -426,9 +432,9 @@ Once `develop` has acquired enough features for a release (or a predetermined re
 
 --
 
-### Creating release
+## Creating release
 
-```bash
+```shell
 $ git flow release start 0.1.0
 Switched to a new branch 'release/0.1.0'
 
@@ -446,23 +452,23 @@ Follow-up actions:
 
 --
 
-### Comparison with raw `git` command
+## Comparison with raw `git` command
 
-```bash
+```shell
 $ git flow release start 0.1.0
 ```
 <!-- .element: class="left width-50" -->
 
-```bash
+```shell
 $ git checkout -b release/0.1.0 develop
 ```
 <!-- .element: class="right width-50" -->
 
 --
 
-### Commit
+## Commit
 
-```bash
+```shell
 $ echo 'Release 0.1.0' > CHANGELOG.md
 
 $ git add .
@@ -475,11 +481,11 @@ $ git commit -m 'Bump to 0.1.0'
 
 --
 
-### Finish
+## Finish
 
-Once the release is ready to ship, it will get merged it into `master` and `develop`, then the `release` branch will be deleted. It’s important to merge back into `develop` because critical updates may have been added to the `release` branch and they need to be accessible to new features
+> Once the release is ready to ship, it will get merged it into `master` and `develop`, then the `release` branch will be deleted. It’s important to merge back into `develop` because critical updates may have been added to the `release` branch and they need to be accessible to new features
 
-```bash
+```shell
 $ git flow release finish 0.1.0
 Switched to branch 'master'
 Merge made by the 'recursive' strategy.
@@ -505,14 +511,14 @@ Summary of actions:
 
 --
 
-### Comparison with raw `git` commands
+## Comparison with raw `git` commands
 
-```bash
+```shell
 $ git flow release finish 0.1.0
 ```
 <!-- .element: class="left width-50" -->
 
-```bash
+```shell
 $ git checkout master
 $ git merge --no-ff release/0.1.0
 $ git tag -a 0.1.0
@@ -524,9 +530,9 @@ $ git branch -d release/0.1.0
 
 --
 
-### Push
+## Push
 
-```bash
+```shell
 $ git push --all
 Counting objects: 4, done.
 Delta compression using up to 4 threads.
@@ -537,13 +543,15 @@ remote: Resolving deltas: 100% (1/1), done.
 To github.com:leksster/empty.git
    ea8af76..55edea2  develop -> develop
    e80daca..662a7ca  master -> master
+
+$ git push --tags
 ```
 
 ---
 
 # Hotfix
 
-Maintenance or “hotfix” branches are used to quickly patch production releases. `Hotfix` branches are a lot like `release` branches and `feature` branches except they're based on `master` instead of `develop`. This is the only branch that should fork directly off of `master`.
+> Maintenance or "hotfix" branches are used to quickly patch production releases. `Hotfix` branches are a lot like `release` branches and `feature` branches except they're based on `master` instead of `develop`. This is the only branch that should fork directly off of `master`.
 
 --
 
@@ -551,9 +559,9 @@ Maintenance or “hotfix” branches are used to quickly patch production releas
 
 --
 
-### Creating hotfix
+## Creating hotfix
 
-```bash
+```shell
 $ git flow hotfix start 0.1.1
 Switched to a new branch 'hotfix/0.1.1'
 
@@ -571,23 +579,23 @@ Follow-up actions:
 
 --
 
-### Comparison with raw `git` command
+## Comparison with raw `git` command
 
-```bash
+```shell
 $ git flow hotfix start 1.2.1
 ```
 <!-- .element: class="left width-50" -->
 
-```bash
+```shell
 $ git checkout -b hotfix/1.2.1
 ```
 <!-- .element: class="right width-50" -->
 
 --
 
-### Commit
+## Commit
 
-```bash
+```shell
 $ echo 'Update instructions' > README.md
 
 $ git add .
@@ -599,11 +607,11 @@ $ git commit -m 'Change readme instructions'
 
 --
 
-### Finish
+## Finish
 
-As soon as the fix is complete, it should be merged into both `master` and `develop` (or the current `release` branch), and `master` should be tagged with an updated version number.
+> As soon as the fix is complete, it should be merged into both `master` and `develop` (or the current `release` branch), and `master` should be tagged with an updated version number.
 
-```bash
+```shell
 $ git flow hotfix finish 0.1.1
 Switched to branch 'master'
 Merge made by the 'recursive' strategy.
@@ -625,14 +633,14 @@ Summary of actions:
 
 --
 
-### Comparison with raw `git` commands
+## Comparison with raw `git` commands
 
-```bash
+```shell
 $ git flow hotfix finish 0.1.1
 ```
 <!-- .element: class="left width-50" -->
 
-```bash
+```shell
 $ git checkout master
 $ git merge --no-ff hotfix/0.1.1
 $ git tag -a 0.1.1
@@ -644,9 +652,9 @@ $ git branch -d hotfix/0.1.1
 
 --
 
-### Push
+## Push
 
-```bash
+```shell
 $ git push --all
 Counting objects: 5, done.
 Delta compression using up to 4 threads.
@@ -657,27 +665,31 @@ remote: Resolving deltas: 100% (1/1), done.
 To github.com:leksster/empty.git
    55edea2..d1f1ce8  develop -> develop
    662a7ca..85e4e09  master -> master
+
+$ git push --tags
 ```
+
+---
+
+# Main rules
+
+<br />
+
+- Do not commit to the `master` branch
+- Every pull-request to the `develop` branch have to be working
+- One task — one branch
+- The `release` branch doesn't have to contain any new functionality
 
 ---
 
 # Useful Links
 
-Gitflow by Vincent Driessen
+<br />
 
-http://nvie.com/posts/a-successful-git-branching-model/
-
-Gitflow Cheatsheet
-
-https://danielkummer.github.io/git-flow-cheatsheet/
-
-Gitflow Workflow by atlassian
-
-https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow
-
-Gitflow step-by-step
-
-http://mkuthan.github.io/blog/2013/07/21/gitflow-step-by-step/
+- [Gitflow by Vincent Driessen](http://nvie.com/posts/a-successful-git-branching-model/)
+- [Gitflow Cheatsheet](https://danielkummer.github.io/git-flow-cheatsheet/)
+- [Gitflow Workflow by atlassian](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)
+- [Gitflow step-by-step](http://mkuthan.github.io/blog/2013/07/21/gitflow-step-by-step/)
 
 ---
 
