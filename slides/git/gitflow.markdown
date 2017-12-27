@@ -11,52 +11,32 @@ title: GitFlow
 
 <br />
 
-### What is Gitflow?
-<!-- .element: class="fragment" -->
-
-### Installing Gitflow
-<!-- .element: class="fragment" -->
-
-### Initializing Gitflow
-<!-- .element: class="fragment" -->
-
-### Git branching models
-<!-- .element: class="fragment" -->
+- What is Gitflow?
+- Installing Gitflow
+- Initializing Gitflow
+- Git branching models
 
 ---
 
 # Git Branching Models
 
-### Centralized
-<!-- .element: class="fragment" -->
+<br />
 
-### Feature branch
-<!-- .element: class="fragment" -->
-
-### Gitflow
-<!-- .element: class="fragment" -->
-
-### Others
-<!-- .element: class="fragment" -->
+- Centralized
+- Feature branch
+- Gitflow
 
 --
 
 ## Centralized
 
+<br />
+
 - Uses a centralized repository
-<!-- .element: class="fragment" -->
-
 - End users clone the repository
-<!-- .element: class="fragment" -->
-
 - Pull changes from the central repository to local
-<!-- .element: class="fragment" -->
-
 - Push local changes to central repository
-<!-- .element: class="fragment" -->
-
 - Very like SVN
-<!-- .element: class="fragment" -->
 
 ![](/assets/images/git/gitflow/centralized-workflow.png)
 
@@ -64,14 +44,11 @@ title: GitFlow
 
 ## Feature Branch
 
+<br />
+
 - End users keep changes isolated from collaborators
-<!-- .element: class="fragment" -->
-
 - Independent “tracks” of developing a project
-<!-- .element: class="fragment" -->
-
 - Pull requests and push permissions
-<!-- .element: class="fragment" -->
 
 ![](/assets/images/git/gitflow/feature-branch-workflow.png)
 
@@ -79,17 +56,12 @@ title: GitFlow
 
 ## Gitflow
 
+<br />
+
 - More complicated than feature branch workflow
-<!-- .element: class="fragment" -->
-
 - Two branches record history of the project (`master` and `develop`)
-<!-- .element: class="fragment" -->
-
 - Features reside in their own branches (as do hotfixes)
-<!-- .element: class="fragment" -->
-
 - Release branches branch off develop
-<!-- .element: class="fragment" -->
 
 --
 
@@ -99,18 +71,10 @@ title: GitFlow
 
 # Install Gitflow
 
-- Gitflow is a set of scripts that extend git
-<!-- .element: class="fragment" -->
+<br />
 
-  - Can Use standard git commands but scripts make it easier
-  <!-- .element: class="fragment" -->
-
-- Has to be installed separately to git
-<!-- .element: class="fragment" -->
-
-  - https://github.com/petervanderdoes/gitflow-avh/wiki/Installation
-
-  <!-- .element: class="fragment" -->
+> - Gitflow is a set of scripts that extend git (Can use standard git commands but scripts make it easier)
+> - Has to be installed separately to git ([Installation](https://github.com/petervanderdoes/gitflow-avh/wiki/Installation))
 
 ---
 
@@ -140,6 +104,8 @@ When the source code in the `develop` branch reaches a stable point and is ready
 
 ## The main types of support branches
 
+<br />
+
 - `Feature` branches
 - `Release` branches
 - `Hotfix` branches
@@ -157,6 +123,8 @@ When the source code in the `develop` branch reaches a stable point and is ready
 
 ## Branch naming convention
 
+<br />
+
 - Must begin with `feature/` (e.g. `feature/my-awesome-feature`)
 
 ---
@@ -171,6 +139,8 @@ When the source code in the `develop` branch reaches a stable point and is ready
 <br />
 
 ## Branch naming convention
+
+<br />
 
 - Must begin with `release/*` (e.g. `release/0.1.0`)
 
@@ -187,30 +157,36 @@ When the source code in the `develop` branch reaches a stable point and is ready
 
 ## Branch naming convention
 
+<br />
+
 - Must begin with `hotfix/*` (e.g. `hotfix/v0.1.1`)
 
 ---
 
 # How to use Gitflow?
 
----
+--
 
-# Initialization
+## Git repository initialization
 
-## Regular git repository
+<br />
+
+Regular git repository
 
 ```shell
 $ mkdir gitflow-sandbox && cd gitflow-sandbox
 
 $ git init .
-Initialized empty Git repository in /home/rubygarage/www/gitflow-sandbox/.git/
+Initialized empty Git repository in /home/john/gitflow-sandbox/.git/
 
 $ git branch # empty
 ```
 
 --
 
-## Git flow
+## Git flow initialization
+
+<br />
 
 ```shell
 $ git flow init -d
@@ -225,7 +201,7 @@ Release branches? [release/]
 Hotfix branches? [hotfix/]
 Support branches? [support/]
 Version tag prefix? []
-Hooks and filters directory? [/home/rubygarage/www/gitflow-sandbox/.git/hooks]
+Hooks and filters directory? [/home/john/gitflow-sandbox/.git/hooks]
 
 $ git branch
 * develop
@@ -587,7 +563,7 @@ $ git flow hotfix start 1.2.1
 <!-- .element: class="left width-50" -->
 
 ```shell
-$ git checkout -b hotfix/1.2.1
+$ git checkout -b hotfix/1.2.1 master
 ```
 <!-- .element: class="right width-50" -->
 
@@ -676,8 +652,8 @@ $ git push --tags
 <br />
 
 - Do not commit to the `master` branch
-- Every pull-request to the `develop` branch have to be working
 - One task — one branch
+- Every pull-request to the `develop` branch have to be working
 - The `release` branch doesn't have to contain any new functionality
 
 ---
