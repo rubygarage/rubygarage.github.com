@@ -118,10 +118,10 @@ $ git config --global user.email 'johndoe@example.com'
 Lets create our first repository
 
 ```shell
-$ mkdir ./repo-example && cd ./repo-example
+$ mkdir repo-example && cd repo-example
 
 $ git init
-Initialized empty Git repository in /home/root/repo-example/.git/
+Initialized empty Git repository in /home/john/repo-example/.git/
 ```
 
 ---
@@ -565,7 +565,7 @@ origin	git@github.com:rubygarage/repo-example.git (push)
 
 --
 
-### Explanation
+## Explanation
 
 - the top half is the branch you a merging into
 - the bottom half is from the commit that you are trying to merge in
