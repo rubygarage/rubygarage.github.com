@@ -131,6 +131,10 @@ title: Ruby presentations
   <br>
   <small>Distributed version control system</small>
 
+- [Design Patterns](/slides/patterns)
+  <br>
+  <small>Develop scalable application with design patterns.</small>
+
 - [Static code analysis](/slides/static-code-analysis)
   <br>
   <small>Write your code clean and beautiful.</small>
