@@ -77,6 +77,33 @@ can be located at any depth under the src top level folder.
 
 --
 
+## Configuring Jest
+
+jest.config.js <!-- .element: class="filename" -->
+```js
+module.exports = {
+  verbose: true,
+  moduleDirectories: [
+    "node_modules",
+    "src"
+  ],
+  testPathIgnorePatterns: [
+    "<rootDir>/node_modules/"
+  ],
+  setupFiles: [
+    "<rootDir>/__test__/setupTest.js"
+  ],
+  testRegex: "(/__test__/.*|\\.(test|spec))\\.js",
+  moduleFileExtensions: [
+    "js",
+    "json",
+    "jsx"
+  ]
+}
+```
+Jest configuration [documentation](https://facebook.github.io/jest/docs/en/configuration.html)
+--
+
 ## Enzyme
 
 ```bash
@@ -89,7 +116,7 @@ npm install --save-dev enzyme enzyme-to-json jest-enzyme
 
 --
 
-Import it in `src/setupTests.js` to make `jest-enzyme` matchers available in every test
+Import it in `setupTests.js` to make `jest-enzyme` matchers available in every test
 
 setupTests.js <!-- .element: class="filename" -->
 ```js
@@ -229,6 +256,70 @@ it('the shopping list has bananas on it', () => {
 
 [Matchers docs](https://facebook.github.io/jest/docs/en/expect.html)
 
+---
+
+## Testing Asynchronous Code
+
+Jest has several ways to handle code that runs asynchronously.
+
+--
+
+## ```Done``` callback
+Jest will wait until the ```done``` callback is called before finishing the test.
+
+```js
+test('the data is shopping list', done => {
+  callback = (data) => {
+    expect(data).toBe('shopping list');
+    done();
+  }
+
+  asyncAction(callback);
+});
+```
+
+--
+
+If the function accepts a done parameter and  ```done()``` is never called
+
+```js
+it('works synchronously', done => {
+  expect(1).toBeGreaterThan(0);
+})
+```
+
+the test will fail, which is what you want to happen
+
+```bash
+  ● Moxios › works synchronously
+
+    Timeout - Async callback was not invoked within the 5000ms timeout specified by jest.setTimeout.
+
+      at node_modules/jest-jasmine2/build/queue_runner.js:72:21
+      at Timeout.callback [as _onTimeout] (node_modules/jsdom/lib/jsdom/browser/Window.js:633:19)
+```
+
+--
+
+## Matchers
+
+You can also use the ```.resolves``` or ```.rejects``` matcher in your expect statement, and Jest will wait for that promise to resolve/rejected
+
+.resolves
+```js
+test('the fetch data with shopping list', () => {
+  expect.assertions(1);
+  expect(fetchShoppingList()).resolves.toBe('shopping list');
+});
+```
+
+.rejects
+```js
+test('the fetch fails with an error', () => {
+  expect.assertions(1);
+  expect(fetchData()).rejects.toMatch('error');
+});
+```
 ---
 
 ## Testing components
@@ -449,6 +540,44 @@ describe('actions', () => {
     expect(actions.addTodo(text)).toEqual(expectedAction)
   })
 })
+```
+
+--
+
+## Asynchronous Actions
+
+For async action creators using [redux-thunk](https://github.com/gaearon/redux-thunk) or other middleware, it's best to completely mock the Redux store for tests.
+
+You can also use [axios-mock-adapter](https://github.com/ctimmerm/axios-mock-adapter) to mock the HTTP requests called by [axios](https://github.com/axios/axios).
+
+--
+
+```js
+import thunk from 'redux-thunk';
+import axios from 'axios';
+import configureMockStore from 'redux-mock-store';
+import MockAdapter from 'axios-mock-adapter';
+
+it('fetch todoes', () => {
+  const axiosMock = new MockAdapter(axios);
+  const stubStore = mockStore(configureMockStore([thunk]));
+  const TODOES = [
+    {
+      id: 1,
+      text: 'Buy bananas',
+    }
+  ];
+
+  axiosMock.onGet('/todoes').reply(200, TODOES);
+
+  const expectedActions = [
+    { type: types.TODO_LIST + types.REQUEST },
+    { type: types.TODO_LIST + types.SUCCESS, payload: { data: TODOES } },
+  ];
+
+  return stubStore.dispatch(actions.ferchTodoes()).then(() => {
+    expect(actions).toEqual(expectedActions);
+});
 ```
 
 --
