@@ -553,6 +553,7 @@ You can also use [axios-mock-adapter](https://github.com/ctimmerm/axios-mock-ada
 --
 
 ```js
+import * as asyncActions from '../actions/TodoActions'
 import thunk from 'redux-thunk';
 import axios from 'axios';
 import configureMockStore from 'redux-mock-store';
@@ -575,7 +576,8 @@ it('fetch todoes', () => {
     { type: types.TODO_LIST + types.SUCCESS, payload: { data: TODOES } },
   ];
 
-  return stubStore.dispatch(actions.ferchTodoes()).then(() => {
+  return stubStore.dispatch(asyncActions.ferchTodoes()).then(() => {
+    const actions = stubStore.getActions();
     expect(actions).toEqual(expectedActions);
 });
 ```
