@@ -576,7 +576,7 @@ it('fetch todoes', () => {
     { type: types.TODO_LIST + types.SUCCESS, payload: { data: TODOES } },
   ];
 
-  return stubStore.dispatch(asyncActions.ferchTodoes()).then(() => {
+  return stubStore.dispatch(asyncActions.fetchTodoes()).then(() => {
     const actions = stubStore.getActions();
     expect(actions).toEqual(expectedActions);
 });
