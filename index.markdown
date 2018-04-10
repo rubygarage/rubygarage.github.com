@@ -116,6 +116,10 @@ title: Ruby presentations
   <br>
   <small>Writing API in Rails.</small>
 
+- [Sidekiq](/slides/sidekiq)
+  <br>
+  <small>Background jobs processing.</small>
+
 
 <!--
 # Frontend
