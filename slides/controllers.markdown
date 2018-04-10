@@ -269,10 +269,31 @@ end
 * `ActionDispatch::Session::CacheStore` - Stores the data in the Rails cache
 
 * `ActionDispatch::Session::ActiveRecordStore` - Stores the data in a database using Active Record (require
-activerecord-session_store gem)
+[activerecord-session_store](https://github.com/rails/activerecord-session_store))
 
-* `ActionDispatch::Session::MemCacheStore` - Stores the data in a memcached cluster (this is a legacy implementation;
-consider using CacheStore instead)
+--
+
+# CacheStore
+
+The default session store is setup internally (to cookie store), you can change it from `:cookie_store` to `:cache_store`
+
+```ruby
+Rails.application.config.session_store :cache_store
+```
+
+Then change the cache store will be used as a session store.
+
+```ruby
+Rails.application.config.cache_store = :file_store, 'tmp/cache_store'
+```
+
+```ruby
+Rails.application.config.cache_store = :redis_store, 'redis://localhost:6379/1'
+```
+
+```ruby
+Rails.application.config.cache_store = :memory_store
+```
 
 --
 
@@ -281,15 +302,19 @@ consider using CacheStore instead)
 config/initializers/session_store.rb <!-- .element: class="filename" -->
 
 ```ruby
-YourApp::Application.config.session_store :active_record_store
-YourApp::Application.config.session_store :cookie_store, key: '_your_app_session'
-YourApp::Application.config.session_store :cookie_store, key: '_your_app_session', domain: ".example.com"
+Rails.application.config.session_store :active_record_store
+Rails.application.config.session_store :cookie_store, key: '_your_app_session'
 ```
+
+```ruby
+Rails.application.config.session_store :cookie_store, key: '_your_app_session', domain: '.example.com'
+```
+
 
 config/initializers/secret_token.rb <!-- .element: class="filename" -->
 
 ```ruby
-YourApp::Application.config.secret_key_base = '49d3f3de9ed86c74b94ad6bd0...'
+Rails.application.config.secret_key_base = '49d3f3de9ed86c74b94ad6bd0...'
 ```
 
 <br>
@@ -997,7 +1022,7 @@ end
 spec/factories/users.rb <!-- .element: class="filename" -->
 
 ```ruby
-FactoryGirl.define do
+FactoryBot.define do
   factory :user do
     email { Faker::Internet.email }
     name { Faker::Name.name }
@@ -1008,7 +1033,7 @@ end
 spec/factories/posts.rb <!-- .element: class="filename" -->
 
 ```ruby
-FactoryGirl.define do
+FactoryBot.define do
   factory :post do
     title { Faker::Lorem.sentence }
     text { Faker::Lorem.paragraph }
@@ -1023,9 +1048,9 @@ spec/controllers/posts_controller_spec.rb <!-- .element: class="filename" -->
 
 ```ruby
 describe PostsController do
-  let(:post_params) { FactoryGirl.attributes_for(:post).stringify_keys }
-  let(:post) { FactoryGirl.build_stubbed(:post) }
-  let(:user) { FactoryGirl.create(:user) }
+  let(:post_params) { FactoryBot.attributes_for(:post).stringify_keys }
+  let(:post) { FactoryBot.build_stubbed(:post) }
+  let(:user) { FactoryBot.create(:user) }
 
   describe 'GET #show' do
     before do
