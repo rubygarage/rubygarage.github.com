@@ -23,8 +23,8 @@ do it, rather than requiring you to specify every little thing through endless c
 ### Preparing environment
 
 ```bash
-$ rvm use 2.3.0@blog --create
-Using /Users/ty/.rvm/gems/ruby-2.3.0 with gemset blog
+$ rvm use 2.4.3@blog --create
+Using /Users/ty/.rvm/gems/ruby-2.4.3 with gemset blog
 ```
 
 --
@@ -38,7 +38,7 @@ $ gem install rails
 ```
 
 ```bash
-$ gem install rails -v 5.0
+$ gem install rails -v 5.1
 ```
 
 ---
@@ -52,26 +52,33 @@ rails new APP_PATH [options]
 
 Options:
 -r, [--ruby=PATH]                                      # Path to the Ruby binary of your choice
-                                                       # Default: /Users/ty/.rvm/rubies/ruby-2.3.0/bin/ruby
+                                                         # Default: /Users/kirill/.rvm/rubies/ruby-2.4.3/bin/ruby
 -m, [--template=TEMPLATE]                              # Path to some application template (can be a filesystem path or URL)
+-d, [--database=DATABASE]                              # Preconfigure for selected database (options: mysql/postgresql/sqlite3/oracle/frontbase/ibm_db/sqlserver/jdbcmysql/jdbcsqlite3/jdbcpostgresql/jdbc)
+                                                         # Default: sqlite3
+    [--skip-yarn], [--no-skip-yarn]                    # Don't use Yarn for managing JavaScript dependencies
     [--skip-gemfile], [--no-skip-gemfile]              # Don't create a Gemfile
--B, [--skip-bundle], [--no-skip-bundle]                # Don't run bundle install
 -G, [--skip-git], [--no-skip-git]                      # Skip .gitignore file
     [--skip-keeps], [--no-skip-keeps]                  # Skip source control .keep files
+-M, [--skip-action-mailer], [--no-skip-action-mailer]  # Skip Action Mailer files
 -O, [--skip-active-record], [--no-skip-active-record]  # Skip Active Record files
+-P, [--skip-puma], [--no-skip-puma]                    # Skip Puma related files
+-C, [--skip-action-cable], [--no-skip-action-cable]    # Skip Action Cable files
 -S, [--skip-sprockets], [--no-skip-sprockets]          # Skip Sprockets files
-    [--skip-spring], [--no-skip-spring]                # Dont install Spring application preloader
--d, [--database=DATABASE]                              # Preconfigure for selected database (options: mysql/oracle/postgresql/sqlite3/frontbase/ibm_db/sqlserver/jdbcmysql/jdbcsqlite3/jdbcpostgresql/jdbc)
-                                                       # Default: sqlite3
--j, [--javascript=JAVASCRIPT]                          # Preconfigure for selected JavaScript library
-                                                       # Default: jquery
+    [--skip-spring], [--no-skip-spring]                # Don't install Spring application preloader
+    [--skip-listen], [--no-skip-listen]                # Don't generate configuration that depends on the listen gem
+    [--skip-coffee], [--no-skip-coffee]                # Don't use CoffeeScript
 -J, [--skip-javascript], [--no-skip-javascript]        # Skip JavaScript files
+    [--skip-turbolinks], [--no-skip-turbolinks]        # Skip turbolinks gem
+-T, [--skip-test], [--no-skip-test]                    # Skip test files
+    [--skip-system-test], [--no-skip-system-test]      # Skip system test files
     [--dev], [--no-dev]                                # Setup the application with Gemfile pointing to your Rails checkout
     [--edge], [--no-edge]                              # Setup the application with Gemfile pointing to Rails repository
-    [--skip-turbolinks], [--no-skip-turbolinks]        # Skip turbolinks gem
--T, [--skip-test-unit], [--no-skip-test-unit]          # Skip Test::Unit files
     [--rc=RC]                                          # Path to file containing extra configuration options for rails command
     [--no-rc], [--no-no-rc]                            # Skip loading of extra configuration options from .railsrc file
+    [--api], [--no-api]                                # Preconfigure smaller stack for API only apps
+-B, [--skip-bundle], [--no-skip-bundle]                # Don't run bundle install
+    [--webpack=WEBPACK]                                # Preconfigure for app-like JavaScript with Webpack (options: react/vue/angular)
 
 Runtime options:
 -f, [--force]                    # Overwrite files that already exist
@@ -96,10 +103,12 @@ create  Rakefile
 create  config.ru
 create  .gitignore
 create  Gemfile
+run  git init from "."
+Initialized empty Git repository in /Users/kirill/workspace/learning/blog/.git/
 create  app
 create  app/assets/config/manifest.js
 create  app/assets/javascripts/application.js
-create  app/assets/javascripts/cable.coffee
+create  app/assets/javascripts/cable.js
 create  app/assets/stylesheets/application.css
 create  app/channels/application_cable/channel.rb
 create  app/channels/application_cable/connection.rb
@@ -112,6 +121,7 @@ create  app/views/layouts/application.html.erb
 create  app/views/layouts/mailer.html.erb
 create  app/views/layouts/mailer.text.erb
 create  app/assets/images/.keep
+create  app/assets/javascripts/channels
 create  app/assets/javascripts/channels/.keep
 create  app/controllers/concerns/.keep
 create  app/models/concerns/.keep
@@ -121,33 +131,32 @@ create  bin/rails
 create  bin/rake
 create  bin/setup
 create  bin/update
+create  bin/yarn
 create  config
 create  config/routes.rb
 create  config/application.rb
 create  config/environment.rb
 create  config/secrets.yml
+create  config/cable.yml
+create  config/puma.rb
+create  config/spring.rb
 create  config/environments
 create  config/environments/development.rb
 create  config/environments/production.rb
 create  config/environments/test.rb
 create  config/initializers
-create  config/initializers/active_record_belongs_to_required_by_default.rb
 create  config/initializers/application_controller_renderer.rb
 create  config/initializers/assets.rb
 create  config/initializers/backtrace_silencers.rb
-create  config/initializers/callback_terminator.rb
 create  config/initializers/cookies_serializer.rb
 create  config/initializers/cors.rb
 create  config/initializers/filter_parameter_logging.rb
 create  config/initializers/inflections.rb
 create  config/initializers/mime_types.rb
-create  config/initializers/request_forgery_protection.rb
-create  config/initializers/session_store.rb
+create  config/initializers/new_framework_defaults_5_1.rb
 create  config/initializers/wrap_parameters.rb
 create  config/locales
 create  config/locales/en.yml
-create  config/redis
-create  config/redis/cable.yml
 create  config/boot.rb
 create  config/database.yml
 create  db
@@ -163,6 +172,8 @@ create  public
 create  public/404.html
 create  public/422.html
 create  public/500.html
+create  public/apple-touch-icon-precomposed.png
+create  public/apple-touch-icon.png
 create  public/favicon.ico
 create  public/robots.txt
 create  test/fixtures
@@ -180,19 +191,20 @@ create  test/helpers/.keep
 create  test/integration
 create  test/integration/.keep
 create  test/test_helper.rb
+create  test/system
+create  test/system/.keep
+create  test/application_system_test_case.rb
 create  tmp
 create  tmp/.keep
 create  tmp/cache
 create  tmp/cache/assets
-create  vendor/assets/javascripts
-create  vendor/assets/javascripts/.keep
-create  vendor/assets/stylesheets
-create  vendor/assets/stylesheets/.keep
+create  vendor
+create  vendor/.keep
+create  package.json
+remove  config/initializers/cors.rb
+remove  config/initializers/new_framework_defaults_5_1.rb
 run  bundle install
 ...
-run  bundle exec spring binstub --all
-* bin/rake: spring inserted
-* bin/rails: spring inserted
 ```
 
 --
@@ -206,7 +218,7 @@ $ cd blog
 .ruby-version <!-- .element: class="filename" -->
 
 ```ruby
-2.3.0
+2.4.3
 ```
 
 .ruby-gemset <!-- .element: class="filename" -->
@@ -238,7 +250,7 @@ blog
 | -------------        | ---------                                                                                                                                                                                                                                                                  |
 | public/              | The only folder seen to the world as-is. Contains the static files and compiled assets.                                                                                                                                                                                    |
 | Rakefile             | This file locates and loads tasks that can be run from the command line. The task definitions are defined throughout the components of Rails. Rather than changing Rakefile, you should add your own tasks by adding files to the lib/tasks directory of your application. |
-| README.rdoc          | This is a brief instruction manual for your application. You should edit this file to tell others what your application does, how to set it up, and so on.                                                                                                                 |
+| README.md            | This is a brief instruction manual for your application. You should edit this file to tell others what your application does, how to set it up, and so on.                                                                                                                 |
 | test/                | Unit tests, fixtures, and other test apparatus. These are covered in Testing Rails Applications
 | tmp/                 | Temporary files (like cache, pid and session files)                                                                                                                                                                                                                        |
 | vendor/              | A place for all third-party code. In a typical Rails application, this includes Ruby Gems and the Rails source code (if you optionally install it into your project).                                                                                                      |
@@ -250,26 +262,33 @@ blog
 ```ruby
 source 'https://rubygems.org'
 
+git_source(:github) do |repo_name|
+  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
+  "https://github.com/#{repo_name}.git"
+end
+
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '>= 5.0.0.beta1.1', '< 5.1'
+gem 'rails', '~> 5.1.4'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
+# Use Puma as the app server
+gem 'puma', '~> 3.7'
+# Use SCSS for stylesheets
+gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
-# Use CoffeeScript for .coffee assets and views
-gem 'coffee-rails', '~> 4.1.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
-# Use jquery as the JavaScript library
-gem 'jquery-rails'
-# Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
+# Use CoffeeScript for .coffee assets and views
+gem 'coffee-rails', '~> 4.2'
+# Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
+gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.0'
-# Use Puma as the app server
-gem 'puma'
-
+gem 'jbuilder', '~> 2.5'
+# Use Redis adapter to run Action Cable in production
+# gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -278,14 +297,19 @@ gem 'puma'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug'
+  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  # Adds support for Capybara system testing and selenium driver
+  gem 'capybara', '~> 2.13'
+  gem 'selenium-webdriver'
 end
 
 group :development do
-  # Access an IRB console on exception pages or by using console in views
-  gem 'web-console', '~> 3.0'
+  # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
+  gem 'web-console', '>= 3.3.0'
+  gem 'listen', '>= 3.0.5', '< 3.2'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+  gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
@@ -294,7 +318,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 #gem 'rails', git: 'https://github.com/rails/rails.git'
 #gem 'rails', git: 'git@github.com:rails/rails.git'
 #gem 'rails', git: 'git://github.com/rails/rails.git'
-#gem 'rails', github: 'rails'
+#gem 'rails', github: 'rails/rails'
 #gem 'rails', path: 'vendor/rails'
 ```
 
@@ -310,26 +334,26 @@ config/database.yml <!-- .element: class="filename" -->
 #
 #   Ensure the SQLite 3 gem is defined in your Gemfile
 #   gem 'sqlite3'
-development:
+#
+default: &default
   adapter: sqlite3
-  database: db/development.sqlite3
-  pool: 5
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
+
+development:
+  <<: *default
+  database: db/development.sqlite3
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
-  adapter: sqlite3
+  <<: *default
   database: db/test.sqlite3
-  pool: 5
-  timeout: 5000
 
 production:
-  adapter: sqlite3
+  <<: *default
   database: db/production.sqlite3
-  pool: 5
-  timeout: 5000
 ```
 
 --
@@ -378,7 +402,7 @@ $ rails server -e production -p 6789
 ```bash
 $ rails s
 => Booting Puma
-=> Rails 5.0.0.beta1.1 application starting in development on http://localhost:3000
+=> Rails 5.1.4 application starting in development on http://localhost:3000
 => Run `rails server -h` for more startup options
 => Ctrl-C to shutdown server
 I, [2016-04-03T17:44:50.487276 #21178]  INFO -- : Celluloid 0.17.3 is running in BACKPORTED mode. [ http://git.io/vJf3J ]
@@ -394,15 +418,14 @@ Puma 2.16.0 starting...
 
 ```bash
 $ rails generate scaffold Post title:string text:text
-  Running via Spring preloader in process 22691
   invoke  active_record
-  create    db/migrate/20160403144910_create_posts.rb
+  create    db/migrate/20180115131427_create_posts.rb
   create    app/models/post.rb
   invoke    test_unit
   create      test/models/post_test.rb
   create      test/fixtures/posts.yml
   invoke  resource_route
-   route    resources :posts
+  route    resources :posts
   invoke  scaffold_controller
   create    app/controllers/posts_controller.rb
   invoke    erb
@@ -420,23 +443,26 @@ $ rails generate scaffold Post title:string text:text
   invoke    jbuilder
   create      app/views/posts/index.json.jbuilder
   create      app/views/posts/show.json.jbuilder
+  create      app/views/posts/_post.json.jbuilder
+  invoke  test_unit
+  create    test/system/posts_test.rb
   invoke  assets
   invoke    coffee
   create      app/assets/javascripts/posts.coffee
-  invoke    css
-  create      app/assets/stylesheets/posts.css
-  invoke  css
-  create    app/assets/stylesheets/scaffold.css
+  invoke    scss
+  create      app/assets/stylesheets/posts.scss
+  invoke  scss
+  create    app/assets/stylesheets/scaffolds.scss
 ```
 
 ---
 
 ## Migrations
 
-db/migrate/20160403144910_create_posts.rb <!-- .element: class="filename" -->
+db/migrate/20180115131427_create_posts.rb <!-- .element: class="filename" -->
 
 ```ruby
-class CreatePosts < ActiveRecord::Migration
+class CreatePosts < ActiveRecord::Migration[5.1]
   def change
     create_table :posts do |t|
       t.string :title
@@ -468,13 +494,13 @@ $ rake db:migrate
 db/schema.rb <!-- .element: class="filename" -->
 
 ```ruby
-ActiveRecord::Schema.define(version: 20160403144910) do
+ActiveRecord::Schema.define(version: 20180115131427) do
 
-  create_table "posts", force: true do |t|
-    t.string   "title"
-    t.text     "text"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "posts", force: :cascade do |t|
+    t.string "title"
+    t.text "text"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end
@@ -487,7 +513,7 @@ end
 config/routes.rb <!-- .element: class="filename" -->
 
 ```ruby
-Community::Application.routes.draw do
+Rails.application.routes.draw do
   resources :posts
 end
 ```
@@ -510,14 +536,14 @@ edit_post   GET    /posts/:id/edit(.:format) posts#edit
 
 ## Models
 
-app/models/post.rb before v5.0.0.beta1 <!-- .element: class="filename" -->
+app/models/post.rb before v5.0.0 <!-- .element: class="filename" -->
 
 ```ruby
 class Post < ActiveRecord::Base
 end
 ```
 
-v5.0.0.beta1 <!-- .element: class="filename" -->
+since v5.0.0 <!-- .element: class="filename" -->
 
 ```ruby
 class Post < ApplicationRecord
@@ -529,6 +555,8 @@ class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
 end
 ```
+
+`abstract_class = true` tells Rails to not use `application_records` as table name for all classes inheriting `ApplicationRecord`.
 
 ---
 
@@ -862,8 +890,6 @@ Post was successfully created.
 <br>
 <b>Text:</b> Facebook’s empire was built on photo tags and sharing, but it’s a grueling process many neglect. Luckily, new Facebook patents give it tech to continuously capture video whenever your camera is open, rank and surface the best images, and auto-tag them with people, places, and businesses. They tease a future where pattern, facial, and audio recognition identify what you’re seeing for easy sharing.
 <br>
-<br>
-[Edit]() \| [Back]()
 </div>
 
 GET localhost:3000/posts/1.json <!-- .element: class="filename" -->
