@@ -83,7 +83,31 @@ Factory Method is a creational design pattern that provides an interface for cre
 ## Example without pattern
 
 ```ruby
-Need to implement
+class Team
+  def initialize(developers_number, developers_type)
+    @developers = []
+    if developers_type == :backend
+      developers_number.times do |i|
+        @developers << BackendDeveloper.new("Developer #{i}")
+      end
+    elsif developers_type == :frontend
+      developers_number.times do |i|
+        @developers << FrontendDeveloper.new("Developer #{i}")
+      end
+    end
+  end
+
+  def implement_feature
+    @developers.each do |developer|
+      developer.code
+      developer.test
+      developer.refactor
+    end
+  end
+end
+
+backend_team = Team.new(7, :backend)
+frontend_team = Team.new(5, :frontend)
 ```
 
 --
@@ -91,7 +115,68 @@ Need to implement
 ## Example with pattern
 
 ```ruby
-Need to implement
+class Team
+  def initialize(developers_number)
+    @developers = []
+    developers_number.times do |i|
+      @developers << new_developer("Developer #{i}")
+    end
+  end
+
+  def implement_feature
+    @developers.each do |developer|
+      developer.code
+      developer.test
+      developer.refactor
+    end
+  end
+end
+
+class BackendTeam < Team
+  def new_developer(name)
+    BackendDeveloper.new(name)
+  end
+end
+
+class FrontendTeam < Team
+  def new_developer(name)
+    FrontendDeveloper.new(name)
+  end
+end
+
+backend_team = BackendTeam.new(7)
+frontend_team = FrontendTeam.new(5)
+```
+
+--
+
+## Example with pattern
+
+```ruby
+class Team
+  def initialize(developers_number, developer_class)
+    @developer_class = developer_class
+    @developers = []
+    developers_number.times do |i|
+      @developers << new_developer("Developer #{i}")
+    end
+  end
+
+  def implement_feature
+    @developers.each do |developer|
+      developer.code
+      developer.test
+      developer.refactor
+    end
+  end
+
+  def new_developer(name)
+    @developer_class.new(name)
+  end
+end
+
+backend_team = Team.new(7, BackendDeveloper)
+frontend_team = Team.new(5, FrontendDeveloper)
 ```
 
 --
@@ -135,7 +220,20 @@ Builder is a creational design pattern that lets you produce different types and
 ## Example without pattern
 
 ```ruby
-Need to implement
+class Post
+  attr_accessor :author, :category, :title, :tags, :background_image_url, :language
+
+  def initialize(author, category, title, tags, background_image_url, language = 'en')
+    @author = author
+    @category = category
+    @title = title
+    @tags = tags
+    @background_image_url = background_image_url
+    @language = language
+  end
+end
+
+post = Post.new(Author.new('Alex'), 'testing', 'Testing with RSpec', ['ruby', 'rails', 'testing', 'rspec'], 'https://cdn.filestackcontent.com/resize=width:48/2h25ZGRHTfmQ2DBEt3yR')
 ```
 
 --
@@ -143,7 +241,56 @@ Need to implement
 ## Example with pattern
 
 ```ruby
-Need to implement
+class Post
+  attr_accessor :author, :category, :title, :tags, :background_image_url, :language
+end
+
+class PostBuilder
+  def initialize
+    @post = Post.new
+  end
+
+  def add_author(author)
+    @post.author = author
+  end
+
+  def add_category(category)
+    @post.category = category
+  end
+
+  def add_title(title)
+    @post.title = title
+  end
+
+  def add_tags(*tags)
+    tags.each do |author|
+      @post.tags << author
+    end
+  end
+
+  def add_background_image_url(url)
+    @post.background_image_url = url
+  end
+
+  def add_language(language)
+    @post.language = language
+  end
+
+  def post
+    @post.language = 'en' if @post.language.nil?
+    @post
+  end
+end
+
+builder = PostBuilder.new
+builder.add_author(Author.new('Alex'))
+builder.add_category('testing')
+builder.add_title('Testing with RSpec')
+builder.add_tags('ruby', 'rails', 'testing', 'rspec')
+builder.add_background_image_url('https://cdn.filestackcontent.com/resize=width:48/2h25ZGRHTfmQ2DBEt3yR')
+builder.add_language = 'es'
+
+post = builder.post
 ```
 
 --
