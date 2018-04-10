@@ -99,25 +99,25 @@ Ruby 1.8 в 2003-м году и Ruby on Rails 2.0 в 2007-м году
 
 ## Рейтинг популярности языков программирования
 
-Рейтинг [TIOBE Programming Community Index](https://www.tiobe.com/tiobe-index) на октябрь 2017-го
+Рейтинг [TIOBE Programming Community Index](https://www.tiobe.com/tiobe-index) на апрель 2018-го
 
-| Oct 2017 | Oct 2016 | Change | Programming Language | Ratings | Change |
-|:---------|:---------|:------:|:---------------------|---------|--------|
-| 1        | 1        |        | Java                 | 12.431% | -6.37% |
-| 2        | 2        |        | C                    | 8.374%  | -1.46% |
-| 3        | 3        |        | C++                  | 5.007%  | -0.79% |
-| 4        | 4        |        | C#                   | 3.858%  | -0.51% |
-| 5        | 5        |        | Python               | 3.803%  | +0.03% |
-| 6        | 6        |        | JavaScript           | 3.010%  | +0.26% |
-| 7        | 7        |        | PHP                  | 2.790%  | +0.05% |
-| 8        | 8        |        | Visual Basic .NET    | 2.735%  | +0.08% |
-| 9        | 11       | up     | Assembly language    | 2.374%  | +0.14% |
-| 10       | 13       | up     | Ruby                 | 2.324%  | +0.32% |
-| 11       | 15       | up     | Delphi/Object Pascal | 2.180%  | +0.31% |
-| 12       | 9        | down   | Perl                 | 1.963%  | -0.53% |
-| 13       | 19       | up     | MATLAB               | 1.880%  | +0.26% |
-| 14       | 23       | up     | Scratch              | 1.819%  | +0.69% |
-| 15       | 18       | up     | R                    | 1.684%  | -0.06% |
+| Apr 2018 | Apr 2017 | Change  | Programming Language | Ratings  | Change  |
+| :------: | :------: | :-----: | :------------------- | -------: | ------: |
+| 1        | 1        |         | Java                 | 15.777%  | +0.21%  |
+| 2        | 2        |         | C                    | 13.589%  | +6.62%  |
+| 3        | 3        |         | C++                  | 7.218%   | +2.66%  |
+| 4        | 5        | ▲       | Python               | 5.803%   | +2.35%  |
+| 5        | 4        | ▼       | C#                   | 5.265%   | +1.69%  |
+| 6        | 7        | ▲       | Visual Basic .NET    | 4.947%   | +1.70%  |
+| 7        | 6        | ▼       | PHP                  | 4.218%   | +0.84%  |
+| 8        | 8        |         | JavaScript           | 3.492%   | +0.64%  |
+| 9        | -        | ▲       | SQL                  | 2.650%   | +2.65%  |
+| 10       | 11       | ▲       | Ruby                 | 2.018%   | -0.29%  |
+| 11       | 9        | ▼       | Delphi/Object Pascal | 1.961%   | -0.86%  |
+| 12       | 15       | ▲       | R                    | 1.806%   | -0.33%  |
+| 13       | 16       | ▲       | Visual Basic         | 1.798%   | -0.26%  |
+| 14       | 13       | ▼       | Assembly language    | 1.655%   | -0.51%  |
+| 15       | 12       | ▼       | Swift                | 1.534%   | -0.75%  |
 
 --
 
@@ -126,7 +126,7 @@ Ruby 1.8 в 2003-м году и Ruby on Rails 2.0 в 2007-м году
 <br />
 
 По статистике ресурса [Githut](http://githut.info/), Ruby находится на 6-м месте популярных языков на GitHub
-(132 848 активных репозиториев) сразу после PHP, который занимает 5-е место (137 771 активный репозиторий).
+(132 848 активных репозиториев) сразу после PHP, который занимает 5-е место (138 771 активный репозиторий).
 
 ---
 
@@ -160,9 +160,6 @@ Basecamp, GitHub, Hulu, Scribd, Kickstarter, Change.org.
 
 <br />
 
-Scrum
-<!-- .element: class="fragment" -->
-
 Gitflow
 <!-- .element: class="fragment" -->
 
@@ -170,6 +167,9 @@ TDD/BDD
 <!-- .element: class="fragment" -->
 
 Continuous Integration
+<!-- .element: class="fragment" -->
+
+Scrum
 <!-- .element: class="fragment" -->
 
 ---
