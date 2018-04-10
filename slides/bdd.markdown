@@ -26,17 +26,17 @@ title:  BDD
 
 ![](/assets/images/bdd/bdd-cycle-around-tdd-cycles.png)
 
-1. Start with an Acceptance Test scenatio.
-2. Run the Acceptance Test scenatio.
-3. Red/Green/Refactor wuth Unit Tests.
+1. Start with an Acceptance Test scenario.
+2. Run the Acceptance Test scenario.
+3. Red/Green/Refactor with Unit Tests.
   * View
   * Controller
   * Model
-4. Run the Acceptance Test scenatio again.
+4. Run the Acceptance Test scenario again.
 
 ---
 
-# Init enviropment
+# Init environment
 
 --
 
@@ -154,7 +154,7 @@ require 'capybara/rspec'
 
 Capybara helps to test web applications by simulating how a real user would interact with an app.
 
-Test your app with [Capybara](http://jnicklas.github.io/capybara/)
+Test your app with [Capybara](http://teamcapybara.github.io/capybara/)
 
 ---
 
@@ -259,7 +259,7 @@ spec/views/users/new_spec.rb <!-- .element: class="filename" -->
 ```ruby
 describe 'users/new.html.erb' do
   it 'has new_user form' do
-    user = mock_model("User").as_new_record
+    user = double("User")
     assign(:user, user)
     render
     expect(rendered).to have_selector('form#new_user')
@@ -311,10 +311,11 @@ spec/views/users/new_spec.rb <!-- .element: class="filename" -->
 
 ```ruby
 describe 'users/new.html.erb' do
-  let(:user) { mock_model("User").as_new_record }
+  let(:user) { double("User") }
 
   before do
-    user.stub(:email).stub(:password)
+    allow(user).to receive(:email)
+    allow(user).to receive(:password)
     assign(:user, user)
     render
   end
@@ -373,10 +374,10 @@ spec/controllers/users_controller_spec.rb <!-- .element: class="filename" -->
 ```ruby
 describe UsersController do
   describe 'GET new' do
-    let(:user) { mock_model("User").as_new_record }
+    let(:user) { double("User") }
 
     before do
-      User.stub(:new).and_return(user)
+      allow(User).to receive(:new).and_return(user)
       get :new
     end
 
@@ -473,22 +474,20 @@ describe UsersController do
   # ...
 
   describe 'POST create' do
-    let(:user) { mock_model(User, params) }
-    let(:params) { {email: Faker::Internet.email, password: '12345678'} }
+    let(:params) { { email: Faker::Internet.email, password: '12345678' } }
+    let(:user) { double('User', params) }
 
-    before do
-      User.stub(:new).and_return(user)
-    end
+    before { allow(User).to receive(:new).and_return(user) }
 
     it 'sends save message to user model' do
-      user.should_receive(:save)
-      post :create, user: params
+      expect(user).to receive(:save)
+      post :create, params: { user: params }
     end
 
     context 'when save message returns true' do
       before do
-        user.stub(:save).and_return(true)
-        post :create, user: params
+        allow(user).to receive(:save).and_return(true)
+        post :create, params: { user: params }
       end
 
       it 'redirects to root url' do
@@ -517,6 +516,7 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
+
     if @user.save
       session[:user_id] = @user.id
       redirect_to root_url, notice: "You registered"
