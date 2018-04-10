@@ -1289,7 +1289,7 @@ end
 User.new(email: "thebestemail@ua.fm").valid?
 # => true
 
-User.new().valid?
+User.new.valid?
 # => false
 ```
 
@@ -1370,8 +1370,6 @@ u.save!
 
 ```ruby
 class User < ApplicationRecord
-  attr_accessible :email, :first_name, :password
-
   has_many :posts
   validates :email, :first_name, presence: true
 end
@@ -1379,7 +1377,6 @@ end
 
 ```ruby
 class Post < ApplicationRecord
-
   belongs_to :user
   validates :user, presence: true
 end
@@ -1387,8 +1384,6 @@ end
 
 ```ruby
 class User < ApplicationRecord
-  attr_accessible :email, :first_name, :password
-
   has_many :posts, inverse_of: :user
 end
 ```
@@ -1399,6 +1394,25 @@ Can be used for the presence of an object associated validation via a `has_one` 
 validates :field_name, inclusion: { in:  [true, false] }. # for fields with boolean type
 ```
 
+## `belongs_to` association required by default:
+
+```ruby
+post = Post.create
+=> <Post id: nil, user_id: nil, created_at: nil, updated_at: nil>
+```
+
+```ruby
+post.errors.full_messages.to_sentence
+=> "User must exist"
+```
+
+We can pass `optional: true` to the `belongs_to` association which would remove this validation check.
+
+```ruby
+class Post < ApplicationRecord
+  belongs_to :user, optional: true
+end
+```
 
 ---
 
@@ -1406,8 +1420,6 @@ validates :field_name, inclusion: { in:  [true, false] }. # for fields with bool
 
 ```ruby
 class User < ApplicationRecord
-  attr_accessible :email, :first_name, :password
-
   has_many :posts
   validates :archived, absence: true
 end
@@ -1432,7 +1444,7 @@ $ rails g migration AddTermsOfServiceToUsers terms_of_service:boolean
 class User < ApplicationRecord
   # ...
 
-  validates :terms_of_service, acceptance: true  # get accept: 1
+  validates :terms_of_service, acceptance: true # get accept: 1
 end
 ```
 
@@ -1569,6 +1581,19 @@ end
 
 ---
 
+## Uniq index
+
+```ruby
+class AddUniqIndexToUsers < ActiveRecord::Migration[5.0]
+  def change
+    add_index :users, :email, unique: true
+    add_index :users, :page_address, unique: true
+  end
+end
+```
+
+---
+
 ## Validates Assosiated
 
 ```ruby
@@ -1675,7 +1700,7 @@ class User < ApplicationRecord
   validates :first_name, presence: true, on: :save
 
   validates :email, uniqueness: true, on: :registration
-  #Custom contexts need to be triggered explicitly by passing name of the context to valid?, invalid? or save.
+  # Custom contexts need to be triggered explicitly by passing name of the context to valid?, invalid? or save.
 end
 ```
 
@@ -2658,7 +2683,7 @@ It provides support for row-level locking using `SELECT … FOR UPDATE` and othe
 
 ```ruby
 User.transaction do
-  user = User.find(1, lock: true)
+  user = User.find(1).lock!
   user.first_name = 'Marta'
   user.save
 end
@@ -3178,18 +3203,18 @@ MySQL and MariaDB
 
 ```stdout
 EXPLAIN for: SELECT `users`.* FROM `users` INNER JOIN `posts` ON `posts`.`user_id` = `users`.`id` WHERE `users`.`id` = 1
-+----+-------------+----------+-------+---------------+
++----|-------------|----------|-------|---------------+
 | id | select_type | table    | type  | possible_keys |
-+----+-------------+----------+-------+---------------+
++----|-------------|----------|-------|---------------+
 |  1 | SIMPLE      | users    | const | PRIMARY       |
 |  1 | SIMPLE      | posts    | ALL   | NULL          |
-+----+-------------+----------+-------+---------------+
-+---------+---------+-------+------+-------------+
++----|-------------|----------|-------|---------------+
++---------|---------|-------|------|-------------+
 | key     | key_len | ref   | rows | Extra       |
-+---------+---------+-------+------+-------------+
++---------|---------|-------|------|-------------+
 | PRIMARY | 4       | const |    1 |             |
 | NULL    | NULL    | NULL  |    1 | Using where |
-+---------+---------+-------+------+-------------+
++---------|---------|-------|------|-------------+
 
 2 rows in set (0.00 sec)
 ```
@@ -3231,7 +3256,7 @@ Gemfile <!-- .element: class="filename" -->
 ```ruby
 group :development, :test do
   gem 'rspec-rails'
-  gem 'factory_girl_rails'
+  gem 'factory_bot_rails'
 end
 
 group :test do
@@ -3253,7 +3278,7 @@ config/application.rb <!-- .element: class="filename" -->
 ```ruby
 config.generators do |g|
   g.test_framework :rspec
-  g.fixture_replacement :factory_girl, dir: 'spec/factories'
+  g.fixture_replacement :factory_bot, dir: 'spec/factories'
 end
 ```
 
@@ -3268,7 +3293,7 @@ $ rails g model User email:text name:text admin:boolean
   create    app/models/user.rb
   invoke    rspec
   create      spec/models/user_spec.rb
-  invoke      factory_girl
+  invoke      factory_bot
   create        spec/factories/users.rb
 ```
 
@@ -3366,9 +3391,9 @@ end
 
 ---
 
-## FactoryGirl
+## FactoryBot
 
-[FactoryGirl](https://github.com/thoughtbot/factory_girl) is a fixtures replacement with a straightforward definition syntax, support for multiple build strategies (saved instances, unsaved instances, attribute hashes, and stubbed objects), and support for multiple factories for the same class (user, admin_user, and so on), including factory inheritance.
+[FactoryBot](https://github.com/thoughtbot/factory_bot) is a fixtures replacement with a straightforward definition syntax, support for multiple build strategies (saved instances, unsaved instances, attribute hashes, and stubbed objects), and support for multiple factories for the same class (user, admin_user, and so on), including factory inheritance.
 
 --
 
@@ -3377,7 +3402,7 @@ end
 spec/factories/users.rb <!-- .element: class="filename" -->
 
 ```ruby
-FactoryGirl.define do
+FactoryBot.define do
   sequence :email do |n|
     "email#{n}@factory.com"
   end
@@ -3413,23 +3438,23 @@ end
 
 ```ruby
 # Saved instance
-user = FactoryGirl.create(:user)
+user = FactoryBot.create(:user)
 
 # Unsaved instance
-user = FactoryGirl.build(:user)
+user = FactoryBot.build(:user)
 
 # Attribute hash (ignores associations)
-user_attributes = FactoryGirl.attributes_for(:user)
+user_attributes = FactoryBot.attributes_for(:user)
 
 # Stubbed object
-user_stub = FactoryGirl.build_stubbed(:user)
+user_stub = FactoryBot.build_stubbed(:user)
 
 # Override attributes
-user = FactoryGirl.create(:user, name: 'Jack Daniel')
+user = FactoryBot.create(:user, name: 'Jack Daniel')
 
 # Passing a block to any of the methods above will yield the return object
-user = FactoryGirl.create(:user) do |user|
-  user.posts.create(FactoryGirl.attributes_for(:post))
+user = FactoryBot.create(:user) do |user|
+  user.posts.create(FactoryBot.attributes_for(:post))
 end
 ```
 
@@ -3442,7 +3467,7 @@ end
 spec/factories/users.rb <!-- .element: class="filename" -->
 
 ```ruby
-FactoryGirl.define do
+FactoryBot.define do
   factory :user do
     email { FFaker::Internet.email }
     name { FFaker::Name.name }
@@ -3476,18 +3501,18 @@ end
 
 ```ruby
 describe User do
-  let(:user) { FactoryGirl.create :user }
+  let(:user) { FactoryBot.create :user }
 
   it 'is invalid without an email' do
-    expect(FactoryGirl.build :user, email: nil).not_to be_valid
+    expect(FactoryBot.build :user, email: nil).not_to be_valid
   end
 
   it 'does not allow duplicate emails' do
-    expect(FactoryGirl.build :user, email: user.email).not_to be_valid
+    expect(FactoryBot.build :user, email: user.email).not_to be_valid
   end
 
   it 'is invalid without a name' do
-    expect(FactoryGirl.build :user, name: nil).not_to be_valid
+    expect(FactoryBot.build :user, name: nil).not_to be_valid
   end
 end
 ```
@@ -3498,7 +3523,7 @@ end
 
 ```ruby
 describe User do
-  let(:user) { FactoryGirl.create :user }
+  let(:user) { FactoryBot.create :user }
 
   it 'has many posts' do
     expect(user).to respond_to :posts
@@ -3514,8 +3539,8 @@ end
 describe User do
   context '.admins' do
     before do
-      @users = FactoryGirl.create_list(:user, 3)
-      @admins = FactoryGirl.create_list(:admin, 3)
+      @users = FactoryBot.create_list(:user, 3)
+      @admins = FactoryBot.create_list(:admin, 3)
     end
 
     it 'returns list of admins' do
@@ -3535,7 +3560,7 @@ end
 
 ```ruby
 describe User do
-  let(:user) { FactoryGirl.create :user }
+  let(:user) { FactoryBot.create :user }
 
   context 'change email' do
     it 'sends email changed notification' do
