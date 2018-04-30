@@ -244,9 +244,97 @@ There are `7 basic types` in JavaScript.
 
 --
 
+The `function declaration` defines a function with the specified parameters.
+
+```javascript
+function calcRectArea(width, height) {
+  return width * height;
+}
+
+console.log(calcRectArea(5, 6));
+
+// expected output: 30
+
+```
+
+--
+
+The function keyword can be used to define a function inside an `expression`.
+
+```javascript
+var getRectArea = function(width, height) {
+    return width * height;
+}
+
+console.log(getRectArea(3,4));
+
+// expected output: 12
+
+```
+
+--
+
+`Arrow functions` are not just a “shorthand” for writing small stuff.  
+Arrow functions:
+
+- Do not have `this`.
+- Do not have `arguments`.
+- Can’t be called with `new`.
+- Don’t have `super`
+
+```javascript
+let multiply = (x, y) => x * y
+
+/*
+ when body has multiple lines,
+ use {...} and explicit return
+*/
+```
+
+--
+
+A property of an `object` can refer to a `function` or a `getter` or `setter` method.
+
+```javascript
+var o = {
+  property: function ([parameters]) {},
+  get property() {},
+  set property(value) {}
+};
+```
+
+--
+
+The `function*` declaration (function keyword followed by an asterisk) defines a `generator function`, which returns a `Generator` object.
+
+```javascript
+function* generator(i) {
+  yield i;
+  yield i + 10;
+}
+
+var gen = generator(10);
+
+console.log(gen.next().value);
+// expected output: 10
+
+console.log(gen.next().value);
+// expected output: 20
+```
+
 ---
 
 # JS lifecycle
+
+--
+
+JavaScript - is a `single-threaded` programming language.  
+This means that he has `one call stack`.  
+This means that at some point in time he can perform `only one task`.
+
+--
+
+A `call stack` is a mechanism for an interpreter to keep track of its place in a script that calls multiple functions — what function is currently being run, what functions are called from within that function and should be called next, etc.
 
 --
 
@@ -258,5 +346,206 @@ There are `7 basic types` in JavaScript.
 
 --
 
+![](/assets/images/javascript/lifecycle_web_api.png)
+
+It is a flows, to which we do not have direct access, we can only execute calls to them.  
+They are built into the browser, where asynchronous actions are performed.
+
+For Node.js, similar APIs are implemented using C ++
+--
+
+![](/assets/images/javascript/lifecycle_event_loop.png)
+
+The event loop solves one basic problem:  
+it watches the call stack and the callback queue.  
+If the call stack is empty, the loop takes the first event from the queue and puts it on the stack, which triggers this event to execute.  
+
+This iteration is called the `tick` of the event loop. Every event is just a callback.
+
+--
+
+- When a script calls a function, the interpreter adds it to the call stack and then starts carrying out the function.
+- Any functions that are called by that function are added to the call stack further up, and run where their calls are reached.
+- When the main function is finished, the interpreter takes it off the stack and resumes execution where it left off in the main code listing.
+- If the stack takes up more space than it had assigned to it, it results in a "stack overflow" error.
+
+--
+
+<!-- https://blog.sessionstack.com/how-does-javascript-actually-work-part-1-b0bacc073cf -->
+<!-- https://hsto.org/getpro/habr/post_images/19c/a4b/bad/19ca4bbadd85f5c38bcfa0a87a79bc75.png -->
+![](/assets/images/javascript/lifecycle_multiply.png)
+
+```javascript
+function multiply(x, y) {
+    return x * y;
+}
+function printSquare(x) {
+    var s = multiply(x, x);
+    console.log(s);
+}
+printSquare(5);
+```
+
+--
+
+### Consider the following example:
+Let's go step by step "execution" of this code and see what happens in the system.
+
+```javascript
+console.log('Hi');
+setTimeout(function cb1() {
+    console.log('cb1');
+}, 5000);
+console.log('Bye');
+```
+--
+
+![](/assets/images/javascript/lifecycle_1_16.png)
+
+Nothing happens yet. The browser console is clean, the call stack is empty.
+
+--
+
+![](/assets/images/javascript/lifecycle_2_16.png)
+
+The `console.log ('Hi')` command is added to the call stack.
+
+--
+
+![](/assets/images/javascript/lifecycle_3_16.png)
+
+The `console.log ('Hi')` is executed.
+
+--
+
+![](/assets/images/javascript/lifecycle_4_16.png)
+
+The `console.log ('Hi')` is removed from the call stack.
+
+--
+
+![](/assets/images/javascript/lifecycle_5_16.png)
+
+The `setTimeout (function cb1 () {...})` is added to the call stack.
+
+--
+
+![](/assets/images/javascript/lifecycle_6_16.png)
+
+The `setTimeout` is executed. The browser creates a timer that is part of the Web API.
+
+--
+
+![](/assets/images/javascript/lifecycle_7_16.png)
+
+The `setTimeout (function cb1 () {...})` is terminated and removed from the call stack.
+
+--
+
+![](/assets/images/javascript/lifecycle_8_16.png)
+
+The `console.log ('Bye')` command is added to the call stack.
+
+--
+
+![](/assets/images/javascript/lifecycle_9_16.png)
+
+The `console.log ('Bye')` command is executed.
+
+--
+
+![](/assets/images/javascript/lifecycle_10_16.png)
+
+The console.log command ('Bye') is removed from the call stack.
+
+--
+
+![](/assets/images/javascript/lifecycle_11_16.png)
+
+After a pass, at least 5000 ms., The timer will shut down and puts `cb1` callback to `Callback Queue`.
+
+--
+
+![](/assets/images/javascript/lifecycle_12_16.png)
+
+The event loop takes the `cb1` function from the callback queue and places it on the call stack.
+
+--
+
+![](/assets/images/javascript/lifecycle_13_16.png)
+
+The cb1 function is executed and adds `console.log ('cb1')` to the call stack.
+
+--
+
+![](/assets/images/javascript/lifecycle_14_16.png)
+
+The `console.log ('cb1')` is executed.
+
+--
+
+![](/assets/images/javascript/lifecycle_15_16.png)
+
+The `console.log ('cb1')` is removed from the call stack.
+
+--
+
+![](/assets/images/javascript/lifecycle_16_16.png)
+
+The function `cb1` is removed from the call stack.
+
+--
+
+![](/assets/images/javascript/lifecycle_1_to_16.gif)
+
+
+```javascript
+console.log('Hi');
+setTimeout(function cb1() {
+    console.log('cb1');
+}, 5000);
+console.log('Bye');
+```
 
 ---
+
+# Closure
+
+--
+
+JavaScript is a very function-oriented language. It gives us a lot of freedom. A function can be created at one moment, then copied to another variable or passed as an argument to another function and called from a totally different place later.
+
+--
+
+### Lexical Environment
+
+In JavaScript, every running function, code block, and the script as a whole have an associated object known as the Lexical Environment.
+
+- Environment Record – an object that has all local variables as its properties (and some other information like the value of this).
+- A reference to the outer lexical environment, usually the one associated with the code lexically right outside of it (outside of the current curly brackets).
+
+So, a “variable” is just a property of the special internal object, Environment Record. “To get or change a variable” means “to get or change a property of the Lexical Environment”.
+
+For instance, in this simple code, there is only one Lexical Environment:
+![](/assets/images/javascript/lexical-environment-global.png)
+
+This is a so-called global Lexical Environment, associated with the whole script. For browsers, all `script` tags share the same global environment.
+
+--
+
+Rectangles on the right-hand side demonstrate how the global Lexical Environment changes during the execution:
+
+![](/assets/images/javascript/lexical-environment-global-2.png)
+
+- When the script starts, the Lexical Environment is empty.
+- The let phrase definition appears. It has been assigned no value, so undefined is stored.
+- phrase is assigned a value.
+- phrase refers to a new value.
+
+--
+
+### To summarize:
+
+- A variable is a property of a special internal object, associated with the currently executing block/function/script.
+- Working with variables is actually working with the properties of that object.
+--
