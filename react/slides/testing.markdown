@@ -760,4 +760,129 @@ describe('todos reducer', () => {
 
 ---
 
+## Testing Reselect
+
+--
+
+[Reselect](https://github.com/reduxjs/reselect) is simple “selector” library for Redux (and others)
+
+* Selectors can compute derived data, allowing Redux to store the minimal possible state.
+* Selectors are efficient. A selector is not recomputed unless one of its arguments changes.
+* Selectors are composable. They can be used as input to other selectors.
+
+--
+
+For a given input, a selector should always produce the same output. For this reason they are simple to unit test.
+
+```js
+const selector = createSelector(
+  state => state.a,
+  state => state.b,
+  (a, b) => ({
+    c: a * 2,
+    d: b * 3
+  })
+)
+
+test('selector unit test', () => {
+  expect(selector({ a: 1, b: 2 })).toEqual({ c: 2, d: 6 })
+  expect(selector({ a: 2, b: 3 })).toEqual({ c: 4, d: 9 })
+})
+```
+
+--
+
+It may also be useful to check that the memoization function for a selector works correctly with the state update function (i.e. the reducer if you are using Redux). Each selector has a `recomputations` method that will return the number of times it has been recomputed:
+
+```js
+suite('selector', () => {
+  let state = { a: 1, b: 2 }
+
+  const reducer = (state, action) => (
+    {
+      a: action(state.a),
+      b: action(state.b)
+    }
+  )
+
+  const selector = createSelector(
+    state => state.a,
+    state => state.b,
+    (a, b) => ({
+      c: a * 2,
+      d: b * 3
+    })
+  )
+
+  const plusOne = x => x + 1
+  const id = x => x
+
+  test('selector unit test', () => {
+    state = reducer(state, plusOne)
+    expect(selector(state)).toEqual({ c: 4, d: 9 })
+
+    state = reducer(state, id)
+    expect(selector(state)).toEqual({ c: 4, d: 9 })
+    expect(selector.recomputations()).toEqual(1)
+
+    state = reducer(state, plusOne)
+    expect(selector(state)).toEqual({ c: 6, d: 12 })
+    expect(selector.recomputations()).toEqual(2)
+  })
+})
+```
+
+--
+
+Additionally, selectors keep a reference to the last result function as `.resultFunc`. If you have selectors composed of many other selectors this can help you test each selector without coupling all of your tests to the shape of your state.
+
+--
+
+For example if you have a set of selectors like this:
+
+selectors.js <!-- .element: class="filename" -->
+```js
+export const firstSelector = createSelector( ... )
+export const secondSelector = createSelector( ... )
+export const thirdSelector = createSelector( ... )
+
+export const myComposedSelector = createSelector(
+  firstSelector,
+  secondSelector,
+  thirdSelector,
+  (first, second, third) => first * second < third
+)
+```
+
+--
+
+And then a set of unit tests like this:
+
+selectors.spec.js <!-- .element: class="filename" -->
+```js
+// tests for the first three selectors...
+test('firstSelector unit test', () => { ... })
+test('secondSelector unit test', () => { ... })
+test('thirdSelector unit test', () => { ... })
+
+// We have already tested the previous
+// three selector outputs so we can just call `.resultFunc`
+// with the values we want to test directly:
+test('myComposedSelector unit test', () => {
+  // here instead of calling selector()
+  // we just call selector.resultFunc()
+  expect(myComposedSelector.resultFunc(1, 2, 3)).toBeTruthy()
+  expect(myComposedSelector.resultFunc(2, 2, 1)).toBeFalsy()
+})
+```
+
+--
+
+Finally, each selector has a `resetRecomputations` method that sets
+recomputations back to 0.  The intended use is for a complex selector that may
+have many independent tests and you don't want to manually manage the
+computation count or create a "dummy" selector for each test.
+
+---
+
 # The End
