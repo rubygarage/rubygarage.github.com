@@ -503,93 +503,6 @@ it('should pass a selected value to the onChange handler', () => {
 
 ---
 
-## Testing containers
-
-* Testing lifecycle methods
-
-* Testing maps state and dispatch to props
-
---
-
-SignUp.js <!-- .element: class="filename" -->
-```js
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { checkAuthentication } from 'actions/authentication'
-import SignUpForm from 'containers/auth/SignUpForm'
-
-
-class SignUp extends Component {
-  componentWillMount() {
-    this.props.checkAuthentication()
-  }
-
-  render() {
-    return (
-      <div>
-        <SignUpForm {...this.props} />
-      </div>
-    );
-  }
-}
-
-const mapStateToProps = (state) => ({
-  referral: state.referral
-})
-
-const mapDispatchToProps = {
-  checkAuthentication
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(SignUp)
-```
-
---
-
-Testing lifecycle methods
-
-```js
-import React from 'react'
-import { shallow } from 'enzyme'
-import SignUp from 'containers/auth/SignUp'
-
-describe('componentWillMount()', () => {
-  const defaultProps = {
-    checkAuthentication: jest.fn(),
-  }
-
-  it('calls checkAuthentication()', () => {
-    const component = shallow(<SignUp {...defaultProps} />)
-    component.instance().componentWillMount()
-
-    expect(component.instance().checkAuthentication).toHaveBeenCalled()
-  })
-})
-```
-
---
-
-Testing maps state and dispatch to props
-
-```js
-import React from 'react'
-import { shallow } from 'enzyme'
-import configureStore from 'redux-mock-store'
-import SignUp from 'containers/auth/SignUp'
-
-it('maps state and dispatch to props', () => {
-  const store = configureStore()({})
-  const container = shallow(<SignUp store={store} />)
-
-  expect(container.props()).toEqual(expect.objectContaining({
-    checkAuthentication: expect.any(Function),
-    referral: expect.any(String)
-  }))
-})
-```
-
----
-
 ## Testing Redux
 
 --
@@ -755,6 +668,93 @@ describe('todos reducer', () => {
       }
     ])
   })
+})
+```
+
+---
+
+## Testing containers
+
+* Testing lifecycle methods
+
+* Testing maps state and dispatch to props
+
+--
+
+SignUp.js <!-- .element: class="filename" -->
+```js
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { checkAuthentication } from 'actions/authentication'
+import SignUpForm from 'containers/auth/SignUpForm'
+
+
+class SignUp extends Component {
+  componentWillMount() {
+    this.props.checkAuthentication()
+  }
+
+  render() {
+    return (
+      <div>
+        <SignUpForm {...this.props} />
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = (state) => ({
+  referral: state.referral
+})
+
+const mapDispatchToProps = {
+  checkAuthentication
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp)
+```
+
+--
+
+Testing lifecycle methods
+
+```js
+import React from 'react'
+import { shallow } from 'enzyme'
+import SignUp from 'containers/auth/SignUp'
+
+describe('componentWillMount()', () => {
+  const defaultProps = {
+    checkAuthentication: jest.fn(),
+  }
+
+  it('calls checkAuthentication()', () => {
+    const component = shallow(<SignUp {...defaultProps} />)
+    component.instance().componentWillMount()
+
+    expect(component.instance().checkAuthentication).toHaveBeenCalled()
+  })
+})
+```
+
+--
+
+Testing maps state and dispatch to props
+
+```js
+import React from 'react'
+import { shallow } from 'enzyme'
+import configureStore from 'redux-mock-store'
+import SignUp from 'containers/auth/SignUp'
+
+it('maps state and dispatch to props', () => {
+  const store = configureStore()({})
+  const container = shallow(<SignUp store={store} />)
+
+  expect(container.props()).toEqual(expect.objectContaining({
+    checkAuthentication: expect.any(Function),
+    referral: expect.any(String)
+  }))
 })
 ```
 
