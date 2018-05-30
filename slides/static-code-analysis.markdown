@@ -212,7 +212,7 @@ https://rails-bestpractices.com/
 
 # Reek
 
-Code smell detector for Ruby 
+Code smell detector for Ruby
 
 ![](https://github.com/troessner/reek/raw/master/logo/reek.text.png)
 
@@ -258,7 +258,7 @@ demo.rb -- 2 warnings:
 
 --
 
-## Report example 
+## Report example
 
 ```bash
 reek app --format html > report.html
@@ -368,24 +368,14 @@ When analysing code like the following:
 ---
 ### Code Analysis and Metrics Tools
 
-* [Barkeep](https://github.com/ooyala/barkeep) - Barkeep is a fast, fun way to review code. Engineering organizations can use it to keep the bar high.
 * [Brakeman](https://github.com/presidentbeef/brakeman) - A static analysis security vulnerability scanner for Ruby on Rails applications.
-* [Cane](https://github.com/square/cane) - Code quality threshold checking as part of your build.
-* [Coverband](https://github.com/danmayer/coverband) - Rack middleware to help measure production code coverage.
+* [Bullet](https://github.com/flyerhzm/bullet) - help you increase your application's performance by reducing the number of queries it makes
+* [bundler-audit](https://github.com/rubysec/bundler-audit) - Patch-level verification for bundler.
 * [Fasterer](https://github.com/DamirSvrtan/fasterer) - Make your Rubies go faster with this command line tool highly inspired by fast-ruby and Sferik's talk at Baruco Conf.
-* [Flay](https://github.com/seattlerb/flay) - Flay analyzes code for structural similarities. Differences in literal values, variable, class, method names, whitespace, programming style, braces vs do/end, etc are all ignored. Making this totally rad.
-* [Flog](https://github.com/seattlerb/flog) - Flog reports the most tortured code in an easy to read pain report. The higher the score, the more pain the code is in.
-* [Heckle](http://ruby.sadi.st/Heckle.html) Think you write good tests? Not bloody likely... Put it to the test with heckle. It’ll put your code into submission in seconds.
-* [fukuzatsu](https://gitlab.com/coraline/fukuzatsu/tree/master) - Complexity analysis tool with a rich web front-end.
-* [MetricFu](https://github.com/metricfu/metric_fu) - A fist full of code metrics.
-* [Pippi](https://github.com/tcopeland/pippi) - A utility for finding suboptimal Ruby class API usage, focused on runtime analysis.
-* [Pronto](https://github.com/mmozuras/pronto) - Quick automated code review of your changes.
 * [rails_best_practices](https://github.com/railsbp/rails_best_practices) - A code metric tool for rails projects.
 * [Reek](https://github.com/troessner/reek) - Code smell detector for Ruby.
 * [RuboCop](https://github.com/bbatsov/rubocop) - A static code analyzer, based on the community Ruby style guide.
 * [Rubycritic](https://github.com/whitesmith/rubycritic) - A Ruby code quality reporter.
---
-* [Scientist](https://github.com/github/scientist) - A Ruby library for carefully refactoring critical paths.
 * [SimpleCov](https://github.com/colszowka/simplecov) - Code coverage for Ruby 1.9+ with a powerful configuration library and automatic merging of coverage across test suites.
 * [Traceroute](https://github.com/amatsuda/traceroute) - A Rake task gem that helps you find the dead routes and actions for your Rails 3+ app
 ---
