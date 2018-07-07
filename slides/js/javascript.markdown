@@ -288,6 +288,8 @@ let multiply = (x, y) => x * y
 /*
  when body has multiple lines,
  use {...} and explicit return
+
+ "arguments" is an Array-like object corresponding to the arguments passed to a function
 */
 ```
 
@@ -330,7 +332,7 @@ console.log(gen.next().value);
 
 JavaScript - is a `single-threaded` programming language.  
 This means that he has `one call stack`.  
-This means that at some point in time he can perform `only one task`.
+And at some point in time he can perform `only one task`.
 
 --
 
@@ -533,7 +535,7 @@ This is a so-called global Lexical Environment, associated with the whole script
 
 --
 
-Rectangles on the right-hand side demonstrate how the global Lexical Environment changes during the execution:
+Rectangles demonstrate how the global Lexical Environment changes during the execution:
 
 ![](/assets/images/javascript/lexical-environment-global-2.png)
 
@@ -548,4 +550,7 @@ Rectangles on the right-hand side demonstrate how the global Lexical Environment
 
 - A variable is a property of a special internal object, associated with the currently executing block/function/script.
 - Working with variables is actually working with the properties of that object.
---
+
+---
+
+# The End
