@@ -127,13 +127,11 @@ title: Ruby presentations
 
 
 ## Utils
+
 - [Git](/slides/git)
   <br>
   <small>Distributed version control system</small>
-
-- [Design Patterns](/slides/patterns)
-  <br>
-  <small>Develop scalable application with design patterns.</small>
+  
 
 - [Static code analysis](/slides/static-code-analysis)
   <br>
