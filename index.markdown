@@ -72,9 +72,9 @@ title: Ruby presentations
   <small>How controllers work and how they fit into the request cycle in your application.</small>
 
 
-- [Refactoring in Rails controllers](/slides/refactoring-rails)
+- [Refactoring in Rails](/slides/refactoring-rails)
   <br>
-  <small>Let's refactor Rails controllers</small>
+  <small>Learn how to do refactoring in Rails.</small>
 
 
 - [Views](/slides/views)
