@@ -1,9 +1,9 @@
 ---
 layout: slide
-title:  Refactoring Controllers
+title:  Refactoring in Rails
 ---
 
-# Refactoring. Controllers.
+# Refactoring.
 
 > When you work on a big project, you’re pushed to deliver new features. The business rarely understands the reasons for
 refactoring.
@@ -749,6 +749,309 @@ class TicketSearchService
       @tickets = @tickets.where(ticket_status_id: @params['status_id'])
     end
   end
+end
+```
+
+---
+
+## Callbacks
+
+Callbacks are a convenient way to decorate the default save method with custom persistence logic. Callbacks are frequently abused by adding non-persistence logic, such as sending emails or processing payments.
+
+### Symptoms
+* Callbacks which contain business logic such as processing payments.
+* Attributes which allow certain callbacks to be skipped.
+* Methods such as save_without_sending_email which skip callbacks.
+* Callbacks which need to be invoked conditionally.
+--
+
+### Example
+
+app/models/event.rb <!-- .element: class="filename" -->
+
+```ruby
+def deliver_invitations
+  recipients.map do |recipient_email|
+    Invitation.create!(
+      event: event,
+      sender: sender,
+      recipient_email: recipient_email,
+      status: 'pending',
+      message: @message
+    )
+  end
+end
+```
+app/models/invitation.rb <!-- .element: class="filename" -->
+
+```ruby
+after_create :deliver
+
+private
+
+def deliver
+  Mailer.invitation_notification(self).deliver
+end
+```
+
+--
+
+### Refactoring
+
+app/models/invitation.rb <!-- .element: class="filename" -->
+
+```ruby
+def deliver
+  Mailer.invitation_notification(self).deliver
+end
+
+private
+```
+
+app/models/event.rb <!-- .element: class="filename" -->
+
+```ruby
+def deliver_invitations
+  create_invitations.each(&:deliver)
+end
+
+def create_invitations
+  Invitation.transaction do
+    recipients.map do |recipient_email|
+      Invitation.create!(
+        event: event,
+        sender: sender,
+        recipient_email: recipient_email,
+        status: 'pending',
+        message: @message
+      )
+    end
+  end
+end
+```
+---
+
+## Convention Over Configuration
+
+Ruby’s metaprogramming allows us to avoid boilerplate code and duplication by relying on conventions for class names, file names, and directory structure. Careful use of conventions will make your applications less tedious and more bug-proof.
+
+### Uses
+* Eliminate Case Statements by finding classes by name.
+* Prevents future duplication, making it easier to avoid duplication.
+* Eliminate Shotgun Surgery by removing the need to register or configure new strategies and services.
+* Remove Duplicated Code by removing manual associations from identifiers to class names.
+--
+
+### Example
+
+This controller accepts an id parameter identifying which summarizer strategy to use and renders a summary of the survey based on the chosen strategy:
+
+app/controllers/summaries_controller.rb <!-- .element: class="filename" -->
+
+```ruby
+class SummariesController < ApplicationController
+  def show
+    @survey = Survey.find(params[:survey_id])
+    @summaries = @survey.summarize(summarizer)
+  end
+
+  private
+
+  def summarizer
+    case params[:id]
+    when 'breakdown'
+      Breakdown.new
+    when 'most_recent'
+      MostRecent.new
+    when 'your_answers'
+      UserAnswer.new(current_user)
+    else
+      raise "Unknown summary type: #{params[:id]}"
+    end
+  end
+end
+```
+
+--
+
+### Refactoring
+
+We will use **constantize** method. But there are some outlier cases:
+
+1. The UserAnswer class is referenced using "your_answers" instead of "user_answer".
+
+2. UserAnswer takes different parameters than the other two strategies.
+
+So, let's refactor to obey convention:
+
+app/controllers/summaries_controller.rb <!-- .element: class="filename" -->
+
+```ruby
+def summarizer
+  case params[:id] # Each class accept the same parameters
+  when 'breakdown'
+    Breakdown.new(user: current_user)
+  when 'most_recent'
+    MostRecent.new(user: current_user)
+  when 'user_answer' # The reference corresponds to the convention
+    UserAnswer.new(user: current_user)
+  else
+    raise "Unknown summary type: #{params[:id]}"
+  end
+end
+```
+
+--
+
+app/controllers/summaries_controller.rb <!-- .element: class="filename" -->
+
+```ruby
+def summarizer
+  summarizer_class.new(user: current_user)
+end
+
+def summarizer_class
+  params[:id].classify.constantize
+end
+```
+Now we’ll never need to change our controller when adding a new strategy;
+we just add a new class following the naming convention.
+
+
+--
+
+### Scoping **constantize**
+
+Our controller currently takes a string directly from user input (params) and instantiates a class with that name.
+
+1. Without a whitelist, a user can make the application instantiate any class.
+
+2. There’s no list of available strategies.
+
+app/controllers/summaries_controller.rb <!-- .element: class="filename" -->
+
+```ruby
+def summarizer_class
+  "Summarizer::#{params[:id].classify}".constantize
+end
+```
+With this convention in place, you can find all strategies by just looking in the **Summarizer** module. In a Rails application, this will be in a summarizer directory by convention.
+
+--
+
+### Drawbacks
+
+1. Conventions are most valuable when they’re completely consistent. In our case convention is slightly forced in this case because UserAnswer needs different parameters than the other two strategies.
+
+2. This class-based approach, while convenient when developing an application, is more likely to cause frustration when writing a library. Forcing developers to pass a class name instead of an object.
+
+---
+
+## Validator
+
+Extract validator used to remove complex validation details from ActiveRecord models. This technique also prevents duplication of validation code across several files.
+
+### Uses
+* Keep validation implementation details out of models.
+* Encapsulate validation details into a single file, following the Single Responsibility Principle.
+* Make validation logic easier to reuse, making it easier to avoid duplication.
+--
+
+### Example
+
+app/models/invitation.rb <!-- .element: class="filename" -->
+
+```ruby
+class Invitation < ActiveRecord::Base
+  EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
+  validates :recipient_email, presence: true, format: EMAIL_REGEX
+end
+```
+We extract the validation details into a new class EmailValidator, and place the new class into the app/validators directory.
+
+app/validators/email_validator.rb <!-- .element: class="filename" -->
+
+```ruby
+class EmailValidator < ActiveModel::EachValidator
+  EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
+  def validate_each(record, attribute, value)
+    unless value.match EMAIL_REGEX
+      record.errors.add(attribute, "#{value} is not a valid email")
+    end
+  end
+end
+```
+
+Once the validator has been extracted. Rails has a convention for using the new validation class. EmailValidator is used by setting email: true in the validation arguments.
+
+```ruby
+class Invitation < ActiveRecord::Base
+  validates :recipient_email, presence: true, email: true
+end
+```
+
+---
+
+## Value Object
+
+Value Objects are objects that represent a value (such as a dollar amount) rather than a unique, identifiable entity (such as a particular user).
+
+### Uses
+* Remove Duplicated Code from making the same observations of primitive objects throughout the code base.
+* Make the code easier to understand by fully-encapsulating related logic into a single class, following the Single Responsibility Principle.
+* Eliminate Divergent Change by extracting code related to an embedded semantic type.
+--
+
+### Example
+
+app/controllers/invitations_controller.rb <!-- .element: class="filename" -->
+
+```ruby
+def recipient_list
+  @recipient_list ||= recipients.gsub(/\s+/, '').split(/[\n,;]+/)
+end
+
+def recipients
+  params[:invitation][:recipients]
+end
+```
+
+We can extract a new class to offload this responsibility.
+
+--
+
+app/models/recipient_list.rb <!-- .element: class="filename" -->
+
+```ruby
+class RecipientList
+  include Enumerable
+
+  def initialize(recipient_string)
+    @recipient_string = recipient_string
+  end
+
+  def each(&block)
+    recipients.each(&block)
+  end
+
+  def to_s
+    @recipient_string
+  end
+
+  private
+
+  def recipients
+    @recipient_string.to_s.gsub(/\s+/, '').split(/[\n,;]+/)
+  end
+end
+```
+
+app/controllers/invitations_controller.rb <!-- .element: class="filename" -->
+
+
+```ruby
+def recipient_list
+  @recipient_list ||= RecipientList.new(params[:invitation][:recipients])
 end
 ```
 
