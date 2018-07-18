@@ -1111,7 +1111,7 @@ app/views/posts/_form.html.erb <!-- .element: class="filename" -->
         <%= comment_form.label :text %> <br />
         <%= comment_form.text_field :text %> <br />
       </div>
-    <%- end %>
+    <% end %>
   </div>
   <div class ="field">
     <%= post_form.label :content %> <br />
@@ -1120,7 +1120,7 @@ app/views/posts/_form.html.erb <!-- .element: class="filename" -->
   <div class = "actions">
     <%= post_form.submit %>
   </div>
-<%- end %>
+<% end %>
 ```
 
 --
