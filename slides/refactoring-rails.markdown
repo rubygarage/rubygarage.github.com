@@ -271,6 +271,75 @@ end
 
 ---
 
+## Explicitly render views with locals
+
+The default practice in Rails apps is not to care about calling views. They are called and rendered using conventions. Whenever an action is called, there’s an implicit call to render, so you don’t have to do that manually. Less code, more conventions.
+
+Such conventions are very useful at the early stage of the project. They speed up the prototyping phase. Once the project becomes more complex, it might sometimes be useful to be more explicit with our code.
+
+--
+
+### There are three things that are implicit.
+* The call to render itself
+* The path to the view file
+* The way the data is passed to the view
+
+In theory, this refactoring is simple. Go to the view, replace all @product with product. The same in the controller. Also, in the controller, at the end of the action, call
+
+app/controllers/products_controller.rb <!-- .element: class="filename" -->
+
+```ruby
+class ProductsController < ApplicationController
+  ...
+
+  def edit
+    product = Product.new
+    render “products/edit”, locals: { product: product }
+  end
+end
+```
+
+app/views/products/edit.rb <!-- .element: class="filename" -->
+
+```ruby
+<div class="form">
+  <form action="product_path(product)" method="patch">
+    <div>
+      <label for="name">Product Name:</label>
+      <input type="text" id="name" name="#{product.name">
+    </div>
+  </form>
+</div>
+```
+
+--
+
+### In practice:
+
+* There are typical reusable views like ‘new’, ‘edit’, ‘_form’. In those cases all the actions need now to pass locals in appropriate places.
+
+* When the view renders a partial you need to explicitly pass the local variable further down.
+
+app/views/products/edit.rb <!-- .element: class="filename" -->
+
+```ruby
+<div class="form">
+  render “products/form”, { product: product }
+</div>
+```
+
+* It’s also important to remember, whole layout depends on the @ivars or locals. It’s easy to forget to check what exactly the layout depends on.
+
+--
+
+### Benefits
+
+With more explicitness we gain a clear interface to the view layer. We know what needs to be passed. The view is no longer this place which magically accesses some global data, but it behaves more like a proper object.
+
+This technique makes it easier, if one day, this view will be turned into a JavaScript widget. In that case, we can move the html part to the client-side. This widget would make an ajax call to get the same data that we’re now explicitly passing.
+
+---
+
 ## Service objects
 
 > Services are not the silver bullet. They don’t solve all the problems. They are good as the first step into the process of improving the design of your application.
