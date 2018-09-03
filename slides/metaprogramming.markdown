@@ -68,6 +68,9 @@ Monkey patching is a practice which involves substituting the pillars of an hous
 you substitute, the whole building will collapse over your remains. Moreover, you may take down some underground
 stations full of people as well as a side-effect.
 
+Carefully check the existing methods in a class before you define your own methods.
+Adding a new method is usually safer than modifying an existing one.
+
 ---
 
 # Classes
@@ -189,10 +192,10 @@ obj = MyClass.new # => NameError: unitialized constant
 # Method missing
 
 When you send a message to an object, the object executes the first method it finds on its method lookup path with the
-same name as the message. If it fails to find any such method, it end up with `method_missing` method, where a
-NoMethodError exception is raised unless you have provided other behavior for it. The method_missing method is passed
-the symbol of the non-existent method, an array of the arguments that were passed in the original call and any block
-passed to the original method.
+same name as the message. If it fails to find any such method, it end up with `method_missing` method (instance method
+of Kernel that every object inherits.), where a NoMethodError exception is raised unless you have provided other
+behavior for it. The method_missing method is passed the symbol of the non-existent method, an array of the arguments
+that were passed in the original call and any block passed to the original method.
 
 ```ruby
 class Person
@@ -210,9 +213,18 @@ end
 
 # Method aliases
 
+You can give an alternate name to a Ruby method by using the `alias`
+
+In alias, the new name for the method comes first, and the original name comes second.
+Note that alias is a keyword, not a method. That’s why there’s no comma between the two method names.
+Ruby also provides `alias_method`, a method equivalent to alias.
+
 ```ruby
 class MyClass
-  def my_method; 'my_method'; end
+  def my_method
+   'my_method'
+  end
+
   alias :m :my_method
 end
 
@@ -244,6 +256,10 @@ end
 'War and Peace'.length      # => "long"
 ```
 
+The previous code redefines String#length, but the alias still refers to the original method. When you redefine a
+method, you don’t really change the method. Instead, you define a new method and attach an existing name to that new
+method. You can still call the old version of the method as long as you have another name that’s still attached to it.
+
 ---
 
 # Instance variables
@@ -256,7 +272,9 @@ class MyClass
     @a, @b = p1, p2
   end
 end
+```
 
+```ruby
 c = MyClass.new('aaa', 'bbb')
 
 puts c.instance_variable_get(:@a)         # => "aaa"
@@ -348,7 +366,7 @@ puts my_meth                      # => "local from the inside"
 
 ---
 
-# instance_eval and instance_exec
+### instance_eval and instance_exec
 
 > `instance_eval` method evaluates a string containing Ruby source code, or the given block, within
 the context of the receiver (obj).
@@ -372,6 +390,10 @@ obj.instance_eval { @v } # => 2
 
 obj.instance_exec(3) { |multiplier| @v * multiplier } # => 6
 ```
+
+The `instance_eval` method can only evaluate a block (or a string) but that's it.
+
+But `instance_exec` on the other hand, will evaluate a provide block and allow you to pass arguments.
 
 ---
 
@@ -413,14 +435,26 @@ class MyClass2 < MyClass
 end
 
 object = MyClass.new(1)
-m = object.method(:my_method)
-m.call # => 1
-
-unbound = m.unbind
-another_object = MyClass2.new(2)
-m = unbound.bind(another_object)
-m.call # => 2
+method_object = object.method(:my_method)
+method_object.call # => 1
 ```
+
+By calling `Object#method`, you get the method itself as a Method object, which you can later execute with `Method#call`
+
+--
+
+You can detach a method from its object with `Method#unbind`, which returns an UnboundMethod object. You can’t execute
+an UnboundMethod, but you can turn it back into a Method by binding it to an object.
+
+```ruby
+unbound = method_object.unbind
+another_object = MyClass2.new(2)
+method_object = unbound.bind(another_object)
+method_object.call # => 2
+```
+
+This technique works only if another_object has the same class as the method’s original object—otherwise,
+you’ll get an exception.
 
 ---
 
@@ -465,6 +499,11 @@ MyClass.methods == obj.methods          # => false
 
 ## Hook methods
 
+The `inherited` method is an instance method of Class, and Ruby calls it when a class is inherited. By default,
+`Class#inherited` does nothing, but you can override it with your own code.
+
+inherited_hook.rb <!-- .element: class="filename" -->
+
 ```ruby
 class String
   def self.inherited(subclass)
@@ -472,16 +511,56 @@ class String
   end
 end
 
+class MyString < String
+end
+```
+
+```bash
+$ ruby inherited_hook.rb
+String was inherited by MyString
+```
+
+--
+
+Just as you override `Class#inherited` to plug into the life cycle of classes, you can plug into the life cycle of
+modules by overriding `Module#included`:
+
+included_hook.rb <!-- .element: class="filename" -->
+
+```ruby
 module M
   def self.included(othermod)
-    puts "M was mixed in #{othermod}"
+    puts "M was mixed into #{othermod}"
   end
+end
 
+class C
+  include M
+end
+```
+
+```bash
+$ ruby included_hook.rb
+M was mixed into C
+```
+
+You can also execute code when a module extends an object by overriding Module#extend_object.
+
+--
+
+#### You can execute method-related events by overriding
+`Module#method_added`, `singleton_method_added`, or `method_missing`.
+
+hooks.rb <!-- .element: class="filename" -->
+
+```ruby
+module M
   def self.method_added(method)
     puts "New method: M##{method}"
   end
 
-  def my_method; end
+  def my_method
+  end
 end
 
 class MyString < String
@@ -490,14 +569,9 @@ class MyString < String
   def singleton_method_added(method)
     puts "New singleton method: #{method}"
   end
-
-  def method_missing(method, *args, &block)
-    puts "not existing method #{method} was called"
-  end
 end
 
 str = MyString.new
-str.yay!
 
 def str.yay_method
 end
@@ -506,10 +580,39 @@ end
 ```bash
 $ ruby hooks.rb
 New method: M#my_method
-String was inherited by MyString
-M was mixed in MyString
-not existing method yay! was called
 New singleton method: yay_method
+```
+
+--
+
+## Overriding method_missing
+
+Most likely, you will never need to call `method_missing` yourself.
+Instead, you can override it to intercept unknown messages. Each
+message landing on `method_missing` desk includes the name of the
+method that was called, plus any arguments and blocks associated with
+the call.
+
+override_method_missing.rb <!-- .element: class="filename" -->
+
+```ruby
+class Lawyer
+  def method_missing(method, *args)
+    puts "You called: #{method}(#{args.join(', ')})"
+    puts "(You also passed it a block)" if block_given?
+  end
+end
+
+bob = Lawyer.new
+bob.talk_simple('a', 'b') do
+  # a block
+end
+```
+
+```bash
+$ ruby override_method_missing.rb
+You called: talk_simple(a, b)
+(You also passed it a block)
 ```
 
 ---
