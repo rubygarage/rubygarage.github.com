@@ -885,4 +885,738 @@ computation count or create a "dummy" selector for each test.
 
 ---
 
+## Production examples
+
+--
+
+### Action creators
+
+--
+
+src/actions/market.js <!-- .element: class="filename" -->
+
+```js
+import { GET_MARKET_CARDS, ADD_CARD_TO_MARKET, SET_MARKET_INITIAL_STATE, REQUEST } from 'constants/actions'
+
+export function getMarketCards(params) {
+  return { type: GET_MARKET_CARDS + REQUEST, params }
+}
+
+export function addCardToMarket(card) {
+  return { type: ADD_CARD_TO_MARKET, card }
+}
+
+export function setMarketInitialState() {
+  return { type: SET_MARKET_INITIAL_STATE }
+}
+```
+
+--
+
+src/actions/\__tests\__/market.spec.js <!-- .element: class="filename" -->
+
+```js
+import { addCardToMarket, getMarketCards, setMarketInitialState } from 'actions/market'
+
+describe('Market actions', () => {
+  it('creates an action to get cards', () => {
+    const expectedAction = { type: 'GET_MARKET_CARDS_REQUEST' }
+
+    expect(getMarketCards()).toEqual(expectedAction)
+  })
+
+  it('creates an action to add card', () => {
+    const expectedAction = { type: 'ADD_CARD_TO_MARKET' }
+
+    expect(addCardToMarket()).toEqual(expectedAction)
+  })
+
+  it('creates an action to reset market to initial state', () => {
+    const expectedAction = { type: 'SET_MARKET_INITIAL_STATE' }
+
+    expect(setMarketInitialState()).toEqual(expectedAction)
+  })
+})
+```
+
+--
+
+### Selectors
+
+--
+
+src/selectors/page.js <!-- .element: class="filename" -->
+
+```js
+import { createSelector } from 'reselect'
+
+export const getPages = (state) => state.entities.pages || {}
+export const getPagesIds = (state) => state.pages.list || []
+
+export const getInvitersPages = createSelector(
+  getPagesIds,
+  getPages,
+  (pagesIds, pages) => (pagesIds ? pagesIds.map((id) => (pages[id])) : [])
+)
+
+export const getPagesInvitersOptions = createSelector(
+  getInvitersPages,
+  (invitersPages) => invitersPages.map((invitersPage) => (
+    {
+      label: invitersPage.mediaName,
+      value: invitersPage.id,
+      avatarUrl: invitersPage.profileImageSmall
+    }
+  ))
+)
+```
+
+--
+
+src/selectors/\__tests\__/page.spec.js <!-- .element: class="filename" -->
+
+```js
+import { getPages, getPagesIds, getInvitersPages, getPagesInvitersOptions } from 'selectors/page'
+
+describe('pages selector', () => {
+  const state = {
+    pages: {
+      list: ['1']
+    },
+    entities: {
+      pages: {
+        1: { id: '1', type: 'pages', mediaName: 'media-name', profileImageSmall: 'image.jpg' },
+        2: { id: '2', type: 'pages', mediaName: 'media-name-2', profileImageSmall: 'image2.jpg' }
+      }
+    }
+  }
+
+  it('returns all pages', () => {
+    expect(getPages(state)).toEqual(state.entities.pages)
+  })
+
+  it('returns pages ids', () => {
+    expect(getPagesIds(state)).toEqual(state.pages.list)
+  })
+
+  it('returns array of pages by ids', () => {
+    expect(getInvitersPages(state)).toEqual([state.entities.pages[1]])
+  })
+
+  it('returns pages options for select', () => {
+    const { 1: selectedPage } = state.entities.pages
+
+    const expectedOptions = [{
+      label: selectedPage.mediaName,
+      value: selectedPage.id,
+      avatarUrl: selectedPage.profileImageSmall
+    }]
+
+    expect(getPagesInvitersOptions(state)).toEqual(expectedOptions)
+  })
+})
+```
+
+--
+
+### Reducers
+
+--
+
+src/reducers/history.js <!-- .element: class="filename" -->
+
+```js
+import { GET_HISTORY_CARDS, SET_HISTORY_INITIAL_STATE, REQUEST, SUCCESS, ERROR } from 'constants/actions'
+
+const initialState = {
+  cards: [],
+  loading: false,
+  page: 0,
+  hasMore: true
+}
+
+export default function history(state = initialState, action) {
+  const { type, results, params } = action
+
+  switch (type) {
+    case SET_HISTORY_INITIAL_STATE: return { ...state, ...initialState }
+    case GET_HISTORY_CARDS + REQUEST: return { ...state, loading: true, page: params.page }
+    case GET_HISTORY_CARDS + ERROR: return { ...state, loading: false, hasMore: false }
+    case GET_HISTORY_CARDS + SUCCESS: {
+      const cards = results.cards || []
+
+      return {
+        ...state,
+        cards: [...new Set([...state.cards, ...cards])],
+        loading: false,
+        page: state.page,
+        hasMore: cards.length !== 0
+      }
+    }
+    default: return state
+  }
+}
+```
+
+--
+
+src/reducers/\__tests\__/history.spec.js <!-- .element: class="filename" -->
+
+```js
+import history from 'reducers/history'
+
+describe('History reducer', () => {
+  it('has an initial state', () => {
+    expect(history(undefined, { type: 'unexpected' })).toEqual({
+      cards: [],
+      loading: false,
+      page: 0,
+      hasMore: true
+    })
+  })
+
+  it('can handle GET_HISTORY_CARDS_REQUEST', () => {
+    const params = { page: 0 }
+
+    expect(history(undefined, { type: 'GET_HISTORY_CARDS_REQUEST', params })).toEqual({
+      cards: [],
+      loading: true,
+      page: 0,
+      hasMore: true
+    })
+  })
+
+  it('can handle GET_HISTORY_CARDS_SUCCESS', () => {
+    const results = {
+      cards: [1, 2, 3]
+    }
+
+    expect(history(undefined, { type: 'GET_HISTORY_CARDS_SUCCESS', results })).toEqual({
+      cards: [1, 2, 3],
+      loading: false,
+      page: 0,
+      hasMore: true
+    })
+  })
+
+  it('can handle GET_HISTORY_CARDS_ERROR', () => {
+    expect(history(undefined, { type: 'GET_HISTORY_CARDS_ERROR' })).toEqual({
+      cards: [],
+      loading: false,
+      page: 0,
+      hasMore: false
+    })
+  })
+
+  it('can handle SET_HISTORY_INITIAL_STATE', () => {
+    const initialState = {
+      cards: [1, 2, 3],
+      loading: true,
+      page: 1480,
+      hasMore: false
+    }
+
+    const action = {
+      type: 'SET_HISTORY_INITIAL_STATE'
+    }
+
+    expect(history(initialState, action)).toEqual({
+      cards: [],
+      loading: false,
+      page: 0,
+      hasMore: true
+    })
+  })
+})
+```
+
+--
+
+### Containers
+
+--
+
+src/views/Stores/container.js <!-- .element: class="filename" -->
+
+```js
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { showModal } from 'state/modal/actions';
+import StoresComponent from './component';
+
+class Stores extends React.Component {
+  handleToggleCreateStoreModal = () => {
+    this.props.showModal({ modalType: 'CREATE_STORE' });
+  };
+
+  render() {
+    return (
+      <StoresComponent
+        {...this.props}
+        handleToggleCreateStoreModal={this.handleToggleCreateStoreModal}
+      />
+    );
+  }
+}
+
+Stores.defaultProps = {
+  isStoresPresent: null,
+};
+
+Stores.propTypes = {
+  isStoresPresent: PropTypes.bool,
+  showModal: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = state => ({
+  isStoresPresent: state.stores.isStoresPresent,
+});
+
+const mapDispatchToProps = {
+  showModal,
+};
+
+export { Stores as StoresContainer };
+export default connect(mapStateToProps, mapDispatchToProps)(Stores);
+```
+
+--
+
+src/views/Stores/\__tests\__/container.spec.js <!-- .element: class="filename" -->
+
+```js
+import React from 'react';
+import { shallow } from 'enzyme';
+import configureStore from 'redux-mock-store';
+import diveTo from 'utils/testHelpers/diveToEnzyme';
+import { showModal } from 'state/modal/actions';
+import StoresWrapped, { StoresContainer } from '../container';
+
+jest.mock('state/modal/actions', () => ({
+  showModal: jest.fn(),
+}));
+
+describe('Stores container', () => {
+  const store = configureStore()({
+    stores: {
+      isStoresPresent: true,
+    },
+  });
+  store.dispatch = jest.fn();
+
+  const wrapper = shallow(<StoresWrapped store={store} history={{}} />);
+  const container = diveTo(wrapper, StoresContainer);
+  const instance = container.instance();
+
+  it('renders Stores component', () => {
+    expect(container).toMatchSnapshot();
+  });
+
+  it('map state and dispatch to props', () => {
+    expect(instance.props).toEqual(expect.objectContaining({
+      isStoresPresent: expect.any(Boolean),
+    }));
+  });
+
+  it('handleToggleCreateStoreModal()', () => {
+    instance.handleToggleCreateStoreModal();
+    expect(showModal).toHaveBeenCalledWith({ modalType: 'CREATE_STORE' });
+  });
+});
+```
+
+--
+
+### Side effects (Sagas)
+
+--
+
+src/sagas/users.js <!-- .element: class="filename" -->
+
+```js
+import axios from 'axios'
+import { normalize } from 'normalize-json-api'
+import { takeEvery, call, put } from 'redux-saga/effects'
+import { LOAD_USERS, REQUEST, SUCCESS } from 'constants/actions'
+
+export function* loadUsers({ params, resolve, reject }) {
+  try {
+    const response = yield call(axios.get, '/api/mobile/users', params)
+    const { entities, results } = yield call(normalize, response.data)
+    yield put({ type: LOAD_USERS + SUCCESS, entities, users: results.users })
+    yield call(resolve)
+  } catch (error) {
+    yield call(reject, error)
+  }
+}
+
+export default function* watchLoadUsers() {
+  yield takeEvery(LOAD_USERS + REQUEST, loadUsers)
+}
+```
+
+--
+
+src/sagas/\__tests\__/users.spec.js <!-- .element: class="filename" -->
+
+```ruby
+jest.mock('responses/users')
+
+import axios from 'axios'
+import { normalize } from 'normalize-json-api'
+import { call, put } from 'redux-saga/effects'
+import { loadUsers } from 'sagas/users'
+import { response } from 'responses/users'
+
+describe('loadUsers()', () => {
+  const params = { params: {} }
+  const resolve = jest.fn()
+  const reject = jest.fn()
+
+  it('is success', () => {
+    const saga = loadUsers({ params, resolve, reject })
+
+    expect(saga.next().value).toEqual(
+      call(axios.get, '/api/mobile/users', params)
+    )
+
+    expect(saga.next({ data: response }).value).toEqual(
+      call(normalize, response)
+    )
+
+    const normalizedResponse = normalize(response)
+
+    expect(saga.next(normalizedResponse).value).toEqual(
+      put({
+        type: 'LOAD_USERS_SUCCESS',
+        entities: normalizedResponse.entities,
+        users: normalizedResponse.results.users
+      })
+    )
+
+    expect(saga.next().value).toEqual(
+      call(resolve)
+    )
+
+    expect(saga.next().done).toBe(true)
+  })
+
+  it('is failure', () => {
+    const saga = loadUsers({ params, resolve, reject })
+    const error = new Error('Unexpected Network Error')
+
+    expect(saga.next().value).toEqual(
+      call(axios.get, '/api/mobile/users', params)
+    )
+
+    expect(saga.throw(error).value).toEqual(
+      call(reject, error)
+    )
+
+    expect(saga.next().done).toBe(true)
+  })
+})
+```
+
+--
+
+src/sagas/\__mocks\__/responses/users.js <!-- .element: class="filename" -->
+
+```js
+export const response = {
+  data: {
+    attributes: {
+      email: 'dmitriy.grechukha@gmail.com',
+      profileImageBig: '/uploads/attachable/profile_image/file/1367/big_4f9c3f52-3b40-49e0-8a74-43e0415181e3.jpg',
+      profileImageSmall: '/uploads/attachable/profile_image/file/1367/small_4f9c3f52-3b40-49e0-8a74-43e0415181e3.jpg',
+      provider: 'twitter',
+      uid: '141283971',
+      username: 'timlar'
+    },
+    id: '319',
+    relationships: {
+      profileCard: {
+        data: {
+          id: '1285',
+          type: 'profileCards'
+        }
+      },
+      roles: {
+        data: [
+          {
+            id: '3',
+            type: 'roles'
+          }
+        ]
+      }
+    },
+    type: 'users'
+  },
+  included: [
+    {
+      attributes: {
+        name: 'merchant',
+        title: 'Merchant'
+      },
+      id: '3',
+      type: 'roles'
+    },
+    {
+      id: '1285',
+      relationships: {
+        profileData: {
+          data: {
+            id: '344',
+            type: 'profileDatas'
+          }
+        }
+      },
+      type: 'profileCards'
+    },
+    {
+      attributes: {
+        fullname: 'timlar'
+      },
+      id: '344',
+      type: 'profileDatas'
+    }
+  ]
+}
+```
+
+--
+
+### Side effects (Redux Logic)
+
+--
+
+src/state/concepts/storeOnboarding/operations.js <!-- .element: class="filename" -->
+
+```js
+import { createLogic } from 'redux-logic';
+import { mapKeys, camelCase } from 'lodash';
+import * as types from './types';
+import { setOnboarding } from './actions';
+
+export const getOnboardingOperation = createLogic({
+  type: types.GET_ONBOARDING,
+  latest: true,
+
+  async process({ httpClient, getState }, dispatch, done) {
+    const state = getState();
+    const { activeStore } = state.stores;
+    const url = `/account/stores/${activeStore}/onboarding`;
+    const data = await httpClient.get(url).then(resp => resp.data);
+
+    dispatch(setOnboarding(mapKeys(data.data.attributes, ((_, key) => camelCase(key)))));
+    done();
+  },
+});
+
+export const changeOnboardingOperation = createLogic({
+  type: types.CHANGE_ONBOARDING,
+  latest: true,
+
+  async process({ httpClient, getState }, dispatch, done) {
+    const state = getState();
+    const { activeStore } = state.stores;
+    const { onboarding } = state;
+    const params = {
+      onboarding: {
+        connect_to_wp_settings_visible: onboarding.connectToWpSettings.visible,
+        shipping_settings_visible: onboarding.shippingSettings.visible,
+        tax_settings_visible: onboarding.taxSettings.visible,
+        email_settings_visible: onboarding.emailSettings.visible,
+        checkout_settings_visible: onboarding.checkoutSettings.visible,
+        transfer_ownership_settings_visible: onboarding.transferOwnershipSettings.visible,
+        payment_settings_visible: onboarding.paymentSettings.visible,
+      },
+    };
+    const url = `/account/stores/${activeStore}/onboarding`;
+
+    await httpClient.patch(url, params);
+
+    done();
+  },
+});
+
+export default [
+  getOnboardingOperation,
+  changeOnboardingOperation,
+];
+```
+
+--
+
+src/state/concepts/storeOnboarding/\__tests\__/operations.spec.js <!-- .element: class="filename" -->
+
+```js
+import * as operations from 'concepts/storeOnboarding/operations';
+import httpClientMock from 'utils/testHelpers/httpClientMock';
+import onboardingResponse from 'concepts/storeOnboarding/__mocks__/storeOnboardingResponses';
+import onboardingState from 'concepts/storeOnboarding/__mocks__/storeOnboardingResponses';
+
+let dispatch;
+
+describe('getOnboardingOperation', () => {
+  describe('success', () => {
+    beforeEach((done) => {
+      const httpClient = httpClientMock({ method: 'get', response: { data: onboardingResponse } });
+      const getState = jest.fn();
+
+      getState.mockReturnValue({
+        onboarding: null,
+        stores: {
+          activeStore: '1',
+        },
+      });
+      dispatch = jest.fn(() => done());
+      operations.getOnboardingOperation.process({ httpClient, getState }, dispatch, done);
+    });
+
+    it('dispatches action onboarding/SET_ONBOARDING', () => {
+      expect(dispatch.mock.calls.length).toBe(1);
+
+      expect(dispatch.mock.calls[0][0]).toEqual({
+        type: 'onboarding/SET_ONBOARDING',
+        payload: {
+          checkoutSettings: {
+            completed: true,
+            visible: true,
+          },
+          connectToWpSettings: {
+            visible: true,
+          },
+          emailSettings: {
+            completed: false,
+            visible: true,
+          },
+          paymentSettings: {
+            completed: false,
+            visible: true,
+          },
+          shippingSettings: {
+            completed: true,
+            visible: true,
+          },
+          taxSettings: {
+            completed: true,
+            visible: true,
+          },
+          transferOwnershipSettings: {
+            visible: true,
+          },
+        },
+      });
+    });
+  });
+});
+
+describe('changeOnboardingOperation', () => {
+  describe('success', () => {
+    const mockedDone = jest.fn();
+
+    beforeEach(() => {
+      const httpClient = httpClientMock({ method: 'patch', response: { data: {} } });
+      const getState = jest.fn();
+
+      getState.mockReturnValue({
+        ...onboardingState,
+        stores: {
+          activeStore: '1',
+        },
+      });
+      dispatch = jest.fn();
+      operations.changeOnboardingOperation.process({ httpClient, getState }, dispatch, mockedDone);
+    });
+
+    it('calls done()', () => {
+      expect(mockedDone.mock.calls.length).toBe(1);
+    });
+  });
+});
+```
+
+--
+
+src/state/concepts/storeOnboarding/\__mocks\__/storeOnboardingResponses.js <!-- .element: class="filename" -->
+
+```js
+const onboardingResponse = {
+  data: {
+    attributes: {
+      'checkout-settings': {
+        completed: true,
+        visible: true,
+      },
+      'connect-to-wp-settings': {
+        visible: true,
+      },
+      'email-settings': {
+        completed: false,
+        visible: true,
+      },
+      'payment-settings': {
+        completed: false,
+        visible: true,
+      },
+      'shipping-settings': {
+        completed: true,
+        visible: true,
+      },
+      'tax-settings': {
+        completed: true,
+        visible: true,
+      },
+      'transfer-ownership-settings': {
+        visible: true,
+      },
+    },
+    id: '1',
+    type: 'onboarding-settings',
+  },
+};
+
+export default onboardingResponse;
+```
+
+--
+
+src/state/concepts/storeOnboarding/\__mocks\__/onboardingState.js <!-- .element: class="filename" -->
+
+```js
+const onboardingState = {
+  onboarding: {
+    connectToWpSettings: { visible: true },
+    shippingSettings: { visible: true, completed: false },
+    taxSettings: { visible: true, completed: false },
+    emailSettings: { visible: true, completed: false },
+    checkoutSettings: { visible: true, completed: false },
+    paymentSettings: { visible: true, completed: false },
+    transferOwnershipSettings: { visible: true },
+  },
+};
+
+export default onboardingState;
+```
+
+src/utils/testHelpers/httpClientMock.js <!-- .element: class="filename" -->
+
+```js
+const httpClientMock = ({ method, response, reject } = { reject: false }) => ({
+  [method]: () => new Promise((resolve, deny) => {
+    if (reject) {
+      deny(response);
+    } else {
+      resolve(response);
+    }
+  }),
+});
+
+export default httpClientMock;
+```
+
+---
+
 # The End

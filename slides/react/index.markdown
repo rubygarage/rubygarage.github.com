@@ -10,40 +10,40 @@ title: React
 
 ---
 
-- [ECMAScript 6](slides/es6)
+- [ECMAScript 6](es6)
 
-- [Overview](slides/overview)
+- [Overview](overview)
   <br>
   <small>Why it is good and what problems it solves</small>
 
-- [JSX](slides/jsx)
+- [JSX](jsx)
   <br>
   <small>Introducing JSX</small>
 
-- [Components and Props](slides/components)
+- [Components and Props](components)
   <br>
   <small>Learn to create and manage a React components</small>
 
-- [State and Lifecycle](slides/state)
+- [State and Lifecycle](state)
   <br>
   <small>How to handle state in React way</small>
 
-- [React Patterns](slides/patterns)
+- [React Patterns](patterns)
 
-- [Flux](slides/flux)
+- [Flux](flux)
   <br>
   <small>Application Architecture for Building User Interfaces</small>
 
-- [Redux](slides/redux)
+- [Redux](redux)
   <br>
   <small>A JavaScript library for managing and maintaining application state.</small>
 
-- [Webpack](slides/webpack)
+- [Webpack](webpack)
   <br>
   <small>Module bundler.</small>
 
-- [React Router 4](slides/react-router-4)
+- [React Router 4](react-router-4)
   <br>
   <small>Declarative routing for React.</small>
 
-- [Testing](slides/testing)
+- [Testing](testing)
