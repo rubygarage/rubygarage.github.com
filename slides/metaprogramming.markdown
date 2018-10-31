@@ -642,13 +642,8 @@ end
 
 C.new.x # => x()
 C.y     # => y()
+
 ```
-
----
-
-## Homework
-
-Please implement your own class `Factory` which will have the same behavior as `Struct` class.
 
 ---
 
@@ -678,6 +673,21 @@ end
 
 Customer.new('Dave', '123 Main').greeting # => "Hello Dave!"
 ```
+
+---
+
+## Homework
+
+Please implement your own class `Factory` which will have the same behavior as `Struct` class.
+
+```bash
+$ git clone https://github.com/dzemlianoi-double/ruby-factory
+$ cd ruby-factory
+$ rspec .
+```
+
+Your Factory must be implemented at `lib/factory.rb`.
+There you will also find detailed task info.
 
 ---
 
