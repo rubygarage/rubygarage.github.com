@@ -120,6 +120,35 @@ title: Ruby presentations
   <br>
   <small>Background jobs processing.</small>
 
+## Trailblazer
+
+- [Introduction](/slides/trailblazer/introduction)
+  <br>
+  <small>A business logic framework</small>
+
+- [Operation overview](/slides/trailblazer/operation)
+  <br>
+  <small>A business logic framework</small>
+
+- [Contract & Reform](/slides/trailblazer/contract)
+  <br>
+  <small>A business logic framework</small>
+
+- [Policy](/slides/trailblazer/policy)
+  <br>
+  <small>A business logic framework</small>
+
+- [Endpoint](/slides/trailblazer/endpoint)
+  <br>
+  <small>A business logic framework</small>
+
+- [Wiring](/slides/trailblazer/wiring)
+  <br>
+  <small>A business logic framework</small>
+
+- [Rails app integration](/slides/trailblazer/rails)
+  <br>
+  <small>A business logic framework</small>
 
 <!--
 # Frontend
@@ -135,7 +164,7 @@ title: Ruby presentations
 - [Git](/slides/git)
   <br>
   <small>Distributed version control system</small>
-  
+
 
 - [Static code analysis](/slides/static-code-analysis)
   <br>
