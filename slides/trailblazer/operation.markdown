@@ -136,6 +136,307 @@ class Create < Trailblazer::Operation
 end
 ```
 
+--
+
+## Step options
+
+### Name
+
+For every kind of step, whether it’s a macro or a custom step, use `:name` to specify a name.
+
+```ruby
+class New < Trailblazer::Operation
+  step Model( Song, :new )
+  step :validate_params!
+  # ..
+end
+
+# Results in
+ 0 =======================>>operation.new
+ 1 =====================&model.build
+ 2 ===================&validate_params!
+```
+
+
+```ruby
+class New < Trailblazer::Operation
+  step Model( Song, :new ), name: "build.song.model"
+  step :validate_params!,   name: "my.params.validate"
+  # ..
+end
+
+# Results in
+ 0 =======================>>operation.new
+ 1 =====================&build.song.model
+ 2 ===================&my.params.validate
+```
+
+--
+
+### Position
+
+Whenever inserting a step, you may provide the position in the pipe using `:before` or `:after`.
+
+```ruby
+class New < Trailblazer::Operation
+  step Model( Song, :new )
+  step :validate_params!,   before: "model.build"
+  # ..
+end
+
+ 0 =======================>>operation.new
+ 1 =====================&validate_params!
+ 2 ==========================&model.build
+```
+
+--
+
+### Replace
+
+Replace existing (or inherited) steps using `:replace`.
+
+```ruby
+class Update < New
+  step Model(Song, :find_by), replace: "model.build"
+end
+
+ 0 =======================>>operation.new
+ 2 ==========================&model.build
+```
+
+### Delete
+
+---
+
+## Step Macros
+
+Trailblazer provides predefined steps to for all kinds of business logic.
+
+- `Contract` implements contracts, validation and persisting verified data using the model layer.
+- `Nested`, `Wrap` and `Rescue` are step containers that help with transactional features for a group of steps per operation.
+- All `Policy`-related macros help with authentication and making sure users only execute what they’re supposed to.
+- The `Model` macro can create and find models based on input.
+
+--
+
+## `Model` macro
+
+An operation can automatically find or create a model for you depending on the input, with the `Model` macro.
+
+It sets up `ctx[:model]` as instance of class you specify with method you specified.
+
+```ruby
+class Create < Trailblazer::Operation
+  step Model( User, :new ) # equivalent to ctx[:model] = User.new
+  # ..
+end
+```
+
+```ruby
+class Create < Trailblazer::Operation
+  step Model( User, :find_by ) # equivalent to ctx[:model] = User.find_by(params[:id])
+  # ..
+end
+```
+
+If `User.find_by` returns `nil` operiation obviously will deviate to the failure track.
+
+
+#### Arbitrary finder
+
+It’s possible to specify any finder method, which is helpful with ROMs such as Sequel. The provided method will be invoked and Trailblazer passes it the `params[:id]` value
+
+```ruby
+class Show < Trailblazer::Operation
+  step Model( User, :[] ) # equivalent to ctx[:model] = User[params[:id]]
+  # ..
+end
+```
+
+--
+
+## `Nested` macro
+
+It is possible to nest operations, as in running an operation in another. This is the common practice for “presenting” operations and “altering” operations, such as Edit and Update.
+
+--
+
+## `Wrap` macro
+
+Steps can be wrapped by an embracing step. This is necessary when defining a set of steps to be contained in a database transaction or a database lock.
+
+You need to provide a handler which runs the wrapped section and implements the transactional code. The handler can be any callable object (or proc).
+Make sure to use `Wrap() { ... }` with **curly brackets**, otherwise Ruby will swallow the block
+
+All nested steps will simply be executed as if they were on the “top-level” pipe, but within the wrapper code. Steps may deviate to the left track, and so on.
+
+However, the last signal of the wrapped pipe is not simply passed on to the “outer” pipe. The return value of the actual Wrap block is crucial: If it returns falsey, the pipe will deviate to left after Wrap.
+
+
+```ruby
+class Create < Trailblazer::Operation
+  step Model(User, :new)
+  step :set_company
+  step Contract::Build(constant: Registrations::Contracts::Create)
+  step Contract::Validate(key: :user)
+  step :user_account
+
+  step Wrap(->((ctx), *, &block) { ActiveRecord::Base.transaction { block.call } }) {
+    step Contract::Persist()
+    step :persist_company
+    step :add_role
+    fail :rollback # raises ActiveRecord::Rollback
+  }
+end
+```
+
+--
+
+### Wrap with Callable
+
+For reusable wrappers, you can also use a `Callable` object.
+
+```ruby
+class ActiveRecordTransaction
+  extend Uber::Callable
+
+  def self.call(options, *)
+    ActiveRecord::Base.transaction { yield } # yield runs the nested pipe.
+    # return value decides about left or right track!
+  end
+end
+```
+
+--
+
+## `Rescue` macro
+
+While you could use the Wrap() macro to catch exceptions and process those, Trailblazer provides the Rescue() macro that embraces the calling of the nested activity into a begin/rescue block and allows to pass in a custom handler in case of an exception.
+
+Make sure to use `Rescue() { ... }` with **curly brackets**, otherwise Ruby will swallow the block
+
+You may pass any number of exceptions you desire to catch, along with your :handler which could be instance method, lambda or callable. The handler is called automatically if an exception was raised, it receives the latter as the first positional argument, followed by a task interface signature.
+
+Per default, if the handler was invoked, the operation will deviate to the left track.
+
+
+```ruby
+class Update < Trailblazer::Operation
+  step Contract::Build(constant: Accounts::ResetPasswords::Contracts::Token)
+  step Contract::Validate(key: :user)
+
+  step Rescue(JWT::InvalidAudError, JWT::DecodeError, handler: :invalid_token_handler) {
+    step :verify_reset_token
+  }, fail_fast: true
+
+  step :find_user
+  step Contract::Build(constant: Accounts::ResetPasswords::Contracts::Update)
+  step Contract::Validate(key: :user)
+  step Contract::Persist()
+
+  def verify_reset_token(ctx, **)
+    # may raise an exception
+  end
+
+  def invalid_token_handler(exception, ctx)
+    ctx[:status] = :gone
+  end
+end
+```
+
+---
+
+## Macro API
+
+Implementing your own macros helps to create reusable code.
+It’s advised to put macro code into namespaces to not pollute the global namespace.
+
+The macro itself is a function. Per convention, the **name is capitalized**. You can specify any set of arguments (positional or kw-args), and it returns a 2-element array with the actual step to be inserted into the pipe and default options.
+
+Note that in the macro, the code design is up to you. You can delegate to other functions, objects, etc.
+
+The macro step receives (input, options) where input is usually the operation instance and options is the context object passed from step to step. It’s your macro’s job to read and write to options. It is not advisable to interact with the operation instance.
+
+
+```ruby
+module Macros
+  def self.FindModel!(class)
+    step = -> (input, ctx) { ctx[:model] = class.find_by!(ctx[:params][:id]) }
+
+    [step, name: 'model.build']
+  end
+end
+
+class Update < Trailblazer::Operation
+  step Macro::FindModel!(User)
+  # ...
+end
+```
+
+---
+
+## Dependencies
+
+All class data, state and dependencies of operation are stored in *context object*. It can be accessed not only at runtime inside steps, but on class layer as well:
+
+```ruby
+module Song
+  class Create < Trailblazer::Operation
+    self["my.model.class"] = Song
+    # ...
+  end
+end
+
+Song::Create["my.model.class"] #=> Song
+```
+
+All this class and runtime data can be overridden using dependency injection.
+
+```ruby
+result = Song::Create.(params: params, "my.model.class" => Hit)
+```
+
+The operation also supports Dry.RB’s `auto_inject`.
+
+---
+
+## Inheritance
+
+It's possible but **not advised** to use inheritance share code and pipe.
+
+```ruby
+class New < Trailblazer::Operation
+  step Model( Song, :new )
+  step Contract::Build( constant: MyContract )
+end
+```
+
+```ruby
+class Create < New
+  step Contract::Validate()
+  step Contract::Persist()
+end
+```
+
+This will result in following pipe (first three steps came from `New` operation):
+
+```
+ 0 =======================>>operation.new
+ 1 ==========================&model.build
+ 2 =======================>contract.build
+ 3 ==============&contract.default.params
+ 4 ============&contract.default.validate
+ 5 =========================&persist.save
+```
+
+Subclasses can now override predefined steps with `:override`.
+
+```ruby
+class New < MyApp::Operation::New
+  step Model( Hit, :new ), override: true
+end
+```
+
 ---
 
 ## Operation invokation
