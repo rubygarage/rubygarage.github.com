@@ -1,0 +1,420 @@
+---
+layout: slide
+title: Operation Contract
+---
+
+# Operation `Contract`
+
+---
+
+## Contract
+
+A contract is an abstraction to handle validation of arbitrary data or object state. It is a fully self-contained object that is orchestrated by the operation.
+
+The actual validation can be implemented using Reform with `ActiveModel::Validation` or `dry-validation`, or a `Dry::Schema` directly without Reform.
+
+The Contract macros helps you defining contracts and assists with instantiating and validating data with those contracts at runtime.
+
+--
+
+## Contract usage
+
+Using contracts consists of five steps:
+
+1. Define the contract class (or multiple of them) for the operation.
+2. Plug the contract creation into the operation’s pipe using Contract::Build.
+3. Run the contract’s validation for the params using Contract::Validate.
+4. If successful, write the sane data to the model(s). This will usually happen in the Contract::Persist macro.
+5. After the operation has been run, interpret the result. For instance, a controller calling an operation will render a erroring form for invalid input.
+
+---
+
+## Reform
+
+Most contracts are `Reform` objects that you can define and validate in the operation. `Reform` is a fantastic tool for deserializing and validating deeply nested hashes, and then, when valid, writing those to the database using your persistence layer such as `ActiveRecord`.
+
+Reform coerces and validates data, and writes it to the model.
+A model can be any kind of Ruby object. Reform is completely framework-agnostic and doesn’t care about your database.
+
+Form fields are specified using `property` and `collection`, validations for the fields using the respective validation engine’s API.
+Forms can also be nested and map to more complex object graphs.
+
+
+```ruby
+class AlbumForm < Reform::Form
+  property :title
+
+  # dry-rb validations
+  validation do
+   required(:title).filled
+  end
+  # or with ActiveModel validations:
+  # validates :title, presence: true
+
+  property :artist do
+    property :name
+
+    validation do
+     required(:name).filled
+    end
+  end
+end
+```
+--
+
+### Virtual attributes
+
+Often, fields like `password_confirmation` should neither be read from nor written back to the model. Reform comes with the :virtual option to handle that case.
+
+```ruby
+class PasswordForm < Reform::Form
+  property :password
+  property :password_confirmation, virtual: true
+```
+
+--
+
+### Validation groups
+
+Validation in Reform happens in the `validate` method, and only there.
+It returns the result boolean, and provide potential errors via errors.
+It creates validation group, that provides the exact same API as a `Dry::Validation::Schema`,
+
+`validation` expects `name` of validation group as first argument and hash of `options`.
+Grouping validations enables you to run them conditionally, or in a specific order. You can use `:if` to specify what group had to be successful for it to be validated.
+
+```ruby
+validation :default do
+  required(:title).filled
+end
+
+validation :unique, if: :default do
+  configure do
+    def unique?(value)
+      # ..
+    end
+  end
+
+  required(:title, &:unique?)
+end
+```
+
+Chaining groups works via the `:after` option. This will run the group regardless of the former result. Note that it still can be combined with `:if`.
+
+--
+
+At any time you can extend an existing group using :inherit. This appends validations to the existing :email group.
+
+```ruby
+validation :email, inherit: true do
+  required(:email).filled
+end
+```
+
+Custom predicates have to be defined in the validation group. If you need access to your form you must pass `with: {form: true}` to your validation block
+
+```ruby
+validation :default, with: {form: true} do
+  configure do
+    option :form
+
+    def unique?(value)
+      Album.where.not(id: form.model.id).find_by(title: value).nil?
+    end
+  end
+
+  required(:title).filled(:unique?)
+end
+```
+
+--
+
+### More on Reform: http://trailblazer.to/gems/reform/index.html
+
+---
+
+## Dry-rb validations
+
+It is based on the idea that each validation is encapsulated by a simple, stateless predicate that receives some input and returns either `true` or `false`. Those predicates are encapsulated by `rules` which can be composed together using predicate logic.
+
+Here the predicates `none?` and `int?` conjuncted into validation rule
+```ruby
+required(:age) { none? | int? }
+```
+
+--
+
+### Macros
+
+Rule composition using blocks is very flexible and powerful; however, in many common cases repeatedly defining the same rules leads to boilerplate code. That’s why dry-validation’s DSL provides convenient macros to reduce that boilerplate. Every macro can be expanded to its block-based equivalent.
+
+```ruby
+Dry::Validation.Schema do
+  # expands to `required(:age) { filled? & int? }`
+  required(:age).filled(:int?)
+end
+
+Dry::Validation.Schema do
+  # expands to `required(:age) { none?.not > int? }`
+  required(:age).maybe(:int?)
+end
+```
+
+--
+
+### Custom predicates
+
+You can simply define predicate methods on your schema object:
+
+```ruby
+schema = Dry::Validation.Schema do
+  configure do
+    def email?(value)
+      ! /magical-regex-that-matches-emails/.match(value).nil?
+    end
+  end
+
+  required(:email).filled(:str?, :email?)
+end
+```
+
+--
+
+Or re-use a predicate container across multiple schemas:
+
+```ruby
+module MyPredicates
+  include Dry::Logic::Predicates
+
+  predicate(:email?) do |value|
+    ! /magical-regex-that-matches-emails/.match(value).nil?
+  end
+end
+
+schema = Dry::Validation.Schema do
+  configure do
+    predicates(MyPredicates)
+  end
+
+  required(:email).filled(:str?, :email?)
+end
+```
+
+You need to provide error messages for your custom predicates if you want them to work with Schema#call(input).messages interface.
+
+```ruby
+configure do
+  config.messages = :i18n
+  config.namespace = :namespace_name
+end
+```
+
+--
+
+### More on dry-rb validations https://dry-rb.org/gems/dry-validation/
+
+---
+
+## Contract Definition
+
+#### Explicit
+
+```ruby
+module Registrations
+  module Contracts
+    class Create < Reform::Form
+      include Dry
+
+      property :full_name
+      property :email
+      property :password, virtual: true
+      property :password_confirmation, virtual: true
+
+
+      validation :default do
+        required(:full_name).filled(:str?)
+        required(:email).filled(format?: Constants::Shared::EMAIL_REGEX)
+        required(:password).filled(
+          :str?,
+          min_size?: Constants::Shared::PASSWORD_MIN_LENGTH,
+          format?: Constants::Shared::PASSWORD_REGEX
+        ).confirmation
+      end
+    end
+  end
+
+  module Operations
+    class Create < Trailblazer::Operation
+      step Model( User, :new )
+      step Contract::Build(constant: Registrations::Contracts::Create)
+      step Contract::Validate()
+      step Contract::Persist()
+    end
+  end
+end
+```
+
+--
+
+#### Inline
+
+Don't do this
+
+```ruby
+class Registrations::Operations::Create < Trailblazer::Operation
+  extend Contract::DSL
+
+  contract do
+    property :full_name
+    property :email
+
+    # ...
+  end
+
+  step Model(User, :new)
+  step Contract::Build()
+  step Contract::Validate()
+  step Contract::Persist()
+end
+```
+
+---
+
+## `Build` macro
+
+The Contract::Build macro helps you to instantiate the contract. It is both helpful for a complete workflow, or to create the contract, only, without validating it, e.g. when presenting the form.
+
+This macro will grab the model from `ctx["model"]` and pass it into the contract’s constructor. The contract is then saved in `ctx["contract.default"]`.
+The `Build` macro accepts the `:name` option to change the name from default.
+
+```ruby
+class Create < Trailblazer::Operation
+  step Model(User, :new)
+  step Contract::Build(constant: Registrations::Contracts::Create)
+  # ...
+end
+```
+
+--
+
+### Manual Build
+
+To manually build the contract instance (e.g. to inject the current user) use `builder:` with any callable.
+
+```ruby
+class Comments::Contracts::Create < Reform::Form
+  include Dry
+
+  property :body
+  property :current_user, virtual: true
+
+  validation :default do
+    required(:body).filled(:str?)
+    # ... validations with current_user
+  end
+end
+
+class Comments::Operations::Create < Trailblazer::Operation
+  step Model( Comments, :new )
+  step Contract::Build( builder: :build_contract )
+  step Contract::Validate()
+  step Contract::Persist()
+
+  def build_contract(ctx, model:, current_user:, **)
+    Comments::Contracts::Create.new(model, current_user: current_user)
+  end
+end
+```
+
+---
+
+## `Validate` macro
+
+The `Contract::Validate` macro is responsible for validating the incoming params against its contract. That means you have to use `Contract::Build` beforehand, or create the contract yourself. The macro will then grab the params and throw then into the contract’s `validate` (or `call`) method.
+Note that Validate really only validates the contract, nothing is written to the model, yet.
+
+Depending on the outcome of the validation, it either stays on the right track, or deviates to left, skipping the remaining steps.
+
+```ruby
+class Create < Trailblazer::Operation
+  step Model(User, :new)
+  step Contract::Build(constant: Registrations::Contracts::Create)
+  step Contract::Validate()
+  # ...
+end
+```
+
+Per default, Contract::Validate will use `options["params"]` as the data to be validated. Use the `key:` option if you want to validate a nested hash from the original params structure. If that key isn’t present in the params hash, the operation fails before the actual validation.
+
+```ruby
+class Create < Trailblazer::Operation
+  # ...
+  step Contract::Validate(key: :user)
+  # ...
+end
+```
+
+---
+
+### `Persist` macro
+
+To push validated data from the contract to the model(s), use Persist. Like Validate, this requires a contract to be set up beforehand.
+After the step, the contract’s attribute values are written to the model, and the contract will call save on the model
+
+```ruby
+class Create < Trailblazer::Operation
+  step Model(User, :new)
+  step Contract::Build(constant: Registrations::Contracts::Create)
+  step Contract::Validate()
+  step Contract::Persist()
+end
+```
+
+You can also configure the `Persist` step to call `sync` instead of Reform’s `save`.
+
+```ruby
+step Persist( method: :sync )
+```
+
+---
+
+### Named Contract
+
+For explicit naming you have to use the `name:` option to tell each step what contract to use. The contract and its result will now use your name instead of `default`.
+
+```ruby
+class User::Operation::Create < Trailblazer::Operation
+  step Model( User, :new )
+  step Contract::Build(    name: "form", constant: User::Contract::Create )
+  step Contract::Validate( name: "form" )
+  step Contract::Persist(  name: "form" )
+end
+```
+Contract in runtime and contract result would be stored under corresponding name:
+
+```ruby
+result = User::Operaion::Create.({ title: "A" })
+result["contract.form"].errors.messages # => {:title=>["is too short (minimum is 2 ch...
+# or in result
+result["result.contract.form"].success?        #=> false
+result["result.contract.form"].errors          #=> Errors object
+result["result.contract.form"].errors.messages #=> {:length=>["is not a number"]}
+```
+
+---
+
+### Dependency Injection
+
+In fact, the operation doesn’t need any reference to a contract class at all. The contract can be injected when calling the operation - you have to provide the default contract class as a dependency.
+
+```ruby
+User::Operation::Create.(params: params, "contract.default.class" => User::Contract::Create)
+```
+
+
+
+
+
+---
+
+# The End

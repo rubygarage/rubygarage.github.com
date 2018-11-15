@@ -122,6 +122,8 @@ end
 
 ### Callable
 
+Used for sharing steps
+
 ```ruby
 class Authenticate
   extend Uber::Callable #
@@ -140,28 +142,28 @@ end
 
 ## Step options
 
-### Name
+### ID
 
-For every kind of step, whether it’s a macro or a custom step, use `:name` to specify a name.
+For every kind of step, whether it’s a macro or a custom step, use `:id` (former `:name`) to specify a name.
 
 ```ruby
 class New < Trailblazer::Operation
   step Model( Song, :new )
-  step :validate_params!
+  step :validate_params
   # ..
 end
 
 # Results in
  0 =======================>>operation.new
  1 =====================&model.build
- 2 ===================&validate_params!
+ 2 ===================&validate_params
 ```
 
 
 ```ruby
 class New < Trailblazer::Operation
-  step Model( Song, :new ), name: "build.song.model"
-  step :validate_params!,   name: "my.params.validate"
+  step Model( Song, :new ), id: "build.song.model"
+  step :validate_params,   id: "my.params.validate"
   # ..
 end
 
@@ -180,12 +182,12 @@ Whenever inserting a step, you may provide the position in the pipe using `:befo
 ```ruby
 class New < Trailblazer::Operation
   step Model( Song, :new )
-  step :validate_params!,   before: "model.build"
+  step :validate_params,   before: "model.build"
   # ..
 end
 
  0 =======================>>operation.new
- 1 =====================&validate_params!
+ 1 =====================&validate_params
  2 ==========================&model.build
 ```
 
@@ -193,7 +195,7 @@ end
 
 ### Replace
 
-Replace existing (or inherited) steps using `:replace`.
+Replace existing (only in the applied class, not in the superclass) steps using `:replace`.
 
 ```ruby
 class Update < New
@@ -201,10 +203,38 @@ class Update < New
 end
 
  0 =======================>>operation.new
+ 1 =====================&validate_params
  2 ==========================&model.build
 ```
 
 ### Delete
+  ```ruby
+class Update < New
+  step nil, delete: 'validate_params', id: ''
+end
+
+ 0 =======================>>operation.new
+ 1 ==========================&model.build
+```
+
+--
+
+### Group
+
+The `:group` option is the ideal solution to create template operations, where you declare a basic circuit layout which can then be enriched by subclasses.
+
+```ruby
+class Memo::Operation < Trailblazer::Operation
+  step :log_call,  group: :start
+  step :log_success,  group: :end, before: "End.success"
+  fail :log_errors,   group: :end, before: "End.failure"
+  # ...
+end
+```
+
+Subclasses can now insert their actual steps without any sequence options needed.
+
+Since all logging steps defined in the template operation are placed into groups, the concrete steps sit in the middle.
 
 ---
 
@@ -252,12 +282,6 @@ class Show < Trailblazer::Operation
   # ..
 end
 ```
-
---
-
-## `Nested` macro
-
-It is possible to nest operations, as in running an operation in another. This is the common practice for “presenting” operations and “altering” operations, such as Edit and Update.
 
 --
 
@@ -311,14 +335,17 @@ end
 
 ## `Rescue` macro
 
-While you could use the Wrap() macro to catch exceptions and process those, Trailblazer provides the Rescue() macro that embraces the calling of the nested activity into a begin/rescue block and allows to pass in a custom handler in case of an exception.
+While you could use the Wrap() macro to catch and process exceptions, Trailblazer provides the Rescue() macro that embraces the calling of the nested activity into a `begin/rescue` block and allows to pass in a custom handler in case of an exception.
 
-Make sure to use `Rescue() { ... }` with **curly brackets**, otherwise Ruby will swallow the block
+Make sure to use `Rescue() { ... }` with **curly brackets**, otherwise Ruby will swallow the block.
 
-You may pass any number of exceptions you desire to catch, along with your :handler which could be instance method, lambda or callable. The handler is called automatically if an exception was raised, it receives the latter as the first positional argument, followed by a task interface signature.
+You may pass any number of exceptions you desire to catch, along with your `:handler` which could be instance method, lambda or callable. The handler is called automatically if an exception was raised, it receives the latter as the first positional argument, followed by a operation context.
 
 Per default, if the handler was invoked, the operation will deviate to the left track.
 
+--
+
+### `Rescue` example
 
 ```ruby
 class Update < Trailblazer::Operation
@@ -343,6 +370,111 @@ class Update < Trailblazer::Operation
   end
 end
 ```
+
+--
+
+## `Nested` macro
+
+It is possible to nest operations, as in running an operation in another.
+
+The nested operation will, per default, only receive runtime data from the composing operation. Mutable data is not available to protect the nested operation from unsolicited input. You can use `:input` to change the data getting passed on.
+
+After running a nested operation, its mutable data gets copied into the options of the composing operation.
+Use `:output` to change that, should you need only specific values
+
+Should the nested operation fail, then the outer pipe will also jump to the fail track.
+
+### When to use `Nested`
+
+You should use it only for some reccuring set of tasks if they:
+- are large;
+- are complicated and need to leverage the railway;
+- have to use `Wrap`, `Rescue` or `Nested` macros within them.
+
+In all other cases consider using just a callable steps.
+
+--
+
+### `Nested` macro example
+
+```ruby
+class Checkout::Update
+  step Model(Order, :find_by)
+  step Contract::Build(constant: Checkout::Contract::Update)
+  step Contract::Validate(key: :order), fail_fast: true
+
+  # ...updates order state
+
+  success :calculate_taxes!
+  success Nested(Checkout::TaxForOrder, input: Checkout::Lib::Input::TaxData)
+
+  # ...other calculations
+
+  step Contract::Persist()
+
+  def calculate_taxes!(options, model:, **)
+    options['calculate_taxes'] = !model.test? && model.store.tax_setting_enabled?
+  end
+
+  # ...
+end
+```
+
+--
+
+### `Nested` operation example
+
+```ruby
+class Checkout::TaxForOrder < Trailblazer::Operation
+  step :calculate_taxes?
+
+  step :from_address!
+  step :to_address!
+  step :assign_params!
+
+  step Rescue(handler: :add_error!) {
+    step :send_request! # reauest to third-party API
+    success :assign_order_tax_amount!
+    success :assign_line_items_tax_amount!
+  }
+
+  def calculate_taxes?(calculate_taxes:, **)
+    calculate_taxes ? Railway.pass! : Railway.pass_fast!
+  end
+
+  # ...
+
+  def add_error!(exception, options)
+    options['contract'].errors.add(:taxjar, exception.message)
+  end
+end
+```
+
+--
+
+### `Nested` `:input` example
+
+Could be implementes as method, lambda or callable.
+
+```ruby
+module Lib
+  module Input
+    class TaxData
+      extend Uber::Callable
+
+      def self.call(ctx, model:, calculate_taxes:, **)
+        {
+          'model' => model,
+          'contract' => ctx['contract.default'],
+          'calculate_taxes' => calculate_taxes
+        }
+      end
+    end
+  end
+end
+```
+
+`:output` could be defined the same way, only difference that it defines output from nested operations, so it arguments will hold its context.
 
 ---
 
@@ -402,7 +534,7 @@ The operation also supports Dry.RB’s `auto_inject`.
 
 ## Inheritance
 
-It's possible but **not advised** to use inheritance share code and pipe.
+It's possible but **not advised** to use inheritance share to code and pipe.
 
 ```ruby
 class New < Trailblazer::Operation
@@ -463,4 +595,20 @@ class SessionsController < ApplicationController
 end
 ```
 
+--
+
+### Primary Binary State
+
+The primary state is decided by the activity’s end event superclass. If derived from `Railway::End::Success`, it will be interpreted as successful, and `result.success?` will return true, whereas a subclass of `Railway::End::Failure` results in the opposite outcome. Here, `result.failure?` is true.
+
+You can access the end event the Result wraps via `event`. This allows to interpret the outcome on a finer level and without having to guess from data in the operation context, using Endpoint.
+
+```ruby
+result = Create.( params )
+
+result.event #=> #<Railway::FastTrack::PassFast ...>
+```
+
 ---
+
+# The End
