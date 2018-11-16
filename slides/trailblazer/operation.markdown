@@ -66,19 +66,244 @@ end
 
 ## Flow control
 
-The flow of an operation is defined by a two-tracked pipeline.
+When you run an operation like Memo::Create.(), it will internally execute its circuit. This simply means the operation will traverse its [railway](https://fsharpforfunandprofit.com/rop/) (or pipe), call the steps you defined, deviate to different tracks, and so on.
 
-The operation’s sole purpose is to define the pipe with its steps that are executed when the operation is run. While traversing the pipe, each step orchestrates all necessary stakeholders like policies, contracts, models and callbacks.
-
-Per default, the success track will be run from start to end. If an error occurs, it will deviate to the fail track and continue executing error handler steps on this track.
+An operation provides three DSL methods to define the circuit: `step`, `pass`, and `fail`.
 
 ![](/assets/images/trailblazer/operation-bpmn-1.png)
 
-The following high-level API is available.
+- `step` always puts the task on the upper, “right” track, but with two outputs per box: one to the next successful step, one to the nearest fail box. The chain of “successful” boxes in the top is the success `right track`. The lower chain is the failure `left track`.
+- `pass` is on the right track, but without an outgoing connection to the left track. It is always assumed successful. The return value is ignored.
+- `fail` puts the box on the failure track and doesn’t connect it back to the right track.
 
-- `step` adds a step to the right track. If its return value is falsey, the pipe deviates to the left track. Can be called with macros, which will run their own insertion logic.
-- `pass` (or `success`) always add step to the success-track. The return value is ignored.
-- `fail` (or `failure`) always add step to the fail-track for error handling. The return value is ignored.
+---
+
+## Wiring API
+
+---
+
+### Fast Track
+
+You can “short-circuit” specific tasks using a built-in mechanism called `fast track`.
+
+--
+
+### Fast Track: `pass_fast`
+
+To short-circuit the successful connection of a task use :pass_fast.
+
+```ruby
+class Memo::Create < Trailblazer::Operation
+  step :create_model
+  step :validate,     pass_fast: true
+  fail :assign_errors
+  step :index
+  pass :uuid
+  step :save
+  fail :log_errors
+  # ...
+end
+```
+
+If validate turned out to be successful, no other task won’t be invoked, as visible in the diagram.
+
+![](/assets/images/trailblazer/wiring-pass-fast.png)
+
+--
+
+### Fast Track: `fail_fast`
+
+The :fail_fast option comes in handy when having to early-out from the error (left) track.
+
+```ruby
+class Memo::Create < Trailblazer::Operation
+  step :create_model
+  step :validate
+  fail :assign_errors, fail_fast: true
+  step :index
+  pass :uuid
+  step :save
+  fail :log_errors
+  # ...
+end
+```
+
+![](/assets/images/trailblazer/wiring-fail-fast.png)
+
+
+--
+
+### Fast Track: `fail_fast` with `step`
+
+You can also use `:fail_fast` with `step` tasks.
+
+
+```ruby
+class Memo::Create < Trailblazer::Operation
+  step :create_model
+  step :validate
+  fail :assign_errors, fail_fast: true
+  step :index,         fail_fast: true
+  pass :uuid
+  step :save
+  fail :log_errors
+  # ...
+end
+```
+
+![](/assets/images/trailblazer/wiring-fail-fast-step.png)
+
+--
+
+### Fast Track: `fast_track`
+
+Instead of hard-wiring the success or failure output to the respective fast-track end, you can decide what output to take dynamically, in the tas. However, this implies you configure the task using the :fast_track option.
+
+```ruby
+class Memo::Create < Trailblazer::Operation
+  step :create_model,  fast_track: true
+  step :validate
+  fail :assign_errors, fast_track: true
+  step :index
+  pass :uuid
+  step :save
+  fail :log_errors
+  # ...
+end
+```
+
+By marking a task with :fast_track, you can create up to four different outputs from it.
+
+![](/assets/images/trailblazer/wiring-fast-track.png)
+
+--
+
+Both create_model and assign_errors have two more outputs in addition to their default ones: one to End.pass_fast, one to End.fail_fast (note that this option works with pass, too). To make the execution take one of the fast-track paths, you need to emit a special signal from that task, though.
+
+```ruby
+def create_model(options, create_empty_model:false, **)
+  options[:model] = Memo.new
+  create_empty_model ? Railway.pass_fast! : true
+end
+```
+
+---
+
+## Signals
+
+A signal is the object that is returned from a task. It can be any kind of object, but per convention, we derive signals from `Trailblazer::Activity::Signal`. When using the wiring API with step and friends, your tasks will automatically get wrapped so the returned boolean gets translated into a signal.
+
+```ruby
+def validate(options, params: {}, **)
+  if params[:text].nil?
+    Trailblazer::Activity::Left  #=> left track, failure
+  else
+    Trailblazer::Activity::Right #=> right track, success
+  end
+end
+```
+
+Instead of using the signal constants directly, you may use signal helpers:
+
+```ruby
+def validate(options, params: {}, **)
+  if params[:text].nil?
+    Railway.fail! #=> left track, failure
+  else
+    Railway.pass! #=> right track, success
+  end
+end
+```
+
+Available signal helpers per default are `Railway.pass!`, `Railway.fail!`, `Railway.pass_fast!` and `Railway.fail_fast!`.
+
+---
+
+## Connections
+
+The four standard tracks in an operation represent an extended railway. While they allow to handle many situations, they sometimes can be confusing as they create hidden semantics. This is why you can also define explicit, custom connections between tasks and even attach task not related to the railway model.
+
+This is achieved by defining `Output` from outgoing task using target `id`.
+
+```ruby
+class Memo::Upload < Trailblazer::Operation
+  step :new?, Output(:failure) => "index"
+  step :upload
+  step :validate
+  fail :validation_error
+  step :index, id: "index"
+  # ...
+end
+```
+
+Events like `Start.default`, and end `End.success`, can also be referenced.
+
+
+![](/assets/images/trailblazer/wiring-output-by-id.png)
+
+
+---
+
+## Custom `End`
+
+You can also wire the step’s error output to a custom end. This is incredibly helpful if your operation needs to communicate what exactly happened inside to the outer world, a pattern used in Endpoint.
+
+The `End` DSL method will create a new end event, the first argument being the name, the second the semantic.
+
+```ruby
+class Memo::Update < Trailblazer::Operation
+  step :find_model, Output(:failure) => End("End.model_not_found", :model_not_found)
+  step :update
+  fail :db_error
+  step :save
+  # ...
+end
+```
+
+![](/assets/images/trailblazer/wiring-custom-end.png)
+
+
+---
+
+## Magnetic API
+
+If you want to stay on one path but need to branch-and-return to model a decision, use the **decider pattern**.
+
+```ruby
+class Memo::Upsert < Trailblazer::Operation
+  step :find_model, Output(:failure) => :create_route
+  step :update
+  step :create, magnetic_to: [:create_route]
+  step :save
+  # ...
+end
+```
+
+![](/assets/images/trailblazer/wiring-magnetic-decider.png)
+
+Magnetic API here polarizes the failure output of find_model to `:create_route`, and making create being attracted to that very polarization, the failure output “snaps” to that task automatically.
+
+Using magnetic API you don’t need to know what is the specific target of a connection, allowing to push multiple tasks onto that new `:create_route` track.
+
+---
+
+### Recover pattern
+
+Error handlers on the left track are the perfect place to “fix things”. For example, if you need to upload a file to S3, if that doesn’t work, try with Azure, and if that still doesn’t play, with Backblaze. This is a common pattern when dealing with external APIs.
+
+You can simply put recover steps on the left track, and wire their :success output back to the right track (which the operation knows as :success).
+
+```ruby
+class Memo::Upsert < Trailblazer::Operation
+  step :find_model, Output(:failure) => :create_route
+  step :update
+  step :create, magnetic_to: [:create_route]
+  step :save
+  # ...
+end
+```
+
+![](/assets/images/trailblazer/wiring-recover-pattern.png)
 
 ---
 
@@ -382,7 +607,7 @@ The nested operation will, per default, only receive runtime data from the compo
 After running a nested operation, its mutable data gets copied into the options of the composing operation.
 Use `:output` to change that, should you need only specific values
 
-Should the nested operation fail, then the outer pipe will also jump to the fail track.
+All nested operation ends with known semantics will be automatically connected to its corresponding tracks in the outer operation
 
 ### When to use `Nested`
 

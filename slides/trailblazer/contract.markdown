@@ -119,7 +119,7 @@ validation :default, with: {form: true} do
     option :form
 
     def unique?(value)
-      Album.where.not(id: form.model.id).find_by(title: value).nil?
+      Album.where.not(id: form.model.id).where(title: value).empty?
     end
   end
 
@@ -208,6 +208,62 @@ configure do
   config.namespace = :namespace_name
 end
 ```
+
+--
+
+## Custom Validation Blocks
+
+Custom validation blocks are executed only when the values they depend on are valid. You can define these blocks using `validate` DSL, they will be executed in the context of your schema objects, which means schema collaborators or external configurations are accessible within these blocks
+
+```ruby
+# inside reform validation block with forwarded form object
+validation :default, with: { form: true } do
+  configure do
+    config.messages = :i18n
+    config.namespace = :order_cancellation
+
+    option :form
+  end
+
+  required(:total).filled(:decimal?, gteq?: 0.0)
+  required(:reason).filled(:str?)
+
+  validate(correct_total?: [:total]) do |total|
+    total <= form.model.order.total
+  end
+end
+```
+
+--
+
+## High-level Rules
+
+It's possible to specify higher-level rules that rely on other rules. This can be achieved using the `rule` interface which can access already defined rules for specific keys.
+
+```ruby
+schema = Dry::Validation.Schema do
+  required(:login).maybe(:str?)
+  required(:email).maybe(:str?)
+
+  rule(email_presence: [:login, :email]) do |login, email|
+    login.none? > email.filled?
+  end
+end
+```
+
+When the validity of one attribute depends on the value of another attribute, you can use `value`:
+
+```ruby
+schema = Dry::Validation.Schema do
+  required(:started).filled(:date?)
+  required(:ended).filled(:date?)
+
+  rule(started_before_ended: [:started, :ended]) do |started, ended|
+    ended.gt?(value(:started))
+  end
+end
+```
+
 
 --
 

@@ -142,10 +142,6 @@ title: Ruby presentations
   <br>
   <small>A business logic framework</small>
 
-- [Wiring](/slides/trailblazer/wiring)
-  <br>
-  <small>A business logic framework</small>
-
 - [Rails app integration](/slides/trailblazer/rails)
   <br>
   <small>A business logic framework</small>
