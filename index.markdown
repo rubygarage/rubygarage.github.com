@@ -128,23 +128,23 @@ title: Ruby presentations
 
 - [Operation overview](/slides/trailblazer/operation)
   <br>
-  <small>A business logic framework</small>
+  <small>Railway-oriented service object</small>
 
 - [Contract & Reform](/slides/trailblazer/contract)
   <br>
-  <small>A business logic framework</small>
+  <small>A validation for Operation</small>
 
 - [Policy](/slides/trailblazer/policy)
   <br>
-  <small>A business logic framework</small>
+  <small>An authorization for Operation</small>
 
 - [Endpoint](/slides/trailblazer/endpoint)
   <br>
-  <small>A business logic framework</small>
+  <small>Generic HTTP handlers for operation results</small>
 
-- [Rails app integration](/slides/trailblazer/rails)
+- [Rails API integration](/slides/trailblazer/rails)
   <br>
-  <small>A business logic framework</small>
+  <small>Integrating Trailblazer with Rails API</small>
 
 <!--
 # Frontend

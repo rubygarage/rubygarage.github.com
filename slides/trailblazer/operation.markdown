@@ -178,7 +178,7 @@ By marking a task with :fast_track, you can create up to four different outputs 
 
 --
 
-Both create_model and assign_errors have two more outputs in addition to their default ones: one to End.pass_fast, one to End.fail_fast (note that this option works with pass, too). To make the execution take one of the fast-track paths, you need to emit a special signal from that task, though.
+Both create_model and assign_errors have two more outputs in addition to their default ones: one to `End.pass_fast`, one to `End.fail_fast` (note that this option works with pass, too). To make the execution take one of the fast-track paths, you need to emit a special signal from that task, though.
 
 ```ruby
 def create_model(options, create_empty_model:false, **)
