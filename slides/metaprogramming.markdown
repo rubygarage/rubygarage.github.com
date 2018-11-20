@@ -683,6 +683,7 @@ Please implement your own class `Factory` which will have the same behavior as `
 ```bash
 $ git clone https://github.com/dzemlianoi-double/ruby-factory
 $ cd ruby-factory
+$ bundle
 $ rspec .
 ```
 

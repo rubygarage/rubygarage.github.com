@@ -2,6 +2,7 @@ _site
 .sass-cache
 .asset-cache
 .jekyll-metadata
+.history
 tmp/
 .bundle
 vendor/bundle
