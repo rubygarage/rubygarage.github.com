@@ -10,9 +10,68 @@ Step by step tutorial of creating rails application using trailblazer stack
 
 ## Project structure
 
+Trailblazer’s file structure organizes by CONCEPT, and then by technology. It embraces the COMPONENT STRUCTURE of your code. The modular structure SIMPLIFIES REFACTORING in hundreds of legacy production apps. To avoid constants naming collision with your active_record models it’s better to name your concepts using plurals nouns.
+
+
+It’s ok to use nested concepts when your business logic belongs to specific scope. For example you have a project that has notification settings. You can place your notification_settings concept under projects.
+
+--
+
+```
+- app
+  - concepts
+    - api
+      - v1
+        - projects
+          - contract
+            | create.rb
+            | index.rb
+            | show.rb
+          - operation
+            | create.rb
+            | index.rb
+            | show.rb
+          - policy
+            | create.rb
+          - representer
+            | create.rb
+            | index.rb
+            | show.rb
+          - notification_settings
+            + contract
+            + operation
+            + representer
+        + user
+        + lib
+  + endpoints
+  - controllers
+    - api
+      - v1
+        | users_controller.rb
+        | projects_controller.rb
+```
+
+
 ---
 
 ## Testing
+
+In Trailblazer, you write operation integration tests. Operations encapsulate all business logic and are single-entry points to operate your application. There’s no needs to test contract/representer etc in isolation. You need to test your operation with all dependencies.
+
+```
+- spec
+  + api_doc
+  - concepts
+    - api
+      - v1
+        - projects
+          + decorators
+          - notification_settings
+            | create_spec.rb
+          | create_spec.rb
+          | index_spec.rb
+        + user
+```
 
 ---
 
@@ -35,6 +94,24 @@ gem 'trailblazer-rails'
 ```
 `trailblazer-endpoint` is generic HTTP handlers for operation results
 `trailblazer-rails` will automatically pull trailblazer and trailblazer-loader.
+
+--
+
+Configurate `config/initializers/trailblazer.rb`
+
+You need to set `config.trailblazer.use_loader`
+```ruby
+
+require 'reform'
+require 'reform/form/dry'
+require 'jsonapi/serializable'
+
+Rails.application.configure do
+  config.trailblazer.use_loader = false
+  config.trailblazer.application_controller = 'ApiController'
+end
+
+```
 
 --
 
@@ -110,7 +187,8 @@ RSpec.describe 'Api::V1::User::Registration', type: :request do
         {
           email: FFaker::Internet.email,
           password: '!1password',
-          password_confirmation: '!1password'
+          password_confirmation: '!1password',
+          redirect_to: '/login'
         }.to_json
       end
 
@@ -322,7 +400,13 @@ module Api::V1::Users::Operation
     step Contract::Build(constant: Api::V1::Users::Contract::Register)
     step Contract::Validate()
     step Contract::Persist()
+    step :send_confirmation
     step :renderer_options
+
+    def send_confirmation
+      redirect_to = ctx['contract.default'].redirect_to
+      UserMailer.confirmation(model, redirect_to).deliver_later
+    end
 
     def renderer_options(ctx, **)
       ctx[:renderer_options] = {
@@ -337,21 +421,42 @@ end
 
 ---
 
-### Implement user register contract using activemodel validations
+### Implement user register contract using dry-rb validations
 
 `app/concepts/api/users/contract/register.rb`
 
 ```ruby
 module Api::V1::Users::Contract
   class Register < Reform::Form
+    include Dry
+
     property :email
     property :password
     property :password_confirmation
+    property :redirect_to
 
-    validate :password_ok?
+    validation :default do
+      required(:email).filled(format?: Constants::Shared::EMAIL_REGEX)
+      required(:timezone).filled(:str?)
+      required(:password).filled(
+        :str?,
+        min_size?: Constants::Shared::PASSWORD_MIN_LENGTH,
+        format?: Constants::Shared::PASSWORD_REGEX
+      ).confirmation
+      required(:redirect_to).filled(format?: Constants::Shared::REDIRECT_TO_REGEX)
+    end
 
-    def password_ok?
-      errors.add(:password, I18n.t('errors.password_missmatch')) if password != password_confirmation
+    validation :email_uniqueness, if: :default, with: { form: true } do
+      configure do
+        config.messages = :i18n
+        config.namespace = :user
+        option :form
+      end
+
+      validate(email_unique?: [:email]) do |email|
+        model = form.model
+        model.class.where.not(id: model.id).where(attr_name => value).empty?
+      end
     end
   end
 end
@@ -368,7 +473,6 @@ module Api::V1::Users::Representer
   class Register < JSONAPI::Serializable::Resource
     type 'users'
 
-
     attributes :email
   end
 end
@@ -376,7 +480,84 @@ end
 
 ---
 
-## More advanced examples
+### Test user register operation
+
+```ruby
+RSpec.describe Api::V1::User::Operations::Register do
+  subject(:result) { described_class.call(params: params) }
+
+  let(:valid_params) { attributes_for(:user) }
+  let(:params) { {} }
+
+  describe 'Success' do
+    let(:params) { valid_params }
+
+    it 'creates user with company and role' do
+      expect(UserMailer).to receive_message_chain(:confirmation, :deliver_later)
+        .with(be_kind_of(User), url).with(no_args) { true }
+
+      expect { result }.to change(User, :count)from(0).to(1)
+
+      expect(result[:model]).to be_persisted
+      expect(result[:model]).to an_instance_of User
+      expect(result).to be_success
+    end
+  end
+
+  describe 'Fail' do
+    context 'with empty keys' do
+      let(:errors) do
+        {
+          email: ['must be filled'],
+          password: ['must be filled', 'size cannot be less than 6'],
+          redirect_to: ['must be filled']
+        }
+      end
+
+      it 'has validation errors' do
+        expect(result).to be_failure
+        expect(result['contract.default'].errors.messages).to match errors
+      end
+    end
+
+    context 'with invalid password' do
+      let(:params) { valid_params.merge(password: 'password', password_confirmation: 'password') }
+      let(:errors) do
+        {
+          password: ['is in invalid format']
+        }
+      end
+
+      it 'has validation errors' do
+        expect(result).to be_failure
+        expect(result['contract.default'].errors.messages).to match errors
+      end
+    end
+
+    context 'with unconfirmed password' do
+      let(:params) { valid_params.merge(password_confirmation: 'no') }
+      let(:errors) { { password_confirmation: ["doesn't match"] } }
+
+      it 'has validation errors' do
+        expect(result).to be_failure
+        expect(result['contract.default'].errors.messages).to match errors
+      end
+    end
+
+    context 'with non unique email' do
+      let(:user) { create(:user) }
+      let(:params) { valid_params.merge(email: user.email) }
+
+      let(:errors) { { email: ['This email is already registered. Please, log in.'] } }
+
+      it 'has validation errors' do
+        expect(result).to be_failure
+        expect(result['contract.default'].errors.messages).to match errors
+      end
+    end
+  end
+end
+```
 
 ---
 

@@ -334,6 +334,100 @@ class Registrations::Operations::Create < Trailblazer::Operation
 end
 ```
 
+--
+
+## Collections
+
+Collections can be defined analogue to `property`.
+
+```ruby
+class AlbumForm < Reform::Form
+  collection :song_titles
+end
+```
+
+## Nesting
+
+To create forms for nested objects, both property and collection accept a block for the nested form definition.
+Nesting will simply create an anonymous, nested Reform::Form class for the nested property.
+
+It’s often helpful with has_many or belongs_to associations.
+
+```ruby
+class AlbumForm < Reform::Form
+  property :artist do
+    property :name
+  end
+
+  collection :songs do
+    property :title
+  end
+
+  validation :default do
+    required(:artist) do
+      required(:name).filled(:str?)
+    end
+
+    required(:songs).each do
+      required(:title).filled(:str?)
+    end
+  end
+end
+```
+
+--
+## Disposable::Twin::Parent
+
+`feature Disposable::Twin::Parent` allows you to access parent in nested forms.
+You would need to add `require 'disposable/twin/parent'` to your trailblazer initializer file `config/initializers/trailblazer.rb`
+
+```ruby
+class AlbumForm < Reform::Form
+  feature Disposable::Twin::Parent
+
+  property :artist_name
+
+  collection :songs do
+    property :title
+  end
+
+  validation :default do
+    required(:songs).each do
+      required(:title).filled(:str?)
+
+      validate(title: [:title]) do |title|
+        !title.include?(parent.artist_name)
+      end
+    end
+  end
+end
+```
+
+--
+
+## Types and Coercion
+
+To coerce your input you can use [dry-rb types](https://github.com/dry-rb/dry-types).
+Disposable already defines a module `Disposable::Twin::Coercion::Types` with all the `Dry::Types` built-in types. So you can use any of the [documented types](https://dry-rb.org/gems/dry-types/built-in-types/).
+
+You would need to add `require 'reform/form/coercion'` to your trailblazer initializer file `config/initializers/trailblazer.rb`
+
+```ruby
+class Create < Reform::Form
+  include Dry
+  feature Coercion
+
+  property :id, type: Types::Form::Int
+end
+```
+
+Coercion also supports the conversion of blank strings ("") into nil. This is known as nilify and provided via the :nilify option.
+
+```ruby
+property :id, type: Types::Form::Int, nilify: true
+```
+
+
 ---
 
 ## `Build` macro
@@ -466,10 +560,6 @@ In fact, the operation doesn’t need any reference to a contract class at all. 
 ```ruby
 User::Operation::Create.(params: params, "contract.default.class" => User::Contract::Create)
 ```
-
-
-
-
 
 ---
 

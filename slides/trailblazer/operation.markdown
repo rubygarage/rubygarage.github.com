@@ -66,7 +66,7 @@ end
 
 ## Flow control
 
-When you run an operation like Memo::Create.(), it will internally execute its circuit. This simply means the operation will traverse its [railway](https://fsharpforfunandprofit.com/rop/) (or pipe), call the steps you defined, deviate to different tracks, and so on.
+When you run an operation like this, it will internally execute its circuit. This simply means the operation will traverse its [railway](https://fsharpforfunandprofit.com/rop/) (or pipe), call the steps you defined, deviate to different tracks, and so on.
 
 An operation provides three DSL methods to define the circuit: `step`, `pass`, and `fail`.
 
@@ -472,7 +472,7 @@ Trailblazer provides predefined steps to for all kinds of business logic.
 - All `Policy`-related macros help with authentication and making sure users only execute what they’re supposed to.
 - The `Model` macro can create and find models based on input.
 
---
+---
 
 ## `Model` macro
 
@@ -508,7 +508,7 @@ class Show < Trailblazer::Operation
 end
 ```
 
---
+---
 
 ## `Wrap` macro
 
@@ -556,7 +556,7 @@ class ActiveRecordTransaction
 end
 ```
 
---
+---
 
 ## `Rescue` macro
 
@@ -596,7 +596,7 @@ class Update < Trailblazer::Operation
 end
 ```
 
---
+---
 
 ## `Nested` macro
 

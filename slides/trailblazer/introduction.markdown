@@ -77,3 +77,5 @@ Trailblazer’s file structure organizes by **CONCEPT**, and then by technology.
 ![](/assets/images/trailblazer/code-structure.png)
 
 ---
+
+# The End
