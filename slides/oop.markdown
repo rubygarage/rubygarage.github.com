@@ -1051,7 +1051,7 @@ Exception
 - Save all Library data to file(s)
 - Get all Library data from file(s)
 
-Detailed description [here](https://goo.gl/eF3mFD)
+Detailed description [here](https://docs.google.com/document/d/1z5-iLgDTvxLW3uZmTylxVg4ASClxQn90MjZx_Y8-LaQ/edit#)
 
 ---
 
