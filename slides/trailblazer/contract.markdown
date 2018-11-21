@@ -99,6 +99,17 @@ validation :unique, if: :default do
 end
 ```
 
+--
+
+
+`:if` option can also receive proc
+
+```ruby
+validation :shipping_address, if: proc { model.shippable? } do
+  optional(:shipping_address_id).maybe(:int?)
+end
+```
+
 Chaining groups works via the `:after` option. This will run the group regardless of the former result. Note that it still can be combined with `:if`.
 
 --
@@ -124,6 +135,18 @@ validation :default, with: {form: true} do
   end
 
   required(:title).filled(:unique?)
+end
+```
+
+--
+
+## Collections
+
+Collections can be defined analogue to `property`.
+
+```ruby
+class AlbumForm < Reform::Form
+  collection :song_titles
 end
 ```
 
@@ -334,17 +357,7 @@ class Registrations::Operations::Create < Trailblazer::Operation
 end
 ```
 
---
-
-## Collections
-
-Collections can be defined analogue to `property`.
-
-```ruby
-class AlbumForm < Reform::Form
-  collection :song_titles
-end
-```
+---
 
 ## Nesting
 
@@ -467,6 +480,22 @@ end
 
 ## Populators
 
+When you have nested form, reform had to instantinate it to perform validation. But Reform per design makes no assumptions about how to create nested models. So you have to tell it what to do in this out-of-sync case.
+
+To let Reform create a new model wrapped by a nested form in case of its abscence use `:populate_if_empty`.
+
+It receives the class to be instantinated.
+
+```ruby
+class AlbumForm < Reform::Form
+  collection :songs, populate_if_empty: Song do
+    property :name
+  end
+end
+```
+
+Or
+
 ---
 
 ## `Build` macro
@@ -520,7 +549,7 @@ end
 ## `Validate` macro
 
 The `Contract::Validate` macro is responsible for validating the incoming params against its contract. That means you have to use `Contract::Build` beforehand, or create the contract yourself. The macro will then grab the params and throw then into the contract’s `validate` (or `call`) method.
-Note that Validate really only validates the contract, nothing is written to the model, yet.
+Validate only parses your params and validates the contract, nothing is written to the model, yet.
 
 Depending on the outcome of the validation, it either stays on the right track, or deviates to left, skipping the remaining steps.
 
@@ -532,7 +561,6 @@ class Create < Trailblazer::Operation
   # ...
 end
 ```
-mapp
 
 Per default, Contract::Validate will use `options["params"]` as the data to be validated. Use the `key:` option if you want to validate a nested hash from the original params structure. If that key isn’t present in the params hash, the operation fails before the actual validation.
 
