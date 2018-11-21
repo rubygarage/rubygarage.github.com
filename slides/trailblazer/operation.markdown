@@ -13,12 +13,11 @@ An operation is a **service object**.
 
 Its goal is simple: Remove all business logic from the controller and model and provide a separate, streamlined object for it.
 
-Operations implement functions of your application, like creating a comment, following a user or exporting a PDF document. Sometimes this is also called command.
+--
 
 Technically, an operation embraces and orchestrates all business logic between the controller dispatch and the persistence layer. This ranges from tasks as finding or creating a model, validating incoming data using a form object to persisting application state using model(s) and dispatching post-processing callbacks or even nested operations.
 
 Note that an operation is not a monolithic god object, but a composition of many stakeholders. It is up to you to orchestrate features like policies, validations or callbacks.
-
 
 ---
 
@@ -26,15 +25,12 @@ Note that an operation is not a monolithic god object, but a composition of many
 
 ```ruby
 class Create < Trailblazer::Operation
-  step Contract::Build(constant: Sessions::Contracts::Create)
-  step Contract::Validate(key: :auth), fail_fast: true
-
   step :model
   step :authenticate
   fail :unauthenticated
   step :confirmed?
   fail :unconfirmed
-  step :create_tokens
+  pass :create_tokens
 
   def model(ctx, **)
     ctx[:model] = UserProfile.find_by(email: ctx['contract.default'].email)
@@ -72,9 +68,11 @@ An operation provides three DSL methods to define the circuit: `step`, `pass`, a
 
 ![](/assets/images/trailblazer/operation-bpmn-1.png)
 
-- `step` always puts the task on the upper, “right” track, but with two outputs per box: one to the next successful step, one to the nearest fail box. The chain of “successful” boxes in the top is the success `right track`. The lower chain is the failure `left track`.
-- `pass` is on the right track, but without an outgoing connection to the left track. It is always assumed successful. The return value is ignored.
-- `fail` puts the box on the failure track and doesn’t connect it back to the right track.
+The chain of “successful” boxes in the top is the success (or `right` ) track. The lower chain is the failure ( or `left`) track.
+
+- `step` always puts the task on the success track, but with two outputs per box: one to the next successful step, one to the nearest fail box.
+- `pass` is on the success track, but without an outgoing connection to the failure track. It is always assumed successful. The return value is ignored.
+- `fail` puts the box on the failure track and doesn’t connect it back to the success track.
 
 ---
 
@@ -105,7 +103,7 @@ class Memo::Create < Trailblazer::Operation
 end
 ```
 
-If validate turned out to be successful, no other task won’t be invoked, as visible in the diagram.
+If validate turned out to be successful, no other task in success track won’t be invoked, as visible in the diagram.
 
 ![](/assets/images/trailblazer/wiring-pass-fast.png)
 
@@ -113,7 +111,7 @@ If validate turned out to be successful, no other task won’t be invoked, as vi
 
 ### Fast Track: `fail_fast`
 
-The :fail_fast option comes in handy when having to early-out from the error (left) track.
+The :fail_fast option comes in handy when having to early-out from the failure track.
 
 ```ruby
 class Memo::Create < Trailblazer::Operation
@@ -157,7 +155,7 @@ end
 
 ### Fast Track: `fast_track`
 
-Instead of hard-wiring the success or failure output to the respective fast-track end, you can decide what output to take dynamically, in the tas. However, this implies you configure the task using the :fast_track option.
+Instead of hard-wiring the success or failure output to the respective fast-track end, you can decide what output to take dynamically, in the tas. However, this implies you configure the task using the `:fast_track` option.
 
 ```ruby
 class Memo::Create < Trailblazer::Operation
@@ -172,7 +170,7 @@ class Memo::Create < Trailblazer::Operation
 end
 ```
 
-By marking a task with :fast_track, you can create up to four different outputs from it.
+By marking a task with `:fast_track`, you can create up to four different outputs from it.
 
 ![](/assets/images/trailblazer/wiring-fast-track.png)
 
@@ -181,8 +179,9 @@ By marking a task with :fast_track, you can create up to four different outputs 
 Both create_model and assign_errors have two more outputs in addition to their default ones: one to `End.pass_fast`, one to `End.fail_fast` (note that this option works with pass, too). To make the execution take one of the fast-track paths, you need to emit a special signal from that task, though.
 
 ```ruby
-def create_model(options, create_empty_model:false, **)
-  options[:model] = Memo.new
+def create_model(ctx, create_empty_model:false, creation_disallowed:, **)
+  return Railway.fail_fast! if creation_disallowed
+  ctx[:model] = Memo.new
   create_empty_model ? Railway.pass_fast! : true
 end
 ```
@@ -253,7 +252,7 @@ The `End` DSL method will create a new end event, the first argument being the n
 ```ruby
 class Memo::Update < Trailblazer::Operation
   step :find_model, Output(:failure) => End("End.model_not_found", :model_not_found)
-  step :update
+  pass :update
   fail :db_error
   step :save
   # ...
@@ -294,13 +293,14 @@ Error handlers on the left track are the perfect place to “fix things”. For 
 You can simply put recover steps on the left track, and wire their :success output back to the right track (which the operation knows as :success).
 
 ```ruby
-class Memo::Upsert < Trailblazer::Operation
-  step :find_model, Output(:failure) => :create_route
-  step :update
-  step :create, magnetic_to: [:create_route]
-  step :save
+class Memo::Upload < Trailblazer::Operation
+  step :upload_to_s3
+  fail :upload_to_azure,  Output(:success) => :success
+  fail :upload_to_b2,     Output(:success) => :success
+  fail :log_problem
   # ...
 end
+
 ```
 
 ![](/assets/images/trailblazer/wiring-recover-pattern.png)
@@ -351,7 +351,7 @@ Used for sharing steps
 
 ```ruby
 class Authenticate
-  extend Uber::Callable #
+  extend Uber::Callables
 
   def self.call(ctx, model:, **)
     model.user_account.authenticate(ctx['contract.default'].password)
@@ -362,104 +362,6 @@ class Create < Trailblazer::Operation
   step Authenticate
 end
 ```
-
---
-
-## Step options
-
-### ID
-
-For every kind of step, whether it’s a macro or a custom step, use `:id` (former `:name`) to specify a name.
-
-```ruby
-class New < Trailblazer::Operation
-  step Model( Song, :new )
-  step :validate_params
-  # ..
-end
-
-# Results in
- 0 =======================>>operation.new
- 1 =====================&model.build
- 2 ===================&validate_params
-```
-
-
-```ruby
-class New < Trailblazer::Operation
-  step Model( Song, :new ), id: "build.song.model"
-  step :validate_params,   id: "my.params.validate"
-  # ..
-end
-
-# Results in
- 0 =======================>>operation.new
- 1 =====================&build.song.model
- 2 ===================&my.params.validate
-```
-
---
-
-### Position
-
-Whenever inserting a step, you may provide the position in the pipe using `:before` or `:after`.
-
-```ruby
-class New < Trailblazer::Operation
-  step Model( Song, :new )
-  step :validate_params,   before: "model.build"
-  # ..
-end
-
- 0 =======================>>operation.new
- 1 =====================&validate_params
- 2 ==========================&model.build
-```
-
---
-
-### Replace
-
-Replace existing (only in the applied class, not in the superclass) steps using `:replace`.
-
-```ruby
-class Update < New
-  step Model(Song, :find_by), replace: "model.build"
-end
-
- 0 =======================>>operation.new
- 1 =====================&validate_params
- 2 ==========================&model.build
-```
-
-### Delete
-  ```ruby
-class Update < New
-  step nil, delete: 'validate_params', id: ''
-end
-
- 0 =======================>>operation.new
- 1 ==========================&model.build
-```
-
---
-
-### Group
-
-The `:group` option is the ideal solution to create template operations, where you declare a basic circuit layout which can then be enriched by subclasses.
-
-```ruby
-class Memo::Operation < Trailblazer::Operation
-  step :log_call,  group: :start
-  step :log_success,  group: :end, before: "End.success"
-  fail :log_errors,   group: :end, before: "End.failure"
-  # ...
-end
-```
-
-Subclasses can now insert their actual steps without any sequence options needed.
-
-Since all logging steps defined in the template operation are placed into groups, the concrete steps sit in the middle.
 
 ---
 
@@ -556,6 +458,12 @@ class ActiveRecordTransaction
 end
 ```
 
+```ruby
+step Wrap(MyTransaction) {
+  # ...
+}
+```
+
 ---
 
 ## `Rescue` macro
@@ -630,16 +538,11 @@ class Checkout::Update
 
   # ...updates order state
 
-  success :calculate_taxes!
-  success Nested(Checkout::TaxForOrder, input: Checkout::Lib::Input::TaxData)
+  pass Nested(Checkout::TaxForOrder, input: Checkout::Lib::Input::TaxData)
 
   # ...other calculations
 
   step Contract::Persist()
-
-  def calculate_taxes!(options, model:, **)
-    options['calculate_taxes'] = !model.test? && model.store.tax_setting_enabled?
-  end
 
   # ...
 end
@@ -651,20 +554,20 @@ end
 
 ```ruby
 class Checkout::TaxForOrder < Trailblazer::Operation
-  step :calculate_taxes?
+  step :calculate_taxes?, fast_track: true
 
   step :from_address!
   step :to_address!
   step :assign_params!
 
   step Rescue(handler: :add_error!) {
-    step :send_request! # reauest to third-party API
+    step :send_request! # request to third-party API
     success :assign_order_tax_amount!
     success :assign_line_items_tax_amount!
   }
 
-  def calculate_taxes?(calculate_taxes:, **)
-    calculate_taxes ? Railway.pass! : Railway.pass_fast!
+  def calculate_taxes?(model:, **)
+    model.store.tax_setting_enabled? ? Railway.pass! : Railway.pass_fast!
   end
 
   # ...
@@ -725,7 +628,7 @@ module Macros
 end
 
 class Update < Trailblazer::Operation
-  step Macro::FindModel!(User)
+  step Macros::FindModel!(User)
   # ...
 end
 ```
@@ -754,6 +657,46 @@ result = Song::Create.(params: params, "my.model.class" => Hit)
 ```
 
 The operation also supports Dry.RB’s `auto_inject`.
+
+---
+
+## Operation invokation
+
+Operations are usually invoked straight from the controller action. They orchestrate all domain logic necessary to perform the app's function.
+
+Operation public interface is only one method - `Operation.call`, all runtime data should be passed to it as kw-arguments, like `params, current_user, etc.`.
+
+It returns the `result object` that contains all the data from operation's context, including injected and class dependenciess. result object exposess `success?` and `failure?` methods that allows to check on which track operation has ended.
+
+Data from the context could be read from it: `result[:model]`. Some data is stored by convention `'namespaced.key'` like  `result['contract.default']`.
+
+```ruby
+class SessionsController < ApplicationController
+  def create
+    result = Sessions::Operations::Create.(params: params)
+    if result.success?
+      render json: result[:representer].new.render(result[:model], result[:renderer_options]).to_json,
+              status: :created
+    else
+      render result['contract.default'].errors.messages.to_json, status: :unauthorized
+    end
+  end
+end
+```
+
+--
+
+### Primary Binary State
+
+The primary state is decided by the activity’s end event superclass. If derived from `Railway::End::Success`, it will be interpreted as successful, and `result.success?` will return true, whereas a subclass of `Railway::End::Failure` results in the opposite outcome. Here, `result.failure?` is true.
+
+You can access the end event the Result wraps via `event`. This allows to interpret the outcome on a finer level and without having to guess from data in the operation context, using Endpoint.
+
+```ruby
+result = Create.( params )
+
+result.event #=> #<Railway::FastTrack::PassFast ...>
+```
 
 ---
 
@@ -796,43 +739,101 @@ end
 
 ---
 
-## Operation invokation
+## Step options
 
-Operations are usually invoked straight from the controller action. They orchestrate all domain logic necessary to perform the app's function.
+### ID
 
-Operation public interface is only one method - `Operation.call`, all runtime data should be passed to it as kw-arguments, like `params, current_user, etc.`.
-
-It returns the `result object` that contains all the data from operation's context, including injected and class dependenciess. result object exposess `success?` and `failure?` methods that allows to check on which track operation has ended.
-
-Data from the context could be read from it: `result[:model]`. Some data is stored by convention `'namespaced.key'` like  `result['contract.default']`.
+For every kind of step, whether it’s a macro or a custom step, use `:id` (former `:name`) to specify a name.
 
 ```ruby
-class SessionsController < ApplicationController
-  def create
-    result = Sessions::Operations::Create.(params: params)
-    if result.success?
-      render json: result[:representer].new.render(result[:model], result[:renderer_options]).to_json,
-              status: :created
-    else
-      render_json_api_errors(result, status: :unauthorized)
-    end
-  end
+class New < Trailblazer::Operation
+  step Model( Song, :new )
+  step :validate_params
+  # ..
 end
+
+# Results in
+ 0 =======================>>operation.new
+ 1 =====================&model.build
+ 2 ===================&validate_params
+```
+
+
+```ruby
+class New < Trailblazer::Operation
+  step Model( Song, :new ), id: "build.song.model"
+  step :validate_params,   id: "my.params.validate"
+  # ..
+end
+
+# Results in
+ 0 =======================>>operation.new
+ 1 =====================&build.song.model
+ 2 ===================&my.params.validate
 ```
 
 --
 
-### Primary Binary State
+### Position
 
-The primary state is decided by the activity’s end event superclass. If derived from `Railway::End::Success`, it will be interpreted as successful, and `result.success?` will return true, whereas a subclass of `Railway::End::Failure` results in the opposite outcome. Here, `result.failure?` is true.
-
-You can access the end event the Result wraps via `event`. This allows to interpret the outcome on a finer level and without having to guess from data in the operation context, using Endpoint.
+Whenever inserting a step, you may provide the position in the pipe using `:before` or `:after`.
 
 ```ruby
-result = Create.( params )
+class New < Trailblazer::Operation
+  step Model( Song, :new )
+  step :validate_params,   before: "model.build"
+  # ..
+end
 
-result.event #=> #<Railway::FastTrack::PassFast ...>
+ 0 =======================>>operation.new
+ 1 =====================&validate_params
+ 2 ==========================&model.build
 ```
+
+--
+
+### Replace
+
+Replace existing (defined only in the applied class, not in the superclass) steps using `:replace`.
+
+```ruby
+class Update < New
+  step Model(Song, :find_by), replace: "model.build"
+end
+
+ 0 =======================>>operation.new
+ 1 =====================&validate_params
+ 2 ==========================&model.build
+```
+
+### Delete
+  ```ruby
+class Update < New
+  step nil, delete: 'validate_params', id: ''
+end
+
+ 0 =======================>>operation.new
+ 1 ==========================&model.build
+```
+
+--
+
+### Group
+
+The `:group` option is the ideal solution to create template operations, where you declare a basic circuit layout which can then be enriched by subclasses.
+
+```ruby
+class Memo::Operation < Trailblazer::Operation
+  step :log_call,  group: :start
+  step :log_success,  group: :end, before: "End.success"
+  fail :log_errors,   group: :end, before: "End.failure"
+  # ...
+end
+```
+
+Subclasses can now insert their actual steps without any sequence options needed.
+
+Since all logging steps defined in the template operation are placed into groups, the concrete steps sit in the middle.
 
 ---
 

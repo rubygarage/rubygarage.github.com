@@ -126,7 +126,7 @@ title: Ruby presentations
   <br>
   <small>A business logic framework</small>
 
-- [Operation overview](/slides/trailblazer/operation)
+- [Operation](/slides/trailblazer/operation)
   <br>
   <small>Railway-oriented service object</small>
 

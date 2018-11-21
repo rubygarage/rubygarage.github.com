@@ -32,9 +32,9 @@ elsif
 In place of hard-to-read and hard-wired decider trees, a simple pattern matching happens behind the scenes.
 
 ```ruby
-Trailblazer::Endpoint.new.(result) do |m|
-  m.success         { |result| puts "Model #{result["model"]} was created successfully." }
-  m.unauthenticated { |result| puts "You ain't root!" }
+Trailblazer::Endpoint.new.(result) do |match|
+  match.success         { |result| puts "Model #{result["model"]} was created successfully." }
+  match.unauthenticated { |result| puts "You ain't root!" }
 end
 
 # or
@@ -55,7 +55,10 @@ Possible pre-defined outcomes are:
 - `created` when an operation successfully ran through the pipetree to create one or more models.
 - `success` when an operation was run successfully.
 - `present` when an operation is supposed to load model that will then be presented.
-All outcomes are detected via a Matcher object implemented in the endpoint gem using pattern matching to do so. Please note that in the current state, those heuristics are still work-in-progress.
+
+All outcomes are detected via a Matcher object implemented in the endpoint gem using pattern matching to do so.
+
+Please note that in the current state, those heuristics are still work-in-progress, so it is adviced to use your own outcomes.
 
 ---
 
@@ -64,9 +67,9 @@ All outcomes are detected via a Matcher object implemented in the endpoint gem u
 Handlers are passed as proc
 
 ```ruby
-MyHandlers = ->(m) do
-  m.success         { |result| puts "Model #{result["model"]} was created successfully." }
-  m.unauthenticated { |result| puts "You ain't root!" }
+MyHandlers = ->(match) do
+  match.success         { |result| puts "Model #{result["model"]} was created successfully." }
+  match.unauthenticated { |result| puts "You ain't root!" }
 end
 
 Trailblazer::Endpoint.new.(result, MyHandlers)
@@ -75,8 +78,8 @@ Trailblazer::Endpoint.new.(result, MyHandlers)
 Or as block that takes precedence over proc
 
 ```ruby
-Trailblazer::Endpoint.new.(result, MyHandlers) do |m|
-  m.unauthenticated { |result| raise "Break-in!" }
+Trailblazer::Endpoint.new.(result, MyHandlers) do |match|
+  match.unauthenticated { |result| raise "Break-in!" }
 end
 
 ```

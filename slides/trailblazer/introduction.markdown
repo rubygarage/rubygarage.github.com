@@ -7,12 +7,20 @@ title:  Trailblazer Introduction
 
 ---
 
-# What is Trailblazer
+## What is Trailblazer
 
 It’s a business logic framework.
-Trailblazer provides new high-level abstractions for Ruby frameworks. It gently enforces encapsulation, an intuitive code structure and gives you an object-oriented architecture.
-Trailblazer gives you a high-level architecture for web applications. It extends the basic MVC pattern with new abstractions. Conventions that go far beyond database table naming or route paths let you focus on your application code, minimize bugs and improve the maintainability.
 
+---
+
+## Pros of using Trailblazer
+
+- provides new high-level abstractions for Ruby frameworks extending basic MVC pattern;
+- gently enforces encapsulation;
+- enforces an intuitive code structure;
+- gives you an object-oriented architecture;
+- sets conventions that go far beyond database table naming or route paths
+- let you focus on your application code, minimize bugs and improve the maintainability.
 
 ---
 
@@ -22,6 +30,8 @@ Trailblazer gives you a high-level architecture for web applications. It extends
 
 --
 
+## Trailblazer layers
+
 - **OPERATION** A service object implementation with functional flow control.
 - **CONTRACT** Form objects to validate incoming data.
 - **POLICY** to authorize code execution per user.
@@ -29,26 +39,20 @@ Trailblazer gives you a high-level architecture for web applications. It extends
 - **REPRESENTER** for serializing and parsing API documents.
 - **DESERIALIZER** Transformers to parse incoming data into structures you can work with
 
----
-
-## What problem it solves?
-
-Bloated controllers.
-After applying Trailblazer architecture controllers end up as lean HTTP endpoints. No business logic is to be found in the controller, they instantly delegate to their respective operation. By standardizing the business logic, new developers can be onboarded faster with help of free documentation. Trailblazer’s patterns cover 75% of daily business code’s structure - you will feel the power of strong conventions within the first hours.
 
 ---
 
-## Why do we need it?
+## Code Structure
 
-Trailblazer defines patterns for a better architecture, and gives you implementations to use those patterns in your applications. Your software will be better structured, more consistent and with stronger, faster, and way simpler tests.
+Trailblazer’s file structure organizes by **CONCEPT**, and then by technology. It embraces the **COMPONENT STRUCTURE** of your code. The modular structure SIMPLIFIES REFACTORING in hundreds of legacy production apps. To avoid constants naming collision with your active_record models it’s better to name your concepts using plurals nouns.
+
+--
+
+![](/assets/images/trailblazer/code-structure.png)
 
 ---
 
-# Other concepts behind Trailblazer
-
----
-
-## Railway oriented programming
+## Railway oriented programming (solves problem)
 
 Trailblazer uses railway oriented programming pattern. And in 2.1 release it’s possible to use more than two tracks (fail/success)
 Railway oriented programming is a design pattern which helps us handle errors in our applications. Instead of relying on exceptions, we design our data and functions in a specific way.
@@ -68,13 +72,32 @@ We can avoid this by changing our application business logic flow to two-tracks 
 
 ---
 
-## Code Structure
+---
 
-Trailblazer’s file structure organizes by **CONCEPT**, and then by technology. It embraces the **COMPONENT STRUCTURE** of your code. The modular structure SIMPLIFIES REFACTORING in hundreds of legacy production apps. To avoid constants naming collision with your active_record models it’s better to name your concepts using plurals nouns.
+## What problems it solves?
+
+- Bloated controllers
+- Unstructured services
+- Cumbersome error handling
 
 --
 
-![](/assets/images/trailblazer/code-structure.png)
+### Bloated controllers.
+After applying Trailblazer architecture controllers end up as lean HTTP endpoints. No business logic is to be found in the controller, they instantly delegate to their respective operation. By standardizing the business logic, new developers can be onboarded faster with help of free documentation. Trailblazer’s patterns cover 75% of daily business code’s structure - you will feel the power of strong conventions within the first hours.
+
+--
+
+### Unstructured services
+
+--
+
+### Error handling
+
+---
+
+## Why do we need it?
+
+Trailblazer defines patterns for a better architecture, and gives you implementations to use those patterns in your applications. Your software will be better structured, more consistent and with stronger, faster, and way simpler tests.
 
 ---
 

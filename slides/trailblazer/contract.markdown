@@ -388,16 +388,10 @@ class AlbumForm < Reform::Form
   property :artist_name
 
   collection :songs do
-    property :title
-  end
+    property :title, default: :default_title
 
-  validation :default do
-    required(:songs).each do
-      required(:title).filled(:str?)
-
-      validate(title: [:title]) do |title|
-        !title.include?(parent.artist_name)
-      end
+    def default_title
+      "#{parent.artist_name} - Unknown Track"
     end
   end
 end
@@ -427,6 +421,51 @@ Coercion also supports the conversion of blank strings ("") into nil. This is kn
 property :id, type: Types::Form::Int, nilify: true
 ```
 
+--
+
+## Skip Parsing
+
+To avoid parsing of property you can use `:skip_parse`. The property will be still mapped on model.
+
+```ruby
+property :uuid, skip_parse: true
+```
+
+--
+
+## Default values
+
+Default values can be set via `:default`.
+Default value is applied when the model’s getter returns nil when initializing the contract.
+`:default` works with :virtual and readable: false. Can also be a lambda
+
+```ruby
+class Album::Contract::Create < Reform::Form
+  property :name
+  property :title, default: "The Greatest Songs Ever Written"
+  property :composer, default: Composer.new do
+    property :name, default: -> { "Object-#{id}" }
+  end
+end
+```
+
+`:default` could also receive a method symbol.
+
+```ruby
+class Album::Contract::Create < Reform::Form
+  property :composer, default: Composer.new do
+    property :name, default: -> { "Object-#{id}" }
+  end
+
+  def captured_payment
+    "Object-#{id}"
+  end
+end
+```
+
+---
+
+## Populators
 
 ---
 
@@ -493,6 +532,7 @@ class Create < Trailblazer::Operation
   # ...
 end
 ```
+mapp
 
 Per default, Contract::Validate will use `options["params"]` as the data to be validated. Use the `key:` option if you want to validate a nested hash from the original params structure. If that key isn’t present in the params hash, the operation fails before the actual validation.
 
