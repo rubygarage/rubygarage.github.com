@@ -467,7 +467,7 @@ end
 ```ruby
 class Album::Contract::Create < Reform::Form
   property :composer, default: Composer.new do
-    property :name, default: -> { "Object-#{id}" }
+    property :name, default: :captured_payment
   end
 
   def captured_payment
@@ -480,6 +480,7 @@ end
 
 ## Populators
 
+`populate_if_empty`
 When you have nested form, reform had to instantinate it to perform validation. But Reform per design makes no assumptions about how to create nested models. So you have to tell it what to do in this out-of-sync case.
 
 To let Reform create a new model wrapped by a nested form in case of its abscence use `:populate_if_empty`.
@@ -494,7 +495,90 @@ class AlbumForm < Reform::Form
 end
 ```
 
-Or
+Or lambda
+
+```ruby
+  property :shipping_address, populate_if_empty: ->(_) { Address.shipping.new(addressable: model) }
+```
+
+--
+
+### `populator`
+
+While the `:populate_if_empty` option is only called when no matching form was found for the input, the `:populator` option is always invoked and gives you maximum flexibility for population. They’re exclusive, you can only use one of the two.
+
+A `:populator` for collections is executed for every collection fragment in the incoming hash
+
+```ruby
+class AlbumForm < Reform::Form
+  collection :songs,
+    populator: -> (collection:, index:, **) do
+      if item = collection[index]
+        item # instance of Reform::Form
+      else
+        collection.append(Song.new) # collection exposes Enumerable interface, and automaticaly wraps model in Reform::Form
+      end
+    end
+end
+```
+
+It is very important that each `:populator` invocation returns the form that represents the fragment, and not the model. Otherwise, deserialization will fail.
+
+--
+
+### Single Property `populator`
+
+Naturally, a :populator for a single property is only called once.
+
+```ruby
+class AlbumForm < Reform::Form
+  property :composer,
+    populator: -> (model:, **) do
+      model || self.composer= Artist.new
+    end
+end
+```
+
+A single populator works identical to a collection one, except for the `model` argument, which is equally to `self.composer`
+
+--
+
+### `populator` Id Matching
+
+Per default, Reform matches incoming hash fragments (available as `fragment:` in kw-args) and nested forms by their order. It doesn’t know anything about IDs, UUIDs or other persistence mechanics.
+
+You can use :populator to write your own matching for IDs.
+
+```ruby
+collection :songs,
+  populator: ->(fragment:, **) {
+    # find out if incoming song is already added.
+    item = songs.find { |song| song.id == fragment["id"].to_i }
+
+    item ? item : songs.append(Song.new)
+  }
+```
+
+-- Delete in `populator`
+
+Populators can not only create, but also destroy.
+
+You can delete items from the graph using `delete`. To avoid this fragment being further deserialized, use `return skip!` to stop processing for this fragment.
+
+```ruby
+collection :songs,
+  populator: ->(fragment:, **) {
+    # find out if incoming song is already added.
+    item = songs.find { |song| song.id.to_s == fragment["id"].to_s }
+
+    if item
+      songs.delete(item)
+      return skip!
+    end
+
+    songs.append(Song.new)
+  }
+```
 
 ---
 

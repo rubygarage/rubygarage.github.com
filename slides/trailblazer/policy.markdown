@@ -11,7 +11,78 @@ title: Operation Contract
 
 `Policy` module allows to authorize code execution per user
 
-It consists from `Policy::Pundit` and `Policy::Guard` modules.
+It consists from `Policy::Guard` and `Policy::Pundit` modules.
+
+---
+
+## `Policy::Guard`
+
+A guard is a step that helps you evaluating a condition and writing the result. If the condition was evaluated as falsey, the pipe won’t be further processed and a policy breach is reported in `result["result.policy.default"]`.
+
+Here you have full control of what and how you would like to authorize. Also you could perform authorization on per-operation basis, and not per-resource like Pundit does, and share callable `Guard`'s among operations.
+That is a great help when you need different authorization rules for one resource in different operations.
+So it is adviced to use Guard over Pundit.
+
+--
+
+The Policy::Guard macro helps you inserting your guard logic, guard can be a Callable-marked object, instance method or lambda.
+
+
+```ruby
+class MyGuard
+  include Uber::Callable
+
+  def call(current_user:, resource:, **)
+    current_user.admin_of?(resource)
+  end
+end
+
+class Create < Trailblazer::Operation
+  step Policy::Guard( MyGuard.new )
+  # ...
+end
+```
+
+```ruby
+step Policy::Guard( ->(options, params:, **) { params[:pass] } )
+```
+
+```ruby
+step Policy::Guard( :pass? )
+
+def pass?(options, params:, **)
+  params[:pass]
+end
+```
+
+---
+
+## `Policy::Guard` Name
+
+The guard name defaults to default and can be set via name:. This allows having multiple guards.
+
+```ruby
+class Create < Trailblazer::Operation
+  step Policy::Guard( MyGuard, name: 'admin?' )
+  # ...
+end
+
+result = Create.(params: params, current_user: => Module)
+result["result.policy.admin?"].success? #=> tru
+```
+
+---
+
+## `Policy::Guard` Dependency Injection
+
+Instead of using the configured guard, you can inject any callable object that returns a `Result` object. Do so by overriding the `policy.#{name}.eval` path when calling the operation.
+
+```ruby
+Create.(params: params,
+        current_user: current_user,
+        "policy.default.eval" => Trailblazer::Operation::Policy::Guard.build(MyGuard))
+)
+```
 
 ---
 
@@ -78,77 +149,6 @@ You can inject it using "policy.#{name}.eval". It can be any object responding t
 Create.(params: params,
         current_user: current_user,
         "policy.default.eval" => Trailblazer::Operation::Policy::Pundit.build(AnotherPolicy, :create?)
-)
-```
-
----
-
-## `Policy::Guard`
-
-A guard is a step that helps you evaluating a condition and writing the result. If the condition was evaluated as falsey, the pipe won’t be further processed and a policy breach is reported in `result["result.policy.default"]`.
-
-Here you have full control of what and how you would like to authorize. Also you could perform authorization on per-operation basis, and not per-resource like Pundit does, and share callable `Guard`'s among operations.
-That is a great help when you need different authorization rules for one resource in defferent operations.
-
---
-
-The Policy::Guard macro helps you inserting your guard logic, guard can be a Callable-marked object, instance method or lambda.
-
-
-```ruby
-class MyGuard
-  include Uber::Callable
-
-  def call(current_user:, resource:, **)
-    current_user.admin_of?(resource)
-  end
-end
-
-class Create < Trailblazer::Operation
-  step Policy::Guard( MyGuard.new )
-  # ...
-end
-```
-
-```ruby
-step Policy::Guard( ->(options, params:, **) { params[:pass] } )
-```
-
-```ruby
-step Policy::Guard( :pass? )
-
-def pass?(options, params:, **)
-  params[:pass]
-end
-```
-
----
-
-## `Policy::Guard` Name
-
-The guard name defaults to default and can be set via name:. This allows having multiple guards.
-
-```ruby
-class Create < Trailblazer::Operation
-  step Policy::Guard( MyGuard, name: 'admin?' )
-  # ...
-end
-
-result = Create.(params: params, current_user: => Module)
-result["result.policy.admin?"].success? #=> tru
-```
-
----
-
-## `Policy::Guard` Dependency Injection
-
-Instead of using the configured guard, you can inject any callable object that returns a `Result` object. Do so by overriding the `policy.#{name}.eval` path when calling the operation.
-
-
-```ruby
-Create.(params: params,
-        current_user: current_user,
-        "policy.default.eval" => Trailblazer::Operation::Policy::Guard.build(MyGuard))
 )
 ```
 
