@@ -10,10 +10,10 @@ Step by step tutorial of creating rails application using trailblazer stack
 
 ## Project structure
 
-Trailblazer’s file structure organizes by CONCEPT, and then by technology. It embraces the COMPONENT STRUCTURE of your code. The modular structure SIMPLIFIES REFACTORING in hundreds of legacy production apps. To avoid constants naming collision with your active_record models it’s better to name your concepts using plurals nouns.
+Trailblazer’s file structure organizes by **CONCEPT**, and then by technology. It embraces the **COMPONENT STRUCTURE** of your code. The modular structure simplifies refactoring in hundreds of legacy production apps. To avoid constants naming collision with your `ActiveRecord` models it’s better to name your concepts using plurals nouns.
 
 
-It’s ok to use nested concepts when your business logic belongs to specific scope. For example you have a project that has notification settings. You can place your notification_settings concept under projects.
+It’s ok to use nested concepts when your business logic belongs to specific scope. For example you have a project that has notification settings. You can place your `notification_settings` concept under projects.
 
 --
 
@@ -56,7 +56,11 @@ It’s ok to use nested concepts when your business logic belongs to specific sc
 
 ## Testing
 
-In Trailblazer, you write operation integration tests. Operations encapsulate all business logic and are single-entry points to operate your application. There’s no needs to test contract/representer etc in isolation. You need to test your operation with all dependencies.
+In Trailblazer, you write operation integration tests. Operations encapsulate all business logic and are single-entry points to operate your application.
+
+**There’s no needs to test contract/representer etc in isolation.**
+
+You need to test your operation with all dependencies.
 
 ```
 - spec

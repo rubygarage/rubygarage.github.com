@@ -21,7 +21,8 @@ A guard is a step that helps you evaluating a condition and writing the result. 
 
 Here you have full control of what and how you would like to authorize. Also you could perform authorization on per-operation basis, and not per-resource like Pundit does, and share callable `Guard`'s among operations.
 That is a great help when you need different authorization rules for one resource in different operations.
-So it is adviced to use Guard over Pundit.
+
+**So it is adviced to use Guard over Pundit.**
 
 --
 
@@ -67,8 +68,8 @@ class Create < Trailblazer::Operation
   # ...
 end
 
-result = Create.(params: params, current_user: => Module)
-result["result.policy.admin?"].success? #=> tru
+result = Create(current_user: current_user)
+result["result.policy.admin?"].success? #=> true
 ```
 
 ---
@@ -133,8 +134,8 @@ class Create < Trailblazer::Operation
   # ...
 end
 
-result = Create.({}, "current_user" => Module)
-result["result.policy.after_model"].success? #=> tru
+result = Create(current_user: current_user)
+result["result.policy.after_model"].success? #=> true
 ```
 
 ---

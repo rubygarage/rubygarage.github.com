@@ -87,7 +87,8 @@ end
 
 ## Specifying outcomes
 
-Outcomes are defined by matchers
+Outcomes are defined by matchers.
+
 There is no way to define them on the fly, so you have to inherit `Trailblazer::Endpoint` and override `matchers`
 
 ```ruby

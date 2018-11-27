@@ -101,7 +101,6 @@ end
 
 --
 
-
 `:if` option can also receive proc
 
 ```ruby
@@ -122,7 +121,9 @@ validation :email, inherit: true do
 end
 ```
 
-Custom predicates have to be defined in the validation group. If you need access to your form you must pass `with: {form: true}` to your validation block
+Custom predicates have to be defined in the validation group.
+
+If you need access to your form you must pass `with: {form: true}` to your validation block
 
 ```ruby
 validation :default, with: {form: true} do
@@ -392,6 +393,7 @@ end
 ## Disposable::Twin::Parent
 
 `feature Disposable::Twin::Parent` allows you to access parent in nested forms.
+
 You would need to add `require 'disposable/twin/parent'` to your trailblazer initializer file `config/initializers/trailblazer.rb`
 
 ```ruby
@@ -450,13 +452,14 @@ property :uuid, skip_parse: true
 
 Default values can be set via `:default`.
 Default value is applied when the model’s getter returns nil when initializing the contract.
-`:default` works with :virtual and readable: false. Can also be a lambda
+`:default` works with `:virtual` and `readable: false`. Can also be a lambda
 
 ```ruby
 class Album::Contract::Create < Reform::Form
   property :name
   property :title, default: "The Greatest Songs Ever Written"
-  property :composer, default: Composer.new do
+  property :composer
+    property :id
     property :name, default: -> { "Object-#{id}" }
   end
 end
@@ -466,7 +469,8 @@ end
 
 ```ruby
 class Album::Contract::Create < Reform::Form
-  property :composer, default: Composer.new do
+  property :composer do
+    property :id
     property :name, default: :captured_payment
   end
 
@@ -559,7 +563,9 @@ collection :songs,
   }
 ```
 
--- Delete in `populator`
+--
+
+### Delete in `populator`
 
 Populators can not only create, but also destroy.
 

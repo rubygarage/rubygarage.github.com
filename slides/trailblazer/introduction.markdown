@@ -55,7 +55,20 @@ It’s a business logic framework.
 
 ### Bloated controllers.
 
-After applying Trailblazer architecture controllers end up as lean HTTP endpoints. No business logic is to be found in the controller, they instantly delegate to their respective operation. By standardizing the business logic, new developers can be onboarded faster with help of free documentation. Trailblazer’s patterns cover 75% of daily business code’s structure - you will feel the power of strong conventions within the first hours.
+After applying Trailblazer architecture controllers end up as lean HTTP endpoints. No business logic is to be found in the controller, they instantly delegate to their respective operation. By standardizing the business logic, new developers can be onboarded faster. Trailblazer’s patterns cover 75% of daily business code’s structure.
+
+--
+
+### Delegated bussines logic
+
+```ruby
+class SampleController < ApplicationController
+  def create
+    result = Samples::Operations::Create.(params: params)
+    render json: result[:response]), status: result[:status]
+  end
+end
+```
 
 ---
 
@@ -107,11 +120,12 @@ Trailblazer defines patterns for a better architecture, and gives you implementa
 
 This course ends with Rails API integration slideshow and task, so it is recommended to get acknowledged with following tools:
 
-- dry-validations
-- dry-matchers
-- JSON-API and JSONAPI-RB
-- json_matchers
-- dox
+- [dry-validation](https://dry-rb.org/gems/dry-validation/) - validations for Ruby;
+- [dry-types](https://dry-rb.org/gems/dry-types/) - type system for Ruby;
+- [dry-matcher](https://dry-rb.org/gems/dry-matcher/) - dry-matcher offers flexible, expressive pattern matching for Ruby;
+- [JSON:API](https://jsonapi.org/) and [JSONAPI-RB](http://jsonapi-rb.org/) - a specification for building APIs in JSON and JSON:API library for ruby
+- [json_matchers](https://github.com/thoughtbot/json_matchers) - matchers to validate JSON returned by your Rails JSON APIs;
+- [dox](https://github.com/infinum/dox) - automated API documentation from Rspec.
 ---
 
 # The End

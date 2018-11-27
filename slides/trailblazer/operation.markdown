@@ -34,16 +34,16 @@ class Create < Trailblazer::Operation
   fail :unconfirmed
   pass :create_tokens
 
-  def model(ctx, **)
-    ctx[:model] = UserProfile.find_by(email: ctx['contract.default'].email)
+  def model(_ctx, params, **)
+    ctx[:model] = UserProfile.find_by(email: params[:email])
   end
 
-  def authenticate(ctx, model:, **)
-    model.user_account.authenticate(ctx['contract.default'].password)
+  def authenticate(_ctx, model:, parrams, **)
+    model.user_account.authenticate(params[:password])
   end
 
   def unauthenticated(ctx, **)
-    ctx['contract.default'].errors.add(:base, I18n.t('errors.session.wrong_credentials'))
+    ctx[:errors][:base] = I18n.t('errors.session.wrong_credentials')
   end
 
   def confirmed?(_ctx, model:, **)
@@ -51,7 +51,7 @@ class Create < Trailblazer::Operation
   end
 
   def unconfirmed(ctx, **)
-    ctx['contract.default'].errors.add(:base, I18n.t('errors.session.confirmation_error'))
+    ctx[:errors][:base] = I18n.t('errors.session.confirmation_error')
   end
 
   def create_tokens(ctx, model:, **)
@@ -181,7 +181,7 @@ By marking a task with `:fast_track`, you can create up to four different output
 Both create_model and assign_errors have two more outputs in addition to their default ones: one to `End.pass_fast`, one to `End.fail_fast` (note that this option works with pass, too). To make the execution take one of the fast-track paths, you need to emit a special signal from that task, though.
 
 ```ruby
-def create_model(ctx, create_empty_model:false, creation_disallowed:, **)
+def create_model(ctx, create_empty_model: false, creation_disallowed:, **)
   return Railway.fail_fast! if creation_disallowed
   ctx[:model] = Memo.new
   create_empty_model ? Railway.pass_fast! : true
@@ -400,8 +400,9 @@ end
 
 If `User.find_by` returns `nil` operiation obviously will deviate to the failure track.
 
+--
 
-#### Arbitrary finder
+### Arbitrary finder
 
 It’s possible to specify any finder method, which is helpful with ROMs such as Sequel. The provided method will be invoked and Trailblazer passes it the `params[:id]` value
 
