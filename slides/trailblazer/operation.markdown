@@ -26,36 +26,38 @@ Note that an operation is not a monolithic god object, but a composition of many
 ## Operation implementation
 
 ```ruby
-class Create < Trailblazer::Operation
-  step :model
-  step :authenticate
-  fail :unauthenticated
-  step :confirmed?
-  fail :unconfirmed
-  pass :create_tokens
+module Sessions::Operation
+  class Create < Trailblazer::Operation
+    step :model
+    step :authenticate
+    fail :unauthenticated
+    step :confirmed?
+    fail :unconfirmed
+    pass :create_tokens
 
-  def model(_ctx, params, **)
-    ctx[:model] = UserProfile.find_by(email: params[:email])
-  end
+    def model(_ctx, params, **)
+      ctx[:model] = UserProfile.find_by(email: params[:email])
+    end
 
-  def authenticate(_ctx, model:, parrams, **)
-    model.user_account.authenticate(params[:password])
-  end
+    def authenticate(_ctx, model:, parrams, **)
+      model.user_account.authenticate(params[:password])
+    end
 
-  def unauthenticated(ctx, **)
-    ctx[:errors][:base] = I18n.t('errors.session.wrong_credentials')
-  end
+    def unauthenticated(ctx, **)
+      ctx[:errors][:base] = I18n.t('errors.session.wrong_credentials')
+    end
 
-  def confirmed?(_ctx, model:, **)
-    model.user_account.confirmed_at
-  end
+    def confirmed?(_ctx, model:, **)
+      model.user_account.confirmed_at
+    end
 
-  def unconfirmed(ctx, **)
-    ctx[:errors][:base] = I18n.t('errors.session.confirmation_error')
-  end
+    def unconfirmed(ctx, **)
+      ctx[:errors][:base] = I18n.t('errors.session.confirmation_error')
+    end
 
-  def create_tokens(ctx, model:, **)
-    # ...
+    def create_tokens(ctx, model:, **)
+      # ...
+    end
   end
 end
 ```

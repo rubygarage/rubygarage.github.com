@@ -103,9 +103,7 @@ gem 'trailblazer-rails'
 
 Configurate `config/initializers/trailblazer.rb`
 
-You need to set `config.trailblazer.use_loader`
 ```ruby
-
 require 'reform'
 require 'reform/form/dry'
 require 'jsonapi/serializable'
@@ -116,6 +114,25 @@ Rails.application.configure do
 end
 
 ```
+
+--
+
+Due to historic reasons the `trailblazer-loader` gem comes pre-bundled with `trailblazer-rails`.
+So you need to set `config.trailblazer.use_loader` to `false` to use Rails naming convention which is recommended now.
+
+Now it’s a Trailblazer convention to put `[ConceptName]::Operation` in one line: it will force Rails to load the concept name constant, so you don’t have to reopen the class yourself.
+
+```ruby
+# app/concepts/sessions/operation/create.rb
+
+module Sessions::Operation
+  class Create < Trailblazer::Operation
+    # ...
+  end
+end
+```
+
+This will result in a class name Product::Operation::Create.
 
 --
 
