@@ -693,8 +693,6 @@ Rails on Rack guides - http://guides.rubyonrails.org/rails_on_rack.html
 
 ---
 
-<<<<<<< Updated upstream
-=======
 ## Rack Specs
 
 --
@@ -774,5 +772,4 @@ It's time to move you `Codebreaker` to web interface!
 
 ---
 
->>>>>>> Stashed changes
 # The End
