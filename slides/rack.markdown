@@ -86,7 +86,33 @@ Rack::Builder - https://github.com/rack/rack/blob/master/lib/rack/builder.rb
 
 # Accepted `env` hash
 
-{"GATEWAY_INTERFACE"=>"CGI/1.1", "PATH_INFO"=>"/", "QUERY_STRING"=>"", "REMOTE_ADDR"=>"::1", "REMOTE_HOST"=>"::1", "REQUEST_METHOD"=>"GET", "REQUEST_URI"=>"http://localhost:9292/", "SCRIPT_NAME"=>"", "SERVER_NAME"=>"localhost", "SERVER_PORT"=>"9292", "SERVER_PROTOCOL"=>"HTTP/1.1", "SERVER_SOFTWARE"=>"WEBrick/1.3.1 (Ruby/2.3.2/2016-11-15)", "HTTP_HOST"=>"localhost:9292", "HTTP_CONNECTION"=>"keep-alive", "HTTP_UPGRADE_INSECURE_REQUESTS"=>"1", "HTTP_USER_AGENT"=>"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36", "HTTP_ACCEPT"=>"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8", "HTTP_ACCEPT_ENCODING"=>"gzip, deflate, sdch, br", "HTTP_ACCEPT_LANGUAGE"=>"en-US,en;q=0.8,ru;q=0.6", "rack.version"=>[1, 3], "rack.multithread"=>true, "REQUEST_PATH"=>"/", "rack.tempfiles"=>[]}
+```ruby
+{
+  "GATEWAY_INTERFACE"=>"CGI/1.1",
+  "PATH_INFO"=>"/",
+  "QUERY_STRING"=>"",
+  "REMOTE_ADDR"=>"::1",
+  "REMOTE_HOST"=>"::1",
+  "REQUEST_METHOD"=>"GET",
+  "REQUEST_URI"=>"http://localhost:9292/",
+  "SCRIPT_NAME"=>"",
+  "SERVER_NAME"=>"localhost",
+  "SERVER_PORT"=>"9292",
+  "SERVER_PROTOCOL"=>"HTTP/1.1",
+  "SERVER_SOFTWARE"=>"WEBrick/1.3.1 (Ruby/2.3.2/2016-11-15)",
+  "HTTP_HOST"=>"localhost:9292",
+  "HTTP_CONNECTION"=>"keep-alive",
+  "HTTP_UPGRADE_INSECURE_REQUESTS"=>"1",
+  "HTTP_USER_AGENT"=>"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36",
+  "HTTP_ACCEPT"=>"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+  "HTTP_ACCEPT_ENCODING"=>"gzip, deflate, sdch, br",
+  "HTTP_ACCEPT_LANGUAGE"=>"en-US,en;q=0.8,ru;q=0.6",
+  "rack.version"=>[1, 3],
+  "rack.multithread"=>true,
+  "REQUEST_PATH"=>"/",
+  "rack.tempfiles"=>[]
+}
+```
 
 ---
 
@@ -485,6 +511,93 @@ Url to Rack::Static - https://github.com/rack/rack/blob/master/lib/rack/static.r
 
 ---
 
+## Rack::Reloader
+
+When you change some code in your application or in `config.ru` you need to 'rackup' your application one more time.
+The reason is that `Rack` is not able to reload the code of application.
+
+For such reason, it's recommended to use `Rack::Reloader` middleware
+
+--
+
+### Using Reloader in middlewares
+
+config.ru <!-- .element: class="filename" -->
+```ruby
+
+require_relative './lib/racker'
+
+use Rack::Reloader
+use Rack::Static, :urls => ['/assets'], :root => 'public'
+run Racker
+
+```
+
+
+---
+
+## Rack::Sessions
+
+If your application needs to work with sessions or with cookies you could add `Rack::Sessions::Cookie` middleware to your `config.ru` file.
+
+You must add it between `Rack::Reloader` and running the application
+
+--
+
+### Using Rack Sessions
+
+config.ru <!-- .element: class="filename" -->
+```ruby
+use Rack::Reloader
+use Rack::Static, :urls => ['/assets'], :root => 'public'
+use Rack::Session::Cookie, :key => 'rack.session',
+                           :domain => 'foo.com',
+                           :path => '/',
+                           :expire_after => 2592000,
+                           :secret => 'change_me',
+                           :old_secret => 'also_change_me'
+run Racker
+```
+
+--
+
+### Using Rack Sessions
+
+lib/racker.rb <!-- .element: class="filename" -->
+```ruby
+class Racker
+  def self.call(env)
+    new(env).response.finish
+  end
+
+  def initialize(env)
+    @request = Rack::Request.new(env)
+  end
+
+  def response
+    case @request.path
+      when '/'
+        return Rack::Response.new("My name is #{@request.session[:name]}", 200) if session_present?
+        Rack::Response.new { |response| response.redirect("/endpoint_where_session_starts") }
+      when '/endpoint_where_session_starts'
+        Rack::Response.new do |response|
+          @request.session[:name] = 'John Doe' unless session_present?
+          response.redirect('/')
+        end
+      else Rack::Response.new('Not Found', 404)
+    end
+  end
+
+  private
+
+  def session_present?
+    @request.session.key?(:name)
+  end
+end
+```
+
+---
+
 ## Into Rails
 
 config.ru <!-- .element: class="filename" -->
@@ -580,4 +693,86 @@ Rails on Rack guides - http://guides.rubyonrails.org/rails_on_rack.html
 
 ---
 
+<<<<<<< Updated upstream
+=======
+## Rack Specs
+
+--
+### Adding helper gem for testing
+
+```bash
+$ bundle add rack-test
+```
+
+spec_helper.rb <!-- .element: class="filename" -->
+```ruby
+  require "rack/test"
+  ...
+
+  include Rack::Test::Methods
+  ...
+```
+
+--
+
+### Test your requests with `rack-test` helpers
+
+```ruby
+RSpec.describe Racker do
+  def app
+    Rack::Builder.parse_file('config.ru').first
+  end
+
+  context 'with rack env' do
+    let(:user_name) { 'John Doe' }
+    let(:env) { { 'HTTP_COOKIE' => "user_name=#{user_name}" } }
+
+    it 'returns ok status' do
+      get '/', {}, env
+      expect(last_response.body).to include(user_name)
+    end
+  end
+
+  context 'statuses' do
+    it 'returns status not found' do
+      get '/unknown'
+      expect(last_response).to be_not_found
+    end
+
+    it 'returns status ok' do
+      get '/'
+      expect(last_response).to be_ok
+    end
+  end
+
+  context 'cookies' do
+    it 'sets cookies' do
+      set_cookie('user_id=123')
+      get '/'
+      expect(last_request.cookies).to eq({"user_id"=>"123"})
+    end
+  end
+
+  context 'redirects' do
+    it 'redirects' do
+      post '/some_url'
+      expect(last_response).to be_redirect
+      expect(last_response.header["Location"]).to eq('/redirect_url')
+    end
+  end
+end
+
+```
+
+---
+
+## Codebreaker Web
+
+It's time to move you `Codebreaker` to web interface!  
+
+[Here](https://docs.google.com/document/d/1Q2u3CAmRs1Gg7zO2rT5IlTP_LdBicfBa7OzC6ZjYwZI/edit) are all the details of the task.
+
+---
+
+>>>>>>> Stashed changes
 # The End
