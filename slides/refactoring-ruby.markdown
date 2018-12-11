@@ -452,6 +452,13 @@ adding a d method to the b and c objects as well.)
 
 ---
 
+## Refactor Me!
+
+You need to refactor the code of [online banking system](https://github.com/dzemlianoi-double/refactoring-example).  
+It's really weird and needs some cleaning!
+
+---
+
 ## Extract Method
 
 ```ruby
