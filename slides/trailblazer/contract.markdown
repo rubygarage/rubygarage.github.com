@@ -121,12 +121,13 @@ validation :email, inherit: true do
 end
 ```
 
+--
+
 Custom predicates have to be defined in the validation group.
 
-If you need access to your form, you must pass `with: {form: true}` to your validation block
-
+If you need access to your form, you need to specifify `option :form` in `configure` block of validation schema
 ```ruby
-validation :default, with: {form: true} do
+validation :default do
   configure do
     option :form
 
@@ -136,6 +137,18 @@ validation :default, with: {form: true} do
   end
 
   required(:title).filled(:unique?)
+end
+```
+
+In versions prior to 2.2.4, you also must pass `with: {form: true}` to your validation block to achieve this
+
+```ruby
+validation :default, with: {form: true} do
+  configure do
+    option :form
+    ...
+  end
+  ...
 end
 ```
 
@@ -389,7 +402,33 @@ class AlbumForm < Reform::Form
 end
 ```
 
+<?--
 --
+
+## Validating collection
+
+When validating collection with custom predicate, you could use `:array?` predicate to avoid perfomance issues (dry-validation will check if field is a string by default, and if it isn't it would `.inspect` array of nested forms).
+
+```ruby
+class Post::Create < Reform::Form
+  collection :comments, form: Comment::Create
+
+  validation do
+    configure do
+      option :form
+
+      def custom_predicate
+        ...
+      end
+    end
+
+    required(:comments).filled(:array?, :custom_predicate)
+  end
+end
+```
+
+--
+
 ## Disposable::Twin::Parent
 
 `feature Disposable::Twin::Parent` allows you to access parent in nested forms.
