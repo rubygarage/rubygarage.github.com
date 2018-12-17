@@ -11,7 +11,7 @@ title:  Trailblazer Operation
 
 An operation is a **service object**.
 
-Its goal is simple: Remove all business logic from the controller and model and provide a separate, streamlined object for it.
+Its goal is simple: to remove all business logic from the controller and model and provide a separate, streamlined object for it.
 
 --
 
@@ -35,11 +35,11 @@ module Sessions::Operation
     fail :unconfirmed
     pass :create_tokens
 
-    def model(_ctx, params, **)
+    def model(ctx, params, **)
       ctx[:model] = UserProfile.find_by(email: params[:email])
     end
 
-    def authenticate(_ctx, model:, parrams, **)
+    def authenticate(_ctx, model:, params, **)
       model.user_account.authenticate(params[:password])
     end
 
@@ -107,7 +107,7 @@ class Memo::Create < Trailblazer::Operation
 end
 ```
 
-If validate turned out to be successful, no other task in success track won’t be invoked, as visible in the diagram.
+If validate turned out to be successful, any other task in success track won’t be invoked, as visible in the diagram.
 
 ![](/assets/images/trailblazer/wiring-pass-fast.png)
 
@@ -159,7 +159,7 @@ end
 
 ### Fast Track: `fast_track`
 
-Instead of hard-wiring the success or failure output to the respective fast-track end, you can decide what output to take dynamically, in the tas. However, this implies you configure the task using the `:fast_track` option.
+Instead of hard-wiring the success or failure output to the respective fast-track end, you can decide what output to take dynamically in the task. However, this implies that you configure the task using the `:fast_track` option.
 
 ```ruby
 class Memo::Create < Trailblazer::Operation
@@ -315,7 +315,7 @@ end
 
 A step can be added via `step`, `pass` and `fail`.
 
-Step should receive `ctx` - mutable operation context object which transports mutable state from one step to the next, as first positional argument. All runtime data is also passed as keyword arguments to the step. Use the positional options to write, and make use of kw-arguments wherever possible - extract the parameters you need (such as `params:`). Any unspecified kw-arguments can be ignored using `**`.
+Step should receive `ctx` - mutable operation context object which transports mutable state from one step to the next, as the first positional argument. All runtime data is also passed as keyword arguments to the step. Use the positional options to write, and make use of kw-arguments wherever possible - extract the parameters you need (such as `params:`). Any unspecified kw-arguments can be ignored using `**`.
 
 
 
@@ -371,7 +371,7 @@ end
 
 ## Step Macros
 
-Trailblazer provides predefined steps to for all kinds of business logic.
+Trailblazer provides predefined steps for all kinds of business logic.
 
 - `Contract` implements contracts, validation and persisting verified data using the model layer.
 - `Nested`, `Wrap` and `Rescue` are step containers that help with transactional features for a group of steps per operation.
@@ -384,7 +384,7 @@ Trailblazer provides predefined steps to for all kinds of business logic.
 
 An operation can automatically find or create a model for you depending on the input, with the `Model` macro.
 
-It sets up `ctx[:model]` as instance of class you specify with method you specified.
+It sets up `ctx[:model]` as an instance of the class you specify with the method you specified.
 
 ```ruby
 class Create < Trailblazer::Operation
@@ -400,7 +400,7 @@ class Create < Trailblazer::Operation
 end
 ```
 
-If `User.find_by` returns `nil` operiation obviously will deviate to the failure track.
+If `User.find_by` returns `nil` operation obviously will deviate to the failure track.
 
 --
 
@@ -477,7 +477,7 @@ While you could use the Wrap() macro to catch and process exceptions, Trailblaze
 
 Make sure to use `Rescue() { ... }` with **curly brackets**, otherwise Ruby will swallow the block.
 
-You may pass any number of exceptions you desire to catch, along with your `:handler` which could be instance method, lambda or callable. The handler is called automatically if an exception was raised, it receives the latter as the first positional argument, followed by a operation context.
+You may pass any number of exceptions you desire to catch, along with your `:handler` which could be instance method, lambda or callable. The handler is called automatically if an exception was raised, it receives the latter as the first positional argument, followed by an operation context.
 
 Per default, if the handler was invoked, the operation will deviate to the left track.
 
@@ -524,12 +524,12 @@ All nested operation ends with known semantics will be automatically connected t
 
 ### When to use `Nested`
 
-You should use it only for some reccuring set of tasks if they:
+You should use it only for some recurring set of tasks if they:
 - are large;
 - are complicated and need to leverage the railway;
 - have to use `Wrap`, `Rescue` or `Nested` macros within them.
 
-In all other cases consider using just a callable steps.
+In all other cases consider using callable steps.
 
 --
 
@@ -607,14 +607,14 @@ module Lib
 end
 ```
 
-`:output` could be defined the same way, only difference that it defines output from nested operations, so it arguments will hold its context.
+`:output` could be defined the same way, the only difference is that it defines output from nested operations, so its arguments will hold its context.
 
 ---
 
 ## Macro API
 
 Implementing your own macros helps to create reusable code.
-It’s advised to put macro code into namespaces to not pollute the global namespace.
+It’s advised to put the macro code into namespaces to not pollute the global namespace.
 
 The macro itself is a function. Per convention, the **name is capitalized**. You can specify any set of arguments (positional or kw-args), and it returns a 2-element array with the actual step to be inserted into the pipe and default options.
 
@@ -642,7 +642,7 @@ end
 
 ## Dependencies
 
-All class data, state and dependencies of operation are stored in *context object*. It can be accessed not only at runtime inside steps, but on class layer as well:
+All class data, state and dependencies of operation are stored in *context object*. It can be accessed not only at runtime inside steps but on a class layer as well:
 
 ```ruby
 module Song
@@ -671,7 +671,7 @@ Operations are usually invoked straight from the controller action. They orchest
 
 Operation public interface is only one method - `Operation.call`, all runtime data should be passed to it as kw-arguments, like `params, current_user, etc.`.
 
-It returns the `result object` that contains all the data from operation's context, including injected and class dependenciess. result object exposess `success?` and `failure?` methods that allows to check on which track operation has ended.
+It returns the `result object` that contains all the data from operation's context, including injected and class dependencies. Result object exposes `success?` and `failure?` methods that allow to check on which track operation has ended.
 
 Data from the context could be read from it: `result[:model]`. Some data is stored by convention `'namespaced.key'` like  `result['contract.default']`.
 
@@ -723,7 +723,7 @@ class Create < New
 end
 ```
 
-This will result in following pipe (first three steps came from `New` operation):
+This will result in the following pipe (first three steps came from `New` operation):
 
 ```
  0 =======================>>operation.new

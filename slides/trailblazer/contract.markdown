@@ -123,7 +123,7 @@ end
 
 Custom predicates have to be defined in the validation group.
 
-If you need access to your form you must pass `with: {form: true}` to your validation block
+If you need access to your form, you must pass `with: {form: true}` to your validation block
 
 ```ruby
 validation :default, with: {form: true} do
@@ -485,11 +485,11 @@ end
 ## Populators
 
 `populate_if_empty`
-When you have nested form, reform had to instantinate it to perform validation. But Reform per design makes no assumptions about how to create nested models. So you have to tell it what to do in this out-of-sync case.
+When you have nested form, reform had to instantiate it to perform validation. But Reform per design makes no assumptions about how to create nested models. So you have to tell it what to do in this out-of-sync case.
 
-To let Reform create a new model wrapped by a nested form in case of its abscence use `:populate_if_empty`.
+To let Reform create a new model wrapped by a nested form in case of its absence, use `:populate_if_empty`.
 
-It receives the class to be instantinated.
+It receives the class to be instantiated.
 
 ```ruby
 class AlbumForm < Reform::Form
@@ -520,7 +520,7 @@ class AlbumForm < Reform::Form
       if item = collection[index]
         item # instance of Reform::Form
       else
-        collection.append(Song.new) # collection exposes Enumerable interface, and automaticaly wraps model in Reform::Form
+        collection.append(Song.new) # collection exposes Enumerable interface, and automatically wraps model in Reform::Form
       end
     end
 end
@@ -543,7 +543,7 @@ class AlbumForm < Reform::Form
 end
 ```
 
-A single populator works identical to a collection one, except for the `model` argument, which is equally to `self.composer`
+A single populator works identical to a collection one, except for the `model` argument, which is equal to `self.composer`
 
 --
 
@@ -607,7 +607,7 @@ end
 
 ### Manual Build
 
-To manually build the contract instance (e.g. to inject the current user) use `builder:` with any callable.
+To manually build the contract instance (e.g. to inject the current user), use `builder:` with any callable.
 
 ```ruby
 class Comments::Contracts::Create < Reform::Form
@@ -638,10 +638,10 @@ end
 
 ## `Validate` macro
 
-The `Contract::Validate` macro is responsible for validating the incoming params against its contract. That means you have to use `Contract::Build` beforehand, or create the contract yourself. The macro will then grab the params and throw then into the contract’s `validate` (or `call`) method.
+The `Contract::Validate` macro is responsible for validating the incoming params against its contract. That means you have to use `Contract::Build` beforehand, or create the contract yourself. The macro will then grab the params and throw them into the contract’s `validate` (or `call`) method.
 Validate only parses your params and validates the contract, nothing is written to the model, yet.
 
-Depending on the outcome of the validation, it either stays on the right track, or deviates to left, skipping the remaining steps.
+Depending on the outcome of the validation, it either stays on the right track or deviates to left, skipping the remaining steps.
 
 ```ruby
 class Create < Trailblazer::Operation
@@ -667,7 +667,7 @@ end
 ### `Persist` macro
 
 To push validated data from the contract to the model(s), use Persist. Like Validate, this requires a contract to be set up beforehand.
-After the step, the contract’s attribute values are written to the model, and the contract will call save on the model
+After the step, the contract’s attribute values are written to the model, and the contract will call save on the model.
 
 ```ruby
 class Create < Trailblazer::Operation
@@ -701,7 +701,7 @@ end
 Contract in runtime and contract result would be stored under corresponding name:
 
 ```ruby
-result = User::Operaion::Create.({ title: "A" })
+result = User::Operation::Create.({ title: "A" })
 result["contract.form"].errors.messages # => {:title=>["is too short (minimum is 2 ch...
 # or in result
 result["result.contract.form"].success?        #=> false

@@ -1,6 +1,6 @@
 ---
 layout: slide
-title: Operation Contract
+title: Operation Policy
 ---
 
 # Operation `Policy`
@@ -11,22 +11,22 @@ title: Operation Contract
 
 `Policy` module allows to authorize code execution per user
 
-It consists from `Policy::Guard` and `Policy::Pundit` modules.
+It consists of `Policy::Guard` and `Policy::Pundit` modules.
 
 ---
 
 ## `Policy::Guard`
 
-A guard is a step that helps you evaluating a condition and writing the result. If the condition was evaluated as falsey, the pipe won’t be further processed and a policy breach is reported in `result["result.policy.default"]`.
+A guard is a step that helps you with evaluating a condition and writing the result. If the condition was evaluated as falsey, the pipe won’t be further processed and a policy breach is reported in `result["result.policy.default"]`.
 
 Here you have full control of what and how you would like to authorize. Also you could perform authorization on per-operation basis, and not per-resource like Pundit does, and share callable `Guard`'s among operations.
 That is a great help when you need different authorization rules for one resource in different operations.
 
-**So it is adviced to use Guard over Pundit.**
+**So it is advised to use Guard over Pundit.**
 
 --
 
-The Policy::Guard macro helps you inserting your guard logic, guard can be a Callable-marked object, instance method or lambda.
+The Policy::Guard macro helps you insert your guard logic, guard can be a Callable-marked object, instance method or lambda.
 
 
 ```ruby
@@ -109,7 +109,7 @@ class MyPolicy
 end
 ```
 
-You can plug this policy into your pipe at any point. However, this must be inserted after the `:model` is available in operation context, and require current user to be injected into operation.
+You can plug this policy into your pipe at any point. However, this must be inserted after the `:model` is available in operation context and requires `current_user` to be injected into operation.
 
 ```ruby
 class Create < Trailblazer::Operation

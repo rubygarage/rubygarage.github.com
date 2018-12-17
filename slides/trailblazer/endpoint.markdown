@@ -58,7 +58,7 @@ Possible pre-defined outcomes are:
 
 All outcomes are detected via a Matcher object implemented in the endpoint gem using pattern matching to do so.
 
-Please note that in the current state, those heuristics are still work-in-progress, so it is adviced to use your own outcomes.
+Please note that in the current state, those heuristics are still work-in-progress, so it is advised to use your own outcomes.
 
 ---
 
