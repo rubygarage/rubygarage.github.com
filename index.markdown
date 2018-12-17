@@ -120,6 +120,7 @@ title: Ruby presentations
   <br>
   <small>Background jobs processing.</small>
 
+<!--
 ## Trailblazer
 
 - [Introduction](/slides/trailblazer/introduction)
@@ -145,6 +146,7 @@ title: Ruby presentations
 - [Rails API integration](/slides/trailblazer/rails)
   <br>
   <small>Integrating Trailblazer with Rails API</small>
+-->
 
 <!--
 # Frontend
