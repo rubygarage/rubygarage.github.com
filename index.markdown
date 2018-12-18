@@ -116,6 +116,12 @@ title: Ruby presentations
   <br>
   <small>Writing API in Rails.</small>
 
+
+- [Dox](/slides/dox)
+  <br>
+  <small>Automated API documentation tool.</small>
+
+
 - [Sidekiq](/slides/sidekiq)
   <br>
   <small>Background jobs processing.</small>
