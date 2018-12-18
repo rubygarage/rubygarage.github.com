@@ -120,6 +120,33 @@ title: Ruby presentations
   <br>
   <small>Background jobs processing.</small>
 
+<!--
+## Trailblazer
+
+- [Introduction](/slides/trailblazer/introduction)
+  <br>
+  <small>A business logic framework</small>
+
+- [Operation](/slides/trailblazer/operation)
+  <br>
+  <small>Railway-oriented service object</small>
+
+- [Contract & Reform](/slides/trailblazer/contract)
+  <br>
+  <small>A validation for Operation</small>
+
+- [Policy](/slides/trailblazer/policy)
+  <br>
+  <small>An authorization for Operation</small>
+
+- [Endpoint](/slides/trailblazer/endpoint)
+  <br>
+  <small>Generic HTTP handlers for operation results</small>
+
+- [Rails API integration](/slides/trailblazer/rails)
+  <br>
+  <small>Integrating Trailblazer with Rails API</small>
+-->
 
 <!--
 # Frontend
@@ -135,7 +162,7 @@ title: Ruby presentations
 - [Git](/slides/git)
   <br>
   <small>Distributed version control system</small>
-  
+
 
 - [Static code analysis](/slides/static-code-analysis)
   <br>
