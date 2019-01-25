@@ -355,7 +355,7 @@ Used for sharing steps
 
 ```ruby
 class Authenticate
-  extend Uber::Callables
+  extend Uber::Callable
 
   def self.call(ctx, model:, **)
     model.user_account.authenticate(ctx['contract.default'].password)
