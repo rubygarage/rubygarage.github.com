@@ -582,4 +582,17 @@ end
 
 ---
 
+## Example
+
+[Repository with Example](https://github.com/rubygarage/trailblazer-courses)
+
+## Task
+
+Extend example with additional features described in specification.
+
+
+[Task and Example Specification](/slides/trailblazer/task_specification)
+
+---
+
 # The End
