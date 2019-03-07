@@ -23,7 +23,7 @@ We’ve stored our content in an S3 bucket located in a region in Europe, and we
 
 ![](/assets/images/aws/cloudfront/hw-before.jpg)
 
-Depending on the user’s location, this can take a long time.
+`Depending on the user’s location`, this can take a long time.
 
 --
 
@@ -52,8 +52,22 @@ Sometimes the file is returned 100 times faster!
 
 ---
 
+## Accessing CloudFront
+- **AWS Management Console**
+
+- **AWS SDKs** – SDKs simplify authentication, integrate easily with your development environment, and provide access to CloudFront [commands.](https://aws.amazon.com/tools/)
+  - Developer [Guide](https://aws.amazon.com/sdk-for-ruby/)
+  - gem [aws-sdk-rails](https://github.com/aws/aws-sdk-rails)
+
+- **CloudFront API** – If you're using a programming language that an SDK isn't available for, [see how to make API requests.](https://docs.aws.amazon.com/cloudfront/latest/APIReference/Welcome.html)
+
+- **AWS Command Line Interface**
+
+- **AWS Tools for Windows PowerShell**
+
+---
+
 # How Configure CloudFront to Deliver Your Content
-![](/assets/images/aws/cloudfront/arrow-down.png)
 
 --
 
@@ -98,6 +112,76 @@ Sometimes the file is returned 100 times faster!
 
 ---
 
+# Making CloudFront works with Rails
+
+--
+
+## Assets pipeline
+
+In `config/environments/production.rb:`
+
+```ruby
+config.action_controller.asset_host = ENV['CLOUDFRONT_DISTRIBUTION_DOMAIN']
+
+# ENV['CLOUDFRONT_DISTRIBUTION_DOMAIN'] => dj19ua31ezj772q.cloudfront.net
+```
+This has the effect of making all the links you send use the configured asset host instead of that of your own website.
+
+--
+
+Example:
+```html
+<link href="/assets/application-75ghc0f37d8bfc5fb4283f312698fff9.css rel="stylesheet">
+```
+The href will now have the configured asset host prepended:
+```html
+<link href="https://dj19ua31ezj772q.cloudfront.net/assets/application-
+75ghc0f37d8bfc5fb4283f312698fff9.css rel="stylesheet">
+```
+
+--
+
+## CORS Issue
+
+### If you are loading all the assets on your site via a CDN then the browser may give warnings or errors about using resources from different origins.
+
+--
+
+### Fixing CORS issue with Cloudfront configuration changes. In order to `enabling CORS` we need to configure Cloudfront to `allow forwarding of required headers`. By clicking on Cloudfront Distribution’s `“Distribution Settings”`. Then from the `“Behavior”` tab click on `“Edit”`. Here we need to whitelist the headers that need to be forwarded as shown in the image below.
+![](/assets/images/aws/cloudfront/whitelist-headers.png)
+
+--
+## Or
+### If you have configured `Nginx` proxies which will serve static assets, add config CORS custom headers correctly.
+link: [CORS on Nginx](https://enable-cors.org/server_nginx.html)
+
+--
+
+In `config/environments/production.rb:` for Rails 4
+```ruby
+config.paperclip_images_default_options = {
+    styles: {
+      thumb: '100x100>',
+      small: '300x300>',
+      medium: '600x600',
+      large: '1200x900'
+    },
+    default_url: '/images/:style/missing.png',
+    path: ':class/:attachment/:id_partition/:style/:basename.:extension',
+
+    # just replace url option with fog_host:
+    # url: ':s3_domain_url'
+
+    fog_host: ENV['CLOUDFRONT_DISTRIBUTION_DOMAIN']
+  }
+```
+
+--
+
+## Well done!
+
+---
+
 ## `Pros` of using `CloudFront`
 - **Speeds up distribution** of your static and dynamic web content, such as .html, .css, .js, and image files, to your users.
 - **Reduce origin traffic**
@@ -120,21 +204,6 @@ Sometimes the file is returned 100 times faster!
 ![](/assets/images/aws/cloudfront/pricing.png)
 
 ### [current prices](https://aws.amazon.com/cloudfront/pricing/)
-
----
-
-## Accessing CloudFront
-- **AWS Management Console**
-
-- **AWS SDKs** – SDKs simplify authentication, integrate easily with your development environment, and provide access to CloudFront [commands.](https://aws.amazon.com/tools/)
-  - Developer [Guide](https://aws.amazon.com/sdk-for-ruby/)
-  - gem [aws-sdk-rails](https://github.com/aws/aws-sdk-rails)
-
-- **CloudFront API** – If you're using a programming language that an SDK isn't available for, [see how to make API requests.](https://docs.aws.amazon.com/cloudfront/latest/APIReference/Welcome.html)
-
-- **AWS Command Line Interface**
-
-- **AWS Tools for Windows PowerShell**
 
 ---
 
