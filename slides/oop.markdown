@@ -34,9 +34,9 @@ end
 ```ruby
 book = BookInStock.new
 book.class # => BookInStock
-book.is_a? BookInStock # => true # this method return true if object is an instance a subclass
-book.kind_of? BookInStock # => true  # this method return true if object is an instance a subclass
-book.instance_of? BookInStock # => true
+book.is_a? BookInStock # => true # this method return true if object is an instance of a class or parent classes
+book.kind_of? BookInStock # => true  # this method return true if object is an instance of a class or parent classes
+book.instance_of? BookInStock # => this method return true if object is an instance of an exact class!
 ```
 
 ---
@@ -76,7 +76,7 @@ end
 
 book = BookInStock.new('The Great Gatsby', 'F. Scott Fitzgerald', 8.99)
 
-book.to_s # => Book: The Great Gatsby / F. Scott Fitzgerald, 8.99
+puts "The coolest book is - #{book}" # => "The coolest book is -  Book: The Great Gatsby / F. Scott Fitzgerald, 8.99"
 ```
 
 ---
@@ -321,7 +321,7 @@ class BookInStock
   end
 
   def self.total_amount(*books)
-    books.map(&:price).inject(0, &:+)
+    books.map(&:price).sum
   end
 end
 
@@ -790,8 +790,10 @@ end
 
 ```ruby
 module AudioConverter
-  def compare_formats another_file
-    File.extname(@file) == File.extname(another_file)
+  ACCEPTED_FORMATS = %w(mp3 mp4).freeze
+
+  def accepted_format? file
+    AudioConverter::ACCEPTED_FORMATS.include? File.extname(file)
   end
 end
 
@@ -801,10 +803,18 @@ class AudioUpload
   def initialize(file)
     @file = file
   end
+
+  def store_file!
+    if accepted_format? @file
+      # => store_data
+    else
+      # => raise exception
+    end
+  end
 end
 
 audio_upload = AudioUpload.new('music.mp3')
-audio_upload.compare_formats('video.avi')
+audio_upload.store_file!
 ```
 
 --
@@ -972,13 +982,10 @@ def try_throw_if(act)
 end
 
 catch :alarm! do
-  puts try_throw_if('Makes one')
-  puts try_throw_if('Makes two')
-  puts try_throw_if('Go! go! go!')
-  puts try_throw_if('Makes three')
+  puts 'Some good issues to catch an alarm would be done soon!'
 end
 
-puts try_throw_if('Makes four')
+puts try_throw_if('Go! go! go!')
 
 # Try 'Makes one'
 # Makes one
@@ -1052,37 +1059,6 @@ Exception
 - Get all Library data from file(s)
 
 Detailed description [here](https://docs.google.com/document/d/1z5-iLgDTvxLW3uZmTylxVg4ASClxQn90MjZx_Y8-LaQ/edit#)
-
----
-
-# Ruby Koans
-
-The [Ruby Koans](http://rubykoans.com/) are a great way to learn about the Ruby language.
-
-```bash
-$ git clone git://github.com/edgecase/ruby_koans.git ruby_koans
-$ cd ruby_koans
-```
-
-```bash
-$ rake gen
-$ mkdir -p koans
-$ cp src/edgecase.rb koans/edgecase.rb
-$ cp README.rdoc koans/README.rdoc
-```
-
-```bash
-$ rake
-
-The Master says:
-You have not yet reached enlightenment.
-The answers you seek...
-Failed assertion, no message given.
-Please meditate on the following code:
-/Users/sparrow/Www/ruby_koans/koans/about_asserts.rb:10:in 'test_assert_truth'
-mountains are merely mountains
-your path thus far [X_________________________________________________] 0/280
-```
 
 ---
 
