@@ -174,40 +174,6 @@ brakeman -o output.html -o output.json
 * New Relic
 * Twitter
 
-
----
-# Rails Best Practices
-
-A code metric tool for rails project
-
---
-
-## Installation
-
-```ruby
-gem "rails_best_practices"
-```
-
-## Usage
-
-```bash
-rails_best_practices -f html .
-```
-
---
-## Report example
-```bash
-➜  rails_best_practices -f html .
-Source Code: |=============================================================================================================================================================================================|
-```
-
-![](/assets/images/static_code_analysis/rails_best_practices.png)
---
-
-best practices here
-
-https://rails-bestpractices.com/
-
 ---
 
 # Reek
@@ -321,63 +287,28 @@ SimpleCov is a code coverage analysis tool for Ruby. It uses Ruby's built-in Cov
 
 ---
 
-# RubyCritic
+### Overcommit
 
-RubyCritic is a gem that wraps around static analysis gems such as Reek, Flay and Flog to provide a quality report of your Ruby code.
+Overcommit is a gem for configuring Git hooks. It is excellent for keeping the code quality high. It allows tuning git hooks for linters launch before every commit.
 
-![](https://github.com/whitesmith/rubycritic/raw/master/images/logo.png)
+* [Tutorial](https://medium.com/@kirill_shevch/lint-your-ruby-code-with-overcommit-and-static-analysis-tools-bd36d3147d2e)
 
---
-
-### Overview
-
-This gem provides features such as:
-
-An overview of your project:
-
-  ![RubyCritic overview screenshot](https://github.com/whitesmith/rubycritic/raw/master/images/overview.png)
-
---
-
-An index of the project files with their respective number of smells:
-
-  ![RubyCritic code index screenshot](https://github.com/whitesmith/rubycritic/raw/master/images/code.png)
-
---
-An index of the smells detected:
-
-  ![RubyCritic smells index screenshot](https://github.com/whitesmith/rubycritic/raw/master/images/smells.png)
-
---
-
-When analysing code like the following:
-
-  ```ruby
-  class Dirty
-    def awful(x, y)
-      if y
-        @screen = widgets.map {|w| w.each {|key| key += 3}}
-      end
-    end
-  end
-  ```
---
-  Into something like this:
-
-  ![RubyCritic file code screenshot](https://github.com/whitesmith/rubycritic/raw/master/images/smell-details.png)
 ---
+
 ### Code Analysis and Metrics Tools
 
 * [Brakeman](https://github.com/presidentbeef/brakeman) - A static analysis security vulnerability scanner for Ruby on Rails applications.
 * [Bullet](https://github.com/flyerhzm/bullet) - help you increase your application's performance by reducing the number of queries it makes
 * [bundler-audit](https://github.com/rubysec/bundler-audit) - Patch-level verification for bundler.
 * [Fasterer](https://github.com/DamirSvrtan/fasterer) - Make your Rubies go faster with this command line tool highly inspired by fast-ruby and Sferik's talk at Baruco Conf.
-* [rails_best_practices](https://github.com/railsbp/rails_best_practices) - A code metric tool for rails projects.
 * [Reek](https://github.com/troessner/reek) - Code smell detector for Ruby.
 * [RuboCop](https://github.com/bbatsov/rubocop) - A static code analyzer, based on the community Ruby style guide.
-* [Rubycritic](https://github.com/whitesmith/rubycritic) - A Ruby code quality reporter.
+* [Pry](https://github.com/pry/pry) - A runtime developer console and IRB alternative with powerful introspection capabilities.
 * [SimpleCov](https://github.com/colszowka/simplecov) - Code coverage for Ruby 1.9+ with a powerful configuration library and automatic merging of coverage across test suites.
 * [Traceroute](https://github.com/amatsuda/traceroute) - A Rake task gem that helps you find the dead routes and actions for your Rails 3+ app
+* [Active Record Doctor](https://github.com/gregnavis/active_record_doctor) - Identify database issues before they hit production.
+* [Overcommit](https://github.com/sds/overcommit) - A fully configurable and extendable Git hook manager.
+* [lol_dba](https://github.com/plentz/lol_dba) - A small package of rake tasks that scan your application models and displays a list of columns that probably should be indexed. Also, it can generate .sql migration scripts.
 ---
 
 # Thank You
