@@ -290,21 +290,6 @@ class BookInStock
     puts title         # => My best title
     puts self.title    # => Author: F. Scott Fitzgerald
   end
-
-  def my_object_as_param
-    str = "my string"
-    puts str.eql? self # => false
-  end
-
-  def method_to_class
-    # puts class - error it try to create new class
-    puts self.class.inspect     # => BookInStock
-    self.class.my_class_method  # => BookInStock
-  end
-
-  def self.my_class_print
-    puts self.inspect           # => BookInStock
-  end
 end
 ```
 
@@ -729,19 +714,19 @@ another.title             # => NoMethodError: undefined method 'title'
 ```ruby
 module AudioConverter
   class Decoder
-    def initialize file
-      @file, @format = @file, AudioHelpers.get_format(file)
+    def initialize(file)
+      @file, @format = file, AudioHelpers.get_format(file)
     end
   end
 
   class Encoder
-    def initialize file
-      @file, @format = @file, AudioHelpers.get_format(file)
+    def initialize(file)
+      @file, @format = file, AudioHelpers.get_format(file)
     end
   end
 
   class AudioHelpers
-    def self.get_format file
+    def self.get_format(file)
       File.extname(file)
     end
   end
@@ -987,13 +972,8 @@ end
 
 puts try_throw_if('Go! go! go!')
 
-# Try 'Makes one'
-# Makes one
-# Try 'Makes two'
-# Makes two
 # Try 'Go! go! go!'
-# Try 'Makes four'
-# Makes four
+# Some good issues to catch an alarm would be done soon!
 ```
 
 --
