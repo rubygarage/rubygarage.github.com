@@ -286,6 +286,15 @@ SimpleCov is a code coverage analysis tool for Ruby. It uses Ruby's built-in Cov
 ![SimpleCov source file detail view](https://cloud.githubusercontent.com/assets/137793/17071163/db6f9f0a-502d-11e6-816c-edb2c66fad8d.png)
 
 ---
+
+### Overcommit
+
+Overcommit is a gem for configuring Git hooks. It is excellent for keeping the code quality high. It allows tuning git hooks for linters launch before every commit.
+
+* [Tutorial](https://medium.com/@kirill_shevch/lint-your-ruby-code-with-overcommit-and-static-analysis-tools-bd36d3147d2e)
+
+---
+
 ### Code Analysis and Metrics Tools
 
 * [Brakeman](https://github.com/presidentbeef/brakeman) - A static analysis security vulnerability scanner for Ruby on Rails applications.
