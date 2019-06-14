@@ -8,11 +8,7 @@ title: Docker
 
 ---
 
-- [Docker](docker)
-  <br>
-  <small>Why it is good and what problems it solves</small>
-
-- [Docker-compose](docker-compose)
+- [Docker and Docker compose](docker)
   <br>
   <small>Why it is good and what problems it solves</small>
 

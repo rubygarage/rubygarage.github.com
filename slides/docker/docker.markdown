@@ -3,11 +3,11 @@ layout: slide
 title: Docker
 ---
 
-## Постановка  проблемы
+## Проблемы
 
 - Неудачи при попытке установить все зависимое ПО, при этом не "сломав" ничего локально
 - Непонимание, как запустить приложение
-- Недостаток опыта в разворачивании приложения на удаленных серверах
+- Несоответствие локальной инфраструктуры с удаленной
 - Поддержка инфраструктуры приложения на удаленных серверах
 - Масштабирование приложения на production окружении
 
@@ -49,39 +49,67 @@ title: Docker
 
 ## Как это работает?
 
-![docker-components](/assets/images/docker/docker-components.png)
+Docker строится на контейнеризации приложений в изолированной среде.
+
+![logo.jpeg](/assets/images/docker/docker/docker_main.png)
 
 --
 
-## Virtual Machine vs Docker
+## Образы и контейнеры
+
+Образ — это пакет, который включает в себя все необходимые для запуска приложения
+
+Контейнер — это экземпляр образа вашего приложения во время выполнения.
+
+---
+
+## Виртуальная машина и Docker контейнер
 
 --
 
-![docker-vm](/assets/images/docker/vm.png)
+## Виртуальная машина
+
+![docker-vm](/assets/images/docker/docker/vm.png)
 
 Виртуальной машина предоставляет среде больше ресурсов, чем требуется большинству приложений
 
 --
 
-![docker-container](/assets/images/docker/container.png)
+## Docker контейнер
+
+![docker-container](/assets/images/docker/docker/dm.png)
 
 Контейнер работает в Linux и разделяет ядро HostOS с другими контейнерами. Он запускается в отдельном процессе, занимая минимум памяти
 
 ---
 
-## Images and Layers
+## Образ и слои
 
-![image-layer](/assets/images/docker/image-layer.png)
+![image-layer](/assets/images/docker/docker/docker_layer.png)
 
-Docker образ состоит из **ряда слоев**
+Dockerfile состоит из команд (RUN, ENTRYPOINT, CMD и другие). 
 
-Каждый слой представляет собой **ряд изменений** от предыдущего слоя
+Каждая команда создание нового слоя при сборке образа.
+
+Структура связей между слоями в Docker - иерархическая.
 
 --
 
-## Containers and Layers
+![dockerfile.png](/assets/images/docker/docker/dockerfile_description.png)
 
-![conainers-layer](/assets/images/docker/conainers-layer.png)
+--
+
+## Dockerfile
+
+![dockerfile.png](/assets/images/docker/docker/dockerfile.png)
+
+Это [инструкция](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#dockerfile-instructions) для сборки образ вашего ПО
+
+--
+
+## Контейнер и слои
+
+![conainers-layer](/assets/images/docker/docker/container_layer.png)
 
 Когда запускается контейнер, он создает еще один слой поверх образа
 
@@ -89,144 +117,49 @@ Docker образ состоит из **ряда слоев**
 
 --
 
-## Containers and Volumes
+## Контейнеры и волумы
 
-![volumes.png](/assets/images/docker/volumes.png)
+![volumes.png](/assets/images/docker/docker/volumes.png)
 
 Docker volume – папка на HostOS, "примонтированная" к файловой системе контейнера
 
 ---
 
-## Dockerfile
-
-![dockerfile.png](/assets/images/docker/dockerfile.png)
-
-Это инструкцией для сборки образ вашего ПО
+![development](/assets/images/docker/docker/development.png)
 
 --
 
-Dockerfile состоит из команд (RUN, ENTRYPOINT, CMD и другие). Каждая команда создание нового слоя при сборке образа. Структура связей между слоями в Docker - иерархическая.
+![docker-components](/assets/images/docker/docker-compose.png)
 
-![image-layer](/assets/images/docker/image-layer.png)
-
---
-
-Базовый образ и установка ПО
-
-```bash
-# Dockerfile
-
-# Layer 0. Качаем образ Debian OS с установленным ruby версии 2.5 и менеджером для управления gem'ами bundle из DockerHub. Используем его в качестве родительского образа.
-FROM ruby:2.5.1-slim
-
-# Layer 1. Задаем пользователя, от чьего имени будут выполняться последующие команды RUN, ENTRYPOINT, CMD и т.д.
-USER root
-
-# Layer 2. Обновляем и устанавливаем нужное для Web сервера ПО
-RUN apt-get update -qq && apt-get install -y \
-  build-essential libpq-dev libxml2-dev libxslt1-dev nodejs imagemagick apt-transport-https curl nano
-
-# Layer 3. Создаем переменные окружения которые буду дальше использовать в Dockerfile
-ENV APP_USER app
-ENV APP_USER_HOME /home/$APP_USER
-ENV APP_HOME /home/www/spreedemo
-```
+Docker Compose - это инструмент для определения и запуска многоконтейнерных приложений Docker.
 
 --
 
-Пользователь для будущего контейнера
+Возможности Compose:
 
-```bash
-# Dockerfile
+- Запуск нескольких изолированных сред на одном хосте
 
-# Layer 4. Поскольку по умолчанию Docker запускаем контейнер от имени root пользователя, то настоятельно рекомендуется создать отдельного пользователя c определенными UID и GID и запустить процесс от имени этого пользователя.
-RUN useradd -m -d $APP_USER_HOME $APP_USER
+- Настройка volumes при создании контейнеров
 
-# Layer 5. Даем root пользователем пользователю app права owner'а на необходимые директории
-RUN mkdir /var/www && \
-   chown -R $APP_USER:$APP_USER /var/www && \
-   chown -R $APP_USER $APP_USER_HOME
+- Удобный менеджмент запущенных контейнеров
 
-# Layer 6. Создаем и указываем директорию в которую будет помещено приложение. Так же теперь команды RUN, ENTRYPOINT, CMD будут запускаться с этой директории.
-WORKDIR $APP_HOME
-
-# Layer 7. Указываем все команды, которые будут выполняться от имени app пользователя
-USER $APP_USER
-```
+- Удобная конфигурация контейнеров и коммуникации между ними
 
 --
 
-Кладем в образ код и устанавливаем gems и assets
+## docker-compose.yml
 
-```bash
-# Dockerfile
+С Compose вы используете файл YAML для настройки сервисов(контейнеров) вашего приложения и одну команду для создания и запуска всех сервисов из этого файла конфигурации
 
-# Layer 8. Добавляем файлы Gemfile и Gemfile.lock из директории, где лежит Dockerfile (root директория приложения на HostOS) в root директорию WORKDIR
-COPY Gemfile Gemfile.lock ./
-
-# Layer 9. Вызываем команду по установке gem-зависимостей. Рекомендуется запускать эту команду от имени пользователя от которого будет запускаться само приложение
-RUN bundle check || bundle install
-
-# Layer 10. Копируем все содержимое директории приложения в root-директорию WORKDIR
-COPY . .
-
-# Layer 11. Указываем все команды, которые будут выполняться от имени root пользователя
-USER root
-
-# Layer 12. Даем root пользователем пользователю app права owner'а на WORKDIR
-RUN chown -R $APP_USER:$APP_USER "$APP_HOME/."
-
-# Layer 13. Указываем все команды, которые будут выполняться от имени app пользователя
-USER $APP_USER
-
-# Layer 14. Запускаем команду для компиляции статических (JS и CSS) файлов
-RUN bin/rails assets:precompile
-```
+![docker-compose-example](/assets/images/docker/docker/docker-compose.png)
 
 --
 
-Команда по умолчанию
+## Задание
 
-```bash
-# Dockerfile
+- Развернем наше Web-приложение локально с помощью Docker и Docker-compose.
+- Развернем staging-окружение приложения на AWS.
+- Развернем production-окружение приложения на AWS.
+- Настроим тестовое окружение и continuous integration для staging и production окружения с помощью CircleCI.
 
-# Layer 15. Указываем команду по умолчанию для запуска будущего контейнера. По скольку в `Layer 13` мы переопределили пользователя, то puma сервер будет запущен от имени www-data пользователя.
-CMD bundle exec puma -C config/puma.rb
-```
-
---
-
-![dockerfile-layers.png](/assets/images/docker/dockerfile-layers.png)
-
---
-
-## .dockerignore
-
-Иногда нужно избежать добавления определенных файлов в образ приложения, например secrets files или файлов, которые относятся только к локальному окружению.
-
-```
-.git
-/log/*
-/tmp/*
-!/log/.keep
-!/tmp/.keep
-!/tmp/pids/.keep
-/vendor/bundle
-/public/assets
-/config/master.key
-/.bundle
-/venv
-```
-
---
-
-## Запуск
-
-```bash
-# -t задает тег образу. Добавление тегов к образам помогает лучше идентифицировать образ из всех имеющихся.
-docker build -t spreeproject_server_app .
-```
-
-Другие [полезные команды](https://docs.docker.com/compose/reference) для работы с образами.
-
-
+## [Решение](https://dou.ua/lenta/articles/rails-tutorial-docker-1)
