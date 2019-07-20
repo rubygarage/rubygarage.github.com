@@ -1,5 +1,9 @@
 # Slides for RubyGarage course
 
+## Table of Contents
+
+- [Creating Your First Slide](https://github.com/rubygarage/rubygarage.github.com/wiki/Creating-Your-First-Slide)
+
 ## How to start Jekyll in development mode
 
 Execute the command:
