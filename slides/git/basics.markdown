@@ -559,6 +559,58 @@ origin	git@github.com:rubygarage/repo-example.git (push)
 
 ---
 
+# Pull Requests
+
+> Pull requests let you tell others about changes you've pushed to a branch in a repository on GitHub.<br />
+> Once a pull request is opened, you can discuss and review the potential changes with collaborators and add follow-up commits before your changes are merged into the base branch.
+
+---
+
+# Creating the pull request
+
+- On GitHub, navigate to the main page of the repository.
+
+- In the "Branch" menu, choose the branch that contains your commits.<br/> ![](/assets/images/git/basics/pr-branch-dropdown.png)
+
+- To the right of the Branch menu, click **New pull request**.<br/> ![](/assets/images/git/basics/pr-new.png)
+
+---
+
+# Creating the pull request
+
+- Use the **base** branch dropdown menu to select the branch you'd like to merge your changes into, <br/>
+then use the **compare** branch drop-down menu to choose the topic branch you made your changes in.<br/> ![](/assets/images/git/basics/pr-choose-branch.png)
+
+- Type a title and description for your pull request.<br/> ![](/assets/images/git/basics/pr-title-description.png)
+
+- Click **Create Pull Request**.
+
+---
+
+# Pull Requests best practices
+
+- Commit early and often with good commit messages
+- Do not resolve the comments if no changes are done ![](/assets/images/git/basics/pr-resolve-conversation.png)
+- Check where do you merge. What's the base branch?
+- Add tags to the pull request
+
+---
+
+# Commit message best practices
+
+1. Separate subject from body with a blank line
+2. Limit the subject line to 50 characters
+3. Capitalize the subject line
+4. Do not end the subject line with a period
+5. Use the imperative mood in the subject line
+6. Wrap the body at 72 characters
+7. Use the body to explain **what** and **why** vs. **how**
+
+Example: `Fix typo in introduction to user guide`
+
+https://chris.beams.io/posts/git-commit/
+---
+
 # Conflicts
 
 > Merge conflicts may occur if competing changes are made to the same line of a file or when a file is deleted that another person is attempting to edit.
