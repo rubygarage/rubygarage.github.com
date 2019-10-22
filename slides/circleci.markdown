@@ -5,7 +5,7 @@ title: CircleCi
 
 # CircleCI
 
----
+--
 
 Continuous integration [service](https://circleci.com/) for web and mobile applications. The service allows you to flexibly configure assembly testing.
 
@@ -128,3 +128,152 @@ A good example is package dependency managers such as Yarn, Bundler, or Pip. Wit
 
 Automatic dependency caching is not available in CircleCI 2.0, so it is important to plan and implement your caching strategy to get the best performance. Manual configuration in 2.0 enables more advanced strategies and finer control.
 
+--
+
+## Сache saving example
+
+```yml
+    steps:
+      - restore_cache:
+          keys:
+            - source-v1-{{ .Branch }}-{{ .Revision }}
+            - source-v1-{{ .Branch }}-
+            - source-v1-
+
+      - checkout
+
+      - save_cache:
+          key: source-v1-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - ".git"
+```
+
+--
+
+## Clearing Cache
+
+In order to clear the cache, you need to change the name of the key under which it is stored for example:
+```yml
+  - v1-npm-deps-{{ checksum "package-lock.json" }} 
+```
+change to
+```yml
+  - v2-npm-deps-{{ checksum "package-lock.json" }}
+```
+
+---
+
+# Steps
+
+--
+
+`Steps` are a collection of executable commands which are run during a job. The steps setting in a job should be a list of single key/value pairs, the key of which indicates the step type. The value may be either a configuration map or a string (depending on what that type of step requires).
+
+--
+
+Example, using a map:
+```yml
+jobs:
+  build:
+    steps:
+      - run:
+          name: Running tests
+          command: make test
+```
+Example, using a string (name here will have the same value as command):
+```yml
+jobs:
+  build:
+    steps:
+      - run: make test
+```
+
+more about steps you can see [here](https://github.com/rubygarage/circledge/blob/master/intro_to_circleci.md#steps)
+
+---
+
+# Jobs
+
+--
+
+**Job** is a collection of Steps. All of the steps in the job are executed in a single unit which consumes a CircleCI container from your while it’s running.
+
+If you are using Workflows, jobs must have a name that is unique within the `.circleci/config.yml` file.
+
+If you are **not** using workflows, the jobs map must contain a job named `build`. This `build` job is the default entry-point for a run that is triggered by a push to your VCS provider.
+
+Jobs have a maximum runtime of 5 hours. If your jobs are timing out, consider running some of them in parallel.
+
+--
+## Sample of job:
+```yml
+jobs:
+  lintering:
+    executor: default
+    steps:
+      - defaults
+      - run_linters
+```
+
+more about job you can see [here](https://github.com/rubygarage/circledge/blob/master/intro_to_circleci.md#jobs)
+
+---
+
+# Workflows
+
+--
+
+A **workflow** is a set of rules for defining a collection of jobs and their run order. Workflows support complex job orchestration using a simple set of configuration keys to help you resolve failures sooner.
+
+With workflows, you can:
+
+- Run and troubleshoot jobs independently with real-time status feedback.
+- Schedule workflows for jobs that should only run periodically.
+- Fan-out to run multiple jobs in parallel for efficient version testing.
+- Fan-in to quickly deploy to multiple platforms.
+
+--
+## Sample of workflow:
+```yml
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - test
+```
+more about workflow [here](https://github.com/rubygarage/circledge/blob/master/intro_to_circleci.md#workflows)
+
+---
+
+# Artifacts
+
+--
+
+**Artifacts** persist data after a job is completed and may be used for longer-term storage of the outputs of your build process. You can store artifacts with `store_artifacts`
+
+Currently, `store_artifacts` has two keys:
+
+- path is a path to the file or directory to be uploaded as artifacts.
+
+- destination (Optional) is a prefix added to the artifact paths in the artifacts API. The directory of the file specified in path is used as the default.
+
+--
+
+## Usage example:
+```yml
+steps:
+  - run: 
+      name: run specs
+      command: |
+        bundle exec rspec 
+  - store_artifacts:
+      path: ~/repo/coverage
+      destination: coverage
+```
+
+--
+
+After the completion of the job, you can see the artifacts in the tab 'Artifacts' :
+
+![](/assets/images/ci_artifacts.png)
