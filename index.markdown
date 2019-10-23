@@ -38,10 +38,17 @@ title: Ruby presentations
   <br>
   <small>Testing Ruby code with RSpec.</small>
 
+- [Continuous integration](/slides/continuos_integration)
+  <br>
+  <small>How works Continuous integration.</small>
+
+<!-- - [CircleCi](/slides/circleci)
+  <br>
+  <small>Continuous integration with CircleCi.</small>
 
 - [Refactoring in Ruby](/slides/refactoring-ruby)
   <br>
-  <small>Learn how to do refactoring in Ruby.</small>
+  <small>Learn how to do refactoring in Ruby.</small> -->
 
 
 - [Rack](/slides/rack)
