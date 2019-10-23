@@ -52,6 +52,12 @@ title: Git
 
 ---
 
+# File status lifecycle
+
+![](/assets/images/git/basics/file-status-lifecycle.png)
+
+---
+
 # What is commit?
 
 > A "commit" is a snapshot of your files. Stores the current contents of the index in a new commit along with a log message from the user describing the changes.
