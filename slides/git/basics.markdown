@@ -595,10 +595,40 @@ then use the **compare** branch drop-down menu to choose the topic branch you ma
 
 # Pull Requests best practices
 
-- Commit early and often with good commit messages
-- Do not resolve the comments if no changes are done ![](/assets/images/git/basics/pr-resolve-conversation.png)
+- Don't build too [complex Pull Requests](https://www.igvita.com/2011/12/19/dont-push-your-pull-requests/)
+- Don't create too complex commits. 300-600 lines of changed code is acceptable.
+- Good commit messages and Pull Request titles
+- Do not resolve the comments if no changes are done. Add a comment before clicking Resolve button ![](/assets/images/git/basics/pr-resolve-conversation.png)
 - Check where do you merge. What's the base branch?
 - Add tags to the pull request
+- Use Pull Request templates
+
+---
+
+# Pull Request template
+
+You can either add the PR template in the root directory itself or in a folder named `docs/` or `.github/`.
+In order for Github to automatically pick up the formatting from the markdown file for PR templates, you must name the file `pull_request_template.md`.
+
+```shell
+JIRA ticket - [Replace this text by the JIRA tiket URL]
+
+### Actions for Code run
+
+F.E - copy database
+
+### Rake Tasks
+
+If PR contains Rake tasks/seeds describe them below
+
+### Before submitting the merge request make sure the following are checked
+
+- [ ] Followed the style guidelines of this project
+- [ ] Performed a self-review of own code
+- [ ] Wrote the tests that prove that fix is effective/that feature works
+- [ ] The code linted with Rubocop/Fasterer/e.t.c
+- [ ] API documentation is re-generated(if some endpoints changed)
+```
 
 ---
 
@@ -748,3 +778,15 @@ git config --global alias.sup '!git branch --set-upstream-to=origin/`git symboli
 ---
 
 # The End
+
+- How to create and update repositories?
+- What is remote? How to set and change remote?
+- What is a branch? How to create, update and delete branch? How to get a branch from remote and update a branch on remote?
+- Lifecycle of the file status in git?
+- What is commit? How to create a commit? Best practices for commits
+- What is a Pull Request? How to create and merge a PR?
+- How to view the file changes, and statuses?
+- How to view the repository/branch history?
+- How to config a git?
+- How to ignore the file/folder for git?
+- How to resolve conflicts?
