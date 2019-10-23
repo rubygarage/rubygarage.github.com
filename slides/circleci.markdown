@@ -277,3 +277,139 @@ steps:
 After the completion of the job, you can see the artifacts in the tab 'Artifacts' :
 
 ![](/assets/images/ci_artifacts.png)
+
+---
+
+# Orbs
+
+--
+
+**CircleCI Orbs** are shareable packages of configuration elements, including jobs, commands, and executors. CircleCI provides certified orbs, along with 3rd-party orbs authored by CircleCI partners. It is best practice to first evaluate whether any of these existing orbs will help you in your configuration workflow. Refer to the [CircleCI Orbs Registry](https://circleci.com/orbs/registry/) for the complete list of certified orbs.
+
+--
+
+## Orb Structure
+
+Orbs consist of the following elements:
+
+- Commands
+- Jobs
+- Executors
+
+You can read about each of this features [here](https://github.com/rubygarage/circledge/blob/master/version_2_1.md)
+
+--
+
+## Sample of using orbs:
+
+Before using the orb, you need to read the documentation for use which can be found on the main page of the orb
+
+example of usage: 
+
+```yml
+version: 2.1
+orbs:
+  hello-build: circleci/hello-build@0.0.9
+workflows:
+  build:
+    jobs:
+      - hello-build/hello-build
+```
+--
+
+# How to create your own orb see [here](https://github.com/rubygarage/circledge/blob/master/orbs.md#creating-a-circleci-orb)
+
+---
+
+# Sample of CircleCi config
+
+--
+
+```yml
+version: 2.1
+
+executors:
+  default:
+    working_directory: ~/repo
+    description: The official CircleCI Ruby Docker image
+    docker:
+      - image: circleci/ruby:2.6.1-node-browsers # if you use api then you do not need 
+        environment:
+          RAILS_ENV: test
+      - image: circleci/postgres:11.3-alpine
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_db
+
+caches: 
+  - &bundle_cache v1-repo-{{ checksum "Gemfile.lock" }}
+
+commands:
+  run_linters:
+    description: command to start linters
+    steps:
+      - run: 
+          name: rubocop
+          command: bundle exec rubocop
+      - run: 
+          name: brakeman
+          command: bundle exec brakeman -q
+      - run: 
+          name: lol_dba
+          command: bundle exec lol_dba db:find_indexes
+      - run: 
+          name: rails best prctices
+          command: bundle exec rails_best_practices .
+
+  run_specs:
+    steps:
+      - run: 
+          name: run specs
+          command: |
+            mkdir /tmp/test-results
+            TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)"
+            bundle exec rspec --format progress \
+                              --out /tmp/test-results/rspec.xml \
+                              --format progress \
+                              $TEST_FILES
+  defaults:
+    steps:
+      - checkout
+      - restore_cache:
+          key: *bundle_cache
+      - run: bundle install --path vendor/bundle
+      - save_cache:
+          key: *bundle_cache
+          paths:
+            - vendor/bundle
+      - run:
+          name: Set up DB
+          command: |
+            bundle exec rake db:create
+            bundle exec rails db:schema:load
+jobs:
+  lintering:
+    executor: default
+    steps:
+      - defaults
+      - run_linters
+  run_specs:
+    executor: default
+    steps:
+      - defaults
+      - run_specs
+
+workflows:
+  version: 2.1
+  build:
+    jobs:
+      - lintering
+      - run_specs:
+          requires:
+            - lintering
+```
+
+---
+
+# The End
