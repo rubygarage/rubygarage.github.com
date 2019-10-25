@@ -1,6 +1,333 @@
 ---
 layout: slide
-title:  BDD
+title:  Feature testing
+---
+
+# Feature testing
+
+  Feature(integration) testing this is testing part of the program(feature) in which user behavior is simulated
+
+---
+
+## The difference between `unit` testing and `feature`
+
+--
+
+![](/assets/images/unit-vs-integration-tests.jpeg)
+
+**`Unit`** tests are needed to test individual sections of the program such as method, class, service, etc.
+
+**`Feature`** tests are needed to verify the interaction of program components with each other
+---
+
+# Init testing tools
+
+--
+## Add gems
+
+Gemfile <!-- .element: class="filename" -->
+```ruby
+...
+group :development, :test do
+  gem 'rspec-rails'
+end
+
+group :test do
+  gem 'capybara'
+  gem 'factory_bot_rails'
+  gem 'shoulda-matchers'
+  gem 'ffaker'
+end
+...
+```
+
+```bash
+bundle install
+```
+<!-- .element: class="command-line" -->
+
+--
+
+## Init RSpec
+
+```bash
+rails g rspec:install
+create  .rspec
+  create  spec
+  create  spec/spec_helper.rb
+```
+<!-- .element: class="command-line" data-output="2-4"-->
+
+config/application.rb <!-- .element: class="filename" -->
+```ruby
+config.generators do |g|
+  g.test_framework :rspec
+end
+```
+
+spec/rails_helper.rb <!-- .element: class="filename" -->
+```ruby
+require 'rspec/rails'
+
+RSpec.configure do |config|
+  config.use_transactional_fixtures = true
+end
+```
+
+--
+
+## It is considered good practice to transfer gem settings from the `rails_helper` to the support folder
+
+add the line below to your `rails_helper.rb` 
+
+
+```ruby
+Dir[Rails.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
+```
+
+Now we can add gem settings to a folder `spec/support` and they automatically connect.
+
+--
+
+### Add Capybara settings: 
+
+spec/support/capybara.rb <!-- .element: class="filename" -->
+```ruby
+require 'capybara/rspec'
+require 'webdrivers/chromedriver'
+
+Capybara.default_driver = :selenium_chrome
+```
+
+### The same for shoulda matchers
+
+spec/support/shoulda_matchers.rb <!-- .element: class="filename" -->
+```ruby
+require 'shoulda/matchers'
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
+end
+```
+
+---
+
+# FFaker
+
+--
+
+## FFaker is a gem that allows you to generate fake data.
+
+example:
+```ruby
+FFaker::Name.name     #=> "Christophe Bartell"
+```
+
+more about Faker [here](https://github.com/ffaker/ffaker).
+
+---
+
+# Factory bot
+
+--
+
+### This is a gem that allows you to easily create entities for testing. It works great with a `ffaker`.
+
+In order to create entities for testing, you first need to define a factory. 
+See below user factory example:
+
+spec/factories/users.rb <!-- .element: class="filename" -->
+```ruby
+FactoryBot.define do
+  factory :user do
+    email { FFaker::Internet.email }
+    password { FFaker::Internet.password }
+  end
+end
+```
+
+It is very important to observe the correct naming since the factory is trying to create an entity based on the model. The factory that we created before that will create instances of the `User` class
+--
+
+# Factory call
+
+```ruby
+build(:user)
+```
+Such a call would be equivalent to this
+```ruby
+ User.new(email: FFaker::Internet.email, password: FFaker::Internet.password)
+```
+
+--
+
+# Trait
+
+### Trait allows you to create factories with additional data for special cases.
+
+for example, create an additional column `name` in the model `User`. Now our factory call will look like this:
+
+rails c <!-- .element: class="filename" -->
+```bash
+<User:0x00007fc3082fabe8> {
+                        :id => nil,
+                        :name => "",
+                        :email => "Richard123@example.com",
+                        :password => "123456"
+                     }
+```
+
+--
+
+### Add trait to your factory:
+
+spec/factories/users.rb <!-- .element: class="filename" -->
+```ruby
+FactoryBot.define do
+  factory :user do
+    email { Faker::Internet.email }
+    password { Faker::Internet.password }
+  end
+
+  trait :with_name do
+    name { Faker::Name.name }
+  end
+end
+```
+after adding trait you can call factory with him
+```ruby
+build(:user, :with_name)
+```
+output:
+```bash
+<User:0x00007fc3082fabe8> {
+                        :id => nil,
+                        :name => "Richard Gear",
+                        :email => "Richard123@example.com",
+                        :password => "123456"
+                     }
+```
+---
+
+# Meet the Capybara
+
+--
+
+![](/assets/images/bdd/capybara.jpg) <!-- .element: style="width: 700px" -->
+
+`Capybara` is acceptance test framework for web applications.
+
+Capybara helps to test web applications by simulating how a real user would interact with an app.
+
+Test your app with [Capybara](https://github.com/teamcapybara/capybara)
+
+--
+
+## Capybara Drivers
+
+By default, Capybara uses the ```:rack_test``` driver, which is fast but limited: it does not support JavaScript, nor is it able to access HTTP resources outside of your Rack application, such as remote APIs and OAuth services. To get around these limitations, you can set up a different default driver for your features.
+```ruby
+Capybara.default_driver = :selenium
+```
+- `:selenium` => Selenium driving Firefox
+- `:selenium_headless` => Selenium driving Firefox in a headless configuration
+- `:selenium_chrome` => Selenium driving Chrome
+- `:selenium_chrome_headless` => Selenium driving Chrome in a headless configuration
+
+In order to use Selenium, you'll need to install the `selenium-webdriver` gem.
+
+---
+
+# Page Objects with SitePrism
+
+--
+
+## SitePrism
+
+ [SitePrism](https://github.com/site-prism/site_prism) gives you a simple, clean and semantic DSL for describing your site using the Page Object Model pattern, for use with Capybara in automated acceptance testing.
+
+--
+
+## Page Object Model
+  The Page Object Model is a test automation pattern that aims to create an abstraction of your site's user interface that can be used in tests. The most common way to do this is to model each page as a class, and to then use instances of those classes in your tests.
+
+--
+
+## Setup SitePrism
+
+If you're using rspec instead, here's what needs requiring:
+```ruby
+require 'capybara'
+require 'capybara/rspec'
+require 'selenium-webdriver'
+require 'site_prism'
+```
+
+--
+
+## Usage example:
+
+define the page object:
+
+/spec/support/pages/sign_up_page.rb<!-- .element: class="filename" -->
+```ruby
+class SignUpPage < SitePrism::Page
+  element :user_email_field, "input[id='user_email']"
+  element :user_password_field, "input[id='user_password']"
+  element :user_password_confirmation_field, "input[id='user_password_confirmation']"
+  set_url '/users/sign_up'
+
+  def sign_up(useremail, password, confirm_password = password)
+    user_email_field.set(useremail)
+    user_password_field.set(password)
+    user_password_confirmation_field.set(confirm_password)
+    click_on(I18n.t('user.registration.sign_up'))
+  end
+end
+```
+--
+
+## Add page object to spec:
+
+```ruby
+RSpec.describe 'Sign up', type: :feature do
+  let(:sign_up_page) { SignUpPage.new }
+  let(:user_attrs) { attributes_for(:user) }
+
+  before{ sign_up_page.load }
+  
+  scenario 'succsessful sign up' do
+    sign_up_page.sign_up(user_attrs[:email], user_attrs[:password])
+    expect(User.count).to eq(1)
+  end
+end
+```
+
+--
+
+## The same test, but without page object
+
+```ruby
+RSpec.describe 'Sign up', type: :feature do
+  let(:user_attrs) { attributes_for(:user) }
+
+  before { visit sign_up_path }
+
+  it 'User try to sign up with valid data' do
+    expect(page).to have_content I18n.t('devise.sign_up')
+    within('.general-form') do
+      fill_in 'user_email', with: user_attrs[:email]
+      fill_in 'user_password', with: user_attrs[:password]
+      fill_in 'user_password_confirmation', with: user_attrs[:password]
+    end
+    click_on(I18n.t('user.registration.sign_up'))
+    expect(User.count).to eq(1)
+  end
+end
+```
+
 ---
 
 # Behavior-driven development
@@ -36,131 +363,33 @@ title:  BDD
 
 ---
 
-# Init environment
+# BDD example
 
 --
 
-## Create gemset
+## User story:
 
-```bash
-rvm use 2.3.4@bookstore --create
-Using /Users/sparrow/.rvm/gems/ruby-2.3.4 with gemset bookstore
-```
-<!-- .element: class="command-line" data-output="2" -->
+Sign up
 
---
+On this page are placed:
+Email, Password and
+Sign up button.
 
-## Install Rails
+Given The user is a guest
+When he wants to register a new account
+And he clicks the Sign up link.
 
-```bash
-gem install --no-rdoc --no-ri rails
-```
-<!-- .element: class="command-line" -->
-
---
-
-## Create Application
-
-```bash
-rails new bookstore --skip-bundle -T
-```
-<!-- .element: class="command-line" -->
+When the user wants to register a new account using Email
+And the user enters his email address into the Email field,
+And enters a password into the Password field,
+Then he clicks the Sign Up button 
+And a new account will be created, the user will be logged in.
 
 --
-
-## Add gems
-
-Gemfile <!-- .element: class="filename" -->
-```ruby
-...
-group :development, :test do
-  gem 'rspec-rails'
-end
-
-group :test do
-  gem 'capybara'
-  gem 'database_cleaner'
-  gem 'shoulda-matchers'
-  gem 'faker'
-end
-...
-```
-
-```bash
-bundle install
-```
-<!-- .element: class="command-line" -->
-
----
-
-# Init testing tools
-
---
-
-## Init RSpec
-
-```bash
-rails g rspec:install
-create  .rspec
-  create  spec
-  create  spec/spec_helper.rb
-```
-<!-- .element: class="command-line" data-output="2-4"-->
-
-config/application.rb <!-- .element: class="filename" -->
-```ruby
-config.generators do |g|
-  g.test_framework :rspec
-end
-```
-
---
-
-spec/spec_helper.rb <!-- .element: class="filename" -->
-```ruby
-RSpec.configure do |config|
-  config.use_transactional_fixtures = false
-
-  config.before(:suite) do
-    DatabaseCleaner.clean_with(:truncation)
-    DatabaseCleaner.strategy = :transaction
-  end
-
-  config.before(:each) do
-    DatabaseCleaner.start
-  end
-
-  config.after(:each) do
-    DatabaseCleaner.clean
-  end
-end
-```
-
-spec/features/features_spec_helper.rb <!-- .element: class="filename" -->
-```ruby
-require 'spec_helper'
-require 'capybara/rspec'
-```
-
----
-
-# Meet the Capybara
-
---
-
-![](/assets/images/bdd/capybara.jpg) <!-- .element: style="width: 700px" -->
-
-`Capybara` is acceptance test framework for web applications.
-
-Capybara helps to test web applications by simulating how a real user would interact with an app.
-
-Test your app with [Capybara](http://teamcapybara.github.io/capybara/)
-
----
 
 # Registration feature
 
-specs/features/registration_spec.rb <!-- .element: class="filename" -->
+spec/features/registration_spec.rb <!-- .element: class="filename" -->
 
 ```ruby
 feature 'Registration' do
@@ -185,7 +414,7 @@ NameError:
 ```
 <!-- .element: class="command-line" data-output="2-3"-->
 
----
+--
 
 # Fix `register_path` error
 
@@ -203,7 +432,7 @@ ActionController::RoutingError:
 ```
 <!-- .element: class="command-line" data-output="2-3"-->
 
----
+--
 
 # Fix uninitialized constant UsersController
 
@@ -220,7 +449,7 @@ AbstractController::ActionNotFound:
 ```
 <!-- .element: class="command-line" data-output="2-3"-->
 
----
+--
 
 # Fix the action 'new' could not be found for UsersController
 
@@ -238,7 +467,7 @@ Missing template users/new, application/new
 ```
 <!-- .element: class="command-line" data-output="2"-->
 
----
+--
 
 # Fix missing template 'users/new'
 
@@ -251,120 +480,128 @@ Capybara::ElementNotFound:
 ```
 <!-- .element: class="command-line" data-output="2-3"-->
 
----
 
-# View specs
+--
 
-spec/views/users/new_spec.rb <!-- .element: class="filename" -->
+# Fix the action 'create' could not be found error
+
+--
+
+app/controllers/users_controller.rb <!-- .element: class="filename" -->
 ```ruby
-describe 'users/new.html.erb' do
-  it 'has new_user form' do
-    user = double("User")
-    assign(:user, user)
-    render
-    expect(rendered).to have_selector('form#new_user')
+class UsersController < ApplicationController
+
+  # ...
+
+  def create
+    @user = User.new(user_params)
+
+    if @user.save
+      session[:user_id] = @user.id
+      redirect_to root_url, notice: "You registered"
+    else
+      flash.now[:error] = "Something went wrong"
+      render :new
+    end
+  end
+
+  private
+
+  def user_params
+    params.require(:user).permit(:email, :password)
   end
 end
 ```
 
+```bash
+rspec spec/controllers/users_controller_spec.rb
+NameError:
+  undefined local variable or method 'root_url' for #<UsersController:0x007fbacc9f1918>
+```
+<!-- .element: class="command-line" data-output="2-3"-->
+
 --
 
-```bash
-rspec spec/views/users/new_spec.rb
-Capybara::ExpectationNotMet:
-  expected to find css "form#new_user" but there were no matches
-```
-<!-- .element: class="command-line" data-output="2-3"-->
-
-app/views/users/new.html.erb <!-- .element: class="filename" -->
-```html
-<%= form_for @user do |f| %>
-<%- end %>
-```
-
-```bash
-rspec spec/views/users/new_spec.rb
-ActionView::Template::Error:
-   undefined method 'users_path' for #<#<Class:0x007f91f5982a68>:0x007f91f5a36e78>
-```
-<!-- .element: class="command-line" data-output="2-3"-->
+# Fix undefined local variable or method 'root_url' error
 
 config/routes.rb <!-- .element: class="filename" -->
 ```ruby
 Bookstore::Application.routes.draw do
   get 'register', to: 'users#new', as: 'register'
   resources :users
-end
-```
-
-```bash
-rspec spec/views/users/new_spec.rb
-1 example, 0 failures
-```
-<!-- .element: class="command-line" data-output="2-3"-->
-
----
-
-# More view specs
-
-spec/views/users/new_spec.rb <!-- .element: class="filename" -->
-
-```ruby
-describe 'users/new.html.erb' do
-  let(:user) { double("User") }
-
-  before do
-    allow(user).to receive(:email)
-    allow(user).to receive(:password)
-    assign(:user, user)
-    render
-  end
-
-  it 'has new_user form' do
-    expect(rendered).to have_selector('form#new_user')
-  end
-
-  it 'has user_email field' do
-    expect(rendered).to have_selector('#user_email')
-  end
-
-  it 'has user_password field' do
-    expect(rendered).to have_selector('#user_password')
-  end
-
-  it 'has register button' do
-    expect(rendered).to have_selector('input[type="submit"]')
-  end
+  root 'pages#home'
 end
 ```
 
 --
 
-app/views/users/new.html.erb <!-- .element: class="filename" -->
-```html
-<%= form_for @user do |f| %>
-  <%= f.email_field :email %>
-  <%= f.password_field :password %>
-  <%= f.submit "Sign up" %>
-<%- end %>
+app/controllers/pages_controller.rb <!-- .element: class="filename" -->
+```ruby
+class PagesController < ApplicationController
+  def home
+  end
+end
 ```
 
-Run views
-
+`app/views/pages/home.html.erb` created
 ```bash
-rspec spec/views/users/new_spec.rb
-4 examples, 0 failures
-```
-<!-- .element: class="command-line" data-output="2"-->
+rspec spec/controllers/users_controller_spec.rb
+6 examples, 0 failures
 
-Run features
+rspec spec/features/registration_spec.rb
+Failure/Error: expect(page).to have_content 'Sign out'
+  expected to find text "Sign out" in ""
+```
+<!-- .element: class="command-line" data-output="2-3,5-6"-->
+
+--
+
+# Fix expected to find text <br> 'Sign out'
+
+app/views/lououts/application.html.erb <!-- .element: class="filename" -->
+```html
+# ...
+<body>
+  <%- if session[:user_id].present? %>
+    <%= link_to 'Sign out', '#' %>
+  <%- else %>
+    <%= link_to 'Sign up', register_path %>
+  <%- end %>
+
+  <%= yield %>
+</body>
+# ...
+```
+
+```bash$
+rspec spec/features/registration_spec.rb
+Failure/Error: expect(page).to have_content 'You registered'
+  expected to find text "You registered" in "Sign out"
+```
+<!-- .element: class="command-line" data-output="2-3"-->
+
+--
+
+# Fix expected to find text <br> 'You registered'
+
+app/views/lououts/application.html.erb <!-- .element: class="filename" -->
+```html
+# ...
+<body>
+  # ...
+  <% if flash[:notice].present? %>
+    <div id="notice"><%= flash[:notice] %></div>
+  <% end %>
+  # ...
+</body>
+# ...
+```
 
 ```bash
 rspec spec/features/registration_spec.rb
-ActionView::Template::Error:
-  First argument in form cannot contain nil or be empty
+1 example, 0 failures
 ```
-<!-- .element: class="command-line" data-output="2-3"-->
+<!-- .element: class="command-line" data-output="2"-->
 
 ---
 
@@ -416,7 +653,7 @@ NameError:
 
 spec/models/user_spec.rb <!-- .element: class="filename" -->
 ```ruby
-describe User do
+RSpec.describe User, type: :model do
   let(:user) { User.new }
 
   it { expect(user).to validate_presence_of(:email) }
@@ -461,170 +698,21 @@ AbstractController::ActionNotFound:
 ```
 <!-- .element: class="command-line" data-output="2-3,5-6,8-9"-->
 
----
-
-# Fix the action 'create' could not be found error
-
 --
 
-spec/controllers/users_controller_spec.rb <!-- .element: class="filename" -->
+## Model spec by shoulda matchers
+
+spec/models/user_spec.rb <!-- .element: class="filename" -->
 ```ruby
-describe UsersController do
-
-  # ...
-
-  describe 'POST create' do
-    let(:params) { { email: Faker::Internet.email, password: '12345678' } }
-    let(:user) { double('User', params) }
-
-    before { allow(User).to receive(:new).and_return(user) }
-
-    it 'sends save message to user model' do
-      expect(user).to receive(:save)
-      post :create, params: { user: params }
-    end
-
-    context 'when save message returns true' do
-      before do
-        allow(user).to receive(:save).and_return(true)
-        post :create, params: { user: params }
-      end
-
-      it 'redirects to root url' do
-        expect(response).to redirect_to root_url
-      end
-
-      it 'assings a success flash message' do
-        expect(flash[:notice]).not_to be_nil
-      end
-
-      it 'logs in user' do
-        expect(session[:user_id]).to eq(user.id)
-      end
-    end
-  end
+RSpec.describe User, type: :model do
+  it { is_expected.to validate_presence_of(:email) }
+  it { is_expected.to validate_uniqueness_of(:email) }
+  it { is_expected.to validate_presence_of(:password) }
 end
 ```
 
---
-
-app/controllers/users_controller.rb <!-- .element: class="filename" -->
-```ruby
-class UsersController < ApplicationController
-
-  # ...
-
-  def create
-    @user = User.new(user_params)
-
-    if @user.save
-      session[:user_id] = @user.id
-      redirect_to root_url, notice: "You registered"
-    else
-      flash.now[:error] = "Something went wrong"
-      render :new
-    end
-  end
-
-  private
-
-  def user_params
-    params.require(:user).permit(:email, :password)
-  end
-end
-```
-
-```bash
-rspec spec/controllers/users_controller_spec.rb
-NameError:
-  undefined local variable or method 'root_url' for #<UsersController:0x007fbacc9f1918>
-```
-<!-- .element: class="command-line" data-output="2-3"-->
-
 ---
 
-# Fix undefined local variable or method 'root_url' error
-
-config/routes.rb <!-- .element: class="filename" -->
-```ruby
-Bookstore::Application.routes.draw do
-  get 'register', to: 'users#new', as: 'register'
-  resources :users
-  root 'pages#home'
-end
-```
-
---
-
-app/controllers/pages_controller.rb <!-- .element: class="filename" -->
-```ruby
-class PagesController < ApplicationController
-  def home
-  end
-end
-```
-
-`app/views/pages/home.html.erb` created
-```bash
-rspec spec/controllers/users_controller_spec.rb
-6 examples, 0 failures
-
-rspec spec/features/registration_spec.rb
-Failure/Error: expect(page).to have_content 'Sign out'
-  expected to find text "Sign out" in ""
-```
-<!-- .element: class="command-line" data-output="2-3,5-6"-->
-
----
-
-# Fix expected to find text <br> 'Sign out'
-
-app/views/lououts/application.html.erb <!-- .element: class="filename" -->
-```html
-# ...
-<body>
-  <%- if session[:user_id].present? %>
-    <%= link_to 'Sign out', '#' %>
-  <%- else %>
-    <%= link_to 'Sign up', register_path %>
-  <%- end %>
-
-  <%= yield %>
-</body>
-# ...
-```
-
-```bash$
-rspec spec/features/registration_spec.rb
-Failure/Error: expect(page).to have_content 'You registered'
-  expected to find text "You registered" in "Sign out"
-```
-<!-- .element: class="command-line" data-output="2-3"-->
-
----
-
-# Fix expected to find text <br> 'You registered'
-
-app/views/lououts/application.html.erb <!-- .element: class="filename" -->
-```html
-# ...
-<body>
-  # ...
-  <% if flash[:notice].present? %>
-    <div id="notice"><%= flash[:notice] %></div>
-  <% end %>
-  # ...
-</body>
-# ...
-```
-
-```bash
-rspec spec/features/registration_spec.rb
-1 example, 0 failures
-```
-<!-- .element: class="command-line" data-output="2"-->
-
----
 
 # Homework
 
