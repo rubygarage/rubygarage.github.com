@@ -99,9 +99,9 @@ title: Ruby presentations
   <small>Modules, Semantics and Grids</small>
 -->
 
-- [BDD in Rails](/slides/bdd)
+- [feature testing in Rails](/slides/bdd)
   <br>
-  <small>Learn how to do behavior-driven development in Rails.</small>
+  <small>Learn how to do feature tests in Rails.</small>
 
 
 - [Devise](/slides/devise)

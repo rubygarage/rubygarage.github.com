@@ -51,10 +51,7 @@ bundle install
 ## Init RSpec
 
 ```bash
-rails g rspec:install
-create  .rspec
-  create  spec
-  create  spec/spec_helper.rb
+$ rails g rspec:install
 ```
 <!-- .element: class="command-line" data-output="2-4"-->
 
@@ -73,6 +70,7 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = true
 end
 ```
+Transactional fixtures simply wrap each test in a database transaction and start a rollback at the end of it, reverting the database back to the state it was in before the test. 
 
 --
 
@@ -256,6 +254,11 @@ In order to use Selenium, you'll need to install the `selenium-webdriver` gem.
 --
 
 ## Setup SitePrism
+
+Add gem to gemfile
+```ruby
+  gem 'site_prism'
+```
 
 If you're using rspec instead, here's what needs requiring:
 ```ruby
