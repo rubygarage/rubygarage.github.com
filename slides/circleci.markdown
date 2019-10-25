@@ -73,6 +73,15 @@ jobs:
       - image: redis
 ```
 
+in version `2.1` you can use `executor`
+```yml
+executors:
+  default:
+    docker:
+      - image: circleci/ruby:2.6.1-node-browsers
+      - image: circleci/postgres:11.3-alpine
+```
+
 ---
 
 # Environment variables
@@ -85,6 +94,8 @@ Do not add secrets or keys inside the `.circleci/config.yml` file. The full text
 
 --
 ## Setting an Environment Variable in a Step, Job, Container
+
+.circleci/config.yml<!-- .element: class="filename" -->
 ```yml
 version: 2
 jobs:
@@ -132,6 +143,7 @@ Automatic dependency caching is not available in CircleCI 2.0, so it is importan
 
 ## Сache saving example
 
+.circleci/config.yml<!-- .element: class="filename" -->
 ```yml
     steps:
       - restore_cache:
@@ -206,6 +218,8 @@ Jobs have a maximum runtime of 5 hours. If your jobs are timing out, consider ru
 
 --
 ## Sample of job:
+
+.circleci/config.yml<!-- .element: class="filename" -->
 ```yml
 jobs:
   lintering:
@@ -234,6 +248,8 @@ With workflows, you can:
 
 --
 ## Sample of workflow:
+
+.circleci/config.yml<!-- .element: class="filename" -->
 ```yml
 workflows:
   version: 2
@@ -261,6 +277,8 @@ Currently, `store_artifacts` has two keys:
 --
 
 ## Usage example:
+
+.circleci/config.yml<!-- .element: class="filename" -->
 ```yml
 steps:
   - run: 
@@ -306,6 +324,7 @@ Before using the orb, you need to read the documentation for use which can be fo
 
 example of usage: 
 
+.circleci/config.yml<!-- .element: class="filename" -->
 ```yml
 version: 2.1
 orbs:
@@ -324,7 +343,7 @@ workflows:
 # Sample of CircleCi config
 
 --
-
+.circleci/config.yml<!-- .element: class="filename" -->
 ```yml
 version: 2.1
 
@@ -412,4 +431,20 @@ workflows:
 
 ---
 
-# The End
+# Control questions
+
+- How to connect CircleCi to GitHub
+
+- How to set the environment? What is an image and what are they?
+
+- How to set variables? Where can I set the variable so that it is not visible to other users?
+
+- What is a job? What can they contain?
+
+- Why is workflow? What are the pros and cons of using more than one `job` in workflow?
+
+- What is caching for? What is cached in rail applications?
+
+- What are artifacts? What are they used for?
+
+- What are orbs? How to use orbs?
