@@ -52,6 +52,12 @@ title: Git
 
 ---
 
+# File status lifecycle
+
+![](/assets/images/git/basics/file-status-lifecycle.png)
+
+---
+
 # What is commit?
 
 > A "commit" is a snapshot of your files. Stores the current contents of the index in a new commit along with a log message from the user describing the changes.
@@ -559,6 +565,88 @@ origin	git@github.com:rubygarage/repo-example.git (push)
 
 ---
 
+# Pull Requests
+
+> Pull requests let you tell others about changes you've pushed to a branch in a repository on GitHub.<br />
+> Once a pull request is opened, you can discuss and review the potential changes with collaborators and add follow-up commits before your changes are merged into the base branch.
+
+---
+
+# Creating the pull request
+
+- On GitHub, navigate to the main page of the repository.
+
+- In the "Branch" menu, choose the branch that contains your commits.<br/> ![](/assets/images/git/basics/pr-branch-dropdown.png)
+
+- To the right of the Branch menu, click **New pull request**.<br/> ![](/assets/images/git/basics/pr-new.png)
+
+---
+
+# Creating the pull request
+
+- Use the **base** branch dropdown menu to select the branch you'd like to merge your changes into, <br/>
+then use the **compare** branch drop-down menu to choose the topic branch you made your changes in.<br/> ![](/assets/images/git/basics/pr-choose-branch.png)
+
+- Type a title and description for your pull request.<br/> ![](/assets/images/git/basics/pr-title-description.png)
+
+- Click **Create Pull Request**.
+
+---
+
+# Pull Requests best practices
+
+- Don't build too [complex Pull Requests](https://www.igvita.com/2011/12/19/dont-push-your-pull-requests/)
+- Don't create too complex commits. 300-600 lines of changed code is acceptable.
+- Good commit messages and Pull Request titles
+- Do not resolve the comments if no changes are done. Add a comment before clicking Resolve button ![](/assets/images/git/basics/pr-resolve-conversation.png)
+- Check where do you merge. What's the base branch?
+- Add tags to the pull request
+- Use Pull Request templates
+
+---
+
+# Pull Request template
+
+You can either add the PR template in the root directory itself or in a folder named `docs/` or `.github/`.
+In order for Github to automatically pick up the formatting from the markdown file for PR templates, you must name the file `pull_request_template.md`.
+
+```shell
+JIRA ticket - [Replace this text by the JIRA tiket URL]
+
+### Actions for Code run
+
+F.E - copy database
+
+### Rake Tasks
+
+If PR contains Rake tasks/seeds describe them below
+
+### Before submitting the merge request make sure the following are checked
+
+- [ ] Followed the style guidelines of this project
+- [ ] Performed a self-review of own code
+- [ ] Wrote the tests that prove that fix is effective/that feature works
+- [ ] The code linted with Rubocop/Fasterer/e.t.c
+- [ ] API documentation is re-generated(if some endpoints changed)
+```
+
+---
+
+# Commit message best practices
+
+1. Separate subject from body with a blank line
+2. Limit the subject line to 50 characters
+3. Capitalize the subject line
+4. Do not end the subject line with a period
+5. Use the imperative mood in the subject line
+6. Wrap the body at 72 characters
+7. Use the body to explain **what** and **why** vs. **how**
+
+Example: `Fix typo in introduction to user guide`
+
+https://chris.beams.io/posts/git-commit/
+---
+
 # Conflicts
 
 > Merge conflicts may occur if competing changes are made to the same line of a file or when a file is deleted that another person is attempting to edit.
@@ -686,6 +774,22 @@ git config --global alias.l 'log --graph --decorate --abbrev-commit --date="form
 git config --global alias.s 'status --short --branch'
 git config --global alias.sup '!git branch --set-upstream-to=origin/`git symbolic-ref --short HEAD`'
 ```
+
+---
+
+# Control questions
+
+- How to create and update repositories?
+- What is remote? How to set and change remote?
+- What is a branch? How to create, update and delete branch? How to get a branch from remote and update a branch on remote?
+- Lifecycle of the file status in git?
+- What is commit? How to create a commit? Best practices for commits
+- What is a Pull Request? How to create and merge a PR?
+- How to view the file changes, and statuses?
+- How to view the repository/branch history?
+- How to config a git?
+- How to ignore the file/folder for git?
+- How to resolve conflicts?
 
 ---
 
