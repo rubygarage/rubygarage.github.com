@@ -777,7 +777,7 @@ git config --global alias.sup '!git branch --set-upstream-to=origin/`git symboli
 
 ---
 
-# The End
+# Control questions
 
 - How to create and update repositories?
 - What is remote? How to set and change remote?
@@ -790,3 +790,7 @@ git config --global alias.sup '!git branch --set-upstream-to=origin/`git symboli
 - How to config a git?
 - How to ignore the file/folder for git?
 - How to resolve conflicts?
+
+---
+
+# The End
