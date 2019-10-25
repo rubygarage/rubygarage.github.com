@@ -99,7 +99,7 @@ title: Ruby presentations
   <small>Modules, Semantics and Grids</small>
 -->
 
-- [feature testing in Rails](/slides/bdd)
+- [Feature Testing in Rails](/slides/feature_testing)
   <br>
   <small>Learn how to do feature tests in Rails.</small>
 
