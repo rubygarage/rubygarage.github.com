@@ -9,12 +9,13 @@ title: Continuous integration
 
 # Why do we use that?
 
-You have a project. You have a team working on this project. Your team deliver some amount of features/per day/per week/ per sprint. All participants of your team want to be sure that your repository contains stable and covered with specs code.
+-  You have a team working on this project. Your team deliver some amount of features/per day/per week/ per sprint.
+-  All participants of your team want to be sure that your repository contains stable and covered with specs code.
 
 --
 
-## Under control!
-All of these cases could be handled with continuous strategies!
+## Under control
+All of these cases could be handled with continuous strategies
 
 - Continuous integration
 - Continuous delivery
@@ -47,10 +48,15 @@ Each check-in is then verified by an automated build, allowing teams to detect p
 # Continuous delivery
 Continuous delivery is an extension of continuous integration to make sure that you can release new changes to your customers quickly in a sustainable way. This means that on top of having automated your testing, you also have automated your release process and you can deploy your application at any point of time by clicking on a button.
 
+### CD(delivery) = CI + Autodeploy to staging
+
+
 ---
 
 # Continuous deployment
 Continuous deployment goes one step further than continuous delivery. With this practice, every change that passes all stages of your production pipeline is released to your customers. There's no human intervention, and only a failed test will prevent a new change to be deployed to production.
+
+### CD(deployment) = CI + Autodeploy to production
 
 ---
 

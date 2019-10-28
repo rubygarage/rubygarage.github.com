@@ -7,6 +7,8 @@ title: CircleCi
 
 --
 
+![](/assets/images/circleci/circleci-logo-stacked-fb.png)
+
 Continuous integration [service](https://circleci.com/) for web and mobile applications. The service allows you to flexibly configure assembly testing.
 
 CircleCI integrates with a VCS and automatically runs a series of steps every time that it detects a change to your repository.
@@ -78,12 +80,6 @@ jobs:
 # Environment variables
 
 --
-
-## **Remember!** 
-
-Do not add secrets or keys inside the `.circleci/config.yml` file. The full text of `config.yml` is visible to developers with access to your project on CircleCI. Store secrets or keys in [project](https://github.com/rubygarage/circledge/blob/master/intro_to_circleci.md#setting-an-environment-variable-in-a-project) or [context](https://github.com/rubygarage/circledge/blob/master/intro_to_circleci.md#setting-an-environment-variable-in-a-context) settings in the CircleCI app.
-
---
 ## Setting an Environment Variable in a Step, Job, Container
 ```yml
 version: 2
@@ -116,17 +112,29 @@ The built-in environment variables are exported in each build and can be used fo
 
 The list of buil-in variables you can see [here](https://circleci.com/docs/2.0/env-vars/#built-in-environment-variables)
 
+--
+
+## **Remember!** 
+
+Do not add secrets or keys inside the `.circleci/config.yml` file. 
+
+The full text of `config.yml` is visible to developers with access to your project on CircleCI.
+
+Store secrets or keys in [project](https://github.com/rubygarage/circledge/blob/master/intro_to_circleci.md#setting-an-environment-variable-in-a-project) or [context](https://github.com/rubygarage/circledge/blob/master/intro_to_circleci.md#setting-an-environment-variable-in-a-context) settings in the CircleCI app.
+
+
 ---
 
 # Caching
 
 --
 
-Caching is one of the most effective ways to make jobs faster on CircleCI by reusing the data from expensive fetch operations from previous jobs.
+![](/assets/images/circleci/why_not_cache_it.jpeg)
+
+**Caching** is one of the most effective ways to make jobs faster on CircleCI by reusing the data from expensive fetch operations from previous jobs.
 
 A good example is package dependency managers such as Yarn, Bundler, or Pip. With dependencies restored from a cache, commands like yarn install will only need to download new dependencies, if any, and not redownload everything on every build.
 
-Automatic dependency caching is not available in CircleCI 2.0, so it is important to plan and implement your caching strategy to get the best performance. Manual configuration in 2.0 enables more advanced strategies and finer control.
 
 --
 
@@ -136,16 +144,15 @@ Automatic dependency caching is not available in CircleCI 2.0, so it is importan
     steps:
       - restore_cache:
           keys:
-            - source-v1-{{ .Branch }}-{{ .Revision }}
-            - source-v1-{{ .Branch }}-
+            - source-v1-{{ checksum "Gemfile.lock" }}
             - source-v1-
 
-      - checkout
+      - run: bundle install --path vendor/bundle
 
       - save_cache:
-          key: source-v1-{{ .Branch }}-{{ .Revision }}
+          key: source-v1-{{ checksum "Gemfile.lock" }}
           paths:
-            - ".git"
+            - vendor/bundle
 ```
 
 --
@@ -161,13 +168,39 @@ change to
   - v2-npm-deps-{{ checksum "package-lock.json" }}
 ```
 
+--
+
+## Additional info about cache
+
+- Сache is stored on the local machine CircleCi
+
+- 1 month cache lifetime
+
+- Use `cache` key for define names of you cache. example:
+
+```yml
+caches: 
+  - &bundle_cache v1-repo-{{ checksum "Gemfile.lock"  }}
+
+commands:
+  setup_env:
+    steps:
+      - checkout
+      - restore_cache:
+          key: *bundle_cache
+```
+
 ---
 
 # Steps
 
 --
 
-`Steps` are a collection of executable commands which are run during a job. The steps setting in a job should be a list of single key/value pairs, the key of which indicates the step type. The value may be either a configuration map or a string (depending on what that type of step requires).
+![](/assets/images/circleci/steps.png)
+
+`Steps` are a collection of executable commands which are run during a job/command. 
+
+If one step exit with code 1(failed), then the next ones will not be executed.
 
 --
 
@@ -188,6 +221,45 @@ jobs:
       - run: make test
 ```
 
+--
+## Predefined steps:
+
+- [checkout](https://circleci.com/docs/2.0/configuration-reference/#checkout)
+- [save_cache](https://circleci.com/docs/2.0/configuration-reference/#save_cache)
+- [restore_cache](https://circleci.com/docs/2.0/configuration-reference/#restore_cache)
+- [persist_to_workspace](https://circleci.com/docs/2.0/configuration-reference/#persist_to_workspace)
+- [attach_workspace](https://circleci.com/docs/2.0/configuration-reference/#attach_workspace)
+- [add_ssh_keys](https://circleci.com/docs/2.0/configuration-reference/#add_ssh_keys)
+
+--
+
+## Best Practices
+
+### Use predefined steps instead of defining steps in the job
+
+Use:
+```yml
+commands:
+  run_linters:
+    steps:
+      - run: bundle exec rubocop
+      - run: bundle exec brakeman -q
+jobs:
+  build:
+    executor: default
+    steps:
+      - run_linters
+```
+Instead:
+```yml
+jobs:
+  build:
+    executor: default
+    steps:
+      - run: bundle exec rubocop
+      - run: bundle exec brakeman -q
+```
+
 more about steps you can see [here](https://github.com/rubygarage/circledge/blob/master/intro_to_circleci.md#steps)
 
 ---
@@ -195,14 +267,19 @@ more about steps you can see [here](https://github.com/rubygarage/circledge/blob
 # Jobs
 
 --
+### Job User Interface
+
+![](/assets/images/circleci/job-ui.png)
 
 **Job** is a collection of Steps. All of the steps in the job are executed in a single unit which consumes a CircleCI container from your while it’s running.
 
-If you are using Workflows, jobs must have a name that is unique within the `.circleci/config.yml` file.
+--
 
-If you are **not** using workflows, the jobs map must contain a job named `build`. This `build` job is the default entry-point for a run that is triggered by a push to your VCS provider.
+## Job rules:
 
-Jobs have a maximum runtime of 5 hours. If your jobs are timing out, consider running some of them in parallel.
+- If you are using Workflows, jobs must have a name that is unique within the `.circleci/config.yml` file.
+
+- If you are **not** using workflows, the jobs map must contain a job named `build`. This `build` job is the default entry-point for a run that is triggered by a push to your VCS provider.
 
 --
 ## Sample of job:
@@ -211,7 +288,7 @@ jobs:
   lintering:
     executor: default
     steps:
-      - defaults
+      - setup_environment
       - run_linters
 ```
 
@@ -223,9 +300,13 @@ more about job you can see [here](https://github.com/rubygarage/circledge/blob/m
 
 --
 
-A **workflow** is a set of rules for defining a collection of jobs and their run order. Workflows support complex job orchestration using a simple set of configuration keys to help you resolve failures sooner.
+![](/assets/images/circleci/workflow.png)
 
-With workflows, you can:
+A **workflow** is a set of rules for defining a collection of jobs and their run order.
+
+--
+
+## With workflows, you can:
 
 - Run and troubleshoot jobs independently with real-time status feedback.
 - Schedule workflows for jobs that should only run periodically.
@@ -233,14 +314,17 @@ With workflows, you can:
 - Fan-in to quickly deploy to multiple platforms.
 
 --
+
 ## Sample of workflow:
 ```yml
 workflows:
-  version: 2
-  build_and_test:
+  version: 2.1
+  build:
     jobs:
-      - build
-      - test
+      - lintering
+      - run_specs:
+          requires:
+            - lintering
 ```
 more about workflow [here](https://github.com/rubygarage/circledge/blob/master/intro_to_circleci.md#workflows)
 
@@ -276,15 +360,102 @@ steps:
 
 After the completion of the job, you can see the artifacts in the tab 'Artifacts' :
 
-![](/assets/images/ci_artifacts.png)
+![](/assets/images/circleci/ci_artifacts.png)
 
+---
+
+# Project Configuration
+
+--
+
+## Overview
+
+To support the open source community, projects that are public on GitHub or Bitbucket receive three free build containers, for a total of four containers. 
+
+Only one container is available for private repositories
+
+--
+
+## Only Build Pull Requests
+
+By default, CircleCI builds every commit from every branch. 
+
+This behavior may be too aggressive for open source projects, which often have significantly more commits than private projects. 
+
+To change this setting, go to the Advanced Settings of your project and set the Only build pull requests option to On.
+
+--
+
+## Auto-cancel redundant builds
+
+Automatically closes all old build for some branch/PR if there is a newer one
+
+Pipelines must be enabled in order to use this feature.
+
+--
+
+## Recommended configurations:
+
+- ✓ Auto-cancel redundant builds
+- ✓ Only build pull requests
+- ✓ GitHub Status updates
+- ✓ Enable pipelines
+
+---
+
+# Debugging with SSH
+
+--
+
+![](/assets/images/circleci/ssh-client-server.jpg)
+
+Often the best way to troubleshoot problems is to SSH into a job and inspect things like log files, running processes, and directory paths.
+
+### How to connect via SSH see [here](https://github.com/rubygarage/circledge/blob/master/debugging_with_ssh.md)
+
+---
+# Parallelism
+
+--
+
+If your project has a large number of tests, it will need more time to run them on one machine. 
+
+To reduce this time, you can run tests in parallel by spreading them across multiple machines. 
+
+![](/assets/images/circleci/test_splitting.png)
+
+--
+To run a job’s steps in parallel, set the `parallelism` key to a value greater than 1.
+
+example:
+
+```yml
+jobs:
+  lintering:
+    executor: default
+    steps:
+      - defaults
+      - run_linters
+  run_specs:
+    executor: default
+    parallelism: 2
+    steps:
+      - defaults
+      - run_specs
+```
 ---
 
 # Orbs
 
 --
 
-**CircleCI Orbs** are shareable packages of configuration elements, including jobs, commands, and executors. CircleCI provides certified orbs, along with 3rd-party orbs authored by CircleCI partners. It is best practice to first evaluate whether any of these existing orbs will help you in your configuration workflow. Refer to the [CircleCI Orbs Registry](https://circleci.com/orbs/registry/) for the complete list of certified orbs.
+**CircleCI Orbs** are shareable packages of configuration elements, including jobs, commands, and executors. 
+
+CircleCI provides certified orbs, along with 3rd-party orbs authored by CircleCI partners. 
+
+It is best practice to first evaluate whether any of these existing orbs will help you in your configuration workflow.
+
+Refer to the [CircleCI Orbs Registry](https://circleci.com/orbs/registry/) for the complete list of certified orbs.
 
 --
 
@@ -317,7 +488,41 @@ workflows:
 ```
 --
 
-# How to create your own orb see [here](https://github.com/rubygarage/circledge/blob/master/orbs.md#creating-a-circleci-orb)
+## How to create your own orb see [here](https://github.com/rubygarage/circledge/blob/master/orbs.md#creating-a-circleci-orb)
+
+---
+
+# Special Cases
+
+--
+
+## Coverage per several threads
+
+When we separate tests into different containers, the problem of correctly displaying the percentage of covered code.
+
+How to merge coverage from different containers see [here](https://github.com/rubygarage/circledge/blob/master/special_cases.md#coverage-per-several-threads).
+
+--
+
+## Approvable Deployment
+
+We can use approvable deployment when we need us to choose which build will be deployed.
+
+How to setup approvable deployment see [here](https://github.com/rubygarage/circledge/blob/master/special_cases.md#approvable-deployment).
+
+--
+
+## Daily Builds
+
+You can configure daily builds to ensure that there are no phantom tests
+
+How to setup daily builds see [here](https://github.com/rubygarage/circledge/blob/master/special_cases.md#daily-builds)
+
+--
+
+## Heroku continuous deployment
+
+How to setup continuous deployment on Heroku see [here](https://github.com/rubygarage/circledge/blob/master/special_cases.md#heroku-continuous-deployment).
 
 ---
 
@@ -333,14 +538,13 @@ executors:
     working_directory: ~/repo
     description: The official CircleCI Ruby Docker image
     docker:
-      - image: circleci/ruby:2.6.1-node-browsers # if you use api then you do not need 
+      - image: circleci/ruby:2.6.1-node-browsers
         environment:
           RAILS_ENV: test
       - image: circleci/postgres:11.3-alpine
         environment:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: test_db
 
 caches: 
   - &bundle_cache v1-repo-{{ checksum "Gemfile.lock" }}
@@ -371,9 +575,8 @@ commands:
             TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)"
             bundle exec rspec --format progress \
                               --out /tmp/test-results/rspec.xml \
-                              --format progress \
                               $TEST_FILES
-  defaults:
+  setup_environment:
     steps:
       - checkout
       - restore_cache:
@@ -392,12 +595,12 @@ jobs:
   lintering:
     executor: default
     steps:
-      - defaults
+      - setup_environment
       - run_linters
   run_specs:
     executor: default
     steps:
-      - defaults
+      - setup_environment
       - run_specs
 
 workflows:
@@ -409,7 +612,3 @@ workflows:
           requires:
             - lintering
 ```
-
----
-
-# The End
