@@ -38,7 +38,7 @@ title: Ruby presentations
   <br>
   <small>Testing Ruby code with RSpec.</small>
 
-- [Continuous integration](/slides/continuos_integration)
+- [Continuous integration](/slides/continuous_integration)
   <br>
   <small>How works Continuous integration.</small>
 
