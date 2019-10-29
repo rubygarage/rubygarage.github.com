@@ -9,8 +9,11 @@ title: Continuous integration
 
 # Why do we use that?
 
--  You have a team working on this project. Your team deliver some amount of features/per day/per week/ per sprint.
--  All participants of your team want to be sure that your repository contains stable and covered with specs code.
+- You have a team working on this project. Your team deliver some amount of features/per day/per week/per sprint.
+- All participants of your team want to be sure that your repository contains stable and covered with specs code.
+- All participants also don't want to have all updates on develop branch into staging area
+- All participants don't want to spend there time running all the tests locally
+- All participants want to be sure that they review the pull request where all the tests are green
 
 --
 
