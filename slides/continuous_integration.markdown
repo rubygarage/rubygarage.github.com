@@ -63,3 +63,17 @@ Continuous deployment goes one step further than continuous delivery. With this 
 ### Continuous delivery VS Continuous deployment
 
 ![](/assets/images/ci_vs_cd.png)
+
+---
+
+# Control questions
+
+- What is continuous integration and how does it work?
+
+- What benefits do we get from continuous integration?
+
+- What is Continuous delivery?
+
+- What is Continuous deployment?
+
+- What criterias for continuous strategy choosing for your project?

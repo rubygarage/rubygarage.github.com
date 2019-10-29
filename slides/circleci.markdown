@@ -75,12 +75,23 @@ jobs:
       - image: redis
 ```
 
+in version `2.1` you can use `executor`
+```yml
+executors:
+  default:
+    docker:
+      - image: circleci/ruby:2.6.1-node-browsers
+      - image: circleci/postgres:11.3-alpine
+```
+
 ---
 
 # Environment variables
 
 --
 ## Setting an Environment Variable in a Step, Job, Container
+
+.circleci/config.yml<!-- .element: class="filename" -->
 ```yml
 version: 2
 jobs:
@@ -140,6 +151,7 @@ A good example is package dependency managers such as Yarn, Bundler, or Pip. Wit
 
 ## Сache saving example
 
+.circleci/config.yml<!-- .element: class="filename" -->
 ```yml
     steps:
       - restore_cache:
@@ -283,6 +295,8 @@ more about steps you can see [here](https://github.com/rubygarage/circledge/blob
 
 --
 ## Sample of job:
+
+.circleci/config.yml<!-- .element: class="filename" -->
 ```yml
 jobs:
   lintering:
@@ -316,6 +330,8 @@ A **workflow** is a set of rules for defining a collection of jobs and their run
 --
 
 ## Sample of workflow:
+
+.circleci/config.yml<!-- .element: class="filename" -->
 ```yml
 workflows:
   version: 2.1
@@ -345,6 +361,8 @@ Currently, `store_artifacts` has two keys:
 --
 
 ## Usage example:
+
+.circleci/config.yml<!-- .element: class="filename" -->
 ```yml
 steps:
   - run: 
@@ -477,6 +495,7 @@ Before using the orb, you need to read the documentation for use which can be fo
 
 example of usage: 
 
+.circleci/config.yml<!-- .element: class="filename" -->
 ```yml
 version: 2.1
 orbs:
@@ -529,7 +548,7 @@ How to setup continuous deployment on Heroku see [here](https://github.com/rubyg
 # Sample of CircleCi config
 
 --
-
+.circleci/config.yml<!-- .element: class="filename" -->
 ```yml
 version: 2.1
 
@@ -612,3 +631,25 @@ workflows:
           requires:
             - lintering
 ```
+
+---
+
+# Control questions
+
+- How to connect CircleCi to GitHub?
+
+- How to set the environment? What is an image and what are they? What are the best practices for using images?
+
+- How to set environment variables? Where can I set the variable so that it is not visible to other users?
+
+- What is a job? What can they contain?  What are the best practices for using jobs?
+
+- What is step? What pre-defined steps do you know? What are the best practices for using step?
+
+- What is workflow? What are the pros and cons of using more than one `job` in workflow?
+
+- What is caching for? What should be cached in Rails applications?  What are the best practices for using caching?
+
+- What are artifacts? What are they used for?
+
+- What are orbs? How to use orbs?
