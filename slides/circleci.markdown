@@ -433,17 +433,19 @@ workflows:
 
 # Control questions
 
-- How to connect CircleCi to GitHub
+- How to connect CircleCi to GitHub?
 
-- How to set the environment? What is an image and what are they?
+- How to set the environment? What is an image and what are they? What are the best practices for using images?
 
-- How to set variables? Where can I set the variable so that it is not visible to other users?
+- How to set environment variables? Where can I set the variable so that it is not visible to other users?
 
-- What is a job? What can they contain?
+- What is a job? What can they contain?  What are the best practices for using jobs?
 
-- Why is workflow? What are the pros and cons of using more than one `job` in workflow?
+- What is step? What pre-defined steps do you know? What are the best practices for using step?
 
-- What is caching for? What is cached in rail applications?
+- What is workflow? What are the pros and cons of using more than one `job` in workflow?
+
+- What is caching for? What should be cached in Rails applications?  What are the best practices for using caching?
 
 - What are artifacts? What are they used for?
 
