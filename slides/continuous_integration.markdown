@@ -70,4 +70,4 @@ Continuous deployment goes one step further than continuous delivery. With this 
 
 - What is Continuous deployment?
 
-- What strategy do you choose for your project?
+- What criterias for continuous strategy choosing for your project?
