@@ -185,12 +185,12 @@ spec/factories/users.rb <!-- .element: class="filename" -->
 ```ruby
 FactoryBot.define do
   factory :user do
-    email { Faker::Internet.email }
-    password { Faker::Internet.password }
+    email { FFaker::Internet.email }
+    password { FFaker::Internet.password }
   end
 
   trait :with_name do
-    name { Faker::Name.name }
+    name { FFaker::Name.name }
   end
 end
 ```
@@ -249,7 +249,9 @@ In order to use Selenium, you'll need to install the `selenium-webdriver` gem.
 --
 
 ## Page Object Model
-  The Page Object Model is a test automation pattern that aims to create an abstraction of your site's user interface that can be used in tests. The most common way to do this is to model each page as a class, and to then use instances of those classes in your tests.
+  The Page Object Model is a test automation pattern that aims to create an abstraction of your site's user interface that can be used in tests. 
+  
+  The most common way to do this is to model each page as a class, and to then use instances of those classes in your tests.
 
 --
 
