@@ -544,6 +544,14 @@ How to setup daily builds see [here](https://github.com/rubygarage/circledge/blo
 
 How to setup continuous deployment on Heroku see [here](https://github.com/rubygarage/circledge/blob/master/special_cases.md#heroku-continuous-deployment).
 
+--
+
+## Manual Triggering
+
+With manual triggering you can run builds on CircleCi from your console.
+
+How to trigger CircleCi builds see [here](https://github.com/rubygarage/circledge/blob/master/special_cases.md#manual-triggering)
+
 ---
 
 # Sample of CircleCi config
