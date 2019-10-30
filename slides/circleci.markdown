@@ -512,6 +512,22 @@ workflows:
 
 ---
 
+# Local Setup
+
+--
+
+## With a locally installed CircleCi, you can:
+
+- Create orbs
+
+- Validate config
+
+- Run tests local. But local installation has limitations.
+
+How to install circleci cli see [here](https://github.com/rubygarage/circledge/blob/master/local_setup.md)
+
+---
+
 # Special Cases
 
 --
