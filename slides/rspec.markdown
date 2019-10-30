@@ -173,6 +173,83 @@ create   .rspec
 create   spec/spec_helper.rb
 ```
 
+--
+
+# Install with Rails
+
+--
+
+- Delete `test` folder if then exist
+
+- Add rspec to gemfile
+
+```ruby
+group :development, :test do
+  gem 'rspec-rails', '~> 3.8'
+end
+```
+
+- rspec init
+
+```bash
+rails generate rspec:install
+```
+
+--
+`spec_helper.rb` example:
+
+spec/spec_helper.rb <!-- .element class="filename" -->
+
+```ruby
+require 'rails_helper'
+
+RSpec.configure do |config|
+  config.expect_with :rspec do |expectations|
+    expectations.include_chain_clauses_in_custom_matcher_descriptions = true
+  end
+
+  config.mock_with :rspec do |mocks|
+    mocks.verify_partial_doubles = true
+  end
+
+  Kernel.srand config.seed
+  config.order = :random
+  config.shared_context_metadata_behavior = :apply_to_host_groups
+end
+```
+
+--
+
+`rails_helper.rb` example
+
+spec/rails_helper.rb <!-- .element class="filename" -->
+
+```ruby
+ENV['RAILS_ENV'] ||= 'test'
+require File.expand_path('../config/environment', __dir__)
+
+abort('The Rails environment is running in production mode!') if Rails.env.production?
+
+require 'rspec/rails'
+
+Dir[Rails.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
+
+begin
+  ActiveRecord::Migration.maintain_test_schema!
+rescue ActiveRecord::PendingMigrationError => e
+  puts e.to_s.strip
+  exit 1
+end
+
+RSpec.configure do |config|
+  config.fixture_path = "#{::Rails.root}/spec/fixtures"
+  config.infer_spec_type_from_file_location!
+  config.use_transactional_fixtures = true
+  config.filter_rails_from_backtrace!
+end
+
+```
+
 ---
 
 # Running specs and formating output
