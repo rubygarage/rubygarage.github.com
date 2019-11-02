@@ -105,7 +105,7 @@ book = BookInStock.new('The Great Gatsby', 'F. Scott Fitzgerald', 8.99)
 book.title                           # => The Great Gatsby
 book.title = 'This Side of Paradise'
 book.title                           # => This Side of Paradise
-book.price                           # => NoMethodError: undefned method `price'
+book.price                           # => NoMethodError: undefined method `price'
 book.price = 10                      # => NoMethodError: undefined method `price='
 ```
 
@@ -456,7 +456,7 @@ class BookInStock
   end
 
   def tax_for_two(other) # error
-    tax + other.tax      # you can user private method only for self
+    tax + other.tax      # you can use private method only for self
   end
 
   protected
@@ -473,12 +473,12 @@ class BookInStock
 end
 
 fitzgerald_book  = BookInStock.new('The Great Gatsby', 'F. Scott Fitzgerald', 8.99)
-hemigway_book = BookInStock.new('The Old Man and the Sea', 'Ernest Hemingway', 7.6)
+hemingway_book = BookInStock.new('The Old Man and the Sea', 'Ernest Hemingway', 7.6)
 
-fitzgerald_book.buy_with hemigway_book    # => 14.93
-fitzgerald_book.full_cost                 # => 10.78
-fitzgerald_book.discount                  # => NoMethodError: protected method 'discount' called
-fitzgerald_book.tax_for_two hemigway_book # => NoMethodError: private method 'tax' called
+fitzgerald_book.buy_with hemingway_book    # => 14.93
+fitzgerald_book.full_cost                  # => 10.78
+fitzgerald_book.discount                   # => NoMethodError: protected method 'discount' called
+fitzgerald_book.tax_for_two hemingway_book # => NoMethodError: private method 'tax' called
 ```
 
 ---
@@ -685,7 +685,7 @@ end
 
 --
 
-## Ways to add a custom behaviour to an instance
+## Ways to add a custom behavior to an instance
 
 ```ruby
 book = BookInStock.new
@@ -851,6 +851,15 @@ audio.formats # => ["mp3", "avi", "ogg"]
 
 ---
 
+## Best practices of using modules
+
+- Module should have some multipurpose logic.
+- Module should not contain any instance variables.
+- Do not create module only to take some methods out of class.
+- If all of your module's methods begins with `self`, consider defining those methods without `self` and using `extend ModuleName` in your classes.
+
+---
+
 ## Class and modules hierarchy, ancestors
 
 ```ruby
@@ -906,7 +915,7 @@ foo.bar # singleton: no -> String class: no -> Comparable module: no ->
 ```ruby
 begin
   puts 'I am before the raise.'
-  raise 'An error has occured.'
+  raise 'An error has occurred.'
   puts 'I am after the raise.'
 rescue
   puts 'I am rescued.'
@@ -945,7 +954,7 @@ rescue Exception => e
   puts e.message
   puts e.backtrace.inspect
 else
-  puts 'Executes if there is no exeception'
+  puts 'Executes if there is no exception'
 ensure
   puts 'Ensuring execution'
 end
@@ -1012,6 +1021,27 @@ Exception
     - ZeroDivisionError
   - SystemExit
 ```
+
+---
+
+# Control questions
+
+- What is OOP?
+- What is class? What is instance of class?
+- How would you declare and use a constructor in Ruby?
+- How would you create getter and setter methods in Ruby? What if we need both of them for same variable?
+- What does `self` mean? When we use it?
+- What is class method? How to define it?
+- What the difference between class variables and class instance variables?
+- What are the three levels of method access control for classes and what do they signify?
+- What is `super`? When and how we can use it?
+- What is singleton methods? How to define them?
+- What is eigenclass?
+- What is module? What the difference between module and class? Describe best practices of using modules.
+- What the difference between `include` and `extend`?
+- How Ruby method lookup works?
+- What is exception? How we can use it?
+- How `begin`, `raise`, `rescue` and `ensure` works together?
 
 ---
 
