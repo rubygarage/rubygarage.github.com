@@ -213,30 +213,50 @@ end
 
 # Method aliases
 
-You can give an alternate name to a Ruby method by using the `alias`
+You can give an alternate name to a Ruby method by using the `alias` or `alias_method`
 
 In alias, the new name for the method comes first, and the original name comes second.
-Note that alias is a keyword, not a method. That’s why there’s no comma between the two method names.
-Ruby also provides `alias_method`, a method equivalent to alias.
+First difference you will notice is that in case of `alias_method` we need to use a comma between methods.
+Also alias_method can takes both symbols and strings as input:
 
 ```ruby
-class MyClass
-  def my_method
-   'my_method'
+alias_method 'new_name', 'original_name'
+```
+
+The second difference `alias` and `alias_method` has different scopes.
+
+```ruby
+class Test
+  def number; 42; end
+  def self.add_alias
+    alias_method :new_number, :number
+    # alias_method 'new_number', 'number'
   end
-
-  alias :m :my_method
 end
 
-obj = MyClass.new
-obj.my_method # => "my_method"
-obj.m         # => "my_method"
-
-class MyClass
-  alias_method :m2, :m
+class NewTest < Test
+  def number; 100; end
+  add_alias
 end
 
-obj.m2 # => "my_method"
+NewTest.new.new_number # => 100
+
+
+
+class Test
+  def number; 42; end
+  def self.add_alias
+    alias :new_number :number
+    # alias new_number number
+  end
+end
+
+class NewTest < Test
+  def number; 100; end
+  add_alias
+end
+
+NewTest.new.new_number # => 42
 ```
 
 ---
@@ -673,6 +693,17 @@ end
 
 Customer.new('Dave', '123 Main').greeting # => "Hello Dave!"
 ```
+
+---
+
+# Control questions
+
+- What is open classes principes?
+- What for monkey patching? Is it good?
+- When do need to use dynamic declaration of classes/methods?
+- `alias_method` and `alias`, what difference?
+- `instance_eval` and `class_eval`, what difference?
+- What is Struct?
 
 ---
 
