@@ -115,7 +115,7 @@ is exactly what TDD is about.
 
 --
 
-## Setup envirepment
+## Setup environment
 
 Install ruby
 
@@ -1522,7 +1522,7 @@ expect(obj).to end_with expected
 ```
 
 ```ruby
-eexpect('first string').to start_with('first')
+expect('first string').to start_with('first')
 expect('first string').not_to start_with('second')
 expect([1,3,5]).to start_with(1,3)
 ```
@@ -1686,7 +1686,7 @@ expect([1, 3, 5]).to match_array([5, 3, 1])
 
 ### Changes
 
-Sometimens you expect some code (wrapped in a proc) to change the state of some object. There is a convenient way to
+Sometimes you expect some code (wrapped in a proc) to change the state of some object. There is a convenient way to
 check it with rspec:
 
 ```ruby
@@ -2107,7 +2107,7 @@ Removes a stub. On a double, the object will no longer respond to message. On a 
 
 #### and_call_original
 
-When working with a partial double object, you may occasionally want to set a message expecation without interfering with how the object responds to the message.
+When working with a partial double object, you may occasionally want to set a message expectation without interfering with how the object responds to the message.
 ```ruby
 RSpec.describe 'call original' do
   it 'calls original method' do
