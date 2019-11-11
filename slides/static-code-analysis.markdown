@@ -311,7 +311,13 @@ Overcommit is a gem for configuring Git hooks. It is excellent for keeping the c
 * [lol_dba](https://github.com/plentz/lol_dba) - A small package of rake tasks that scan your application models and displays a list of columns that probably should be indexed. Also, it can generate .sql migration scripts.
 ---
 
-# Thank You
+# Control questions
+
+- What is `Rubocop`?
+- What is `Fasterer`?
+- What is `Simplecov`?
+- What is `Overcommit`?
+- Why is it important to follow ruby style guide?
 
 ---
 
