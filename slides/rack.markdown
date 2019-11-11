@@ -8,7 +8,7 @@ title:  Rack
 `Rack` provides a minimal interface between webservers supporting Ruby and Ruby frameworks. This
 might seem a fairly simple thing, but it gives us a lot of power. One of the things it enables is
 Rack Middleware which is a filter that can be used to intercept a request and alter the response
-as a request is made to an application. 
+as a request is made to an application.
 
 To use `Rack`, provide an `app`: an object that responds to the call method, taking the environment
 hash as a parameter, and returning an Array with three elements:
@@ -19,7 +19,7 @@ hash as a parameter, and returning an Array with three elements:
 
 ---
 
-# Init enviropment
+# Init environment
 
 Create gemset
 
@@ -228,9 +228,9 @@ class Racker
   def call(env)
     Rack::Response.new(render('index.html.erb'))
   end
-  
+
   private
-  
+
   def render(template)
     path = File.expand_path("../views/#{template}", __FILE__)
     ERB.new(File.read(path)).result(binding)
@@ -293,9 +293,9 @@ class Racker
     else Rack::Response.new('Not Found', 404)
     end
   end
-  
+
   private
-  
+
   def render(template)
     path = File.expand_path("../views/#{template}", __FILE__)
     ERB.new(File.read(path)).result(binding)
@@ -367,7 +367,7 @@ class Racker
     else Rack::Response.new('Not Found', 404)
     end
   end
-  
+
   def render(template)
     path = File.expand_path("../views/#{template}", __FILE__)
     ERB.new(File.read(path)).result(binding)
@@ -636,11 +636,11 @@ module TestRailsRack
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
- 
+
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
     # config.time_zone = 'Central Time (US & Canada)'
- 
+
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
@@ -766,7 +766,7 @@ end
 
 ## Codebreaker Web
 
-It's time to move you `Codebreaker` to web interface!  
+It's time to move your `Codebreaker` to web interface!
 
 [Here](https://docs.google.com/document/d/1Q2u3CAmRs1Gg7zO2rT5IlTP_LdBicfBa7OzC6ZjYwZI/edit) are all the details of the task.
 
