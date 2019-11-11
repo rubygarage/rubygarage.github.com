@@ -425,4 +425,11 @@ we don’t do this, rake will attempt to invoke a task for each command line arg
 
 ---
 
+# Control questions
+
+- What is `rake`?
+- When can we use it?
+
+---
+
 # The End

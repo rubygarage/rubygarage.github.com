@@ -383,4 +383,16 @@ new_gem 0.1.0 built to pkg/new_gem-0.1.0.gem
 
 ---
 
+# Control questions
+
+- What is `gem`?
+- What is `bundler`?
+- What is `Gemfile`?
+- What is `Gemfile.lock`?
+- How to create a `gem`?
+- What is `gemspec`?
+- What is `RubyGems.org`?
+
+---
+
 # The End
