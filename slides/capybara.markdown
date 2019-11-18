@@ -107,35 +107,57 @@ Drivers can be switched in Before and After blocks. Some of the web drivers supp
   - RackTest (out from box, using in API testing)
 
 - With JS support
-  - Capybara-Webkit
-
   - Selenium-Webdriver
 
-  - Poltergeist or Cuprite
+  - Apparition
+
+  - Capybara-Webkit
+
+  - Poltergeist
 
 --
 
-## rack::test
+## RackTest
 
 By default, it works with rack::test driver. This driver is considerably faster than other drivers, but it lacks JavaScript support and it cannot access HTTP resources outside of the application for which the tests are made (Rails app, Sinatra app).
 
 --
 
-## selenium-webdriver
+## Selenium
 
-Capybara supports selenium-webdriver, which is mostly used in web-based automation frameworks. It supports JavaScript, can access HTTP resources outside of application, and can also be setup for testing in headless mode which is especially useful for CI scenarios. To setup usage of this driver you need to add:
-`Capybara.default_driver = :selenium`
+Capybara supports selenium-webdriver, which is mostly used in web-based automation frameworks. It supports JavaScript, can access HTTP resources outside of application, and can also be setup for testing in headless mode which is especially useful for CI scenarios.
+
+Capybara pre-registers a number of named drivers that use Selenium - they are:
+
+- `:selenium` => Selenium driving Firefox
+
+- `:selenium_headless` => Selenium driving Firefox in a headless configuration
+
+- `:selenium_chrome` => Selenium driving Chrome
+
+- `:selenium_chrome_headless` => Selenium driving Chrome in a headless configuration
 
 --
 
-## capybara-webkit
+## Apparition
 
-For true headless testing with JavaScript support, we can use the capybara-webkit driver (gem). It uses QtWebKit and it is significantly faster than selenium as it does not load the entire browser. To setup usage of this driver, you need to add:
-`Capybara.default_driver = :webkit`
+The apparition driver is a new driver that allows you to run tests using Chrome in a headless or headed configuration. It attempts to provide backwards compatibility with the [Poltergeist driver API](https://github.com/teampoltergeist/poltergeist) and [capybara-webkit API](https://github.com/thoughtbot/capybara-webkit) while allowing for the use of modern JS/CSS. It uses CDP to communicate with Chrome, thereby obviating the need for chromedriver. This driver is being developed by the current developer of Capybara and will attempt to keep up to date with new Capybara releases. It will probably be moved into the teamcapybara repo once it reaches v1.0.
 
 --
 
-### Selecting the Driver
+## Capybara-Webkit
+
+For true headless testing with JavaScript support, we can use the [capybara-webkit](https://github.com/thoughtbot/capybara-webkit) driver (gem). It uses QtWebKit and it is significantly faster than selenium as it does not load the entire browser.
+
+--
+
+## Poltergeist
+
+Poltergeist is a PhantomJS driver for Capybara. We can use the [poltergeist](https://github.com/teampoltergeist/poltergeist) driver (gem). PhantomJS is a headless WebKit scriptable with a JavaScript API. It has fast and native support for various web standards: DOM handling, CSS selector, JSON, Canvas, and SVG.
+
+---
+
+## Selecting the Driver
 
 For example if you'd prefer to run everything in Selenium, you could do:
 
@@ -155,9 +177,23 @@ Capybara.current_driver = :apparition # temporarily select different driver
 Capybara.use_default_driver       # switch back to default driver
 ```
 
-`Note:` switching the driver creates a new session, so you may not be able to switch in the middle of a test.
+`Note`: switching the driver creates a new session, so you may not be able to switch in the middle of a test.
 
---
+---
+
+## Configuring and adding drivers
+
+Capybara makes it convenient to switch between different drivers. It also exposes an API to tweak those drivers with whatever settings you want, or to add your own drivers. This is how to override the selenium driver configuration to use chrome:
+
+```ruby
+Capybara.register_driver :selenium do |app|
+  Capybara::Selenium::Driver.new(app, :browser => :chrome)
+end
+```
+
+The [Selenium wiki](https://github.com/SeleniumHQ/selenium/wiki/Ruby-Bindings) has additional info about how the underlying driver can be configured.
+
+---
 
 ### `js: true`
 
