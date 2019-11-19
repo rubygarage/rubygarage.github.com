@@ -1104,7 +1104,7 @@ create_join_table :posts, :tags
 create_join_table :posts, :tags, table_name: :tags_for_posts
 ```
 ```ruby
-create_join_table :posts, :tags, column_options:  {null:  true}
+create_join_table :posts, :tags, column_options: {null: true}
 ```
 
 db/migrate/20160414213342_create_posts_tags.rb <!-- .element: class="filename" -->
@@ -1254,7 +1254,7 @@ post.pictures.create(file: 'public/picture/image.png')
 
 --
 
-## Skiping Validations
+## Skipping Validations
 
 * `decrement!`
 * `decrement_counter`
@@ -1391,7 +1391,7 @@ end
 Can be used for the presence of an object associated validation via a `has_one` or `has_many` relationship, it will check that the object is neither `blank?` nor `marked_for_destruction?`.
 
 ```ruby
-validates :field_name, inclusion: { in:  [true, false] }. # for fields with boolean type
+validates :field_name, inclusion: { in: [true, false] }. # for fields with boolean type
 ```
 
 ## `belongs_to` association required by default:
@@ -1489,7 +1489,7 @@ end
 class User < ApplicationRecord
   # ...
 
-  validates :first_name, exclusion: { in:  %w(Admin BadDog),  message:  "First name %{value} is reserved." }
+  validates :first_name, exclusion: { in: %w(Admin BadDog), message: "First name %{value} is reserved." }
 end
 ```
 
@@ -1529,7 +1529,7 @@ class User < ApplicationRecord
   }
 
   validates :password, length: { in: 6..20 }
-  validates :card_number, length:  { is: 14 }
+  validates :card_number, length: { is: 14 }
 end
 ```
 
@@ -1574,14 +1574,14 @@ class User < ApplicationRecord
   # ...
 
   validates :email, uniqueness: true
-  validates :first_name, uniqueness: { scope: :email,  message: 'should only one user with name and email' }
-  validates :page_address, uniqueness: { case_sensitive:  false }
+  validates :first_name, uniqueness: { scope: :email, message: 'should only one user with name and email' }
+  validates :page_address, uniqueness: { case_sensitive: false }
 end
 ```
 
 ---
 
-## Uniq index
+## Unique index
 
 ```ruby
 class AddUniqIndexToUsers < ActiveRecord::Migration[5.0]
@@ -1613,7 +1613,7 @@ end
 class User < ApplicationRecord
   validates_with GoodnessValidator
 end
- 
+
 class GoodnessValidator < ActiveModel::Validator
   def validate(record)
     if record.first_name == 'Evil'
@@ -1643,7 +1643,7 @@ end
 
 ```ruby
 class User < ApplicationRecord
-  validates_each :first_name, :last_name do |record, attr, value|
+  validate_each :first_name, :last_name do |record, attr, value|
     record.errors.add(attr, 'must start with upper case') if value =~ /\A[a-z]/
   end
 end
@@ -1723,7 +1723,7 @@ User.new.valid?  # => ActiveModel::StrictValidationFailed: "Email can't be blank
 
 ---
 
-## Condional validations
+## Conditional validations
 
 ```ruby
 class User < ApplicationRecord
@@ -1888,7 +1888,7 @@ end
 
 ---
 
-## Availiable Callbacks
+## Available Callbacks
 
 ### Creating an Object
 
@@ -1977,7 +1977,7 @@ u.touch
 class Post < ApplicationRecord
   belongs_to :user, touch: true
   after_touch do
-    puts 'An Post was touched'
+    puts 'A Post was touched'
   end
 end
 
@@ -1997,8 +1997,8 @@ end
 
 # triggers @post.user.touch
 @post.touch
+# A Post was touched
 # User was touched
-# An Post was touched
 # => true
 ```
 
@@ -2008,16 +2008,14 @@ end
 
 * `create`
 * `create!`
-* `decrement!`
 * `destroy`
 * `destroy!`
 * `destroy_all`
-* `increment!`
 * `save`
 * `save!`
 * `save(validate: false)`
 * `toggle!`
-* `update`
+* `touch`
 * `update_attribute`
 * `update`
 * `update!`
@@ -2039,14 +2037,12 @@ end
 
 ## Skipping callbacks
 
-* `decrement`
+* `decrement!`
 * `decrement_counter`
 * `delete`
 * `delete_all`
-* `increment`
+* `increment!`
 * `increment_counter`
-* `toggle`
-* `touch`
 * `update_column`
 * `update_columns`
 * `update_all`
@@ -2108,7 +2104,7 @@ after_create :send_email_to_user,   if: :user_wants_emails?, unless: Proc.new { 
 ```ruby
 class PictureFileCallbacks
   def after_destroy(picture_file)
-    if File.exists?(picture_file.filepath)
+    if File.exist?(picture_file.filepath)
       File.delete(picture_file.filepath)
     end
   end
@@ -2124,7 +2120,7 @@ end
 ```ruby
 class PictureFileCallbacks
   def self.after_destroy(picture_file)
-    if File.exists?(picture_file.filepath)
+    if File.exist?(picture_file.filepath)
       File.delete(picture_file.filepath)
     end
   end
@@ -2178,11 +2174,13 @@ end
 ### ActiveRecord::Relation
 
 <div>
+* `annotate`
 * `find`
 * `create_with`
 * `distinct`
 * `eager_load`
 * `extending`
+* `extract_associated`
 * `from`
 * `group`
 * `having`
@@ -2196,11 +2194,13 @@ end
 * `lock`
 * `none`
 * `offset`
+* `optimizer_hints`
 * `order`
 * `preload`
 * `readonly`
 * `references`
 * `reorder`
+* `reselect`
 * `reverse_order`
 * `select`
 * `where`
