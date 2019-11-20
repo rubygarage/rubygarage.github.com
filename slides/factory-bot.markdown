@@ -11,10 +11,10 @@ factory_bot is a fixtures replacement with a straightforward definition syntax, 
 
 ## Install `factory_bot_rails`
 
-The first thing we need to do is add our gem to Gemfile in `:development, :test` groups
+The first thing we need to do is add our gem to Gemfile in `:test` group
 
 ```ruby
-group :development, :test do
+group :test do
   gem "factory_bot_rails"
 end
 ```
@@ -25,9 +25,7 @@ Then, run `bundle` to download and instal new gem
 $ bundle install
 ```
 
-After that we must include `FactoryBot` to test helper file. 
-
-For this we will crete new folder spec/`support`. And `factory_bot.rb` file in it.
+Define config file:
 
 spec/support/factory_bot.rb <!-- .element: class="filename" -->
 
@@ -37,7 +35,8 @@ RSpec.configure do |config|
 end
 ```
 
-Just the following line down the file `rails_helper.rb`
+We need include a support folder for rspec. Add following line down the file `rails_helper.rb` this will
+tell rails to load the modules under the `spec/support`.
 
 spec/rails_helper.rb <!-- .element: class="filename" -->
 
@@ -87,14 +86,6 @@ It is also possible to explicitly specify the class:
 factory :admin, class: User
 ```
 
-Because of the block syntax in Ruby, defining attributes as Hashes (for serialized/JSON columns, for example) requires two sets of curly brackets:
-
-```ruby
-factory :program do
-  configuration { { auto_resolve: false, auto_define: true } }
-end
-```
-
 ---
 
 ### Using factories
@@ -129,6 +120,7 @@ You can easily create multiple factories for the same class without repeating co
 ```ruby
 factory :post do
   title { "A title" }
+  approved { false }
 
   factory :approved_post do
     approved { true }
@@ -137,6 +129,10 @@ end
 ```
 
 ```bash
+post = create(:post)
+post.title             # => "A title"
+post.approved          # => false
+
 approved_post = create(:approved_post)
 approved_post.title    # => "A title"
 approved_post.approved # => true
@@ -146,16 +142,33 @@ approved_post.approved # => true
 
 ### Associations
 
-It's possible to set up associations within factories. If the factory name is the same as the association name, the factory name can be left out.
+It's possible to set up associations within factories.
+
+spec/factories/author.rb <!-- .element: class="filename" -->
+
+```ruby
+factory :author do
+  # ...
+  name { "Bender" }
+end
+```
+spec/factories/post.rb <!-- .element: class="filename" -->
 
 ```ruby
 factory :post do
   # ...
-  author
+  association :author # this line will create association post with factory author
 end
 ```
 
+```bash
+post = create(:post)
+post.author.name # => "Bender"
+```
+
 You can also specify a different factory or override attributes:
+
+spec/factories/post.rb <!-- .element: class="filename" -->
 
 ```ruby
 factory :post do
@@ -166,7 +179,39 @@ end
 
 --
 
-To `not save` the associated object, specify `strategy: :build` in the factory:
+### `Parent strategy`
+
+In factory_bot 5, associations default to using the same build strategy as their parent object:
+
+```ruby
+FactoryBot.define do
+  factory :author
+
+  factory :post do
+    author
+  end
+end
+
+# Builds an Author, and then builds a Post, but does not save either
+post = build(:post)
+post.new_record?        # => true
+post.author.new_record? # => true
+
+# Builds and saves an Author, and then builds and saves a Post
+post = create(:post)
+post.new_record?        # => false
+post.author.new_record? # => false
+```
+
+`build(:post)` won't save the object, but will still make requests to a database if the factory has 
+
+associations. It will trigger validations only for associated objects.
+
+--
+
+### `use_parent_strategy`
+
+This is different than the default behavior for previous versions of factory_bot, where the association strategy would not always match the strategy of the parent object. If you want to continue using the old behavior, you can set the `use_parent_strategy` configuration option to `false`.
 
 spec/support/factory_bot.rb <!-- .element: class="filename" -->
 
@@ -174,20 +219,24 @@ spec/support/factory_bot.rb <!-- .element: class="filename" -->
 FactoryBot.use_parent_strategy = false
 ```
 
-spec/factories/post_factory.rb <!-- .element: class="filename" -->
-
 ```ruby
-factory :post do
-  # ...
-  association :author, factory: :user, strategy: :build
-end
-```
+FactoryBot.define do
+  factory :author
 
-```bash
-# Builds a User, and then builds a Post, but does not save either
+  factory :post do
+    author
+  end
+end
+
+# Builds and saves a Author, and then builds but does not save a Post
 post = build(:post)
 post.new_record?        # => true
-post.author.new_record? # => true
+post.author.new_record? # => false
+
+# Builds and saves a Author and a Post
+post = create(:post)
+post.new_record?        # => false
+post.author.new_record? # => false
 ```
 
 ---
