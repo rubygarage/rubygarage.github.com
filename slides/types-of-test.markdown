@@ -23,6 +23,61 @@ All these different tests fall along a spectrum. At one end are unit tests. Thes
 ## Integration tests
 These tests exercise the system as a whole rather than its individual components. They typically do so by simulating a user trying to accomplish a task in our software. Instead of being concerned with invoking methods or calling out to collaborators, integration tests are all about clicking and typing as a user.
 
+--
+
+## End-to-End testing
+
+End-to-end testing is a technique used to test whether the flow of an application right from start to finish is behaving as expected. The purpose of performing end-to-end testing is to identify system dependencies and to ensure that the data integrity is maintained between various system components and systems.
+
+The entire application is tested for critical functionalities such as communicating with the other systems, interfaces, database, network, and other applications.
+
+--
+
+For example, we created simple End-to-End test with one `scenario` block:
+
+spec/features/end_to_end_spec.rb <!-- .element: class="filename" -->
+
+```ruby
+
+describe 'End to End', type: :feature do
+  scenario 'login, buy book and logout' do
+    visit(root_path)
+
+    expect(page).to have_content('Bookstore')
+
+    find('Sign up').click
+  
+    fill_in 'user', with: 'User'
+    fill_in 'password', with: '1234'
+    click_button 'Sign up'
+
+    expect(page).to have_content('Sign out')
+
+    find('#second_book').click
+
+    expect(page).to have_content('Second book')
+
+    find('.buy_button').click
+
+    expect(find_field('cart_count').value).to eq '1'
+    
+    find('Checkout').click
+
+    expect(page).to have_current_path checkout_path
+
+    fill_in 'address', with: 'str Dneprovskaya 17'
+    fill_in 'postal_code', with: '52000'
+    click_button 'Complete'
+
+    expect(page).to have_content('Checkout complete!')
+
+    find('Log out').click
+
+    expect(page).not_to have_content('Sign out')
+  end
+end
+```
+
 ---
 
 ## Hybrid tests
