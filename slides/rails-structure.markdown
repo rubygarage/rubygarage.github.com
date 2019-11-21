@@ -161,7 +161,7 @@ $ nvm list
 
 ---
 
-##  What should i do to run application?
+##  What should I do to run application?
 
 ```bash
 $ bundle install
@@ -195,208 +195,117 @@ $ yarn install
 
 ---
 
-# What is a structure of rails folders?
+## Structure of rails folders
 
----
-
-## `app folder`
-
-This is the core directory of your entire app and most of the application-specific code will go into this directory. As you may know, Rails is an MVC framework, which means the application is separated into parts per its purpose in the Model, View, or Controller. These three sections goes inside this directory.
-
---
-
-### `app/assets`
-This contains the static files required for the application’s front-end grouped into folders based on their type. The javascript files and stylesheets (CSS) in these folders should be application specific since the external library files would go into another directory (vendor) which we will look at in a bit.
-
---
-
-### `app/assets/images`
-All the images required for the application should go into this directory. The images here are available in views through nifty helpers like image_tag("img_name.png") so that you don’t have to specify the relative or absolute path for images.
-
---
-
-### `app/assets/javascripts`
-The javascript files go here. There is a convention to create the JS files for each controller. For example, for books_controller.rb, the JS functions for this controller’s views would be books.js.
+|     |             |
+| --- | ----------- |
+| **app** | It organizes your application components. It's got subdirectories that hold the views, controllers, models, and more that handle business logic. |
+| **bin** | Contains the rails script that starts your app and can contain other scripts you use to setup, update, deploy or run your application. |
+| **config** | onfigure your application's routes, database, and more. This is covered in more detail in [Configuring Rails Applications](https://guides.rubyonrails.org/configuring.html). |
+| **db** | Contains your current database schema, as well as the database migrations. |
+| **lib** | Extended modules for your application. |
+| **log** | Application log files. |
+| **public** | The only folder seen by the world as-is. Contains static files and compiled assets. |
+| **test** | Unit tests, fixtures, and other test apparatus. |
+| **spec** | Alternative to test directory using BDD. Rspec allows you to write an alternative syntax to Test Unit that reads more like a specification than a test. |
+| **tmp** | Temporary files (like cache and pid files). |
+| **vendor** | A place for all third-party code. In a typical Rails application this includes vendored gems. |
+|     |             |
 
 --
 
-### `app/assets/stylesheets`
-Similar to /javascripts, the CSS files go here. The naming convention is also the same as the javascript assets.
+## app
+
+- `app/assets` - Holds the assets for your application including images, stylesheets, and javascript..
+
+- `app/controllers` − The controllers subdirectory is where Rails looks to find the controller classes. A controller handles a web request from the user.
+
+- `app/channels` - Contains channels used to setup connections with ActionCable.
+
+- `app/helpers` − The helpers subdirectory holds any helper classes used to assist the model, view, and controller classes. This helps to keep the model, view, and controller code small, focused, and uncluttered.
+
+- `app/models` − The models subdirectory holds the classes that model and wrap the data stored in our application's database. In most frameworks, this part of the application can grow pretty messy, tedious, verbose, and error-prone. Rails makes it dead simple!
+
+- `app/view` − The views subdirectory holds the display templates to fill in with data from our application, convert to HTML, and return to the user's browser.
+
+- `app/view/layouts` − Holds the template files for layouts to be used with views. This models the common header/footer method of wrapping views.
 
 --
 
-### `app/controllers`
-This is where all the controller files go. Controllers are responsible for orchestrating the model and views. The naming convention for the file is the pluralized model name + “_controller”. For example, the controller for the Book model is books_controller.rb, which is called “snake case”. Also, the controller class will be CamelCase which is BooksController.
+## config
 
---
+- `config/application.rb` This contains the main configuration for the application, such as the timezone to use, language, and many other settings.
 
-### `app/helpers`
-This is where all the helper functions for views reside. There are already a few pre-created helpers available, like the one we reference above (image_tag) for referring to images in views. You can create your own functions in a controller specific helper file, which will be automatically created when you use Rails generators to create the controller.
+- `config/boot.rb` As you might imagine, “boots” up the Rails application. `boot.rb` verifies that there is actually a Gemfile present and will store the path to this file in an environment variable called `BUNDLE_GEMFILE` for later use.
 
---
+- `config/database.yml` This file holds all the database configuration the application needs. Here, different configurations can be set for different environments.
 
-### `app/mailers`
-The mailers directory contains the mail (as in “email”) specific functions for the application. Mailers are similar to controllers and they will have their view files in app/views/mailer_name/. 
+- `config/environment.rb` This file requires application.rb to initialize the Rails application.
 
---
-
-### `app/models`
-All model files live in the app/models directory. Models act as object-relational mappers to the database tables that hold the data. The naming convention is simply modelname.rb. The model name is, by convention, the singular form of the underlying table that represents the model in the database.
-
---
-
-### `app/views`
-The third part of the MVC architecture are the views. The files related to the views go into this directory. The files are a combination of HTML and Ruby (called Embedded Ruby or Erb) and are organized based on the controller to which they correspond. There is a view file for each controller action.
-
----
-
-## `bin folder`
-This directory contains Binstubs for the Rails application. Binstubs are nothing but wrappers to run the gem executables scoped to your application. This can be used in place of bundle exec `command`. The default available Binstubs are bundle, rails, rake, setup, and spring.
-
----
-
-## `config folder`
-As the name suggests this contains all the application’s configuration files. The database connection and application behavior can be altered by the files inside this directory.
-
---
-
-### `config/application.rb`
-This contains the main configuration for the application, such as the timezone to use, language, and many other settings. The full list could be found here. Also, note the configurations specified here is for all environments (development, test, and production). Environment specific configurations will go into other files, which we’ll see below.
-
---
-
-### `config/boot.rb`
-boot.rb, as you might imagine, “boots” up the Rails application. Rails apps keep gem dependencies in a file called Gemfile in the root of the project. The Gemfile contains all the dependencies required for the application to run. boot.rb verifies that there is actually a Gemfile present and will store the path to this file in an environment variable called BUNDLE_GEMFILE for later use. boot.rb also requires 'bundler/setup' which will fetch and build the gems mentioned in the Gemfile using Bundler.
-
---
-
-### `config/database.yml`
-This file holds all the database configuration the application needs. Here, different configurations can be set for different environments.
-
---
-
-### `config/environment.rb`
-This file requires application.rb to initialize the Rails application.
-
---
-
-### `config/routes.rb`
+- `config/routes.rb`
 This is where all the routes of the application are defined. There are different semantics for declaring the routes, examples of which can be found in this file.
 
---
+- `config/secrets.yml` Newly added in Rails 4.1, this gives you a place to store application secrets. The secrets defined here are available throughout the application using Rails.application.secrets.`secret_name`.
 
-### `config/secrets.yml`
-Newly added in Rails 4.1, this gives you a place to store application secrets. The secrets defined here are available throughout the application using Rails.application.secrets.`secret_name`.
+- `config/initializers` This directory contains the list of files that need to be run during the Rails initialization process.
 
---
-
-### `config/environments`
-As I mentioned above, this folder contains the environment-specific configuration files for the development, test, and production environments. Configurations in application.rb are available in all environments, whereas you can separate out different configurations for the different environments by adding settings to the environment named files inside this directory. Default environment files available are, development.rb, production.rb, test.rb, but you can add others, if needed.
+- `config/locales` This has the list of YAML file for each language that holds the keys and values to translate bits of the app. You can learn about internationalization (i18n) [here](https://guides.rubyonrails.org/i18n.html).
 
 --
 
-### `config/initializers`
-This directory contains the list of files that need to be run during the Rails initialization process. Any *.rb file you create here will run during the initialization automatically. For example, constants that you declare in here will then be available throughout your app. The initializer file is triggered from the call in config/environment.rb to Rails.application.initialize!.
+## db
+
+- `db/migrate` Migrations are stored as files in the db/migrate directory, one for each migration class. The name of the file is of the form `YYYYMMDDHHMMSS_create_products.rb`, that is to say a UTC timestamp identifying the migration followed by an underscore followed by the name of the migration.
+
+- `db/schema.rb` It documents the final current state of the database schema. Often, especially when you have more than a couple of migrations, it's hard to deduct the schema just from the migrations alone. With a present schema.rb, you can just have a look there.
+
+- `db/seeds.rb` This file is used to pre fill, or “seed”, database with required records. You can use normal ActiveRecord methods for record insertion.
 
 --
 
-### `config/locales`
-This has the list of YAML file for each language that holds the keys and values to translate bits of the app. You can learn about internationalization (i18n) and the settings from [here](https://guides.rubyonrails.org/i18n.html).
+## lib
 
----
+- `lib/assets` This file holds all the library assets, meaning those items (scripts, stylesheets, images) that are not application specific.
 
-## `db folder`
-All the database related files go inside this folder. The configuration, schema, and migration files can be found here, along with any seed files.
-
---
-
-### `db/migrate`
-Migrations are stored as files in the db/migrate directory, one for each migration class. The name of the file is of the form YYYYMMDDHHMMSS_create_products.rb, that is to say a UTC timestamp identifying the migration followed by an underscore followed by the name of the migration.
-
---
-
-### `db/schema.rb`
-It documents the final current state of the database schema. Often, especially when you have more than a couple of migrations, it's hard to deduct the schema just from the migrations alone. With a present schema.rb, you can just have a look there.
-
---
-
-### `db/seeds.rb`
-This file is used to pre fill, or “seed”, database with required records. You can use normal ActiveRecord methods for record insertion.
-
----
-
-## `lib folder`
-lib directory is where all the application specific libraries goes. Application specific libraries are re-usable generic code extracted from the application. Think of it as an application specific gem.
-
---
-
-### `lib/assets`
-This file holds all the library assets, meaning those items (scripts, stylesheets, images) that are not application specific.
-
---
-
-### `lib/tasks`
-The application’s Rake tasks and other tasks can be put in this directory. Rake tasks mentioned here are required by the app’s `Rakefile`.
-
----
-
-## `vendor folder`
-This is where the vendor files go, such as javascript libraries and CSS files, among others. Files added here will become part of the asset pipeline automatically.
-
----
-
-## `public folder`
-The public directory contains some of the common files for web applications. By default, HTML templates for HTTP errors, such as 404, 422 and 500, are generated along with a favicon and a robots.txt file. Files that are inside this directory are available in https://appname.com/filename directly.
-
----
-
-## `rspec folder`
-This directory contains all the test files for the app. A subdirectory is created for each component’s test files.
-
----
-
-## `log folder`
-This holds all the log files. Rails automatically creates files for each environment.
-
----
-
-## What is Gems?
-
-`Gem - is a library` Gem allows you to use ready-made solutions for your application created by other developers and kindly provided for public use.
+- `lib/tasks` The application’s Rake tasks and other tasks can be put in this directory. Rake tasks mentioned here are required by the app’s `Rakefile`.
 
 --
 
 ### `Gemfile`
 The Gemfile is the place where all your app’s gem dependencies are declared. This file is mandatory, as it includes the Rails core gems, among other gems.
 
---
 
 ### `Gemfile.lock`
 Gemfile.lock holds the gem dependency tree, including all versions, for the app. This file is generated by bundle install on the above Gemfile. It, in effect, locks your app dependencies to specific versions.
 
 ---
 
-## How to work with Gemfile?
+# How to work with Gemfile?
 
 --
 
-### Setting up a Gemfile
+## Setting up a Gemfile
 
 The first thing we need to do is tell the Gemfile where to look for gems, this is called the source.
 We use the #source method for doing this.
-```
+
+Gemfile.rb <!-- .element class="filename" -->
+
+```ruby
 source "https://rubygems.org”
 ```
 
 --
 
-### Setting up your Gems
+## Setting up your Gems
 
 Now onto the main point of using a Gemfile, setting up the gems!
 
 The most basic syntax is;
 
-```
+Gemfile.rb <!-- .element class="filename" -->
+
+```ruby
 gem "my_gem"
 ```
 
@@ -404,28 +313,37 @@ In this case my_gem is the name of the gem. The name is the only thing that is r
 
 --
 
-### Setting the version of a Gem
+## Setting the version of a Gem
 
 The most common thing you will want to do with a gem is set its version.
 
 If you don’t set a version you are basically saying any version will do;
 
-```
+Gemfile.rb <!-- .element class="filename" -->
+
+```ruby
 gem "my_gem", ">= 0.0.0"
 ```
+
 There are `seven` operators you can use when specifying your gems.
 
-- = Equal To "=1.0"
-- != Not Equal To "!=1.0"
-- \> Greater Than ">1.0"
-- < Less Than "<1.0"
-- \>= Greater Than or Equal To ">=1.0"
-- <= Less Than or Equal To "<=1.0"
-- ~> Pessimistically Greater Than or Equal To "~>1.0"
+- `=` Equal To "=1.0"
+
+- `!=` Not Equal To "!=1.0"
+
+- `>` Greater Than ">1.0"
+
+- `<` Less Than "<1.0"
+
+- `>=` Greater Than or Equal To ">=1.0"
+
+- `<=` Less Than or Equal To "<=1.0"
+
+- `~>` Pessimistically Greater Than or Equal To "~>1.0"
 
 --
 
-### Semantic versioning of Gem boils down to:
+## Semantic versioning of Gem boils down to:
 
 - `PATCH` 0.0.x level changes for implementation level detail changes, such as small bug fixes
 
@@ -435,26 +353,36 @@ There are `seven` operators you can use when specifying your gems.
 
 --
 
-### Grouping your Gem
+## Grouping your Gem
 
 There are two ways you group a gem. The first is by assigning a value to the :group property;
 
-```
+Gemfile.rb <!-- .element class="filename" -->
+
+```ruby
 gem "my_gem", group: :development
 ```
 
 The second way you can decide a grouping for a gem is by setting your gems up inside a block;
 
-```
+Gemfile.rb <!-- .element class="filename" -->
+
+```ruby
   group :development do
     gem "my_gem"
     gem "my_other_gem"
   end
 ```
 
+--
+
+## Combine groups
+
 This is visually more pleasing, and you can combine groups;
 
-```
+Gemfile.rb <!-- .element class="filename" -->
+
+```ruby
 group :development, :test do
   gem "my_gem"
   gem "my_other_gem"
@@ -463,7 +391,9 @@ end
 
 If there is a group you want to be optional you can pass optional: true before the block;
 
-```
+Gemfile.rb <!-- .element class="filename" -->
+
+```ruby
 group :development, optional: true do
   gem "my_gem"
   gem "my_other_gem"
@@ -472,42 +402,74 @@ end
 
 --
 
-### Setting a source for your Gem
+## Setting a source for your Gem
 
 You can set sources for your gems
 
-```
+Gemfile.rb <!-- .element class="filename" -->
+
+```ruby
 gem "my_gem", source: "https://your_resource.com"
 ```
 
 Also you can Installing a Gem from Git
 
-```
+Gemfile.rb <!-- .element class="filename" -->
+
+```ruby
 gem "my_gem", git: "ssh@githib.com/your_resource/my_gem”
 ```
 
 You can specify that your gem lives locally on your system by passing in the :path parameter.
 
-```
+Gemfile.rb <!-- .element class="filename" -->
+
+```ruby
 gem "my_gem", :path => "../my_path/my_gem”
 ```
 ---
 
-### What is `Yarn`?
+# Package manager for the JavaScript
+
+--
+
+## `NPM` vs `Yarn`
+
+Yarn has a few differences from npm. First of all, Yarn caches all installed packages. Yarn is installing the packages simultaneously, and that is why Yarn is faster than NPM. They both download packages from npm repository. Yarn generates yarn.lock to lock down the versions of package’s dependencies by default. On the contrary, npm for this purpose offers `shrinkwrap` CLI command.
+
+### Problems with Yarn
+
+- Problems with installing native modules
+
+- Yarn doesn’t work with any node.js version older than 5
+
+---
+
+## What is `NPM`?
+
+`npm` (originally short for Node Package Manager) is a package manager for the JavaScript programming language. It is the default package manager for the JavaScript runtime environment Node.js. It consists of a command line client, also called npm, and an online database of public and paid-for private packages, called the npm registry.
+
+---
+
+## What is `Yarn`?
 `Yarn` is a JavaScript package manager for your code, that is a faster alternative to NPM.
 
 The are a few benefits of using Yarn with your Rails application:
 
 - It allows you to use and share code with other developers from around the world.
+
 - You don't have to download packages twice ever again, as Yarn catches every package it downloads.
+
 - It facilitates much faster installation times by stopping other operations to maximize resource - utilization.
+
 - It's secure! Yarn verifies and checks to make sure the installed packages are not compromised before the code is executed.
+
 - Yarn promotes consistency as it ensures one install that works on one system will work on another in the same way.
 
 --
 
 ### package.json
-A `package.json` file with some dependencies that provides information to Yarn about your package.
+`package.json` file with some dependencies that provides information to Yarn about your package.
 
 
 ### package-lock.json
