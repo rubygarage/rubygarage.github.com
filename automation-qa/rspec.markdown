@@ -161,20 +161,102 @@ Now you don't need to requre `rails_helper` file to every test.
 
 # First test
 
+
+
+spec/first_test_spec.rb <!-- .element: class="filename" -->
+
 ```ruby
 RSpec.describe 'test' do
-  it "lol" do
+  it "first test" do
     expect(2 + 2).to eq(4)
   end
 end
 ```
 
+Test will pase:
 
+```bash
+.
+
+Finished in 0.00424 seconds (files took 0.09888 seconds to load)
+1 example, 0 failures
+```
 
 ---
 
+## How to run my first spec?
 
-...
+For running specs you can choose one of several commands:
+
+```bash
+# Run all spec files
+$ bundle exec rspec
+```
+
+```bash
+# Run all spec files in a single directory (recursively)
+$ bundle exec rspec spec/features
+```
+
+```bash
+# Run a single spec file
+$ bundle exec rspec spec/controllers/accounts_controller_spec.rb
+```
+
+```bash
+# Run a single example from a spec file (by line number)
+$ bundle exec rspec spec/controllers/accounts_controller_spec.rb:8
+```
+
+---
+
+# What is formatters?
+
+### Formatters helps visualize output result of tests
+
+--
+
+## Colorization
+
+```bash
+$ rspec spec/arrays/push_spec.rb --color
+```
+
+## Formating
+
+Progress format (default)
+
+```bash
+$ rspec spec/arrays/push_spec.rb
+```
+
+or
+
+```bash
+$ rspec spec/arrays/push_spec.rb  --format progress
+
+....F.....*.....
+
+# '.' represents a passing example, 'F' is failing, and '*' is pending.
+```
+--
+
+### Documentation format
+
+```bash
+$ rspec spec/arrays/push_spec.rb --format documentation
+
+Array
+  #last
+    should return the last element
+    should not remove the last element
+  #pop
+    should return the last element
+    should remove the last element
+
+Finished in 0.00212 seconds
+4 examples, 0 failures
+```
 
 ---
 
