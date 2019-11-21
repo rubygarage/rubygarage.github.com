@@ -13,47 +13,54 @@ DSL extensions for testing web-based UIs
 ---
 
 ## Why Capybara Gem?
-- **Commands**
-  - visit
-  - click
-  - within
-  - ...
 
-- **Matchers**
-  - have_selector
-  - have_content
-  - have_no_content
-  - ...
+Capybara can mimic actions of real users interacting with web-based applications. It can receive pages, parse the HTML and submit forms.
 
-- **Complexities working with Javascript**
-  - different web drivers for different tasks
+Capybara supports many different drivers which execute your tests through the same clean and simple interface. You can seamlessly choose between Selenium, Webkit or pure Ruby drivers.
 
-- **Debugging**
-  - save_and_open_page
-  - save_and_open_screenshot
+---
+
+## What Capybara Gem Brings?
+
+- Commands
+ - visit
+ - click
+ - within
+ - ...
+
+- Matchers
+ - have_selector
+ - have_content
+ - have_no_content
+ - ...
+
+- Complexities working with Javascript
+ - different web drivers for different tasks
+
+- Debugging
+ - save_and_open_page
+ - save_and_open_screenshot
 
 ---
 
 ## Install `Capybara`
 
-The first thing we need to do is add our gem to Gemfile in `:development, :test` groups
+The first thing we need to do is add our gem to Gemfile in `:test` group
 
 ```ruby
-group :development, :test do
+group :test do
   gem "capybara"
   gem "rspec-rails"
 end
 ```
 
-Then, run `bundle` to download and instal new gem
+Then, run `bundle install` to download and instal new gem
 
 ```bash
 $ bundle install
 ```
 
-After that we must require `capybara` to test helper file. 
-
-For this we will crete new folder spec/`support`. And `capybara.rb` file in it.
+Define config file:
 
 spec/support/capybara.rb <!-- .element: class="filename" -->
 
@@ -61,7 +68,7 @@ spec/support/capybara.rb <!-- .element: class="filename" -->
 require 'capybara/rails'
 ```
 
-Just the following line down the file `rails_helper.rb`
+We need include a support folder for rspec. Add following line down the file rails_helper.rb this will tell rails to load the modules under the `spec/support`.
 
 spec/rails_helper.rb <!-- .element: class="filename" -->
 
@@ -79,10 +86,10 @@ spec/support/capybara.rb <!-- .element: class="filename" -->
 
 ```ruby
 Capybara.configure do |config|
-  config.run_server = false
-  config.app_host   = 'http://www.google.com'
-  config.session_name = "some other session"
-  config.server = :puma, { Silent: true } # To clean up your test output
+  config.run_server = false                   # Whether to start a Rack server for the given Rack app
+  config.app_host   = 'http://www.google.com' # The default host to use when giving a relative URL to visit
+  config.session_name = "some other session"  # Set name for the current session
+  config.server = :puma, { Silent: true }     # To clean up your test output
 end
 ```
 
@@ -174,7 +181,14 @@ spec/support/capybara.rb <!-- .element: class="filename" -->
 ```ruby
 Capybara.current_driver = :apparition # temporarily select different driver
 # tests here
-Capybara.use_default_driver       # switch back to default driver
+Capybara.use_default_driver           # switch back to default driver
+```
+
+```ruby
+describe 'some stuff which requires js', type: :feature do
+  it 'will use the default js driver'
+  it 'will switch to one specific driver', driver: :apparition # temporarily select different driver
+end
 ```
 
 `Note`: switching the driver creates a new session, so you may not be able to switch in the middle of a test.
@@ -202,9 +216,16 @@ Use `js: true` to switch to the `Capybara.javascript_driver` (:selenium by defau
 spec/feature/test_spec.rb <!-- .element: class="filename" -->
 
 ```ruby
-describe 'some stuff which requires js', js: true do
+describe 'some stuff which requires js', type: :feature, js: true do
   it 'will use the default js driver'
-  it 'will switch to one specific driver', driver: :apparition
+end
+```
+
+spec/feature/second_test_spec.rb <!-- .element: class="filename" -->
+
+```ruby
+describe 'some stuff which not requires js', type: :feature do
+  it 'will use the default driver'
 end
 ```
 
@@ -243,7 +264,9 @@ Capybara.run_server = false
 
 ### How to find elements? - DOM
 
-`Finders` - Capybara provided methods whereby you can find specific elements, in order to manipulate them.
+The `Document Object Model` (DOM) is a cross-platform and language-independent interface that treats an XML or HTML document as a tree structure wherein each node is an object representing a part of the document. The DOM represents a document with a logical tree. Each branch of the tree ends in a node, and each node contains objects.
+
+`Finders` - Capybara provided methods whereby you can find specific elements in DOM, in order to manipulate them.
 
 ```ruby
 find_field('First Name').value
@@ -333,7 +356,7 @@ find(:xpath, 'actual_xpath')
 
 ---
 
-### Capybara provadies special `Matchers` for our `RSpec Expectations`
+### Capybara provides special `Matchers` for our `RSpec Expectations`
 
 Capybara has a rich set of options for querying the page for the existence of certain elements, and working with and manipulating those elements.
 
