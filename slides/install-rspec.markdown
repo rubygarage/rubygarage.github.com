@@ -8,23 +8,24 @@ title:  Install Rspec
 <img src="/assets/images/install-rspec/rspec.png"  width="240" height="240">
 
 ---
+
 ## Gem `rspec-rails`
 
 `rspec-rails` brings the RSpec testing framework to Ruby on Rails as a drop-in alternative to its default testing framework, Minitest.
 
----
+--
 
 ## Install `rspec-rails`
 
-The first thing we need to do is add our gem to Gemfile in `:development, :test` groups
+The first thing we need to do is add our gem to Gemfile in `:test` group
 
 ```ruby
-group :development, :test do
+group :test do
   gem "rspec-rails"
 end
 ```
 
-Then, run `bundle` to download and instal new gem
+Run `bundle install` to download and instal new gem
 
 ```bash
 $ bundle install
@@ -43,7 +44,7 @@ create  spec/spec_helper.rb
 create  spec/rails_helper.rb
 ```
 
---
+---
 
 ### What is `spec_helper.rb`?
 `spec_helper.rb` - is for specs which don't depend on Rails (such as specs for classes in the lib directory).
@@ -59,7 +60,33 @@ Best practice include ideas how to improve your specs quality and increase effic
 
 --
 
-### `describe`
+### Stop writing `require 'rails_helper'` in every spec
+Simply add this to your `.rspec` instead:
+
+.rspec <!-- .element: class="filename" -->
+
+```ruby
+--require rails_helper
+```
+
+---
+
+## RSpec give us some new methods, lets look
+
+- `describe` - The describe method creates an example group. Within the block passed to
+describe you can declare nested groups using the describe method. Use describe to separate methods being tested or behavior being tested.
+
+- `context` - alias `describe`, but you can use it if you want to separate specs based on conditions.
+
+- `it` - create a test block with RSpec, where we write our expectation.
+
+- `specify` - alias `it`, but you can use it to make your tests more readable.
+
+- `subject` makes way clearer about what you're actually testing and helps you stay DRY in your tests.
+
+--
+
+## `describe`
 
 Be clear about what method you're describing. For instance, use the ruby documentation convention of `.` when referring to a class method's name and `#` when referring to an instance method's name.
 
@@ -75,19 +102,17 @@ describe '#admin?' do
 
 --
 
-### `context`
+## `context`
 
 `context` starts either with `"with"` or `"when"`, such "when status is pending"
 
 ```ruby
 describe '#status_badge' do
-  context 'returns css class based on status' do
-    context 'when status is pending' do
-      let(:request_status) { 'pending' }
+  context 'when status is pending' do
+    let(:request_status) { 'pending' }
 
-      it 'returns css for grey badge' do
-        expect(subject.status_badge).to eql 'c-badge--grey'
-      end
+    it 'returns css for grey badge' do
+      expect(subject.status_badge).to eql 'c-badge--grey'
     end
   end
 end
@@ -95,39 +120,76 @@ end
 
 --
 
-### `it`
+## `it`
 `it` describes a test case (one expectation) and specify only one behavior. Multiple expectations in the same example are signal that you may be specifying multiple behaviors. By specify only have one expectation, helps you on finding possible errors, going directly to the failing test, and to make your code readable.
 
 ```ruby
-it { is_expected.to belong_to(:job_title).class_name('JobTitle').optional }
+it { expect(page).to have_current_path root_path }
 ```
 
 or
 
 ```ruby
-it 'has relations' do
-  is_expected.to belong_to(:job_title).class_name('JobTitle').optional
+it 'stay on main page' do
+  expect(page).to have_current_path root_path
 end
+```
+
+`specify` alias for `it`
+
+```ruby
+  specify { expect(page).to have_current_path root_path }
 ```
 
 --
 
-### `subject`
+## `subject`
 
-`subject` makes way clearer about what you're actually testing and helps you stay DRY in your tests
+- It's instantiated lazily. That is, the implicit instantiation of the described class or the execution of the block passed to `subject` doesn't happen until `subject` or the named `subject` is referred to in an example. If you want your explicit subject to be instantiated eagerly (before an example in its group runs), say `subject!` instead of `subject`
+
+- Expectations can be set on it implicitly (without writing subject or the name of a named subject):
 
 ```ruby
-describe Book do
-  describe '#valid_isbn?' do
-    subject { Book.new(isbn: isbn).valid_isbn? }
-
-    context 'with a valid ISBN number' do
-      let(:isbn) { 'valid' }
-
-      # ...
-    end
-  end
+describe A do
+  it { is_expected.to be_an(A) }
 end
+```
+
+---
+
+# Mocks vs Stubs
+
+### What is the difference?
+
+- A stub is only a method with a canned response, it doesn’t care about behavior.
+
+- A mock expects methods to be called, if they are not called the test will fail.
+
+--
+
+### `Stubbing`
+
+Stub is an object that holds predefined data and uses it to answer calls during tests. It is used when we cannot or don’t want to involve objects that would answer with real data or have undesirable side effects.
+
+```ruby
+# create a double
+obj = double()
+```
+
+Method Stubs
+
+A method stub is an instruction to an object (real or test double) to return a
+known value in response to a message:
+
+```ruby
+# tells the die object to return the value 3 when it receives the roll message
+allow(die).to receive(:roll) { 3 }
+
+# stub a method
+obj.stub(:message) # returns obj
+
+# specify a return value
+obj.stub(:message) { 'this is the value to return' }
 ```
 
 --
@@ -138,33 +200,198 @@ end
 
 You may mock just everything so your spec will never hit the database or another service. But, this is something wrong. When your model code changed or the initiliaze method of service you are call changed, your code will break without get failing specs before merge to production.
 
-app/models/post_info.rb <!-- .element: class="filename" -->
-
 ```ruby
-class PostInfo do
-  #...
-  def allow?
-    current_company.active_subscribe?
-  end
-end
+expect(mock).to receive(:flip).with("ruby.jpg") # mock will return nil
+
+expect(mock).to receive(:flip).with("ruby.jpg").and_return("ruby-flipped.jpg") # mock will return a result
 ```
 
-spec/models/post_info_spec.rb <!-- .element: class="filename" -->
+---
+
+### What is `expectation`?
+
+`rspec-expectations` - is used to define expected outcomes.
+
+The basic structure of an rspec expectation is:
 
 ```ruby
-RSpec.describe PostInfo do
-  before do
-    allow_any_instance_of(Company).to receive(:active_subscribe?).and_return true
-  end
+expect(actual).to matcher(expected)
+expect(actual).not_to matcher(expected)
+```
 
-  it ... do
-  #..
+Examples
+
+```ruby
+expect(5).to eq(5)
+expect(5).not_to eq(4)
+```
+
+---
+
+### What is `matcher`?
+
+A matcher is any object that responds to the following methods:
+
+```ruby
+matches?(actual)
+failure_message
+```
+Types od matchers:
+
+- `Eq matchers`
+
+- `Equal matchers`
+
+- `Comparisons matchers`
+
+- `Between matchers`
+
+- `Types/classes/response`
+
+- `Start/End`
+
+- `Exist matchers`
+
+- `True/False matchers`
+
+- `Custom matchers`
+
+- `...`
+
+
+About of different type matchers you can read [here](https://relishapp.com/rspec/rspec-expectations/docs/built-in-matchers)
+
+--
+
+### Eq matcher
+
+```ruby
+expect(obj).to eq(expected)
+expect(obj).not_to eq(expected)
+```
+
+Passes if given and expected are of equal value, but not necessarily the same object.
+```ruby
+RSpec.describe 'a string' do
+  context '#eq' do
+    it 'is equal to another string of the same value' do
+      expect('this string').to eq('this string')
+    end
+  end
 end
 ```
 
 --
 
-## Custom matchers
+### Equal matcher
+
+```ruby
+expect(obj).to equal(expected)
+expect(obj).not_to equal(expected)
+```
+
+Passes if given and expected are the same object (object identity).
+```ruby
+RSpec.describe 'a string' do
+  context '#equal' do
+    it 'is equal to itself' do
+      string = 'this string'
+      expect(string).to equal(string)
+    end
+  end
+end
+```
+
+Note: expect syntax doesn't support '==' matcher
+
+--
+
+## Comparisons matchers
+
+```ruby
+expect(obj).to be >  expected
+expect(obj).to be >= expected
+expect(obj).to be
+```
+
+### Between matchers
+
+```ruby
+expect(obj).to be_between(minimum, maximum).inclusive
+expect(obj).to be_between(minimum, maximum).exclusive
+```
+
+```ruby
+expect(10).to be_between(1, 10).inclusive
+expect(10).to be_between(1, 11).exclusive
+```
+
+### Start/End matchers
+
+```ruby
+expect(obj).to start_with expected
+expect(obj).to end_with expected
+```
+
+```ruby
+expect('first string').to start_with('first')
+expect('first string').not_to start_with('second')
+expect([1,3,5]).to start_with(1,3)
+```
+
+--
+
+### Types and responses
+
+```ruby
+expect(obj).to respond_to(expected)
+expect(obj).to be_instance_of(expected)
+expect(obj).to be_kind_of(expected)
+```
+
+--
+
+### Include matchers
+
+Passes if given includes expected. This works for collections and Strings. You can also pass in multiple args and it
+will only pass if all args are found in collection.
+
+```ruby
+expect([1,2,3]).to include(3)
+expect([1,2,3]).to include(2,3)
+expect('spread').to include('read')
+expect('spread').to_not include('red')
+```
+
+--
+
+### Exist matchers
+
+```ruby
+expect(obj).to exist
+expect(obj).not_to exist
+expect(obj).to exist(*args)
+expect(obj).not_to exist(*args)
+```
+
+Passes if given.exist? or given.exists?
+
+--
+
+### True/False matchers
+
+```ruby
+expect(obj).to be_truthy    # passes if obj is truthy (not nil or false)
+expect(obj).to be true      # passes if obj == true
+expect(obj).to be_falsey    # passes if obj is falsy (nil or false)
+expect(obj).to be false     # passes if obj == false
+expect(obj).to be_nil  
+end
+```
+
+--
+
+### Custom matchers
 
 Rspec has many useful matchers, we already used be true, be false, and so on. Sometimes, when expecting given values, we repeat the same code over and over again.
 
@@ -205,73 +432,10 @@ Previous command will create for us new file:
 spec/features/mainpage_spec.rb <!-- .element: class="filename" -->
 
 ```ruby
-require 'rails_helper'
-
 RSpec.feature "Mainpages", type: :feature do
   pending "add some scenarios (or delete) #{__FILE__}"
 end
 ```
-
---
-
-### RSpec give us some new methods, lets look
-
-- `describe` - The describe method creates an example group. Within the block passed to
-describe you can declare nested groups using the describe method. Use describe to separate methods being tested or behavior being tested.
-
-- `context` - alias `describe`, but you can use it if you want to separate specs based on conditions.
-
-- `it` - create a test block with RSpec, where we write our expectation.
-
-- `specify` - alias `it`, but you can use it to make your tests more readable.
-
-If you're writing feature tests with `Capybara`, use the `feature` / `scenario` syntax, if not use `describe` / `it` syntax.
-
---
-
-### What is `expectation`?
-
-`rspec-expectations` - is used to define expected outcomes.
-
-The basic structure of an rspec expectation is:
-
-```ruby
-expect(actual).to matcher(expected)
-expect(actual).not_to matcher(expected)
-```
-
-Examples
-
-```ruby
-expect(5).to eq(5)
-expect(5).not_to eq(4)
-```
-
---
-
-### What is `matcher`?
-
-A matcher is any object that responds to the following methods:
-
-```ruby
-matches?(actual)
-failure_message
-```
-Types od matchers:
-
-- `Object identity`
-
-- `Object equivalence`
-
-- `Optional APIs for identity/equivalence`
-
-- `Comparisons`
-
-- `Types/classes/response`
-
-- `...`
-
-About of different type matchers you can read [here](https://relishapp.com/rspec/rspec-expectations/docs/built-in-matchers)
 
 ---
 
