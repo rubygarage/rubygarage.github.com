@@ -56,7 +56,11 @@ create  spec/rails_helper.rb
 
 ## RSpec best practice
 
-Best practice include ideas how to improve your specs quality and increase efficiency of your BDD workflow.
+Best practice include ideas how to improve your specs quality and increase efficiency of your BDD/TDD workflow.
+
+*Every file name, that testing the code should to end with `_spec.rb`*
+
+*Do not litter the files `rails_helper.rb`, `rspec_helper.rb`. Move all configs to `./spec/support/`*
 
 --
 
@@ -66,7 +70,7 @@ Simply add this to your `.rspec` instead:
 .rspec <!-- .element: class="filename" -->
 
 ```ruby
---require rails_helper
+require rails_helper
 ```
 
 ---
@@ -86,33 +90,53 @@ describe you can declare nested groups using the describe method. Use describe t
 
 --
 
-## `describe`
+## Describe your methods
 
-Be clear about what method you're describing. For instance, use the ruby documentation convention of `.` when referring to a class method's name and `#` when referring to an instance method's name.
+Keep clear the methods you are describing using "." as prefix for class methods and "#" as prefix for instance methods.
 
 ```ruby
-### Bad example
+### Bad
 describe 'the authenticate method for User' do
 describe 'if the user is an admin' do
+```
 
-### Good example
+```ruby
+### Good
 describe '.authenticate' do
 describe '#admin?' do
 ```
 
 --
 
-## `context`
+### Use context
 
 `context` starts either with `"with"` or `"when"`, such "when status is pending"
 
 ```ruby
-describe '#status_badge' do
-  context 'when status is pending' do
-    let(:request_status) { 'pending' }
+### wrong
+describe User do
+  it "should save when name is not empty" do
+    User.new(:name => 'Alex').save.should == true
+  end
 
-    it 'returns css for grey badge' do
-      expect(subject.status_badge).to eql 'c-badge--grey'
+  it "should not save when name is empty" do
+    User.new.save.should == false
+  end
+end
+```
+
+```ruby
+### good
+describe User do
+  let (:user) { User.new }
+
+  context "when name is empty" do
+    it "should not be valid" do
+      expect(user.valid?).to be_false
+    end
+
+    it "should not save" do
+      expect(user.save).to be_false
     end
   end
 end
