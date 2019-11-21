@@ -1,5 +1,5 @@
 ---
-layout: automation-qa
+layout: slide
 title:  RSpec
 ---
 
@@ -7,7 +7,7 @@ title:  RSpec
 
 ---
 
-## What is Rspec
+## What is RSpec?
 
 ...
 
