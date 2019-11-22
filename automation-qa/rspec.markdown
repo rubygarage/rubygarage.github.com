@@ -170,59 +170,81 @@ RSpec.describe 'test' do
   it "first test" do
     expect(2 + 2).to eq(4)
   end
+
+  it "second test" do
+    expect(2 + 2).not_to eq(10)
+  end
 end
-```
-
-Test will pase:
-
-```bash
-.
-
-Finished in 0.00424 seconds (files took 0.09888 seconds to load)
-1 example, 0 failures
 ```
 
 ---
 
 ## How to run my first spec?
 
-For running specs you can choose one of several commands:
-
 ```bash
 # Run all spec files
-$ bundle exec rspec
+$ rspec
 ```
 
 ```bash
 # Run all spec files in a single directory (recursively)
-$ bundle exec rspec spec/features
+$ rspec spec/features
 ```
 
 ```bash
 # Run a single spec file
-$ bundle exec rspec spec/controllers/accounts_controller_spec.rb
+$ rspec spec/controllers/accounts_controller_spec.rb
 ```
 
 ```bash
 # Run a single example from a spec file (by line number)
-$ bundle exec rspec spec/controllers/accounts_controller_spec.rb:8
+$ rspec spec/controllers/accounts_controller_spec.rb:8
+```
+
+--
+
+## Run example spec
+
+spec/first_test_spec.rb <!-- .element: class="filename" -->
+
+```ruby
+RSpec.describe 'test' do
+  it "first test" do
+    expect(2 + 2).to eq(4)
+  end
+
+  it "second test" do
+    expect(2 + 2).not_to eq(10)
+  end
+end
+```
+
+Test will pase:
+
+```bash
+$ rspec spec/first_test_spec.rb
+
+..
+
+Finished in 0.00424 seconds (files took 0.09888 seconds to load)
+2 example, 0 failures
 ```
 
 ---
 
-# What is formatters?
+# Output formatters
 
 ### Formatters helps visualize output result of tests
 
 --
 
-## Colorization
+## Formating
+
+Colorization
 
 ```bash
 $ rspec spec/arrays/push_spec.rb --color
 ```
-
-## Formating
 
 Progress format (default)
 
@@ -241,7 +263,7 @@ $ rspec spec/arrays/push_spec.rb  --format progress
 ```
 --
 
-### Documentation format
+## Documentation format
 
 ```bash
 $ rspec spec/arrays/push_spec.rb --format documentation
@@ -260,12 +282,372 @@ Finished in 0.00212 seconds
 
 ---
 
-Control questions
+# Structure of RSpec
+
+--
+
+## Specs are usually placed in a canonical directory structure that describes their purpose:
+
+- `Model` specs reside in the `spec/models` directory
+
+- `Controller` specs reside in the `spec/controllers` directory
+
+- `Request` specs reside in the `spec/requests` directory. The directory can also be named integration or api.
+
+- `Feature` specs reside in the `spec/features` directory
+
+- `View` specs reside in the `spec/views` directory
+
+- `Helper` specs reside in the `spec/helpers` directory
+
+- `Mailer` specs reside in the `spec/mailers` directory
+
+- `Routing` specs reside in the `spec/routing` directory
+
+- `Job` specs reside in the `spec/jobs` directory
+
+- `System` specs reside in the `spec/system` directory
+
+---
+
+# Basic syntax of RSpec
+
+--
+
+## Describe
+
+We use the describe() method to define an example group.
+
+```ruby
+describe 'A User' do
+end
+# => A User
+
+describe User do
+end
+# => User
+
+describe User, 'with no roles assigned' do
+end
+# => User with no roles assigned
+```
+
+--
+
+## Nested groups
+
+```ruby
+RSpec.describe User do
+  describe 'With no roles assigned' do
+    it 'is not allowed to view protected content' do
+    end
+  end
+end
+
+# User
+#   with no roles assigned
+#     is not allowed to view protected content
+```
+
+--
+
+## Context
+
+The context() method is an alias for `describe()`.
+
+```ruby
+RSpec.describe User
+  context 'with no roles assigned' do
+    it 'is not allowed to view protected content' do
+    end
+  end
+end
+
+# User
+#   with no roles assigned
+#     is not allowed to view protected content
+```
+
+--
+
+## It
+
+The `it()` method takes a single String, an optional Hash and an optional block. String with `'it'` represents the detail that will be expressed in code within the block.
+
+```ruby
+RSpec.describe Array do
+  context '#last' do
+    it 'returns the last element' do
+      array = [:first, :second, :third]
+      expect(array.last).to eq(:third)
+    end
+
+    it 'does not remove the last element' do
+      array = [:first, :second, :third]
+      array.last
+      expect(array.size).to eq(3)
+    end
+  end
+```
+
+--
+
+## Specify
+
+Alias for `it`. Can be used when decsription can be leaved
+
+```ruby
+specify { expect(product).not_to be_featured }
+```
+
+---
+
+## `let` and `!let`
+
+--
+
+## `let`
+
+Use let to define a memoized helper method. The value will be cached across multiple calls in the same example but not across examples.
+
+### Use `before`
+
+```ruby
+before do
+  @empty_array = Array.new
+end
+
+it 'is empty' do
+  expect(@empty_array).to be_empty
+end
+```
+
+### Use `let`
+
+```ruby
+let(:empty_array) { Array.new }
+
+it 'is empty' do
+  expect(empty_array).to be_empty
+end
+```
+
+--
+
+## `!let`
+
+Use `let`:
+
+```ruby
+let(:user) { User.create(data) }
+
+before do
+  user
+end
+
+it 'is empty' do
+  expect(User.count).to eq(1)
+end
+```
+
+Use `!let`:
+
+```ruby
+let!(:user) { User.create(data) }
+
+it 'is empty' do
+  expect(User.count).to eq(1)
+end
+```
+
+`let` is lazy-evaluated: it is not evaluated until the first time the method it defines is invoked. You can use `let!` to force the method’s invocation before each example.
+
+---
+
+# Expectations
+
+Used to define expected outcomes.
+
+--
+
+The basic structure of an rspec expectation is:
+
+```ruby
+expect(actual).to matcher(expected)
+expect(actual).not_to matcher(expected)
+```
+
+Examples
+
+```ruby
+expect(5+5).to eq(10) #=> true
+expect(5 + 5).not_to eq(11) #=> true
+```
+
+---
+
+# Shared examples
+
+--
+
+Shared examples let you describe behaviour of types or modules. When declared, a shared group’s content is stored. It is only realized in the context of another example group, which provides any context the shared group needs to run.
+
+- `include_examples` 'name' # include the examples in the current context
+- `it_behaves_like` 'name' # include the examples in a nested context
+- `it_should_behave_like` 'name' # include the examples in a nested context
+
+--
+
+You can use any of these methods to use shared examples. Filewith share examples should be loaded before the files that use them
+
+```ruby
+RSpec.describe 'test' do
+  shared_example 'a collection object' do
+    expect(collection.to_a).to eq([1])
+  end
+
+  describe '<<' do
+    let(:collection) { Array.new }
+
+    it 'adds objects to the end of the collection' do
+      collection << 1
+      it_behaves_like 'a collection object'
+    end
+  end
+end
+```
+
+--
+
+or
+
+```ruby
+require 'set'
+
+RSpec.shared_examples 'a collection object' do
+  describe '<<' do
+    it 'adds objects to the end of the collection' do
+      collection << 1
+      collection << 2
+      expect(collection.to_a).to eq([1,2])
+    end
+  end
+end
+
+RSpec.describe Array do
+  it_behaves_like 'a collection object' do
+    let(:collection) { Array.new }
+  end
+end
+
+RSpec.describe Set do
+  it_behaves_like 'a collection object' do
+    let(:collection) { Set.new }
+  end
+end
+```
+
+--
+
+## Shared context
+
+Use shared_context to define a block that will be evaluated in the context of example groups either explicitly, using include_context, or implicitly by matching metadata.
+
+```ruby
+RSpec.shared_context 'shared stuff', a: :b do
+  before { @some_var = :some_value }
+
+  def shared_method
+    'it works'
+  end
+
+  let(:shared_let) { {'arbitrary' => 'object'} }
+
+  subject do
+    'this is the subject'
+  end
+end
+```
+
+--
+
+## Include context
+
+```ruby
+RSpec.describe "group that includes a shared context using 'include_context'" do
+  include_context 'shared stuff'
+
+  it 'has access to methods defined in shared context' do
+    expect(shared_method).to eq('it works')
+  end
+
+  it 'has access to methods defined with let in shared context' do
+    expect(shared_let['arbitrary']).to eq('object')
+  end
+
+  it 'runs the before hooks defined in the shared context' do
+    expect(@some_var).to eq(:some_value)
+  end
+
+  it 'accesses the subject defined in the shared context' do
+    expect(subject).to eq('this is the subject')
+  end
+end
+```
+
+--
+
+## metadata
+
+```ruby
+RSpec.describe 'group that includes a shared context using metadata', a: :b do
+  it 'has access to methods defined in shared context' do
+    expect(shared_method).to eq('it works')
+  end
+
+  it 'has access to methods defined with let in shared context' do
+    expect(shared_let['arbitrary']).to eq('object')
+  end
+
+  it 'runs the before hooks defined in the shared context' do
+    expect(@some_var).to eq(:some_value)
+  end
+
+  it 'accesses the subject defined in the shared context' do
+    expect(subject).to eq('this is the subject')
+  end
+end
+```
+
+```bash
+$ rspec spec/shared_stuff_spec.rb
+
+........
+Finished in 0.00758 seconds
+8 examples, 0 failures
+```
+
+---
+
+# Hooks
+
+...
+
+
+---
+
+# RSpec best practices
+
+--
+
+
+---
+
+# Control questions
 
 *What is RSpec?*
+...
 
 ---
 
-The End
-
----
+# The End
