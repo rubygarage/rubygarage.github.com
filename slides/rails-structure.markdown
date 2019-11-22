@@ -13,7 +13,7 @@ title:  Rails
 
 --
 
-## Instaling and setup Git
+## Install and setup Git
 
 `Git` - is a version control system for tracking changes in computer files and coordinating work on those files among multiple people.
 
@@ -74,6 +74,16 @@ Check this worked correctly
 
 ```bash
 $ ruby -v
+```
+
+--
+
+## Install Bundler
+
+Bundler is a popular tool for managing application gem dependencies.
+
+```bash
+$ gem install bundler
 ```
 
 --
@@ -374,27 +384,12 @@ Gemfile.rb <!-- .element class="filename" -->
   end
 ```
 
---
-
-## Combine groups
-
 This is visually more pleasing, and you can combine groups;
 
 Gemfile.rb <!-- .element class="filename" -->
 
 ```ruby
 group :development, :test do
-  gem "my_gem"
-  gem "my_other_gem"
-end
-```
-
-If there is a group you want to be optional you can pass optional: true before the block;
-
-Gemfile.rb <!-- .element class="filename" -->
-
-```ruby
-group :development, optional: true do
   gem "my_gem"
   gem "my_other_gem"
 end
