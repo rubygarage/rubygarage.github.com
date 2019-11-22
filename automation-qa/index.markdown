@@ -6,6 +6,9 @@ title: QA Automation
 ## QA Automation
 
 ---
+- [Preprogramming Course](preprogramming-course)
+  <br>
+  <small>So, let's begin! </small>
 
 - [Rails Structure](rails-structure)
   <br>
@@ -23,13 +26,13 @@ title: QA Automation
   <br>
   <small>How to generates dummy data? </small>
 
-- [Database Cleaner](database-cleaner)
-  <br>
-  <small>Strategies for cleaning your database </small>
-
 - [Capybara](capybara)
   <br>
   <small>Lets test web applications by simulating how a real user would interact with your app. </small>
+
+- [Database Cleaner](database-cleaner)
+  <br>
+  <small>Strategies for cleaning your database </small>
 
 - [Site Prism](siteprism)
   <br>

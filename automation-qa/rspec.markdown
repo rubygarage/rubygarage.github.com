@@ -180,10 +180,6 @@ RSpec.describe 'test' do
   it "first test" do
     expect(2 + 2).to eq(4)
   end
-
-  it "second test" do
-    expect(2 + 2).not_to eq(10)
-  end
 end
 ```
 
@@ -490,32 +486,12 @@ expect(actual).not_to matcher(expected)
 Examples
 
 ```ruby
-expect(5+5).to eq(10) #=> true
+expect(5 + 5).to eq(10) #=> true
 expect(5 + 5).not_to eq(11) #=> true
+expect(3 + 2).not_to eq(6) #=> false
 ```
 
----
-
-# Stub
-
---
-
-### Stub is an object that holds predefined data and uses it to answer calls during tests.
-
-It is used when we cannot or don’t want to involve objects that would answer with real data or have undesirable side effects.
-
-```ruby
-obj = double() # create a dummy
-
-# tells the 'obj' to return the value ':value' when it receives the roll ':method_name'
-allow(obj).to receive(:method_name).and_return(:value)
-```
-
-Same stub but with `Lazy evaluation`:
-
-```ruby
-allow(obj).to receive(:method_name) { :value }
-```
+For more expectations go [here](https://relishapp.com/rspec/rspec-expectations/docs/built-in-matchers)
 
 ---
 
@@ -662,25 +638,208 @@ Finished in 0.00758 seconds
 
 ---
 
+# Stub
+
+--
+
+### Stub is an object that holds predefined data and uses it to answer calls during tests.
+
+It is used when we cannot or don’t want to involve objects that would answer with real data or have undesirable side effects.
+
+```ruby
+obj = double() # create a dummy
+
+# tells the 'obj' to return the value ':value' when it receives the roll ':method_name'
+allow(obj).to receive(:method_name).and_return(:value)
+```
+
+Same stub but with `Lazy evaluation`:
+
+```ruby
+allow(obj).to receive(:method_name) { :value }
+```
+
+---
+
 # Hooks
 
-...
+Provides `before`, `after` and `around` hooks as a means of supporting common setup and teardown. This module is extended on to `ExampleGroup`, making the methods available from any `describe` or `context` block.
 
+The most common hooks used in RSpec are `before` and `after` hooks. They provide a way to define and run the setup and teardown code.
+
+--
+
+### Hooks types
+
+- **after**
+
+  ```ruby
+  after(*args, &block)
+  ```
+
+  Declare a block of code to be run after each example (using `:example`) or once after all examples in the context (using `:context`).
+
+- **around**
+
+  ```ruby
+  around(*args) {|Example| ... }
+  ```
+
+  Declare a block of code, parts of which will be run before and parts after the example.
+
+- **before**
+
+  ```ruby
+  before(*args, &block)
+  ```
+
+  Declare a block of code to be run before each example (using `:example`) or once before any example (using `:context`).
+
+  **`Note`**: The `:example` and `:context` scopes are also available as `:each` and `:all`, respectively. Use whichever you prefer.
+
+--
+
+### Here is a simple example that illustrates when each hook is called.
+
+```ruby
+describe "Before and after hooks" do
+   before(:each) do
+      puts "Runs before each Example"
+   end
+   after(:each) do
+      puts "Runs after each Example"
+   end
+   before(:all) do
+      puts "Runs before all Examples"
+   end
+   after(:all) do
+      puts "Runs after all Examples"
+   end
+
+   it 'is the first Example in this spec file' do
+      puts 'Running the first Example'
+   end
+
+   it 'is the second Example in this spec file' do
+      puts 'Running the second Example'
+   end
+end
+```
+
+```
+Runs before all Examples
+Runs before each Example
+Running the first Example
+Runs after each Example
+.Runs before each Example
+Running the second Example
+Runs after each Example
+.Runs after all Examples
+```
+
+--
+
+The syntax of around is similar to that of `before` and `after` but the semantics are quite different. `before` and `after` hooks are run in the context of of the examples with which they are associated, whereas `around` hooks are actually responsible for running the examples. Consequently, `around` hooks do not have direct access to resources that are made available within the examples and their associated `before` and `after` hooks.
+
+
+```ruby
+RSpec.describe "around hook" do
+  around(:each) do |example|
+    puts "around example before"
+    example.run
+    puts "around example after"
+  end
+
+  it "gets run in order" do
+    puts "in the example"
+  end
+end
+```
+Output should contain:
+
+```
+around example before
+in the example
+around example after
+```
 
 ---
 
 # RSpec best practices
 
+Best practice include ideas how to improve your specs quality and increase efficiency of your BDD/TDD workflow.
+
+*Every file name, that testing the code should to end with `_spec.rb`*
+
+*Do not litter the filjes `rails_helper.rb`, `rspec_helper.rb`. Move all configs to `./spec/support/`*
+
+*Add `--require spec_helper` to file `.rspec` and you don't need to require this file in every spec file*
+
 --
 
+## How to describe your methods
 
----
+Be clear about what method you are describing. For instance, use the Ruby documentation convention of `.` (or `::`) when referring to a class method's name and `#` when referring to an instance method's name.
 
-# Control questions
+```ruby
+# bad
+describe 'the authenticate method for User' do
+describe 'if the user is an admin' do
+```
 
-*What is RSpec?*
-...
+```ruby
+# good
+describe '.authenticate' do
+describe '#admin?' do
+```
+
+--
+
+## Use contexts
+
+`context` starts either with `"with"` or `"when"`, such "when status is pending"
+
+```ruby
+# Bad
+it 'has 200 status code if logged in' do
+  expect(response).to respond_with 200
+end
+it 'has 401 status code if not logged in' do
+  expect(response).to respond_with 401
+end
+```
+
+```ruby
+# good
+context 'when logged in' do
+  it { is_expected.to respond_with 200 }
+end
+context 'when logged out' do
+  it { is_expected.to respond_with 401 }
+end
+```
+
+--
+
+## Keep your description short
+
+A spec description should never be longer than 40 characters. If this happens you should split it using a context.
+
+```ruby
+it 'has 422 status code if an unexpected params will be added' do
+```
+
+```ruby
+context 'when not valid' do
+  it { is_expected.to respond_with 422 }
+end
+```
+
+For more practices go
+[here](https://relishapp.com/rspec/rspec-expectations/docs/built-in-matchers)
 
 ---
 
 # The End
+
+---
