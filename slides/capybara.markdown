@@ -3,7 +3,7 @@ layout: slide
 title: Capybara
 ---
 
-## What is Capybara?
+# What is Capybara?
 
 DSL extensions for testing web-based UIs
 - HTML elements and attributes
@@ -12,7 +12,7 @@ DSL extensions for testing web-based UIs
 
 ---
 
-## Why Capybara Gem?
+# Why Capybara Gem?
 
 Capybara can mimic actions of real users interacting with web-based applications. It can receive pages, parse the HTML and submit forms.
 
@@ -20,30 +20,9 @@ Capybara supports many different drivers which execute your tests through the sa
 
 ---
 
-## What Capybara Gem Brings?
+# Install Capybara
 
-- Commands
- - visit
- - click
- - within
- - ...
-
-- Matchers
- - have_selector
- - have_content
- - have_no_content
- - ...
-
-- Complexities working with Javascript
- - different web drivers for different tasks
-
-- Debugging
- - save_and_open_page
- - save_and_open_screenshot
-
----
-
-## Install `Capybara`
+--
 
 The first thing we need to do is add our gem to Gemfile in `:test` group
 
@@ -54,7 +33,7 @@ group :test do
 end
 ```
 
-Then, run `bundle install` to download and instal new gem
+Then, run `bundle install` to download and install new gem
 
 ```bash
 $ bundle install
@@ -78,9 +57,11 @@ Dir[File.dirname(__FILE__) + '/support/*.rb'].each { |file| require file }
 
 ---
 
-## Capybara configuration 
+# Capybara configuration
 
-Configure Capybara to suit your needs.
+--
+
+## Configure Capybara to suit your needs.
 
 spec/support/capybara.rb <!-- .element: class="filename" -->
 
@@ -99,13 +80,37 @@ end
 
 - DSL Options
 
-  - `default_driver (Symbol = :rack_test)` - The name of the driver to use by default.
+  - `default_driver` - The name of the driver to use by default.
 
-  - `javascript_driver (Symbol = :selenium)` - The name of a driver to use for JavaScript enabled tests.
+  - `javascript_driver` - The name of a driver to use for JavaScript enabled tests.
+
+
+--
+
+## Execution host
+
+Normally Capybara expects to be testing an in-process Rack application, but you can also use it to talk to a web server running anywhere on the internet, by setting app_host:
+
+spec/support/capybara.rb <!-- .element: class="filename" -->
+
+```ruby
+  Capybara.current_driver = :selenium # Default driver (:rack_test) does not support running against a remote server.
+  Capybara.app_host = 'http://www.google.com'
+```
+
+After previous execution write:
+
+spec/feature/test_spec.rb <!-- .element: class="filename" -->
+
+```ruby
+visit('/') # Capybara will visit `http://www.google.com`
+```
 
 ---
 
-## Drivers
+# Drivers
+
+--
 
 By default, Capybara uses the `:rack_test` driver which does not have any support for executing JavaScript. 
 Drivers can be switched in Before and After blocks. Some of the web drivers supported by Capybara are mentioned below.
@@ -162,7 +167,7 @@ For true headless testing with JavaScript support, we can use the [capybara-webk
 
 Poltergeist is a PhantomJS driver for Capybara. We can use the [poltergeist](https://github.com/teampoltergeist/poltergeist) driver (gem). PhantomJS is a headless WebKit scriptable with a JavaScript API. It has fast and native support for various web standards: DOM handling, CSS selector, JSON, Canvas, and SVG.
 
----
+--
 
 ## Selecting the Driver
 
@@ -193,7 +198,7 @@ end
 
 `Note`: switching the driver creates a new session, so you may not be able to switch in the middle of a test.
 
----
+--
 
 ## Configuring and adding drivers
 
@@ -207,9 +212,9 @@ end
 
 The [Selenium wiki](https://github.com/SeleniumHQ/selenium/wiki/Ruby-Bindings) has additional info about how the underlying driver can be configured.
 
----
+--
 
-### `js: true`
+## `js: true`
 
 Use `js: true` to switch to the `Capybara.javascript_driver` (:selenium by default), or provide a :driver option to switch to one specific driver. For example:
 
@@ -231,36 +236,9 @@ end
 
 ---
 
-## Execution host
+# Finders
 
-Normally Capybara expects to be testing an in-process Rack application, but you can also use it to talk to a web server running anywhere on the internet, by setting app_host:
-
-spec/support/capybara.rb <!-- .element: class="filename" -->
-
-```ruby
-  Capybara.current_driver = :selenium # Default driver (:rack_test) does not support running against a remote server.
-  Capybara.app_host = 'http://www.google.com'
-```
-
-After previous execution if you write `visit('/')` in your feature test, your Capybara will visit `http://www.google.com`.
-
-Also you can visit any URL directly:
-
-spec/feature/test_spec.rb <!-- .element: class="filename" -->
-
-```ruby
-visit('http://www.youtube.com')
-```
-
-By default Capybara will try to boot a rack application automatically. You might want to switch off Capybara's rack server if you are running against a remote application:
-
-spec/support/capybara.rb <!-- .element: class="filename" -->
-
-```ruby
-Capybara.run_server = false
-```
-
----
+--
 
 ### How to find elements? - DOM
 
@@ -300,9 +278,13 @@ When trying to find an element either using the DSL or xpath/CSS selectors, it i
 
 ---
 
+# Actions
+
+--
+
 ## How to click/hover/any other action with element?
 
-### Capybara is a library/gem built to be used on top of an underlying web-based driver. It offers a user-friendly `DSL` (Domain Specific Language) which is used to describe actions that are executed by the underlying web driver.
+ Capybara is a gem built to be used on top of an underlying web-based driver. It offers a user-friendly `DSL` (Domain Specific Language) which is used to describe actions that are executed by the underlying web driver.
 
 --
 
@@ -356,7 +338,11 @@ find(:xpath, 'actual_xpath')
 
 ---
 
-### Capybara provides special `Matchers` for our `RSpec Expectations`
+# Matchers
+
+--
+
+### Capybara provides special matchers for our RSpec Expectations
 
 Capybara has a rich set of options for querying the page for the existence of certain elements, and working with and manipulating those elements.
 
@@ -371,7 +357,9 @@ expect(page).to have_content('foo')
 
 ---
 
-### Debugging
+# Debugging
+
+--
 
 It can be useful to take a snapshot of the page as it currently is and take a look at it:
 
