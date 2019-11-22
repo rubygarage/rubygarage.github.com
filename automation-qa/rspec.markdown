@@ -13,7 +13,17 @@ RSpec is a unit test framework for the Ruby programming language. RSpec is diffe
 
 ---
 
-<!-- think may be about test types or any else -->
+# RSpec Test Types
+
+--
+
+![](/assets/images/types-of-test/rails-test-types.png)
+
+- **Unit tests** - these tests individual components in isolation, proving that they implement the expected behavior independent of the surrounding system.
+
+- **Integration tests** - these tests exercise the system as a whole rather than its individual components.
+
+- **Hybrid tests** - these tests what testing several components together but not the full system.
 
 ---
 
@@ -486,11 +496,34 @@ expect(5 + 5).not_to eq(11) #=> true
 
 ---
 
+# Stub
+
+--
+
+### Stub is an object that holds predefined data and uses it to answer calls during tests.
+
+It is used when we cannot or don’t want to involve objects that would answer with real data or have undesirable side effects.
+
+```ruby
+obj = double() # create a dummy
+
+# tells the 'obj' to return the value ':value' when it receives the roll ':method_name'
+allow(obj).to receive(:method_name).and_return(:value)
+```
+
+Same stub but with `Lazy evaluation`:
+
+```ruby
+allow(obj).to receive(:method_name) { :value }
+```
+
+---
+
 # Shared examples
 
 --
 
-Shared examples let you describe behaviour of types or modules. When declared, a shared group’s content is stored. It is only realized in the context of another example group, which provides any context the shared group needs to run.
+Shared examples let you describe behavior of types or modules. When declared, a shared group’s content is stored. It is only realized in the context of another example group, which provides any context the shared group needs to run.
 
 - `include_examples` 'name' # include the examples in the current context
 - `it_behaves_like` 'name' # include the examples in a nested context
@@ -498,7 +531,7 @@ Shared examples let you describe behaviour of types or modules. When declared, a
 
 --
 
-You can use any of these methods to use shared examples. Filewith share examples should be loaded before the files that use them
+You can use any of these methods to use shared examples. File with share examples should be loaded before the files that use them
 
 ```ruby
 RSpec.describe 'test' do
