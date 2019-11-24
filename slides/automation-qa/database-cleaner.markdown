@@ -7,11 +7,83 @@ title: Database Cleaner
 
 # Database cleaning
 
+--
+
+**Data cleaning** - is the process of preparing data for analysis by removing or modifying data that is incorrect, incomplete, irrelevant, duplicated, or improperly formatted. This data is usually not necessary or helpful when it comes to analyzing data because it may hinder the process or provide inaccurate results. 
+
 ---
 
-## Setup Database cleaning
+# Setup Database cleaning
 
-### If you are using Rails later than 5.1.5
+---
+
+## If you are using Rails earlier than 5.1.5
+
+--
+
+Earlier versions of Rails 5.1 had a defect in ActionDispatch::SystemTesting::Server that caused problems with rolling back the `transaction`. So in this case we will be use `database_cleaner` gem. 
+
+--
+
+The first thing we need to do is add our gem to Gemfile in `:test` group
+
+```ruby
+group :test do
+  gem "database_cleaner"
+  gem "selenium-webdriver" # From box only in Rails later than 5.1
+end
+```
+
+Then, run `bundle install` to download and install new gem
+
+```bash
+$ bundle install
+```
+
+Change `use_transactional_fixtures = false` this will disable rspec-rails’ implicit wrapping of tests in a
+database transaction. 	
+
+spec/rails_helper.rb <!-- .element: class="filename" -->
+
+```ruby
+config.use_transactional_fixtures = false
+```
+
+--
+
+Define `database_cleaner` file, which manages the [Database cleaner](https://github.com/DatabaseCleaner/database_cleaner) configuration:
+
+spec/support/database_cleaner.rb <!-- .element: class="filename" -->
+
+```ruby
+RSpec.configure do |config|
+  config.before(:suite) do
+    # Before the entire test suite runs, clear the test database out completely
+    DatabaseCleaner.clean_with(:truncation)
+  end
+  config.before(:each) do
+    # Sets the default database cleanjing strategy to be transactions
+    DatabaseCleaner.strategy = :transaction
+  end
+  config.before(:each, :js => true) do
+    # Chooses the “truncation” strategy if your Capybara use js driver
+    DatabaseCleaner.strategy = :truncation
+  end
+  # Next lines hook up database_cleaner around the beginning and end of each test
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+  config.after(:each) do
+    DatabaseCleaner.clean
+  end
+end
+```
+
+---
+
+## If you are using Rails later than 5.1.5
+
+--
 
 The main idea `Database cleaning` is to start each example with a clean database, create whatever data
 is necessary for that example, and then remove that data by simply rolling back
@@ -50,9 +122,9 @@ end
 
 --
 
-### Data created in before(`:each`) are **rolled back**
+### Data created in before(:each) are **rolled back**
 
-Any data you create in a before(`:each`) hook will be rolled back at the end of
+Any data you create in a `before(:each)` hook will be rolled back at the end of
 the example. This is a good thing because it means that each example is
 isolated from state that would otherwise be left around by the examples that
 already ran. For example:
@@ -76,66 +148,3 @@ has a different object, and the underlying data is rolled back so the data
 backing the `@widget` in each example is new.
 
 `Note` Data created in before(`:all`) are **not rolled back**
-
----
-
-## Setup Database cleaning
-
-### If you are using Rails earlier than 5.1.5
-
-Earlier versions of Rails 5.1 had a defect in ActionDispatch::SystemTesting::Server that caused problems with previous method of cleaning database.
-
---
-
-The first thing we need to do is add our gem to Gemfile in `:test` group
-
-```ruby
-group :test do
-  gem "database_cleaner"
-  gem "selenium-webdriver" # from box only in Rails later than 5.1
-end
-```
-
-Then, run `bundle` to download and instal new gem
-
-```bash
-$ bundle install
-```
-
-Change `use_transactional_fixtures = false` this will disable rspec-rails’ implicit wrapping of tests in a
-database transaction. 	
-
-spec/rails_helper.rb <!-- .element: class="filename" -->
-
-```ruby
-config.use_transactional_fixtures = false
-```
-
---
-
-Define `database_cleaner` file, which manages the [Database cleaner](https://github.com/DatabaseCleaner/database_cleaner) configuration:
-
-spec/support/database_cleaner.rb <!-- .element: class="filename" -->
-
-```ruby
-RSpec.configure do |config|
-  config.before(:suite) do
-    DatabaseCleaner.clean_with(:truncation)
-  end
-  config.before(:each) do
-    DatabaseCleaner.strategy = :transaction
-  end
-  config.before(:each, :js => true) do
-    DatabaseCleaner.strategy = :truncation
-  end
-  config.before(:each) do
-    DatabaseCleaner.start
-  end
-  config.after(:each) do
-    DatabaseCleaner.clean
-  end
-end
-```
----
-
-# The end
