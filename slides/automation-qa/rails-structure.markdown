@@ -299,7 +299,7 @@ Gemfile.lock holds the gem dependency tree, including all versions, for the app.
 The first thing we need to do is tell the Gemfile where to look for gems, this is called the source.
 We use the #source method for doing this.
 
-Gemfile.rb <!-- .element class="filename" -->
+Gemfile <!-- .element class="filename" -->
 
 ```ruby
 source "https://rubygems.org”
@@ -313,10 +313,10 @@ Now onto the main point of using a Gemfile, setting up the gems!
 
 The most basic syntax is;
 
-Gemfile.rb <!-- .element class="filename" -->
+Gemfile <!-- .element class="filename" -->
 
 ```ruby
-gem "my_gem"
+gem 'my_gem'
 ```
 
 In this case my_gem is the name of the gem. The name is the only thing that is required, there are several optional parameters that you can use.
@@ -329,10 +329,10 @@ The most common thing you will want to do with a gem is set its version.
 
 If you don’t set a version you are basically saying any version will do;
 
-Gemfile.rb <!-- .element class="filename" -->
+Gemfile <!-- .element class="filename" -->
 
 ```ruby
-gem "my_gem", ">= 0.0.0"
+gem 'my_gem', '>= 0.0.0'
 ```
 
 There are `seven` operators you can use when specifying your gems.
@@ -367,31 +367,31 @@ There are `seven` operators you can use when specifying your gems.
 
 There are two ways you group a gem. The first is by assigning a value to the :group property;
 
-Gemfile.rb <!-- .element class="filename" -->
+Gemfile <!-- .element class="filename" -->
 
 ```ruby
-gem "my_gem", group: :development
+gem 'my_gem', group: :development
 ```
 
 The second way you can decide a grouping for a gem is by setting your gems up inside a block;
 
-Gemfile.rb <!-- .element class="filename" -->
+Gemfile <!-- .element class="filename" -->
 
 ```ruby
   group :development do
-    gem "my_gem"
-    gem "my_other_gem"
+    gem 'my_gem'
+    gem 'my_other_gem'
   end
 ```
 
 This is visually more pleasing, and you can combine groups;
 
-Gemfile.rb <!-- .element class="filename" -->
+Gemfile <!-- .element class="filename" -->
 
 ```ruby
 group :development, :test do
-  gem "my_gem"
-  gem "my_other_gem"
+  gem 'my_gem'
+  gem 'my_other_gem'
 end
 ```
 
@@ -401,26 +401,26 @@ end
 
 You can set sources for your gems
 
-Gemfile.rb <!-- .element class="filename" -->
+Gemfile <!-- .element class="filename" -->
 
 ```ruby
-gem "my_gem", source: "https://your_resource.com"
+gem 'my_gem', source: "https://your_resource.com"
 ```
 
 Also you can Installing a Gem from Git
 
-Gemfile.rb <!-- .element class="filename" -->
+Gemfile <!-- .element class="filename" -->
 
 ```ruby
-gem "my_gem", git: "ssh@githib.com/your_resource/my_gem”
+gem 'my_gem', git: 'ssh@githib.com/your_resource/my_gem'
 ```
 
 You can specify that your gem lives locally on your system by passing in the :path parameter.
 
-Gemfile.rb <!-- .element class="filename" -->
+Gemfile <!-- .element class="filename" -->
 
 ```ruby
-gem "my_gem", :path => "../my_path/my_gem”
+gem 'my_gem', path: '../my_path/my_gem'
 ```
 ---
 
@@ -428,23 +428,11 @@ gem "my_gem", :path => "../my_path/my_gem”
 
 --
 
-## `NPM` vs `Yarn`
-
-Yarn has a few differences from npm. First of all, Yarn caches all installed packages. Yarn is installing the packages simultaneously, and that is why Yarn is faster than NPM. They both download packages from npm repository. Yarn generates yarn.lock to lock down the versions of package’s dependencies by default. On the contrary, npm for this purpose offers `shrinkwrap` CLI command.
-
-### Problems with Yarn
-
-- Problems with installing native modules
-
-- Yarn doesn’t work with any node.js version older than 5
-
----
-
 ## What is `NPM`?
 
 `npm` (originally short for Node Package Manager) is a package manager for the JavaScript programming language. It is the default package manager for the JavaScript runtime environment Node.js. It consists of a command line client, also called npm, and an online database of public and paid-for private packages, called the npm registry.
 
----
+--
 
 ## What is `Yarn`?
 `Yarn` is a JavaScript package manager for your code, that is a faster alternative to NPM.
@@ -469,6 +457,18 @@ The are a few benefits of using Yarn with your Rails application:
 
 ### package-lock.json
 `package-lock.json` is automatically generated for any operations where npm modifies either the node_modules tree, or package.json. It describes the exact tree that was generated, such that subsequent installs are able to generate identical trees, regardless of intermediate dependency updates.
+
+--
+
+## `NPM` vs `Yarn`
+
+Yarn has a few differences from npm. First of all, Yarn caches all installed packages. Yarn is installing the packages simultaneously, and that is why Yarn is faster than NPM. They both download packages from npm repository. Yarn generates yarn.lock to lock down the versions of package’s dependencies by default. On the contrary, npm for this purpose offers `shrinkwrap` CLI command.
+
+### Problems with Yarn
+
+- Problems with installing native modules
+
+- Yarn doesn’t work with any node.js version older than 5
 
 ---
 

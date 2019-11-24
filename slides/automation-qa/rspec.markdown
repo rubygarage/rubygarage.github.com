@@ -58,7 +58,7 @@ rspec-rails (3.9.0)
   rspec-support (~> 3.9.0)
 ```
 
-Based on this, you can add to `Gemfile` this gems and you needn't to install `rspec-rails`
+Based on this, you can add to `Gemfile` this gems and you don't need to install `rspec-rails`
 
 
 `But not recomended!`
@@ -638,6 +638,146 @@ Finished in 0.00758 seconds
 
 ---
 
+# Pending
+
+```ruby
+RSpec.describe Array do
+  skip 'not implemented yet' do
+  end
+
+  context '#last' do
+    it 'returns the last element', skip: true do
+      array = [:first, :second, :third]
+      expect(array.last).to eq(:third)
+    end
+
+    it 'does not remove the last element', skip: 'reason explanation' do
+      array = [:first, :second, :third]
+      array.last
+      expect(array.size).to eq(3)
+    end
+  end
+
+  it 'does something else' do
+    skip # or skip 'reason explanation'
+  end
+end
+```
+
+--
+
+```bash
+Array
+  not implemented yet (PENDING: No reason given)
+  does something else (PENDING: No reason given)
+  #last
+    returns the last element (PENDING: No reason given)
+    does not remove the last element (PENDING: reason explanation)
+
+Pending: (Failures listed here are expected and do not affect your suites status)
+
+  1) Array not implemented yet
+     # No reason given
+     # ./spec/a_spec.rb:2
+
+  2) Array does something else
+     # No reason given
+     # ./spec/a_spec.rb:18
+
+  3) Array#last returns the last element
+     # No reason given
+     # ./spec/a_spec.rb:6
+
+  4) Array#last does not remove the last element
+     # reason explanation
+     # ./spec/a_spec.rb:11
+
+
+Finished in 0.00105 seconds (files took 0.08152 seconds to load)
+4 examples, 0 failures, 4 pending
+```
+
+---
+
+# Filters
+
+```ruby
+describe Actor do
+  let(:name) { 'Ivan' }
+
+  context 'with subject redefinition', :focus do # or focus: true
+    let(:actor) {  Actor.new(name) }
+    subject { actor }
+
+    it 'has name', :slow do # or slow: true
+      expect(subject.name).to eq(name)
+    end
+  end
+end
+```
+
+```bash
+$ rspec spec/subject_spec.rb --tag focus --format documentation
+
+Actor
+  with subject redefinition
+    has name
+
+Finished in 1.22 seconds
+1 example, 0 failures
+```
+
+--
+
+before, after, and around hooks defined in the block passed to
+RSpec.configure can be constrained to specific examples and/or groups using
+metadata as a filter.
+
+rails_helper.rb <!-- .element: class="filename" -->
+
+
+```ruby
+RSpec.configure do |c|
+  c.before(:each, type: :model) do
+    # do some
+  end
+end
+```
+
+`before` will be works when run tests with current `type`
+
+```ruby
+describe "something", type: :model do
+end
+```
+
+--
+
+### You can also include helpers for tests that you need
+
+```ruby
+RSpec.configure do |config|
+  config.include ModelHelper, type: :model
+  config.include FeatureHelper, type: :feature
+  config.include TestHelper, type: :test_name
+  config.include ControllerHelper, type: :controller
+end
+```
+
+```ruby
+# first spec file
+describe "something", type: :model do
+  # will be included ModelHelper
+end
+
+# second spec file
+describe "something", type: :feature do
+  # will be included FeatureHelper
+end
+```
+
+---
+
 # Stub
 
 --
@@ -841,5 +981,3 @@ For more practices go
 ---
 
 # The End
-
----
