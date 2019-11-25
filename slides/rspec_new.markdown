@@ -1914,74 +1914,1555 @@ expect(obj).to be_kind_of(expected)
 End of first lection
 
 ---
-
-## Lets create console interface to use Library
+### Lets create console app for library class, to manage it's state from terminal.
 
 --
-
 ### Requirements
 1. Show greeting message
-2. Show available action
+2. Show available actions
   - Show books
   - Add book
   - Remove book
-3. Shut down when user typed `exit`
----
-## around(:each)
+  - Exit
+3. Show books
+4. Add book
+5. Remove book
+6. Shut down when user types `quit`. Print `Goodbye`
+--
 
-Around hooks receive the example as a block argument, extended to behave as a proc. This lets you define code that should be executed before and after the example.
+## Output Matchers
 
 ```ruby
-class User
-  def self.communication
-    puts 'Hello!'
-    yield
-    puts 'Bye!'
+expect { obj }.to output('some output').to_stdout
+expect { actual }.to output('some error').to_stderr
+```
+
+```ruby
+expect { puts('output') }.to output('output').to_stdout
+expect { warn('error') }.to output('error').to_stderr
+```
+--
+### Show greeting message
+#### Test
+```ruby
+# spec/console_spec.rb
+
+require 'console'
+
+RSpec.describe Console do
+  subject(:console) { described_class.new.run }
+
+  describe 'run' do
+    context 'greeting message' do
+      it 'prints Hello' do
+        expect{ console }.to output(/Hello/).to_stdout
+      end
+    end
   end
 end
+```
+--
+#### Implementation
 
-RSpec.describe 'Around filter' do
-  around(:each) do |example|
-    User.communication(&example)
+```ruby
+# lib/console.rb
+
+require_relative 'library'
+
+class Console
+  def initialize
+    @library = Library.new
   end
 
-  it 'first test' do
-    puts 'run the example'
+  def run
+    greeting
+  end
+
+  private
+
+  def greeting
+    puts 'Hello'
+  end
+end
+```
+--
+
+### Show available actions
+#### Test
+```ruby
+# spec/console_spec.rb
+
+require 'console'
+
+RSpec.describe Console do
+  subject(:console) { described_class.new.run }
+
+  describe 'run' do
+    # ...
+
+    context 'shows available actions' do
+      let(:options_message) do
+        "Please choose an option\n"\
+        "add - add new book to library\n"\
+        "remove - remove book from library\n"\
+        "show - show available books in library\n"\
+        'exit - to exit library'
+      end
+
+      it 'prints options message' do
+        expect { console }.to output(/#{options_message}/).to_stdout
+      end
+    end
+  end
+end
+```
+--
+#### Implementation
+```ruby
+# lib/console.rb
+
+require_relative 'library'
+
+class Console
+  def initialize
+    @library = Library.new
+  end
+
+  def run
+    greeting
+    show_options
+  end
+
+  private
+
+  def show_options
+    puts "Please choose an option\n"\
+    "add - add new book to library\n"\
+    "remove - remove book from library\n"\
+    "show - show available books in library\n"\
+    'exit - to exit library'
+  end
+
+  def greeting
+    puts 'Hello'
+  end
+end
+```
+---
+### Shut down when user types `quit`. Print `Goodbye`
+Let's find out how to write such test
+--
+# Doubles
+
+A `test double` is an object that stands in for another object in an example.
+```ruby
+# spec/stubs_spec.rb
+
+require 'library'
+
+RSpec.describe 'Stubs examples' do
+  let(:message) { 'Message' }
+  let(:text) { 'Text' }
+
+  context 'double' do
+    it 'with stubbed methods' do
+      library = double('Library Double',
+                       show_books: message,
+                       undefined_method: text)
+      expect(library.show_books).to eq message
+      expect(library.undefined_method).to eq text
+    end
   end
 end
 ```
 
-```bash
-$ rspec spec
+The argument is a name, used for failure reporting, so you should use the role that the double is playing in the
+example.
 
-Hello!
-run the example
-Bye!
+--
+# Doubles, as_null_object
+Test doubles are strict by default, raising errors when they receive messages that have not been allowed or expected.
+You can chain `as_null_object` off of double in order to make the double "loose". For any message that has not
+explicitly allowed or expected, the double will return itself. It acts as a black hole null object, allowing
+arbitrarily deep method chains.
+
+Use the `as_null_object` method to ignore any messages that aren't explicitly set as stubs or message expectations.
+
+```ruby
+# spec/stubs_spec.rb
+
+RSpec.describe 'Stubs examples' do
+  specify {
+    null_object = double('null object').as_null_object
+    expect(null_object).to respond_to(:any_undefined_method)
+  }
+end
+```
+<img src="https://res.cloudinary.com/dciwrzg9w/image/upload/v1574290364/07c_vmfpjc.png"
+     alt="Markdown Monster icon"
+     width="100" />
+--
+
+## Verifying doubles
+
+Verifying doubles are a stricter alternative to normal doubles that provide guarantees about what is being verified.
+When using verifying doubles, RSpec will check that the methods being stubbed are actually present on the underlying
+object if it is available. Prefer using verifying doubles over normal doubles.
+
+```ruby
+# lib/library.rb
+
+class Library
+  EMPTY_LIBRARY_MESSAGE = 'Library is empty'.freeze
+  attr_reader :books
+
+  def initialize(books = [])
+    @books = books
+  end
+
+  def show_books
+    return EMPTY_LIBRARY_MESSAGE if books.empty?
+
+    compose_books_message
+  end
+
+  # ...
+end
+
+```
+--
+
+## Instance Double
+```ruby
+# spec/stubs_spec.rb
+
+require 'library'
+
+RSpec.describe 'Stubs examples' do
+  let(:message) { 'Message' }
+
+  # ...
+
+  context 'instance_double' do
+    it 'returns message' do
+      library = instance_double('Library', show_books: message)
+      expect(library.show_books).to eq message
+    end
+  end
+
+  # ...
+end
+```
+--
+## Class Double
+```ruby
+# spec/stubs_spec.rb
+
+require 'library'
+
+RSpec.describe 'Stubs examples' do
+  # ...
+
+  context 'class_double' do
+    it 'transfer_nested_constants' do
+      library_class = class_double('Library')
+        .as_stubbed_const(transfer_nested_constants: true)
+
+      expect(library_class::EMPTY_LIBRARY_MESSAGE).to eq('Library is empty')
+    end
+  end
+
+  # ...
+end
+```
+--
+## Object Double
+```ruby
+# spec/stubs_spec.rb
+
+require 'library'
+
+RSpec.describe 'Stubs examples' do
+  let(:message) { 'Message' }
+
+  # ...
+
+  context 'object_double' do
+    it '' do
+      library = object_double(Library.new, show_books: message)
+      expect(library.show_books).to eq message
+    end
+  end
+end
+```
+--
+
+## Allowing messages
+
+Test doubles are `strict` by default -- messages that have not been specifically allowed or expected will trigger an
+error.
+```ruby
+require 'library'
+
+RSpec.describe 'Stubs examples' do
+  let(:message) { 'Message' }
+  let(:text) { 'Text' }
+
+  # ...
+
+  context 'Allowing messages' do
+    it 'stub double' do
+      double = double('Test Double')
+      allow(double).to receive(:method_one).and_return(message)
+      expect(double.method_one).to eq message
+    end
+
+    it 'multiple method stub' do
+      double = double('Test Double')
+      allow(double).to receive_messages(
+        method_one: message,
+        method_two: text
+      )
+      expect(double.method_one).to eq message
+      expect(double.method_two).to eq text
+    end
+
+    it 'multiple calls of stubbed method' do
+      double = double('Test Double')
+      allow(double).to receive(:get_a_number).and_return(1, 2, 3)
+      expect(double.get_a_number).to eq 1
+      expect(double.get_a_number).to eq 2
+      expect(double.get_a_number).to eq 3
+    end
+  end
+
+  # ...
+end
+```
+--
+## Partial test doubles
+
+A partial test double is an extension of a real object in a system that is instrumented with test-double like behaviour
+in the context of a test.
+```ruby
+# spec/stubs_spec.rb
+
+require 'library'
+
+RSpec.describe 'Stubs examples' do
+  let(:message) { 'Message' }
+
+  # ...
+
+  context 'Partial doubles' do
+    it 'returns double' do
+      library = instance_double('Library', show_books: message)
+      allow(Library).to receive(:new) { library }
+      expect(Library.new.show_books).to eq message
+    end
+  end
+end
+```
+--
+### Shut down when user types `quit`. Print `Goodbye`
+#### Test
+```ruby
+# spec/console_spec.rb
+
+require 'console'
+
+RSpec.describe Console do
+  subject(:console) { described_class.new.run }
+
+  describe 'run' do
+    let(:input_sequence) { %w[quit] }
+    before do
+      allow(STDIN).to receive(:gets).and_return(*input_sequence)
+    end
+
+    context 'shows available actions' do
+      # ...
+
+      it 'quits from console app when user types quit' do
+        expect { console }.to output(/Goodbye/).to_stdout
+      end
+    end
+  end
+end
+
+```
+--
+#### Implementation
+```ruby
+# lib/console.rb
+
+require_relative 'library'
+
+class Console
+  def initialize
+    @library = Library.new
+  end
+
+  def run
+    greeting
+    loop do
+      break unless choose_option
+    end
+    goodbye
+  end
+
+  private
+
+  def choose_option
+    show_options
+    input = read_input
+    return false if input == 'quit'
+  end
+
+  def show_options
+    puts "Please choose an option\n"\
+    "add - add new book to library\n"\
+    "remove - remove book from library\n"\
+    "show - show available books in library\n"\
+    'quit - to quit library'
+  end
+
+  def greeting
+    puts 'Hello'
+    @state = :choose_option
+  end
+
+  def goodbye
+    puts 'Goodbye'
+  end
+
+  def read_input
+    STDIN.gets.chomp
+  end
+end
+
+```
+
+---
+### Show books
+We don't need to test Library class functionality, as we are writing a unit test.
+Unit tests should not check functionality of other class. Respectively Library class should be stubbed.
+This means we don't need to call actual `Library` methods to test `Console` class.
+How to test it?
+--
+#### Test
+```ruby
+# spec/console_spec.rb
+
+require 'console'
+
+RSpec.describe Console do
+  subject(:console) { described_class.new.run }
+
+  describe 'run' do
+    let(:input_sequence) { %w[quit] }
+    before do
+      allow(STDIN).to receive(:gets).and_return(*input_sequence)
+    end
+
+    # ...
+
+    context 'show books' do
+      let(:expected_books) { 'Expected books' }
+      let(:input_sequence) { %w[show quit] }
+      let(:library_double) { instance_double('Library', show_books: expected_books) }
+
+      before do
+        allow(Library).to receive(:new) { library_double }
+      end
+
+      it 'prints available books on typing show' do
+        expect { console }.to output(/#{expected_books}/).to_stdout
+      end
+    end
+  end
+end
+
+```
+--
+#### Implementation
+```ruby
+# lib/console.rb
+
+require_relative 'library'
+
+class Console
+  def initialize
+    @library = Library.new
+  end
+
+  def run
+    greeting
+    loop do
+      break unless choose_option
+    end
+    goodbye
+  end
+
+  private
+
+  def choose_option
+    show_options
+    input = read_input
+    case input
+    when 'show'
+      puts @library.show_books
+      true
+    when 'quit'
+      false
+    end
+  end
+
+  # ...
+end
+
+```
+---
+### Add book
+To implement this functionality, we can use the same approach as for `show books`, by allowing to call `Library#add_book` method. But sometimes developer want to be sure that method was called with certain arguments.
+
+--
+## Message expectations
+
+A message expectation is an expectation that the test double will receive a message some time before the example ends.
+If the message is received, the expectation is satisfied. If not, the example fails.
+```ruby
+  context 'add book' do
+    let(:expected_name) { 'Book name' }
+    let(:input_sequence) { ['add', 'Book name', 'quit'] }
+    let(:library_double) { instance_double('Library') }
+
+    before do
+      allow(Library).to receive(:new) { library_double }
+    end
+
+      it 'calls add_book with expected name' do
+        expect(library_double).to receive(:add_book)
+          .with(name: expected_name)
+        console
+      end
+  end
+```
+
+For a negative expectation
+```ruby
+expect(library_double).not_to receive(:add_book)
 ```
 
 --
 
-```ruby
-RSpec.describe 'Test around hook' do
-  around(:each) do |example|
-    puts 'around each before'
-    example.run
-    puts 'around each after'
-  end
+### Expecting Arguments
 
-  it 'runs' do
-    puts "inside the example"
+```ruby
+expect(double).to receive(:msg).with(*args)
+```
+
+Arguments that are passed to with are compared with actual arguments received using `==`. In cases in which you want to
+specify things about the arguments rather than the arguments themselves, you can use any of the matchers that ship with
+rspec-expectations.
+```ruby
+expect(double).to receive(:msg).with(1, true)
+expect(double).to receive(:msg).with(/bar/)                   # any String matching the submitted Regexp
+expect(double).to receive(:msg).with(any_args)                # msg(), msg(1), msg(:bar, 2)
+expect(double).to receive(:msg).with(1, any_args)             # msg(1), msg(1, :bar, 2)
+expect(double).to receive(:msg).with(no_args)                 # msg()
+expect(double).to receive(:msg).with(3, anything)             # msg(3, nil), msg(3, :bar)
+expect(double).to receive(:msg).with(duck_type(:each))        # argument can be object that responds to #each
+expect(double).to receive(:msg).with(3, boolean)              # msg(3, true), msg(3, false)
+expect(double).to receive(:msg).with(hash_including(a: 1))    # msg(a: 1, b: 2)
+expect(double).to receive(:msg).with(hash_excluding(a: 1))    # msg(b: 2)
+expect(double).to receive(:msg).with(array_including(:a, :b)) # msg([:a, :b, :c])
+expect(double).to receive(:msg).with(instance_of(Fixnum))     # any instance of Fixnum
+expect(double).to receive(:msg).with(1, kind_of(Numeric))     # 2nd argument can be any kind of Numeric
+expect(double).to receive(:msg).with(<matcher>)               # msg(<object that matches>)
+```
+
+--
+
+### Receive Counts
+
+The implicit expectation is that the message passed to should_receive will be called once. You can make the expected
+counts explicit using the following
+```ruby
+expect(double).to receive(:msg).once
+expect(double).to receive(:msg).twice
+expect(double).to receive(:msg).exactly(n).times
+expect(double).to receive(:msg).at_least(:once)
+expect(double).to receive(:msg).at_least(:twice)
+expect(double).to receive(:msg).at_least(n).times
+expect(double).to receive(:msg).at_most(:once)
+expect(double).to receive(:msg).at_most(:twice)
+expect(double).to receive(:msg).at_most(n).times
+```
+
+--
+
+### Ordering
+
+When specifying interactions with a test double, the order of the calls is rarely important. In fact, the ideal
+situation is to specify only a single call. But sometimes, we need to specify that messages are sent in a specific
+order.
+```ruby
+RSpec.describe Roster do
+  it 'asks database for count before adding' do
+    database = double()
+    student = double()
+
+    expect(database).to receive(:count).with('Roster', course_id: 37).ordered
+    expect(database).to receive(:add).with(student).ordered
+
+    roster = Roster.new(37, database)
+    roster.register(student)
   end
 end
 ```
 
-```bash
-around each before
-inside the example
-around each after
+This example will pass only if the `count( )` and `add( )` messages are sent with the correct arguments and in the
+same order.
+
+--
+
+### Setting responses
+
+Whether you are setting a message expectation or a method stub, you can tell the object precisely how to respond. The
+most generic way is to pass a block to stub or `should_receive`:
+```ruby
+expect(double).to receive(:msg) { value }
+```
+
+When the double receives the msg message, it evaluates the block and returns the result.
+
+The same responses are available, as for stub method:
+```ruby
+expect(double).to receive(:msg).and_return(value)
+expect(double).to receive(:msg).exactly(3).times.and_return(value1, value2, value3)
+  # returns value1 the first time, value2 the second, etc
+expect(double).to receive(:msg).and_raise(error)
+  #error can be an instantiated object or a class
+  #if it is a class, it must be instantiable with no args
+expect(double).to receive(:msg).and_throw(:msg)
+expect(double).to receive(:msg).and_yield(values,to,yield)
+expect(double).to receive(:msg).and_yield(values,to,yield).and_yield(some,other,values,this,time)
+  # for methods that yield to a block multiple times
+```
+--
+#### Test
+```ruby
+# spec/console_spec.rb
+
+require 'console'
+
+RSpec.describe Console do
+  subject(:console) { described_class.new.run }
+
+  describe 'run' do
+    let(:input_sequence) { %w[quit] }
+    before do
+      allow(STDIN).to receive(:gets).and_return(*input_sequence)
+    end
+
+    # ...
+
+    context 'add book' do
+      let(:expected_name) { 'Book name' }
+      let(:input_sequence) { ['add', 'Book name', 'quit'] }
+      let(:library_double) { instance_double('Library') }
+
+      before do
+        allow(Library).to receive(:new) { library_double }
+      end
+
+      it 'calls add_book with expected name' do
+        expect(library_double).to receive(:add_book)
+          .with(name: expected_name)
+        console
+      end
+
+      context 'quit after Enter book name message' do
+        let(:input_sequence) { %w[add quit] }
+
+        it 'quits from console app when user types quit' do
+          expect { console }.to output(/Goodbye/).to_stdout
+        end
+      end
+    end
+  end
+end
+
+```
+--
+Asume we want to add few more tests for add book use case. These tests will fail, as we don't allow or expect `library_double` to recieve `add_book`. Some tests don't need to check if some method was called with proper arguments. There the `Spy` will come in handy.
+
+```ruby
+context 'add book' do
+  let(:expected_name) { 'Book name' }
+  let(:input_sequence) { ['add', 'Book name', 'quit'] }
+  let(:library_double) { instance_double('Library') }
+
+  before do
+    allow(Library).to receive(:new) { library_double }
+  end
+
+  # ...
+
+  it 'prints Enter book name' do
+    expect { console }.to output(/Enter book name/).to_stdout
+  end
+
+  it 'prints Book was successfully added' do
+    expect { console }.to output(/Book was successfully added/).to_stdout
+  end
+
+  # ...
+end
+```
+--
+## Spies
+
+Spies are an alternate type of test double that support act-arrange-assert (or given-when-then) pattern for structuring
+tests by allowing you to expect that a message has been received after the fact, using `have_received`.
+
+--
+
+### Using a spy
+
+```ruby
+RSpec.describe 'have_received' do
+  it 'passes when the message has been received' do
+    email = spy('email')
+    email.deliver
+    expect(email).to have_received(:deliver)
+  end
+end
+```
+
+--
+
+### Spy on a method on a partial double
+
+```ruby
+class Email
+  def self.deliver; end
+end
+
+RSpec.describe 'have_received' do
+  it 'passes when the expectation is met' do
+    allow(Email).to receive(:deliver)
+    Email.deliver
+    expect(Email).to have_received(:deliver)
+  end
+end
+```
+
+--
+
+### Failure when the message has not been received
+
+```ruby
+class Email
+  def self.deliver; end
+end
+
+RSpec.describe 'failure when the message has not been received' do
+  example 'for a spy' do
+    email = spy('email')
+    expect(email).to have_received(:deliver)
+  end
+
+  example 'for a partial double' do
+    allow(Email).to receive(:deliver)
+    expect(Email).to have_received(:deliver)
+  end
+end
+```
+--
+#### Tests
+```ruby
+require 'console'
+
+RSpec.describe Console do
+  subject(:console) { described_class.new.run }
+
+  describe 'run' do
+    before do
+      allow(STDIN).to receive(:gets).and_return(*input_sequence)
+    end
+
+    # ...
+
+    context 'add book' do
+      let(:expected_name) { 'Book name' }
+      let(:input_sequence) { ['add', 'Book name', 'quit'] }
+      let(:library_double) { instance_double('Library') }
+
+      before do
+        allow(Library).to receive(:new) { library_double }
+        allow(library_double).to receive(:add_book)
+      end
+
+      it 'calls add_book with expected name' do
+        console
+        expect(library_double).to have_received(:add_book)
+          .with(name: expected_name)
+      end
+
+      it 'prints Enter book name' do
+        expect { console }.to output(/Enter book name/).to_stdout
+      end
+
+      it 'prints Book was successfully added' do
+        expect { console }.to output(/Book was successfully added/).to_stdout
+      end
+
+      context 'quit after Enter book name message' do
+        let(:input_sequence) { %w[add quit] }
+
+        it 'quits from console app when user types quit' do
+          expect { console }.to output(/Goodbye/).to_stdout
+        end
+      end
+    end
+  end
+end
+
+```
+--
+#### Implementation
+```ruby
+require_relative 'library'
+
+class Console
+  def initialize
+    @library = Library.new
+  end
+
+  def run
+    greeting
+    loop do
+      break unless choose_option
+    end
+    goodbye
+  end
+
+  private
+
+  def choose_option
+    show_options
+    case read_input
+    when 'show'
+      puts @library.show_books
+      true
+    when 'add'
+      add_book
+    when 'quit'
+      false
+    else
+      'Invalid input'
+    end
+  end
+
+  def add_book
+    puts 'Enter book name'
+    input = read_input
+    return false if input == 'quit'
+
+    @library.add_book(name: input)
+    puts 'Book was successfully added'
+    true
+  end
+
+  # ...
+end
+```
+--
+### Test case when user enters empty book name, should also be tested
+- `and_raise(ExceptionClass)`
+- `and_raise('message')`
+- `and_raise(ExceptionClass, 'message')`
+- `and_raise(instance_of_an_exception_class)`
+
+```ruby
+allow(user).to receive(:some_method).and_raise(NoMethodError)
+```
+--
+#### Test
+```ruby
+require 'console'
+
+RSpec.describe Console do
+  subject(:console) { described_class.new.run }
+
+  describe 'run' do
+    let(:input_sequence) { %w[quit] }
+    before do
+      allow(STDIN).to receive(:gets).and_return(*input_sequence)
+    end
+
+    context 'add book' do
+      let(:expected_name) { 'Book name' }
+      let(:input_sequence) { ['add', 'Book name', 'quit'] }
+      let(:library_double) { instance_double('Library') }
+
+      before do
+        allow(Library).to receive(:new) { library_double }
+        allow(library_double).to receive(:add_book)
+      end
+
+      # ...
+
+      context 'name is empty' do
+        let(:input_sequence) { ['add', '', 'quit'] }
+
+        before do
+          allow(library_double).to receive(:add_book)
+            .and_raise(PresenceValidationError)
+        end
+
+        it 'prints Name should be present' do
+          expect { console }.to output(/Name should be present/).to_stdout
+        end
+
+        it 'quits from console app when user types quit' do
+          expect { console }.to output(/Goodbye/).to_stdout
+        end
+      end
+    end
+  end
+end
+
+```
+--
+#### Implementation
+```ruby
+require_relative 'library'
+
+class Console
+  def initialize
+    @library = Library.new
+  end
+
+  def run
+    greeting
+    loop do
+      break unless choose_option
+    end
+    goodbye
+  end
+
+  private
+
+  # ...
+
+  def add_book
+    puts 'Enter book name'
+    input = read_input
+    return false if input == 'quit'
+
+    @library.add_book(name: input)
+    puts 'Book was successfully added'
+    true
+  rescue PresenceValidationError
+    puts 'Name should be present'
+    retry
+  end
+
+  # ...
+end
+
+```
+---
+### Remove book
+#### Test
+```ruby
+require 'console'
+
+RSpec.describe Console do
+  subject(:console) { described_class.new.run }
+
+  describe 'run' do
+    let(:input_sequence) { %w[quit] }
+    before do
+      allow(STDIN).to receive(:gets).and_return(*input_sequence)
+    end
+
+    # ...
+
+    context 'remove book' do
+      let(:expected_id) { 'id' }
+      let(:input_sequence) { ['remove', expected_id, 'quit'] }
+      let(:library_double) { instance_double('Library') }
+
+      before do
+        allow(Library).to receive(:new) { library_double }
+        allow(library_double).to receive(:remove_book)
+      end
+
+      it 'calls add_book with expected id' do
+        console
+        expect(library_double).to have_received(:remove_book)
+          .with(expected_id)
+      end
+
+      it 'prints Enter book name' do
+        expect { console }.to output(/Enter book id/).to_stdout
+      end
+
+      it 'prints Book was successfully added' do
+        expect { console }.to output(/Book was successfully deleted/).to_stdout
+      end
+
+      context 'quit after Enter book name message' do
+        let(:input_sequence) { %w[remove quit] }
+
+        it 'quits from console app when user types quit' do
+          expect { console }.to output(/Goodbye/).to_stdout
+        end
+      end
+
+      context 'error handling' do
+        let(:input_sequence) { ['remove', '', 'quit'] }
+
+        context 'DigitValidationError' do
+          before do
+            allow(library_double).to receive(:remove_book)
+              .and_raise(DigitValidationError)
+          end
+
+          it 'prints Invalid id value' do
+            expect { console }.to output(/Invalid id value/).to_stdout
+          end
+
+          it 'quits from console app when user types quit' do
+            expect { console }.to output(/Goodbye/).to_stdout
+          end
+        end
+
+        context 'BookNotFoundError' do
+          before do
+            allow(library_double).to receive(:remove_book)
+              .and_raise(BookNotFoundError)
+          end
+
+          it 'prints Book not found' do
+            expect { console }.to output(/Book not found/).to_stdout
+          end
+
+          it 'quits from console app when user types quit' do
+            expect { console }.to output(/Goodbye/).to_stdout
+          end
+        end
+      end
+    end
+  end
+end
+
+```
+--
+#### Implementation
+```ruby
+require_relative 'library'
+
+class Console
+  def initialize
+    @library = Library.new
+  end
+
+  def run
+    greeting
+    loop do
+      break unless choose_option
+    end
+    goodbye
+  end
+
+  private
+
+  def choose_option
+    show_options
+    case read_input
+    when 'show'
+      puts @library.show_books
+      true
+    when 'add'
+      add_book
+    when 'remove'
+      remove_book
+    when 'quit'
+      false
+    else
+      'Invalid input'
+    end
+  end
+
+  def remove_book
+    puts 'Enter book id'
+    input = read_input
+    return false if input == 'quit'
+
+    @library.remove_book(input)
+    puts 'Book was successfully deleted'
+    true
+  rescue DigitValidationError
+    puts 'Invalid id value'
+    retry
+  rescue BookNotFoundError
+    puts 'Book not found'
+    retry
+  end
+
+  # ...
+end
+
+```
+---
+## Refactoring
+
+It will be hard to extend functionality of console app with current approach.
+Also it would be hard to test it
+
+So lets refactor it into something easier to maintain.
+
+--
+#### Use state for console flow handling
+
+```ruby
+require_relative 'library'
+
+class Console
+  INITIAL_STATE = :greeting
+
+  def initialize(initial_state = INITIAL_STATE)
+    @library = Library.new
+    @state = initial_state
+  end
+
+  def run
+    loop do
+      case @state
+      when :greeting then greeting
+      when :choose_option then choose_option
+      when :add_book then add_book
+      when :remove_book then remove_book
+      when :show_books then show_books
+      when :goodbye then goodbye
+      when :quit then break
+      end
+    end
+  end
+
+  private
+
+  def greeting
+    puts 'Hello'
+    set_state(:choose_option)
+  end
+
+  def choose_option
+    puts "Please choose an option\n"\
+    "add - add new book to library\n"\
+    "remove - remove book from library\n"\
+    "show - show available books in library\n"\
+    'quit - to quit library'
+    case read_input
+    when 'add' then set_state(:add_book)
+    when 'remove' then set_state(:remove_book)
+    when 'show' then set_state(:show_books)
+    when 'quit' then set_state(:goodbye)
+    else
+      puts 'Invalid option'
+    end
+  end
+
+  def add_book
+    puts 'Enter book name'
+    input = read_input
+    set_state(:goodbye) && return if input == 'quit'
+    @library.add_book(name: input)
+    puts 'Book was successfully added'
+    set_state(:choose_option)
+  rescue PresenceValidationError
+    puts 'Name should be present'
+  end
+
+  def remove_book
+    puts 'Enter book id'
+    input = read_input
+    set_state(:goodbye) && return if input == 'quit'
+    @library.remove_book(input)
+    puts 'Book was successfully deleted'
+    set_state(:choose_option)
+  rescue BookNotFoundError
+    puts 'Book not found'
+  rescue DigitValidationError
+    puts 'Invalid id value'
+  end
+
+  def show_books
+    puts @library.show_books
+    set_state(:choose_option)
+  end
+
+  def set_state(state)
+    @state = state
+  end
+
+  def goodbye
+    puts 'Goodbye'
+    set_state(:quit)
+  end
+
+  def read_input
+    STDIN.gets.chomp
+  end
+end
+```
+--
+#### Refactoring of quit functionality
+```ruby
+require_relative 'library'
+
+class Console
+  INITIAL_STATE = :greeting
+
+  def initialize(initial_state = INITIAL_STATE)
+    @library = Library.new
+    @state = initial_state
+  end
+
+  def run
+    @shut_down = Proc.new do
+      before_shut_down_actions
+      return
+    end
+    loop do
+      case @state
+      when :greeting then greeting
+      when :choose_option then choose_option
+      when :add_book then add_book
+      when :remove_book then remove_book
+      when :show_books then show_books
+      end
+    end
+  end
+
+  private
+
+  def greeting
+    puts 'Hello'
+    set_state(:choose_option)
+  end
+
+  def choose_option
+    puts "Please choose an option\n"\
+    "add - add new book to library\n"\
+    "remove - remove book from library\n"\
+    "show - show available books in library\n"\
+    'quit - to quit library'
+    case read_input
+    when 'add' then set_state(:add_book)
+    when 'remove' then set_state(:remove_book)
+    when 'show' then set_state(:show_books)
+    else
+      puts 'Invalid option'
+    end
+  end
+
+  def add_book
+    puts 'Enter book name'
+    @library.add_book(name: read_input)
+    puts 'Book was successfully added'
+    set_state(:choose_option)
+  rescue PresenceValidationError
+    puts 'Name should be present'
+  end
+
+  def remove_book
+    puts 'Enter book id'
+    @library.remove_book(read_input)
+    puts 'Book was successfully deleted'
+    set_state(:choose_option)
+  rescue BookNotFoundError
+    puts 'Book not found'
+  rescue DigitValidationError
+    puts 'Invalid id value'
+  end
+
+  def show_books
+    puts @library.show_books
+    set_state(:choose_option)
+  end
+
+  def set_state(state)
+    @state = state
+  end
+
+  def goodbye
+    puts 'Goodbye'
+    set_state(:quit)
+  end
+
+  def before_shut_down_actions
+    puts 'Goodbye'
+  end
+
+  def read_input
+    input = STDIN.gets.chomp
+    input == 'quit' ? @shut_down.call : input
+  end
+end
+```
+--
+#### Refactoring of case statement
+```ruby
+require_relative 'library'
+
+class Console
+  INITIAL_STATE = :greeting
+  ALLOWED_STATES = %i[
+    greeting
+    choose_option
+    add_book
+    remove_book
+    show_books
+  ]
+
+  def initialize(initial_state = INITIAL_STATE)
+    @library = Library.new
+    @state = initial_state
+  end
+
+  def run
+    @shut_down = Proc.new do
+      before_shut_down_actions
+      return
+    end
+    loop do
+      break unless ALLOWED_STATES.include?(@state)
+
+      send(@state)
+    end
+  end
+
+  # ...
+end
+
+```
+---
+### Besides returning a value, method stub can yield a block, raise an exception, or throw the message.
+```ruby
+class Triviality
+  def one_two_three
+    yield self
+  end
+end
+
+allow(triviality).to receive(:one_two_three).and_yield(triviality)
+triviality.one_two_three { }
+```
+
+--
+
+- `and_throw(:symbol)`
+- `and_throw(:symbol, argument)`
+
+```ruby
+it 'includes the provided argument when throwing' do
+  user = double
+  allow(user).to receive(:confirm).and_throw(:section, 'I am not here any more')
+
+  arg = catch :section do
+    user.confirm
+    fail 'should not get here'
+  end
+
+  expect(arg).to eq('I am not here any more')
+end
+```
+
+--
+
+# Removing stubs
+
+--
+
+Removes a stub. On a double, the object will no longer respond to message. On a real object, the original method (if it exists) is restored.
+
+--
+
+#### and_call_original
+
+When working with a partial double object, you may occasionally want to set a message expecation without interfering with how the object responds to the message.
+```ruby
+RSpec.describe 'call original' do
+  it 'calls original method' do
+    allow(Modifier).to receive(:sum).and_call_original
+    allow(Modifier).to receive(:sum).with(3, 4).and_return(-10)
+
+    expect(Modifier.sum(1, 2)).to eq(3)
+    expect(Modifier.sum(3, 4)).to eq(-10)
+  end
+end
 ```
 
 ---
+
+# Stubbing constants
+
+--
+
+When the constant is already defined, the stubbed value will replace the original value for the duration of the
+example.
+
+--
+
+### Stub top-level constant
+
+```ruby
+TOP_LEVEL_CONST = 100
+
+RSpec.describe 'stubbing TOP_LEVEL_CONST' do
+  it 'can stub TOP_LEVEL_CONST with a different value' do
+    stub_const('TOP_LEVEL_CONST', 20)
+    expect(TOP_LEVEL_CONST).to eq(20)
+  end
+
+  it 'restores the stubbed constant when the example completes' do
+    expect(TOP_LEVEL_CONST).to eq(100)
+  end
+end
+```
+
+--
+
+### Stub nested constant
+
+```ruby
+module Calculation
+  class Statistic
+    LEVEL = 15
+  end
+end
+
+module Calculation
+  RSpec.describe Statistic do
+    it 'stubs the nested constant when it is fully qualified' do
+      stub_const('Calculation::Statistic::LEVEL', 52)
+      expect(Statistic::LEVEL).to eq(52)
+    end
+  end
+end
+```
+
+--
+
+### Transfer nested constants
+
+```ruby
+module Calculation
+  class Statistic
+    LEVEL = 15
+  end
+end
+
+module Calculation
+  RSpec.describe Statistic do
+    let(:new_class) { Class.new }
+
+    it 'does not transfer nested constants by default' do
+      stub_const('Calculation::Statistic', new_class)
+      expect { Statistic::LEVEL }.to raise_error(NameError)
+    end
+
+    it 'transfers nested constants when using transfer_nested_constants: true' do
+      stub_const('Calculation::Statistic', new_class, transfer_nested_constants: true)
+      expect(Statistic::LEVEL).to eq(15)
+    end
+
+    it 'can specify a list of nested constants to transfer' do
+      stub_const('Calculation::Statistic', new_class, transfer_nested_constants:  [:LEVEL])
+      expect(Statistic::LEVEL).to eq(15)
+    end
+  end
+```
+
+---
+
+# Stub on any instance of a class
+
+```ruby
+allow_any_instance_of(User).to receive(:name).and_return('User')
+```
+
+```ruby
+RSpec.describe 'allow_any_instance_of' do
+  it 'yields the receiver to the block implementation' do
+    allow_any_instance_of(String).to receive(:slice) do |value, start, length|
+      value[start, length]
+    end
+
+    expect('string'.slice(2, 3)).to eq('rin')
+  end
+end
+```
+`allow_any_instance_of` is a bad practice accordingly to [rubocop rspec](https://rubocop-rspec.readthedocs.io/en/latest/cops_rspec/#rspecanyinstance)
+---
+
+# Stub a chain of methods
+
+--
+
+Stubbing methods chain lets you to stub a chain of methods in one statement - and there is no need to stub each method
+in the dependency chain represented by a chain of messages to different objects.
+
+```ruby
+class User
+  scope :admins, -> { where(role: 'admin').order("created_at DESC") }
+end
+
+RSpec.describe 'stubs method chain' do
+  it 'returns admin' do
+    admin = double('Admin')
+    allow(User).to receive_message_chain(:where, :order).and_return([admin])
+    // allow(User).to receive_message_chain("where.order") { [admin] }
+    // allow(User).to receive_message_chain(:where, order:  [admin])
+    // allow(User).to receive_message_chain(:where, :order) { [admin] }
+    expect(User.admins).to include(admin)
+  end
+end
+```
+
+---
+
+# Stubs and before(:context)
+
+--
+
+Since `before(:context)` runs outside the scope of any individual example, usage of rspec-mocks features is not supported
+there. You can, however, create a temporary scope in any arbitrary context, including in a `before(:context)` hook, using
+`RSpec::Mocks.with_temporary_scope \{ }`.
+```ruby
+RSpec.describe 'Creating a double in a before(:context) hook' do
+  before(:context) do
+    RSpec::Mocks.with_temporary_scope do
+      user = double(name: 'Alex')
+      @result = user.name
+    end
+  end
+
+  it 'allows a double to be created and used from within a with_temporary_scope block' do
+    expect(@result).to eq('Alex')
+  end
+end
+```
+---
+END OF SECOND LECTION
+---
+
 # Pending
 
 ```ruby
@@ -2058,6 +3539,62 @@ New example group aliases: `xdescribe`/`xcontext`, like xit for examples, can be
 skip an example group.
 
 ---
+## around(:each) hook
+
+Around hooks receive the example as a block argument, extended to behave as a proc. This lets you define code that should be executed before and after the example.
+
+```ruby
+class User
+  def self.communication
+    puts 'Hello!'
+    yield
+    puts 'Bye!'
+  end
+end
+
+RSpec.describe 'Around filter' do
+  around(:each) do |example|
+    User.communication(&example)
+  end
+
+  it 'first test' do
+    puts 'run the example'
+  end
+end
+```
+
+```bash
+$ rspec spec
+
+Hello!
+run the example
+Bye!
+```
+
+--
+
+```ruby
+RSpec.describe 'Test around hook' do
+  around(:each) do |example|
+    puts 'around each before'
+    example.run
+    puts 'around each after'
+  end
+
+  it 'runs' do
+    puts "inside the example"
+  end
+end
+```
+
+```bash
+around each before
+inside the example
+around each after
+```
+
+---
+
 
 ## Define hooks in configuration
 
@@ -2392,23 +3929,8 @@ $ rspec spec/shared_stuff_spec.rb
 Finished in 0.00758 seconds
 8 examples, 0 failures
 ```
---
-
-## Output
-
-```ruby
-expect { obj }.to output('some output').to_stdout
-expect { actual }.to output('some error').to_stderr
-```
-
-```ruby
-expect { puts('output') }.to output('output').to_stdout
-expect { warn('error') }.to output('error').to_stderr
-```
 
 ---
-
-
 
 ### Custom matchers
 
@@ -2509,654 +4031,6 @@ end
 
 ---
 
-# Doubles
-
---
-
-A `test double` is an object that stands in for another object in an example.
-```ruby
-thingamajig_double = double('thing-a-ma-jig')
-```
-
-The argument is a name, used for failure reporting, so you should use the role that the double is playing in the
-example.
-
---
-
-## Verifying doubles
-
-Verifying doubles are a stricter alternative to normal doubles that provide guarantees about what is being verified.
-When using verifying doubles, RSpec will check that the methods being stubbed are actually present on the underlying
-object if it is available. Prefer using verifying doubles over normal doubles.
-
-```ruby
-# app/models/user.rb
-
-class User
-  MIN_AGE = 18
-
-  def notify(msg)
-    puts msg
-  end
-end
-
-def call_user(user)
- "Hey!" if user.valid
-end
-```
-<!-- .element: class="left width-50" -->
-
-```ruby
-# spec/models/user_spec.rb
-
-user = instance_double('User', name: 'Peter')
-expect(user).to receive(:notify).with('Warning!')
-
-notifier = class_double('User')
-  .as_stubbed_const(transfer_nested_constants: true)
-
-expect(User::MIN_AGE).to eq(18)
-
-user = object_double(User.new, valid: true)
-expect(call_user(user)).to eq('Hey!')
-```
-<!-- .element: class="right width-50" -->
-
---
-
-## Partial test doubles
-
-A partial test double is an extension of a real object in a system that is instrumented with test-double like behaviour
-in the context of a test.
-```ruby
-person = double('person')
-allow(Person).to receive(:find) { person }
-```
-
----
-
-# Doubles, as_null_object
-
---
-
-Test doubles are strict by default, raising errors when they receive messages that have not been allowed or expected.
-You can chain `as_null_object` off of double in order to make the double "loose". For any message that has not
-explicitly allowed or expected, the double will return itself. It acts as a black hole null object, allowing
-arbitrarily deep method chains.
-
-Use the `as_null_object` method to ignore any messages that aren't explicitly set as stubs or message expectations.
-```ruby
-RSpec.describe 'null object' do
-  specify {
-    null_object = double('null object').as_null_object
-    expect(null_object).to respond_to(:any_undefined_method)
-  }
-end
-```
-
----
-
-# Method stubs
-
---
-
-Test doubles are `strict` by default -- messages that have not been specifically allowed or expected will trigger an
-error.
-```ruby
-class EmailConfirmationJob
-  include Sidekiq::Worker
-
-  def perform(user_id)
-    user = User.find(user_id)
-    UserMailer.send_confirmation_email(user)
-  end
-end
-
-describe '#perform' do
-  it 'finds the user by id' do
-    allow(UserMailer).to receive(:send_confirmation_email)
-    expect(User).to receive(:find).with(12)
-
-    EmailConfirmationJob.new.perform(12)
-  end
-end
-```
-
---
-
-```ruby
-class Statement
-  def initialize(customer)
-    @name = customer.name
-  end
-
-  def generate
-    "Statement for #{@name}"
-  end
-end
-
-RSpec.describe Statement do
-  it "uses the customer's name in the header" do
-    customer = double('customer')
-    allow(customer).to receive(:name).and_return('Aslak')
-    statement = Statement.new(customer)
-    expect(statement.generate).to match(/^Statement for Aslak/)
-  end
-end
-```
-
-```ruby
-RSpec.describe 'receive_messages' do
-  it 'returns first and last names' do
-    user = double('User')
-    allow(user).to receive_messages(first_name: 'David', last_name: 'Masterson')
-    expect(user.first_name).to eq('David')
-    expect(user.last_name).to eq('Masterson')
-  end
-end
-```
-
---
-
-The mock object can be created with stubbed methods at once.
-```ruby
-customer = double('customer', name: 'Aslak')
-obj = double('object', created_at: -> { Time.now })
-```
-
---
-
-Besides returning a value, method stub can yield a block, raise an exception, or throw the message.
-```ruby
-class Triviality
-  def one_two_three
-    yield self
-  end
-end
-
-allow(triviality).to receive(:one_two_three).and_yield(triviality)
-triviality.one_two_three { }
-```
-
---
-
-- `and_raise(ExceptionClass)`
-- `and_raise('message')`
-- `and_raise(ExceptionClass, 'message')`
-- `and_raise(instance_of_an_exception_class)`
-
-```ruby
-allow(user).to receive(:some_method).and_raise(NoMethodError)
-```
-
---
-
-- `and_throw(:symbol)`
-- `and_throw(:symbol, argument)`
-
-```ruby
-it 'includes the provided argument when throwing' do
-  user = double
-  allow(user).to receive(:confirm).and_throw(:section, 'I am not here any more')
-
-  arg = catch :section do
-    user.confirm
-    fail 'should not get here'
-  end
-
-  expect(arg).to eq('I am not here any more')
-end
-```
-
----
-
-# Removing stubs
-
---
-
-Removes a stub. On a double, the object will no longer respond to message. On a real object, the original method (if it exists) is restored.
-
---
-
-### New syntax
-
-#### and_call_original
-
-When working with a partial double object, you may occasionally want to set a message expecation without interfering with how the object responds to the message.
-```ruby
-RSpec.describe 'call original' do
-  it 'calls original method' do
-    allow(Modifier).to receive(:sum).and_call_original
-    allow(Modifier).to receive(:sum).with(3, 4).and_return(-10)
-
-    expect(Modifier.sum(1, 2)).to eq(3)
-    expect(Modifier.sum(3, 4)).to eq(-10)
-  end
-end
-```
-
---
-
-### Old syntax
-
-#### unstub (or unstub!)
-
-```ruby
-describe String do
-  before(:each) { String.stub(:new).and_return('hello') }
-
-  it "can restore it's own behavior" do
-    expect(String.new('initial string')).to eq('hello')
-    String.unstub(:new)
-
-    expect(String.new('initial string')).to eq('initial string')
-  end
-end
-```
-
----
-
-# Stubbing constants
-
---
-
-When the constant is already defined, the stubbed value will replace the original value for the duration of the
-example.
-
---
-
-### Stub top-level constant
-
-```ruby
-TOP_LEVEL_CONST = 100
-
-RSpec.describe 'stubbing TOP_LEVEL_CONST' do
-  it 'can stub TOP_LEVEL_CONST with a different value' do
-    stub_const('TOP_LEVEL_CONST', 20)
-    expect(TOP_LEVEL_CONST).to eq(20)
-  end
-
-  it 'restores the stubbed constant when the example completes' do
-    expect(TOP_LEVEL_CONST).to eq(100)
-  end
-end
-```
-
---
-
-### Stub nested constant
-
-```ruby
-module Calculation
-  class Statistic
-    LEVEL = 15
-  end
-end
-
-module Calculation
-  RSpec.describe Statistic do
-    it 'stubs the nested constant when it is fully qualified' do
-      stub_const('Calculation::Statistic::LEVEL', 52)
-      expect(Statistic::LEVEL).to eq(52)
-    end
-  end
-end
-```
-
---
-
-### Transfer nested constants
-
-```ruby
-module Calculation
-  class Statistic
-    LEVEL = 15
-  end
-end
-
-module Calculation
-  RSpec.describe Statistic do
-    let(:new_class) { Class.new }
-
-    it 'does not transfer nested constants by default' do
-      stub_const('Calculation::Statistic', new_class)
-      expect { Statistic::LEVEL }.to raise_error(NameError)
-    end
-
-    it 'transfers nested constants when using transfer_nested_constants: true' do
-      stub_const('Calculation::Statistic', new_class, transfer_nested_constants: true)
-      expect(Statistic::LEVEL).to eq(15)
-    end
-
-    it 'can specify a list of nested constants to transfer' do
-      stub_const('Calculation::Statistic', new_class, transfer_nested_constants:  [:LEVEL])
-      expect(Statistic::LEVEL).to eq(15)
-    end
-  end
-```
-
----
-
-# Stub on any instance of a class
-
---
-
-###  New syntax
-
-```ruby
-allow_any_instance_of(User).to receive(:name).and_return('User')
-```
-
-```ruby
-RSpec.describe 'allow_any_instance_of' do
-  it 'yields the receiver to the block implementation' do
-    allow_any_instance_of(String).to receive(:slice) do |value, start, length|
-      value[start, length]
-    end
-
-    expect('string'.slice(2, 3)).to eq('rin')
-  end
-end
-```
-
---
-
-###  Old syntax
-
-Use any_instance.stub on a class to tell any instance of that class to return a value (or values) in response to a
-given message. If no instance receives the message, nothing happens.
-
-Messages can be stubbed on any class, including those in Ruby's core library.
-```ruby
-describe 'any_instance.stub' do
-  it 'returns the specified value on any instance of the class' do
-    String.any_instance.stub(:foo).and_return(:return_value)
-
-    str = 'sample string'
-    expect(str.foo).to eq(:return_value)
-  end
-end
-```
-
----
-
-# Stub a chain of methods
-
---
-
-Stubbing methods chain lets you to stub a chain of methods in one statement - and there is no need to stub each method
-in the dependency chain represented by a chain of messages to different objects.
-
---
-
-### New syntax
-
-```ruby
-class User
-  scope :admins, -> { where(role: 'admin').order("created_at DESC") }
-end
-
-RSpec.describe 'stubs method chain' do
-  it 'returns admin' do
-    admin = double('Admin')
-    allow(User).to receive_message_chain(:where, :order).and_return([admin])
-    // allow(User).to receive_message_chain("where.order") { [admin] }
-    // allow(User).to receive_message_chain(:where, order:  [admin])
-    // allow(User).to receive_message_chain(:where, :order) { [admin] }
-    expect(User.admins).to include(admin)
-  end
-end
-```
-
---
-
-### Old syntax
-
-```ruby
-Article.recent.published.authored_by(params[:author_id])
-```
-
-```ruby
-recent = double()
-published = double()
-authored_by = double()
-article = double()
-Article.stub(:recent).and_return(recent)
-recent.stub(:published).and_return(published)
-published.stub(:authored_by).and_return(article)
-```
-
-```ruby
-article = double()
-Article.stub_chain(:recent, :published, :authored_by).and_return(article)
-```
-
----
-
-# Stubs and before(:context)
-
---
-
-Since `before(:context)` runs outside the scope of any individual example, usage of rspec-mocks features is not supported
-there. You can, however, create a temporary scope in any arbitrary context, including in a `before(:context)` hook, using
-`RSpec::Mocks.with_temporary_scope \{ }`.
-```ruby
-RSpec.describe 'Creating a double in a before(:context) hook' do
-  before(:context) do
-    RSpec::Mocks.with_temporary_scope do
-      user = double(name: 'Alex')
-      @result = user.name
-    end
-  end
-
-  it 'allows a double to be created and used from within a with_temporary_scope block' do
-    expect(@result).to eq('Alex')
-  end
-end
-```
-
----
-
-# Message expectations
-
---
-
-A message expectation is an expectation that the test double will receive a message some time before the example ends.
-If the message is received, the expectation is satisfied. If not, the example fails.
-```ruby
-RSpec.describe Zipcode do
-  context 'when created' do
-    it 'validates a record with provided validator' do
-      validator = double('validator')
-      expect(validator).to receive(:validate)
-
-      zipcode = Zipcode.new('02134', validator)
-      zipcode.valid?
-    end
-  end
-end
-```
-
-For a negative expectation
-```ruby
-network_double.stub(:ping).and_return(false)
-expect(network_double).not_to receive(:open_connection)
-```
-
---
-
-### Expecting Arguments
-
-```ruby
-expect(double).to receive(:msg).with(*args)
-```
-
-Arguments that are passed to with are compared with actual arguments received using `==`. In cases in which you want to
-specify things about the arguments rather than the arguments themselves, you can use any of the matchers that ship with
-rspec-expectations.
-```ruby
-expect(double).to receive(:msg).with(1, true)
-expect(double).to receive(:msg).with(/bar/)                   # any String matching the submitted Regexp
-expect(double).to receive(:msg).with(any_args)                # msg(), msg(1), msg(:bar, 2)
-expect(double).to receive(:msg).with(1, any_args)             # msg(1), msg(1, :bar, 2)
-expect(double).to receive(:msg).with(no_args)                 # msg()
-expect(double).to receive(:msg).with(3, anything)             # msg(3, nil), msg(3, :bar)
-expect(double).to receive(:msg).with(duck_type(:each))        # argument can be object that responds to #each
-expect(double).to receive(:msg).with(3, boolean)              # msg(3, true), msg(3, false)
-expect(double).to receive(:msg).with(hash_including(a: 1))    # msg(a: 1, b: 2)
-expect(double).to receive(:msg).with(hash_excluding(a: 1))    # msg(b: 2)
-expect(double).to receive(:msg).with(array_including(:a, :b)) # msg([:a, :b, :c])
-expect(double).to receive(:msg).with(instance_of(Fixnum))     # any instance of Fixnum
-expect(double).to receive(:msg).with(1, kind_of(Numeric))     # 2nd argument can be any kind of Numeric
-expect(double).to receive(:msg).with(<matcher>)               # msg(<object that matches>)
-```
-
---
-
-### Receive Counts
-
-The implicit expectation is that the message passed to should_receive will be called once. You can make the expected
-counts explicit using the following
-```ruby
-expect(double).to receive(:msg).once
-expect(double).to receive(:msg).twice
-expect(double).to receive(:msg).exactly(n).times
-expect(double).to receive(:msg).at_least(:once)
-expect(double).to receive(:msg).at_least(:twice)
-expect(double).to receive(:msg).at_least(n).times
-expect(double).to receive(:msg).at_most(:once)
-expect(double).to receive(:msg).at_most(:twice)
-expect(double).to receive(:msg).at_most(n).times
-```
-
---
-
-### Ordering
-
-When specifying interactions with a test double, the order of the calls is rarely important. In fact, the ideal
-situation is to specify only a single call. But sometimes, we need to specify that messages are sent in a specific
-order.
-```ruby
-RSpec.describe Roster do
-  it 'asks database for count before adding' do
-    database = double()
-    student = double()
-
-    expect(database).to receive(:count).with('Roster', course_id: 37).ordered
-    expect(database).to receive(:add).with(student).ordered
-
-    roster = Roster.new(37, database)
-    roster.register(student)
-  end
-end
-```
-
-This example will pass only if the `count( )` and `add( )` messages are sent with the correct arguments and in the
-same order.
-
---
-
-### Setting responses
-
-Whether you are setting a message expectation or a method stub, you can tell the object precisely how to respond. The
-most generic way is to pass a block to stub or `should_receive`:
-```ruby
-expect(double).to receive(:msg) { value }
-```
-
-When the double receives the msg message, it evaluates the block and returns the result.
-
-The same responses are available, as for stub method:
-```ruby
-expect(double).to receive(:msg).and_return(value)
-expect(double).to receive(:msg).exactly(3).times.and_return(value1, value2, value3)
-  # returns value1 the first time, value2 the second, etc
-expect(double).to receive(:msg).and_raise(error)
-  #error can be an instantiated object or a class
-  #if it is a class, it must be instantiable with no args
-expect(double).to receive(:msg).and_throw(:msg)
-expect(double).to receive(:msg).and_yield(values,to,yield)
-expect(double).to receive(:msg).and_yield(values,to,yield).and_yield(some,other,values,this,time)
-  # for methods that yield to a block multiple times
-```
-
----
-
-# Spies
-
---
-
-Spies are an alternate type of test double that support act-arrange-assert (or given-when-then) pattern for structuring
-tests by allowing you to expect that a message has been received after the fact, using `have_received`.
-
---
-
-### Using a spy
-
-```ruby
-RSpec.describe 'have_received' do
-  it 'passes when the message has been received' do
-    email = spy('email')
-    email.deliver
-    expect(email).to have_received(:deliver)
-  end
-end
-```
-
---
-
-### Spy on a method on a partial double
-
-```ruby
-class Email
-  def self.deliver; end
-end
-
-RSpec.describe 'have_received' do
-  it 'passes when the expectation is met' do
-    allow(Email).to receive(:deliver)
-    Email.deliver
-    expect(Email).to have_received(:deliver)
-  end
-end
-```
-
---
-
-### Failure when the message has not been received
-
-```ruby
-class Email
-  def self.deliver; end
-end
-
-RSpec.describe 'failure when the message has not been received' do
-  example 'for a spy' do
-    email = spy('email')
-    expect(email).to have_received(:deliver)
-  end
-
-  example 'for a partial double' do
-    allow(Email).to receive(:deliver)
-    expect(Email).to have_received(:deliver)
-  end
-end
-```
-
-```bash
-1) failure when the message has not been received for a spy
-   Failure/Error: expect(email).to have_received(:deliver)
-     (Double "email").deliver(*(any args))
-         expected: 1 time with any arguments
-         received: 0 times with any arguments
- 2) failure when the message has not been received for a partial double
-    Failure/Error: expect(Email).to have_received(:deliver)
-     (Email (class)).deliver(*(any args))
-         expected: 1 time with any arguments
-         received: 0 times with any arguments
-```
-
----
 
 # So, let's create an application
 
