@@ -26,7 +26,7 @@ title:  Rails
 ## Clone the repository
 
 ```bash
-$ git clone todo_repository_name
+$ git clone https://github.com/WoLkErSs/training_store
 ```
 --
 
