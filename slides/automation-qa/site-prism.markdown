@@ -61,7 +61,7 @@ You need to require all files from `/spec/support`, to keep there all rspec conf
 spec/rails_helper.rb <!-- .element: class="filename" -->
 
 ```ruby
- Dir[Rails.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
+ Dir[File.dirname(__FILE__) + '/support/**/*.rb'].each { |file| require file }
 ```
 
 --

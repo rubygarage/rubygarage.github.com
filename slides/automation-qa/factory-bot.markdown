@@ -41,7 +41,7 @@ tell rails to load the modules under the `spec/support`.
 spec/rails_helper.rb <!-- .element: class="filename" -->
 
 ```ruby
-Dir[File.dirname(__FILE__) + '/support/*.rb'].each { |file| require file }
+Dir[File.dirname(__FILE__) + '/support/**/*.rb'].each { |file| require file }
 ```
 
 --

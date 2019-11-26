@@ -52,7 +52,7 @@ We need include a support folder for rspec. Add following line down the file rai
 spec/rails_helper.rb <!-- .element: class="filename" -->
 
 ```ruby
-Dir[File.dirname(__FILE__) + '/support/*.rb'].each { |file| require file }
+Dir[File.dirname(__FILE__) + '/support/**/*.rb'].each { |file| require file }
 ```
 
 ---
