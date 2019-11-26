@@ -8,15 +8,15 @@ title: QA Automation
 ---
 - [Preprogramming Course](preprogramming-course)
   <br>
-  <small>So, let's begin! </small>
+  <small>Let's begin! </small>
 
 - [Rails Structure](rails-structure)
   <br>
-  <small>So, what is Rails? Rails structure? How setup environment? </small>
+  <small>So, what is Rails? Rails structure? How to setup environment? </small>
 
 - [RSpec](rspec)
   <br>
-  <small>How to install RSpec? What is RSpec? How write tests in RSpec? </small>
+  <small>How to install RSpec? What is RSpec? How to write tests in RSpec? </small>
 
 - [Capybara](capybara)
   <br>
@@ -37,3 +37,7 @@ title: QA Automation
 - [Site Prism](site-prism)
   <br>
   <small>What is Page Object Model pattern? How use it with Capybara? </small>
+
+- [SimpleCov](simple-cov)
+  <br>
+  <small>How to check coverage in RSpec? What is SimpleCov? </small>

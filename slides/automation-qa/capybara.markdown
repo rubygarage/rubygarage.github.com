@@ -67,10 +67,10 @@ spec/support/capybara.rb <!-- .element: class="filename" -->
 
 ```ruby
 Capybara.configure do |config|
-  config.run_server = false                   # Whether to start a Rack server for the given Rack app
-  config.app_host   = 'http://www.google.com' # The default host to use when giving a relative URL to visit
+  config.run_server = false                   # Whether to start a Rack server for the given Rack app, default = true
   config.session_name = "some other session"  # Set name for the current session
   config.server = :puma, { Silent: true }     # To clean up your test output
+  config.default_max_wait_time = 5            # The maximum number of seconds to wait for asynchronous processes to finish
 end
 ```
 
@@ -125,8 +125,6 @@ Drivers can be switched in Before and After blocks. Some of the web drivers supp
 
   - Capybara-Webkit
 
-  - Poltergeist
-
 --
 
 ## RackTest
@@ -163,12 +161,6 @@ For true headless testing with JavaScript support, we can use the [capybara-webk
 
 --
 
-## Poltergeist
-
-Poltergeist is a PhantomJS driver for Capybara. We can use the [poltergeist](https://github.com/teampoltergeist/poltergeist) driver (gem). PhantomJS is a headless WebKit scriptable with a JavaScript API. It has fast and native support for various web standards: DOM handling, CSS selector, JSON, Canvas, and SVG.
-
---
-
 ## Selecting the Driver
 
 For example if you'd prefer to run everything in Selenium, you could do:
@@ -178,25 +170,6 @@ spec/support/capybara.rb <!-- .element: class="filename" -->
 ```ruby
 Capybara.default_driver = :selenium # :selenium_chrome and :selenium_chrome_headless are also registered
 ```
-
-You can also change the driver temporarily (typically in the Before/setup and After/teardown blocks):
-
-spec/support/capybara.rb <!-- .element: class="filename" -->
-
-```ruby
-Capybara.current_driver = :apparition # temporarily select different driver
-# tests here
-Capybara.use_default_driver           # switch back to default driver
-```
-
-```ruby
-describe 'some stuff which requires js', type: :feature do
-  it 'will use the default js driver'
-  it 'will switch to one specific driver', driver: :apparition # temporarily select different driver
-end
-```
-
-`Note`: switching the driver creates a new session, so you may not be able to switch in the middle of a test.
 
 --
 
@@ -221,7 +194,7 @@ Use `js: true` to switch to the `Capybara.javascript_driver` (:selenium by defau
 spec/feature/test_spec.rb <!-- .element: class="filename" -->
 
 ```ruby
-describe 'some stuff which requires js', type: :feature, js: true do
+RSpec.escribe 'some stuff which requires js', type: :feature, js: true do
   it 'will use the default js driver'
 end
 ```
@@ -229,7 +202,7 @@ end
 spec/feature/second_test_spec.rb <!-- .element: class="filename" -->
 
 ```ruby
-describe 'some stuff which not requires js', type: :feature do
+RSpec.describe 'some stuff which not requires js', type: :feature do
   it 'will use the default driver'
 end
 ```
@@ -247,17 +220,20 @@ The `Document Object Model` (DOM) is a cross-platform and language-independent i
 `Finders` - Capybara provided methods whereby you can find specific elements in DOM, in order to manipulate them.
 
 ```ruby
-find_field('First Name').value
-find_field(id: 'my_field').value
-find_link('Hello', :visible => :all).visible?
-find_link(class: ['some_class', 'some_other_class'], :visible => :all).visible?
+find_field(name: 'name_of_field')
+find_field(id: 'my_field_id')
+find_link('link_name', :visible => :all)
+find_link(class: ['some_class', 'some_other_class'], :visible => :all)
 
-find_button('Send').click
-find_button(value: '1234').click
+find_button(text: 'some_name')
+find_button(value: 'some_value')
 
-find(:xpath, ".//table/tr").click
-find("#overlay").find("h1").click
-all('a').each { |a| a[:href] }
+find(:xpath, './/table/tr')
+find('#overlay').find('h1')
+find('.person')
+
+all('a', text: 'Home')
+all('a#person_123')
 ```
 
 More about different types of finder you can find [here](https://rubydoc.info/github/teamcapybara/capybara/master/Capybara/Node/Finders)
@@ -266,15 +242,11 @@ More about different types of finder you can find [here](https://rubydoc.info/gi
 
 ### Ambiguous match error
 
-When trying to find an element either using the DSL or xpath/CSS selectors, it is common to have two or more matches which will cause Capybara to fail with an Ambiguous match error. For this case you can use next methods:
+When you trying to find an element, it is common to have two or more matches which will cause Capybara to fail with an Ambiguous match error. For this case you can use next methods:
 
 - `:one` – raises an error when more than one match found
 
 - `:first` – simply picks the first match
-
-- `:prefer_exact` – finds all matching elements, but will return only an exact match discarding other matches
-
-- `:smart` – depends on the value for Capybara.exact. If set to true, it will behave like :one. Otherwise, it will first search for exact matches. If multiple matches are found, an ambiguous exception is raised. If none are found, it will search for inexact matches and again raise an ambiguous exception when multiple inexact matches are found.
 
 ---
 
@@ -296,15 +268,22 @@ Capybara comes with a very intuitive DSL which is used to express actions that w
 
 ```ruby
 visit('page_url') # navigate to page
+
 click_link('id_of_link') # click link by id
-click_link('link_text') # click link by link text
-click_button('button_name') # click button by button text
-fill_in('First Name', :with => 'John') # fill text field
-choose('radio_button') # choose radio button
-check('checkbox') # check in checkbox 
-uncheck('checkbox') # uncheck in checkbox
-select('option', :from=>'select_box') # select from dropdown
-attach_file('image', 'path_to_image') # upload file
+click_link('link_name') # click link by link text
+click_button('button_text') # click button by button text
+
+within("some_class") { ... } # will scope interaction to within a particular selector
+fill_in('field_name', with: 'your_value') # fill text field
+
+choose('radio_button_name') # choose radio button
+check('checkbox_id') # check in checkbox 
+uncheck('checkbox_name') # uncheck in checkbox
+
+select('option', from: 'select_box_name') # select from dropdown
+
+attach_file('image_name', 'path_to_image') # upload file
+
 find('.some_class').hover # finds the desired element and simulate mouse hover
 ```
 

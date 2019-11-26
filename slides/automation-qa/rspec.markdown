@@ -9,7 +9,7 @@ title:  RSpec
 
 ## What is RSpec?
 
-RSpec is a unit test framework for the Ruby programming language. RSpec is different than traditional xUnit frameworks like JUnit because RSpec is a Behavior driven development tool. What this means is that, tests written in RSpec focus on the "behavior" of an application being tested. RSpec does not put emphasis on, how the application works but instead on how it behaves, in other words, what the application actually does.
+RSpec is a unit test framework for the Ruby programming language. Tests written in RSpec focus on the "behavior" of an application being tested. RSpec does not put emphasis on, how the application works but instead on how it behaves, in other words, what the application actually does.
 
 ---
 
@@ -31,9 +31,13 @@ RSpec is a unit test framework for the Ruby programming language. RSpec is diffe
 
 --
 
+## Make sure that RSpec is not installed.
+
+Try to find `rspec-rails` inside Gemfile. If `rspec-rails` exist in test group. You can skip Installation step!
+
+--
+
 ## Install gem - `rspec-rails`
-
-
 
 Gemfile <!-- .element: class="filename" -->
 
@@ -88,27 +92,28 @@ create  spec/rails_helper.rb
 
 --
 
-
 ### What is `spec_helper.rb`?
-`spec_helper.rb` - every spec file needs to require this config(it gives your tests functionality)
+`spec_helper.rb` - this file describes in the context of RSpec configuration
 
 spec/spec_helper.rb <!-- .element: class="filename" -->
 
 ```ruby
-RSpec.configure do |config|
-  config.expect_with :rspec do |expectations|
-    # This option makes the `description` and `failure_message`
-    # of custom matchers include text for helper methods defined using `chain`
-    expectations.include_chain_clauses_in_custom_matcher_descriptions = true
+RSpec.configure do | config |
+  config.expect_with: rspec do | expectations |
+
+    # This option makes the `description` and` failure_message`
+    # of custom matchers include text for helper methods defined using `chain`
+    expectations.include_chain_clauses_in_custom_matcher_descriptions = true
   end
 
-  config.mock_with :rspec do |mocks|
-    # Prevents you from mocking or stubbing a method that does not exist on a real object.
-    mocks.verify_partial_doubles = true
+  config.mock_with: rspec do | mocks |
+
+    # Prevents you from mocking or stubbing a method that does not exist on a real object.
+    mocks.verify_partial_doubles = true
   end
 
   # Metadata will be inherited by the metadata hash of all host groups and examples.
-  config.shared_context_metadata_behavior = :apply_to_host_groups
+  config.shared_context_metadata_behavior =: apply_to_host_groups
 end
 ```
 
@@ -122,15 +127,21 @@ spec/rails_helper.rb <!-- .element: class="filename" -->
 ```ruby
 # This line will load /spec/spec_helper.rb
 require 'spec_helper'
+
 # Set default environment to `test` for Rspec
 ENV['RAILS_ENV'] ||= 'test'
+
 # Returns absolute path of the file environment.rb, which is located in the 'config' directory.
 require File.expand_path('../config/environment', __dir__)
+
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
+
 # This line will load rspec-rails
 require 'rspec/rails'
+
 # Add additional requires below this line. Rails is not loaded until this point!
+
 # Checks for pending migrations and applies them before tests are run.
 begin
   ActiveRecord::Migration.maintain_test_schema!
@@ -144,34 +155,21 @@ RSpec.configure do |config|
 
   # This line define path for fixtures data
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
+
   # Run every test method within a transaction
   config.use_transactional_fixtures = true
+
   # This line automatically added metadata to specs based on their location on the filesystem.
   config.infer_spec_type_from_file_location!
+
   # Filter lines from Rails gems in backtraces.
   config.filter_rails_from_backtrace!
 end
 ```
 
---
-
-### What is `.rspec`?
-
-Any code that you have in `.rspec` file, will be required before each test
-
-`Example`:
-
-```ruby
---require rails_helper
-```
-
-Now you don't need to requre `rails_helper` file to every test.
-
 ---
 
 # First test
-
-
 
 spec/first_test_spec.rb <!-- .element: class="filename" -->
 
@@ -286,6 +284,25 @@ Finished in 0.00212 seconds
 4 examples, 0 failures
 ```
 
+--
+
+### What is `.rspec`?
+
+Any code that you have in `.rspec` file, will be required before each test
+
+`Example`:
+
+```ruby
+--color
+
+--format documentation
+
+--require rails_helper
+```
+
+Now you don't need to require `rails_helper` file to every test.
+
+
 ---
 
 # Structure of RSpec
@@ -301,18 +318,6 @@ Finished in 0.00212 seconds
 - `Request` specs reside in the `spec/requests` directory. The directory can also be named integration or api.
 
 - `Feature` specs reside in the `spec/features` directory
-
-- `View` specs reside in the `spec/views` directory
-
-- `Helper` specs reside in the `spec/helpers` directory
-
-- `Mailer` specs reside in the `spec/mailers` directory
-
-- `Routing` specs reside in the `spec/routing` directory
-
-- `Job` specs reside in the `spec/jobs` directory
-
-- `System` specs reside in the `spec/system` directory
 
 ---
 
@@ -502,7 +507,9 @@ For more expectations go [here](https://relishapp.com/rspec/rspec-expectations/d
 Shared examples let you describe behavior of types or modules. When declared, a shared group’s content is stored. It is only realized in the context of another example group, which provides any context the shared group needs to run.
 
 - `include_examples` 'name' # include the examples in the current context
+
 - `it_behaves_like` 'name' # include the examples in a nested context
+
 - `it_should_behave_like` 'name' # include the examples in a nested context
 
 --
@@ -638,67 +645,6 @@ Finished in 0.00758 seconds
 
 ---
 
-# Pending
-
-```ruby
-RSpec.describe Array do
-  skip 'not implemented yet' do
-  end
-
-  context '#last' do
-    it 'returns the last element', skip: true do
-      array = [:first, :second, :third]
-      expect(array.last).to eq(:third)
-    end
-
-    it 'does not remove the last element', skip: 'reason explanation' do
-      array = [:first, :second, :third]
-      array.last
-      expect(array.size).to eq(3)
-    end
-  end
-
-  it 'does something else' do
-    skip # or skip 'reason explanation'
-  end
-end
-```
-
---
-
-```bash
-Array
-  not implemented yet (PENDING: No reason given)
-  does something else (PENDING: No reason given)
-  #last
-    returns the last element (PENDING: No reason given)
-    does not remove the last element (PENDING: reason explanation)
-
-Pending: (Failures listed here are expected and do not affect your suites status)
-
-  1) Array not implemented yet
-     # No reason given
-     # ./spec/a_spec.rb:2
-
-  2) Array does something else
-     # No reason given
-     # ./spec/a_spec.rb:18
-
-  3) Array#last returns the last element
-     # No reason given
-     # ./spec/a_spec.rb:6
-
-  4) Array#last does not remove the last element
-     # reason explanation
-     # ./spec/a_spec.rb:11
-
-
-Finished in 0.00105 seconds (files took 0.08152 seconds to load)
-4 examples, 0 failures, 4 pending
-```
-
----
-
 # Filters
 
 ```ruby
@@ -774,6 +720,67 @@ end
 describe "something", type: :feature do
   # will be included FeatureHelper
 end
+```
+
+---
+
+# Pending
+
+```ruby
+RSpec.describe Array do
+  skip 'not implemented yet' do
+  end
+
+  context '#last' do
+    it 'returns the last element', skip: true do
+      array = [:first, :second, :third]
+      expect(array.last).to eq(:third)
+    end
+
+    it 'does not remove the last element', skip: 'reason explanation' do
+      array = [:first, :second, :third]
+      array.last
+      expect(array.size).to eq(3)
+    end
+  end
+
+  it 'does something else' do
+    skip # or skip 'reason explanation'
+  end
+end
+```
+
+--
+
+```bash
+Array
+  not implemented yet (PENDING: No reason given)
+  does something else (PENDING: No reason given)
+  #last
+    returns the last element (PENDING: No reason given)
+    does not remove the last element (PENDING: reason explanation)
+
+Pending: (Failures listed here are expected and do not affect your suites status)
+
+  1) Array not implemented yet
+     # No reason given
+     # ./spec/a_spec.rb:2
+
+  2) Array does something else
+     # No reason given
+     # ./spec/a_spec.rb:18
+
+  3) Array#last returns the last element
+     # No reason given
+     # ./spec/a_spec.rb:6
+
+  4) Array#last does not remove the last element
+     # reason explanation
+     # ./spec/a_spec.rb:11
+
+
+Finished in 0.00105 seconds (files took 0.08152 seconds to load)
+4 examples, 0 failures, 4 pending
 ```
 
 ---
@@ -909,29 +916,13 @@ around example after
 
 Best practice include ideas how to improve your specs quality and increase efficiency of your BDD/TDD workflow.
 
-*Every file name, that testing the code should to end with `_spec.rb`*
+- Every file name, that testing the code should to end with `_spec.rb`
 
-*Do not litter the filjes `rails_helper.rb`, `rspec_helper.rb`. Move all configs to `./spec/support/`*
+- Do not litter the files `rails_helper.rb`, `spec_helper.rb`
 
-*Add `--require spec_helper` to file `.rspec` and you don't need to require this file in every spec file*
+- Move all configs to `./spec/support/`
 
---
-
-## How to describe your methods
-
-Be clear about what method you are describing. For instance, use the Ruby documentation convention of `.` (or `::`) when referring to a class method's name and `#` when referring to an instance method's name.
-
-```ruby
-# bad
-describe 'the authenticate method for User' do
-describe 'if the user is an admin' do
-```
-
-```ruby
-# good
-describe '.authenticate' do
-describe '#admin?' do
-```
+- Add `--require spec_helper` to file `.rspec` and you don't need to require this file in every spec file
 
 --
 
