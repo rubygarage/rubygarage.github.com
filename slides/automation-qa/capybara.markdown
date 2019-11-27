@@ -194,7 +194,7 @@ Use `js: true` to switch to the `Capybara.javascript_driver` (:selenium by defau
 spec/feature/test_spec.rb <!-- .element: class="filename" -->
 
 ```ruby
-RSpec.escribe 'some stuff which requires js', type: :feature, js: true do
+RSpec.describe 'some stuff which requires js', type: :feature, js: true do
   it 'will use the default js driver'
 end
 ```
@@ -273,7 +273,6 @@ click_link('id_of_link') # click link by id
 click_link('link_name') # click link by link text
 click_button('button_text') # click button by button text
 
-within("some_class") { ... } # will scope interaction to within a particular selector
 fill_in('field_name', with: 'your_value') # fill text field
 
 choose('radio_button_name') # choose radio button
@@ -285,6 +284,14 @@ select('option', from: 'select_box_name') # select from dropdown
 attach_file('image_name', 'path_to_image') # upload file
 
 find('.some_class').hover # finds the desired element and simulate mouse hover
+```
+
+```ruby
+# For the duration of the block, any command to Capybara will be handled as though it were scoped to the given element.
+within("some_class") do
+  fill_in('field_name', with: 'your_value')
+  fill_in('field_name_2', with: 'your_value_2')
+end
 ```
 
 --

@@ -33,7 +33,11 @@ RSpec is a unit test framework for the Ruby programming language. Tests written 
 
 ## Make sure that RSpec is not installed.
 
-Try to find `rspec-rails` inside Gemfile. If `rspec-rails` exist in test group. You can skip Installation step!
+- Try to find `rspec-rails` inside **Gemfile**
+
+- Find `spec_helper.rb` and `rails_helper.rb` inside **spec** folder at Rails project
+
+If you passed all steps. You can skip Installation step!
 
 --
 
@@ -93,7 +97,7 @@ create  spec/rails_helper.rb
 --
 
 ### What is `spec_helper.rb`?
-`spec_helper.rb` - this file describes in the context of RSpec configuration
+`spec_helper.rb` - this file describes in the context of RSpec configuration (not Rails)
 
 spec/spec_helper.rb <!-- .element: class="filename" -->
 
@@ -171,7 +175,7 @@ end
 
 # First test
 
-spec/first_test_spec.rb <!-- .element: class="filename" -->
+spec/unit/first_test_spec.rb <!-- .element: class="filename" -->
 
 ```ruby
 RSpec.describe 'test' do
@@ -192,24 +196,24 @@ $ rspec
 
 ```bash
 # Run all spec files in a single directory (recursively)
-$ rspec spec/features
+$ rspec spec/unit
 ```
 
 ```bash
 # Run a single spec file
-$ rspec spec/controllers/accounts_controller_spec.rb
+$ rspec spec/unit/first_test_spec.rb
 ```
 
 ```bash
 # Run a single example from a spec file (by line number)
-$ rspec spec/controllers/accounts_controller_spec.rb:8
+$ rspec spec/unit/first_test_spec.rb:2
 ```
 
 --
 
 ## Run example spec
 
-spec/first_test_spec.rb <!-- .element: class="filename" -->
+spec/unit/first_test_spec.rb <!-- .element: class="filename" -->
 
 ```ruby
 RSpec.describe 'test' do
@@ -226,7 +230,7 @@ end
 Test will pase:
 
 ```bash
-$ rspec spec/first_test_spec.rb
+$ rspec spec/unit/first_test_spec.rb
 
 ..
 
@@ -247,19 +251,19 @@ Finished in 0.00424 seconds (files took 0.09888 seconds to load)
 Colorization
 
 ```bash
-$ rspec spec/arrays/push_spec.rb --color
+$ rspec spec/unit/first_test_spec.rb --color
 ```
 
 Progress format (default)
 
 ```bash
-$ rspec spec/arrays/push_spec.rb
+$ rspec spec/unit/first_test_spec.rb
 ```
 
 or
 
 ```bash
-$ rspec spec/arrays/push_spec.rb  --format progress
+$ rspec spec/unit/first_test_spec.rb  --format progress
 
 ....F.....*.....
 
@@ -270,7 +274,7 @@ $ rspec spec/arrays/push_spec.rb  --format progress
 ## Documentation format
 
 ```bash
-$ rspec spec/arrays/push_spec.rb --format documentation
+$ rspec spec/unit/first_test_spec.rb --format documentation
 
 Array
   #last
@@ -359,6 +363,8 @@ end
 #   with no roles assigned
 #     is not allowed to view protected content
 ```
+
+**Note**: First `describe` in each file_spec should start from `RSpec.describe`
 
 --
 
@@ -484,21 +490,273 @@ Used to define expected outcomes.
 The basic structure of an rspec expectation is:
 
 ```ruby
-expect(actual).to matcher(expected)
-expect(actual).not_to matcher(expected)
+expect(actual).to some_matcher(expected)
+expect(actual).not_to some_matcher(expected)
 ```
 
 Examples
 
 ```ruby
-expect(5 + 5).to eq(10) #=> true
+expect(5 + 5).to eq(10)     #=> true
 expect(5 + 5).not_to eq(11) #=> true
-expect(3 + 2).not_to eq(6) #=> false
+expect(3 + 2).not_to eq(6)  #=> false
 ```
 
 For more expectations go [here](https://relishapp.com/rspec/rspec-expectations/docs/built-in-matchers)
 
 ---
+
+# Pending
+
+```ruby
+RSpec.describe Array do
+  skip 'not implemented yet' do
+  end
+
+  context '#last' do
+    it 'returns the last element', skip: true do
+      array = [:first, :second, :third]
+      expect(array.last).to eq(:third)
+    end
+
+    it 'does not remove the last element', skip: 'reason explanation' do
+      array = [:first, :second, :third]
+      array.last
+      expect(array.size).to eq(3)
+    end
+  end
+
+  it 'does something else' do
+    skip # or skip 'reason explanation'
+  end
+end
+```
+
+--
+
+```bash
+Array
+  not implemented yet (PENDING: No reason given)
+  does something else (PENDING: No reason given)
+  #last
+    returns the last element (PENDING: No reason given)
+    does not remove the last element (PENDING: reason explanation)
+
+Pending: (Failures listed here are expected and do not affect your suites status)
+
+  1) Array not implemented yet
+     # No reason given
+     # ./spec/a_spec.rb:2
+
+  2) Array does something else
+     # No reason given
+     # ./spec/a_spec.rb:18
+
+  3) Array#last returns the last element
+     # No reason given
+     # ./spec/a_spec.rb:6
+
+  4) Array#last does not remove the last element
+     # reason explanation
+     # ./spec/a_spec.rb:11
+
+
+Finished in 0.00105 seconds (files took 0.08152 seconds to load)
+4 examples, 0 failures, 4 pending
+```
+
+---
+
+# Stub
+
+--
+
+### Stub is an object that holds predefined data and uses it to answer calls during tests.
+
+It is used when we cannot or don’t want to involve objects that would answer with real data or have undesirable side effects.
+
+```ruby
+obj = double() # create a dummy
+
+# tells the 'obj' to return the value ':value' when it receives the roll ':method_name'
+allow(obj).to receive(:method_name).and_return(:value)
+```
+
+Same stub but with `Lazy evaluation`:
+
+```ruby
+allow(obj).to receive(:method_name) { :value }
+```
+
+--
+
+spec/unit/first_test_spec.rb <!-- .element: class="filename" -->
+
+```ruby
+RSpec.describe 'test' do
+  it 'return stub count of user friends' do
+    user = double   # create a dummy, because we don't have real User class
+
+    allow(user).to receive(:friends_count).and_return(11)
+
+    expect(user.friends_count).to eq(11)
+  end
+end
+```
+
+```
+Stub test
+  return stub count of user friends
+
+Finished in 0.01035 seconds (files took 1.78 seconds to load)
+1 example, 0 failures
+
+```
+
+---
+
+# Hooks
+
+Provides `before`, `after` and `around` hooks as a means of supporting common setup and teardown. This module is extended on to `ExampleGroup`, making the methods available from any `describe` or `context` block.
+
+The most common hooks used in RSpec are `before` and `after` hooks. They provide a way to define and run the setup and teardown code.
+
+--
+
+### Hooks types
+
+- **after**
+
+  ```ruby
+  after(*args, &block)
+  ```
+
+  Declare a block of code to be run after each example (using `:example`) or once after all examples in the context (using `:context`).
+
+- **around**
+
+  ```ruby
+  around(*args) {|Example| ... }
+  ```
+
+  Declare a block of code, parts of which will be run before and parts after the example.
+
+- **before**
+
+  ```ruby
+  before(*args, &block)
+  ```
+
+  Declare a block of code to be run before each example (using `:example`) or once before any example (using `:context`).
+
+  **`Note`**: The `:example` and `:context` scopes are also available as `:each` and `:all`, respectively. Use whichever you prefer.
+
+--
+
+### Here is a simple example that illustrates when each hook is called.
+
+```ruby
+describe "Before and after hooks" do
+   before(:each) do
+      puts "Runs before each Example"
+   end
+   after(:each) do
+      puts "Runs after each Example"
+   end
+   before(:all) do
+      puts "Runs before all Examples"
+   end
+   after(:all) do
+      puts "Runs after all Examples"
+   end
+
+   it 'is the first Example in this spec file' do
+      puts 'Running the first Example'
+   end
+
+   it 'is the second Example in this spec file' do
+      puts 'Running the second Example'
+   end
+end
+```
+
+```
+Runs before all Examples
+Runs before each Example
+Running the first Example
+Runs after each Example
+.Runs before each Example
+Running the second Example
+.Runs after each Example
+Runs after all Examples
+```
+
+---
+
+# RSpec best practices
+
+Best practice include ideas how to improve your specs quality and increase efficiency of your BDD/TDD workflow.
+
+- Every file name, that testing the code should to end with `_spec.rb`
+
+- Do not litter the files `rails_helper.rb`, `spec_helper.rb`
+
+- Move all configs to `spec/support/`
+
+- Add `--require spec_helper` to file `.rspec` and you don't need to require this file in every spec file
+
+- Structure folders `spec/features/controller_name/action_name` like `spec/features/users/create`
+
+--
+
+## Use contexts
+
+`context` starts either with `"with"` or `"when"`, such "when status is pending"
+
+```ruby
+# Bad
+it 'has 200 status code if logged in' do
+  expect(response).to respond_with 200
+end
+it 'has 401 status code if not logged in' do
+  expect(response).to respond_with 401
+end
+```
+
+```ruby
+# good
+context 'when logged in' do
+  it { is_expected.to respond_with 200 }
+end
+context 'when logged out' do
+  it { is_expected.to respond_with 401 }
+end
+```
+
+--
+
+## Keep your description short
+
+A spec description should never be longer than 40 characters. If this happens you should split it using a context.
+
+```ruby
+it 'has 422 status code if an unexpected params will be added' do
+```
+
+```ruby
+context 'when not valid' do
+  it { is_expected.to respond_with 422 }
+end
+```
+
+For more practices go
+[here](https://relishapp.com/rspec/rspec-expectations/docs/built-in-matchers)
+
+---
+
+# Additional tools
+
+--
 
 # Shared examples
 
@@ -643,7 +901,7 @@ Finished in 0.00758 seconds
 8 examples, 0 failures
 ```
 
----
+--
 
 # Filters
 
@@ -721,253 +979,6 @@ describe "something", type: :feature do
   # will be included FeatureHelper
 end
 ```
-
----
-
-# Pending
-
-```ruby
-RSpec.describe Array do
-  skip 'not implemented yet' do
-  end
-
-  context '#last' do
-    it 'returns the last element', skip: true do
-      array = [:first, :second, :third]
-      expect(array.last).to eq(:third)
-    end
-
-    it 'does not remove the last element', skip: 'reason explanation' do
-      array = [:first, :second, :third]
-      array.last
-      expect(array.size).to eq(3)
-    end
-  end
-
-  it 'does something else' do
-    skip # or skip 'reason explanation'
-  end
-end
-```
-
---
-
-```bash
-Array
-  not implemented yet (PENDING: No reason given)
-  does something else (PENDING: No reason given)
-  #last
-    returns the last element (PENDING: No reason given)
-    does not remove the last element (PENDING: reason explanation)
-
-Pending: (Failures listed here are expected and do not affect your suites status)
-
-  1) Array not implemented yet
-     # No reason given
-     # ./spec/a_spec.rb:2
-
-  2) Array does something else
-     # No reason given
-     # ./spec/a_spec.rb:18
-
-  3) Array#last returns the last element
-     # No reason given
-     # ./spec/a_spec.rb:6
-
-  4) Array#last does not remove the last element
-     # reason explanation
-     # ./spec/a_spec.rb:11
-
-
-Finished in 0.00105 seconds (files took 0.08152 seconds to load)
-4 examples, 0 failures, 4 pending
-```
-
----
-
-# Stub
-
---
-
-### Stub is an object that holds predefined data and uses it to answer calls during tests.
-
-It is used when we cannot or don’t want to involve objects that would answer with real data or have undesirable side effects.
-
-```ruby
-obj = double() # create a dummy
-
-# tells the 'obj' to return the value ':value' when it receives the roll ':method_name'
-allow(obj).to receive(:method_name).and_return(:value)
-```
-
-Same stub but with `Lazy evaluation`:
-
-```ruby
-allow(obj).to receive(:method_name) { :value }
-```
-
----
-
-# Hooks
-
-Provides `before`, `after` and `around` hooks as a means of supporting common setup and teardown. This module is extended on to `ExampleGroup`, making the methods available from any `describe` or `context` block.
-
-The most common hooks used in RSpec are `before` and `after` hooks. They provide a way to define and run the setup and teardown code.
-
---
-
-### Hooks types
-
-- **after**
-
-  ```ruby
-  after(*args, &block)
-  ```
-
-  Declare a block of code to be run after each example (using `:example`) or once after all examples in the context (using `:context`).
-
-- **around**
-
-  ```ruby
-  around(*args) {|Example| ... }
-  ```
-
-  Declare a block of code, parts of which will be run before and parts after the example.
-
-- **before**
-
-  ```ruby
-  before(*args, &block)
-  ```
-
-  Declare a block of code to be run before each example (using `:example`) or once before any example (using `:context`).
-
-  **`Note`**: The `:example` and `:context` scopes are also available as `:each` and `:all`, respectively. Use whichever you prefer.
-
---
-
-### Here is a simple example that illustrates when each hook is called.
-
-```ruby
-describe "Before and after hooks" do
-   before(:each) do
-      puts "Runs before each Example"
-   end
-   after(:each) do
-      puts "Runs after each Example"
-   end
-   before(:all) do
-      puts "Runs before all Examples"
-   end
-   after(:all) do
-      puts "Runs after all Examples"
-   end
-
-   it 'is the first Example in this spec file' do
-      puts 'Running the first Example'
-   end
-
-   it 'is the second Example in this spec file' do
-      puts 'Running the second Example'
-   end
-end
-```
-
-```
-Runs before all Examples
-Runs before each Example
-Running the first Example
-Runs after each Example
-.Runs before each Example
-Running the second Example
-Runs after each Example
-.Runs after all Examples
-```
-
---
-
-The syntax of around is similar to that of `before` and `after` but the semantics are quite different. `before` and `after` hooks are run in the context of of the examples with which they are associated, whereas `around` hooks are actually responsible for running the examples. Consequently, `around` hooks do not have direct access to resources that are made available within the examples and their associated `before` and `after` hooks.
-
-
-```ruby
-RSpec.describe "around hook" do
-  around(:each) do |example|
-    puts "around example before"
-    example.run
-    puts "around example after"
-  end
-
-  it "gets run in order" do
-    puts "in the example"
-  end
-end
-```
-Output should contain:
-
-```
-around example before
-in the example
-around example after
-```
-
----
-
-# RSpec best practices
-
-Best practice include ideas how to improve your specs quality and increase efficiency of your BDD/TDD workflow.
-
-- Every file name, that testing the code should to end with `_spec.rb`
-
-- Do not litter the files `rails_helper.rb`, `spec_helper.rb`
-
-- Move all configs to `./spec/support/`
-
-- Add `--require spec_helper` to file `.rspec` and you don't need to require this file in every spec file
-
---
-
-## Use contexts
-
-`context` starts either with `"with"` or `"when"`, such "when status is pending"
-
-```ruby
-# Bad
-it 'has 200 status code if logged in' do
-  expect(response).to respond_with 200
-end
-it 'has 401 status code if not logged in' do
-  expect(response).to respond_with 401
-end
-```
-
-```ruby
-# good
-context 'when logged in' do
-  it { is_expected.to respond_with 200 }
-end
-context 'when logged out' do
-  it { is_expected.to respond_with 401 }
-end
-```
-
---
-
-## Keep your description short
-
-A spec description should never be longer than 40 characters. If this happens you should split it using a context.
-
-```ruby
-it 'has 422 status code if an unexpected params will be added' do
-```
-
-```ruby
-context 'when not valid' do
-  it { is_expected.to respond_with 422 }
-end
-```
-
-For more practices go
-[here](https://relishapp.com/rspec/rspec-expectations/docs/built-in-matchers)
 
 ---
 
