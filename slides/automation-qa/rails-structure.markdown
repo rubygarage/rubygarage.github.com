@@ -26,7 +26,7 @@ title:  Rails
 ## Clone the repository
 
 ```bash
-$ git clone todo_repository_name
+$ git clone https://github.com/WoLkErSs/training_store
 ```
 --
 
@@ -171,13 +171,17 @@ $ nvm list
 
 ---
 
-##  What should I do to run application?
+#  What should I do to run application?
+
+--
 
 ```bash
 $ bundle install
 ```
 
 `bundle install` - is a command that run Bundler, what will fetch all remote sources, resolve dependencies and install all needed gems.
+
+--
 
 ```bash
 $ rails db:create
@@ -195,7 +199,9 @@ $ rails db:migrate
 $ rails db:seed
 ```
 
-`rails db:seed` - runs the db/seed.rb file and seeding your database.
+`rails db:seed` - runs the db/seed.rb file and seeding your database (`optional`)
+
+--
 
 ```bash
 $ yarn install
@@ -307,6 +313,18 @@ source "https://rubygems.org”
 
 --
 
+## Selecting a version of Ruby
+
+You can use the `ruby` keyword in your app’s Gemfile to specify a specific version of Ruby.
+
+Gemfile <!-- .element class="filename" -->
+
+```ruby
+ruby '2.6.3'
+```
+
+--
+
 ## Setting up your Gems
 
 Now onto the main point of using a Gemfile, setting up the gems!
@@ -378,10 +396,10 @@ The second way you can decide a grouping for a gem is by setting your gems up in
 Gemfile <!-- .element class="filename" -->
 
 ```ruby
-  group :development do
-    gem 'my_gem'
-    gem 'my_other_gem'
-  end
+group :development do
+  gem 'my_gem'
+  gem 'my_other_gem'
+end
 ```
 
 This is visually more pleasing, and you can combine groups;

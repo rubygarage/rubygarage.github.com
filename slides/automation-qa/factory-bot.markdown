@@ -5,7 +5,7 @@ title: Factory Bot
 
 ## What is Factory Bot?
 
-factory_bot is a fixtures replacement with a straightforward definition syntax, support for multiple build strategies (saved instances, unsaved instances, attribute hashes, and stubbed objects), and support for multiple factories for the same class (user, admin_user, and so on), including factory inheritance.
+Factory Bot is a library that provides factory methods to create test fixtures for automated software testing. The fixture objects can be created on the fly.
 
 ---
 
@@ -41,7 +41,7 @@ tell rails to load the modules under the `spec/support`.
 spec/rails_helper.rb <!-- .element: class="filename" -->
 
 ```ruby
-Dir[File.dirname(__FILE__) + '/support/*.rb'].each { |file| require file }
+Dir[File.dirname(__FILE__) + '/support/**/*.rb'].each { |file| require file }
 ```
 
 --
