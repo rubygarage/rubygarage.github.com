@@ -92,6 +92,14 @@ create  spec/rails_helper.rb
 
 ---
 
+# Clone Repository for Practice
+
+```bash
+$ git clone https://github.com/alexyndr/library.git
+```
+
+---
+
 # Conventional files for a RSpec
 
 --
