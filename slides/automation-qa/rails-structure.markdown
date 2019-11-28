@@ -235,20 +235,20 @@ The `rails console` or `rails c` command lets you interact with your Rails appli
 
 ## Structure of rails folders
 
-|     |             |
-| --- | ----------- |
-| **app** | It organizes your application components. It's got subdirectories that hold the views, controllers, models, and more that handle business logic. |
-| **bin** | Contains the rails script that starts your app and can contain other scripts you use to setup, update, deploy or run your application. |
-| **config** | onfigure your application's routes, database, and more. This is covered in more detail in [Configuring Rails Applications](https://guides.rubyonrails.org/configuring.html). |
-| **db** | Contains your current database schema, as well as the database migrations. |
-| **lib** | Extended modules for your application. |
-| **log** | Application log files. |
+|  `Folder`  | `Description` |
+|    ---     |  -----------  |
+| **app**    | It organizes your application components. It's got subdirectories that hold the views, controllers, models, and more that handle business logic. |
+| **bin**    | Contains the rails script that starts your app and can contain other scripts you use to setup, update, deploy or run your application. |
+| **config** | Configure your application's routes, database, and more. This is covered in more detail in [Configuring Rails Applications](https://guides.rubyonrails.org/configuring.html). |
+| **db**     | Contains your current database schema, as well as the database migrations. |
+| **lib**    | Extended modules for your application. |
+| **log**    | Application log files. |
 | **public** | The only folder seen by the world as-is. Contains static files and compiled assets. |
-| **test** | Unit tests, fixtures, and other test apparatus. |
-| **spec** | Alternative to test directory using BDD. Rspec allows you to write an alternative syntax to Test Unit that reads more like a specification than a test. |
-| **tmp** | Temporary files (like cache and pid files). |
+| **test**   | Unit tests, fixtures, and other test apparatus. |
+| **spec**   | Alternative to test directory using BDD. Rspec allows you to write an alternative syntax to Test Unit that reads more like a specification than a test. |
+| **tmp**    | Temporary files (like cache and pid files). |
 | **vendor** | A place for all third-party code. In a typical Rails application this includes vendored gems. |
-|     |             |
+|            |               |
 
 --
 
@@ -662,7 +662,7 @@ user_friend   DELETE   /user/:user_id/friends/:id(.:format)  friends#destroy
 
 --
 
-**From** Rails 5.2 we have new way of handling encrypted credentials
+### From Rails 5.2 we have new way of handling encrypted credentials
 
 The first thing to notice is that Rails projects come with two files:
 
@@ -698,7 +698,7 @@ Rails.application.credentials.aws[:access_key_id]     # => "123"
 Rails.application.credentials.aws[:secret_access_key] # => "345"
 Rails.application.credentials.secret_key_base         # => "2fdea...
 ```
---
+---
 
 # Environment Variables
 

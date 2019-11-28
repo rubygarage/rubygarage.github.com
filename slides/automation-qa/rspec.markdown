@@ -98,6 +98,15 @@ create  spec/rails_helper.rb
 $ git clone https://github.com/alexyndr/library.git
 ```
 
+```bash
+$ cd library
+```
+
+```bash
+$ ruby seed.rb  # will run application
+```
+
+
 ---
 
 # Conventional files for a RSpec
@@ -427,7 +436,7 @@ specify { expect(product).not_to be_featured }
 
 ---
 
-## `let` and `!let`
+# `let` and `!let`
 
 --
 
@@ -495,11 +504,13 @@ Used to define expected outcomes.
 
 --
 
+**RSpec Expectations** lets you express expected outcomes on an object in an example
+
 The basic structure of an rspec expectation is:
 
 ```ruby
-expect(actual).to some_matcher(expected)
-expect(actual).not_to some_matcher(expected)
+expect(actual).to     some_matcher(expected)
+expect(actual).not_to some_matcher(not_expected)
 ```
 
 Examples
@@ -507,71 +518,98 @@ Examples
 ```ruby
 expect(5 + 5).to eq(10)     #=> true
 expect(5 + 5).not_to eq(11) #=> true
-expect(3 + 2).not_to eq(6)  #=> false
+expect(3 + 2).not_to eq(5)  #=> false
 ```
-
-For more expectations go [here](https://relishapp.com/rspec/rspec-expectations/docs/built-in-matchers)
 
 ---
 
-# Pending
+# Matchers
+
+--
+
+**RSpec Matchers** provides a number of useful matchers, that we use to define expectations.
+
+Each matcher can be used with `expect(..).to` or `expect(..).not_to` to define positive and negative expectations
+respectively on an object. 
+
+Examples
 
 ```ruby
-RSpec.describe Array do
-  skip 'not implemented yet' do
-  end
-
-  context '#last' do
-    it 'returns the last element', skip: true do
-      array = [:first, :second, :third]
-      expect(array.last).to eq(:third)
-    end
-
-    it 'does not remove the last element', skip: 'reason explanation' do
-      array = [:first, :second, :third]
-      array.last
-      expect(array.size).to eq(3)
-    end
-  end
-
-  it 'does something else' do
-    skip # or skip 'reason explanation'
-  end
-end
+expect("a string").to be_an_instance_of(String)     # passes
+expect("a string").to be_an_instance_of(Array)      # fail
+expect("a string").not_to be_an_instance_of(Array)  # passes
 ```
 
 --
 
-```bash
-Array
-  not implemented yet (PENDING: No reason given)
-  does something else (PENDING: No reason given)
-  #last
-    returns the last element (PENDING: No reason given)
-    does not remove the last element (PENDING: reason explanation)
+## `RSpec Matchers` provides a different types of matchers
 
-Pending: (Failures listed here are expected and do not affect your suites status)
+- Equality/Identity Matchers
 
-  1) Array not implemented yet
-     # No reason given
-     # ./spec/a_spec.rb:2
+- True/False/Nil Matchers
 
-  2) Array does something else
-     # No reason given
-     # ./spec/a_spec.rb:18
+- Class/Type Matchers
 
-  3) Array#last returns the last element
-     # No reason given
-     # ./spec/a_spec.rb:6
+- Comparison Matchers
 
-  4) Array#last does not remove the last element
-     # reason explanation
-     # ./spec/a_spec.rb:11
+--
 
+## Equality/Identity Matchers
 
-Finished in 0.00105 seconds (files took 0.08152 seconds to load)
-4 examples, 0 failures, 4 pending
-```
+Matchers to test for object or value equality.
+
+| `Matcher` |             `Description`                |            `Example`             |
+|    ---    |              -----------                 |           -----------            |
+| **eq**    | Passes when actual == expected           | expect(actual).to eq expected    |
+| **eql**   | Passes when actual.eql?(expected)        | expect(actual).to eql expected   |
+| **be**    | Passes when actual.equal?(expected)      | expect(actual).to be expected    |
+| **equal** | Also passes when actual.equal?(expected) | expect(actual).to equal expected |
+|           |                                          |                                  |
+
+--
+
+## True/False/Nil Matchers
+
+Matchers for testing whether a value is true, false or nil.
+
+|   `Matcher`   |             `Description`               |          `Example`           |
+|      ---      |              -----------                |         -----------          |
+| **be true**   | Passes when actual == true              | expect(actual).to be true    |
+| **be false**  | Passes when actual == false             | expect(actual).to be false   |
+| **be_truthy** | Passes when actual is not false or nil  | expect(actual).to be_truthy  |
+| **be_falsey** | Passes when actual is false or nil      | expect(actual).to be_falsey  |
+| **be_nil**    | Passes when actual is nil               | expect(actual).to be_nil     |
+|               |                                         |                              |
+
+--
+
+## Class/Type Matchers
+
+Matchers for testing the type or class of objects.
+
+|     `Matcher`      |             `Description`               |          `Example`           |
+|        ---         |              -----------                |         -----------          |
+| **be_instance_of** | Passes when actual is an instance of the expected class                              | expect(actual).to be_instance_of(Expected) |
+| **be_kind_of**     | Passes when actual is an instance of the expected class or any of its parent classes | expect(actual).to be_kind_of(Expected)               |
+| **respond_to**     | Passes when actual responds to the specified method                                  | expect(actual).to respond_to(expected)               |
+|                    |                                         |                              |
+
+--
+
+## Comparison Matchers
+
+Matchers for comparing to values.
+
+|         `Matcher`        |                 `Description`                   |          `Example`           |
+|            ---           |                  -----------                    |         -----------          |
+| **>**                    | Passes when actual > expected                   | expect(actual).to be > expected    |
+| **>=**                   | Passes when actual >= expected                  | expect(actual).to be >= expected   |
+| **<**                    | Passes when actual < expected                   | expect(actual).to be < expected    |
+| **<=**                   | Passes when actual <= expected                  | expect(actual).to be <= expected   |
+| **be_between inclusive** | Passes when actual is <= min and >= max         | expect(actual).to be_between(min, max).inclusive |
+| **be_between exclusive** | Passes when actual is < min and > max           | expect(actual).to be_between(min, max).exclusive |
+| **match**                | Passes when actual matches a regular expression | expect(actual).to match(/regex/)                 |
+|                          |                                                 |                              |
 
 ---
 
@@ -625,7 +663,9 @@ Finished in 0.01035 seconds (files took 1.78 seconds to load)
 
 # Hooks
 
-Provides `before`, `after` and `around` hooks as a means of supporting common setup and teardown. This module is extended on to `ExampleGroup`, making the methods available from any `describe` or `context` block.
+RSpec provides `before`, `after` and `around` hooks.
+
+This methods available from any **describe** or **context** block.
 
 The most common hooks used in RSpec are `before` and `after` hooks. They provide a way to define and run the setup and teardown code.
 
@@ -701,6 +741,67 @@ Runs after all Examples
 
 ---
 
+# Pending
+
+```ruby
+RSpec.describe Array do
+  skip 'not implemented yet' do
+  end
+
+  context '#last' do
+    it 'returns the last element', skip: true do
+      array = [:first, :second, :third]
+      expect(array.last).to eq(:third)
+    end
+
+    it 'does not remove the last element', skip: 'reason explanation' do
+      array = [:first, :second, :third]
+      array.last
+      expect(array.size).to eq(3)
+    end
+  end
+
+  it 'does something else' do
+    skip # or skip 'reason explanation'
+  end
+end
+```
+
+--
+
+```bash
+Array
+  not implemented yet (PENDING: No reason given)
+  does something else (PENDING: No reason given)
+  #last
+    returns the last element (PENDING: No reason given)
+    does not remove the last element (PENDING: reason explanation)
+
+Pending: (Failures listed here are expected and do not affect your suites status)
+
+  1) Array not implemented yet
+     # No reason given
+     # ./spec/a_spec.rb:2
+
+  2) Array does something else
+     # No reason given
+     # ./spec/a_spec.rb:18
+
+  3) Array#last returns the last element
+     # No reason given
+     # ./spec/a_spec.rb:6
+
+  4) Array#last does not remove the last element
+     # reason explanation
+     # ./spec/a_spec.rb:11
+
+
+Finished in 0.00105 seconds (files took 0.08152 seconds to load)
+4 examples, 0 failures, 4 pending
+```
+
+---
+
 # RSpec best practices
 
 Best practice include ideas how to improve your specs quality and increase efficiency of your BDD/TDD workflow.
@@ -766,9 +867,7 @@ For more practices go
 
 --
 
-# Shared examples
-
---
+## Shared examples
 
 Shared examples let you describe behavior of types or modules. When declared, a shared group’s content is stored. It is only realized in the context of another example group, which provides any context the shared group needs to run.
 
