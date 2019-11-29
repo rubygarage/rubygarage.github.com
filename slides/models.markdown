@@ -1639,11 +1639,11 @@ end
 
 ---
 
-## validate_each
+## validates_each
 
 ```ruby
 class User < ApplicationRecord
-  validate_each :first_name, :last_name do |record, attr, value|
+  validates_each :first_name, :last_name do |record, attr, value|
     record.errors.add(attr, 'must start with upper case') if value =~ /\A[a-z]/
   end
 end
@@ -3408,7 +3408,7 @@ FactoryBot.define do
   end
 
   factory :user do
-    email { FactoryGirl.generate(:email) }
+    email { FactoryBot.generate(:email) }
     name 'John Doe'
     admin false
 
@@ -3565,7 +3565,7 @@ describe User do
   context 'change email' do
     it 'sends email changed notification' do
       user.email = FFaker::Internet.email
-      expect(UserMailer).to receive(:email_changed).with(user).and_return(double('meil', deliver: true))
+      expect(UserMailer).to receive(:email_changed).with(user).and_return(double('mail', deliver: true))
       user.save
     end
 
@@ -3611,10 +3611,10 @@ end
 Business logic structure:
 
 Book
-- Should contain title, descirption, price and how many books in stock
+- Should contain title, description, price and how many books in stock
 - Title, price, books in stock fields should be required
 - Should belong to author and category
-- Should have many ratings from costomers
+- Should have many ratings from customers
 
 Category
 - Has a title
@@ -3639,7 +3639,7 @@ Customer
 - A customer should be able to return a current order in progress
 
 Order
-- Should contain total price, completed date and state (in progress/complited/shipped)
+- Should contain total price, completed date and state (in progress/completed/shipped)
 - Total price, completed date and state fields should be required
 - By default an order should have 'in progress' state
 - Should belong to customer and credit card
