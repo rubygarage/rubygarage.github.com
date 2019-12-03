@@ -203,6 +203,36 @@ $ rails db:seed
 
 --
 
+### Dumping the Data (optional)
+
+`pg_dump` makes consistent backups even if the database is being used while the backup is being run
+
+```bash
+$ mkdir db/backups  # create directory for our backups
+
+$ pg_dump -F t bookstore_development > db/backups/bookstore_development_backup.tar
+
+# -F configures the file format of the dump file. It can be a tar (t), plain (p)
+
+# > means pipe the output into the specified file
+```
+
+After this command you will be able to see a `db/backups/bookstore_development_backup.tar` file
+
+### Restoring the Database (optional)
+
+`pg_restore` restore the database by using backup file
+
+```bash
+$ pg_restore -C -d bookstore_development db/backups/bookstore_development_backup.tar
+
+# -C create the database before restoring into it
+
+# -d <dbname> connect to database <dbname> and restore directly into the database
+```
+
+--
+
 ```bash
 $ yarn install
 ```
@@ -233,7 +263,9 @@ The `rails console` or `rails c` command lets you interact with your Rails appli
 
 ---
 
-## Structure of rails folders
+# Structure of rails folders
+
+--
 
 |  `Folder`  | `Description` |
 |    ---     |  -----------  |
@@ -322,15 +354,15 @@ Gemfile.lock holds the gem dependency tree, including all versions, for the app.
 
 - **spec**/factories/*
   <br>
-  <small>Folder for factories </small>
+  <small>Folder with dummy data that we need to stub some date and user instances </small>
 
 - **spec**/features/*
   <br>
-  <small>Folder for feature tests </small>
+  <small>In this folder are located feature tests </small>
 
 - **spec**/support/*
   <br>
-  <small>Folder for support files </small>
+  <small>Folder where placed support files (custom matchers, shared examples, helper methods for specs, etc.)</small>
   
 - **spec**/rails_helper.rb
   <br>
@@ -342,15 +374,15 @@ Gemfile.lock holds the gem dependency tree, including all versions, for the app.
 
 - **config**/routes.rb
   <br>
-  <small>File with routes </small>
+  <small>File where placed routes for application </small>
 
 - **db**/schema.rb
   <br>
-  <small>File with db schema </small>
+  <small>File with final current state of the database schema </small>
 
 - Gemfile
   <br>
-  <small>File with gems </small>
+  <small>File with list of uses gems </small>
 
 ---
 
@@ -595,7 +627,7 @@ config/routes.rb <!-- .element: class="filename" -->
 
 ```ruby
 Rails.application.routes.draw do
-  resources :user do                           # creates seven routes all mapping to the user controller
+  resources :users do                           # creates seven routes all mapping to the user controller
     resources :friends, only: %i[destroy]      # creates one nested route mapping to the friends controller
   end
  
@@ -620,18 +652,18 @@ $ rake routes
 ```
 Prefix        Verb     URI Pattern                           Controller#Action
 
-user_friend   DELETE   /user/:user_id/friends/:id(.:format)  friends#destroy
- user_index   GET      /user(.:format)                       user#index
-              POST     /user(.:format)                       user#create
-   new_user   GET      /user/new(.:format)                   user#new
-  edit_user   GET      /user/:id/edit(.:format)              user#edit
-       user   GET      /user/:id(.:format)                   user#show
-              PATCH    /user/:id(.:format)                   user#update
-              PUT      /user/:id(.:format)                   user#update
-              DELETE   /user/:id(.:format)                   user#destroy
-   projects   DELETE   /projects(.:format)                   projects#destroy
-              POST     /projects(.:format)                   projects#create
-       root   GET      /                                     home#index
+user_friend   DELETE   /users/:user_id/friends/:id(.:format)  friends#destroy
+      users   GET      /users(.:format)                       users#index
+              POST     /users(.:format)                       users#create
+   new_user   GET      /users/new(.:format)                   users#new
+  edit_user   GET      /users/:id/edit(.:format)              users#edit
+       user   GET      /users/:id(.:format)                   users#show
+              PATCH    /users/:id(.:format)                   users#update
+              PUT      /users/:id(.:format)                   users#update
+              DELETE   /users/:id(.:format)                   users#destroy
+   projects   DELETE   /projects(.:format)                    projects#destroy
+              POST     /projects(.:format)                    projects#create
+       root   GET      /                                      home#index
 ```
 
 --
@@ -641,20 +673,37 @@ user_friend   DELETE   /user/:user_id/friends/:id(.:format)  friends#destroy
 So let’s say you only want to know which routes have a “/user” in them.
 
 ```bash
-$ rake routes | grep user
+$ rake routes | grep users
 ```
 
 ```
-user_friend   DELETE   /user/:user_id/friends/:id(.:format)  friends#destroy
- user_index   GET      /user(.:format)                       user#index
-              POST     /user(.:format)                       user#create
-   new_user   GET      /user/new(.:format)                   user#new
-  edit_user   GET      /user/:id/edit(.:format)              user#edit
-       user   GET      /user/:id(.:format)                   user#show
-              PATCH    /user/:id(.:format)                   user#update
-              PUT      /user/:id(.:format)                   user#update
-              DELETE   /user/:id(.:format)                   user#destroy
+user_friend   DELETE   /users/:user_id/friends/:id(.:format)  friends#destroy
+      users   GET      /users(.:format)                       users#index
+              POST     /users(.:format)                       users#create
+   new_user   GET      /users/new(.:format)                   users#new
+  edit_user   GET      /users/:id/edit(.:format)              users#edit
+       user   GET      /users/:id(.:format)                   users#show
+              PATCH    /users/:id(.:format)                   users#update
+              PUT      /users/:id(.:format)                   users#update
+              DELETE   /users/:id(.:format)                   users#destroy
 ```
+
+--
+
+## `Path` and `URL` Helpers
+
+Creating a resourceful route will also expose a number of helpers to the controllers in your application.
+
+- **users_path** returns **/users**
+
+- **new_user_path** returns **/users/new**
+
+- **edit_user_path(:id)** returns **/users/:id/edit** (for instance, **edit_user_path(10)** returns **/users/10/edit**)
+
+- **user_path(:id)** returns **/users/:id** (for instance, **user_path(10)** returns **/users/10**)
+
+- **user_friend(:user_id, :id)** returns **/users/:user_id/friends/:id**  
+(for instance, **user_friend_path(user_id: 10, id: 5)** returns **/users/10/friends/5**)
 
 ---
 
@@ -698,19 +747,81 @@ Rails.application.credentials.aws[:access_key_id]     # => "123"
 Rails.application.credentials.aws[:secret_access_key] # => "345"
 Rails.application.credentials.secret_key_base         # => "2fdea...
 ```
----
 
-# Environment Variables
+### Environment Variables
 
-Ruby has this ENV object that behaves like a hash & it gives you access to all the environment variables that are available to you.
+Ruby has this **ENV** object that behaves like a hash & it gives you access to all the environment variables that are available to you.
 
 
 ```bash
-$ ENV.size          # Show how many keys you have
-
-$ ENV.keys          # List of all keys
-
 $ ENV["RAILS_ENV"]  # Access to specific key
+```
+
+---
+
+# Debugging
+
+--
+
+## What is Pry?
+
+Pry is a powerful alternative to the standard IRB shell for Ruby. It features runtime invocation and source browsing. With `pry` gem you can causes rails console to open bindings that you left for debugging code inside your tests.
+
+--
+
+## Install pry
+
+The first thing we need to do is add our gem to Gemfile in :development, :test groups
+
+```ruby
+group :development, :test do
+  gem 'pry'
+end
+```
+
+Then, run `bundle install` to download and instal new gem
+
+```bash
+$ bundle install
+```
+
+--
+
+## Using pry
+
+Pry can be invoked in the middle of a running program. It opens a Pry session at the point it's called and makes all program state at that point available.
+
+It can be invoked on the current binding (or any binding) using **binding.pry**
+
+```ruby
+require 'pry'
+
+class A
+  def hello() puts "hello world!" end
+end
+
+a = A.new
+
+# start a REPL session
+binding.pry
+
+# program resumes here (after pry session)
+puts "program resumes here."
+```
+
+```bash
+pry(main)> a.hello
+hello world!
+=> nil
+pry(main)> def a.goodbye
+pry(main)*   puts "goodbye cruel world!"
+pry(main)* end
+=> nil
+pry(main)> a.goodbye
+goodbye cruel world!
+=> nil
+pry(main)> exit
+program resumes here.
 ```
 
 ---

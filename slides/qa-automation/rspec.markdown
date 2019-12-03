@@ -202,6 +202,8 @@ RSpec.describe 'test' do
 end
 ```
 
+RSpec naming conventions for files obliges you add `_spec` to end of the file name.
+
 ---
 
 ## How to run my first spec?

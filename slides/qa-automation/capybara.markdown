@@ -267,8 +267,6 @@ When you trying to find an element, it is common to have two or more matches whi
 Capybara comes with a very intuitive DSL which is used to express actions that will be executed. This is the list of basic command that are used
 
 ```ruby
-visit('page_url') # navigate to page
-
 click_link('id_of_link') # click link by id
 click_link('link_name') # click link by link text
 click_button('button_text') # click button by button text
@@ -292,6 +290,35 @@ within("some_class") do
   fill_in('field_name', with: 'your_value')
   fill_in('field_name_2', with: 'your_value_2')
 end
+```
+
+--
+
+## `Visit`
+
+Visit method allows you navigate to the given [**URL**](https://rubygarage.github.io/slides/qa-automation/rails-structure#/9/5) or [**Path**](https://rubygarage.github.io/slides/qa-automation/rails-structure#/9/5) Helpers
+
+```ruby
+visit("/users")   # navigate to page with users through URL
+
+visit(users_path) # navigate to page with users through Path
+
+# In both cases we will visit page with users (https://your_facebook/users)
+```
+
+Also you can provide params for visit method
+
+```bash
+user.id
+=> 1
+```
+
+```ruby
+visit("/users/#{user}")  # navigate to page with user through URL
+
+visit(user_path(user))   # navigate to page with user through Path
+
+# In both cases we will visit page with user_id = 1 (https://your_facebook/users/1)
 ```
 
 --
