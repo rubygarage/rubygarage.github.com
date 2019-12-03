@@ -33,19 +33,43 @@ $ bundle install
 
 --
 
-Define `simplecov` file, which manages the [SimpleCov](https://github.com/colszowka/simplecov) configuration:
+Load and launch [SimpleCov](https://github.com/colszowka/simplecov) at the **very top** of your `spec/rails_helper.rb`
 
-spec/support/simplecov.rb <!-- .element: class="filename" -->
+spec/rails_helper.rb <!-- .element: class="filename" -->
 
 ```ruby
 require 'simplecov'
 
-SimpleCov.start do
+SimpleCov.start
+```
+
+--
+
+## Configuring SimpleCov
+
+If you're making a Rails application, SimpleCov comes with built-in configurations. To use it, the first two lines of your `rails_helper` should be like this:
+
+spec/rails_helper.rb <!-- .element: class="filename" -->
+
+```ruby
+require 'simplecov'
+
+SimpleCov.start 'rails'
+```
+
+For example you can add any custom configs like groups and filters:
+
+spec/rails_helper.rb <!-- .element: class="filename" -->
+
+```ruby
+SimpleCov.start 'rails' do
   add_filter '/spec/'         # simple string filter will remove all files that match "/spec/" in their path
   minimum_coverage 95         # define the minimum coverage percentage expected
   minimum_coverage_by_file 90 # define the minimum coverage by file percentage expected
 end
 ```
+
+[Configuration](https://rubydoc.info/gems/simplecov/SimpleCov/Configuration) API documentation to find out what you can customize.
 
 ---
 
