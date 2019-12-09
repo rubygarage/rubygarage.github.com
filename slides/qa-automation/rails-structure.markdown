@@ -23,13 +23,6 @@ title:  Rails
 
 --
 
-## Clone the repository
-
-```bash
-$ git clone https://github.com/WoLkErSs/training_store
-```
---
-
 ## Setup Postgres database
 
 `PostgreSQL` - is a powerful, open source object-relational database system that uses and extends the SQL language combined with many features that safely store and scale the most complicated data workloads.
@@ -50,18 +43,18 @@ $ git clone https://github.com/WoLkErSs/training_store
 
 --
 
-## Setup Ruby 2.6.5 via RVM
+## Setup Ruby 2.6.4 via RVM
 
-Install a version of Ruby (eg 2.6.5)
+Install a version of Ruby (eg 2.6.4)
 
 ```bash
-$ rvm install 2.6.5
+$ rvm install 2.6.4
 ```
 
-Make Ruby 2.6.5 default
+Make Ruby 2.6.4 default
 
 ```bash
-$ rvm --default use 2.6.5
+$ rvm --default use 2.6.4
 ```
 
 Show list of all installed Ruby version on your machine
@@ -167,6 +160,34 @@ $ nvm list
 |- Rakefile
 |- README.rdoc
 |- yarn.lock
+```
+
+---
+
+# Download Test Application
+
+--
+
+## Clone the repository
+
+```bash
+$ git clone https://github.com/WoLkErSs/training_store
+
+$ cd training_store
+```
+
+### Add secrets after clone
+
+To run this application in the future we need create the file `.sekrets.key` which contains the key.
+
+```bash
+$ echo "c9ca193febdae77d0d7317715bdd167e" >> .sekrets.key
+```
+
+Run Rake task which will decrypt **.sekrets.key**
+
+```bash
+$ rake sekrets:decrypt\[development\]
 ```
 
 ---
@@ -595,15 +616,17 @@ Many tasks come configured with Rails out of the box to provide important functi
 **Remember** you must running rake task in Rails project folder.
 
 ```bash
-$ rake -T         # Lists all rake tasks for the application
+$ rake -T                # Lists all rake tasks for the application
 
-$ rake            # Automatically checks for a task named default, and runs that task if one is found
+$ rake                   # Automatically checks for a task named default, and runs that task if one is found
 
-$ rake my_task    # To run a named task "my_task"
+$ rake my_task           # To run a named task 'my_task'
 
-$ rake mydoc.pdf  # To run a Rake file or directory task
+$ rake my_task\[env\]    # To run a named task 'my_task' with argument 'env'
 
-$ rake —help      # List of all of the available options
+$ rake mydoc.pdf         # To run a Rake file or directory task
+
+$ rake —help             # List of all of the available options
 ```
 
 ---
@@ -748,12 +771,21 @@ Rails.application.credentials.aws[:secret_access_key] # => "345"
 Rails.application.credentials.secret_key_base         # => "2fdea...
 ```
 
+--
+
 ### Environment Variables
 
 Ruby has this **ENV** object that behaves like a hash & it gives you access to all the environment variables that are available to you.
 
+```bash
+$ export PORT=5000  # Changed variable ENV["PORT"] to 5000
+```
 
 ```bash
+# Before use this commands start 'rails console' to have access to ENV
+
+$ ENV.keys          # List of exist keys
+
 $ ENV["RAILS_ENV"]  # Access to specific key
 ```
 

@@ -103,6 +103,10 @@ $ cd library
 ```
 
 ```bash
+$ bundle install
+```
+
+```bash
 $ ruby seed.rb  # will run application
 ```
 
