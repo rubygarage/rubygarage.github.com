@@ -43,18 +43,18 @@ title:  Rails
 
 --
 
-## Setup Ruby 2.6.4 via RVM
+## Setup Ruby 2.6.5 via RVM
 
-Install a version of Ruby (eg 2.6.4)
+Install a version of Ruby (eg 2.6.5)
 
 ```bash
-$ rvm install 2.6.4
+$ rvm install 2.6.5
 ```
 
-Make Ruby 2.6.4 default
+Make Ruby 2.6.5 default
 
 ```bash
-$ rvm --default use 2.6.4
+$ rvm --default use 2.6.5
 ```
 
 Show list of all installed Ruby version on your machine
@@ -431,7 +431,7 @@ You can use the `ruby` keyword in your app’s Gemfile to specify a specific ver
 Gemfile <!-- .element class="filename" -->
 
 ```ruby
-ruby '2.6.3'
+ruby '2.6.5'
 ```
 
 --
