@@ -30,6 +30,7 @@ The first thing we need to do is add our gem to Gemfile in `:test` group
 group :test do
   gem "capybara"
   gem "rspec-rails"
+  gem "selenium-webdriver" # in order to use Selenium
 end
 ```
 
@@ -105,6 +106,12 @@ spec/feature/test_spec.rb <!-- .element: class="filename" -->
 ```ruby
 visit('/') # Capybara will visit `http://www.google.com`
 ```
+
+--
+
+## Launch different browsers
+
+
 
 ---
 
@@ -236,7 +243,7 @@ all('a', text: 'Home')
 all('a#person_123')
 ```
 
-More about different types of finder you can find [here](https://rubydoc.info/github/teamcapybara/capybara/master/Capybara/Node/Finders)
+More about different types of finder you can find [here](https://rubydoc.info/github/teamcapybara/capybara/master/Capybara/Node/Finders) and [here](https://gist.github.com/tomas-stefano/6652111)
 
 --
 
@@ -366,6 +373,12 @@ expect(page).to have_selector(:xpath, './/table/tr')
 expect(page).to have_xpath('.//table/tr')
 expect(page).to have_css('table tr.foo')
 expect(page).to have_content('foo')
+expect(page).to have_no_content('foo')
+expect(page).to have_current_path(your_path)
+expect(page).to have_link("Foo", :href=>"googl.com")
+expect(page).to have_no_link("Foo", :href=>"google.com")
+expect(page).to have_field('#field')
+expect(page).to have_button('#submit')
 ```
 
 ---
@@ -393,3 +406,28 @@ save_and_open_screenshot
 ```
 
 Screenshots are saved to `Capybara.save_path`, relative to the app directory. If you have required `capybara/rails`, `Capybara.save_path` will default to `tmp/capybara`.
+
+--
+
+## Again `Pry`
+
+You can remember what is pry [here](http://localhost:4000/slides/automation-qa/rails-structure#/12/1)
+
+Remember you should place `binding.pry` inside `it` block.
+
+spec/features/hello_world_spec.rb <!-- .element: class="filename" -->
+
+```ruby
+describe 'Your page', type: :feature do
+
+  before do
+    visit(your_page_path)
+  end
+
+  it 'Say hello' do
+    click_button('Hello World')
+    binding.pry
+    expect(page).to have_content('Hello!')
+  end
+end
+```

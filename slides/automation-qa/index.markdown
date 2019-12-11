@@ -41,3 +41,11 @@ title: QA Automation
 - [SimpleCov](simple-cov)
   <br>
   <small>How to check coverage in RSpec? What is SimpleCov? </small>
+
+- [Rubocop](rubocop)
+  <br>
+  <small>What is Rubocop? How it use? </small>
+
+- [CircleCI](../circleci)
+  <br>
+  <small>CircleCI is Continuous Integration, for testing apps, which is fast, functional and flexible. </small>
