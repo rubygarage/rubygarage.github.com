@@ -72,7 +72,7 @@ title: Git
 
 # What is `HEAD`?
 
-> A head is simply a reference to a commit object. Each head has a name (branch name or tag name, etc). By default, there is a head in every repository called master. A repository can contain any number of heads. At any given time, one head is selected as the “current head.” This head is aliased to HEAD, always in capitals".
+> A head is simply a reference to a commit object. Each head has a name (branch name or tag name, etc). By default, there is a head in every repository called master. A repository can contain any number of heads. At any given time, one head is selected as the “current head”. This head is aliased to HEAD, always in capitals.
 
 ---
 

@@ -22,11 +22,11 @@ All of these cases could be handled with continuous strategies
 
 - Continuous integration
 - Continuous delivery
-- Continuous deployment 
+- Continuous deployment
 
 ---
 # Continuous integration
-It's is a development practice that requires developers to integrate code into a shared repository several times a day.
+It is a development practice that requires developers to integrate code into a shared repository several times a day.
 
 Each check-in is then verified by an automated build, allowing teams to detect problems early.
 
@@ -79,4 +79,4 @@ Continuous deployment goes one step further than continuous delivery. With this 
 
 - What is Continuous deployment?
 
-- What criterias for continuous strategy choosing for your project?
+- What are the criteria for choosing a continuous strategy for your project?
