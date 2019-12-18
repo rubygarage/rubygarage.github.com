@@ -43,8 +43,8 @@ title:  BDD
 ## Create gemset
 
 ```bash
-rvm use 2.3.4@bookstore --create
-Using /Users/sparrow/.rvm/gems/ruby-2.3.4 with gemset bookstore
+rvm use 2.6.3@bookstore --create
+Using /Users/sparrow/.rvm/gems/ruby-2.6.3 with gemset bookstore
 ```
 <!-- .element: class="command-line" data-output="2" -->
 
@@ -81,7 +81,7 @@ group :test do
   gem 'capybara'
   gem 'database_cleaner'
   gem 'shoulda-matchers'
-  gem 'faker'
+  gem 'ffaker'
 end
 ...
 ```
@@ -167,7 +167,7 @@ feature 'Registration' do
   scenario 'Visitor registers successfully via register form' do
     visit register_path
     within '#new_user' do
-      fill_in 'Email', with: Faker::Internet.email
+      fill_in 'Email', with: FFaker::Internet.email
       fill_in 'Password', with: '12345678'
       click_button('Sign up')
     end
@@ -434,7 +434,7 @@ invoke    rspec
 conflict  spec/models/user_spec.rb
 skip      spec/models/user_spec.rb
 
-rake db:migrage
+rails db:migrate
 ```
 <!-- .element: class="command-line" data-output="2-8"-->
 
@@ -474,7 +474,7 @@ describe UsersController do
   # ...
 
   describe 'POST create' do
-    let(:params) { { email: Faker::Internet.email, password: '12345678' } }
+    let(:params) { { email: FFaker::Internet.email, password: '12345678' } }
     let(:user) { double('User', params) }
 
     before { allow(User).to receive(:new).and_return(user) }
@@ -579,7 +579,7 @@ Failure/Error: expect(page).to have_content 'Sign out'
 
 # Fix expected to find text <br> 'Sign out'
 
-app/views/lououts/application.html.erb <!-- .element: class="filename" -->
+app/views/layouts/application.html.erb <!-- .element: class="filename" -->
 ```html
 # ...
 <body>
@@ -605,7 +605,7 @@ Failure/Error: expect(page).to have_content 'You registered'
 
 # Fix expected to find text <br> 'You registered'
 
-app/views/lououts/application.html.erb <!-- .element: class="filename" -->
+app/views/layouts/application.html.erb <!-- .element: class="filename" -->
 ```html
 # ...
 <body>
