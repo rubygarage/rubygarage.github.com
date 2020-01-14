@@ -27,6 +27,8 @@ title:  Graphql
 
 - A server spec - creates a uniform API across your entire application without being limited by a specific language, framework or database
 
+- A GraphQL server exposes single endpoint and responds to queries
+
 ---
 
 # Advantages of GraphQL
@@ -909,6 +911,136 @@ And response:
   }
 }
 ```
+
+---
+## Batch Loader in GraphQL
+### Solving the N+1 Problem
+--
+#### GraphQL allows you to describe the way your data is actually structured and the relationships between your different resources.
+#### The upshot of this is that you end up with a highly flexible API where it is possible to write queries to request any combination of data.
+#### The downside is, as the details of any query are unpredictable, it is more complicated to avoid N+1 queries, which can mean your API's increased utility comes at the cost of sluggish performance.
+--
+## gem 'batch-loader' and 'graphql-batch'
+
+#### gem 'batch-loader'
+- "out of the box" for ActiveRecord associations without having to define additional loader classes
+
+#### 'graphql-batch'
+- need to define a custom loader, which is initialized with arguments that are used for grouping and a perform method for performing the batch load.
+
+--
+
+## Example
+
+Imagine we have an app cataloguing museums and their exhibits, with a GraphQL API setup for querying them. Our basic museum type might look a little like this:
+
+```ruby
+# app/graphql/types/museum_type.rb
+
+module Types
+  class MuseumType < GraphQL::Schema::Object
+    field :name, String, null: false
+    field :exhibits, [ExhibitType], null: true
+  end
+end
+```
+And our exhibit type. Let's keep this simple and only declare the association in a single direction for now:
+
+```ruby
+# app/graphql/types/exhibit_type.rb
+
+module Types
+  class ExhibitType < GraphQL::Schema::Object
+    field :name, String, null: false
+  end
+end
+```
+--
+And also our root query type (note for this example we are only declaring a root query for museums, not exhibits):
+```ruby
+# app/graphql/types/query_type.rb
+
+module Types
+  class QueryType < GraphQL::Schema::Object
+    field :museums, [MuseumType], null: true
+
+    def museums
+      Museum.all
+    end
+  end
+end
+```
+
+--
+Say we now want to run a query retrieving all of our museums and the name of each of their exhibits. Executing the following GraphQL query in our GraphiQL editor:
+```ruby
+{
+  museums {
+    name
+    exhibits {
+      name
+    }
+  }
+}
+```
+
+And the result would be:
+
+![](/assets/images/graphql/lazy_loading.png)
+--
+
+To deal with we need to make some changes:
+
+```ruby
+# app/graphql/types/museum_type.rb
+
+module Types
+  class MuseumType < GraphQL::Schema::Object
+    field :name, String, null: false
+
+    field :exhibits, [ExhibitType], null: true
+
+    def exhibits
+      BatchLoader::GraphQL.for(object.id).batch(default_value: []) do |museum_ids, loader|
+        Exhibit.where(museum_id: museum_ids).each do |exhibit|
+          loader.call(exhibit.museum_id) { |memo| memo << exhibit }
+        end
+      end
+    end
+  end
+end
+```
+And also in our schema we need to make the following change:
+
+```ruby
+# app/graphql/app_schema.rb
+
+class AppSchema < GraphQL::Schema
+  query(Types::QueryType)
+
+  # enable batch loading
+  use BatchLoader::GraphQL
+end
+```
+--
+
+#### Run the same query again:
+```ruby
+{
+  museums {
+    name
+    exhibits {
+      name
+    }
+  }
+}
+```
+#### And the result would be:
+
+![](/assets/images/graphql/without_lazy_loading.png)
+
+#### BatchLoader is evaluated lazily, which means rather than the exhibits being loaded from the database instantly for each museum, the necessary museum IDs are stored and then executed in a single call to Exhibit.where, eliminating the N+1. BatchLoader will also cache the result of this query, so subsequent requests will be even faster as the database won't get hit at all. 
+---
 
 ---
 
