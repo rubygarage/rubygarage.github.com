@@ -177,7 +177,7 @@ type Task {
 Add to Gemfile
 
 ```ruby
-  gem "graphql"
+  gem 'graphql', '1.9.14'
 ```
 
 Then run
@@ -191,70 +191,63 @@ Then run
 
 ### It generates base structure
 
+```
+- app
+  - controllers
+    | graphql_controller.rb
+  - graphql
+    + mutations
+    + queries
+    - types
+      | base_object.rb
+      | base_argument.rb
+      | base_field.rb
+      | base_enum.rb
+      | base_input_object.rb
+      | base_interface.rb
+      | base_scalar.rb
+      | base_union.rb
+      | query_type.rb
+      | mutation_type.rb
+    | graphql_meetup_schema.rb
+```
+
+--
+
 #### Graphql Schema
 ```ruby
-  # app/graphql/app_schema.rb
-  AppSchema = GraphQL::Schema.define do
-    query Types::QueryType
-    mutation Types::MutationType
+  # app/graphql/graphql_meetup_schema.rb
+  class GraphqlMeetupSchema < GraphQL::Schema
+    mutation(Types::MutationType)
+    query(Types::QueryType)
   end
 ```
 
 #### Graphql base types
 ```ruby
   # app/graphql/types/guery_type.rb
-  Types::QueryType = GraphQL::ObjectType.define do
-    name "Query"
+  module Types
+    class QueryType < Types::BaseObject
+      # Add root-level fields here.
+      # They will be entry points for queries on your schema.
+
+      field :test_field, String, null: false, description: "An example field added by the generator"
+
+      def test_field
+        "Hello World!"
+      end
+    end
   end
 ```
 
 ```ruby
   # app/graphql/types/mutation_type.rb
-  Types::MutationType = GraphQL::ObjectType.define do
-    name "Mutation"
-  end
-```
+  module Types
+    class MutationType < Types::BaseObject
+      field :test_field, String, null: false, description: "An example field added by the generator"
 
-#### Route
-```ruby
-  # config/routes.rb
-  MyApp.routes.draw do
-    post "/graphql", to: "graphql#execute"
-  end
-```
-
---
-
-#### And controller
-```ruby
-  # app/controllers/graphql_controller.rb
-  class GraphqlController < ApplicationController
-    def execute
-      variables = ensure_hash(params[:variables])
-      query = params[:query]
-      context = {
-        current_user: current_user,
-      }
-      result = AppSchema.execute(query, variables: variables, context: context)
-      render json: result
-    end
-
-    private
-
-    def ensure_hash(ambiguous_param)
-      case ambiguous_param
-      when String
-        if ambiguous_param.present?
-          ensure_hash(JSON.parse(ambiguous_param))
-        else
-          {}
-        end
-      when Hash, ActionController::Parameters
-        ambiguous_param
-      when nil
-        {}
-      else
-        raise ArgumentError, "Unexpected parameter: #{ambiguous_param}"
+      def test_field
+        "Hello World"
       end
     end
   end
@@ -262,7 +255,56 @@ Then run
 
 --
 
-### Also it adds `gem "graphiql-rails"` to Gemfile. Graphiql is a nice IDE that helps you to test your GraphQL queries.
+#### Route
+```ruby
+  # config/routes.rb
+  Rails.application.routes.draw do
+    post '/graphql', to: 'graphql#execute'
+  end
+```
+
+#### And controller
+```ruby
+  # app/controllers/graphql_controller.rb
+  class GraphQLController < ApplicationController
+    def execute
+      variables, query, operation_name = params.values_at(:variables, :query, :operationName)
+
+      context = { current_user: current_user }
+
+      result = GraphqlMeetupSchema.execute(
+        query,
+        variables: ensure_hash(variables),
+        context: context,
+        operation_name: operation_name
+      )
+
+      render json: result
+    end
+
+    private
+
+    # Handle form data, JSON body, or a blank value
+    def ensure_hash(ambiguous_param)
+      return {} unless ambiguous_param
+
+      case ambiguous_param
+      when String
+        ambiguous_param.present? ? ensure_hash(JSON.parse(ambiguous_param)) : {}
+      when Hash, ActionController::Parameters
+        ambiguous_param
+      else
+        raise ArgumentError, "Unexpected parameter: #{ambiguous_param}"
+      end
+    end
+  end
+
+```
+
+--
+
+### GraphQL generator will offer you to install GraphiQL app and add `gem "graphiql-rails"` to Gemfile.
+### GraphiQL is a nice IDE that helps you to test your GraphQL queries.
 
 --
 
@@ -271,6 +313,22 @@ Then run
 ![](/assets/images/graphql/graphiql-example.png)
 
 #### Just write the query you want to test and press play button
+
+--
+
+### A better GraphiQL alternatives that allow you to configure HTTP headers:
+
+- GraphQL Playground: https://github.com/prisma-labs/graphql-playground
+- Insomnia: https://github.com/Kong/insomnia
+
+GraphQL Playground demo: https://www.graphqlbin.com/v2/6RQ6TM
+
+--
+
+### Starting from version 7.2 Postman supports GraphQL
+The only disadvantage of Postman is that you need to upload you GraphQL schema in order to have the autocomplete and that it doesn't have documentation sidebar
+
+![](/assets/images/graphql/graphql-postman.png)
 
 ---
 
