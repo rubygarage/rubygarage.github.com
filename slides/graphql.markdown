@@ -978,6 +978,330 @@ And response:
 
 ---
 
+## Let's start creating an application
+
+--
+
+## Create request test for sign up
+
+`spec/requests/graphql/mutations/user/sign_up_spec.rb`
+
+```ruby
+describe 'mutation userSignup', type: :request do
+  let(:default_variables) do
+    {
+      email: FFaker::Internet.email,
+      password: 'password',
+      password_confirmation: 'password',
+      first_name: FFaker::Name.first_name,
+      last_name: FFaker::Name.last_name
+    }
+  end
+
+  context 'when params are valid' do
+    it 'returns auth tokens' do
+      graphql_post(
+        query: user_signup_mutation,
+        variables: variables
+      )
+
+      expect(response).to match_schema(User::SignUpSchema::Success)
+      expect(response.status).to be(200)
+    end
+  end
+
+  context 'when email is not unique' do
+    let!(:user_account) { create(:user_account) }
+
+    it 'returns error data' do
+      graphql_post(
+        query: user_signup_mutation,
+        variables: variables(email: "  #{user_account.email}")
+      )
+
+      expect(response).to match_schema(ErrorSchema)
+      expect(response.status).to be(200)
+    end
+  end
+
+  def variables(attributes = {})
+    { input: default_variables.merge(attributes) }
+  end
+end
+```
+
+--
+
+## We use a graphql_post helper to normalize the variables for GraphQL
+
+`spec/support/graphql/request_helpers.rb`
+
+```ruby
+module GraphQL
+  module RequestHelpers
+    include ActionDispatch::Integration::RequestHelpers
+
+    def graphql_post(query:, variables: {}, headers: nil, **kwargs)
+      post(
+        '/graphql',
+        params: {
+          query: query,
+          variables: normalize_hash(variables).to_json
+        },
+        headers: headers,
+        **kwargs
+      )
+    end
+
+    private
+
+    def normalize_hash(hash)
+      raise unless hash.is_a?(Hash)
+
+      hash = convert_decimal_values(hash)
+
+      camelize_hash_keys(hash)
+    end
+
+    def convert_decimal_values(hash)
+      # decimals are converted to string after converting to json
+      # need to convert decimals to floats
+      hash.transform_values do |value|
+        next convert_decimal_values(value) if value.is_a?(::Hash)
+
+        value.is_a?(::BigDecimal) ? value.to_f : value
+      end
+    end
+
+    def camelize_hash_keys(hash)
+      hash.deep_transform_keys { |key| key.to_s.camelize(:lower) }
+    end
+  end
+end
+
+```
+
+--
+
+## GraphQL queries for tests are defined like this
+
+`spec/support/graphql/mutations_helpers/user.rb`
+```ruby
+module GraphQL
+  module MutationsHelper
+    def user_signup_mutation
+      %(
+        mutation userSignUp($input: UserSignUpInput!) {
+          userSignUp(input: $input) {
+            access
+            csrf
+            refresh
+          }
+        }
+      )
+    end
+  end
+end
+```
+
+--
+
+## Let's run the test and see why it's failing
+
+`pp JSON.parse response.body`
+```ruby
+{
+  "errors"=>[
+    {
+      "message"=>"UserSignUpInput isn't a defined input type (on $input)",
+      "locations"=>[{"line"=>2, "column"=>29}],
+      "path"=>["mutation userSignUp"],
+      "extensions"=> {
+        "code"=>"variableRequiresValidType",
+        "typeName"=>"UserSignUpInput",
+        "variableName"=>"input"
+      }
+    },
+    {
+      "message"=>"Field 'userSignUp' doesn't exist on type 'Mutation'",
+      "locations"=>[{"line"=>3, "column"=>11}],
+      "path"=>["mutation userSignUp", "userSignUp"],
+      "extensions"=>{
+        "code"=>"undefinedField",
+        "typeName"=>"Mutation",
+        "fieldName"=>"userSignUp"}
+      },
+    {
+      "message"=>"Variable $input is declared by userSignUp but not used",
+      "locations"=>[{"line"=>2, "column"=>9}],
+      "path"=>["mutation userSignUp"],
+      "extensions"=>{"code"=>"variableNotUsed", "variableName"=>"input"}
+    }
+  ]
+}
+```
+
+--
+
+## Let's create a userSignUp mutation
+
+`app/graphql/types/mutation_type.rb`
+```ruby
+module Types
+  class MutationType < Types::Base::Object
+    field :user_sign_up, mutation: Mutations::User::SignUp
+  end
+end
+```
+`app/graphql/mutations/user/sign_up.rb`
+```ruby
+module Mutations
+  module User
+    class SignUp < BaseMutation
+      type Types::AuthTokenType
+
+      description I18n.t('graphql.mutations.user.sign_up.desc')
+
+      argument :input, Types::Inputs::UserSignUpInput, required: true
+
+      def resolve(input:)
+        match_operation UserAuth::Operation::SignUp.call(
+          params: input.to_h,
+          current_order: current_order,
+          'contract.default.class' => UserAuth::Contract::SignUp
+        )
+      end
+    end
+  end
+end
+```
+
+--
+
+## The base mutation contains shared logic for all mutations
+
+`app/graphql/mutations/base_mutation.rb`
+```ruby
+module Mutations
+  class BaseMutation < GraphQL::Schema::Mutation
+    null false
+
+    private
+
+    def match_operation(operation_result)
+      MatchOperationResult.new.call(
+        operation_result: operation_result,
+        context: context
+      )
+    end
+
+    def current_user
+      context[:current_user]
+    end
+  end
+end
+```
+
+--
+
+## Let's create a UserSignUpInput type
+
+`app/graphql/types/inputs/user_sign_up_input.rb`
+```ruby
+module Types
+  module Inputs
+    class UserSignUpInput < ::Types::Base::InputObject
+      I18N_PATH = 'graphql.inputs.user_sign_up_input'
+
+      graphql_name 'UserSignUpInput'
+
+      description I18n.t("#{I18N_PATH}.desc")
+
+      argument :first_name,
+               String,
+               required: true,
+               description: I18n.t("#{I18N_PATH}.args.first_name"),
+               prepare: ->(first_name, _ctx) { first_name.strip }
+
+      argument :last_name,
+               String,
+               required: true,
+               description: I18n.t("#{I18N_PATH}.args.last_name"),
+               prepare: ->(last_name, _ctx) { last_name.strip }
+
+      argument :email,
+               String,
+               required: true,
+               description: I18n.t("#{I18N_PATH}.args.email"),
+               prepare: ->(email, _ctx) { email.strip }
+
+      argument :password,
+               String,
+               required: true,
+               description: I18n.t("#{I18N_PATH}.args.password")
+
+      argument :password_confirmation,
+               String,
+               required: true,
+               description: I18n.t("#{I18N_PATH}.args.password_confirmation")
+    end
+  end
+end
+```
+
+--
+
+## Let's create AuthTokenType that will be returned as a result of userSignUp mutation
+
+`app/graphql/types/auth_token_type.rb`
+```ruby
+module Types
+  class AuthTokenType < Base::Object
+    graphql_name 'AuthTokenType'
+    description I18n.t('graphql.types.auth_token.desc')
+
+    field :csrf,
+          String,
+          null: false,
+          description: I18n.t('graphql.types.auth_token.fields.csrf')
+
+    field :access,
+          String,
+          null: false,
+          description: I18n.t('graphql.types.auth_token.fields.access')
+
+    field :refresh,
+          String,
+          null: false,
+          description: I18n.t('graphql.types.auth_token.fields.refresh')
+  end
+end
+```
+--
+
+## Now the tests pass. Let's look at what will be returned to the client
+#### The `resolve` method of `Mutations::User::SignUp` mutation returns an object:
+```ruby
+{
+  :csrf=>"ygUDZ...2ohA==",
+  :access=>"eyJhb...cQw",
+  :access_expires_at=>2020-01-29 18:15:33 +0200,
+  :refresh=>"eyJhb...dLrIQ",
+  :refresh_expires_at=>2020-01-30 17:15:33 +0200
+}
+```
+#### The above object will be mapped to the `Types::AuthTokenType` and the client will get the following data:
+```ruby
+{
+  "data" => {
+    "userSignUp" => { "access" => "eyJhb...cQw", "csrf" => "ygUDZ...2ohA==", "refresh" => "eyJhb...dLrIQ" }
+  }
+}
+```
+
+
+---
+
 ## Usefull links
 
 https://www.howtographql.com/ - good graphql guides - different languages, frontend/backend
