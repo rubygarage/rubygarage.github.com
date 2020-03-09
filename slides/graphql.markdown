@@ -1039,7 +1039,13 @@ end
 
 ![](/assets/images/graphql/without_lazy_loading.png)
 
-#### BatchLoader is evaluated lazily, which means rather than the exhibits being loaded from the database instantly for each museum, the necessary museum IDs are stored and then executed in a single call to Exhibit.where, eliminating the N+1. BatchLoader will also cache the result of this query, so subsequent requests will be even faster as the database won't get hit at all. 
+#### BatchLoader is evaluated lazily, which means rather than the exhibits being loaded from the database instantly for each museum, the necessary museum IDs are stored and then executed in a single call to Exhibit.where, eliminating the N+1. BatchLoader will also cache the result of this query, so subsequent requests will be even faster as the database won't get hit at all.
+
+--
+
+This was example of usage gem 'batch-loader'.
+For example of using gem 'graphql-batch' visit: http://blog.rstankov.com/dealing-with-n-1-with-graphql-part-1/
+
 ---
 
 ---
