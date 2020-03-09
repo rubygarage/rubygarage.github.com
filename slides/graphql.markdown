@@ -978,6 +978,768 @@ And response:
 
 ---
 
+## Let's start creating an application
+
+--
+
+## Create request test for sign up
+
+`spec/requests/graphql/mutations/user/sign_up_spec.rb`
+
+```ruby
+describe 'mutation userSignup', type: :request do
+  let(:default_variables) do
+    {
+      email: FFaker::Internet.email,
+      password: 'password',
+      password_confirmation: 'password',
+      first_name: FFaker::Name.first_name,
+      last_name: FFaker::Name.last_name
+    }
+  end
+
+  context 'when params are valid' do
+    it 'returns auth tokens' do
+      graphql_post(
+        query: user_signup_mutation,
+        variables: variables
+      )
+
+      expect(response).to match_schema(User::SignUpSchema::Success)
+      expect(response.status).to be(200)
+    end
+  end
+
+  context 'when email is not unique' do
+    let!(:user_account) { create(:user_account) }
+
+    it 'returns error data' do
+      graphql_post(
+        query: user_signup_mutation,
+        variables: variables(email: "  #{user_account.email}")
+      )
+
+      expect(response).to match_schema(ErrorSchema)
+      expect(response.status).to be(200)
+    end
+  end
+
+  def variables(attributes = {})
+    { input: default_variables.merge(attributes) }
+  end
+end
+```
+
+--
+
+## We use a graphql_post helper to normalize the variables for GraphQL
+
+`spec/support/graphql/request_helpers.rb`
+
+```ruby
+module GraphQL
+  module RequestHelpers
+    include ActionDispatch::Integration::RequestHelpers
+
+    def graphql_post(query:, variables: {}, headers: nil, **kwargs)
+      post(
+        '/graphql',
+        params: {
+          query: query,
+          variables: normalize_hash(variables).to_json
+        },
+        headers: headers,
+        **kwargs
+      )
+    end
+
+    private
+
+    def normalize_hash(hash)
+      raise unless hash.is_a?(Hash)
+
+      hash = convert_decimal_values(hash)
+
+      camelize_hash_keys(hash)
+    end
+
+    def convert_decimal_values(hash)
+      # decimals are converted to string after converting to json
+      # need to convert decimals to floats
+      hash.transform_values do |value|
+        next convert_decimal_values(value) if value.is_a?(::Hash)
+
+        value.is_a?(::BigDecimal) ? value.to_f : value
+      end
+    end
+
+    def camelize_hash_keys(hash)
+      hash.deep_transform_keys { |key| key.to_s.camelize(:lower) }
+    end
+  end
+end
+
+```
+
+--
+
+## GraphQL queries for tests are defined like this
+
+`spec/support/graphql/mutations_helpers/user.rb`
+```ruby
+module GraphQL
+  module MutationsHelper
+    def user_signup_mutation
+      %(
+        mutation userSignUp($input: UserSignUpInput!) {
+          userSignUp(input: $input) {
+            access
+            csrf
+            refresh
+          }
+        }
+      )
+    end
+  end
+end
+```
+
+--
+
+## Let's run the test and see why it's failing
+
+```ruby
+{
+  "errors"=>[
+    {
+      "message"=>"UserSignUpInput isn't a defined input type (on $input)",
+      "locations"=>[{"line"=>2, "column"=>29}],
+      "path"=>["mutation userSignUp"],
+      "extensions"=> {
+        "code"=>"variableRequiresValidType",
+        "typeName"=>"UserSignUpInput",
+        "variableName"=>"input"
+      }
+    },
+    {
+      "message"=>"Field 'userSignUp' doesn't exist on type 'Mutation'",
+      "locations"=>[{"line"=>3, "column"=>11}],
+      "path"=>["mutation userSignUp", "userSignUp"],
+      "extensions"=>{
+        "code"=>"undefinedField",
+        "typeName"=>"Mutation",
+        "fieldName"=>"userSignUp"}
+      },
+    {
+      "message"=>"Variable $input is declared by userSignUp but not used",
+      "locations"=>[{"line"=>2, "column"=>9}],
+      "path"=>["mutation userSignUp"],
+      "extensions"=>{"code"=>"variableNotUsed", "variableName"=>"input"}
+    }
+  ]
+}
+```
+
+--
+
+## Let's create a userSignUp mutation
+
+`app/graphql/types/mutation_type.rb`
+```ruby
+module Types
+  class MutationType < Types::Base::Object
+    field :user_sign_up, mutation: Mutations::User::SignUp
+  end
+end
+```
+`app/graphql/mutations/user/sign_up.rb`
+```ruby
+module Mutations
+  module User
+    class SignUp < BaseMutation
+      type Types::AuthTokenType
+
+      description I18n.t('graphql.mutations.user.sign_up.desc')
+
+      argument :input, Types::Inputs::UserSignUpInput, required: true
+
+      def resolve(input:)
+        match_operation UserAuth::Operation::SignUp.call(
+          params: input.to_h,
+          current_order: current_order,
+          'contract.default.class' => UserAuth::Contract::SignUp
+        )
+      end
+    end
+  end
+end
+```
+
+--
+
+## The base mutation contains shared logic for all mutations
+
+`app/graphql/mutations/base_mutation.rb`
+```ruby
+module Mutations
+  class BaseMutation < GraphQL::Schema::Mutation
+    null false
+
+    private
+
+    def match_operation(operation_result)
+      MatchOperationResult.new.call(
+        operation_result: operation_result,
+        context: context
+      )
+    end
+
+    def current_user
+      context[:current_user]
+    end
+  end
+end
+```
+
+--
+
+## Let's create a UserSignUpInput type
+
+`app/graphql/types/inputs/user_sign_up_input.rb`
+```ruby
+module Types
+  module Inputs
+    class UserSignUpInput < ::Types::Base::InputObject
+      I18N_PATH = 'graphql.inputs.user_sign_up_input'
+
+      graphql_name 'UserSignUpInput'
+
+      description I18n.t("#{I18N_PATH}.desc")
+
+      argument :first_name,
+               String,
+               required: true,
+               description: I18n.t("#{I18N_PATH}.args.first_name"),
+               prepare: ->(first_name, _ctx) { first_name.strip }
+
+      argument :last_name,
+               String,
+               required: true,
+               description: I18n.t("#{I18N_PATH}.args.last_name"),
+               prepare: ->(last_name, _ctx) { last_name.strip }
+
+      argument :email,
+               String,
+               required: true,
+               description: I18n.t("#{I18N_PATH}.args.email"),
+               prepare: ->(email, _ctx) { email.strip }
+
+      argument :password,
+               String,
+               required: true,
+               description: I18n.t("#{I18N_PATH}.args.password")
+
+      argument :password_confirmation,
+               String,
+               required: true,
+               description: I18n.t("#{I18N_PATH}.args.password_confirmation")
+    end
+  end
+end
+```
+
+--
+
+## Let's create AuthTokenType that will be returned as a result of userSignUp mutation
+
+`app/graphql/types/auth_token_type.rb`
+```ruby
+module Types
+  class AuthTokenType < Base::Object
+    graphql_name 'AuthTokenType'
+    description I18n.t('graphql.types.auth_token.desc')
+
+    field :csrf,
+          String,
+          null: false,
+          description: I18n.t('graphql.types.auth_token.fields.csrf')
+
+    field :access,
+          String,
+          null: false,
+          description: I18n.t('graphql.types.auth_token.fields.access')
+
+    field :refresh,
+          String,
+          null: false,
+          description: I18n.t('graphql.types.auth_token.fields.refresh')
+  end
+end
+```
+--
+
+## Now the tests pass. Let's look at what will be returned to the client
+#### The `resolve` method of `Mutations::User::SignUp` mutation returns an object:
+```ruby
+{
+  :csrf=>"ygUDZ...2ohA==",
+  :access=>"eyJhb...cQw",
+  :access_expires_at=>2020-01-29 18:15:33 +0200,
+  :refresh=>"eyJhb...dLrIQ",
+  :refresh_expires_at=>2020-01-30 17:15:33 +0200
+}
+```
+#### The above object will be mapped to the `Types::AuthTokenType` and the client will get the following data:
+```ruby
+{
+  "data" => {
+    "userSignUp" => { "access" => "eyJhb...cQw", "csrf" => "ygUDZ...2ohA==", "refresh" => "eyJhb...dLrIQ" }
+  }
+}
+```
+--
+
+## Let's implement some queries
+
+--
+
+## Here is a request test for a query with pagination - `moviesSearch`
+
+`spec/requests/graphql/queries/movies_search_spec.rb`
+```ruby
+describe 'query moviesSearch', type: :request do
+  let(:movies) { create_list(:movie, 2, with_movie_images: true, with_poster: true) }
+
+  before { movies }
+
+  context 'when signed in user' do
+    let(:user_account) { create :user_account }
+    let(:payload) { { account_id: user_account.id } }
+    let(:auth_token) do
+      JWTSessions::Session.new(payload: payload).login[:access]
+    end
+
+    it 'responds with correct schema' do
+      graphql_post(
+        query: movies_search_query,
+        variables: {},
+        headers: { 'Authorization': "Bearer #{auth_token}" }
+      )
+
+      expect(response).to match_schema(Movies::IndexSchema)
+      expect(response.status).to be(200)
+    end
+  end
+
+  context 'when guest user' do
+    it 'responds with error data' do
+      graphql_post(
+        query: movies_search_query,
+        variables: {}
+      )
+
+      expect(response).to match_schema(UnauthenticatedErrorSchema)
+      expect(response.status).to be(200)
+    end
+  end
+end
+```
+
+--
+
+## A moviesSearch query looks like this:
+
+`spec/support/graphql/query_helpers/movie.rb`
+```ruby
+# frozen_string_literal: true
+
+module GraphQL
+  module QueryHelpers
+    def movies_search_query
+      %(
+        query moviesSearch(
+          $after: String
+          $before: String
+          $first: Int
+          $last: Int
+        ) {
+          moviesSearch(
+            after: $after
+            before: $before
+            first: $first
+            last: $last
+          ) {
+            totalCount
+            pageInfo {
+              endCursor
+              hasNextPage
+              hasPreviousPage
+              startCursor
+            }
+            edges {
+              cursor
+              node {
+                id
+                title
+                originalTitle
+                overview
+                revenue
+                budget
+                runtime
+                originalLanguage
+                poster {
+                  filePath
+                }
+                images {
+                  filePath
+                }
+              }
+            }
+          }
+        }
+      )
+    end
+  end
+end
+```
+
+--
+
+## Let's add a movies_search to query type
+
+`app/graphql/types/query_type.rb`
+```ruby
+module Types
+  class QueryType < Types::Base::Object
+    field :movies_search,
+          resolver: Resolvers::MoviesSearch,
+          connection: true,
+          description: I18n.t('graphql.queries.movies_search')
+  end
+end
+```
+
+--
+
+## Let's add a movies_search resolver
+
+`app/graphql/resolvers/movies_search.rb`
+```ruby
+module Resolvers
+  class MoviesSearch < AuthBase
+    type Types::Connections::MovieConnection, null: false
+
+    def resolve
+      match_operation ::Movie::Operation::Index.call
+    end
+  end
+end
+```
+
+--
+
+## Let's add the connection and edge types for the movie
+
+`app/graphql/types/connections/movie_connection.rb`
+```ruby
+module Types::Connections
+  class MovieConnection < Types::Base::Connection
+    edge_type Types::Edges::MovieEdge
+
+    graphql_name 'MovieConnectionType'
+  end
+end
+```
+
+`app/graphql/types/edges/movie_edge.rb`
+```ruby
+module Types::Edges
+  class MovieEdge < Types::Base::Edge
+    node_type Types::MovieType
+
+    graphql_name 'MovieEdgeType'
+  end
+end
+```
+
+--
+
+## Let's declare a movie type
+
+`app/graphql/types/movie_type.rb`
+```ruby
+module Types
+  class MovieType < Base::Object
+    I18N_PATH = 'graphql.types.movie_type'
+
+    graphql_name 'MovieType'
+    implements Types::Interfaces::NodeInterface
+    description I18n.t("#{I18N_PATH}.desc")
+
+    field :title, String, null: false, description: I18n.t("#{I18N_PATH}.fields.title")
+    field :original_title, String, null: true, description: I18n.t("#{I18N_PATH}.fields.original_title")
+    field :overview, String, null: true, description: I18n.t("#{I18N_PATH}.fields.overview")
+    field :revenue, Integer, null: true, description: I18n.t("#{I18N_PATH}.fields.revenue")
+    field :budget, Integer, null: true, description: I18n.t("#{I18N_PATH}.fields.budget")
+    field :runtime, Integer, null: true, description: I18n.t("#{I18N_PATH}.fields.runtime")
+    field :original_language, String, null: true, description: I18n.t("#{I18N_PATH}.fields.original_language")
+
+    field :images,
+          [Types::MovieImageType],
+          null: true,
+          description: I18n.t("#{I18N_PATH}.fields.images")
+
+    field :poster,
+          Types::PosterType,
+          null: true,
+          description: I18n.t("#{I18N_PATH}.fields.poster")
+
+    def images
+      BatchLoader::GraphQL.for(object.id).batch(default_value: []) do |movie_ids, loader|
+        ::MovieImage
+          .with_attached_file
+          .where(movie_id: movie_ids)
+          .each do |movie_image|
+            loader.call(movie_image.movie_id) { |memo| memo << movie_image.file }
+          end
+      end
+    end
+
+    def poster
+      BatchLoader::GraphQL.for(object.id).batch do |record_ids, loader|
+        ::ActiveStorage::Attachment.includes(:blob).where(
+          record_id: record_ids,
+          record_type: 'Movie'
+        ).each do |attachment|
+          loader.call(attachment.record_id, attachment)
+        end
+      end
+    end
+  end
+end
+```
+
+--
+
+## Let's define a node interface:
+
+`app/graphql/types/interfaces/node_interface.rb`
+```ruby
+module Types::Interfaces::NodeInterface
+  include Types::Base::Interface
+
+  graphql_name 'NodeInterface'
+
+  description I18n.t('graphql.interfaces.node.desc')
+
+  field :id, ID, null: false, description: I18n.t('graphql.interfaces.node.fields.id')
+end
+```
+
+--
+
+## Let's define the movie_image and poster types:
+
+`app/graphql/types/movie_image_type.rb`
+```ruby
+module Types
+  class MovieImageType < Base::Object
+    implements Types::Interfaces::ImageInterface
+
+    graphql_name 'MovieImageType'
+
+    I18N_PATH = 'graphql.types.movie_image_type'
+
+    description I18n.t("#{I18N_PATH}.desc")
+  end
+end
+```
+
+`app/graphql/types/poster_type.rb`
+```ruby
+module Types
+  class PosterType < Base::Object
+    implements Types::Interfaces::ImageInterface
+
+    graphql_name 'PosterType'
+
+    I18N_PATH = 'graphql.types.poster_type'
+
+    description I18n.t("#{I18N_PATH}.desc")
+  end
+end
+```
+
+--
+
+## Let's add an image interface:
+
+`app/graphql/types/interfaces/image_interface.rb`
+```ruby
+module Types::Interfaces::ImageInterface
+  include Types::Base::Interface
+
+  graphql_name 'ImageInterface'
+
+  I18N_PATH = 'graphql.interfaces.image_interface'
+
+  description I18n.t("#{I18N_PATH}.desc")
+
+  field :file_path, String, null: true, description: I18n.t("#{I18N_PATH}.fields.file_path")
+
+  def file_path
+    return nil unless object.blob
+
+    Rails.application.routes.url_helpers.rails_blob_url(object.blob)
+  end
+end
+```
+
+--
+
+## Now let's add a `movie` query to fetch a movie by id
+
+--
+
+## Here is a request test for the query
+
+`spec/requests/graphql/queries/movie_spec.rb`
+```ruby
+describe 'query movie', type: :request do
+  let(:movie) { create(:movie, with_movie_images: true, with_poster: true) }
+
+  before { movie }
+
+  context 'when signed in user' do
+    let(:user_account) { create :user_account }
+    let(:payload) { { account_id: user_account.id } }
+    let(:auth_token) do
+      JWTSessions::Session.new(payload: payload).login[:access]
+    end
+
+    context 'when movie with specified id exists' do
+      it 'responds with correct schema' do
+        graphql_post(
+          query: movie_query,
+          variables: variables,
+          headers: { 'Authorization': "Bearer #{auth_token}" }
+        )
+
+        expect(response).to match_schema(Movies::ShowSchema)
+        expect(response.status).to be(200)
+      end
+    end
+
+    context 'when movie with specified id does NOT exist' do
+      it 'responds with correct schema' do
+        graphql_post(
+          query: movie_query,
+          variables: variables(id: Movie.last.id + 1),
+          headers: { 'Authorization': "Bearer #{auth_token}" }
+        )
+
+        expect(response).to match_schema(NotFoundSchema)
+        expect(response.status).to be(200)
+      end
+    end
+  end
+
+  context 'when guest user' do
+    it 'responds with error data' do
+      graphql_post(
+        query: movie_query,
+        variables: variables
+      )
+
+      expect(response).to match_schema(UnauthenticatedErrorSchema)
+      expect(response.status).to be(200)
+    end
+  end
+
+  def variables(id: movie.id)
+    { id: id }
+  end
+end
+```
+
+--
+
+## A movies query looks like this:
+
+`spec/support/graphql/query_helpers/movie.rb`
+```ruby
+# frozen_string_literal: true
+
+module GraphQL
+  module QueryHelpers
+    def movie_query
+      %(
+        query movie($id: ID!) {
+          movie(id: $id) {
+            id
+            title
+            originalTitle
+            overview
+            revenue
+            budget
+            runtime
+            originalLanguage
+            poster {
+              filePath
+            }
+            images {
+              filePath
+            }
+          }
+        }
+      )
+    end
+  end
+end
+```
+
+--
+
+## Let's add a movie to query type
+
+`app/graphql/types/query_type.rb`
+```ruby
+module Types
+  class QueryType < Types::Base::Object
+    field :movies_search,
+          resolver: Resolvers::MoviesSearch,
+          connection: true,
+          description: I18n.t('graphql.queries.movies_search')
+
+    field :movie,
+          resolver: Resolvers::Movie,
+          connection: false,
+          description: I18n.t('graphql.queries.movie')
+  end
+end
+```
+
+--
+
+## We already have a movie type defined. So, the only think we need to do is to add a resolver:
+
+`app/graphql/resolvers/movie.rb`
+```ruby
+module Resolvers
+  class Movie < AuthBase
+    type Types::MovieType, null: false
+
+    argument :id, ID, required: true
+
+    def resolve(id:)
+      match_operation ::Movie::Operation::Show.call(params: { id: id })
+    end
+  end
+end
+```
+
+---
+
 ## Usefull links
 
 https://www.howtographql.com/ - good graphql guides - different languages, frontend/backend
@@ -985,6 +1747,10 @@ https://www.howtographql.com/ - good graphql guides - different languages, front
 http://graphql.org/ - official graphql docs
 
 http://graphql-ruby.org/ - graphql-ruby gem docs
+
+https://github.com/Shopify/graphql-design-tutorial/blob/master/TUTORIAL.md - GraphQL API design tutorial
+
+https://engineering.universe.com/batching-a-powerful-way-to-solve-n-1-queries-every-rubyist-should-know-24e20c6e7b94 - batching with `batch-loader` gem
 
 ---
 
