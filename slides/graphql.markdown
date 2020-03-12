@@ -137,6 +137,17 @@ title:  Graphql
 
 ---
 
+## GraphQL limitations
+
+### - File downloads
+GraphQL uses JSON format, which represents as text format, not as binary.
+You can send a file as base64 string or send a download link.
+
+### - Incoming Webhooks
+You will need to add the REST endpoints to listen for events from services like Stripe. 
+
+---
+
 ## Schema & Type System
 
 ### GraphQL uses a strong type system to define the capabilities of an API. All the types that are exposed in an API are written down in a schema using the GraphQL Schema Definition Language (SDL). This schema serves as the contract between the client and the server to define how a client can access the data.
