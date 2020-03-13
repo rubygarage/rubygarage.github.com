@@ -345,6 +345,8 @@ The only disadvantage of Postman is that you need to upload you GraphQL schema i
 - Custom scalar types
 - Enum types
 - Interface types
+- Input types
+- Union types
 
 --
 
@@ -360,15 +362,15 @@ The only disadvantage of Postman is that you need to upload you GraphQL schema i
 
 #### Ruby example:
 ```ruby
-  Types::Product = GraphQL::ObjectType.define do
-    name "Product"
+  module Types
+    class Product < Base::Object
+      graphql_name "Product"
 
-    global_id_field
-
-    field :name, types.String
-    field :price, types.Float
-    field :rating, types.Integer
-    field :recommended, types.Boolean
+      field :name, String
+      field :price, Float
+      field :rating, Integer
+      field :recommended, Boolean
+    end
   end
 ```
 
@@ -391,16 +393,47 @@ The only disadvantage of Postman is that you need to upload you GraphQL schema i
 
 #### Ruby example:
 ```ruby
-  Types::Product = GraphQL::ObjectType.define do
-    ...
+
+module Types
+  class ProductType < Base::Object
+    graphql_name 'ProductType'
+
+    description 'some description about type'
+
+    field :name, String, null: false, description: 'some description'
+    field :description, String, null: false, description: 'some description'
+    field :status, String, null: false, description: 'some description'
+    field :inventory, Int, null: true, description: 'some description'
+
+    def inventory
+      # inventory is your custom field, you can return any thing
+    end
   end
+end
+
 ```
 
 #### Graphql schema example:
 ```graphql
-type Product {
-  ...
+
+some description about type
+type ProductType {
+  some description
+  description: String!
+
+  Globally unique identifier.
+  id: ID!
+
+  some description
+  inventory: Int
+
+  some description
+  name: String!
+
+  some description
+  status: String!
 }
+
 ```
 
 --
@@ -507,6 +540,84 @@ Example:
     releaseYear: Int
     ...
   }
+```
+
+--
+
+### Input types
+
+Input objects have arguments which are identical to Field arguments. They map names to types and support default values. Their input types can be any input types, including InputObjectTypes.
+
+```ruby
+
+module Types::Inputs::ProductCreateInput < ::Types::Base::InputObject
+  graphql_name 'ProductCreateInput'
+
+  description 'desctiption'
+
+  argument :id, ID, required: false, description: 'desc'
+
+  argument :name, String, required: true,
+                          description: 'desc',
+                          prepare: ->(name, _ctx) { name.strip }
+
+  argument :slug, String, required: true,
+                          description: '',
+                          prepare: ->(slug, _ctx) { slug.strip }
+end
+
+```
+
+```ruby
+
+module Mutations::Product::Create < Mutation
+  ...
+
+  argument :input, Types::Inputs::ProductCreateInput, required: true
+
+  def resolve(input:)
+    # do something with data input
+  end
+end
+
+```
+
+--
+
+### Union types
+
+A Union is is a collection of object types which may appear in the same place.
+
+The members of a union are declared with *possible_types*.
+
+A union itself has no fields; only its members have fields. So, when you query, you must use fragment spreads to access fields.
+
+```ruby
+
+class Types::Movie < Types::BaseObject
+  field :id, ID, null: false
+  field :title, String, null: false
+  field :director, String, null: false
+end
+
+class Types::Book < Types::BaseObject
+  field :id, ID, null: false
+  field :title, String, null: false
+end
+
+class SearchResultUnionType < Types::BaseUnion
+  description 'Represents either a Movie, Book or Album'
+  possible_types Book, Movie
+  def self.resolve_type(object, _context)
+    case object
+    when Movie then Types::Movie
+    when Book then Types::Book
+    else
+      raise "Unknown search result type"
+    end
+  end
+end
+
 ```
 
 ---
