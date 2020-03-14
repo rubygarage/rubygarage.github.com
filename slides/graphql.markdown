@@ -672,15 +672,30 @@ You can get an access to field arguments in resolver using second argument (args
 
 #### Inside the `query type` you describe the fields which are actually could be fetched from server
 
-```ruby
-  # app/graphql/types/guery_type.rb
-  Types::QueryType = GraphQL::ObjectType.define do
-    name "Query"
+app/graphql/types/query_type.rb<!-- .element: class="filename" -->
 
-    field :products, [Types::ProductType] do
-      resolve -> (obj, args, ctx) { Product.all }
-    end
+```ruby
+module Types::QueryType < GraphQL::Schema::Object
+  field :product,
+        resolver: Resolvers::Product,
+        description: '...'
+end
+```
+
+app/graphql/resolvers/product.rb<!-- .element: class="filename" -->
+
+```ruby
+
+module Resolvers::Product < GraphQL::Schema::Resolver
+  type Types::ProductType, null: false
+
+  argument :id, ID, required: false
+
+  def resolve(id: nil)
+    # Product.find(id)
   end
+end
+
 ```
 
 #### In our case we allow client to fetch all products
@@ -693,10 +708,9 @@ You can get an access to field arguments in resolver using second argument (args
 
 ```graphql
   query {
-    products {
+    product(id: 10) {
       id
-      title
-      price
+      name
     }
   }
 ```
@@ -704,43 +718,65 @@ You can get an access to field arguments in resolver using second argument (args
 ```json
   {
     "data": {
-      "products": [
-        {
-          "id:": "uniqueProductId",
-          "title": "Sandwitch",
-          "price": 1.0
-        },
-        ...
-      ]
+      "product": {
+        "id": 10,
+        "name": "..."
+      }
     }
   }
+
 ```
 
 ---
 
 ## Mutations
 
-### Mutations are queries with side effects. Mutations are used to mutate your data. In order to use mutations you need to define a mutation root type that allows for defining fields that can mutate your data.
+#### Mutations are queries with side effects. Mutations are used to mutate your data. In order to use mutations you need to define a mutation root type that allows for defining fields that can mutate your data.
 
-### Then add your mutations here:
+app/graphql/types/mutation_type.rb<!-- .element: class="filename" -->
 
 ```ruby
-  # app/graphql/types/mutation_type.rb
-  Types::MutationType = GraphQL::ObjectType.define do
-    name "Mutation"
+module Types::MutationType < ::Types::Base::Object
+  description '...'
 
-    field :addTask, Types::TaskType do
-      description "Adds a task to list"
+  field :product_create, mutation: Mutations::Product::Create
+end
+```
 
-      argument :todoListId, !types.ID
-      argument :title, !types.String
+app/graphql/mutations/product/create.rb<!-- .element: class="filename" -->
 
-      resolve ->(obj, args, ctx) {
-        todo_list = TodoList.find(args["todoListId"])
-        todo_list.tasks.create!(title: args["title"])
-      }
-    end
+```ruby
+Mutations::Product::Create < GraphQL::Schema::Mutation
+  description '...'
+
+  type Types::ProductType
+
+  argument :input, Types::Inputs::ProductCreateInput, required: true
+
+  def resolve(input:)
+    # here you will create product with data in input
   end
+end
+```
+
+--
+
+### Also you create input object(params), that you will pass from the outside
+
+app/graphql/types/inputs/product_create_input.rb<!-- .element: class="filename" -->
+
+```ruby
+Types::Inputs::ProductCreateInput < GraphQL::Schema::InputObject
+  graphql_name 'ProductCreateInput'
+  description '...'
+
+  argument :id, ID, required: false, description: '...'
+
+  argument :name, String, required: true,
+                          description: '...',
+                          prepare: ->(name, _ctx) { name.strip }
+end
+
 ```
 
 --
@@ -749,11 +785,12 @@ The mutation query would look like:
 
 ```graphql
 mutation {
-  addTask(todoListId: 1, title: "Title") {
+  productCreate(input: { name: 'Test' }) {
     id
-    title
+    name
   }
 }
+
 ```
 
 And response:
@@ -761,49 +798,12 @@ And response:
 ```json
 {
   "data": {
-    "addTask": {
+    "productCreate": {
       "id": 10,
-      "title": "Title"
+      "name": "Title"
     }
   }
 }
-```
-
---
-
-### Complex resolvers with arguments
-
-#### If you have complex mutations with lots of arguments and business logic its better to refactor them this way:
-
-```ruby
-  # app/graphql/resolvers/add_task.rb
-  class Resolvers::AddTask < GraphQL::Function
-    # arguments passed as "args"
-    argument :todoListId, !types.ID
-    argument :title, !types.String
-
-    # return type from the mutation
-    type Types::TaskType
-
-    # the mutation method
-    # _obj - is parent object, which in this case is nil
-    # args - are the arguments passed
-    # _ctx - is the GraphQL context (which would be discussed later)
-    def call(_obj, args, _ctx)
-      todo_list = TodoList.find(args["todoListId"])
-      todo_list.tasks.create!(title: args["title"])
-    end
-  end
-```
-
-#### Then you can use it as field function in mutation query:
-
-```ruby
-  Types::MutationType = GraphQL::ObjectType.define do
-    name 'Mutation'
-
-    field :addTask, function: Resolvers::AddTask.new
-  end
 ```
 
 ---
