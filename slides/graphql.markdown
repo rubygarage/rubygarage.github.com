@@ -672,33 +672,30 @@ You can get an access to field arguments in resolver using second argument (args
 
 #### Inside the `query type` you describe the fields which are actually could be fetched from server
 
-app/graphql/types/query_type.rb<!-- .element: class="filename" -->
+`app/graphql/types/query_type.rb`
 
 ```ruby
-module Types::QueryType < GraphQL::Schema::Object
+class Types::QueryType < GraphQL::Schema::Object
   field :product,
         resolver: Resolvers::Product,
-        description: '...'
+        description: 'Fetch a product'
 end
 ```
 
-app/graphql/resolvers/product.rb<!-- .element: class="filename" -->
+`app/graphql/resolvers/product.rb`
 
 ```ruby
-
-module Resolvers::Product < GraphQL::Schema::Resolver
+class Resolvers::Product < GraphQL::Schema::Resolver
   type Types::ProductType, null: false
 
   argument :id, ID, required: false
 
   def resolve(id: nil)
-    # Product.find(id)
+    Product.find(id)
   end
 end
 
 ```
-
-#### In our case we allow client to fetch all products
 
 #### `Attention!` Query fields resolvers should always return the instance of object or an collection of objects the field type expects or nil if allowed.
 
@@ -733,20 +730,20 @@ end
 
 #### Mutations are queries with side effects. Mutations are used to mutate your data. In order to use mutations you need to define a mutation root type that allows for defining fields that can mutate your data.
 
-app/graphql/types/mutation_type.rb<!-- .element: class="filename" -->
+`app/graphql/types/mutation_type.rb`
 
 ```ruby
-module Types::MutationType < ::Types::Base::Object
+class Types::MutationType < ::Types::Base::Object
   description '...'
 
   field :product_create, mutation: Mutations::Product::Create
 end
 ```
 
-app/graphql/mutations/product/create.rb<!-- .element: class="filename" -->
+`app/graphql/mutations/product/create.rb`
 
 ```ruby
-Mutations::Product::Create < GraphQL::Schema::Mutation
+class Mutations::Product::Create < GraphQL::Schema::Mutation
   description '...'
 
   type Types::ProductType
@@ -761,19 +758,17 @@ end
 
 --
 
-### Also you create input object(params), that you will pass from the outside
+### Also you create input object, that you will pass from the outside
 
-app/graphql/types/inputs/product_create_input.rb<!-- .element: class="filename" -->
+`app/graphql/types/inputs/product_create_input.rb`
 
 ```ruby
-Types::Inputs::ProductCreateInput < GraphQL::Schema::InputObject
+class Types::Inputs::ProductCreateInput < GraphQL::Schema::InputObject
   graphql_name 'ProductCreateInput'
-  description '...'
-
-  argument :id, ID, required: false, description: '...'
+  description 'Input for product creation'
 
   argument :name, String, required: true,
-                          description: '...',
+                          description: 'Name',
                           prepare: ->(name, _ctx) { name.strip }
 end
 
