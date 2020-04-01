@@ -352,118 +352,82 @@ The only disadvantage of Postman is that you need to upload you GraphQL schema i
 
 ### Default scalar types
 
-- Int: A signed 32‐bit integer.
-- Float: A signed double-precision floating-point value.
-- String: A UTF‐8 character sequence.
-- Boolean: true or false.
-- ID: The ID scalar type represents a unique identifier, often used to refetch an object or as the key for a cache. The ID type is serialized in the same way as a String; however, defining it as an ID signifies that it is not intended to be human‐readable.
-
+- String, like a JSON or Ruby string
+- Int, like a JSON or Ruby integer
+- Float, like a JSON or Ruby floating point decimal
+- Boolean, like a JSON or Ruby boolean (true or false)
+- ID, which a specialized String for representing unique object identifiers
+- ISO8601DateTime, an ISO 8601-encoded datetime
+- ISO8601Date, an ISO 8601-encoded date
+- JSON, ⚠ This returns arbitrary JSON (Ruby hashes, arrays, strings, integers, floats, booleans and nils). Take care: by using this type, you completely lose all GraphQL type safety. Consider building object types for your data instead.
 --
 
-#### Ruby example:
-```ruby
-  module Types
-    class Product < Base::Object
-      graphql_name "Product"
-
-      field :name, String
-      field :price, Float
-      field :rating, Integer
-      field :recommended, Boolean
-    end
-  end
-```
-
-#### Graphql schema example:
-```graphql
-  type Product {
-    id: ID
-    name: String
-    price: Float
-    rating: Integer
-    recommended: Boolean
-  }
-```
-
---
-
-### Object Types
+### Object types
 
 #### The most basic components of a GraphQL schema are object types, which just represent a kind of object you can fetch from your service, and what fields it has.
 
 #### Ruby example:
 ```ruby
-
 module Types
-  class ProductType < Base::Object
-    graphql_name 'ProductType'
-
-    description 'some description about type'
-
-    field :name, String, null: false, description: 'some description'
-    field :description, String, null: false, description: 'some description'
-    field :status, String, null: false, description: 'some description'
-    field :inventory, Int, null: true, description: 'some description'
+  class Product < Base::Object
+    field :id, ID, null: false
+    field :name, String, null: false
+    field :price, Float, null: false
+    field :inventory, Int, null: false
 
     def inventory
-      # inventory is your custom field, you can return any thing
+      # inventory is your custom field, you can return anything
     end
   end
 end
-
 ```
 
 #### Graphql schema example:
 ```graphql
-
-some description about type
-type ProductType {
-  some description
-  description: String!
-
-  Globally unique identifier.
+type Product {
   id: ID!
-
-  some description
-  inventory: Int
-
-  some description
   name: String!
-
-  some description
-  status: String!
+  price: Float!
+  inventory: Int!
 }
-
 ```
 
 --
 
 ### Custom scalar types
 
-#### There is also a way to specify custom scalar types. For example, we could define a Time type:
+#### There is also a way to specify custom scalar types. For example, we could define a Money type:
 
 ```ruby
-  TimeType = GraphQL::ScalarType.define do
-    name "Time"
-    description "Time since epoch in seconds"
+module Types::Scalars
+  class MoneyType < Types::Base::Scalar
+    description 'A monetary value number'
 
-    coerce_input ->(value, ctx) { Time.at(Float(value)) }
-    coerce_result ->(value, ctx) { value.to_f }
-  end
+    def self.coerce_input(input_value, _context)
+      # Store money as integer
+      return input_value * 100 if input_value.is_a?(Numeric)
 
-  Types::Product = GraphQL::ObjectType.define do
-    ...
-    field :createdAt, TimeType
+      raise GraphQL::CoercionError, "#{input_value.inspect} is not a valid number"
+    end
+
+    def self.coerce_result(ruby_value, _context)
+      # Return money as a number with floating point
+      ruby_value / 100.0
+    end
   end
+end
 ```
 
 ```graphql
-  scalar Time
+"""
+A monetary value number
+"""
+scalar Money
 
-  type Product {
-    ...
-    createdAt: Time
-  }
+type Product {
+  ...
+  price: Money
+}
 ```
 
 --
@@ -475,94 +439,115 @@ type ProductType {
 Example:
 
 ```ruby
-  LanguageEnum = GraphQL::EnumType.define do
-    name "Languages"
-    description "Programming languages for Web projects"
+module Types::Enums
+  class DateRangeEnum < ::Types::Base::Enum
+    description 'Date ranges for filtering'
 
-    value "PYTHON", "A dynamic, function-oriented language"
-    value "RUBY", "A very dynamic language aimed at programmer happiness"
-    value "JAVASCRIPT", "Accidental lingua franca of the web"
-  end
+    value 'TODAY' do
+      value Time.zone.today.beginning_of_day..Time.zone.today.end_of_day
+      description 'Filter records that were created/placed/etc today'
+    end
 
-  Types::Product = GraphQL::ObjectType.define do
-    ...
-    field :language, LanguageEnum
+    value 'LAST_7_DAYS' do
+      value((Time.zone.today - 7.days).beginning_of_day..Time.zone.today.end_of_day)
+      description 'Filter records that were created/placed/etc in the date range between 7 days ago and today'
+    end
   end
+end
+
+
+class Types::Inputs::ProductsFilterInput < ::Types::Base::InputObject
+  ...
+  argument :date_range, Types::Inputs::DateRangeInput, required: false, description: 'Date filter'
+end
 ```
 
 ```graphql
-  enum Languages {
-    PYTHON
-    RUBY
-    JAVASCRIPT
-  }
+"""
+Date ranges for filtering
+"""
+enum DateRangeEnum {
 
-  type App {
-    ...
-    language: Languages
-  }
+  """
+  Filter records that were created/placed/etc in the date range between 7 days ago and today
+  """
+  LAST_7_DAYS
+
+  """
+  Filter records that were created/placed/etc today
+  """
+  TODAY
+}
 ```
 
 --
 
 ### Interface types
 
-#### Like many type systems, GraphQL supports interfaces. An Interface is an abstract type that includes a certain set of fields that a type must include to implement the interface.
+#### Interfaces are lists of fields which may be implemented by object types. Interfaces may also provide field implementations along with the signatures.
 
 ```ruby
-  DeviceInterface = GraphQL::InterfaceType.define do
-    name "Device"
-    description "Hardware devices for computing"
+module Types::Interfaces::Node
+  include Types::Base::Interface
 
-    field :ram, types.String
-    field :processor, ProcessorType
-    field :releaseYear, types.Int
-  end
+  graphql_name 'Node'
 
-  Laptoptype = GraphQL::ObjectType.define do
-    implements DeviceInterface
+  description 'An object with an ID to support global identification'
 
-    ...
-  end
+  field :id, ID, null: false, description: 'Globally unique identifier'
+
+  # Optional: provide a special implementation of `id` here
+  # def id
+  #   ...
+  # end
+end
 ```
 
 ```graphql
-  interface Device {
-    ram: String
-    processor: Processor
-    releaseYear: Int
-  }
+"""
+An object with an ID to support global identification.
+"""
+interface Node {
+  """
+  Globally unique identifier.
+  """
+  id: ID!
+}
 
-  type Laptop implements Device {
-    id: ID
-    ram: String
-    processor: Processor
-    releaseYear: Int
-    ...
-  }
+"""
+Product type
+"""
+type ProductType implements Node {
+  """
+  ID
+  """
+  id: ID!
+
+  """
+  Product's title
+  """
+  title: String!
+}
 ```
 
 --
 
 ### Input types
 
-Input objects have arguments which are identical to Field arguments. They map names to types and support default values. Their input types can be any input types, including InputObjectTypes.
+Input objects have arguments which are identical to Field arguments.
 
 ```ruby
-
-module Types::Inputs::ProductCreateInput < ::Types::Base::InputObject
+class Types::Inputs::ProductCreateInput < ::Types::Base::InputObject
   graphql_name 'ProductCreateInput'
 
-  description 'desctiption'
+  description 'Input for product creation'
 
-  argument :id, ID, required: false, description: 'desc'
-
-  argument :name, String, required: true,
-                          description: 'desc',
-                          prepare: ->(name, _ctx) { name.strip }
+  argument :title, String, required: true,
+                           description: 'product title',
+                           prepare: ->(title, _ctx) { title.strip }
 
   argument :slug, String, required: true,
-                          description: '',
+                          description: 'product slug',
                           prepare: ->(slug, _ctx) { slug.strip }
 end
 
@@ -570,7 +555,7 @@ end
 
 ```ruby
 
-module Mutations::Product::Create < Mutation
+class Mutations::Product::Create < Mutations::BaseMutation
   ...
 
   argument :input, Types::Inputs::ProductCreateInput, required: true
@@ -607,7 +592,9 @@ end
 
 class SearchResultUnionType < Types::BaseUnion
   description 'Represents either a Movie, Book or Album'
+
   possible_types Book, Movie
+
   def self.resolve_type(object, _context)
     case object
     when Movie then Types::Movie
@@ -1862,6 +1849,8 @@ http://graphql-ruby.org/ - graphql-ruby gem docs
 https://github.com/Shopify/graphql-design-tutorial/blob/master/TUTORIAL.md - GraphQL API design tutorial
 
 https://engineering.universe.com/batching-a-powerful-way-to-solve-n-1-queries-every-rubyist-should-know-24e20c6e7b94 - batching with `batch-loader` gem
+
+https://blog.apollographql.com/designing-graphql-mutations-e09de826ed97 - designing graphql mutations
 
 ---
 
