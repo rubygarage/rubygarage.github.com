@@ -1,6 +1,6 @@
 ---
 layout: slide
-title:  Graphql
+title:  GraphQL
 ---
 
 # GraphQL
@@ -23,11 +23,9 @@ title:  Graphql
 
 - A new API standard developed by Facebook that provides a more efficient, powerful and flexible alternative to REST
 
-- A client specified query language for APIs - enables declarative data fetching where a client can specify exactly what data it needs
+- It enables declarative data fetching where a client can specify exactly what data it needs
 
-- A server spec - creates a uniform API across your entire application without being limited by a specific language, framework or database
-
-- A GraphQL server exposes single endpoint and responds to queries
+- GraphQL is a query language for APIs - not databases. It’s database agnostic
 
 ---
 
@@ -37,7 +35,7 @@ title:  Graphql
 
 ## No more Over- and Underfetching
 
-### One of the most common problems with REST is that of over- and underfetching. This happens because the only way for a client to download data is by hitting endpoints that return fixed data structures.
+### One of the most common problems with REST is that of over- and underfetching. This happens because the only way for a client to fetch data is by hitting endpoints that return fixed data structures.
 
 --
 
@@ -80,6 +78,7 @@ title:  Graphql
 ## Using GraphQL
 
 ```graphql
+  # POST /graphql
   query {
     user(id: 1) {
       id
@@ -111,11 +110,15 @@ title:  Graphql
 
 ## Faster frontend development
 
-### Thanks to the flexible nature of GraphQL, changes on the client-side can be made without any extra work on the server. Since clients can specify their exact data requirements, no backend engineer needs to make adjustments when the design and data needs on the frontend change. Also frontend engineers can stub schema and work before backend is ready.
+### Thanks to the flexible nature of GraphQL, changes on the client-side can be made without any extra work on the server.
+<p/>
+### Since clients can specify their exact data requirements, no backend engineer needs to make adjustments when the design and data needs on the frontend change. 
+<p/>
+### Also frontend engineers can stub schema and work before backend is ready.
 
 ---
 
-## Less boilerplate work on the backend
+## Less boilerplate work on the backend comparing with REST
 
 `POST /graphql`
 
@@ -123,7 +126,7 @@ title:  Graphql
 
 ```ruby
   # app/controllers/graphql_controller.rb
-  class GraphqlController < ApplicationController
+  class GraphQLController < ApplicationController
     def execute
       ...
     end
@@ -139,22 +142,54 @@ title:  Graphql
 
 ---
 
-## GraphQL limitations
+## Auto-generated documentation
 
-### - File downloads
-GraphQL uses JSON format, which represents as text format, not as binary.
-You can send a file as base64 string or send a download link.
+### GraphQL keeps documentation in sync with API changes.
+### As the GraphQL API is tightly coupled with code, once a field, type or query changes, so do the docs.
 
-### - Incoming Webhooks
-You will need to add the REST endpoints to listen for events from services like Stripe. 
+---
+
+## Convenient IDEs
+
+--
+
+### GraphiQL is the most popular IDE that helps you to test your GraphQL queries.
+
+#### It is available under `/graphiql` path and looks like this:
+
+![](/assets/images/graphql/graphiql-example.png)
+
+#### Just write the query you want to test and press play button
+
+--
+
+### A better GraphiQL alternatives that allow you to configure HTTP headers:
+
+- GraphQL Playground: https://github.com/prisma-labs/graphql-playground
+- Insomnia: https://github.com/Kong/insomnia
+
+GraphQL Playground demo: https://www.graphqlbin.com/v2/6RQ6TM
+
+--
+
+### Starting from version 7.2 Postman supports GraphQL
+The only disadvantage of Postman is that you need to upload you GraphQL schema in order to have the autocomplete and that it doesn't have documentation sidebar
+
+![](/assets/images/graphql/graphql-postman.png)
 
 ---
 
 ## Schema & Type System
 
-### GraphQL uses a strong type system to define the capabilities of an API. All the types that are exposed in an API are written down in a schema using the GraphQL Schema Definition Language (SDL). This schema serves as the contract between the client and the server to define how a client can access the data.
+### All the types that are exposed in an API are written down in a **schema** using the GraphQL Schema Definition Language (SDL).
+<p/>
+### You can create a GraphQL schema with any programming language.
+<p/>
+### This schema serves as the contract between the client and the server to define how a client can access the data.
 
 --
+
+### The schema defines what queries are allowed to be made, what types of data can be fetched, and the relationships between these types.
 
 ### Example
 
@@ -182,166 +217,6 @@ type Task {
   position: Integer
 }
 ```
-
----
-
-## Setup GraphQL server using Ruby on Rails
-
-Add to Gemfile
-
-```ruby
-  gem 'graphql', '1.9.14'
-```
-
-Then run
-
-```bash
-  $ bundle
-  $ rails generate graphql:install
-```
-
---
-
-### It generates base structure
-
-```
-- app
-  - controllers
-    | graphql_controller.rb
-  - graphql
-    + mutations
-    + queries
-    - types
-      | base_object.rb
-      | base_argument.rb
-      | base_field.rb
-      | base_enum.rb
-      | base_input_object.rb
-      | base_interface.rb
-      | base_scalar.rb
-      | base_union.rb
-      | query_type.rb
-      | mutation_type.rb
-    | graphql_meetup_schema.rb
-```
-
---
-
-#### Graphql Schema
-```ruby
-  # app/graphql/graphql_meetup_schema.rb
-  class GraphqlMeetupSchema < GraphQL::Schema
-    mutation(Types::MutationType)
-    query(Types::QueryType)
-  end
-```
-
-#### Graphql base types
-```ruby
-  # app/graphql/types/guery_type.rb
-  module Types
-    class QueryType < Types::BaseObject
-      # Add root-level fields here.
-      # They will be entry points for queries on your schema.
-
-      field :test_field, String, null: false, description: "An example field added by the generator"
-
-      def test_field
-        "Hello World!"
-      end
-    end
-  end
-```
-
-```ruby
-  # app/graphql/types/mutation_type.rb
-  module Types
-    class MutationType < Types::BaseObject
-      field :test_field, String, null: false, description: "An example field added by the generator"
-
-      def test_field
-        "Hello World"
-      end
-    end
-  end
-```
-
---
-
-#### Route
-```ruby
-  # config/routes.rb
-  Rails.application.routes.draw do
-    post '/graphql', to: 'graphql#execute'
-  end
-```
-
-#### And controller
-```ruby
-  # app/controllers/graphql_controller.rb
-  class GraphQLController < ApplicationController
-    def execute
-      variables, query, operation_name = params.values_at(:variables, :query, :operationName)
-
-      context = { current_user: current_user }
-
-      result = GraphqlMeetupSchema.execute(
-        query,
-        variables: ensure_hash(variables),
-        context: context,
-        operation_name: operation_name
-      )
-
-      render json: result
-    end
-
-    private
-
-    # Handle form data, JSON body, or a blank value
-    def ensure_hash(ambiguous_param)
-      return {} unless ambiguous_param
-
-      case ambiguous_param
-      when String
-        ambiguous_param.present? ? ensure_hash(JSON.parse(ambiguous_param)) : {}
-      when Hash, ActionController::Parameters
-        ambiguous_param
-      else
-        raise ArgumentError, "Unexpected parameter: #{ambiguous_param}"
-      end
-    end
-  end
-
-```
-
---
-
-### GraphQL generator will offer you to install GraphiQL app and add `gem "graphiql-rails"` to Gemfile.
-### GraphiQL is a nice IDE that helps you to test your GraphQL queries.
-
---
-
-#### It is available under `/graphiql` path and looks like this:
-
-![](/assets/images/graphql/graphiql-example.png)
-
-#### Just write the query you want to test and press play button
-
---
-
-### A better GraphiQL alternatives that allow you to configure HTTP headers:
-
-- GraphQL Playground: https://github.com/prisma-labs/graphql-playground
-- Insomnia: https://github.com/Kong/insomnia
-
-GraphQL Playground demo: https://www.graphqlbin.com/v2/6RQ6TM
-
---
-
-### Starting from version 7.2 Postman supports GraphQL
-The only disadvantage of Postman is that you need to upload you GraphQL schema in order to have the autocomplete and that it doesn't have documentation sidebar
-
-![](/assets/images/graphql/graphql-postman.png)
 
 ---
 
@@ -385,7 +260,7 @@ module Types
   class Product < Base::Object
     field :id, ID, null: false
     field :name, String, null: false
-    field :price, Float, null: false
+    field :price, Types::Scalars::MoneyType, null: false
     field :inventory, Int, null: false
 
     def inventory
@@ -395,7 +270,7 @@ module Types
 end
 ```
 
-#### Graphql schema example:
+#### GraphQL schema example:
 ```graphql
 type Product {
   id: ID!
@@ -447,31 +322,24 @@ type Product {
 
 ### Enum types
 
-#### Enumeration types are a special kind of scalar that is restricted to a particular set of allowed values.
-
-Example:
-
+#### Enumeration types are a special kind of scalar that is restricted to a particular set of allowed values:
 ```ruby
-module Types::Enums
-  class DateRangeEnum < ::Types::Base::Enum
-    description 'Date ranges for filtering'
+class Types::Enums::DateRangeEnum < ::Types::Base::Enum
+  description 'Date ranges for filtering'
 
-    value 'TODAY' do
-      value Time.zone.today.beginning_of_day..Time.zone.today.end_of_day
-      description 'Filter records that were created/placed/etc today'
-    end
+  value 'TODAY' do
+    value Time.zone.today.beginning_of_day..Time.zone.today.end_of_day
+    description 'Filter records that were created/placed/etc today'
+  end
 
-    value 'LAST_7_DAYS' do
-      value((Time.zone.today - 7.days).beginning_of_day..Time.zone.today.end_of_day)
-      description 'Filter records that were created/placed/etc in the date range between 7 days ago and today'
-    end
+  value 'LAST_7_DAYS' do
+    value((Time.zone.today - 7.days).beginning_of_day..Time.zone.today.end_of_day)
+    description 'Filter records that were created/placed/etc in the date range between 7 days ago and today'
   end
 end
 
-
 class Types::Inputs::ProductsFilterInput < ::Types::Base::InputObject
-  ...
-  argument :date_range, Types::Inputs::DateRangeInput, required: false, description: 'Date filter'
+  argument :date_range, Types::Inputs::DateRangeEnum, required: false, description: 'Date filter'
 end
 ```
 
@@ -480,12 +348,10 @@ end
 Date ranges for filtering
 """
 enum DateRangeEnum {
-
   """
   Filter records that were created/placed/etc in the date range between 7 days ago and today
   """
   LAST_7_DAYS
-
   """
   Filter records that were created/placed/etc today
   """
@@ -509,12 +375,26 @@ module Types::Interfaces::Node
 
   field :id, ID, null: false, description: 'Globally unique identifier'
 
-  # Optional: provide a special implementation of `id` here
-  # def id
+  # def id # Optional: provide a special implementation of `id` here
   #   ...
   # end
 end
 ```
+#### Interface usage example:
+
+```ruby
+class Types::ProductType < Base::Object
+  graphql_name 'ProductType'
+
+  implements Types::Interfaces::Node
+
+  description 'Product'
+
+  field :name, String, null: false, description: "Product's title"
+end
+```
+
+--
 
 ```graphql
 """
@@ -528,14 +408,13 @@ interface Node {
 }
 
 """
-Product type
+Product
 """
 type ProductType implements Node {
   """
   ID
   """
   id: ID!
-
   """
   Product's title
   """
@@ -567,7 +446,6 @@ end
 ```
 
 ```ruby
-
 class Mutations::Product::Create < Mutations::BaseMutation
   ...
 
@@ -586,12 +464,11 @@ end
 
 A Union is is a collection of object types which may appear in the same place.
 
-The members of a union are declared with *possible_types*.
+The members of a union are declared with **possible types** .
 
 A union itself has no fields; only its members have fields. So, when you query, you must use fragment spreads to access fields.
 
 ```ruby
-
 class Types::Movie < Types::BaseObject
   field :id, ID, null: false
   field :title, String, null: false
@@ -620,58 +497,98 @@ end
 
 ```
 
----
+--
 
-## Type Modifiers
+### Non-Null Types
 
-Object types, scalars, and enums are the only kinds of types you can define in GraphQL. But when you use the types in other parts of the schema, or in your query variable declarations, you can apply additional type modifiers that affect validation of those values.
+GraphQL’s concept of non-null is expressed in the SDL with !, for example:
+
+```graphql
+type User {
+  # This field _always_ returns a String, never returns `null`
+  handle: String!
+  # `since:` _must_ be passed a `DateTime` value, it can never be omitted or passed `null`
+  followers(since: DateTime!): [User!]!
+}
+```
+
+#### Non-null return types
+```ruby
+# equivalent to `handle: String!` above
+field :handle, String, null: false
+```
+
+#### Non-null argument types
+```ruby
+# equivalent to `since: DateTime!` above
+argument :since, Types::DateTime, required: true
+```
 
 --
 
-### Non-Null modifier
+### Lists
+
+GraphQL has list types which are ordered lists containing items of other types. The following examples use the SDL:
+```graphql
+enum PostCategory {
+  SOFTWARE
+  UPHOLSTERY
+  MAGIC_THE_GATHERING
+}
+
+type BlogPost {
+  # Zero or more categories this post belongs to
+  categories: [PostCategory!]
+  # Post tags
+  tags: [String!]
+}
+
+type Query {
+  # Return posts, filtered by `categories`
+  posts(categories: [PostCategory!]): [BlogPost!]
+}
+```
 
 ```ruby
-  Types::Product = GraphQL::ObjectType.define do
-    ...
-    field :title, !types.String
-  end
-```
+# A field returning a list type:
+# Equivalent to `tags: [String!]` above
+field :tags, [String], null: true
 
-```graphql
-  type Product {
-    title: String!
-  }
+# An argument which accepts a list type:
+argument :categories, [Types::PostCategory], required: false
 ```
-
-Here, we're using a String type and marking it as Non-Null by adding an exclamation mark, ! after the type name in graphql or before the type object in Ruby. This means that our server always expects to return a non-null value for this field, and if it ends up getting a null value that will actually trigger a GraphQL execution error, letting the client know that something has gone wrong.
 
 --
 
-### List modifier
+### Lists Nullability
 
-We can use a type modifier to mark a type as a List, which indicates that this field will return an array of that type.
+- Nullability of the field: can this field **return null**, or does it always return a list?
+- Nullability of the list items: when a list is present, may it **include null**?
 
+#### Non-null lists with non-null items
 ```ruby
-  Types::Task = GraphQL::ObjectType.define do
-    ...
-  end
-
-  Types::TodoList = GraphQL::ObjectType.define do
-    ...
-    field :tasks, [Types::Task]
-  end
+field :tags, [String], null: false
+# In GraphQL, tags: [String!]!
+# Valid values: [], [1, 2]
 ```
-
-```graphql
-  type Task {
-    ...
-  }
-
-  type TodoList {
-    tasks: [Task]
-  }
+#### Non-null lists with nullable items
+```ruby
+field :tags, [String, null: true], null: false
+# In GraphQL, tags: [String]!
+# Valid values: [], [1, 2], [null], [1, null]
 ```
-
+#### Nullable lists with nullable items
+```ruby
+field :tags, [String, null: true], null: true
+# In GraphQL, tags: [String]
+# Valid values: [], [1, 2], [null], [1, null], null
+```
+#### Nullable lists with non-null items
+```ruby
+field :tags, [String], null: true
+# In GraphQL, tags: [String!]
+# Valid values: [], [1, 2], null
+```
 ---
 
 ## Fields and arguments
@@ -680,100 +597,110 @@ We can use a type modifier to mark a type as a List, which indicates that this f
 
 ### Fields
 
-#### Fields are like functions - they receive arguments and have return type
-
-#### `graphql-ruby` returns fields value from parent object by default.
+#### Object fields expose data about that object or connect the object to other objects. Objects and Interfaces have fields.
 
 ```ruby
-  Types::Product = GraphQL::ObjectType.define do
-    name "Product"
-
-    # this will return the price from products table
-    field :price, types.Float
-  end
+field :name, String, "The unique name of this list", null: false
 ```
 
+By default, fields return values by:
+- Trying to call a **method** on the underlying object
+OR
+- If the underlying object is a Hash, lookup a **key** in that hash
+
 --
+
+#### You can override the method name with the **method**: keyword, or override the hash key with the **hash_key**: keyword, for example:
+```ruby
+# Use the `#best_score` method to resolve this field
+field :top_score, Integer, null: false, method: :best_score
+
+# Lookup `hash["allPlayers"]` to resolve this field
+field :players, [User], null: false, hash_key: "allPlayers"
+```
+#### If you don’t want to delegate to the underlying object, you can define a method for each field:
+
+```ruby
+# Use the custom method below to resolve this field
+field :total_games_played, Integer, null: false
+
+def total_games_played
+  object.games.count
+end
+```
+--
+
+### Field arguments
+
+Arguments allow fields to take input to their resolution. For example:
+
+- A search() field may take a term: argument, which is the query to use for searching
+<p/>`search(term: "GraphQL")`
+- A user() field may take an id: argument, which specifies which user to find
+<p/>`user(id: 1)`
+- An attachments() field may take a type: argument, which filters the result by file type
+<p/>`attachments(type: PHOTO)`
+
+```ruby
+field :total_games_played, Integer, null: false do
+  argument :starting_from, Date, required: false, default_value: false
+end
+
+def total_games_played(starting_from:)
+  # Business logic goes here
+end
+```
+--
+
 ### Resolvers
 
-`grapqhl-ruby` allows you to assign custom resolvers to fields that allows you to customize field return value.
-Resolver is expected to be an object that has a public method call (either proc object or class) that receives three arguments:
-
-- obj - parent object, the object that query or mutation resolvers return
-- args - arguments for this field
-- ctx - context of the request that you send down in controller
-
-and return value of the field type or nil if allowed
+A GraphQL::Schema::Resolver is a container for field signature and resolution logic. It can be attached to a field with the **resolver:** keyword:
+```ruby
+field :recommended_items, resolver: Resolvers::RecommendedItems
+```
 
 ```ruby
-  Types::Product = GraphQL::ObjectType.define do
-    ...
-    field :discountedPrice, types.Float do
-      resolver -> (obj, args, ctx) do
-        obj.price * 0.5
-      end
+module Resolvers
+  class RecommendedItems < Resolvers::Base
+    type [Types::Item], null: false
+
+    argument :order_by, Types::ItemOrder, required: false
+    argument :category, Types::ItemCategory, required: false
+
+    def resolve(order_by: nil, category: nil)
+      # call your application logic here:
+      recommendations = ItemRecommendation.new(
+        viewer: context[:viewer],
+        recommended_for: object,
+        order_by: order_by,
+        category: category,
+      )
+      # return the list of items
+      recommendations.items
     end
   end
+end
 ```
 
 --
 
-### Arguments
+Putting logic in a Resolver has some downsides:
 
-#### Fields accepts arguments
+- Since it’s coupled to GraphQL, it’s **harder to test** than a plain ol’ Ruby object in your app
+- Since the base class comes from GraphQL-Ruby, it’s **subject to upstream changes** which may require updates in your code
 
-#### The most common usecase is an `id`:
-
-```graphql
-  query {
-    product(id: 1) {
-      id
-      title
-      price(currency: "USD")
-    }
-  }
-```
+You can put display logic (sorting, filtering, etc.) into a plain ol’ Ruby class in your app, and test that class:
 
 ```ruby
-  Types::ProductType = GraphQL::ObjectType.define do
-    ...
-    field :price, types.Float do
-      resolver -> (obj, args, ctx) do
-        SomeExchangeService.call(obj, args["currency"])
-      end
-    end
-  end
+field :recommended_items, [Types::Item], null: false
 
-  Types::QueryType = GraphQL::ObjectType.define do
-    name 'Query'
-
-    field :product, Types::ProductType do
-      resolve -> (obj, args, ctx) { Product.find(args["id"]) }
-    end
-  end
+def recommended_items
+  ItemRecommendation.new(user: context[:viewer]).items
+end
 ```
-
-You can get an access to field arguments in resolver using second argument (args).
-
 ---
 
 ## Queries and Mutations
-
----
-
-### Schema definition
-
-#### `graphql-ruby` generator creates schema file for us, so we don't need to create it
-
-```ruby
-  # app/graphql/app_schema.rb
-  AppSchema = GraphQL::Schema.define do
-    query Types::QueryType
-    mutation Types::MutationType
-  end
-```
-
-#### Schema must always include two root fields `query` and `mutation`. Those two includes other queries - for fetching data and mutations - for performing some changes in database
 
 ---
 
@@ -833,6 +760,174 @@ end
     }
   }
 
+```
+
+--
+
+## Cursor Based Pagination
+
+--
+
+#### Pagination can be implemented in several ways, but the most effective way is to use cursor-based pagination. In GraphQL such pagination can be implemented via connections.
+
+#### Connections has a structure:
+
+```
+Connection -> Edge -> Node
+```
+
+### Connection
+#### Connections are objects that represent a one-to-many relation. They contain metadata about the list of items and access to the items. Connections are often generated from object types. Their list items, called nodes, are members of that object type. Connections can also be generated from union types and interface types.
+
+### Edge
+#### Edges are like join tables in that they can expose relationship metadata between a parent object and its children. For example, let’s say that someone may be the member of several teams. You would make a join table in the database (eg, team_memberships) which connect people to each of the teams they’re on. This join table could also include information about how that person is related to the team: when they joined, what role they have, etc. 
+
+### Node
+#### Nodes are items in a list. A node is usually an object in your schema. 
+
+--
+### Let's build an example with products pagination
+
+#### At first, we need to create products query with `connection: true` argument
+
+`app/graphq/types/query_type.rb`
+
+```ruby
+module Types
+  class QueryType < Types::Base::Object
+    field :products,
+          resolver: Resolvers::Products,
+          connection: true,
+          description: I18n.t('graphql.queries.products')
+  end
+end
+
+```
+
+#### then we need to create resolver with product connection
+
+`app/graphq/resolvers/products.rb`
+
+```ruby
+module Resolvers
+  class Products < GraphQL::Schema::Resolver
+    type Types::Connections::Product, null: false
+  
+    def resolve
+      match_operation Api::V1::Product::Operation::Index.call
+    end
+  end
+end
+
+```
+#### For a return type, use Connection type. The resolver: should return a collection (eg, Array or ActiveRecord::Relation) without pagination. (The connection will paginate the collection).
+
+--
+
+#### Create Connection type:
+`app/graphql/types/connections/product.rb`
+```ruby
+module Types::Connections
+  class Product < GraphQL::Types::Relay::BaseConnection
+    edge_type Types::Edges::Product
+
+    graphql_name 'ProductConnectionType'
+  end
+end
+
+```
+
+#### Create Edge type:
+`app/graphql/types/edges/product.rb`
+```ruby
+module Types::Edges
+  class Product < GraphQL::Types::Relay::BaseEdge
+    node_type Types::ProductType
+
+    graphql_name 'ProductEdgeType'
+  end
+end
+
+```
+
+#### Create Node type:
+`app/graphql/types/product_type.rb`
+```ruby
+module Types
+  class ProductType < GraphQL::Schema::Object
+    graphql_name 'ProductType'
+
+    field :id, ID, null: false
+    field :name, String, null: false
+    field :description, String, null: false
+    field :quantity, Integer, null: false
+  end
+end
+
+```
+
+--
+
+#### For now, let's imagine that we have 5 product and we want to recieve first 2.
+
+```graphql
+query {
+  products(
+    first: 2
+  ) {
+    totalCount
+    pageInfo {
+      endCursor
+      hasNextPage
+      hasPreviousPage
+      startCursor
+    }
+    edges {
+      node {
+        id
+        name
+        description
+        quantity
+      }
+      cursor
+  }
+}
+```
+
+--
+
+#### and we will recieve
+
+```json
+{
+  "data": {
+    "products": {
+      "totalCount": 5,
+      "pageInfo": {
+        "endCursor": "Mg", "hasNextPage": true, "hasPreviousPage": false, "startCursor": "MQ"
+      },
+      "edges": [{
+          "node": {
+            "id": "5659e44e-bc22-4e62-933d-4417a9d1d1bc",
+            "name": "First product",
+            "description": "First product description",
+            "quantity": 12
+          },
+          "cursor": "MQ"
+        },
+        {
+          "node": {
+            "id": "c2b2cbb4-a6f3-4b03-925a-fe9b9a73fa56",
+            "name": "Second product",
+            "description": "Second product description",
+            "quantity": 2
+          },
+          "cursor": "Mg"
+        }
+      ]
+    }
+  }
+}
 ```
 
 ---
@@ -913,6 +1008,7 @@ And response:
 ```
 
 ---
+
 ## Solving the N+1 Problem
 
 --
@@ -1266,173 +1362,147 @@ end
 
 ---
 
-## Cursor Based Pagination
+## GraphQL limitations
 
---
+### - File downloads
+GraphQL uses JSON format, which represents as text format, not as binary.
+You can send a file as base64 string or send a download link.
 
-#### Pagination can be implemented in several ways, but the most effective way is to use cursor-based pagination. In GraphQL such pagination can be implemented via connections.
+### - Incoming Webhooks
+You will need to add the REST endpoints to listen for events from services like Stripe. 
 
-#### Connections has a structure:
+---
 
-```
-Connection -> Edge -> Node
-```
+## Setup GraphQL server using Ruby on Rails
 
-### Connection
-#### Connections are objects that represent a one-to-many relation. They contain metadata about the list of items and access to the items. Connections are often generated from object types. Their list items, called nodes, are members of that object type. Connections can also be generated from union types and interface types.
-
-### Edge
-#### Edges are like join tables in that they can expose relationship metadata between a parent object and its children. For example, let’s say that someone may be the member of several teams. You would make a join table in the database (eg, team_memberships) which connect people to each of the teams they’re on. This join table could also include information about how that person is related to the team: when they joined, what role they have, etc. 
-
-### Node
-#### Nodes are items in a list. A node is usually an object in your schema. 
-
---
-### Let's build an example with products pagination
-
-#### At first, we need to create products query with `connection: true` argument
-
-`app/graphq/types/query_type.rb`
+Add to Gemfile
 
 ```ruby
-module Types
-  class QueryType < Types::Base::Object
-    field :products,
-          resolver: Resolvers::Products,
-          connection: true,
-          description: I18n.t('graphql.queries.products')
+  gem 'graphql'
+```
+
+Then run
+
+```bash
+  $ bundle
+  $ rails generate graphql:install
+```
+
+--
+
+### It generates base structure
+
+```
+- app
+  - controllers
+    | graphql_controller.rb
+  - graphql
+    + mutations
+    + queries
+    - types
+      | base_object.rb
+      | base_argument.rb
+      | base_field.rb
+      | base_enum.rb
+      | base_input_object.rb
+      | base_interface.rb
+      | base_scalar.rb
+      | base_union.rb
+      | query_type.rb
+      | mutation_type.rb
+    | graphql_meetup_schema.rb
+```
+
+--
+
+#### GraphQL Schema
+```ruby
+  # app/graphql/graphql_meetup_schema.rb
+  class GraphQLMeetupSchema < GraphQL::Schema
+    mutation(Types::MutationType)
+    query(Types::QueryType)
   end
-end
-
 ```
 
-#### then we need to create resolver with product connection
-
-`app/graphq/resolvers/products.rb`
-
+#### GraphQL base types
 ```ruby
-module Resolvers
-  class Products < GraphQL::Schema::Resolver
-    type Types::Connections::Product, null: false
-  
-    def resolve
-      match_operation Api::V1::Product::Operation::Index.call
+  # app/graphql/types/guery_type.rb
+  module Types
+    class QueryType < Types::BaseObject
+      # Add root-level fields here.
+      # They will be entry points for queries on your schema.
+
+      field :test_field, String, null: false, description: "An example field added by the generator"
+
+      def test_field
+        "Hello World!"
+      end
     end
   end
-end
-
-```
-#### For a return type, use Connection type. The resolver: should return a collection (eg, Array or ActiveRecord::Relation) without pagination. (The connection will paginate the collection).
-
---
-
-#### Create Connection type:
-`app/graphql/types/connections/product.rb`
-```ruby
-module Types::Connections
-  class Product < GraphQL::Types::Relay::BaseConnection
-    edge_type Types::Edges::Product
-
-    graphql_name 'ProductConnectionType'
-  end
-end
-
 ```
 
-#### Create Edge type:
-`app/graphql/types/edges/product.rb`
 ```ruby
-module Types::Edges
-  class Product < GraphQL::Types::Relay::BaseEdge
-    node_type Types::ProductType
+  # app/graphql/types/mutation_type.rb
+  module Types
+    class MutationType < Types::BaseObject
+      field :test_field, String, null: false, description: "An example field added by the generator"
 
-    graphql_name 'ProductEdgeType'
+      def test_field
+        "Hello World"
+      end
+    end
   end
-end
-
-```
-
-#### Create Node type:
-`app/graphql/types/product_type.rb`
-```ruby
-module Types
-  class ProductType < GraphQL::Schema::Object
-    graphql_name 'ProductType'
-
-    field :id, ID, null: false
-    field :name, String, null: false
-    field :description, String, null: false
-    field :quantity, Integer, null: false
-  end
-end
-
 ```
 
 --
 
-#### For now, let's imagine that we have 5 product and we want to recieve first 2.
-
-```graphql
-query {
-  products(
-    first: 2
-  ) {
-    totalCount
-    pageInfo {
-      endCursor
-      hasNextPage
-      hasPreviousPage
-      startCursor
-    }
-    edges {
-      node {
-        id
-        name
-        description
-        quantity
-      }
-      cursor
-  }
-}
+#### Route
+```ruby
+  # config/routes.rb
+  Rails.application.routes.draw do
+    post '/graphql', to: 'graphql#execute'
+  end
 ```
 
---
+#### And controller
+```ruby
+  # app/controllers/graphql_controller.rb
+  class GraphQLController < ApplicationController
+    def execute
+      variables, query, operation_name = params.values_at(:variables, :query, :operationName)
 
-#### and we will recieve
+      context = { current_user: current_user }
 
-```json
-{
-  "data": {
-    "products": {
-      "totalCount": 5,
-      "pageInfo": {
-        "endCursor": "Mg", "hasNextPage": true, "hasPreviousPage": false, "startCursor": "MQ"
-      },
-      "edges": [{
-          "node": {
-            "id": "5659e44e-bc22-4e62-933d-4417a9d1d1bc",
-            "name": "First product",
-            "description": "First product description",
-            "quantity": 12
-          },
-          "cursor": "MQ"
-        },
-        {
-          "node": {
-            "id": "c2b2cbb4-a6f3-4b03-925a-fe9b9a73fa56",
-            "name": "Second product",
-            "description": "Second product description",
-            "quantity": 2
-          },
-          "cursor": "Mg"
-        }
-      ]
-    }
-  }
-}
+      result = GraphQLMeetupSchema.execute(
+        query,
+        variables: ensure_hash(variables),
+        context: context,
+        operation_name: operation_name
+      )
+
+      render json: result
+    end
+
+    private
+
+    # Handle form data, JSON body, or a blank value
+    def ensure_hash(ambiguous_param)
+      return {} unless ambiguous_param
+
+      case ambiguous_param
+      when String
+        ambiguous_param.present? ? ensure_hash(JSON.parse(ambiguous_param)) : {}
+      when Hash, ActionController::Parameters
+        ambiguous_param
+      else
+        raise ArgumentError, "Unexpected parameter: #{ambiguous_param}"
+      end
+    end
+  end
+
 ```
+
 ---
---
 
 ## Let's start creating an application
 
