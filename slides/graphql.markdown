@@ -1063,7 +1063,7 @@ end
 
 ```graphql
   query {
-    tasks {
+    products {
       unknown
     }
   }
@@ -1073,7 +1073,7 @@ end
   {
     "errors": [
       {
-        "message": "Field 'unknown' doesn't exist on type 'Task'",
+        "message": "Field 'unknown' doesn't exist on type 'Product'",
         "locations": [
           {
             "line": 3,
@@ -1082,7 +1082,7 @@ end
         ],
         "fields": [
           "query",
-          "tasks",
+          "products",
           "unknown"
         ]
       }
@@ -1097,20 +1097,20 @@ end
 #### You can manually return instance of GraphQL::ExecutionError from resolver to respond with custom error. For example:
 
 ```ruby
-  class Resolvers::AddTask < GraphQL::Function
-    argument :todoListId, !types.ID
-    argument :title, !types.String
+  class Mutations::Product::Create < GraphQL::Schema::Mutation
+    type Types::ProductType
 
-    type Types::TaskType
+    argument :name, String, required: true
+    argument :description, String, required: true
+    argument :quantity, Integer, required: true
 
-    def call(_obj, args, _ctx)
-      todo_list = TodoList.find(args["todoListId"])
-      task = todo_list.tasks.build(title: args["title"])
+    def resolve(name:, description:, quantity:)
+      product = Product.build(name: name, description: description, quantity: quantity)
 
-      if task.save
-        tasks
+      if product.save
+        product
       else
-        GraphQL::ExecutionError.new("Invalid input: #{e.record.errors.full_messages.join(', ')}")
+        GraphQL::ExecutionError.new(product.errors.full_messages.join("\n"))
       end
     end
   end
@@ -1122,9 +1122,15 @@ end
 
 ```graphql
   mutation {
-    addTask(title: "Short T") {
+    productCreate(
+      name: "Very long string...",
+      description: "Description",
+      quantity: 12
+    ) {
       id
-      title
+      name
+      description
+      quantity
     }
   }
 ```
@@ -1134,11 +1140,11 @@ end
 ```json
   {
     "data": {
-      "addTask": null
+      "productCreate": null
     },
     "errors": [
       {
-        "message": "Invalid input: Title is too short (minimum 8 characters)",
+        "message": "Invalid input: Name is too long (maximum is 255 characters)",
         "locations": [
           {
             "line": 2,
@@ -1147,7 +1153,7 @@ end
         ],
         "fields": [
           "mutation",
-          "addTask"
+          "productCreate"
         ]
       }
     ]
@@ -1160,8 +1166,8 @@ end
 
 #### Previous example is good when you want to show errors as flash message, but it won't work if you need to show errors for each field in form. For this case you can create your own custom error. For example:
 
-```graphql
-  class Mutations::ValidationError < GraphQL::ExecutionError
+```ruby
+  class GraphQL::UserInputError < ExecutionError
     attr_reader :entity
 
     def initialize(entity)
@@ -1169,6 +1175,19 @@ end
     end
 
     def to_h
+      super.merge(
+        'extensions' => {
+          'code' => 'USER_INPUT_ERROR',
+          'exception' => {
+            'validationErrors' => validation_errors
+          }
+        }
+      )
+    end
+
+    private
+
+    def validation_errors
       entity.errors.to_hash.transform_keys { |key| key.to_s.camelize(:lower) }
     end
   end
@@ -1177,17 +1196,20 @@ end
 #### And return it in resolver:
 
 ```ruby
-  class Resolvers::AddTask < GraphQL::Function
-    ...
+  class Mutations::Product::Create < GraphQL::Schema::Mutation
+    type Types::ProductType
 
-    def call(_obj, args, _ctx)
-      todo_list = TodoList.find(args["todoListId"])
-      task = todo_list.tasks.build(title: args["title"])
+    argument :name, String, required: true
+    argument :description, String, required: true
+    argument :quantity, Integer, required: true
 
-      if task.save
-        tasks
+    def resolve(name:, description:, quantity:)
+      product = Product.build(name: name, description: description, quantity: quantity)
+
+      if product.save
+        product
       else
-        Mutations::ValidationError.new(task)
+        GraphQL::UserInputError.new(product)
       end
     end
   end
@@ -1199,9 +1221,15 @@ end
 
 ```graphql
   mutation {
-    addTask(title: "Short T") {
+    productCreate(
+      name: "Very long name...",
+      description: "Very long description...",
+      quantity: 12
+    ) {
       id
-      title
+      name
+      description
+      quantity
     }
   }
 ```
@@ -1209,14 +1237,29 @@ end
 #### Response:
 
 ```json
-  {
-    "data": {
-      "addTask": null
-    },
-    "errors": [
-      { title: ["is too short (minimum 8 characters)"] }
-    ]
-  }
+{
+  "data": null,
+  "errors": 
+  [
+    {
+      "message": "Validation error",
+      "locations": [{"line": 3, "column": 11}],
+      "path": ["productCreate"],
+      "extensions": 
+      {
+        "code": "USER_INPUT_ERROR",
+        "exception": 
+        {
+          "validationErrors": 
+          {
+            "name": ["is too long (maximum is 255 characters)"],
+            "description": ["is too long (maximum is 65535 characters)"]
+          }
+        }
+      }
+    }
+  ]
+}
 ```
 
 #### Now you have errors assosiated to the field name and you can easily show them on your form
