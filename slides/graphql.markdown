@@ -179,6 +179,34 @@ The only disadvantage of Postman is that you need to upload you GraphQL schema i
 
 ---
 
+## Use cases of GraphQL
+
+--
+
+### 1. GraphQL server **with a connected database**
+
+This architecture will be the most common for new projects. In the setup, you have a single database and a single (web) server that implements the GraphQL specification.
+
+![](/assets/images/graphql/graphql_with_connected_db.png)
+
+--
+
+### 2. GraphQL server that is a ** thin layer in front of a number of third party or legacy systems** 
+
+GraphQL is used to **unify** these existing systems and hide their complexity. This way, new client applications can be developed that simply talk to the GraphQL server to fetch the data they need.
+
+![](/assets/images/graphql/graphql_layer.png)
+
+--
+
+### 3. Hybrid approach
+
+When a query is received by the server, it will resolve it and either retrieve the required data from the connected database or some of the integrated APIs
+
+![](/assets/images/graphql/graphql_hybrid.png)
+
+---
+
 ## Schema & Type System
 
 ### All the types that are exposed in an API are written down in a **schema** using the GraphQL Schema Definition Language (SDL).
