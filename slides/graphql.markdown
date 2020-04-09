@@ -1223,6 +1223,174 @@ end
 
 ---
 
+## Cursor Based Pagination
+
+--
+
+#### Pagination can be implemented in several ways, but the most effective way is to use cursor-based pagination. In GraphQL such pagination can be implemented via connections.
+
+#### Connections has a structure:
+
+```
+Connection -> Edge -> Node
+```
+
+### Connection
+#### Connections are objects that represent a one-to-many relation. They contain metadata about the list of items and access to the items. Connections are often generated from object types. Their list items, called nodes, are members of that object type. Connections can also be generated from union types and interface types.
+
+### Edge
+#### Edges are like join tables in that they can expose relationship metadata between a parent object and its children. For example, let’s say that someone may be the member of several teams. You would make a join table in the database (eg, team_memberships) which connect people to each of the teams they’re on. This join table could also include information about how that person is related to the team: when they joined, what role they have, etc. 
+
+### Node
+#### Nodes are items in a list. A node is usually an object in your schema. 
+
+--
+### Let's build an example with products pagination
+
+#### At first, we need to create products query with `connection: true` argument
+
+`app/graphq/types/query_type.rb`
+
+```ruby
+module Types
+  class QueryType < Types::Base::Object
+    field :products,
+          resolver: Resolvers::Products,
+          connection: true,
+          description: I18n.t('graphql.queries.products')
+  end
+end
+
+```
+
+#### then we need to create resolver with product connection
+
+`app/graphq/resolvers/products.rb`
+
+```ruby
+module Resolvers
+  class Products < GraphQL::Schema::Resolver
+    type Types::Connections::Product, null: false
+  
+    def resolve
+      match_operation Api::V1::Product::Operation::Index.call
+    end
+  end
+end
+
+```
+#### For a return type, use Connection type. The resolver: should return a collection (eg, Array or ActiveRecord::Relation) without pagination. (The connection will paginate the collection).
+
+--
+
+#### Create Connection type:
+`app/graphql/types/connections/product.rb`
+```ruby
+module Types::Connections
+  class Product < GraphQL::Types::Relay::BaseConnection
+    edge_type Types::Edges::Product
+
+    graphql_name 'ProductConnectionType'
+  end
+end
+
+```
+
+#### Create Edge type:
+`app/graphql/types/edges/product.rb`
+```ruby
+module Types::Edges
+  class Product < GraphQL::Types::Relay::BaseEdge
+    node_type Types::ProductType
+
+    graphql_name 'ProductEdgeType'
+  end
+end
+
+```
+
+#### Create Node type:
+`app/graphql/types/product_type.rb`
+```ruby
+module Types
+  class ProductType < GraphQL::Schema::Object
+    graphql_name 'ProductType'
+
+    field :id, ID, null: false
+    field :name, String, null: false
+    field :description, String, null: false
+    field :quantity, Integer, null: false
+  end
+end
+
+```
+
+--
+
+#### For now, let's imagine that we have 5 product and we want to recieve first 2.
+
+```graphql
+query {
+  products(
+    first: 2
+  ) {
+    totalCount
+    pageInfo {
+      endCursor
+      hasNextPage
+      hasPreviousPage
+      startCursor
+    }
+    edges {
+      node {
+        id
+        name
+        description
+        quantity
+      }
+      cursor
+  }
+}
+```
+
+--
+
+#### and we will recieve
+
+```json
+{
+  "data": {
+    "products": {
+      "totalCount": 5,
+      "pageInfo": {
+        "endCursor": "Mg", "hasNextPage": true, "hasPreviousPage": false, "startCursor": "MQ"
+      },
+      "edges": [{
+          "node": {
+            "id": "5659e44e-bc22-4e62-933d-4417a9d1d1bc",
+            "name": "First product",
+            "description": "First product description",
+            "quantity": 12
+          },
+          "cursor": "MQ"
+        },
+        {
+          "node": {
+            "id": "c2b2cbb4-a6f3-4b03-925a-fe9b9a73fa56",
+            "name": "Second product",
+            "description": "Second product description",
+            "quantity": 2
+          },
+          "cursor": "Mg"
+        }
+      ]
+    }
+  }
+}
+```
+---
+--
+
 ## Let's start creating an application
 
 --
@@ -1998,6 +2166,8 @@ https://github.com/Shopify/graphql-design-tutorial/blob/master/TUTORIAL.md - Gra
 https://engineering.universe.com/batching-a-powerful-way-to-solve-n-1-queries-every-rubyist-should-know-24e20c6e7b94 - batching with `batch-loader` gem
 
 https://blog.apollographql.com/designing-graphql-mutations-e09de826ed97 - designing graphql mutations
+
+https://relay.dev/graphql/connections.htm - GraphQL Cursor Connections Specification
 
 ---
 
