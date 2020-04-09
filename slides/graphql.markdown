@@ -796,113 +796,11 @@ end
 
 --
 
-#### Pagination can be implemented in several ways, but the most effective way is to use cursor-based pagination. In GraphQL such pagination can be implemented via connections.
-
-#### Connections has a structure:
-
-```
-Connection -> Edge -> Node
-```
-
-### Connection
-#### Connections are objects that represent a one-to-many relation. They contain metadata about the list of items and access to the items. Connections are often generated from object types. Their list items, called nodes, are members of that object type. Connections can also be generated from union types and interface types.
-
-### Edge
-#### Edges are like join tables in that they can expose relationship metadata between a parent object and its children. For example, let’s say that someone may be the member of several teams. You would make a join table in the database (eg, team_memberships) which connect people to each of the teams they’re on. This join table could also include information about how that person is related to the team: when they joined, what role they have, etc. 
-
-### Node
-#### Nodes are items in a list. A node is usually an object in your schema. 
-
---
-### Let's build an example with products pagination
-
-#### At first, we need to create products query with `connection: true` argument
-
-`app/graphq/types/query_type.rb`
-
-```ruby
-module Types
-  class QueryType < Types::Base::Object
-    field :products,
-          resolver: Resolvers::Products,
-          connection: true,
-          description: I18n.t('graphql.queries.products')
-  end
-end
-
-```
-
-#### then we need to create resolver with product connection
-
-`app/graphq/resolvers/products.rb`
-
-```ruby
-module Resolvers
-  class Products < GraphQL::Schema::Resolver
-    type Types::Connections::Product, null: false
-  
-    def resolve
-      match_operation Api::V1::Product::Operation::Index.call
-    end
-  end
-end
-
-```
-#### For a return type, use Connection type. The resolver: should return a collection (eg, Array or ActiveRecord::Relation) without pagination. (The connection will paginate the collection).
-
---
-
-#### Create Connection type:
-`app/graphql/types/connections/product.rb`
-```ruby
-module Types::Connections
-  class Product < GraphQL::Types::Relay::BaseConnection
-    edge_type Types::Edges::Product
-
-    graphql_name 'ProductConnectionType'
-  end
-end
-
-```
-
-#### Create Edge type:
-`app/graphql/types/edges/product.rb`
-```ruby
-module Types::Edges
-  class Product < GraphQL::Types::Relay::BaseEdge
-    node_type Types::ProductType
-
-    graphql_name 'ProductEdgeType'
-  end
-end
-
-```
-
-#### Create Node type:
-`app/graphql/types/product_type.rb`
-```ruby
-module Types
-  class ProductType < GraphQL::Schema::Object
-    graphql_name 'ProductType'
-
-    field :id, ID, null: false
-    field :name, String, null: false
-    field :description, String, null: false
-    field :quantity, Integer, null: false
-  end
-end
-
-```
-
---
-
-#### For now, let's imagine that we have 5 product and we want to recieve first 2.
+#### Let's imagine that we have 5 product and we want to recieve first 2.
 
 ```graphql
 query {
-  products(
-    first: 2
-  ) {
+  products(first: 2) {
     totalCount
     pageInfo {
       endCursor
@@ -918,6 +816,7 @@ query {
         quantity
       }
       cursor
+    }
   }
 }
 ```
@@ -957,6 +856,53 @@ query {
   }
 }
 ```
+
+--
+
+#### Connections are a pagination solution which started with Relay JS, but now it’s used for almost any GraphQL API.
+
+#### Connections has a structure:
+
+```
+Connection -> Edge -> Node
+```
+
+```graphql
+query {
+  products(first: 2) {
+    # Connection
+    totalCount
+    pageInfo {
+      endCursor
+      hasNextPage
+      hasPreviousPage
+      startCursor
+    }
+    edges {
+      # Edge
+      node {
+        # Node
+        id
+        name
+        description
+        quantity
+      }
+      cursor
+    }
+  }
+}
+```
+
+--
+
+### Connection
+#### Expose **pagination-related metadata** and access to the items
+
+### Edge
+#### Expose **node** and **cursor** fields
+
+### Node
+#### Nodes are items in a list. A node is usually an object in your schema. 
 
 ---
 
