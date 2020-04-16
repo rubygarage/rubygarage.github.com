@@ -64,46 +64,46 @@ It may make sense to store data in a region that...
 
 --
 
-##Kinds of instances
+## Kinds of instances
 
-- **On Demand Instances:** short workload, predictable pricing
-- **Reserved Instances:** long workloads (>= 1 year)
-- **Convertible Reserved Instances:** long workloads with flexible instances
-- **Scheduled Reserved Instances:** launch within time window you reserve
-- **Spot Instances:** short workloads, for cheap, can lose instances
-- **Dedicated Instances:** no other customers will share your hardware
-- **Dedicated Hosts:** book an entire physical server, control instance placement
+- `On Demand Instances` short workload, predictable pricing
+- `Reserved Instances` long workloads (>= 1 year)
+- `Convertible Reserved Instances` long workloads with flexible instances
+- `Scheduled Reserved Instances` launch within time window you reserve
+- `Spot Instances` short workloads, for cheap, can lose instances
+- `Dedicated Instances` no other customers will share your hardware
+- `Dedicated Hosts` book an entire physical server, control instance placement
 
 --
 
-##EC2 launch types:
+## EC2 launch types:
 
- **On Demand Instances:** - the most common type of server (when needed for several hours, for example, turned on for 2 hours and then immediately deleted) payment is done hourly. If you turned on the server for 5 minutes and then turned it off, then you will pay for an hour
+ `On Demand Instances` - the most common type of server (when needed for several hours, for example, turned on for 2 hours and then immediately deleted) payment is done hourly. If you turned on the server for 5 minutes and then turned it off, then you will pay for an hour
 
- **Spot** - when on demand servers are not taken so that they are not idle, they can reduce the price.
+ `Spot` - when on demand servers are not taken so that they are not idle, they can reduce the price.
   they are needed for works that do not require the importance of storing information on the servers themselves, that is, they do some work and no matter what happens to the data
 
 --
 
 ## Reserved:
 
- **Reserved Instances:** - usually take for long periods from 1 to a maximum of 3 years, this is a very cheap option compared to ondemand (70% cheaper). Can be payed by 3 ways: No Upfront - all sum at the end of contract; Partial Upfront - pay by parts; All Upfront - all sum right away (Most cheepest way)
+ `Reserved Instances` - usually take for long periods from 1 to a maximum of 3 years, this is a very cheap option compared to ondemand (70% cheaper). Can be payed by 3 ways: No Upfront - all sum at the end of contract; Partial Upfront - pay by parts; All Upfront - all sum right away (Most cheepest way)
 
- **Scheduled Reserved Instances** -  almost the same as a **Reserved Instances** but can be purchaised for a smaller term with recurring launches (daily, weekly or monthly).  They are available in the following Regions: US East (N. Virginia), US West (Oregon), and Europe (Ireland).
+ `Scheduled Reserved Instances` -  almost the same as a **Reserved Instances** but can be purchaised for a smaller term with recurring launches (daily, weekly or monthly).  They are available in the following Regions: US East (N. Virginia), US West (Oregon), and Europe (Ireland).
 
- **Convertible Reserved Instances:** - Can change the EC2 instance type. Up to 54% discount
+ `Convertible Reserved Instances` - Can change the EC2 instance type. Up to 54% discount
 
 --
 
 ## Dedicated
 
- **Dedicated hosts** - when the whole server (not a piece of processor and memory) belongs to you. needed for leasing
+ `Dedicated hosts` - when the whole server (not a piece of processor and memory) belongs to you. needed for leasing
 
- **Dedicated instances** - physical instances running on hardware that’s dedicated to you. May share hardware with other instances in same account. No control over instance placement (can move hardware after Stop / Start)
+ `Dedicated instances` - physical instances running on hardware that’s dedicated to you. May share hardware with other instances in same account. No control over instance placement (can move hardware after Stop / Start)
 
 ---
 
-##Types of instances
+## Types of instances
 
 Types include how many processors, memory, disks
 
@@ -112,53 +112,61 @@ Instance types naming schema:
 
 ![](https://imgur.com/LRLKOWT.png)
 
+--
+
 # Types of EC2 Instances
 
-- General Purpose Instances - **T, M** - (generic type, free)
+- General Purpose Instances - `T, M` - (generic type, free)
 
-- Computer Optimized Instances - **C** - (bigger and more powerful processors)
+- Computer Optimized Instances - `C` - (bigger and more powerful processors)
 
-- Memory Optimized Instances - **X, R, High Memory, z1d** - (memory db)
+- Memory Optimized Instances - `X, R, High Memory, z1d` - (memory db)
 
-- Accelerated Computing Instances - **P, G, Inf, F** - (powerful graphics cards)
+- Accelerated Computing Instances - `P, G, Inf, F` - (powerful graphics cards)
 
-- Storage Optimized Instances - **I, D, H** - (for databases, when needs to connect many hard disks)
+- Storage Optimized Instances - `I, D, H` - (for databases, when needs to connect many hard disks)
 
-### Size types:
+--
+
+## Size types:
+
 **micro, nano, small, medium, large, xlarge(extra large)**
 
 **metal** - special size type with physical CPUs
 
-###From more info see: https://mindmajix.com/aws-ec2-instance-types
+### For more info see: https://mindmajix.com/aws-ec2-instance-types
 
 ---
 
-#Amazon Elastic Block Store (EBS)
+## Amazon Elastic Block Store (EBS)
 
 is an easy to use, high performance block storage service designed for use with Amazon Elastic Compute Cloud (EC2) for both throughput and transaction intensive workloads at any scale. A broad range of workloads, such as relational and non-relational databases, enterprise applications, containerized applications, big data analytics engines, file systems, and media workflows are widely deployed on Amazon EBS.
 
 
-*Snapshot* - reserve copy of Volume
+`Snapshot` - reserve copy of Volume
+
 --
 
 ## Volume types:
 
-**Root-Boot volumes:**
-**General purpose SSD (GP2)** - up to 10.000 *iops.<br />
-(Boot volumes, low-latency interactive apps, dev & test)
+`Root-Boot volumes:`<br />
+- `General purpose SSD (GP2)` - up to 10.000 iops.<br />
+**(Boot volumes, low-latency interactive apps, dev & test)**
 
-**Provisioned IOPS SSD (IO1)** - up to 20.000 iops. **Most powerful volume type.**<br />
-(I/O-intensive NoSQL and relational databases)
+- `Provisioned IOPS SSD (IO1)` - up to 20.000 iops. **Most powerful volume type.**
+<br />
+**(I/O-intensive NoSQL and relational databases)**
 
-**Magnetic** - standart HDD
+- `Magnetic` - standart HDD
 
-*iops - input/output operations per second
+*** `iops` - input/output operations per second***
 
 #### **Additional types. (Not available as root-boot volume):**
-**Throughput Optimized HDD (ST1)** - enchanced HDD. For frequently accessed workloads.<br />
+<br />
+- `Throughput Optimized HDD (ST1)` - enchanced HDD. For frequently accessed workloads.<br />
 (Big data, data warehouses, log processing)
 
-**Cold HDD (SC1)** - lowest cost HDD. For less frequently accessed workloads.<br />(Colder data requiring fewer scans per day)
+- `Cold HDD (SC1)` - lowest cost HDD. For less frequently accessed workloads.<br />(Colder data requiring fewer scans per day)
 
 --
 
@@ -190,13 +198,14 @@ https://aws.amazon.com/answers/account-management/aws-tagging-strategies/
 
 ---
 
-#Key pairs
+# Key pairs
+<br />
 
 Amazon AWS uses keys to encrypt and decrypt login information. At the basic level, a sender uses a public key to encrypt data, which its receiver then decrypts using another private key. These two keys, public and private, are known as a key pair. You need a key pair to be able to connect to your instances
 
 --
 
-##How to create Key pair for EC2
+## How to create Key pair for EC2
 
 - Open the Amazon EC2 console at https://console.aws.amazon.com/ec2/.
 
@@ -214,18 +223,18 @@ for more info(different contents of key pairs and manage it) see -  https://docs
 
 ---
 
-#Security Group
+# Security Group
 
 AWS security groups (SGs) are associated with EC2 instances and provide security at the protocol and port access level. Each security group — working much the same way as a firewall — contains a set of rules that filter traffic coming into and out of an EC2 instance
 
 --
 
-#How to create
+# How to create
 
 By default, new security groups start with only an outbound rule that allows all traffic to leave the instances. You must add rules to enable any inbound traffic or to restrict the outbound traffic.
 
 
-###To create a security group using the console
+### To create a security group using the console
 
 *Open the Amazon VPC console at https://console.aws.amazon.com/vpc*
 
@@ -237,7 +246,7 @@ By default, new security groups start with only an outbound rule that allows all
 
 --
 
-##Rules
+## Rules
 
 AWS Security Groups have a set of rules that filter traffic in two ways: inbound and outbound. Since AWS security groups are assigned differently, you won’t be needing the same rules for both inbound and outbound traffic. Thus, any provision that permits traffic into the EC2 instance will ultimately filter outbound traffic.
 
@@ -258,62 +267,62 @@ To further break this down each rule is made up of four principal components: Ty
 
 --
 
-##Add a rule using the console
+## Add a rule using the console
 
-*Open the Amazon VPC console at https://console.aws.amazon.com/vpc/.*
+- *Open the Amazon VPC console at https://console.aws.amazon.com/vpc/.*
 
-*In the navigation pane, choose Security Groups.*
+- *In the navigation pane, choose Security Groups.*
 
-*Select the security group to update.*
+- *Select the security group to update.*
 
-*Choose Actions, Edit inbound rules or Actions, Edit outbound rules.*
+- *Choose Actions, Edit inbound rules or Actions, Edit outbound rules.*
 
-*For Type, select the traffic type, and then fill in the required information. For example, for a public web server, choose HTTP or HTTPS and specify a value for Source as 0.0.0.0/0.*
+- *For Type, select the traffic type, and then fill in the required information. For example, for a public web server, choose HTTP or HTTPS and specify a value for Source as 0.0.0.0/0.*
 
 
-*You can also allow communication between all instances that are associated with this security group. Create an inbound rule with the following options:*
+- *You can also allow communication between all instances that are associated with this security group. Create an inbound rule with the following options:*
 
   **Type: All Traffic**
 
   **Source: Enter the ID of the security group.**
 
-*Choose Save rules.*
+- *Choose Save rules.*
 
 --
 
-##Delete a rule using the console
+## Delete a rule using the console
 
-*Open the Amazon VPC console at https://console.aws.amazon.com/vpc/.*
+- *Open the Amazon VPC console at https://console.aws.amazon.com/vpc/.*
 
-*In the navigation pane, choose Security Groups.*
+- *In the navigation pane, choose Security Groups.*
 
-*Select the security group to update.*
+- *Select the security group to update.*
 
-*Choose Actions, Edit inbound rules or Actions, Edit outbound rules.*
+- *Choose Actions, Edit inbound rules or Actions, Edit outbound rules.*
 
-*Choose the delete button (“x”) to the right of the rule that you want to delete.*
+- *Choose the delete button (“x”) to the right of the rule that you want to delete.*
 
-*Choose Save rules.*
-
---
-
-##Update a rule using the console
-
-*Open the Amazon VPC console at https://console.aws.amazon.com/vpc/*
-
-*In the navigation pane, choose Security Groups.*
-
-*Select the security group to update.*
-
-*Choose Actions, Edit inbound rules or Actions, Edit outbound rules.*
-
-*Modify the rule entry as required.*
-
-*Choose Save rules.*
+- *Choose Save rules.*
 
 --
 
-You must provide it with a name and a description. The following rules apply:
+## Update a rule using the console
+
+- *Open the Amazon VPC console at https://console.aws.amazon.com/vpc/*
+
+- *In the navigation pane, choose Security Groups.*
+
+- *Select the security group to update.*
+
+- *Choose Actions, Edit inbound rules or Actions, Edit outbound rules.*
+
+- *Modify the rule entry as required.*
+
+- *Choose Save rules.*
+
+--
+
+### You must provide it with a name and a description. The following rules apply:
 
 *Names and descriptions can be up to 255 characters in length*
 
@@ -326,7 +335,7 @@ You must provide it with a name and a description. The following rules apply:
 
 --
 
-###Tips on Configuring Security Groups:
+### Tips on Configuring Security Groups:
 
 Avoid incoming traffic through (0.0.0.0/0)
  It could end up exposing sensitive cloud information to outside threats.
@@ -336,7 +345,7 @@ The best thing to do is permit only necessary IP ranges and their respective por
 
 
 Delete unused security groups
-  There is no need to keep a security group not assignedto an EC2 instance
+  There is no need to keep a security group not assigned to an EC2 instance
 
 
 Enable Tracking and Alerting
@@ -344,58 +353,59 @@ Enable Tracking and Alerting
 
 ---
 
-#Monitoring Instances with CloudWatch
+## Monitoring Instances with CloudWatch
+
+<br />
 
 You can enable detailed monitoring on an instance as you launch it or after the instance is running or stopped. Enabling detailed monitoring on an instance does not affect the monitoring of the EBS volumes attached to the instance. For more information, see Amazon CloudWatch Metrics for Amazon EBS
 
 --
 
-##To enable detailed monitoring for an existing instance (console)
+## To enable detailed monitoring for an existing instance (console)
 
-*Open the Amazon EC2 console at https://console.aws.amazon.com/ec2/.*
+- *Open the Amazon EC2 console at https://console.aws.amazon.com/ec2/.*
 
-*In the navigation pane, choose Instances.*
+- *In the navigation pane, choose Instances.*
 
-*Select the instance and choose Actions, CloudWatch Monitoring, Enable Detailed Monitoring.*
+- *Select the instance and choose Actions, CloudWatch Monitoring, Enable Detailed Monitoring.*
 
-*In the Enable Detailed Monitoring dialog box, choose Yes, Enable.*
+- *In the Enable Detailed Monitoring dialog box, choose Yes, Enable.*
 
-*Choose Close.*
+- *Choose Close.*
 
 ---
 
-#Instance Lifecycle
+# Instance Lifecycle
 
 ![](/assets/images/aws/instance_lifecycle.png)
 
 --
 
-*Pending* - When the instance is first launched is enters into the pending state. The instance is being provisioned in this state
+`Pending` - When the instance is first launched is enters into the pending state. The instance is being provisioned in this state
 
+`Running` - When the instance is ready and can be used, it enters the running state. The instance can be used, rebooted, shut down or terminated from this state. The user starts paying for the instance in this state.
 
-*Running* - When the instance is ready and can be used, it enters the running state. The instance can be used, rebooted, shut down or terminated from this state. The user starts paying for the instance in this state.
-
-*Stop & Start (EBS-backed instances only)* - Note that only EBS-backed instance (where the root volume is EBS volume) can be stopped and started. Instance store-backed instances cannot be stopped and started. When an instance is stopped and started, AWS usually will start the instance in a new host, thus the instance can stopped & started when the instance fails a system status check. When the instance is stopped, the instance changes state from running to stopping to stopped state. When in stopped state, certain attributes of the instance can be modified. When the instance is started, it changes state from pending to running.
-
---
-
-*Stop* - When the instance is stopped, the instance changes state from running to stopping to stopped state. The user will not pay for the EC2 instances in this state (EBS volumes are charged in usual rate). Therefore, for development purpose EC2 instances, it is better to stop the instances in non-business hours and weekends or as the business see fit. The root volume can be used as any other EBS volumes and can be detached from the stopped instance, and attached to a different running instance and re-attached to another instance.
-
-*Start* - When the instance is started, it changes state from pending to running. When an instance is stopped and started, AWS usually will start the instance in a new host, thus the instance can stopped & started when the instance fails a system status check. Any data that previously persisted on instance store volume would be lost while data on the EBS volume would persist. When started, the public IP of the instance is changed but the elastic and private IP is retained. EC2 instances are charged for full hours and stopping and starting the instance would incur more charges.
+`Stop & Start (EBS-backed instances only)` - Note that only EBS-backed instance (where the root volume is EBS volume) can be stopped and started. Instance store-backed instances cannot be stopped and started. When an instance is stopped and started, AWS usually will start the instance in a new host, thus the instance can stopped & started when the instance fails a system status check. When the instance is stopped, the instance changes state from running to stopping to stopped state. When in stopped state, certain attributes of the instance can be modified. When the instance is started, it changes state from pending to running.
 
 --
 
-*Instance Reboot* - Both EBS-backed and Instance store-backed instances can be rebooted. Rebooting is different that stopping and starting an instance in that it retains the public IP (and private and elastic IP), data on the instance store volumes (and EBS volumes). The instance can be rebooted from the AWS console and also from the operating system but AWS recommends rebooting EC2 instance from the console as it performs a hard reboot.
+`Stop` - When the instance is stopped, the instance changes state from running to stopping to stopped state. The user will not pay for the EC2 instances in this state (EBS volumes are charged in usual rate). Therefore, for development purpose EC2 instances, it is better to stop the instances in non-business hours and weekends or as the business see fit. The root volume can be used as any other EBS volumes and can be detached from the stopped instance, and attached to a different running instance and re-attached to another instance.
 
-*Instance Retirement* - An instance is scheduled to be retired when AWS detects irreparable failure of the underlying hardware hosting the instance. When an instance reaches its scheduled retirement date, it is stopped or terminated by AWS. If the instance root device is an Amazon EBS volume, the instance is stopped, and can be started again at any time. If the instance root device is an instance store volume, the instance is terminated, and cannot be used again.
+`Start` - When the instance is started, it changes state from pending to running. When an instance is stopped and started, AWS usually will start the instance in a new host, thus the instance can stopped & started when the instance fails a system status check. Any data that previously persisted on instance store volume would be lost while data on the EBS volume would persist. When started, the public IP of the instance is changed but the elastic and private IP is retained. EC2 instances are charged for full hours and stopping and starting the instance would incur more charges.
 
 --
 
-*Instance Termination* - When an instance is terminated, it enters into the shutting-down and then the terminated state. When an instance is terminated, it cannot be used and will not be charged. EBS-backed instances support InstanceInitiatedShutdownBehavior attribute which determines whether the instance would be stopped or terminated during an instance initiated shutdown command. By default, the instance would be stopped. A shutdown command for an Instance store-backed instance will always terminate the instance.
+`Instance Reboot` - Both EBS-backed and Instance store-backed instances can be rebooted. Rebooting is different that stopping and starting an instance in that it retains the public IP (and private and elastic IP), data on the instance store volumes (and EBS volumes). The instance can be rebooted from the AWS console and also from the operating system but AWS recommends rebooting EC2 instance from the console as it performs a hard reboot.
 
-*Termination Protection* - Termination protection can be enabled by the DisableApiTermination attribute that prevents an instance from being accidently terminated from the AWS console, CLI, and the API. The attribute is available to both instance-store and EBS backed instances. Note that termination protection does not work for spot instances, instances launched through Autoscaling group and when terminating an instance by shutting down the instance from the operating system
+`Instance Retirement` - An instance is scheduled to be retired when AWS detects irreparable failure of the underlying hardware hosting the instance. When an instance reaches its scheduled retirement date, it is stopped or terminated by AWS. If the instance root device is an Amazon EBS volume, the instance is stopped, and can be started again at any time. If the instance root device is an instance store volume, the instance is terminated, and cannot be used again.
 
-*Data Persistence* - EBS volume has DeleteOnTermination attribute that determines whether the volumes would be persisted or deleted when an instance it is associated with is terminated. By default, the root volume is deleted and the additional volumes are preserved but detached from the instance. Data on Instance store volume data does not persist.
+--
+
+`Instance Termination` - When an instance is terminated, it enters into the shutting-down and then the terminated state. When an instance is terminated, it cannot be used and will not be charged. EBS-backed instances support InstanceInitiatedShutdownBehavior attribute which determines whether the instance would be stopped or terminated during an instance initiated shutdown command. By default, the instance would be stopped. A shutdown command for an Instance store-backed instance will always terminate the instance.
+
+`Termination Protection` - Termination protection can be enabled by the DisableApiTermination attribute that prevents an instance from being accidently terminated from the AWS console, CLI, and the API. The attribute is available to both instance-store and EBS backed instances. Note that termination protection does not work for spot instances, instances launched through Autoscaling group and when terminating an instance by shutting down the instance from the operating system
+
+`Data Persistence` - EBS volume has DeleteOnTermination attribute that determines whether the volumes would be persisted or deleted when an instance it is associated with is terminated. By default, the root volume is deleted and the additional volumes are preserved but detached from the instance. Data on Instance store volume data does not persist.
 
 ---
 
