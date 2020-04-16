@@ -248,6 +248,148 @@ type Task {
 
 ---
 
+## Queries and Mutations
+
+---
+
+### Queries
+
+#### `graphql-ruby` generator creates query type as well
+
+#### Inside the `query type` you describe the fields which are actually could be fetched from server
+
+`app/graphql/types/query_type.rb`
+
+```ruby
+class Types::QueryType < GraphQL::Schema::Object
+  field :product,
+        resolver: Resolvers::Product,
+        description: 'Fetch a product'
+end
+```
+
+`app/graphql/resolvers/product.rb`
+
+```ruby
+class Resolvers::Product < GraphQL::Schema::Resolver
+  type Types::ProductType, null: false
+
+  argument :id, ID, required: false
+
+  def resolve(id: nil)
+    Product.find(id)
+  end
+end
+
+```
+
+#### `Attention!` Query fields resolvers should always return the instance of object or an collection of objects the field type expects or nil if allowed.
+
+--
+
+#### Now let's query products form graphql server
+
+```graphql
+  query {
+    product(id: 10) {
+      id
+      name
+    }
+  }
+```
+
+```json
+  {
+    "data": {
+      "product": {
+        "id": 10,
+        "name": "..."
+      }
+    }
+  }
+
+```
+
+---
+
+## Mutations
+
+#### Mutations are queries with side effects. Mutations are used to mutate your data. In order to use mutations you need to define a mutation root type that allows for defining fields that can mutate your data.
+
+`app/graphql/types/mutation_type.rb`
+
+```ruby
+class Types::MutationType < ::Types::Base::Object
+  description '...'
+
+  field :product_create, mutation: Mutations::Product::Create
+end
+```
+
+`app/graphql/mutations/product/create.rb`
+
+```ruby
+class Mutations::Product::Create < GraphQL::Schema::Mutation
+  description '...'
+
+  type Types::ProductType
+
+  argument :input, Types::Inputs::ProductCreateInput, required: true
+
+  def resolve(input:)
+    # here you will create product with data in input
+  end
+end
+```
+
+--
+
+### Also you create input object, that you will pass from the outside
+
+`app/graphql/types/inputs/product_create_input.rb`
+
+```ruby
+class Types::Inputs::ProductCreateInput < GraphQL::Schema::InputObject
+  graphql_name 'ProductCreateInput'
+  description 'Input for product creation'
+
+  argument :name, String, required: true,
+                          description: 'Name',
+                          prepare: ->(name, _ctx) { name.strip }
+end
+
+```
+
+--
+
+The mutation query would look like:
+
+```graphql
+mutation {
+  productCreate(input: { name: 'Test' }) {
+    id
+    name
+  }
+}
+
+```
+
+And response:
+
+```json
+{
+  "data": {
+    "productCreate": {
+      "id": 10,
+      "name": "Title"
+    }
+  }
+}
+```
+
+
+---
+
 ## Types, fields and arguments
 
 ---
@@ -306,6 +448,112 @@ type Product {
   price: Float!
   inventory: Int!
 }
+```
+
+--
+
+### Object Fields
+
+#### Object fields expose data about that object or connect the object to other objects. Objects and Interfaces have fields.
+
+```ruby
+field :name, String, "The unique name of this list", null: false
+```
+
+By default, fields return values by:
+- Trying to call a **method** on the underlying object
+OR
+- If the underlying object is a Hash, lookup a **key** in that hash
+
+--
+
+#### You can override the method name with the **method**: keyword, or override the hash key with the **hash_key**: keyword, for example:
+```ruby
+# Use the `#best_score` method to resolve this field
+field :top_score, Integer, null: false, method: :best_score
+
+# Lookup `hash["allPlayers"]` to resolve this field
+field :players, [User], null: false, hash_key: "allPlayers"
+```
+#### If you don’t want to delegate to the underlying object, you can define a method for each field:
+
+```ruby
+# Use the custom method below to resolve this field
+field :total_games_played, Integer, null: false
+
+def total_games_played
+  object.games.count
+end
+```
+--
+
+### Field arguments
+
+Arguments allow fields to take input to their resolution. For example:
+
+- A search() field may take a term: argument, which is the query to use for searching
+<p/>`search(term: "GraphQL")`
+- A user() field may take an id: argument, which specifies which user to find
+<p/>`user(id: 1)`
+- An attachments() field may take a type: argument, which filters the result by file type
+<p/>`attachments(type: PHOTO)`
+
+```ruby
+field :total_games_played, Integer, null: false do
+  argument :starting_from, Date, required: false, default_value: false
+end
+
+def total_games_played(starting_from:)
+  # Business logic goes here
+end
+```
+--
+
+### Resolvers
+
+A GraphQL::Schema::Resolver is a container for field signature and resolution logic. It can be attached to a field with the **resolver:** keyword:
+```ruby
+field :recommended_items, resolver: Resolvers::RecommendedItems
+```
+
+```ruby
+module Resolvers
+  class RecommendedItems < Resolvers::Base
+    type [Types::Item], null: false
+
+    argument :order_by, Types::ItemOrder, required: false
+    argument :category, Types::ItemCategory, required: false
+
+    def resolve(order_by: nil, category: nil)
+      # call your application logic here:
+      recommendations = ItemRecommendation.new(
+        viewer: context[:viewer],
+        recommended_for: object,
+        order_by: order_by,
+        category: category,
+      )
+      # return the list of items
+      recommendations.items
+    end
+  end
+end
+```
+
+--
+
+Putting logic in a Resolver has some downsides:
+
+- Since it’s coupled to GraphQL, it’s **harder to test** than a plain ol’ Ruby object in your app
+- Since the base class comes from GraphQL-Ruby, it’s **subject to upstream changes** which may require updates in your code
+
+You can put display logic (sorting, filtering, etc.) into a plain ol’ Ruby class in your app, and test that class:
+
+```ruby
+field :recommended_items, [Types::Item], null: false
+
+def recommended_items
+  ItemRecommendation.new(user: context[:viewer]).items
+end
 ```
 
 --
@@ -534,7 +782,7 @@ GraphQL’s concept of non-null is expressed in the SDL with !, for example:
 ```graphql
 type User {
   # This field _always_ returns a String, never returns `null`
-  handle: String!
+  name: String!
   # `since:` _must_ be passed a `DateTime` value, it can never be omitted or passed `null`
   followers(since: DateTime!): [User!]!
 }
@@ -542,8 +790,8 @@ type User {
 
 #### Non-null return types
 ```ruby
-# equivalent to `handle: String!` above
-field :handle, String, null: false
+# equivalent to `name: String!` above
+field :name, String, null: false
 ```
 
 #### Non-null argument types
@@ -558,22 +806,14 @@ argument :since, Types::DateTime, required: true
 
 GraphQL has list types which are ordered lists containing items of other types. The following examples use the SDL:
 ```graphql
-enum PostCategory {
-  SOFTWARE
-  UPHOLSTERY
-  MAGIC_THE_GATHERING
-}
-
 type BlogPost {
-  # Zero or more categories this post belongs to
-  categories: [PostCategory!]
   # Post tags
   tags: [String!]
 }
 
 type Query {
-  # Return posts, filtered by `categories`
-  posts(categories: [PostCategory!]): [BlogPost!]
+  # Return posts list
+  posts: [BlogPost!]
 }
 ```
 
@@ -581,9 +821,6 @@ type Query {
 # A field returning a list type:
 # Equivalent to `tags: [String!]` above
 field :tags, [String], null: true
-
-# An argument which accepts a list type:
-argument :categories, [Types::PostCategory], required: false
 ```
 
 --
@@ -616,369 +853,6 @@ field :tags, [String, null: true], null: true
 field :tags, [String], null: true
 # In GraphQL, tags: [String!]
 # Valid values: [], [1, 2], null
-```
----
-
-## Fields and arguments
-
---
-
-### Fields
-
-#### Object fields expose data about that object or connect the object to other objects. Objects and Interfaces have fields.
-
-```ruby
-field :name, String, "The unique name of this list", null: false
-```
-
-By default, fields return values by:
-- Trying to call a **method** on the underlying object
-OR
-- If the underlying object is a Hash, lookup a **key** in that hash
-
---
-
-#### You can override the method name with the **method**: keyword, or override the hash key with the **hash_key**: keyword, for example:
-```ruby
-# Use the `#best_score` method to resolve this field
-field :top_score, Integer, null: false, method: :best_score
-
-# Lookup `hash["allPlayers"]` to resolve this field
-field :players, [User], null: false, hash_key: "allPlayers"
-```
-#### If you don’t want to delegate to the underlying object, you can define a method for each field:
-
-```ruby
-# Use the custom method below to resolve this field
-field :total_games_played, Integer, null: false
-
-def total_games_played
-  object.games.count
-end
-```
---
-
-### Field arguments
-
-Arguments allow fields to take input to their resolution. For example:
-
-- A search() field may take a term: argument, which is the query to use for searching
-<p/>`search(term: "GraphQL")`
-- A user() field may take an id: argument, which specifies which user to find
-<p/>`user(id: 1)`
-- An attachments() field may take a type: argument, which filters the result by file type
-<p/>`attachments(type: PHOTO)`
-
-```ruby
-field :total_games_played, Integer, null: false do
-  argument :starting_from, Date, required: false, default_value: false
-end
-
-def total_games_played(starting_from:)
-  # Business logic goes here
-end
-```
---
-
-### Resolvers
-
-A GraphQL::Schema::Resolver is a container for field signature and resolution logic. It can be attached to a field with the **resolver:** keyword:
-```ruby
-field :recommended_items, resolver: Resolvers::RecommendedItems
-```
-
-```ruby
-module Resolvers
-  class RecommendedItems < Resolvers::Base
-    type [Types::Item], null: false
-
-    argument :order_by, Types::ItemOrder, required: false
-    argument :category, Types::ItemCategory, required: false
-
-    def resolve(order_by: nil, category: nil)
-      # call your application logic here:
-      recommendations = ItemRecommendation.new(
-        viewer: context[:viewer],
-        recommended_for: object,
-        order_by: order_by,
-        category: category,
-      )
-      # return the list of items
-      recommendations.items
-    end
-  end
-end
-```
-
---
-
-Putting logic in a Resolver has some downsides:
-
-- Since it’s coupled to GraphQL, it’s **harder to test** than a plain ol’ Ruby object in your app
-- Since the base class comes from GraphQL-Ruby, it’s **subject to upstream changes** which may require updates in your code
-
-You can put display logic (sorting, filtering, etc.) into a plain ol’ Ruby class in your app, and test that class:
-
-```ruby
-field :recommended_items, [Types::Item], null: false
-
-def recommended_items
-  ItemRecommendation.new(user: context[:viewer]).items
-end
-```
----
-
-## Queries and Mutations
-
----
-
-### Queries
-
-#### `graphql-ruby` generator creates query type as well
-
-#### Inside the `query type` you describe the fields which are actually could be fetched from server
-
-`app/graphql/types/query_type.rb`
-
-```ruby
-class Types::QueryType < GraphQL::Schema::Object
-  field :product,
-        resolver: Resolvers::Product,
-        description: 'Fetch a product'
-end
-```
-
-`app/graphql/resolvers/product.rb`
-
-```ruby
-class Resolvers::Product < GraphQL::Schema::Resolver
-  type Types::ProductType, null: false
-
-  argument :id, ID, required: false
-
-  def resolve(id: nil)
-    Product.find(id)
-  end
-end
-
-```
-
-#### `Attention!` Query fields resolvers should always return the instance of object or an collection of objects the field type expects or nil if allowed.
-
---
-
-#### Now let's query products form graphql server
-
-```graphql
-  query {
-    product(id: 10) {
-      id
-      name
-    }
-  }
-```
-
-```json
-  {
-    "data": {
-      "product": {
-        "id": 10,
-        "name": "..."
-      }
-    }
-  }
-
-```
-
---
-
-## Cursor Based Pagination
-
---
-
-#### Let's imagine that we have 5 product and we want to recieve first 2.
-
-```graphql
-query {
-  products(first: 2) {
-    totalCount
-    pageInfo {
-      endCursor
-      hasNextPage
-      hasPreviousPage
-      startCursor
-    }
-    edges {
-      node {
-        id
-        name
-        description
-        quantity
-      }
-      cursor
-    }
-  }
-}
-```
-
---
-
-#### and we will recieve
-
-```json
-{
-  "data": {
-    "products": {
-      "totalCount": 5,
-      "pageInfo": {
-        "endCursor": "Mg", "hasNextPage": true, "hasPreviousPage": false, "startCursor": "MQ"
-      },
-      "edges": [{
-          "node": {
-            "id": "5659e44e-bc22-4e62-933d-4417a9d1d1bc",
-            "name": "First product",
-            "description": "First product description",
-            "quantity": 12
-          },
-          "cursor": "MQ"
-        },
-        {
-          "node": {
-            "id": "c2b2cbb4-a6f3-4b03-925a-fe9b9a73fa56",
-            "name": "Second product",
-            "description": "Second product description",
-            "quantity": 2
-          },
-          "cursor": "Mg"
-        }
-      ]
-    }
-  }
-}
-```
-
---
-
-#### Connections are a pagination solution which started with Relay JS, but now it’s used for almost any GraphQL API.
-
-#### Connections has a structure:
-
-```
-Connection -> Edge -> Node
-```
-
-```graphql
-query {
-  products(first: 2) {
-    # Connection
-    totalCount
-    pageInfo {
-      endCursor
-      hasNextPage
-      hasPreviousPage
-      startCursor
-    }
-    edges {
-      # Edge
-      node {
-        # Node
-        id
-        name
-        description
-        quantity
-      }
-      cursor
-    }
-  }
-}
-```
-
---
-
-### Connection
-#### Expose **pagination-related metadata** and access to the items
-
-### Edge
-#### Expose **node** and **cursor** fields
-
-### Node
-#### Nodes are items in a list. A node is usually an object in your schema. 
-
----
-
-## Mutations
-
-#### Mutations are queries with side effects. Mutations are used to mutate your data. In order to use mutations you need to define a mutation root type that allows for defining fields that can mutate your data.
-
-`app/graphql/types/mutation_type.rb`
-
-```ruby
-class Types::MutationType < ::Types::Base::Object
-  description '...'
-
-  field :product_create, mutation: Mutations::Product::Create
-end
-```
-
-`app/graphql/mutations/product/create.rb`
-
-```ruby
-class Mutations::Product::Create < GraphQL::Schema::Mutation
-  description '...'
-
-  type Types::ProductType
-
-  argument :input, Types::Inputs::ProductCreateInput, required: true
-
-  def resolve(input:)
-    # here you will create product with data in input
-  end
-end
-```
-
---
-
-### Also you create input object, that you will pass from the outside
-
-`app/graphql/types/inputs/product_create_input.rb`
-
-```ruby
-class Types::Inputs::ProductCreateInput < GraphQL::Schema::InputObject
-  graphql_name 'ProductCreateInput'
-  description 'Input for product creation'
-
-  argument :name, String, required: true,
-                          description: 'Name',
-                          prepare: ->(name, _ctx) { name.strip }
-end
-
-```
-
---
-
-The mutation query would look like:
-
-```graphql
-mutation {
-  productCreate(input: { name: 'Test' }) {
-    id
-    name
-  }
-}
-
-```
-
-And response:
-
-```json
-{
-  "data": {
-    "productCreate": {
-      "id": 10,
-      "name": "Title"
-    }
-  }
-}
 ```
 
 ---
@@ -1056,15 +930,15 @@ And the result would be:
 
 <br/>
 
-### gem 'batch-loader'
-- Used by GitLab and Netflix
-- 0 dependencies. Uses lazy objects instead of Promises
-
-<br/>
-
 ### gem 'graphql-batch'
 - Used by Shopify
 - Depends on promise.rb gem
+
+<br/>
+
+### gem 'batch-loader'
+- Used by GitLab and Netflix
+- 0 dependencies. Uses lazy objects instead of Promises
 
 --
 
@@ -1129,7 +1003,7 @@ end
 
 ### Schema validation errors
 
-#### If you try to send an invalid request to the server, such as a request with a field that doesn’t exist, you’ll already get a pretty good error message back. For example:
+#### Because GraphQL is strongly typed, it performs **validation of all queries before executing** them. If an incoming query is invalid, it isn’t executed. Instead, a response is sent back with "errors":
 
 ```graphql
   query {
@@ -1162,177 +1036,79 @@ end
 
 --
 
-### Application errors
-
-#### You can manually return instance of GraphQL::ExecutionError from resolver to respond with custom error. For example:
-
-```ruby
-  class Mutations::Product::Create < GraphQL::Schema::Mutation
-    type Types::ProductType
-
-    argument :name, String, required: true
-    argument :description, String, required: true
-    argument :quantity, Integer, required: true
-
-    def resolve(name:, description:, quantity:)
-      product = Product.build(name: name, description: description, quantity: quantity)
-
-      if product.save
-        product
-      else
-        GraphQL::ExecutionError.new(product.errors.full_messages.join("\n"))
-      end
-    end
-  end
-```
-
---
-
-#### Let's perform the mutation:
-
-```graphql
-  mutation {
-    productCreate(
-      name: "Very long string...",
-      description: "Description",
-      quantity: 12
-    ) {
-      id
-      name
-      description
-      quantity
-    }
-  }
-```
-
-#### And what we get:
-
-```json
-  {
-    "data": {
-      "productCreate": null
-    },
-    "errors": [
-      {
-        "message": "Invalid input: Name is too long (maximum is 255 characters)",
-        "locations": [
-          {
-            "line": 2,
-            "column": 3
-          }
-        ],
-        "fields": [
-          "mutation",
-          "productCreate"
-        ]
-      }
-    ]
-  }
-```
-
---
-
-### Form input errors
-
-#### Previous example is good when you want to show errors as flash message, but it won't work if you need to show errors for each field in form. For this case you can create your own custom error. For example:
-
-```ruby
-  class GraphQL::UserInputError < ExecutionError
-    attr_reader :entity
-
-    def initialize(entity)
-      @entity = entity
-    end
-
-    def to_h
-      super.merge(
-        'extensions' => {
-          'code' => 'USER_INPUT_ERROR',
-          'exception' => {
-            'validationErrors' => validation_errors
-          }
-        }
-      )
-    end
-
-    private
-
-    def validation_errors
-      entity.errors.to_hash.transform_keys { |key| key.to_s.camelize(:lower) }
-    end
-  end
-```
-
-#### And return it in resolver:
-
-```ruby
-  class Mutations::Product::Create < GraphQL::Schema::Mutation
-    type Types::ProductType
-
-    argument :name, String, required: true
-    argument :description, String, required: true
-    argument :quantity, Integer, required: true
-
-    def resolve(name:, description:, quantity:)
-      product = Product.build(name: name, description: description, quantity: quantity)
-
-      if product.save
-        product
-      else
-        GraphQL::UserInputError.new(product)
-      end
-    end
-  end
-```
-
---
-
-#### Mutation:
-
-```graphql
-  mutation {
-    productCreate(
-      name: "Very long name...",
-      description: "Very long description...",
-      quantity: 12
-    ) {
-      id
-      name
-      description
-      quantity
-    }
-  }
-```
-
-#### Response:
+#### The response may include both "data" and "errors" in the case of a partial success:
 
 ```json
 {
-  "data": null,
-  "errors": 
-  [
+  "data" => { ... } # parts of the query that ran successfully
+  "errors" => [ ... ] # errors that prevented some parts of the query from running
+}
+```
+
+#### You can add errors to the array by raising GraphQL::ExecutionError
+
+```ruby
+raise GraphQL::ExecutionError, "Can't continue with this query"
+```
+
+```json
+{
+  "errors" => [
     {
-      "message": "Validation error",
-      "locations": [{"line": 3, "column": 11}],
-      "path": ["productCreate"],
-      "extensions": 
-      {
-        "code": "USER_INPUT_ERROR",
-        "exception": 
+      "message" => "Can't continue with this query",
+      "locations" => [
         {
-          "validationErrors": 
-          {
-            "name": ["is too long (maximum is 255 characters)"],
-            "description": ["is too long (maximum is 65535 characters)"]
-          }
+          "line" => 2,
+          "column" => 10,
         }
-      }
+      ],
+      "path" => ["user", "login"],
     }
   ]
 }
 ```
 
-#### Now you have errors assosiated to the field name and you can easily show them on your form
+--
+
+### Handling errors raised during field resolution
+
+You can configure your schema to rescue errors using `graphql-errors` gem. Schema will handle errors before they propagate to the rails controller.
+
+```ruby
+class MySchema < GraphQL::Schema
+  # Use the new error handling:
+  use GraphQL::Execution::Errors
+
+  rescue_from(ActiveRecord::RecordNotFound) do |err, obj, args, ctx, field|
+    # Raise a graphql-friendly error with a custom message
+    raise GraphQL::ExecutionError, "#{field.type.unwrap.graphql_name} not found"
+  end
+end
+```
+
+Inside the handler, you can:
+
+- Raise a GraphQL-friendly GraphQL::ExecutionError to return to the user
+- Re-raise the given err to crash the query and halt execution. (The error will propagate to your application, eg, the controller.)
+- Log errors to Bugsnag or another tool
+
+--
+
+### Customizing errors
+
+Override #to_h in a subclass of GraphQL::ExecutionError, for example:
+
+```ruby
+module GraphQL
+  class AuthenticationError < ExecutionError
+    def to_h
+      super.merge('extensions' => { 'code' => 'UNAUTHENTICATED' })
+    end
+  end
+end
+```
+
+Now, "extensions" => { "code" => "UNAUTHENTICATED" } will be added to the error JSON
 
 ---
 
@@ -1344,6 +1120,10 @@ You can send a file as base64 string or send a download link.
 
 ### - Incoming Webhooks
 You will need to add the REST endpoints to listen for events from services like Stripe. 
+
+---
+
+## Let's start creating an application
 
 ---
 
@@ -1475,10 +1255,6 @@ Then run
   end
 
 ```
-
----
-
-## Let's start creating an application
 
 --
 
@@ -1800,6 +1576,120 @@ end
 --
 
 ## Let's implement some queries
+
+--
+
+## Cursor Based Pagination
+
+--
+
+#### Let's imagine that we have 5 product and we want to recieve first 2.
+
+```graphql
+query {
+  products(first: 2) {
+    totalCount
+    pageInfo {
+      endCursor
+      hasNextPage
+      hasPreviousPage
+      startCursor
+    }
+    edges {
+      node {
+        id
+        name
+        description
+        quantity
+      }
+      cursor
+    }
+  }
+}
+```
+
+--
+
+#### and we will recieve
+
+```json
+{
+  "data": {
+    "products": {
+      "totalCount": 5,
+      "pageInfo": {
+        "endCursor": "Mg", "hasNextPage": true, "hasPreviousPage": false, "startCursor": "MQ"
+      },
+      "edges": [{
+          "node": {
+            "id": "5659e44e-bc22-4e62-933d-4417a9d1d1bc",
+            "name": "First product",
+            "description": "First product description",
+            "quantity": 12
+          },
+          "cursor": "MQ"
+        },
+        {
+          "node": {
+            "id": "c2b2cbb4-a6f3-4b03-925a-fe9b9a73fa56",
+            "name": "Second product",
+            "description": "Second product description",
+            "quantity": 2
+          },
+          "cursor": "Mg"
+        }
+      ]
+    }
+  }
+}
+```
+
+--
+
+#### Connections are a pagination solution which started with Relay JS, but now it’s used for almost any GraphQL API.
+
+#### Connections has a structure:
+
+```
+Connection -> Edge -> Node
+```
+
+```graphql
+query {
+  products(first: 2) {
+    # Connection
+    totalCount
+    pageInfo {
+      endCursor
+      hasNextPage
+      hasPreviousPage
+      startCursor
+    }
+    edges {
+      # Edge
+      node {
+        # Node
+        id
+        name
+        description
+        quantity
+      }
+      cursor
+    }
+  }
+}
+```
+
+--
+
+### Connection
+#### Expose **pagination-related metadata** and access to the items
+
+### Edge
+#### Expose **node** and **cursor** fields
+
+### Node
+#### Nodes are items in a list. A node is usually an object in your schema. 
 
 --
 
