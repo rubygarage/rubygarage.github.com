@@ -28,6 +28,17 @@ title: ECS
 - **Task definition** - configuration that is required to run Docker containers
 - **Container definition** - Docker container
 
+--
+
+Some of the parameters you can specify in a **Task Definition** include:
+
+- the Docker image to use with each container in your task
+- how much CPU and memory to use with each task or each container within a task
+- the launch type to use
+- whether the task should continue to run if the container finishes or fails
+- the command the container should run when it is started
+- the IAM role that your tasks should use
+
 ---
 
 ## Fargate
@@ -60,7 +71,7 @@ ECS services support such load balancer types:
 - Application Load Balancer (route HTTP/HTTPS traffic)
 - Network Load Balancer and Classic Load Balancer (route TCP traffic)
 
----
+--
 
 ## Application Load Balancer (ALB)
 
@@ -87,7 +98,7 @@ ECS services support such load balancer types:
 - Rolling Update
 - Blue/Green Deployment
 
----
+--
 
 ## Rolling Update
 
@@ -95,7 +106,7 @@ ECS services support such load balancer types:
 
 **Rolling Update** involves the service scheduler replacing the current running version of the container with the latest version.
 
----
+--
 
 ## Blue/Green Deployment
 
