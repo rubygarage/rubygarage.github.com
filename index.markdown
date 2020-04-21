@@ -186,6 +186,9 @@ title: Ruby presentations
   <br>
   <small>Application deploy.</small>
 
+- [AWS](/slides/aws)
+  <br>
+  <small>Amazon Web Services</small>
 
 <!--
 # Additional
