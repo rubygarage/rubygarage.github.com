@@ -81,6 +81,14 @@ ECS services support such load balancer types:
 
 ---
 
+## Auto Scaling
+
+**Auto Scaling** enables you to configure automatic scaling for the AWS resources that are part of your application.
+
+With Auto Scaling, you configure and manage scaling for your resources through a scaling plan. The scaling plan automatically scale your application’s resources. This ensures that you add the required computing power to handle the load on your application and then remove it when it's no longer required.
+
+---
+
 ## Elastic Container Registry (ECR)
 
 ![](/assets/images/aws/ecs/ecr.png)
