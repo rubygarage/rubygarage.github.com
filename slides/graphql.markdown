@@ -112,9 +112,7 @@ title:  GraphQL
 
 ### Thanks to the flexible nature of GraphQL, changes on the client-side can be made without any extra work on the server.
 <p/>
-### Since clients can specify their exact data requirements, no backend engineer needs to make adjustments when the design and data needs on the frontend change. 
-<p/>
-### Also frontend engineers can stub schema and work before backend is ready.
+### Thanks to strong type system, frontend engineers can mock the server and work before backend is ready.
 
 ---
 
@@ -209,11 +207,12 @@ When a query is received by the server, it will resolve it and either retrieve t
 
 ## Schema & Type System
 
+### This schema serves as the contract between the client and the server to define how a client can access the data.
+<p/>
 ### All the types that are exposed in an API are written down in a **schema** using the GraphQL Schema Definition Language (SDL).
 <p/>
 ### You can create a GraphQL schema with any programming language.
 <p/>
-### This schema serves as the contract between the client and the server to define how a client can access the data.
 
 --
 
@@ -254,8 +253,6 @@ type Task {
 
 ### Queries
 
-#### `graphql-ruby` generator creates query type as well
-
 #### Inside the `query type` you describe the fields which are actually could be fetched from server
 
 `app/graphql/types/query_type.rb`
@@ -282,8 +279,6 @@ class Resolvers::Product < GraphQL::Schema::Resolver
 end
 
 ```
-
-#### `Attention!` Query fields resolvers should always return the instance of object or an collection of objects the field type expects or nil if allowed.
 
 --
 
@@ -1583,11 +1578,18 @@ end
 
 --
 
-#### Let's imagine that we have 5 product and we want to recieve first 2.
+#### Connections are a pagination solution which started with Relay JS, but now it’s used for almost any GraphQL API.
+
+#### Connections has a structure:
+
+```
+Connection -> Edge -> Node
+```
 
 ```graphql
 query {
   products(first: 2) {
+    # Connection
     totalCount
     pageInfo {
       endCursor
@@ -1596,7 +1598,9 @@ query {
       startCursor
     }
     edges {
+      # Edge
       node {
+        # Node
         id
         name
         description
@@ -1639,42 +1643,6 @@ query {
           "cursor": "Mg"
         }
       ]
-    }
-  }
-}
-```
-
---
-
-#### Connections are a pagination solution which started with Relay JS, but now it’s used for almost any GraphQL API.
-
-#### Connections has a structure:
-
-```
-Connection -> Edge -> Node
-```
-
-```graphql
-query {
-  products(first: 2) {
-    # Connection
-    totalCount
-    pageInfo {
-      endCursor
-      hasNextPage
-      hasPreviousPage
-      startCursor
-    }
-    edges {
-      # Edge
-      node {
-        # Node
-        id
-        name
-        description
-        quantity
-      }
-      cursor
     }
   }
 }
@@ -2130,6 +2098,12 @@ end
 
 ---
 
+## Repo with application
+
+https://github.com/rubygarage/graphql_meetup
+
+---
+
 ## Usefull links
 
 https://www.howtographql.com/ - good graphql guides - different languages, frontend/backend
@@ -2148,4 +2122,6 @@ https://relay.dev/graphql/connections.htm - GraphQL Cursor Connections Specifica
 
 ---
 
-## The end
+# The end
+
+## Questions?
