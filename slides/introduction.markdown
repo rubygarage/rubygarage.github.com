@@ -97,39 +97,6 @@ Ruby 1.8 в 2003-м году и Ruby on Rails 2.0 в 2007-м году
 
 --
 
-## Рейтинг популярности языков программирования
-
-Рейтинг [TIOBE Programming Community Index](https://www.tiobe.com/tiobe-index) на апрель 2018-го
-
-| Apr 2018 | Apr 2017 | Change  | Programming Language | Ratings  | Change  |
-| :------: | :------: | :-----: | :------------------- | -------: | ------: |
-| 1        | 1        |         | Java                 | 15.777%  | +0.21%  |
-| 2        | 2        |         | C                    | 13.589%  | +6.62%  |
-| 3        | 3        |         | C++                  | 7.218%   | +2.66%  |
-| 4        | 5        | ▲       | Python               | 5.803%   | +2.35%  |
-| 5        | 4        | ▼       | C#                   | 5.265%   | +1.69%  |
-| 6        | 7        | ▲       | Visual Basic .NET    | 4.947%   | +1.70%  |
-| 7        | 6        | ▼       | PHP                  | 4.218%   | +0.84%  |
-| 8        | 8        |         | JavaScript           | 3.492%   | +0.64%  |
-| 9        | -        | ▲       | SQL                  | 2.650%   | +2.65%  |
-| 10       | 11       | ▲       | Ruby                 | 2.018%   | -0.29%  |
-| 11       | 9        | ▼       | Delphi/Object Pascal | 1.961%   | -0.86%  |
-| 12       | 15       | ▲       | R                    | 1.806%   | -0.33%  |
-| 13       | 16       | ▲       | Visual Basic         | 1.798%   | -0.26%  |
-| 14       | 13       | ▼       | Assembly language    | 1.655%   | -0.51%  |
-| 15       | 12       | ▼       | Swift                | 1.534%   | -0.75%  |
-
---
-
-## Рейтинг популярности языков программирования
-
-<br />
-
-По статистике ресурса [Githut](http://githut.info/), Ruby находится на 6-м месте популярных языков на GitHub
-(132 848 активных репозиториев) сразу после PHP, который занимает 5-е место (138 771 активный репозиторий).
-
----
-
 ## Что такое фреймворк Ruby on Rails?
 
 <br />
@@ -166,7 +133,13 @@ Gitflow
 TDD/BDD
 <!-- .element: class="fragment" -->
 
-Continuous Integration
+Infrustructure as a code
+<!-- .element: class="fragment" -->
+
+Cloud based architecture
+<!-- .element: class="fragment" -->
+
+Continuous Integration/Continuous delivery/Continuous deployment
 <!-- .element: class="fragment" -->
 
 Scrum
@@ -189,10 +162,28 @@ Scrum
 ![](/assets/images/introduction/postgresql.png)
 ![](/assets/images/introduction/elastic.png)
 ![](/assets/images/introduction/chef.png)
+![](/assets/images/introduction/terraform.png)
 ![](/assets/images/introduction/docker.png)
 ![](/assets/images/introduction/amazon.png)
 ![](/assets/images/introduction/heroku.png)
 ![](/assets/images/introduction/digitalocean.png)
+
+---
+
+## О курсе
+
+Курс состоит из 3 частей - Ruby, Ruby On Rails и DevOps
+<!-- .element: class="fragment" -->
+
+Занятия будут делиться на 2 типа - Лекции и Code Review
+<!-- .element: class="fragment" -->
+
+Количество заданий - 5 для Ruby и 2 для Ruby on Rails
+<!-- .element: class="fragment" -->
+
+Проверка заданий в несколько этапов - Cross-review от учасников и Review от менторов
+<!-- .element: class="fragment" -->
+
 
 ---
 
