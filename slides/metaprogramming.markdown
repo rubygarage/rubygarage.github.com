@@ -9,8 +9,9 @@ title:  Metaprogramming
 
 # Open Classes
 
-In Ruby, classes are never closed: you can always add methods to an existing class. This applies to the classes you
-write as well as the standard, built-in classes. All you have to do is open up a class definition for an existing
+In Ruby, classes are never closed: you can always add methods to an existing class.
+
+This applies to the classes you write as well as the standard, built-in classes. All you have to do is open up a class definition for an existing
 class, and the new contents you specify will be added to whatever's there.
 
 ```ruby
@@ -64,7 +65,7 @@ end
       # That is correct, I just turned addition into subtraction
 ```
 
-Monkey patching is a practice which involves substituting the pillars of an house: if you're not very careful in what
+Monkey patching is a practice which involves substituting the pillars of a house: if you're not very careful in what
 you substitute, the whole building will collapse over your remains. Moreover, you may take down some underground
 stations full of people as well as a side-effect.
 
@@ -79,10 +80,12 @@ Classes themselves are nothing but objects.
 
 ```ruby
 'hello'.class          # => String
+
 String.class           # => Class
 String.superclass      # => Object
 Object.superclass      # => BasicObject
 BasicObject.superclass # => nil
+
 Class.superclass       # => Module
 Module.superclass      # => Object
 ```
@@ -111,14 +114,35 @@ Or just eval
 eval "'hi there'.length" #=> 8
 ```
 
-Instantiating a method object is the fastest dynamic way in calling a method, eval is the slowest one. Also when
+Instantiating a method object is the fastest dynamic way in calling a method, eval is the slowest one.
+
+---
+
+Also when
 sending a message to an object, or when instantiating a method object, you can call private methods of that object.
+
+```ruby
+class Example
+  private
+
+  def hello_there
+    puts 'Hello'
+  end
+end
+
+example = Example.new
+
+example.send(:hello_there)        # => "Hello"
+example.public_send(:hello_there) # => NoMethodError: private method `hello_there' called ..
+```
+
+Unlike `send`, `public_send` calls public methods only.
 
 ---
 
 # Defining methods dynamically
 
-You can define a method on the spot with `define_method()`. You just need to provide a method name and a block, which
+You can define a method on the spot with `define_method`. You just need to provide a method name and a block, which
 becomes the method body.
 
 ```ruby
@@ -145,11 +169,10 @@ class MyClass
   def meth3; 'meth3 called'; end
 end
 
-obj = MyClass.new # => #<MyClass:0x9170850>
+obj = MyClass.new
 obj.meth1         # => "meth1 called"
-```
 
-```ruby
+
 class MyClass
   undef meth1
   remove_method :meth2
@@ -163,11 +186,45 @@ obj.meth3 # => NoMethodError
 
 ---
 
+## `remove_method` vs `undef_method`
+
+```ruby
+class A
+  def x
+    puts 'x from A class'
+  end
+end
+```
+```ruby
+class B < A
+  def x
+    puts 'x from B Class'
+  end
+  remove_method :x # removes the method from the receiver, but it leaves inherited methods alone
+end
+
+obj = B.new
+obj.x # => "x from A class"
+
+
+class B < A
+  def x
+    puts 'x from B Class'
+  end
+  undef_method :x # removes all methods, including the inherited ones
+end
+
+obj = B.new
+obj.x # => NoMethodError: undefined method `x' for #<B:0x0000561bdf1ce098>
+```
+
+---
+
 # Defining classes dynamically
 
 ```ruby
 MyClass = Class.new do
-  define_method :my_method do
+  def my_method
     'Method call'
   end
 end
@@ -184,7 +241,7 @@ class itself to be removed by GC
 
 ```ruby
 Object.send(:remove_const, :MyClass)
-obj = MyClass.new # => NameError: unitialized constant
+MyClass.new # => NameError: unitialized constant
 ```
 
 ---
@@ -193,14 +250,14 @@ obj = MyClass.new # => NameError: unitialized constant
 
 When you send a message to an object, the object executes the first method it finds on its method lookup path with the
 same name as the message. If it fails to find any such method, it end up with `method_missing` method (instance method
-of Kernel that every object inherits.), where a NoMethodError exception is raised unless you have provided other
-behavior for it. The method_missing method is passed the symbol of the non-existent method, an array of the arguments
+of `Kernel` that every object inherits), where a `NoMethodError` exception is raised unless you have provided other
+behavior for it. The method_missing method is passed the symbol of the non-existent method name, an array of the arguments
 that were passed in the original call and any block passed to the original method.
 
 ```ruby
 class Person
-  def method_missing (meth, *args, &block)
-    if meth.to_s =~ /^find_all_by_(\w+)$/
+  def method_missing (method_name, *args, &block)
+    if method_name.to_s =~ /^find_all_by_(\w+)$/
       'Looking for the Person'
     else
       super
@@ -215,54 +272,62 @@ end
 
 You can give an alternate name to a Ruby method by using the `alias` or `alias_method`
 
-In alias, the new name for the method comes first, and the original name comes second.
-First difference you will notice is that in case of `alias_method` we need to use a comma between methods.
-Also alias_method can takes both symbols and strings as input:
+In alias, the `new name` for the method `comes first`, and the `original name comes second`.
+
+The first difference you will notice is that in the case of `alias_method` we need to use a comma between arguments. Also, alias_method can takes both symbols and strings as input:
 
 ```ruby
 alias_method 'new_name', 'original_name'
+alias_method :new_name, :original_name
+
+alias :new_number :number
+alias new_number number
 ```
+Notice `alias` is a Ruby keyword (like if, def, class, etc.)
+
+---
 
 The second difference `alias` and `alias_method` has different scopes.
-
 ```ruby
-class Test
+class Base
   def number; 42; end
-  def self.add_alias
+
+  def self.add_alias_method
     alias_method :new_number, :number
     # alias_method 'new_number', 'number'
   end
 end
 
-class NewTest < Test
+class Test < Base
   def number; 100; end
-  add_alias
+  add_alias_method # will belong to `self`, the current class at the time the code is run
 end
 
-NewTest.new.new_number # => 100
-
-
-
-class Test
+Test.new.new_number # => 100
+```
+```ruby
+class Base
   def number; 42; end
+
   def self.add_alias
     alias :new_number :number
     # alias new_number number
   end
 end
 
-class NewTest < Test
+class Test < Base
   def number; 100; end
-  add_alias
+  add_alias # will belong to the `class` where alias is used
 end
 
-NewTest.new.new_number # => 42
+Test.new.new_number # => 42
 ```
 
 ---
 
 # What happens if you alias a method and then redefine it?
 
+Aliasing `makes a copy of the method`
 ```ruby
 class String
   alias :real_length :length
@@ -284,7 +349,7 @@ method. You can still call the old version of the method as long as you have ano
 
 # Instance variables
 
-`instance_variable_get()`, `instance_variable_set()`, `instance_variable_defined?()`
+`instance_variable_get`, `instance_variable_set`, `instance_variable_defined?`, `remove_instance_variable`
 
 ```ruby
 class MyClass
@@ -301,8 +366,12 @@ puts c.instance_variable_get(:@a)         # => "aaa"
 puts c.instance_variable_set(:@a, 'dog')  # => "dog"
 puts c.instance_variable_get(:@a)         # => "dog"
 puts c.instance_variable_set(:@c, 'cat')  # => "cat"
+
 puts c.instance_variable_defined?(:@c)    # => true
 puts c.instance_variable_get(:@c)         # => "cat"
+puts c.remove_instance_variable(:@c)      # => "cat"
+puts c.instance_variable_get(:@c)         # => nil
+puts c.instance_variable_defined?(:@c)    # => false
 ```
 
 ---
@@ -362,6 +431,33 @@ puts counter # => 0
 inc(4)
 puts counter # => 4
 ```
+
+---
+
+# But we can override variables outside the block
+
+```ruby
+current = 'global'
+1.upto(5) do |i|
+  current = i
+  puts current
+end
+puts current # 5
+```
+
+> Since Ruby 1.9 introduced the concept of `block-local variables` – simply list them in the block’s parameter list, preceded by a semicolon.
+
+```ruby
+current = 'global'
+1.upto(5) do |i; current|
+  current = i
+  puts current
+end
+puts current # global
+```
+
+> Better to use more descriptive variable names to avoid overriding variables by accident.
+
 
 ---
 
@@ -440,41 +536,41 @@ add_method_to String
 
 # Method Objects binding
 
-```ruby
-class MyClass
-  def initialize(value)
-    @x = value
-  end
-
-  def my_method
-    @x
-  end
-end
-
-class MyClass2 < MyClass
-end
-
-object = MyClass.new(1)
-method_object = object.method(:my_method)
-method_object.call # => 1
-```
-
-By calling `Object#method`, you get the method itself as a Method object, which you can later execute with `Method#call`
-
---
 
 You can detach a method from its object with `Method#unbind`, which returns an UnboundMethod object. You can’t execute
-an UnboundMethod, but you can turn it back into a Method by binding it to an object.
+an `UnboundMethod`, but you can turn it back into a Method by binding it to an object.
+
+> This technique works only if another_object has the same class as the method’s original object—otherwise,
+you’ll get an exception.
 
 ```ruby
-unbound = method_object.unbind
-another_object = MyClass2.new(2)
-method_object = unbound.bind(another_object)
-method_object.call # => 2
+unbound_plus = Integer.instance_method(:+) # => #<UnboundMethod: Integer#+>
+five_plus = unbound_plus.bind(5)
+five_plus                                  # => #<Method: Integer#+>
+five_plus.call(2)                          # => 7
+five_plus.call(5)                          # => 10
+
+six_plus = five_plus.unbind.bind(6)        # Another way to obtain an UnboundMethod object
+six_plus.call(2)                           # => 8
+```
+> Alternate way is by calling `Object#method`, you get the method itself as a Method object, which you can later execute with `Method#call`.
+
+
+---
+
+Use case `source_location`
+
+```ruby
+method_call = Ctv::GetEstablishmentReviewsRequest.instance_method(:call)
+method_call.source_location
+
+=> ["/home/yevhenii/work/campsited/app/requests/ctv/get_establishment_reviews_request.rb", 20]
 ```
 
-This technique works only if another_object has the same class as the method’s original object—otherwise,
-you’ll get an exception.
+Note that for native (read: written in C) Ruby methods you’ll get a response of `nil`
+```ruby
+Struct.method(:new).source_location # => nil
+```
 
 ---
 
@@ -490,7 +586,7 @@ class MyClass
   private
 
   def my_private
-    caller
+    caller        # Returns the current execution stack
   end
 end
 
@@ -500,8 +596,7 @@ def obj.my_singleton
   "i'm singleton"
 end
 
-obj.my_method                           # => ["test.rb:4:in `my_method`",
-                                        # "test.rb:16:in `<top>`", ... ]
+obj.my_method                           # => ["test.rb:4:in `my_method`", "test.rb:16:in `<top>`", ... ]
 obj.class                               # => MyClass
 obj.methods.grep /my/                   # => [:my_singleton, :my_method]
 obj.private_methods.grep /my/           # => [:my_private]
@@ -540,7 +635,7 @@ $ ruby inherited_hook.rb
 String was inherited by MyString
 ```
 
---
+---
 
 Just as you override `Class#inherited` to plug into the life cycle of classes, you can plug into the life cycle of
 modules by overriding `Module#included`:
@@ -566,7 +661,7 @@ M was mixed into C
 
 You can also execute code when a module extends an object by overriding Module#extend_object.
 
---
+---
 
 #### You can execute method-related events by overriding
 `Module#method_added`, `singleton_method_added`, or `method_missing`.
@@ -603,7 +698,7 @@ New method: M#my_method
 New singleton method: yay_method
 ```
 
---
+---
 
 ## Overriding method_missing
 
@@ -664,6 +759,7 @@ C.new.x # => x()
 C.y     # => y()
 
 ```
+The `self.included` is called when the module is included. It allows methods to be executed in the context of the base (where the module is included).
 
 ---
 
@@ -697,13 +793,12 @@ Customer.new('Dave', '123 Main').greeting # => "Hello Dave!"
 ---
 
 # Control questions
-
-- What is open classes principes?
-- What for monkey patching? Is it good?
-- When do need to use dynamic declaration of classes/methods?
-- `alias_method` and `alias`, what difference?
-- `instance_eval` and `class_eval`, what difference?
-- What is Struct?
+- What are open classes principles?
+- What about monkey patching? Is it a good practice?
+- When do you need to use a dynamic declaration of classes/methods?
+- `alias_method` and `alias`, what's the difference?
+- `instance_eval` and `class_eval`, what's the difference?
+- What is a Struct?
 
 ---
 
