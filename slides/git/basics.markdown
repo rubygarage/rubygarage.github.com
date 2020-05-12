@@ -26,6 +26,12 @@ title: Git
 ### Branching and merging
 <!-- .element: class="fragment" -->
 
+### Team collaboration
+<!-- .element: class="fragment" -->
+
+### Friendly big community
+<!-- .element: class="fragment" -->
+
 ---
 
 # What is Git Repository?
@@ -110,8 +116,8 @@ $ git config --global user.email 'johndoe@example.com'
 | `git diff`   | generate a differences between multiple commits              |
 | `git push`   | push commit(s) to remote repository                          |
 | `git status` | show uncommited changes                                      |
-| `git reset`  | download objects and refs from another repository            |
-| `git rebase` | download objects and refs from another repository            |
+| `git reset`  | undo changes                                                 |
+| `git rebase` | integrate changes from one branch onto another               |
 
 ---
 
@@ -679,7 +685,7 @@ bar
 | ------------------------- | --------------------------------------------------------------- |
 | `git blame`               | show what revision and author last modified each line of a file |
 | `git stash (pop / apply)` | stash the changes in a dirty working directory away             |
-| `git show`                | show various types of objects                                   |
+| `git show`                | show details on Git objects (blobs, trees, tags, and commits)   |
 | `git tag`                 | create, list, delete or verify a tag object signed with GPG     |
 | `git bisect`              | use binary search to find the commit that introduced a bug      |
 | `git reflog`              | manage reflog information                                       |

@@ -103,6 +103,10 @@ $ cd library
 ```
 
 ```bash
+$ bundle install
+```
+
+```bash
 $ ruby seed.rb  # will run application
 ```
 
@@ -185,6 +189,12 @@ RSpec.configure do |config|
 
   # Filter lines from Rails gems in backtraces.
   config.filter_rails_from_backtrace!
+
+  # Runs tests in random order
+  config.order = :random
+
+  # Show 10 slowest tests
+  config.profile_examples = 10
 end
 ```
 
@@ -201,6 +211,8 @@ RSpec.describe 'test' do
   end
 end
 ```
+
+RSpec naming conventions for files obliges you add `_spec` to end of the file name.
 
 ---
 
@@ -521,6 +533,21 @@ expect(5 + 5).not_to eq(11) #=> true
 expect(3 + 2).not_to eq(5)  #=> false
 ```
 
+--
+
+## Compound Expectations
+
+RSpec allows chaining expectations simply by using **and**. RSpec also offers **or** which means that only one condition needs to be satisfied.
+
+Examples
+
+```ruby
+expect("foobazz").to start_with("foo").and end_with("bazz")    #=> true
+expect("foofoo").to start_with("foo").and end_with("bazz")     #=> false
+expect("green").to eq("green").or eq("yellow").or eq("red")    #=> true
+expect("black").to eq("green").or eq("yellow").or eq("red")    #=> false
+```
+
 ---
 
 # Matchers
@@ -551,6 +578,16 @@ expect("a string").not_to be_an_instance_of(Array)  # passes
 - Class/Type Matchers
 
 - Comparison Matchers
+
+- Predicate matchers
+
+- Other build in matchers
+
+- **all** matcher
+
+- **include** matcher
+
+- **change** matcher
 
 --
 
@@ -609,7 +646,57 @@ Matchers for comparing to values.
 | **be_between inclusive** | Passes when actual is <= min and >= max         | expect(actual).to be_between(min, max).inclusive |
 | **be_between exclusive** | Passes when actual is < min and > max           | expect(actual).to be_between(min, max).exclusive |
 | **match**                | Passes when actual matches a regular expression | expect(actual).to match(/regex/)                 |
+| **start_with**           | Passes when actual start with expected   | expect(actual).to start_with expected |
+| **end_with**             | Passes when actual end with expected   | expect(actual).to end_with expected |
 |                          |                                                 |                              |
+
+--
+
+## Predicate matchers
+
+For any [predicate method](http://ruby-for-beginners.rubymonstas.org/objects/predicates.html), RSpec gives you a corresponding matcher. Simply prefix the method with `be_` or `have_`.
+
+|   `Matcher`          |             `Description`     |          `Example`                   |
+|      ---             |              -----------      |         -----------                  |
+| **be_zero**          | calls 7.zero?                 | expect(7).not_to be_zero             |
+| **be_empty**         | calls [].empty?               | expect([]).to be_empty               |
+| **be_multiple_of()** | calls x.multiple_of?(3)       | expect(x).to be_multiple_of(3)       |
+| **have_key()**       | calls hash.has_key?(:foo)     | expect(hash).to have_key(:foo)       |
+| **have_odd_values**  | calls array.has_odd_values?   | expect(array).not_to have_odd_values |
+|                      |                               |                                      |
+
+--
+
+## `all` matcher
+
+Use the **all** matcher to specify that a collection's objects all pass an expected matcher. This works on any enumerable object.
+
+|   `Matcher`     |             `Description`     |          `Example`                   |
+|      ---        |              -----------      |         -----------                  |
+| **all**         | Passes when all elements satisfy the conditions | expect([1, 3, 5]).to all( be < 10 ) |
+|                 |                               |                                      |
+
+--
+
+## `include` matcher
+
+Use the **include** matcher to specify that a collection includes one or more expected objects.
+
+|   `Matcher`     |             `Description`     |          `Example`                  |
+|      ---        |              -----------      |         -----------                 |
+| **include**     | Passes when actual includes expected | expect([1, 2]).to include(1)|
+|                 |                               |                                     |
+
+--
+
+## `change` matcher
+
+The **change** matcher is used to specify that a block of code changes some mutable state.
+
+|   `Matcher`     |             `Description`     |          `Example`                  |
+|      ---        |              -----------      |         -----------                 |
+| **change**      | Passes when actual change to expected | expect { arr.push(4) }.to change { arr.length }.from(3).to(4) |
+|                 |                               |                                     |
 
 ---
 
@@ -798,6 +885,30 @@ Pending: (Failures listed here are expected and do not affect your suites status
 
 Finished in 0.00105 seconds (files took 0.08152 seconds to load)
 4 examples, 0 failures, 4 pending
+```
+
+--
+
+## Temporarily pending by changing `it` to `xit`
+
+```ruby
+RSpec.describe Array do
+
+  describe "an example" do
+    xit "is pending using xit" do
+      true.should be(true)
+    end
+  end
+
+end
+```
+
+```bash
+Pending:
+  an example is pending using xit
+
+Finished in 0.00105 seconds (files took 0.08152 seconds to load)
+1 examples, 0 failures, 1 pending
 ```
 
 ---
