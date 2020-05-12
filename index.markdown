@@ -50,6 +50,9 @@ title: Ruby presentations
   <br>
   <small>Learn how to do refactoring in Ruby.</small> -->
 
+- [Refactoring](/slides/refactoring-ruby)
+  <br>
+  <small>Clean code is code that is easy to read, understand and maintain. </small>
 
 - [Rack](/slides/rack)
   <br>

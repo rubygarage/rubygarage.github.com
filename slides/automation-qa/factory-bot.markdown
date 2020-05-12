@@ -19,7 +19,7 @@ group :test do
 end
 ```
 
-Then, run `bundle` to download and instal new gem
+Then, run `bundle install` to download and instal new gem
 
 ```bash
 $ bundle install
