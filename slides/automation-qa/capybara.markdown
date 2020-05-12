@@ -101,7 +101,7 @@ spec/support/capybara.rb <!-- .element: class="filename" -->
 
 After previous execution write:
 
-spec/feature/test_spec.rb <!-- .element: class="filename" -->
+spec/features/test_spec.rb <!-- .element: class="filename" -->
 
 ```ruby
 visit('/') # Capybara will visit `http://www.google.com`
@@ -119,7 +119,7 @@ visit('/') # Capybara will visit `http://www.google.com`
 
 --
 
-By default, Capybara uses the `:rack_test` driver which does not have any support for executing JavaScript. 
+By default, Capybara uses the `:rack_test` driver which does not have any support for executing JavaScript.
 Drivers can be switched in Before and After blocks. Some of the web drivers supported by Capybara are mentioned below.
 
 - Non JS support
@@ -194,11 +194,34 @@ The [Selenium wiki](https://github.com/SeleniumHQ/selenium/wiki/Ruby-Bindings) h
 
 --
 
+## `type: :feature`
+
+Feature specs are marked by `type: :feature` or if you have set
+`config.infer_spec_type_from_file_location!` by placing them in `spec/features`.
+
+spec/features/test_spec.rb <!-- .element: class="filename" -->
+
+```ruby
+RSpec.describe 'some test placed in features folder' do
+end
+```
+
+or
+
+spec/test_spec.rb <!-- .element: class="filename" -->
+
+```ruby
+RSpec.describe 'some test with type feature', type: :feature do
+end
+```
+
+--
+
 ## `js: true`
 
 Use `js: true` to switch to the `Capybara.javascript_driver` (:selenium by default), or provide a :driver option to switch to one specific driver. For example:
 
-spec/feature/test_spec.rb <!-- .element: class="filename" -->
+spec/features/test_spec.rb <!-- .element: class="filename" -->
 
 ```ruby
 RSpec.describe 'some stuff which requires js', type: :feature, js: true do
@@ -206,7 +229,7 @@ RSpec.describe 'some stuff which requires js', type: :feature, js: true do
 end
 ```
 
-spec/feature/second_test_spec.rb <!-- .element: class="filename" -->
+spec/features/second_test_spec.rb <!-- .element: class="filename" -->
 
 ```ruby
 RSpec.describe 'some stuff which not requires js', type: :feature do
@@ -281,7 +304,7 @@ click_button('button_text') # click button by button text
 fill_in('field_name', with: 'your_value') # fill text field
 
 choose('radio_button_name') # choose radio button
-check('checkbox_id') # check in checkbox 
+check('checkbox_id') # check in checkbox
 uncheck('checkbox_name') # uncheck in checkbox
 
 select('option', from: 'select_box_name') # select from dropdown
@@ -336,7 +359,7 @@ For scenarios where basic the DSL cannot help, we use xpath and CSS selectors (C
 
 To find a specific element and click on it we can use:
 
-spec/feature/test_spec.rb <!-- .element: class="filename" -->
+spec/features/test_spec.rb <!-- .element: class="filename" -->
 
 ```ruby
 find('xpath/css').click
@@ -406,28 +429,3 @@ save_and_open_screenshot
 ```
 
 Screenshots are saved to `Capybara.save_path`, relative to the app directory. If you have required `capybara/rails`, `Capybara.save_path` will default to `tmp/capybara`.
-
---
-
-## Again `Pry`
-
-You can remember what is pry [here](http://localhost:4000/slides/automation-qa/rails-structure#/12/1)
-
-Remember you should place `binding.pry` inside `it` block.
-
-spec/features/hello_world_spec.rb <!-- .element: class="filename" -->
-
-```ruby
-describe 'Your page', type: :feature do
-
-  before do
-    visit(your_page_path)
-  end
-
-  it 'Say hello' do
-    click_button('Hello World')
-    binding.pry
-    expect(page).to have_content('Hello!')
-  end
-end
-```
