@@ -55,7 +55,7 @@ In Ruby, the term `monkey patch` means any dynamic modification to a class.
 ```ruby
 # Evil example
 
-class Fixnum
+class Integer
   def +(adder)
     self - adder
   end
@@ -71,6 +71,42 @@ stations full of people as well as a side-effect.
 
 Carefully check the existing methods in a class before you define your own methods.
 Adding a new method is usually safer than modifying an existing one.
+
+
+---
+
+`Refinements` are designed to reduce the impact of monkey patching on other users of the monkey-patched class. Refinements provide a way to extend a class locally.
+
+config/initializers/hash.rb <!-- .element: class="filename" -->
+```ruby
+module HashOpenStruct
+  refine Hash do
+    def to_o
+      JSON.parse to_json, object_class: OpenStruct
+    end
+  end
+end
+```
+
+```ruby
+class SomeClass
+  using HashOpenStruct
+
+  def do_some_stuff
+    obj = { name: 'John', age: 30 }.to_o # => #<OpenStruct name="John", age=30>
+    obj.name # => John
+    a[:age] # => 30
+  end
+end
+
+class OtherClass
+  def do_some_stuff
+    { name: 'John', age: 30 }.to_o # => NoMethodError
+  end
+end
+```
+
+The purpose of Ruby refinements is to provide a solution by scoping changed behavior to the very specific area of code you choose.
 
 ---
 
@@ -116,10 +152,13 @@ eval "'hi there'.length" #=> 8
 
 Instantiating a method object is the fastest dynamic way in calling a method, eval is the slowest one.
 
+
 ---
 
 Also when
 sending a message to an object, or when instantiating a method object, you can call private methods of that object.
+
+Unlike `send`, `public_send` calls public methods only.
 
 ```ruby
 class Example
@@ -136,7 +175,6 @@ example.send(:hello_there)        # => "Hello"
 example.public_send(:hello_there) # => NoMethodError: private method `hello_there' called ..
 ```
 
-Unlike `send`, `public_send` calls public methods only.
 
 ---
 
@@ -211,7 +249,7 @@ class B < A
   def x
     puts 'x from B Class'
   end
-  undef_method :x # removes all methods, including the inherited ones
+  undef_method :x # removes the method from the receiver and not allow call inherited method
 end
 
 obj = B.new
@@ -241,6 +279,7 @@ class itself to be removed by GC
 
 ```ruby
 Object.send(:remove_const, :MyClass)
+
 MyClass.new # => NameError: unitialized constant
 ```
 
@@ -268,6 +307,38 @@ end
 
 ---
 
+## Overriding method_missing
+
+Most likely, you will never need to call `method_missing` yourself.
+Instead, you can override it to intercept unknown messages. Each
+message landing on `method_missing` desk includes the name of the
+method that was called, plus any arguments and blocks associated with
+the call.
+
+override_method_missing.rb <!-- .element: class="filename" -->
+
+```ruby
+class Lawyer
+  def method_missing(method, *args)
+    puts "You called: #{method}(#{args.join(', ')})"
+    puts "(You also passed it a block)" if block_given?
+  end
+end
+
+bob = Lawyer.new
+bob.talk_simple('a', 'b') do
+  # a block
+end
+```
+
+```bash
+$ ruby override_method_missing.rb
+You called: talk_simple(a, b)
+(You also passed it a block)
+```
+
+---
+
 # Method aliases
 
 You can give an alternate name to a Ruby method by using the `alias` or `alias_method`
@@ -284,6 +355,7 @@ alias :new_number :number
 alias new_number number
 ```
 Notice `alias` is a Ruby keyword (like if, def, class, etc.)
+
 
 ---
 
@@ -344,6 +416,7 @@ end
 The previous code redefines String#length, but the alias still refers to the original method. When you redefine a
 method, you don’t really change the method. Instead, you define a new method and attach an existing name to that new
 method. You can still call the old version of the method as long as you have another name that’s still attached to it.
+
 
 ---
 
@@ -511,6 +584,7 @@ The `instance_eval` method can only evaluate a block (or a string) but that's it
 
 But `instance_exec` on the other hand, will evaluate a provide block and allow you to pass arguments.
 
+
 ---
 
 # Class eval
@@ -661,6 +735,39 @@ M was mixed into C
 
 You can also execute code when a module extends an object by overriding Module#extend_object.
 
+
+---
+
+# Class plus instance methods
+
+```ruby
+module MyMixin
+  def self.included(base)
+    base.extend ClassMethods
+  end
+
+  def x
+    'x()'
+  end
+
+  module ClassMethods
+    def y
+      'y()'
+    end
+  end
+end
+
+class C
+  include MyMixin
+end
+
+C.new.x # => x()
+C.y     # => y()
+
+```
+The `self.included` is called when the module is included. It allows methods to be executed in the context of the base (where the module is included).
+
+
 ---
 
 #### You can execute method-related events by overriding
@@ -697,69 +804,6 @@ $ ruby hooks.rb
 New method: M#my_method
 New singleton method: yay_method
 ```
-
----
-
-## Overriding method_missing
-
-Most likely, you will never need to call `method_missing` yourself.
-Instead, you can override it to intercept unknown messages. Each
-message landing on `method_missing` desk includes the name of the
-method that was called, plus any arguments and blocks associated with
-the call.
-
-override_method_missing.rb <!-- .element: class="filename" -->
-
-```ruby
-class Lawyer
-  def method_missing(method, *args)
-    puts "You called: #{method}(#{args.join(', ')})"
-    puts "(You also passed it a block)" if block_given?
-  end
-end
-
-bob = Lawyer.new
-bob.talk_simple('a', 'b') do
-  # a block
-end
-```
-
-```bash
-$ ruby override_method_missing.rb
-You called: talk_simple(a, b)
-(You also passed it a block)
-```
-
----
-
-# Class plus instance methods
-
-```ruby
-module MyMixin
-  def self.included(base)
-    base.extend ClassMethods
-  end
-
-  def x
-    'x()'
-  end
-
-  module ClassMethods
-    def y
-      'y()'
-    end
-  end
-end
-
-class C
-  include MyMixin
-end
-
-C.new.x # => x()
-C.y     # => y()
-
-```
-The `self.included` is called when the module is included. It allows methods to be executed in the context of the base (where the module is included).
 
 ---
 
