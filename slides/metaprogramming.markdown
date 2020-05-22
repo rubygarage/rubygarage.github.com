@@ -294,15 +294,18 @@ behavior for it. The method_missing method is passed the symbol of the non-exist
 that were passed in the original call and any block passed to the original method.
 
 ```ruby
-class Person
-  def method_missing (method_name, *args, &block)
-    if method_name.to_s =~ /^find_all_by_(\w+)$/
-      'Looking for the Person'
-    else
-      super
-    end
+class MyClass
+  SOME_DATA = { foo: '0', bar: '1', sample: '2', data: '3', key: '4' }.freeze
+
+  def method_missing(name, *args)
+    SOME_DATA[name] || super
   end
 end
+
+my = MyClass.new
+my.foo # 0
+my.bar # 1
+my.unknown_method # => NoMethodError
 ```
 
 ---
@@ -319,7 +322,7 @@ override_method_missing.rb <!-- .element: class="filename" -->
 
 ```ruby
 class Lawyer
-  def method_missing(method, *args)
+  def method_missing(method, *args, &block)
     puts "You called: #{method}(#{args.join(', ')})"
     puts "(You also passed it a block)" if block_given?
   end
