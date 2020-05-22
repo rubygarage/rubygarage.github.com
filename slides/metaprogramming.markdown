@@ -95,7 +95,7 @@ class SomeClass
   def do_some_stuff
     obj = { name: 'John', age: 30 }.to_o # => #<OpenStruct name="John", age=30>
     obj.name # => John
-    a[:age] # => 30
+    obj[:age] # => 30
   end
 end
 
