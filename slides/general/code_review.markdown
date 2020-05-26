@@ -18,11 +18,12 @@ Code review ...
 
 - should be initiated by team members - not business staff of managers
 - should be clean and well-structured
-- should have all precondition phases completed
+- should have all precondition phases completed(details in next slides)
 - is suitable for all level of developers as a reviewer
 - is suitable for all level of developers as a reviewee
 - is suitable for all languages and specific cases
 
+---
 
 ## What to review
 
@@ -33,7 +34,11 @@ Code review ...
 - general structure of code
 - potential miss logics and bugs
 
+---
+
 # NO!
+
+---
 
 ## Correct way
 
@@ -79,6 +84,8 @@ Code review ...
 - If `Developer A` are strongly disagree with his reviewer we propose not to make a panic in comments but discuss it in another communication channel
 - It's required to leave a reply comment with a result of communication in such cases
 
+---
+
 ## Common oopsies
 
 - Huge complexity PR's
@@ -94,8 +101,11 @@ Code review ...
 - Ask a question to reviewer before searching the info
 - Forget to notify the reviewers after finishing the fix
 
+---
 
 # Part 2 - Code Reviewer
+
+---
 
 ## Processing
 - `Developer B` receives a notification about review and opens the PR
@@ -106,6 +116,8 @@ Code review ...
 - `Developer B` lives a comment with :+1 or something like that in comments of other reviewers if he agrees with it
 - `Developer B` change a label of Pull Request is needs some changes or it's a last review
 
+---
+
 ## Common mistakes
 
 - Leaves comments like `redo`, or `change` without any sense.
@@ -115,6 +127,8 @@ Code review ...
 - Don't set the resolution to PR - `Approve` or `Request Changes`
 - Provide the comments in imperative mood, e.g `Fix it ...`, `Change it ...`
 - Provide review for lines of code but not for all PR
+
+---
 
 ## Best practices
 
@@ -127,6 +141,7 @@ Code review ...
 - Remember that there is no ideal code
 - Use `Nit`s in your code. When you have small issue and that's doesn't affect the code quality of all code you can make comments like `Nit: please lets use each_with_index instead each.with_index next time`
 
+---
 
 ## Usefull things
 
@@ -134,5 +149,7 @@ Code review ...
 - Continuos Integration(We use CircleCi)
 - Use Github Notifiers in order not to forget about reviews
 - Use Github Template for each PR
+
+---
 
 # The End
