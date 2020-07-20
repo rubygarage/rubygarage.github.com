@@ -33,7 +33,7 @@ Install Rack
 $ gem install rack
 ```
 
-Create Application
+Create folder for application
 
 ```bash
 $ mkdir racker
@@ -120,9 +120,9 @@ Rack::Builder - https://github.com/rack/rack/blob/master/lib/rack/builder.rb
 
 Each middleware is responsible of calling the next.
 
-lib/custom_header.rb <!-- .element: class="filename" -->
+middlewares/custom_header.rb <!-- .element: class="filename" -->
 ```ruby
-module Rack
+module Middlewares
   class CustomHeader
     def initialize(app)
       @app = app
@@ -141,9 +141,9 @@ end
 
 --
 
-lib/welcome.rb <!-- .element: class="filename" -->
+middlewares/welcome.rb <!-- .element: class="filename" -->
 ```ruby
-module Rack
+module Middlewares
   class Welcome
     def initialize(app)
       @app = app
@@ -167,12 +167,12 @@ end
 config.ru <!-- .element: class="filename" -->
 
 ```ruby
-require './lib/custom_header'
-require './lib/welcome'
+require './middlewares/custom_header'
+require './middlewares/welcome'
 
 app = Rack::Builder.new do
-  use Rack::Welcome
-  use Rack::CustomHeader
+  use Middlewares::Welcome
+  use Middlewares::CustomHeader
   run proc { |env| [200, { 'Content-Type' => 'text/plain' }, ['Hello!']] }
 end
 
@@ -215,7 +215,7 @@ We use Rack::Response! Yay!
 config.ru <!-- .element: class="filename" -->
 
 ```ruby
-require './lib/racker'
+require './middlewares/racker'
 run Racker.new
 ```
 
@@ -224,16 +224,18 @@ lib/racker.rb <!-- .element: class="filename" -->
 ```ruby
 require 'erb'
 
-class Racker
-  def call(env)
-    Rack::Response.new(render('index.html.erb'))
-  end
+module Middlewares
+  class Racker
+    def call(env)
+      Rack::Response.new(render('index.html.erb'))
+    end
 
-  private
+    private
 
-  def render(template)
-    path = File.expand_path("../views/#{template}", __FILE__)
-    ERB.new(File.read(path)).result(binding)
+    def render(template)
+      path = File.expand_path("../views/#{template}", __FILE__)
+      ERB.new(File.read(path)).result(binding)
+    end
   end
 end
 ```
@@ -280,29 +282,31 @@ $ curl http://localhost:9292
 
 # Request
 
-lib/racker.rb <!-- .element: class="filename" -->
+middlewares/racker.rb <!-- .element: class="filename" -->
 
 ```ruby
 require 'erb'
 
-class Racker
-  def call(env)
-    request = Rack::Request.new(env)
-    case request.path
-    when '/' then respond(render('index.html.erb'))
-    else respond('Not Found', 404)
+module Middlewares
+  class Racker
+    def call(env)
+      request = Rack::Request.new(env)
+      case request.path
+      when '/' then respond(render('index.html.erb'))
+      else respond('Not Found', 404)
+      end
     end
-  end
 
-  private
+    private
 
-  def render(template)
-    path = File.expand_path("../views/#{template}", __FILE__)
-    ERB.new(File.read(path)).result(binding)
-  end
+    def render(template)
+      path = File.expand_path("../views/#{template}", __FILE__)
+      ERB.new(File.read(path)).result(binding)
+    end
 
-  def respond(*args)
-    Rack::Response.new(*args).finish
+    def respond(*args)
+      Rack::Response.new(*args).finish
+    end
   end
 end
 ```
@@ -340,45 +344,47 @@ Not Found
 config.ru <!-- .element: class="filename" -->
 
 ```ruby
-require './lib/racker'
-run Racker
+require './middlewares/racker'
+run Middlewares::Racker
 ```
 
 --
 
-lib/racker.rb <!-- .element: class="filename" -->
+middlewares/racker.rb <!-- .element: class="filename" -->
 
 ```ruby
 require 'erb'
 
-class Racker
-  def self.call(env)
-    new(env).response.finish
-  end
-
-  def initialize(env)
-    @request = Rack::Request.new(env)
-  end
-
-  def response
-    case @request.path
-    when '/' then Rack::Response.new(render('index.html.erb'))
-    when '/update_word'
-      Rack::Response.new do |response|
-        response.set_cookie('word', @request.params['word'])
-        response.redirect('/')
-      end
-    else Rack::Response.new('Not Found', 404)
+module Middlewares
+  class Racker
+    def self.call(env)
+      new(env).response.finish
     end
-  end
 
-  def render(template)
-    path = File.expand_path("../views/#{template}", __FILE__)
-    ERB.new(File.read(path)).result(binding)
-  end
+    def initialize(env)
+      @request = Rack::Request.new(env)
+    end
 
-  def word
-    @request.cookies['word'] || 'Nothing'
+    def response
+      case @request.path
+      when '/' then Rack::Response.new(render('index.html.erb'))
+      when '/update_word'
+        Rack::Response.new do |response|
+          response.set_cookie('word', @request.params['word'])
+          response.redirect('/')
+        end
+      else Rack::Response.new('Not Found', 404)
+      end
+    end
+
+    def render(template)
+      path = File.expand_path("../views/#{template}", __FILE__)
+      ERB.new(File.read(path)).result(binding)
+    end
+
+    def word
+      @request.cookies['word'] || 'Nothing'
+    end
   end
 end
 ```
@@ -430,10 +436,10 @@ Go to http://localhost:9292
 
 config.ru <!-- .element: class="filename" -->
 ```ruby
-require './lib/racker'
+require './middlewares/racker'
 
 use Rack::Static, urls: ['/stylesheets'], root: 'public'
-run Racker
+run Middlewares::Racker
 ```
 
 --
@@ -529,11 +535,11 @@ For such reason, it's recommended to use `Rack::Reloader` middleware
 config.ru <!-- .element: class="filename" -->
 ```ruby
 
-require_relative './lib/racker'
+require_relative './middlewares/racker'
 
 use Rack::Reloader
 use Rack::Static, :urls => ['/assets'], :root => 'public'
-run Racker
+run Middlewares::Racker
 
 ```
 
@@ -560,42 +566,44 @@ use Rack::Session::Cookie, :key => 'rack.session',
                            :expire_after => 2592000,
                            :secret => 'change_me',
                            :old_secret => 'also_change_me'
-run Racker
+run Middlewares::Racker
 ```
 
 --
 
 ### Using Rack Sessions
 
-lib/racker.rb <!-- .element: class="filename" -->
+middlewares/racker.rb <!-- .element: class="filename" -->
 ```ruby
-class Racker
-  def self.call(env)
-    new(env).response.finish
-  end
-
-  def initialize(env)
-    @request = Rack::Request.new(env)
-  end
-
-  def response
-    case @request.path
-      when '/'
-        return Rack::Response.new("My name is #{@request.session[:name]}", 200) if session_present?
-        Rack::Response.new { |response| response.redirect("/endpoint_where_session_starts") }
-      when '/endpoint_where_session_starts'
-        Rack::Response.new do |response|
-          @request.session[:name] = 'John Doe' unless session_present?
-          response.redirect('/')
-        end
-      else Rack::Response.new('Not Found', 404)
+module Middlewares
+  class Racker
+    def self.call(env)
+      new(env).response.finish
     end
-  end
 
-  private
+    def initialize(env)
+      @request = Rack::Request.new(env)
+    end
 
-  def session_present?
-    @request.session.key?(:name)
+    def response
+      case @request.path
+        when '/'
+          return Rack::Response.new("My name is #{@request.session[:name]}", 200) if session_present?
+          Rack::Response.new { |response| response.redirect("/endpoint_where_session_starts") }
+        when '/endpoint_where_session_starts'
+          Rack::Response.new do |response|
+            @request.session[:name] = 'John Doe' unless session_present?
+            response.redirect('/')
+          end
+        else Rack::Response.new('Not Found', 404)
+      end
+    end
+
+    private
+
+    def session_present?
+      @request.session.key?(:name)
+    end
   end
 end
 ```
@@ -612,58 +620,6 @@ require_relative 'config/environment'
 
 run Rails.application
 ```
-
---
-
-config/environment.rb <!-- .element: class="filename" -->
-```ruby
-# Load the Rails application.
-require_relative 'application'
-
-# Initialize the Rails application.
-Rails.application.initialize!
-```
-
---
-
-config/application.rb <!-- .element: class="filename" -->
-```ruby
-require File.expand_path('../boot', __FILE__)
-
-require 'rails/all'
-
-# Require the gems listed in Gemfile, including any gems
-# you've limited to :test, :development, or :production.
-Bundler.require(*Rails.groups)
-
-module TestRailsRack
-  class Application < Rails::Application
-    # Settings in config/environments/* take precedence over those specified here.
-    # Application configuration should go into files in config/initializers
-    # -- all .rb files in that directory are automatically loaded.
-
-    # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
-    # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
-    # config.time_zone = 'Central Time (US & Canada)'
-
-    # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
-    # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
-    # config.i18n.default_locale = :de
-  end
-end
-```
-
---
-
-config/boot.rb <!-- .element: class="filename" -->
-```ruby
-# Set up gems listed in the Gemfile.
-ENV['BUNDLE_GEMFILE'] ||= File.expand_path('../../Gemfile', __FILE__)
-
-require 'bundler/setup' if File.exist?(ENV['BUNDLE_GEMFILE'])
-```
-
----
 
 ## Rails rack middleware
 
