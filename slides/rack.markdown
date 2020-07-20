@@ -24,7 +24,7 @@ hash as a parameter, and returning an Array with three elements:
 Create gemset
 
 ```bash
-$ rvm use ruby-2.4.1@rack --create
+$ rvm use ruby-2.6.6@rack --create
 ```
 
 Install Rack
@@ -192,7 +192,7 @@ config.ru <!-- .element: class="filename" -->
 ```ruby
 class Racker
   def call(env)
-    Rack::Response.new('We use Rack::Response! Yay!')
+    Rack::Response.new('We use Rack::Response! Yay!').finish
   end
 end
 
@@ -289,8 +289,8 @@ class Racker
   def call(env)
     request = Rack::Request.new(env)
     case request.path
-    when '/' then Rack::Response.new(render('index.html.erb'))
-    else Rack::Response.new('Not Found', 404)
+    when '/' then respond(render('index.html.erb'))
+    else respond('Not Found', 404)
     end
   end
 
@@ -299,6 +299,10 @@ class Racker
   def render(template)
     path = File.expand_path("../views/#{template}", __FILE__)
     ERB.new(File.read(path)).result(binding)
+  end
+
+  def respond(*args)
+    Rack::Response.new(*args).finish
   end
 end
 ```
@@ -604,7 +608,8 @@ config.ru <!-- .element: class="filename" -->
 ```ruby
 # This file is used by Rack-based servers to start the application.
 
-require ::File.expand_path('../config/environment',  __FILE__)
+require_relative 'config/environment'
+
 run Rails.application
 ```
 
@@ -613,7 +618,7 @@ run Rails.application
 config/environment.rb <!-- .element: class="filename" -->
 ```ruby
 # Load the Rails application.
-require File.expand_path('../application', __FILE__)
+require_relative 'application'
 
 # Initialize the Rails application.
 Rails.application.initialize!
