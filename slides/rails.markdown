@@ -23,8 +23,8 @@ do it, rather than requiring you to specify every little thing through endless c
 ### Preparing environment
 
 ```bash
-$ rvm use 2.4.3@blog --create
-Using /Users/ty/.rvm/gems/ruby-2.4.3 with gemset blog
+$ rvm use 2.7.1@blog --create
+Using /Users/ty/.rvm/gems/ruby-2.7.1 with gemset blog
 ```
 
 --
@@ -38,7 +38,7 @@ $ gem install rails
 ```
 
 ```bash
-$ gem install rails -v 5.1
+$ gem install rails -v 6.0.3.2
 ```
 
 ---
@@ -48,47 +48,66 @@ $ gem install rails -v 5.1
 ```bash
 $ rails new -h
 Usage:
-rails new APP_PATH [options]
+  rails new APP_PATH [options]
 
 Options:
--r, [--ruby=PATH]                                      # Path to the Ruby binary of your choice
-                                                         # Default: /Users/kirill/.rvm/rubies/ruby-2.4.3/bin/ruby
--m, [--template=TEMPLATE]                              # Path to some application template (can be a filesystem path or URL)
--d, [--database=DATABASE]                              # Preconfigure for selected database (options: mysql/postgresql/sqlite3/oracle/frontbase/ibm_db/sqlserver/jdbcmysql/jdbcsqlite3/jdbcpostgresql/jdbc)
-                                                         # Default: sqlite3
-    [--skip-yarn], [--no-skip-yarn]                    # Don't use Yarn for managing JavaScript dependencies
-    [--skip-gemfile], [--no-skip-gemfile]              # Don't create a Gemfile
--G, [--skip-git], [--no-skip-git]                      # Skip .gitignore file
-    [--skip-keeps], [--no-skip-keeps]                  # Skip source control .keep files
--M, [--skip-action-mailer], [--no-skip-action-mailer]  # Skip Action Mailer files
--O, [--skip-active-record], [--no-skip-active-record]  # Skip Active Record files
--P, [--skip-puma], [--no-skip-puma]                    # Skip Puma related files
--C, [--skip-action-cable], [--no-skip-action-cable]    # Skip Action Cable files
--S, [--skip-sprockets], [--no-skip-sprockets]          # Skip Sprockets files
-    [--skip-spring], [--no-skip-spring]                # Don't install Spring application preloader
-    [--skip-listen], [--no-skip-listen]                # Don't generate configuration that depends on the listen gem
-    [--skip-coffee], [--no-skip-coffee]                # Don't use CoffeeScript
--J, [--skip-javascript], [--no-skip-javascript]        # Skip JavaScript files
-    [--skip-turbolinks], [--no-skip-turbolinks]        # Skip turbolinks gem
--T, [--skip-test], [--no-skip-test]                    # Skip test files
-    [--skip-system-test], [--no-skip-system-test]      # Skip system test files
-    [--dev], [--no-dev]                                # Setup the application with Gemfile pointing to your Rails checkout
-    [--edge], [--no-edge]                              # Setup the application with Gemfile pointing to Rails repository
-    [--rc=RC]                                          # Path to file containing extra configuration options for rails command
-    [--no-rc], [--no-no-rc]                            # Skip loading of extra configuration options from .railsrc file
-    [--api], [--no-api]                                # Preconfigure smaller stack for API only apps
--B, [--skip-bundle], [--no-skip-bundle]                # Don't run bundle install
-    [--webpack=WEBPACK]                                # Preconfigure for app-like JavaScript with Webpack (options: react/vue/angular)
+      [--skip-namespace], [--no-skip-namespace]              # Skip namespace (affects only isolated applications)
+  -r, [--ruby=PATH]                                          # Path to the Ruby binary of your choice
+                                                             # Default: /usr/share/rvm/rubies/ruby-2.6.5/bin/ruby
+  -m, [--template=TEMPLATE]                                  # Path to some application template (can be a filesystem path or URL)
+  -d, [--database=DATABASE]                                  # Preconfigure for selected database (options: mysql/postgresql/sqlite3/oracle/frontbase/ibm_db/sqlserver/jdbcmysql/jdbcsqlite3/jdbcpostgresql/jdbc)
+                                                             # Default: sqlite3
+      [--skip-gemfile], [--no-skip-gemfile]                  # Don't create a Gemfile
+  -G, [--skip-git], [--no-skip-git]                          # Skip .gitignore file
+      [--skip-keeps], [--no-skip-keeps]                      # Skip source control .keep files
+  -M, [--skip-action-mailer], [--no-skip-action-mailer]      # Skip Action Mailer files
+      [--skip-action-mailbox], [--no-skip-action-mailbox]    # Skip Action Mailbox gem
+      [--skip-action-text], [--no-skip-action-text]          # Skip Action Text gem
+  -O, [--skip-active-record], [--no-skip-active-record]      # Skip Active Record files
+      [--skip-active-storage], [--no-skip-active-storage]    # Skip Active Storage files
+  -P, [--skip-puma], [--no-skip-puma]                        # Skip Puma related files
+  -C, [--skip-action-cable], [--no-skip-action-cable]        # Skip Action Cable files
+  -S, [--skip-sprockets], [--no-skip-sprockets]              # Skip Sprockets files
+      [--skip-spring], [--no-skip-spring]                    # Don't install Spring application preloader
+      [--skip-listen], [--no-skip-listen]                    # Don't generate configuration that depends on the listen gem
+  -J, [--skip-javascript], [--no-skip-javascript]            # Skip JavaScript files
+      [--skip-turbolinks], [--no-skip-turbolinks]            # Skip turbolinks gem
+  -T, [--skip-test], [--no-skip-test]                        # Skip test files
+      [--skip-system-test], [--no-skip-system-test]          # Skip system test files
+      [--skip-bootsnap], [--no-skip-bootsnap]                # Skip bootsnap gem
+      [--dev], [--no-dev]                                    # Setup the application with Gemfile pointing to your Rails checkout
+      [--edge], [--no-edge]                                  # Setup the application with Gemfile pointing to Rails repository
+      [--rc=RC]                                              # Path to file containing extra configuration options for rails command
+      [--no-rc], [--no-no-rc]                                # Skip loading of extra configuration options from .railsrc file
+      [--api], [--no-api]                                    # Preconfigure smaller stack for API only apps
+  -B, [--skip-bundle], [--no-skip-bundle]                    # Don't run bundle install
+  --webpacker, [--webpack=WEBPACK]                           # Preconfigure Webpack with a particular framework (options: react, vue, angular, elm, stimulus)
+      [--skip-webpack-install], [--no-skip-webpack-install]  # Don't run Webpack install
 
 Runtime options:
--f, [--force]                    # Overwrite files that already exist
--p, [--pretend], [--no-pretend]  # Run but do not make any changes
--q, [--quiet], [--no-quiet]      # Suppress status output
--s, [--skip], [--no-skip]        # Skip files that already exist
+  -f, [--force]                    # Overwrite files that already exist
+  -p, [--pretend], [--no-pretend]  # Run but do not make any changes
+  -q, [--quiet], [--no-quiet]      # Suppress status output
+  -s, [--skip], [--no-skip]        # Skip files that already exist
 
 Rails options:
--h, [--help], [--no-help]        # Show this help message and quit
--v, [--version], [--no-version]  # Show Rails version number and quit
+  -h, [--help], [--no-help]        # Show this help message and quit
+  -v, [--version], [--no-version]  # Show Rails version number and quit
+
+Description:
+    The 'rails new' command creates a new Rails application with a default
+    directory structure and configuration at the path you specify.
+
+    You can specify extra command-line arguments to be used every time
+    'rails new' runs in the .railsrc configuration file in your home directory.
+
+    Note that the arguments specified in the .railsrc file don't affect the
+    defaults values shown above in this help message.
+
+Example:
+    rails new ~/Code/Ruby/weblog
+
+    This generates a skeletal Rails installation in ~/Code/Ruby/weblog.
 ```
 
 --
@@ -100,46 +119,46 @@ $ rails new blog
 create
 create  README.md
 create  Rakefile
+create  .ruby-version
 create  config.ru
 create  .gitignore
 create  Gemfile
-run  git init from "."
-Initialized empty Git repository in /Users/kirill/workspace/learning/blog/.git/
+   run  git init from "."
+Initialized empty Git repository in /home/user/temp/blog/.git/
+create  package.json
 create  app
 create  app/assets/config/manifest.js
-create  app/assets/javascripts/application.js
-create  app/assets/javascripts/cable.js
 create  app/assets/stylesheets/application.css
 create  app/channels/application_cable/channel.rb
 create  app/channels/application_cable/connection.rb
 create  app/controllers/application_controller.rb
 create  app/helpers/application_helper.rb
+create  app/javascript/channels/consumer.js
+create  app/javascript/channels/index.js
+create  app/javascript/packs/application.js
 create  app/jobs/application_job.rb
 create  app/mailers/application_mailer.rb
 create  app/models/application_record.rb
 create  app/views/layouts/application.html.erb
 create  app/views/layouts/mailer.html.erb
 create  app/views/layouts/mailer.text.erb
+create  app/assets/images
 create  app/assets/images/.keep
-create  app/assets/javascripts/channels
-create  app/assets/javascripts/channels/.keep
 create  app/controllers/concerns/.keep
 create  app/models/concerns/.keep
 create  bin
-create  bin/bundle
 create  bin/rails
 create  bin/rake
 create  bin/setup
-create  bin/update
 create  bin/yarn
 create  config
 create  config/routes.rb
 create  config/application.rb
 create  config/environment.rb
-create  config/secrets.yml
 create  config/cable.yml
 create  config/puma.rb
 create  config/spring.rb
+create  config/storage.yml
 create  config/environments
 create  config/environments/development.rb
 create  config/environments/production.rb
@@ -148,15 +167,18 @@ create  config/initializers
 create  config/initializers/application_controller_renderer.rb
 create  config/initializers/assets.rb
 create  config/initializers/backtrace_silencers.rb
+create  config/initializers/content_security_policy.rb
 create  config/initializers/cookies_serializer.rb
 create  config/initializers/cors.rb
 create  config/initializers/filter_parameter_logging.rb
 create  config/initializers/inflections.rb
 create  config/initializers/mime_types.rb
-create  config/initializers/new_framework_defaults_5_1.rb
+create  config/initializers/new_framework_defaults_6_0.rb
 create  config/initializers/wrap_parameters.rb
 create  config/locales
 create  config/locales/en.yml
+create  config/master.key
+append  .gitignore
 create  config/boot.rb
 create  config/database.yml
 create  db
@@ -176,6 +198,14 @@ create  public/apple-touch-icon-precomposed.png
 create  public/apple-touch-icon.png
 create  public/favicon.ico
 create  public/robots.txt
+create  tmp
+create  tmp/.keep
+create  tmp/pids
+create  tmp/pids/.keep
+create  tmp/cache
+create  tmp/cache/assets
+create  vendor
+create  vendor/.keep
 create  test/fixtures
 create  test/fixtures/.keep
 create  test/fixtures/files
@@ -190,20 +220,18 @@ create  test/helpers
 create  test/helpers/.keep
 create  test/integration
 create  test/integration/.keep
+create  test/channels/application_cable/connection_test.rb
 create  test/test_helper.rb
 create  test/system
 create  test/system/.keep
 create  test/application_system_test_case.rb
-create  tmp
-create  tmp/.keep
-create  tmp/cache
-create  tmp/cache/assets
-create  vendor
-create  vendor/.keep
-create  package.json
+create  storage
+create  storage/.keep
+create  tmp/storage
+create  tmp/storage/.keep
 remove  config/initializers/cors.rb
-remove  config/initializers/new_framework_defaults_5_1.rb
-run  bundle install
+remove  config/initializers/new_framework_defaults_6_0.rb
+   run  bundle install
 ...
 ```
 
@@ -218,7 +246,7 @@ $ cd blog
 .ruby-version <!-- .element: class="filename" -->
 
 ```ruby
-2.4.3
+2.7.1
 ```
 
 .ruby-gemset <!-- .element: class="filename" -->
@@ -261,65 +289,59 @@ blog
 
 ```ruby
 source 'https://rubygems.org'
+git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-git_source(:github) do |repo_name|
-  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
-  "https://github.com/#{repo_name}.git"
-end
-
+ruby '2.7.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.1.4'
+gem 'rails', '~> 6.0.3', '>= 6.0.3.1'
 # Use sqlite3 as the database for Active Record
-gem 'sqlite3'
+gem 'sqlite3', '~> 1.4'
 # Use Puma as the app server
-gem 'puma', '~> 3.7'
+gem 'puma', '~> 4.1'
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0'
-# Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
-# See https://github.com/rails/execjs#readme for more supported runtimes
-# gem 'therubyracer', platforms: :ruby
-
-# Use CoffeeScript for .coffee assets and views
-gem 'coffee-rails', '~> 4.2'
+gem 'sass-rails', '>= 6'
+# Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
+gem 'webpacker', '~> 4.0'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.5'
+gem 'jbuilder', '~> 2.7'
 # Use Redis adapter to run Action Cable in production
-# gem 'redis', '~> 3.0'
-# Use ActiveModel has_secure_password
+# gem 'redis', '~> 4.0'
+# Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
+# Use Active Storage variant
+# gem 'image_processing', '~> 1.2'
+
+# Reduces boot times through caching; required in config/boot.rb
+gem 'bootsnap', '>= 1.4.2', require: false
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-  # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '~> 2.13'
-  gem 'selenium-webdriver'
 end
 
 group :development do
-  # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
+  # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem 'web-console', '>= 3.3.0'
-  gem 'listen', '>= 3.0.5', '< 3.2'
+  gem 'listen', '~> 3.2'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
+group :test do
+  # Adds support for Capybara system testing and selenium driver
+  gem 'capybara', '>= 2.15'
+  gem 'selenium-webdriver'
+  # Easy installation and use of web drivers to run system tests with browsers
+  gem 'webdrivers'
+end
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-
-#gem 'rails', git: 'https://github.com/rails/rails.git'
-#gem 'rails', git: 'git@github.com:rails/rails.git'
-#gem 'rails', git: 'git://github.com/rails/rails.git'
-#gem 'rails', github: 'rails/rails'
-#gem 'rails', path: 'vendor/rails'
 ```
 
 ---
@@ -364,7 +386,7 @@ production:
 development:
   adapter: postgresql
   encoding: unicode
-  database: community_development
+  database: blog_development
   username: root
   password:
 ```
@@ -375,7 +397,7 @@ development:
 development:
   adapter: mysql2
   encoding: utf8
-  database: community_development
+  database: blog_development
   username: root
   password:
   socket: /tmp/mysql.sock
@@ -402,14 +424,15 @@ $ rails server -e production -p 6789
 ```bash
 $ rails s
 => Booting Puma
-=> Rails 5.1.4 application starting in development on http://localhost:3000
-=> Run `rails server -h` for more startup options
-=> Ctrl-C to shutdown server
-I, [2016-04-03T17:44:50.487276 #21178]  INFO -- : Celluloid 0.17.3 is running in BACKPORTED mode. [ http://git.io/vJf3J ]
-Puma 2.16.0 starting...
-* Min threads: 0, max threads: 16
+=> Rails 6.0.3.2 application starting in development
+=> Run `rails server --help` for more startup options
+Puma starting in single mode...
+* Version 4.3.5 (ruby 2.6.5-p114), codename: Mysterious Traveller
+* Min threads: 5, max threads: 5
 * Environment: development
-* Listening on tcp://localhost:3000
+* Listening on tcp://127.0.0.1:3000
+* Listening on tcp://[::1]:3000
+Use Ctrl-C to stop
 ```
 
 ---
@@ -418,14 +441,15 @@ Puma 2.16.0 starting...
 
 ```bash
 $ rails generate scaffold Post title:string text:text
+  Running via Spring preloader in process 24696
   invoke  active_record
-  create    db/migrate/20180115131427_create_posts.rb
+  create    db/migrate/20200730214810_create_posts.rb
   create    app/models/post.rb
   invoke    test_unit
   create      test/models/post_test.rb
   create      test/fixtures/posts.yml
   invoke  resource_route
-  route    resources :posts
+   route    resources :posts
   invoke  scaffold_controller
   create    app/controllers/posts_controller.rb
   invoke    erb
@@ -437,6 +461,7 @@ $ rails generate scaffold Post title:string text:text
   create      app/views/posts/_form.html.erb
   invoke    test_unit
   create      test/controllers/posts_controller_test.rb
+  create      test/system/posts_test.rb
   invoke    helper
   create      app/helpers/posts_helper.rb
   invoke      test_unit
@@ -444,11 +469,7 @@ $ rails generate scaffold Post title:string text:text
   create      app/views/posts/index.json.jbuilder
   create      app/views/posts/show.json.jbuilder
   create      app/views/posts/_post.json.jbuilder
-  invoke  test_unit
-  create    test/system/posts_test.rb
   invoke  assets
-  invoke    coffee
-  create      app/assets/javascripts/posts.coffee
   invoke    scss
   create      app/assets/stylesheets/posts.scss
   invoke  scss
@@ -459,10 +480,10 @@ $ rails generate scaffold Post title:string text:text
 
 ## Migrations
 
-db/migrate/20180115131427_create_posts.rb <!-- .element: class="filename" -->
+db/migrate/20200730214810_create_posts.rb <!-- .element: class="filename" -->
 
 ```ruby
-class CreatePosts < ActiveRecord::Migration[5.1]
+class CreatePosts < ActiveRecord::Migration[6.0]
   def change
     create_table :posts do |t|
       t.string :title
@@ -494,13 +515,13 @@ $ rake db:migrate
 db/schema.rb <!-- .element: class="filename" -->
 
 ```ruby
-ActiveRecord::Schema.define(version: 20180115131427) do
+ActiveRecord::Schema.define(version: 2020_07_30_214810) do
 
   create_table "posts", force: :cascade do |t|
     t.string "title"
     t.text "text"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
 end
@@ -634,7 +655,7 @@ class PostsController < ApplicationController
     @post = Post.find(params[:id])
   end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
+  # Only allow a list of trusted parameters through.
   def post_params
     params.require(:post).permit(:title, :text)
   end
@@ -713,16 +734,16 @@ end
 app/views/posts/index.html.erb <!-- .element: class="filename" -->
 
 ```html
-<h1>Listing posts</h1>
+<p id="notice"><%= notice %></p>
+
+<h1>Posts</h1>
 
 <table>
   <thead>
     <tr>
       <th>Title</th>
       <th>Text</th>
-      <th></th>
-      <th></th>
-      <th></th>
+      <th colspan="3"></th>
     </tr>
   </thead>
 
@@ -751,10 +772,14 @@ app/views/posts/index.html.erb <!-- .element: class="filename" -->
 app/views/posts/index.json.jbuilder <!-- .element: class="filename" -->
 
 ```ruby
-json.array!(@posts) do |post|
-  json.extract! post, :id, :title, :text
-  json.url post_url(post, format: :json)
-end
+json.array! @posts, partial: "posts/post", as: :post
+```
+
+app/views/posts/_post.json.jbuilder <!-- .element: class="filename" -->
+
+```ruby
+json.extract! post, :id, :title, :text, :created_at, :updated_at
+json.url post_url(post, format: :json)
 ```
 
 ---
@@ -806,12 +831,12 @@ end
 
 ## Post Form
 
-app/views/posts/index.html.erb <!-- .element: class="filename" -->
+app/views/posts/new.html.erb <!-- .element: class="filename" -->
 
 ```html
-<h1>New post</h1>
+<h1>New Post</h1>
 
-<%= render 'form' %>
+<%= render 'form', post: @post %>
 
 <%= link_to 'Back', posts_path %>
 ```
@@ -819,27 +844,32 @@ app/views/posts/index.html.erb <!-- .element: class="filename" -->
 app/views/posts/_form.html.erb <!-- .element: class="filename" -->
 
 ```html
-<%= form_for(@post) do |f| %>
-  <% if @post.errors.any? %>
+<%= form_with(model: post, local: true) do |form| %>
+  <% if post.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
+      <h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
+
       <ul>
-      <% @post.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
+        <% post.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
       </ul>
     </div>
   <% end %>
 
   <div class="field">
-    <%= f.label :title %><br>
-    <%= f.text_field :title %>
+    <%= form.label :title %>
+    <%= form.text_field :title %>
   </div>
+
   <div class="field">
-    <%= f.label :text %><br>
-    <%= f.text_area :text %>
+    <%= form.label :text %>
+    <%= form.text_area :text %>
   </div>
-  <div class="actions"><%= f.submit %></div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
 <% end %>
 ```
 
@@ -862,9 +892,9 @@ class PostsController < ApplicationController
     respond_to do |format|
       if @post.save
         format.html { redirect_to @post, notice: 'Post was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @post }
+        format.json { render :show, status: :created, location: @post }
       else
-        format.html { render action: 'new' }
+        format.html { render :new }
         format.json { render json: @post.errors, status: :unprocessable_entity }
       end
     end
@@ -950,7 +980,15 @@ app/views/posts/show.html.erb <!-- .element: class="filename" -->
 app/views/posts/show.json.jbuilder <!-- .element: class="filename" -->
 
 ```ruby
-json.extract! @post, :title, :text, :created_at, :updated_at
+json.partial! "posts/post", post: @post
+```
+
+app/views/posts/_post.json.jbuilder <!-- .element: class="filename" -->
+
+```ruby
+json.extract! post, :id, :title, :text, :created_at, :updated_at
+json.url post_url(post, format: :json)
+
 ```
 
 ---
@@ -1003,7 +1041,10 @@ end
 app/views/posts/edit.html.erb <!-- .element: class="filename" -->
 
 ```html
-<%= render 'form' %>
+<h1>Editing Post</h1>
+
+<%= render 'form', post: @post %>
+
 <%= link_to 'Show', @post %> |
 <%= link_to 'Back', posts_path %>
 ```
@@ -1011,27 +1052,31 @@ app/views/posts/edit.html.erb <!-- .element: class="filename" -->
 app/views/posts/_form.html.erb <!-- .element: class="filename" -->
 
 ```html
-<%= form_for(@post) do |f| %>
-  <% if @post.errors.any? %>
+<%= form_with(model: post, local: true) do |form| %>
+  <% if post.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
+      <h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
+
       <ul>
-      <% @post.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
+        <% post.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
       </ul>
     </div>
   <% end %>
+
   <div class="field">
-    <%= f.label :title %><br>
-    <%= f.text_field :title %>
+    <%= form.label :title %>
+    <%= form.text_field :title %>
   </div>
+
   <div class="field">
-    <%= f.label :text %><br>
-    <%= f.text_area :text %>
+    <%= form.label :text %>
+    <%= form.text_area :text %>
   </div>
+
   <div class="actions">
-    <%= f.submit %>
+    <%= form.submit %>
   </div>
 <% end %>
 ```
@@ -1053,9 +1098,9 @@ class PostsController < ApplicationController
     respond_to do |format|
       if @post.update(post_params)
         format.html { redirect_to @post, notice: 'Post was successfully updated.' }
-        format.json { head :no_content }
+        format.json { render :show, status: :ok, location: @post }
       else
-        format.html { render action: 'edit' }
+        format.html { render :edit }
         format.json { render json: @post.errors, status: :unprocessable_entity }
       end
     end
@@ -1092,7 +1137,7 @@ class PostsController < ApplicationController
   def destroy
     @post.destroy
     respond_to do |format|
-      format.html { redirect_to posts_url }
+      format.html { redirect_to posts_url, notice: 'Post was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -1122,12 +1167,11 @@ app/views/layouts/application.html.erb <!-- .element: class="filename" -->
 <html>
   <head>
     <title>Blog</title>
-
     <%= csrf_meta_tags %>
-    <%= action_cable_meta_tag %>
+    <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
@@ -1160,6 +1204,7 @@ app/helpers/posts_helper.rb <!-- .element: class="filename" -->
 module PostsHelper
   def post_short_description(post)
     return post.text if post.text.length <= 30
+
     post.text.slice(0, 27).concat("...")
   end
 
@@ -1194,13 +1239,13 @@ app/views/posts/index.html.erb <!-- .element: class="filename" -->
 
 ## Assets
 
-app/assets/javascripts/application.js <!-- .element: class="filename" -->
+app/javascript/packs/application.js <!-- .element: class="filename" -->
 
 ```javascript
-//= require jquery
-//= require jquery_ujs
-//= require turbolinks
-//= require_tree .
+require("@rails/ujs").start()
+require("turbolinks").start()
+require("@rails/activestorage").start()
+require("channels")
 ```
 
 app/assets/stylesheets/application.css <!-- .element: class="filename" -->
@@ -1221,21 +1266,14 @@ app/assets/stylesheets/application.css <!-- .element: class="filename" -->
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Community</title>
+    <title>Blog</title>
+    <meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="l+gq/e/RzeQzbgRi4pY1H71ff2y4lRmKK8iV4f3osLh1bRgA9ipOdbDQxZABF6aM3kYUMp+gh2AcLRWA2QAzOg==" />
 
-    <link data-turbolinks-track="true" href="/assets/application.css?body=1" media="all" rel="stylesheet" />
-    <link data-turbolinks-track="true" href="/assets/posts.css?body=1" media="all" rel="stylesheet" />
-    <link data-turbolinks-track="true" href="/assets/scaffolds.css?body=1" media="all" rel="stylesheet" />
-
-    <script data-turbolinks-track="true" src="/assets/jquery.js?body=1"></script>
-    <script data-turbolinks-track="true" src="/assets/jquery_ujs.js?body=1"></script>
-    <script data-turbolinks-track="true" src="/assets/turbolinks.js?body=1"></script>
-    <script data-turbolinks-track="true" src="/assets/posts.js?body=1"></script>
-    <script data-turbolinks-track="true" src="/assets/application.js?body=1"></script>
-
-    <meta content="authenticity_token" name="csrf-param" />
-    <meta content="n4Djzu/hPGSd5oMdGdfJ3sqePMR+E/1fs2679AMHLE0=" name="csrf-token" />
+    <link rel="stylesheet" media="all" href="/assets/application.debug-86435a3da7ccdbdbe471db77c4e963257e72df29b5dd28831a9d47af7daf59d7.css" data-turbolinks-track="reload" />
+    <script src="/packs/js/application-9afcbb5693aa87623e69.js" data-turbolinks-track="reload"></script>
   </head>
+
   <body>
 
     ...
