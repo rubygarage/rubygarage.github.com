@@ -13,9 +13,49 @@ Refactoring is a systematic process of improving the quality of code without cha
 
 ---
 
-# Code smell
+## Why is the refactoring is needed?
+- There was a need to hotfix some code in a hurry
+- Some legacy approaches were left in a hurry for later fixes
+- Developer-dependent parts of code
+- Refactoring during the process of adapting some module to be multipurpose
+- Human factor
 
-> Code smells are usually not bugs and don’t currently prevent the program from functioning. Instead, they indicate weaknesses in design that may be slowing down development or increasing the risk of bugs or failures in the future.
+---
+
+## Refactoring vs Optimisation vs Bugfixing
+
+| | Refactoring | Optimisation | Bugfixing |
+|-------------|-------------|-------------|-------------|
+| Making code clean | `true` | false | false |
+| Optimising performance | false | `true` | false |
+| Changing code functionality | false | false | `true` |
+
+---
+
+# Goals of Refactoring
+
+- Code purity
+- Code maintainability
+- Increase ease of understanding and reduce entry threshold
+- Modularity
+- Compliance with software design principles (DRY, SOLID, etc.)
+- Reduce obsolete code
+
+---
+
+## When can we apply refactoring?
+When the development team has:
+- Well-tested code, which is about to be refactored
+- Understanding of what exactly should be refactored (having `Definition of Done`)
+- Prioritized the pieces of source code to be refactored
+- Understanding of business logic
+
+---
+
+
+# Code smell as bad code unit
+
+> Code smells are usually `not bugs` and don’t currently prevent the program from functioning. Instead, they indicate weaknesses in design that may be slowing the development down or increasing the risk of bugs or failures in the future.
 
 > "A code smell is a surface indication that usually corresponds to a deeper problem in the system."
 
@@ -25,16 +65,52 @@ Refactoring is a systematic process of improving the quality of code without cha
 
 # The Refactoring Cycle
 
-* Start with working, tested code while the design can be simplified
-* Choose the worst smell
-* Apply the refactoring
-* Check that the tests still pass
+1. Find code smells and document them
+2. Prioritize according to the following standards:
+  * importancy for business
+  * frequency of usage of that piece of code
+  * size of a code smell
+  * coverage of specs and tests quality
+3. Choose the code smell from the top of the list
+4. Apply the refactoring
+5. Check that the tests still pass
+
+---
+
+# Bad approaches
+- "Guerrilla" refactoring
+- Running specs rarely during refactoring
+- Killing the specs
+- Refactoring the spec during refactoring
+- Make a huge refactoring in one branch
+- Do the refactoring without preparing the list of worst code places in a project
+
+---
+
+## Code smells & Refactoring techniques
+
+Refactoring techniques - they are just approaches, not the final implementation (like patterns).
+
+---
+
+# Main points
+
+- Refactoring should be measurable, finite, costly-oriented, regular, corpuscular
+
+- Refactoring task is not "the task of the second chance"
+
+- Refactoring tasks (pull requests) should be quick and fast to merge (too expensive to keep them too long)
+
+---
+
+# Code smells' groups
+![](/assets/images/refactoring-ruby/code_smells_groups.png)
 
 ---
 
 # Bloaters
 
-Bloater smells represents something that has grown so large that it cannot be effectively handled. These smells usually accumulate over time as the program evolves:
+Bloater smells represent something that has grown so large that it cannot be effectively handled. These smells usually accumulate over time as the program evolves:
 
 * [Long Method](refactoring-ruby#/9)
 * [Long Parameter List](refactoring-ruby#/10)
@@ -89,13 +165,13 @@ All the smells in this group contribute to excessive coupling between classes or
 
 # Long Method
 
-* A method has a large number of lines. (We’re immediately suspicious of any method with more than five lines.)
+A method has a large number of lines. (We’re immediately suspicious of any method with more than five lines.)
 
 --
 
 ## Problems
 
-* Flexibility: A Long Method is guaranteed to be a Greedy Method at least two responsibilities are coupled together in
+* Flexibility: A Long Method is guaranteed to be a Greedy Method that has at least two responsibilities coupled together in
 one place, which in turn leads to Divergent Change.
 * Testability: It can be difficult to isolate individual behaviors of a Long Method for testing; and if a method does
 too much it may also be difficult to create fixtures that contain enough context for the method to work properly.
@@ -104,7 +180,7 @@ too much it may also be difficult to create fixtures that contain enough context
 
 ## What to Do
 
-* If no prob with params use [Extract Method](refactoring-ruby#/32) to break up the method into smaller pieces. Look
+* If no problems with params use [Extract Method](refactoring-ruby#/32) to break up the method into smaller pieces. Look
 for comments or white space delineating interesting fragments. You want to extract methods that are semantically
 meaningful, not just introduce a function call every seven lines.
 * If the method doesn't separate easily into pieces, consider [Replace Method with Method Object](refactoring-ruby#/52) to turn the method into a separate object, or [Replace Temp with Query](refactoring-ruby#/55)
@@ -133,7 +209,7 @@ to pass, but in which order. More succinct APIs are easier and quicker to use.
 
 ## What to Do
 
-* If a parameter's value can be obtained from another object use [Replace Parameter with Method](refactoring-ruby#/47).
+* If a parameter's value can be obtained from another object, use [Replace Parameter with Method](refactoring-ruby#/47).
 * If the parameters come from a single object, try [Preserve Whole Object](refactoring-ruby#/48).
 * If the data is not from one logical object, you still might group them via [Introduce Parameter Object](refactoring-ruby#/49).
 * Otherwise make clearer with [Introduce Named Parameter](refactoring-ruby#/62)
@@ -147,7 +223,7 @@ A class or module has a large number of instance variables, methods, or just lin
 
 ## Problems
 
-* Testability: A Large Module is usually difficult to test, either because it depends on many other modules or because
+* Testability: A Large Class or Module is usually difficult to test, either because it depends on many other modules or because
 it is difficult or time-consuming to create instances in isolation.
 * Flexibility: The module represents too many responsibilities folded together that is, every Large Module is also a
 Greedy Module.
@@ -157,7 +233,7 @@ Greedy Module.
 ## What to Do
 
 * To break up the module further, use [Extract Class](refactoring-ruby#/34) or [Extract Module](refactoring-ruby#/36) if you can identify a new piece that has part of this module's responsibilities
-* Also will be useful [Replace Type Code with Polymorphism](refactoring-ruby#/56), [Replace Type Code with Module Extension](refactoring-ruby#/57), [Replace Type Code with State/Strategy](refactoring-ruby#/58)
+* Also [Replace Type Code with Polymorphism](refactoring-ruby#/56), [Replace Type Code with Module Extension](refactoring-ruby#/57), [Replace Type Code with State/Strategy](refactoring-ruby#/58) will be useful
 * Very often a review of the module reveals a composite of other smells, such as Long Methods, Data Clumps, and
 Temporary Fields; fix these smells first.
 
@@ -172,7 +248,7 @@ Temporary Fields; fix these smells first.
 
 ## Problems
 
-* Duplication: The recurrence of the items often means there is duplicate code spread around to handle them.
+* Duplication: The recurrence of the items often means there is a duplicate code spread around to handle them.
 * Abstraction: There may be a missing concept, making the system harder to understand.
 
 --
@@ -187,15 +263,15 @@ class.
 
 # Primitive Obsession
 
-* Use of primitives instead of small objects for simple tasks (such as currency, ranges, special strings for phone numbers, etc.)
-* Use of constants for coding information (such as a constant ADMIN_ROLE = 1 for referring to users with administrator rights).
-* Use of string constants as field names for use in data arrays.
+* Using primitives instead of small objects for simple tasks (such as currency, ranges, special strings for phone numbers, etc.)
+* Using constants for coding information (such as a constant ADMIN_ROLE = 1 for referring to users with administrator rights).
+* Using string constants as field names for use in data arrays.
 
 --
 
 ## Problems
 
-* Flexibility: Code becomes less flexible because of use of primitives instead of objects.
+* Flexibility: Code becomes less flexible due to using primitives instead of objects.
 * Abstraction: Primitives are often related to dedicated business logic. Therefore, leaving this logic unseparated may violate the Single Responsibility Principle and the Open/Closed Principle.
 * Size: When data type logic is not separated in a dedicated class, adding a new type or behavior makes the basic class grow and get unwieldy.
 
@@ -256,7 +332,7 @@ Child class uses only some of the methods and properties inherited from the base
 
 # Complex Conditional Expression
 
-* Complex case operator or sequence of if statements.
+* Complex case operator or sequence of "if statements".
 * Guard clauses checks for particular values before doing work (especially comparisons to constants)
 
 --
@@ -300,7 +376,7 @@ sidestep the method's other responsibilities - it can therefore be a challenge t
 
 ## What to Do
 
-* Consider the approaches to dealing with a [Long Method](refactoring-ruby#/9) they will often work here just as well. Use
+* Consider the approaches of dealing with a [Long Method](refactoring-ruby#/9), they will often work here just as well. Use
 [Extract Method](refactoring-ruby#/32) to hide detail behind an intention revealing name.
 * If the method makes extensive use of another object, treat and fix the [Feature Envy](refactoring-ruby#/26).
 
@@ -327,7 +403,7 @@ be harder to test than necessary, and some modules may churn for longer, perhaps
 * Identify the class or module that should own the group of changes. It may be an existing module, or you may need to
 use [Extract Module](refactoring-ruby#/36) to create a new one.
 * Use [Move Field](refactoring-ruby#/40) and [Move Method](refactoring-ruby#/39) to put the functionality onto the chosen module. After the
-module not chosen is simple enough, you may be able to use Inline Module to eliminate it.
+chosen module is simple enough, you may be able to use Inline Module to eliminate it.
 
 ---
 
@@ -393,10 +469,10 @@ Whenever you create a subclass for a class, you find yourself needing to create 
 
 ## What to Do
 
-* If in same class [Extract Method](refactoring-ruby#/32)
-* If in two subclasses [Extract Method](refactoring-ruby#/32) or [Pull Up Method](refactoring-ruby#/37)
+* If it is in same class [Extract Method](refactoring-ruby#/32)
+* If it is in two subclasses [Extract Method](refactoring-ruby#/32) or [Pull Up Method](refactoring-ruby#/37)
 * If not identical [Form Template Method](refactoring-ruby#/41) or [Substitute Algorithm](refactoring-ruby#/59)
-* If in unrelated locns [Extract Class](refactoring-ruby#/34) or [Extract Module](refactoring-ruby#/36)
+* If it is in unrelated locations [Extract Class](refactoring-ruby#/34) or [Extract Module](refactoring-ruby#/36)
 
 ---
 
@@ -439,8 +515,7 @@ A variable, parameter, code fragment, method, module, or class is not used anywh
 * Size: Dead Code adds to the application’s size, and thus to the amount of code that must be understood by developers
 and maintainers.
 * Communication: It isn’t always obvious when code is dead, and so the reader may take it as having a bearing on the
-behavior of his software. Indeed, Dead Code that is also incorrect or invalid may lead the developer seriously
-astray.
+behavior of his software. Indeed, Dead Code that is also incorrect or invalid may astray the developer.
 * Flexibility: All code has dependencies on other code; but Dead Code may create dependencies where otherwise there
 would be none. These unnecessary couplings may, in turn, slow the pace of change for the code in these areas.
 
@@ -456,7 +531,7 @@ checking and deleting until you find no more Dead Code.
 
 # Lazy Class
 
-* A class isn't doing much its parents, children, or clients seem to be doing all the associated work and there isn’t
+* A class doesn't affect much its parents, children, or clients. They seem to be doing all the associated work and there isn’t
 enough behavior left in the class to justify its continued existence.
 
 --
@@ -518,7 +593,7 @@ they can be misinterpreted. They also hurt the flow of reading as the reader mus
 
 ## Problems
 
-* Communication: Code that "belongs" on one class but is located in another can be hard to find and may upset the
+* Communication: Code that "belongs" to one class, but is located in another can be hard to find and may upset the
 System of Names in the host class.
 * Flexibility: A code fragment that is in the wrong class creates couplings that may not be natural within the
 application's domain and a loss of cohesion in the unwilling host class.
@@ -544,7 +619,7 @@ You see calls of the form a.b.c.d.
 
 ## What to Do
 
-* If the manipulations actually belong on the target object (the one at the end of the chain), use [Extract Method](refactoring-ruby#/32) and [Move Method](refactoring-ruby#/39) / [Move Field](refactoring-ruby#/40) to put them there.
+* If the manipulations actually belong to the target object (the one at the end of the chain), use [Extract Method](refactoring-ruby#/32) and [Move Method](refactoring-ruby#/39) / [Move Field](refactoring-ruby#/40) to put them there.
 * Use [Hide Delegate](refactoring-ruby#/44) and [Inline Class](refactoring-ruby#/35) to make the caller depend only on
 the object at the head of the chain. (So, rather than a.b.c.d, put a d method on the a object. That may require
 adding a d method to the b and c objects as well.)
@@ -559,7 +634,7 @@ One class uses the internal fields and methods of another class.
 
 ## Problems
 
-* Abstraction: Two classes are too tightly coupled and know too much about each other.
+* Abstraction: Two classes are coupled too tightly and know too much about each other.
 * Communication: Sharing too much information about each other makes both classes harder to understand.
 * Flexibility: When each class uses a significant number of methods and fields of the other, it makes both classes difficult to maintain and reuse.
 
@@ -618,7 +693,7 @@ paths.
 
 ## Refactor Me!
 
-You need to refactor the code of [online banking system](https://github.com/dzemlianoi-double/refactoring-example).  
+You need to refactor the code of [online banking system](https://github.com/dzemlianoi-double/refactoring-example).
 It's really weird and needs some cleaning!
 
 ---
@@ -721,7 +796,7 @@ class Student
   attr_accessor :second_term_assiduity, :second_term_test, :second_term_behavior
   attr_accessor :third_term_assiduity, :third_term_test, :third_term_behavior
 
-  def set_all_grades_to grade
+  def set_all_grades_to(grade)
     %w(first second third).each do |which_term|
       %w(assiduity test behavior).each do |criteria|
         send "#{which_term}_term_#{criteria}=".to_sym, grade
@@ -877,7 +952,7 @@ class Bid
   before_save :capture_account_number
 
   def capture_account_number
-    self.account_number = buyer.preferred_account_number
+    buyer.preferred_account_number
   end
 end
 
@@ -885,7 +960,7 @@ class Sale
   before_save :capture_account_number
 
   def capture_account_number
-    self.account_number = buyer.preferred_account_number
+    buyer.preferred_account_number
   end
 end
 ```
@@ -900,7 +975,7 @@ module AccountNumberCapture
   end
 
   def capture_account_number
-    self.account_number = buyer.preferred_account_number
+    buyer.preferred_account_number
   end
 end
 
@@ -922,7 +997,7 @@ end
 class Person
   attr_reader :first_name, :last_name
 
-  def initialize first_name, last_name
+  def initialize(first_name, last_name)
     @first_name = first_name
     @last_name = last_name
   end
@@ -954,7 +1029,7 @@ end
 class Person
   attr_reader :first_name, :last_name
 
-  def initialize first_name, last_name
+  def initialize(first_name, last_name)
     @first_name = first_name
     @last_name = last_name
   end
@@ -988,7 +1063,7 @@ class UserService
   PASSWORD = "secret"
 
   class << self
-    def lgn username, password
+    def lgn(username, password)
       username == USERNAME && password == PASSWORD
     end
   end
@@ -1002,7 +1077,7 @@ class UserService
   PASSWORD = "secret"
 
   class << self
-    def sign_in username, password
+    def sign_in(username, password)
       username == USERNAME && password == PASSWORD
     end
   end
@@ -1015,6 +1090,12 @@ end
 ## Move Method
 
 ```ruby
+class AccountType
+  def premium?
+    # Do some logic
+  end
+end
+
 class Account
   def overdraft_charge
     return @days_overdrawn * 1.75 unless @account_type.premium?
@@ -1035,6 +1116,10 @@ end
 
 ```ruby
 class AccountType
+  def premium?
+    # Do some logic
+  end
+
   def overdraft_charge(days_overdrawn)
     return days_overdrawn * 1.75 unless premium?
 
@@ -1067,12 +1152,12 @@ PHONE_CODES = {
 class Phone
   attr_reader :number
 
-  def initialize number
+  def initialize(number)
     @number = number
   end
 
   def to_s
-    number
+    number.to_s
   end
 end
 
@@ -1100,7 +1185,7 @@ PHONE_CODES = {
 class Phone
   attr_reader :number, :locale
 
-  def initialize number, locale
+  def initialize(number, locale)
     @number = number
     @locale = locale
   end
@@ -1224,7 +1309,7 @@ end
 class Post
   attr_reader :id, :title, :body, :created_at
 
-  def initialize id, title, body, created_at
+  def initialize(id, title, body, created_at)
     @id         = id
     @title      = title
     @body       = body
@@ -1240,7 +1325,7 @@ class Post
 
   def publish
     @published = true
-    return POSTS.count { |post| !post.published? }
+    POSTS.count { |post| !post.published? }
   end
 
   def unpublish
@@ -1250,7 +1335,6 @@ class Post
   def published?
     @published
   end
-
 end
 
 # Sample data
@@ -1288,7 +1372,7 @@ POSTS = [
 class Post
   attr_reader :id, :title, :body, :created_at
 
-  def initialize id, title, body, created_at
+  def initialize(id, title, body, created_at)
     @id         = id
     @title      = title
     @body       = body
@@ -1296,14 +1380,14 @@ class Post
     @published = false
   end
 
-  def self.find id
+  def self.find(id)
     # database operation to retrieve data.
     # We will simulate it for now.
     post = POSTS.find { |post| post.id == id }
   end
 
   def self.unpublished
-    return POSTS.count { |post| !post.published? }
+    POSTS.count { |post| !post.published? }
   end
 
   def publish
@@ -1317,7 +1401,6 @@ class Post
   def published?
     @published
   end
-
 end
 
 # Sample data
@@ -1359,7 +1442,7 @@ POSTS = [
 class Client
   attr_reader :department, :clerk
 
-  def initialize department, clerk
+  def initialize(department, clerk)
     @department = department
     @clerk = clerk
   end
@@ -1384,7 +1467,7 @@ end
 class Department
   attr_reader :manager
 
-  def initialize manager
+  def initialize(manager)
     @manager = manager
     manager.department = self
   end
@@ -1396,15 +1479,19 @@ end
 class Client
   attr_reader :clerk
 
-  def initialize clerk
+  def initialize(clerk)
     @clerk = clerk
   end
+end
+
+class Manager
+  attr_accessor :department
 end
 
 class Clerk
   attr_reader :department
 
-  def initialize (department)
+  def initialize(department)
     @department = department
   end
 
@@ -1413,13 +1500,10 @@ class Clerk
   end
 end
 
-class Manager
-  attr_accessor :department
-end
-
 class Department
   attr_reader :manager
-  def initialize manager
+
+  def initialize(manager)
     @manager = manager
     manager.department = self
   end
@@ -1434,9 +1518,9 @@ end
 ```ruby
 class SquareRootCalculator
   class << self
-    def calculate number
+    def calculate(number)
       if number > 0
-        Math.sqrt number
+        Math.sqrt(number)
       end
     end
   end
@@ -1446,7 +1530,7 @@ end
 
 ```ruby
 module Assertions
-  def assert &block
+  def assert(&block)
     raise ArgumentError unless block.call
   end
 end
@@ -1454,9 +1538,9 @@ end
 class SquareRootCalculator
   extend Assertions
 
-  def self.calculate number
+  def self.calculate(number)
     assert { number > 0 }
-    Math.sqrt number
+    Math.sqrt(number)
   end
 end
 ```
@@ -1488,7 +1572,6 @@ class Post
   def publish
     @published = true
   end
-
 end
 
 POSTS = [
@@ -1561,8 +1644,11 @@ class CartItem
     discounted_price(base_price, level_of_discount)
   end
 
+  private
+
   def discounted_price(base_price, level_of_discount)
     return base_price * 0.9 if level_of_discount == 2
+
     base_price * 0.95
   end
 end
@@ -1571,6 +1657,8 @@ end
 
 ```ruby
 class CartItem
+  attr_reader :product, :quantity
+
   def initialize(product, quantity)
     @product  = product
     @quantity = quantity
@@ -1580,24 +1668,18 @@ class CartItem
     base_price * discount_coefficient
   end
 
-  def base_price
-    @quantity * @product.price
-  end
+  private
 
-  def discount_level
-    if @quantity > 100
-      2
-    else
-      1
-    end
+  def base_price
+    quantity * product.price
   end
 
   def discount_coefficient
-    if discount_level == 2
-      0.9
-    else
-      0.95
-    end
+    discount_level == 2 ? 0.9 : 0.95
+  end
+
+  def discount_level
+    quantity > 100 ? 2 : 1
   end
 end
 ```
@@ -1609,10 +1691,10 @@ end
 
 ```ruby
 class Room
-  def within_plan?(plan)
+  def within_plan?(heating_plan)
     low = days_temperature_range.low
     high = days_temperature_range.high
-    plan.within_range?(low, high)
+    heating_plan.within_range?(low, high)
   end
 end
 
@@ -1626,8 +1708,8 @@ end
 
 ```ruby
 class Room
-  def within_plan?(plan)
-    plan.within_range?(days_temperature_range)
+  def within_plan?(heating_plan)
+    heating_plan.within_range?(days_temperature_range)
   end
 end
 
@@ -1733,7 +1815,6 @@ class Cart
   def total
     products.inject(0) { |sum, product| sum + product.price }
   end
-
 end
 
 class Product
@@ -1826,6 +1907,12 @@ end
 
 
 ```ruby
+class Person
+  def tax(income: nil, expenses: 0, type: :dependent_worker)
+    TaxAlgorithm.new(income: income, expenses: expenses, type: type).compute
+  end
+end
+
 class TaxAlgorithm
   def initialize(income: nil, expenses: 0, type: :dependent_worker)
     @income   = income
@@ -1841,6 +1928,8 @@ class TaxAlgorithm
     process_income_expense_difference
     deduct_expenses
   end
+
+  private
 
   def process_type
     if @type == :dependent_worker
@@ -1860,12 +1949,6 @@ class TaxAlgorithm
 
   def deduct_expenses
     @return_value -= @expenses * 0.30
-  end
-end
-
-class Person
-  def tax(income: nil, expenses: 0, type: :dependent_worker)
-    TaxAlgorithm.new(income: income, expenses: expenses, type: type).compute
   end
 end
 ```
@@ -2051,10 +2134,10 @@ class Employee
   private
 
   def bonus
-    value = case @type
-      when :regular then 0
-      when :boss    then 1500.0
-      when :manager then 800.0
+    case @type
+    when :regular then 0
+    when :boss    then 1500.0
+    when :manager then 800.0
     end
   end
 end
@@ -2123,10 +2206,10 @@ class Employee
   end
 
   def bonus
-    value = case @type
-      when :regular then 0
-      when :boss    then 1500.0
-      when :manager then 800.0
+    case @type
+    when :regular then 0
+    when :boss    then 1500.0
+    when :manager then 800.0
     end
   end
 end
@@ -2151,7 +2234,6 @@ class Employee
     instance = new
     instance.extend const_get(type.capitalize)
   end
-
 end
 
 module Regular
@@ -2200,15 +2282,15 @@ class User
 
   class << self
     def login(name, options = {})
-      user = USERS.find { |u| u.name == name }
+      current_user = USERS.find { |user| user.name == name }
 
-      case user.type
-        when :password
-          return user.options[:password] == options[:password]
-        when :public_key
-          return user.public_key_matches?
-        when :oauth
-          return user.oauth_authenticates?
+      case current_user.type
+      when :password
+        current_user.options[:password] == options[:password]
+      when :public_key
+        current_user.public_key_matches?
+      when :oauth
+        current_user.oauth_authenticates?
       end
     end
   end
@@ -2226,17 +2308,14 @@ class User
     @options = options
 
     @strategy = case @type
-      when :password
-        Auth::Password.new self
-      when :public_key
-        Auth::PublicKey.new self
-      when :oauth
-        Auth::OAuth.new self
-    end
+                when :password then Auth::Password.new(self)
+                when :public_key then Auth::PublicKey.new(self)
+                when :oauth then Auth::OAuth.new(self)
+                end
   end
 
-  def auth! options
-    @strategy.auth? options
+  def auth!(options)
+    @strategy.auth?(options)
   end
 
   class << self
@@ -2250,36 +2329,35 @@ end
 
 module Auth
   class Password
-    def initialize user
+    def initialize(user)
       @user = user
     end
 
-    def auth? options
+    def auth?(options)
       @user.options[:password] == options[:password]
     end
   end
 
   class PublicKey
-    def initialize user
+    def initialize(user)
       @user = user
     end
 
-    def auth? options
+    def auth?(options)
       # Do some logic
       true
     end
   end
 
   class OAuth
-    def initialize user
+    def initialize(user)
       @user = user
     end
 
-    def auth? options
+    def auth?(options)
       # Do some logic
       true
     end
-
   end
 end
 ```
@@ -2313,7 +2391,7 @@ end
 ```ruby
 def found_friends(people)
   people.select do |person|
-    %w(Don John Kent).include? person
+    %w(Don John Kent).include?(person)
   end
 end
 ```
@@ -2324,7 +2402,7 @@ end
 ## Decompose Conditional
 
 ```ruby
-if date < SUMMER_START || date > SUMMER_END
+if date < SUMMER_START && date > SUMMER_END
   charge = quantity * @winter_rate + @winter_service_charge
 else
   charge = quantity * @summer_rate
@@ -2334,11 +2412,9 @@ end
 
 ```ruby
 def final_charge
-  unless summer?(date)
-    winter_charge(quantity)
-  else
-    summer_charge(quantity)
-  end
+  return winter_charge(quantity) unless summer?(date)
+
+  summer_charge(quantity)
 end
 
 def summer?(date)
