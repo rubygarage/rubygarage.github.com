@@ -112,20 +112,20 @@ Refactoring techniques - they are just approaches, not the final implementation 
 
 Bloater smells represent something that has grown so large that it cannot be effectively handled. These smells usually accumulate over time as the program evolves:
 
-* [Long Method](refactoring-ruby#/9)
-* [Long Parameter List](refactoring-ruby#/10)
-* [Large Class or Module](refactoring-ruby#/11)
-* [Data Clumps](refactoring-ruby#/12)
-* [Primitive Obsession](refactoring-ruby#/13)
+* [Long Method](refactoring-ruby#/17)
+* [Long Parameter List](refactoring-ruby#/18)
+* [Large Class or Module](refactoring-ruby#/19)
+* [Data Clumps](refactoring-ruby#/20)
+* [Primitive Obsession](refactoring-ruby#/21)
 
 ---
 
 # Object-Orientation Abusers
 
-* [Temporary Field](refactoring-ruby#/14)
-* [Refused Bequest](refactoring-ruby#/15)
-* [Complex Conditional Expression](refactoring-ruby#/16)
-* [Greedy method](refactoring-ruby#/17)
+* [Temporary Field](refactoring-ruby#/22)
+* [Refused Bequest](refactoring-ruby#/23)
+* [Complex Conditional Expression](refactoring-ruby#/24)
+* [Greedy method](refactoring-ruby#/25)
 
 ---
 
@@ -133,9 +133,9 @@ Bloater smells represent something that has grown so large that it cannot be eff
 
 These smells mean that if you need to change something in one place in your code, you have to make many changes in other places too. It makes software development much more complicated and error-prone as a result:
 
-* [Shotgun Surgery](refactoring-ruby#/18)
-* [Divergent Change](refactoring-ruby#/19)
-* [Parallel Inheritance Hierarchies](refactoring-ruby#/20)
+* [Shotgun Surgery](refactoring-ruby#/26)
+* [Divergent Change](refactoring-ruby#/27)
+* [Parallel Inheritance Hierarchies](refactoring-ruby#/28)
 
 ---
 
@@ -143,11 +143,11 @@ These smells mean that if you need to change something in one place in your code
 
 The common thing for the Dispensable smells is that they all represent something unnecessary that should be removed from the source code to make it cleaner, more efficient and easier to understand:
 
-* [Duplicate Code](refactoring-ruby#/21)
-* [Comments](refactoring-ruby#/22)
-* [Dead Code](refactoring-ruby#/23)
-* [Lazy Class](refactoring-ruby#/24)
-* [Uncommunicative name](refactoring-ruby#/25)
+* [Duplicate Code](refactoring-ruby#/29)
+* [Comments](refactoring-ruby#/30)
+* [Dead Code](refactoring-ruby#/31)
+* [Lazy Class](refactoring-ruby#/32)
+* [Uncommunicative name](refactoring-ruby#/33)
 
 ---
 
@@ -155,11 +155,11 @@ The common thing for the Dispensable smells is that they all represent something
 
 All the smells in this group contribute to excessive coupling between classes or show what happens if coupling is replaced by excessive delegation:
 
-* [Feature Envy](refactoring-ruby#/26)
-* [Message Chains](refactoring-ruby#/27)
-* [Inappropriate Intimacy](refactoring-ruby#/28)
-* [Middle Man](refactoring-ruby#/29)
-* [Control Coupling](refactoring-ruby#/30)
+* [Feature Envy](refactoring-ruby#/34)
+* [Message Chains](refactoring-ruby#/35)
+* [Inappropriate Intimacy](refactoring-ruby#/36)
+* [Middle Man](refactoring-ruby#/37)
+* [Control Coupling](refactoring-ruby#/38)
 
 ---
 
@@ -180,11 +180,11 @@ too much it may also be difficult to create fixtures that contain enough context
 
 ## What to Do
 
-* If no problems with params use [Extract Method](refactoring-ruby#/32) to break up the method into smaller pieces. Look
+* If no problems with params use [Extract Method](refactoring-ruby#/40) to break up the method into smaller pieces. Look
 for comments or white space delineating interesting fragments. You want to extract methods that are semantically
 meaningful, not just introduce a function call every seven lines.
-* If the method doesn't separate easily into pieces, consider [Replace Method with Method Object](refactoring-ruby#/52) to turn the method into a separate object, or [Replace Temp with Query](refactoring-ruby#/55)
-* If has loops and conditionals [Decompose Conditional](refactoring-ruby#/60) or [Replace Loop with Collection Closure Method](refactoring-ruby#/61)
+* If the method doesn't separate easily into pieces, consider [Replace Method with Method Object](refactoring-ruby#/60) to turn the method into a separate object, or [Replace Temp with Query](refactoring-ruby#/63)
+* If has loops and conditionals [Decompose Conditional](refactoring-ruby#/68) or [Replace Loop with Collection Closure Method](refactoring-ruby#/69)
 
 ---
 
@@ -209,10 +209,10 @@ to pass, but in which order. More succinct APIs are easier and quicker to use.
 
 ## What to Do
 
-* If a parameter's value can be obtained from another object, use [Replace Parameter with Method](refactoring-ruby#/47).
-* If the parameters come from a single object, try [Preserve Whole Object](refactoring-ruby#/48).
-* If the data is not from one logical object, you still might group them via [Introduce Parameter Object](refactoring-ruby#/49).
-* Otherwise make clearer with [Introduce Named Parameter](refactoring-ruby#/62)
+* If a parameter's value can be obtained from another object, use [Replace Parameter with Method](refactoring-ruby#/55).
+* If the parameters come from a single object, try [Preserve Whole Object](refactoring-ruby#/56).
+* If the data is not from one logical object, you still might group them via [Introduce Parameter Object](refactoring-ruby#/57).
+* Otherwise make clearer with [Introduce Named Parameter](refactoring-ruby#/70)
 
 ---
 
@@ -232,8 +232,8 @@ Greedy Module.
 
 ## What to Do
 
-* To break up the module further, use [Extract Class](refactoring-ruby#/34) or [Extract Module](refactoring-ruby#/36) if you can identify a new piece that has part of this module's responsibilities
-* Also [Replace Type Code with Polymorphism](refactoring-ruby#/56), [Replace Type Code with Module Extension](refactoring-ruby#/57), [Replace Type Code with State/Strategy](refactoring-ruby#/58) will be useful
+* To break up the module further, use [Extract Class](refactoring-ruby#/42) or [Extract Module](refactoring-ruby#/44) if you can identify a new piece that has part of this module's responsibilities
+* Also [Replace Type Code with Polymorphism](refactoring-ruby#/64), [Replace Type Code with Module Extension](refactoring-ruby#/65), [Replace Type Code with State/Strategy](refactoring-ruby#/66) will be useful
 * Very often a review of the module reveals a composite of other smells, such as Long Methods, Data Clumps, and
 Temporary Fields; fix these smells first.
 
@@ -255,9 +255,9 @@ Temporary Fields; fix these smells first.
 
 ## What to Do
 
-* If the items are instance variables in a class, use [Extract Class](refactoring-ruby#/34) to pull them into a new
+* If the items are instance variables in a class, use [Extract Class](refactoring-ruby#/42) to pull them into a new
 class.
-* If the values are together in method signatures, use [Introduce Parameter Object](refactoring-ruby#/49), [Replace Array with Object](refactoring-ruby#/50) to extract the new object.
+* If the values are together in method signatures, use [Introduce Parameter Object](refactoring-ruby#/57), [Replace Array with Object](refactoring-ruby#/58) to extract the new object.
 
 ---
 
@@ -279,10 +279,10 @@ class.
 
 ## What to Do
 
-* Move the behavior associated with this data into the class. For this task, try [Replace Data Value with Object](refactoring-ruby#/51).
-* If the values of primitive fields are used in method parameters, go with [Introduce Parameter Object](refactoring-ruby#/49) or [Preserve Whole Object](refactoring-ruby#/48).
-* When complicated data is coded in variables, use [Replace Type Code with Module Extension](refactoring-ruby#/57) or [Replace Type Code with State/Strategy](refactoring-ruby#/58).
-* If there are arrays among the variables, use [Replace Array with Object](refactoring-ruby#/50).
+* Move the behavior associated with this data into the class. For this task, try [Replace Data Value with Object](refactoring-ruby#/59).
+* If the values of primitive fields are used in method parameters, go with [Introduce Parameter Object](refactoring-ruby#/57) or [Preserve Whole Object](refactoring-ruby#/56).
+* When complicated data is coded in variables, use [Replace Type Code with Module Extension](refactoring-ruby#/65) or [Replace Type Code with State/Strategy](refactoring-ruby#/66).
+* If there are arrays among the variables, use [Replace Array with Object](refactoring-ruby#/58).
 
 ---
 
@@ -305,8 +305,8 @@ It may not be worth the trouble of creating a new class if it doesn’t represen
 
 ## What to Do
 
-* Use [Extract Class](refactoring-ruby#/34), moving over the fields and any related code.
-* Also [Introduce Null Object](refactoring-ruby#/46), [Replace Method with Method Object](refactoring-ruby#/52), [Replace Temp with Query](refactoring-ruby#/55)
+* Use [Extract Class](refactoring-ruby#/42), moving over the fields and any related code.
+* Also [Introduce Null Object](refactoring-ruby#/54), [Replace Method with Method Object](refactoring-ruby#/60), [Replace Temp with Query](refactoring-ruby#/63)
 
 ---
 
@@ -325,8 +325,8 @@ Child class uses only some of the methods and properties inherited from the base
 
 ## What to Do
 
-* If inheritance makes no sense and the subclass really does have nothing in common with the superclass, eliminate inheritance in favor of [Replace Inheritance with Delegation](refactoring-ruby#/53).
-* Another way to get rid of an unnecessary inheritance is to move all common behavior to a module - [Extract Module](refactoring-ruby#/36).
+* If inheritance makes no sense and the subclass really does have nothing in common with the superclass, eliminate inheritance in favor of [Replace Inheritance with Delegation](refactoring-ruby#/61).
+* Another way to get rid of an unnecessary inheritance is to move all common behavior to a module - [Extract Module](refactoring-ruby#/44).
 
 ---
 
@@ -347,12 +347,11 @@ Child class uses only some of the methods and properties inherited from the base
 
 ## What to Do
 
-* To isolate conditional and put it in the right class, you may need [Extract Method](refactoring-ruby#/32) and then [Move Method](refactoring-ruby#/39).
-* If a conditional is based on type code, such as when the program’s runtime mode is switched, use [Replace Conditional with Polymorphism](refactoring-ruby#/54) or [Replace Type Code with State/Strategy](refactoring-ruby#/58).
-* After specifying the inheritance structure, use [Replace Conditional with Polymorphism](refactoring-ruby#/54).
-* If there aren’t too many conditions in the operator and they all call same method with different parameters, polymorphism will be superfluous. In this case, you can break that method into multiple smaller methods with [Replace Parameter with Method](refactoring-ruby#/47) and change the conditional accordingly.
-* If one of the conditional options is null, use [Introduce Null Object](refactoring-ruby#/46).
-* If you have difficult conditions use [Decompose Conditional](refactoring-ruby#/60), [Substitute Algorithm](refactoring-ruby#/59), [Replace Method With Method Object](refactoring-ruby#/52).
+* To isolate conditional and put it in the right class, you may need [Extract Method](refactoring-ruby#/40) and then [Move Method](refactoring-ruby#/47).
+* If a conditional is based on type code, such as when the program’s runtime mode is switched, use [Replace Conditional with Polymorphism](refactoring-ruby#/62) or [Replace Type Code with State/Strategy](refactoring-ruby#/66).
+* If there aren’t too many conditions in the operator and they all call same method with different parameters, polymorphism will be superfluous. In this case, you can break that method into multiple smaller methods with [Replace Parameter with Method](refactoring-ruby#/55) and change the conditional accordingly.
+* If one of the conditional options is null, use [Introduce Null Object](refactoring-ruby#/54).
+* If you have difficult conditions use [Decompose Conditional](refactoring-ruby#/68), [Substitute Algorithm](refactoring-ruby#/67), [Replace Method With Method Object](refactoring-ruby#/60).
 * If the if and else clauses are similar enough, you may be able to rewrite them so that the same code fragment can generate the proper results for each case. Then the conditional can be eliminated.
 
 ---
@@ -376,9 +375,9 @@ sidestep the method's other responsibilities - it can therefore be a challenge t
 
 ## What to Do
 
-* Consider the approaches of dealing with a [Long Method](refactoring-ruby#/9), they will often work here just as well. Use
-[Extract Method](refactoring-ruby#/32) to hide detail behind an intention revealing name.
-* If the method makes extensive use of another object, treat and fix the [Feature Envy](refactoring-ruby#/26).
+* Consider the approaches of dealing with a [Long Method](refactoring-ruby#/17), they will often work here just as well. Use
+[Extract Method](refactoring-ruby#/40) to hide detail behind an intention revealing name.
+* If the method makes extensive use of another object, treat and fix the [Feature Envy](refactoring-ruby#/34).
 
 ---
 
@@ -401,8 +400,8 @@ be harder to test than necessary, and some modules may churn for longer, perhaps
 ## What to Do
 
 * Identify the class or module that should own the group of changes. It may be an existing module, or you may need to
-use [Extract Module](refactoring-ruby#/36) to create a new one.
-* Use [Move Field](refactoring-ruby#/40) and [Move Method](refactoring-ruby#/39) to put the functionality onto the chosen module. After the
+use [Extract Module](refactoring-ruby#/44) to create a new one.
+* Use [Move Field](refactoring-ruby#/48) and [Move Method](refactoring-ruby#/47) to put the functionality onto the chosen module. After the
 chosen module is simple enough, you may be able to use Inline Module to eliminate it.
 
 ---
@@ -424,10 +423,10 @@ useful domain abstraction.
 
 ## What to Do
 
-* If the module has too many (i.e., more than one) responsibilities use [Extract Class](refactoring-ruby#/34) or
-[Extract Module](refactoring-ruby#/36) to separate the responsibilities.
+* If the module has too many (i.e., more than one) responsibilities use [Extract Class](refactoring-ruby#/42) or
+[Extract Module](refactoring-ruby#/44) to separate the responsibilities.
 * If several classes share the same decisions or variation points, you may be able to consolidate them into new classes
-(e.g., by [Hide Delegate](refactoring-ruby#/44), [Pull Up Method](refactoring-ruby#/37), [Form Template Method](refactoring-ruby#/41),
+(e.g., by [Hide Delegate](refactoring-ruby#/52), [Pull Up Method](refactoring-ruby#/45), [Form Template Method](refactoring-ruby#/49),
 Extract Superclass or Extract Subclass) or extract a common module to serve as a
 mixin. In the limit, these extracted classes or modules can form a layer (e.g., a persistence layer).
 
@@ -448,7 +447,7 @@ Whenever you create a subclass for a class, you find yourself needing to create 
 
 ## What to Do
 
-* It is possible to de-duplicate parallel class hierarchies in two steps. First, make instances of one hierarchy refer to instances of another hierarchy. Then, remove the hierarchy in the referred class, by using [Move Method](refactoring-ruby#/39) and [Move Field](refactoring-ruby#/40).
+* It is possible to de-duplicate parallel class hierarchies in two steps. First, make instances of one hierarchy refer to instances of another hierarchy. Then, remove the hierarchy in the referred class, by using [Move Method](refactoring-ruby#/47) and [Move Field](refactoring-ruby#/48).
 
 ---
 
@@ -469,10 +468,10 @@ Whenever you create a subclass for a class, you find yourself needing to create 
 
 ## What to Do
 
-* If it is in same class [Extract Method](refactoring-ruby#/32)
-* If it is in two subclasses [Extract Method](refactoring-ruby#/32) or [Pull Up Method](refactoring-ruby#/37)
-* If not identical [Form Template Method](refactoring-ruby#/41) or [Substitute Algorithm](refactoring-ruby#/59)
-* If it is in unrelated locations [Extract Class](refactoring-ruby#/34) or [Extract Module](refactoring-ruby#/36)
+* If it is in same class [Extract Method](refactoring-ruby#/40) or [Parameterize Method](refactoring-ruby#/50)
+* If it is in two subclasses [Extract Method](refactoring-ruby#/40) or [Pull Up Method](refactoring-ruby#/45)
+* If not identical [Form Template Method](refactoring-ruby#/49) or [Substitute Algorithm](refactoring-ruby#/67)
+* If it is in unrelated locations [Extract Class](refactoring-ruby#/42) or [Extract Module](refactoring-ruby#/44)
 
 ---
 
@@ -496,10 +495,10 @@ and slow the reader down.
 
 ## What to Do
 
-* When a comment explains a code fragment, you can often use [Extract Method](refactoring-ruby#/32) to pull the
+* When a comment explains a code fragment, you can often use [Extract Method](refactoring-ruby#/40) to pull the
 fragment out into a separate method. The comment will often suggest a name for the new method.
-* When a comment explains what a method does (better than the method's name!), use [Rename Method](refactoring-ruby#/38) using the comment as the basis of the new name.
-* When a comment explains preconditions, consider using [Introduce Assertion](refactoring-ruby#/45) to replace
+* When a comment explains what a method does (better than the method's name!), use [Rename Method](refactoring-ruby#/46) using the comment as the basis of the new name.
+* When a comment explains preconditions, consider using [Introduce Assertion](refactoring-ruby#/53) to replace
 the comment with code.
 
 ---
@@ -531,7 +530,7 @@ checking and deleting until you find no more Dead Code.
 
 # Lazy Class
 
-* A class doesn't affect much its parents, children, or clients. They seem to be doing all the associated work and there isn’t
+A class doesn't affect much it's parents, children, or clients. They seem to be doing all the associated work and there isn’t
 enough behavior left in the class to justify its continued existence.
 
 --
@@ -553,7 +552,7 @@ your design; and when communication wins, leave the Lazy Class in place.
 
 * If parents or children of the class seem like the right place for the class’ behavior, fold it into one of them via
 *Collapse Hierarchy*.
-* Otherwise, fold its behavior into its caller via [Inline Class](refactoring-ruby#/35).
+* Otherwise, fold its behavior into its caller via [Inline Class](refactoring-ruby#/43).
 
 ---
 
@@ -580,7 +579,7 @@ they can be misinterpreted. They also hurt the flow of reading as the reader mus
 
 ## What to Do
 
-* Use [Rename Method](refactoring-ruby#/38) (or field, constant, etc.) to give it a better name
+* Use [Rename Method](refactoring-ruby#/46) (or field, constant, etc.) to give it a better name
 
 ---
 
@@ -604,9 +603,9 @@ being written more than once.
 
 ## What to Do
 
-* If the envious code fragment is not isolated, use [Extract Method](refactoring-ruby#/32) to pull it into its own
+* If the envious code fragment is not isolated, use [Extract Method](refactoring-ruby#/40) to pull it into its own
 method.
-* Look for the class of the object that is referenced most and use [Move Field](refactoring-ruby#/40) and [Move Method](refactoring-ruby#/39) to
+* Look for the class of the object that is referenced most and use [Move Field](refactoring-ruby#/48) and [Move Method](refactoring-ruby#/47) to
 put the actions on the correct class.
 
 ---
@@ -619,8 +618,8 @@ You see calls of the form a.b.c.d.
 
 ## What to Do
 
-* If the manipulations actually belong to the target object (the one at the end of the chain), use [Extract Method](refactoring-ruby#/32) and [Move Method](refactoring-ruby#/39) / [Move Field](refactoring-ruby#/40) to put them there.
-* Use [Hide Delegate](refactoring-ruby#/44) and [Inline Class](refactoring-ruby#/35) to make the caller depend only on
+* If the manipulations actually belong to the target object (the one at the end of the chain), use [Extract Method](refactoring-ruby#/40) and [Move Method](refactoring-ruby#/47) / [Move Field](refactoring-ruby#/48) to put them there.
+* Use [Hide Delegate](refactoring-ruby#/52) and [Inline Class](refactoring-ruby#/43) to make the caller depend only on
 the object at the head of the chain. (So, rather than a.b.c.d, put a d method on the a object. That may require
 adding a d method to the b and c objects as well.)
 
@@ -642,9 +641,9 @@ One class uses the internal fields and methods of another class.
 
 ## What to Do
 
-* The simplest solution is to use [Move Method](refactoring-ruby#/39) and [Move Field](refactoring-ruby#/40) to move parts of one class to the class in which those parts are used. But this works only if the first class truly doesn’t need these parts.
-* Another solution is to use [Extract Class](refactoring-ruby#/34) and [Hide Delegate](refactoring-ruby#/44) on the class to make the code relations “official”.
-* If the classes are mutually interdependent, you should use [Change Bidirectional Association to Unidirectional](refactoring-ruby#/63).
+* The simplest solution is to use [Move Method](refactoring-ruby#/47) and [Move Field](refactoring-ruby#/48) to move parts of one class to the class in which those parts are used. But this works only if the first class truly doesn’t need these parts.
+* Another solution is to use [Extract Class](refactoring-ruby#/42) and [Hide Delegate](refactoring-ruby#/52) on the class to make the code relations “official”.
+* If the classes are mutually interdependent, you should use [Change Bidirectional Association to Unidirectional](refactoring-ruby#/71).
 
 ---
 
@@ -662,7 +661,7 @@ A class is doing too much simple delegation.
 
 ## What to Do
 
-* Get the client to call the delegate directly, use [Remove Middle Man](refactoring-ruby#/64).
+* Get the client to call the delegate directly, use [Remove Middle Man](refactoring-ruby#/72).
 
 ---
 
@@ -685,8 +684,8 @@ paths.
 
 ## What to Do
 
-* Use [Extract Method](refactoring-ruby#/32) to strip the controlled method down to the bare skeleton.
-* Then use [Inline Method](refactoring-ruby#/33) to push the responsibility back up to the caller(s).
+* Use [Extract Method](refactoring-ruby#/40) to strip the controlled method down to the bare skeleton.
+* Then use [Inline Method](refactoring-ruby#/41) to push the responsibility back up to the caller(s).
 * Repeat all the way up the call stack to the source of the control value.
 
 ---
@@ -1294,7 +1293,7 @@ class Student
     third: 12
   }
 
-  def term_grade index
+  def term_grade(index)
     GRADES[index]
   end
 end
@@ -1317,7 +1316,7 @@ class Post
     @published = false
   end
 
-  def self.find id
+  def self.find(id)
     # database operation to retrieve data.
     # We will simulate it for now.
     post = POSTS.find { |post| post.id == id }
