@@ -153,13 +153,289 @@ Docker Compose - это инструмент для определения и з
 
 ![docker-compose-example](/assets/images/docker/docker/docker-compose.png)
 
+---
+
+# Docker commands
+
 --
 
-## Задание
+#  Pull image from DockerHub
+<br>
 
-- Развернем наше Web-приложение локально с помощью Docker и Docker-compose.
-- Развернем staging-окружение приложения на AWS.
-- Развернем production-окружение приложения на AWS.
-- Настроим тестовое окружение и continuous integration для staging и production окружения с помощью CircleCI.
+```bash
+docker pull hello-world
+```
 
-## [Решение](https://dou.ua/lenta/articles/rails-tutorial-docker-1)
+--
+
+# Run image. If image not exists locally then pull it from DockerHub
+<br>
+
+```bash
+docker run hello-world
+```
+
+--
+
+# Build image from the Dockerfile
+<br>
+
+```bash
+docker build -t <image_tag> - < Dockerfile
+```
+
+and then you can run it in interactive mode:
+
+```bash
+docker run -it <image_tag> bash
+```
+
+or run in deamon mode
+
+```bash
+docker run -d <image_tag> rails s
+```
+
+or just run, execute command and stop
+
+```bash
+docker run <image_tag> uname -a
+```
+
+--
+
+# Display running containers
+<br>
+
+```bash
+docker ps
+```
+
+If you want to see all containers - live and dead, so just add `-a` to commant:
+
+```bash
+docker ps -a
+```
+
+--
+
+# Execute command in running container
+
+You can run command and get output:
+```bash
+docker exec <container_id or name> some command
+```
+
+or run command in interactive mode:
+```bash
+docker exec -it <container_id or name> rails c
+```
+
+--
+
+# Managing images
+<br>
+
+## List images
+<br>
+
+```bash
+docker images ls
+```
+
+## Remove image
+<br>
+
+```bash
+docker rmi <image_id or tag>
+```
+
+--
+
+# Managing volumes
+<br>
+
+## List volumes
+<br>
+
+```bash
+docker volume ls
+```
+
+## Create volume
+<br>
+
+```bash
+docker volume create <name>
+```
+
+## Remove volume
+<br>
+
+```bash
+docker volume rm <name>
+```
+
+--
+
+## Delete everything (containers, images, volumes, networks) in one command
+<br>
+
+```bash
+docker system prune -af
+```
+#### Be very careful with this command!
+
+--
+
+# Inspect container logs
+<br>
+
+```bash
+docker logs <container_id or name>
+```
+
+--
+
+# Inspect container metadata
+<br>
+
+```bash
+docker inspect <container_id or name>
+```
+
+---
+
+# Docker Compose commands
+
+--
+
+# Build images
+<br>
+
+```bash
+docker-compose build
+```
+
+--
+
+# Run containers
+<br>
+
+```bash
+docker-compose up
+```
+
+--
+
+# Build and run containers
+<br>
+
+```bash
+docker-compose up --build
+```
+
+--
+
+# Stop all containers
+<br>
+
+```bash
+docker-compose down
+```
+
+---
+
+# Popular questions
+
+--
+
+## How to seed DB in container?
+<br>
+
+Let's image that you already have running containers, but empty database,
+so to seed you just need to execute one command:
+```bash
+docker exec -it <rails_container_id> rake db:seed
+```
+
+--
+
+## How to debug dockerized application?
+<br>
+
+Just attach to the running rails container
+```bash
+docker attach <rails_container_id>
+```
+and magic...
+
+---
+
+# Usefull links
+
+--
+
+## Documentation:
+
+[DockerHub](https://hub.docker.com/)
+
+[Docker build docs](https://docs.docker.com/engine/reference/commandline/build/)
+
+[Docker run docs](https://docs.docker.com/engine/reference/commandline/run/)
+
+[Docker volume docs](https://docs.docker.com/storage/volumes/)
+
+[Docker compose docs](https://docs.docker.com/compose/)
+
+[Docker security docs](https://docs.docker.com/engine/security/)
+
+--
+
+## Courses
+
+[Official docker course](https://www.docker.com/play-with-docker)
+
+[Docker interactive course](https://www.katacoda.com/courses/docker)
+
+--
+
+## Utils
+
+A tool for exploring a docker image, layer contents, and discovering ways to shrink the size of your Docker/OCI image:
+
+[Dive](https://github.com/wagoodman/dive)
+
+<br>
+
+The Docker Bench for Security is a script that checks for dozens of common best-practices around deploying Docker containers in production:
+
+[Docker Bench Security](https://github.com/docker/docker-bench-security)
+
+<br>
+
+VScode extension
+
+[Link](https://code.visualstudio.com/docs/containers/overview)
+
+--
+
+# Materials from this lecture
+
+https://github.com/bl0rch1d/docker_lecture_materials
+
+---
+
+# One more thing...
+
+---
+
+```bash
+git clone https://github.com/bl0rch1d/docker_lecture_materials.git
+
+cd docker_lecture_materials
+
+docker build -t sw_movie - < ./dockerfiles/simple.Dockerfile
+
+docker run -it sw_movie telnet towel.blinkenlights.nl
+```
