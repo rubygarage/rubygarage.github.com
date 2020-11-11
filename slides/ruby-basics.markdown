@@ -25,8 +25,8 @@ Visit https://rvm.io for more details.
 ```sh
 $ gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
 $ \curl -sSL https://get.rvm.io | bash -s stable
-$ rvm install 2.3.0
-$ rvm use 2.3.0
+$ rvm install 2.7.2
+$ rvm use 2.7.2
 $ rvm gemset create project_name
 $ rvm gemset use project_name
 ```
@@ -39,18 +39,18 @@ $ rvm gemset use project_name
 - `.versions.conf` - key=value configuration file
 - `.ruby-version` - single line ruby-version only
 - `.ruby-gemset` - single line ruby-gemset only
-- `Gemfile` - comment: #ruby=2.3.0 and directive: ruby '2.3.0'
+- `Gemfile` - comment: #ruby=2.7.2 and directive: ruby '2.7.2'
 
 --
 
 .rvmrc <!-- .element: class="filename" -->
 ```sh
-rvm use 2.0.0@project_name --create
+rvm use 2.6.6@project_name --create
 ```
 
 .ruby-version <!-- .element: class="filename" -->
 ```sh
-2.0.0-p247
+2.6.6
 ```
 
 .ruby-gemset <!-- .element: class="filename" -->
@@ -143,10 +143,7 @@ Object.methods
 
 ```ruby
 100.class
-# => Fixnum
-
-10000000000000000000.class
-# => Bignum
+# => Integer
 
 100.0.class
 # => Float
@@ -199,7 +196,7 @@ Assume variable `a` holds `10` and variable `b` holds `20` then:
 
 | Operator | Description                                                                                                                  | Example                                      |
 |----------|------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------|
-| =        | Simple assignment operator, Assigns values from right side operands to left side operand                                     | c = a + b will assigne value of a + b into c |
+| =        | Simple assignment operator, Assigns values from right side operands to left side operand                                     | c = a + b will assign value of a + b into c |
 | +=       | Add AND assignment operator, It adds right operand to the left operand and assign the result to left operand                 | c += a is equivalent to c = c + a            |
 | -=       | Subtract AND assignment operator, It subtracts right operand from the left operand and assign the result to left operand     | c -= a is equivalent to c = c - a            |
 | \*=      | Multiply AND assignment operator, It multiplies right operand with the left operand and assign the result to left operand    | c \*= a is equivalent to c = c \* a          |
@@ -207,11 +204,11 @@ Assume variable `a` holds `10` and variable `b` holds `20` then:
 | %=       | Modulus AND assignment operator, It takes modulus using two operands and assign the result to left operand                   | c %= a is equivalent to c = c % a            |
 | \*\*=    | Exponent AND assignment operator, Performs exponential (power) calculation on operators and assign value to the left operand | c \*\*= a is equivalent to c = c \*\* a      |
 
-### Safe navigation Operator (only 2.3.0)
+### Safe navigation Operator
 
 | Operator | Description                                                                                                | Example |
 |----------|------------------------------------------------------------------------------------------------------------|---------|
-| &.       | Makes it safer to chain multiple methods together. Execution stopes if method doesn’t exist or returns nil | a&.b&.c |
+| &.       | Makes it safer to chain multiple methods together. Execution stops if method doesn’t exist or returns nil | a&.b&.c |
 
 ---
 
@@ -293,7 +290,7 @@ str.slice(13)
 str[13, 10]
 # => "I love it!"
 
-str.slice(13, 12)
+str.slice(13, 10)
 # => "I love it!"
 
 str[13..-17]
@@ -310,7 +307,7 @@ str[/[abc](.)\1/]
 
 ## Useful methods
 
-Follow by http://ruby-doc.org/core-2.3.0/String.html for more information
+Follow by https://ruby-doc.org/core-2.7.2/String.html for more information
 
 ```ruby
 'pROgraMMing'.capitalize
@@ -320,7 +317,7 @@ Follow by http://ruby-doc.org/core-2.3.0/String.html for more information
 # => "programming"
 
 'Programming'.chars
-# => #<Enumerator: "Programming":chars>
+# => ["P", "r", "o", "g", "r", "a", "m", "m", "i", "n", "g"]
 
 'Programming'.index('gra')
 # => 3
@@ -333,7 +330,7 @@ Follow by http://ruby-doc.org/core-2.3.0/String.html for more information
 
 ## Useful methods
 
-Follow by http://ruby-doc.org/core-2.3.0/String.html for more information
+Follow by https://ruby-doc.org/core-2.7.2/String.html for more information
 
 ```ruby
 'Programming'.match(/(.)\1/)
@@ -365,7 +362,7 @@ Follow by http://ruby-doc.org/core-2.3.0/String.html for more information
 > Array indexing starts at 0, as in C or Java.
 > A negative index is assumed to be relative to the end of the array — that is, an index of -1 indicates the last element of the array
 
-Follow by http://ruby-doc.org/core-2.3.0/Array.html for more information
+Follow by https://ruby-doc.org/core-2.7.2/Array.html for more information
 
 --
 
@@ -429,7 +426,7 @@ languages
 
 --
 
-## Extracts the nested value (only from 2.3.0)
+## Extracts the nested value
 
 ```ruby
 a = [[1, [2, 3]]]
@@ -441,7 +438,7 @@ a.dig(1, 2, 3)
 # => nil
 
 a.dig(0, 0, 0)
-# => NoMethodError, undefined method 'dig' for 1:Fixnum
+# => TypeError: Integer does not have #dig method
 
 [42, {foo: :bar}].dig(1, :foo)
 # => :bar
@@ -595,7 +592,13 @@ Difference
 os - linux_os
 # => ["MacOS", "Windows"]
 
+os.difference(linux_os)
+# => ["MacOS", "Windows"]
+
 linux_os - os
+# => ["Ubuntu"]
+
+linux_os.difference(os)
 # => ["Ubuntu"]
 ```
 
@@ -664,7 +667,7 @@ methods, names of classes. A Symbol object is created by prefixing an operator, 
 class, module name with a colon. Symbols are immutable. The symbol object will be unique for each different name but
 does not refer to a particular instance of the name, for the duration of a program's execution.
 
-Follow by http://www.ruby-doc.org/core-2.3.0/Symbol.html for more information.
+Follow by https://ruby-doc.org/core-2.7.2/Symbol.html for more information.
 
 --
 
@@ -701,7 +704,7 @@ language = 'Ruby'
 > A Hash is a collection of key-value pairs. It is similar to an Array (sometimes it is called an associative array),
 except that indexing is done via arbitrary keys of any object type, not an integer index.
 
-Follow by http://www.ruby-doc.org/core-2.3.0/Hash.html for more information.
+Follow by https://ruby-doc.org/core-2.7.2/Hash.html for more information.
 
 --
 
@@ -899,7 +902,7 @@ h = { d: 100, a: 200, v: 300, e: 400 }
 h.length
 # => 4
 
-h.delete('a')
+h.delete(:a)
 # => 200
 
 h.length
@@ -929,7 +932,7 @@ h.select { |key, value| value > 100}
 # => {"b"=>200, "c" =>300}
 ```
 
-dig (2.3.0 only)
+dig
 
 ```ruby
 h = { a: { b: { c: 1 } } }
@@ -955,7 +958,7 @@ h.dig(:a, 1)
 
 > A Range represents an interval — a set of values with a beginning and an end.
 
-Follow by http://www.ruby-doc.org/core-2.3.0/Range.html for more information.
+Follow by https://ruby-doc.org/core-2.7.2/Range.html for more information.
 
 --
 
@@ -988,21 +991,21 @@ Creates a range from `a` to `e`
 
 > Time is an abstraction of dates and times.
 
-Follow by http://www.ruby-doc.org/core-2.3.0/Time.html for more information.
+Follow by https://ruby-doc.org/core-2.7.2/Time.html for more information.
 
 --
 
 ## Time
 
 ```ruby
-Time.new(2016)
-# => 2016-01-01 00:00:00 +0200
+Time.new(2020)
+# => 2020-01-01 00:00:00 +0200
 
-Time.new(2016, 10)
-# => 2016-10-01 00:00:00 +0300
+Time.new(2020, 10)
+# => 2020-10-01 00:00:00 +0300
 
-Time.new(2016, 10, 30, 2, 2, 2, '+03:00')
-# => 2016-10-30 02:02:02 +0300
+Time.new(2020, 10, 30, 2, 2, 2, '+03:00')
+# => 2020-10-30 02:02:02 +0300
 
 Time.at(628232400)
 # => 1989-11-28 08:00:00 +0300
@@ -1014,22 +1017,22 @@ Time.at(628232400)
 
 ```ruby
 t = Time.new
-# => 2013-05-09 18:50:25 +0300
+# => 2020-11-11 21:51:24.741163566 +0200
 
 t.year
-# => 2013
+# => 2020
 
 t.month
-# => 5
+# => 11
 
 t.day
-# => 9
+# => 11
 
 t.wday
-# => 4
+# => 3
 
 t.yday
-# => 129
+# => 316
 ```
 
 --
@@ -1038,22 +1041,22 @@ t.yday
 
 ```ruby
 t = Time.new
-# => 2013-05-09 18:50:25 +0300
+# => 2020-11-11 21:51:24.741163566 +0200
 
 t.hour
-# => 18
+# => 21
 
 t.min
-# => 50
+# => 52
 
 t.sec
-# => 25
+# => 42
 
 t.zone
-# => "EEST"
+# => "EET"
 
 t.strftime('%Y-%m-%d %H:%M:%S')
-# => "2013-05-09 18:50:25"
+# => "2020-11-11 21:52:42"
 ```
 
 ---
@@ -1062,7 +1065,7 @@ t.strftime('%Y-%m-%d %H:%M:%S')
 
 > A `File` is an abstraction of any file object accessible by the program and is closely associated with class `IO`.
 
-Follow by http://www.ruby-doc.org/core-2.3.0/File.html for more information.
+Follow by https://ruby-doc.org/core-2.7.2/File.html for more information.
 
 --
 
@@ -1201,7 +1204,7 @@ File.expand_path(__FILE__)
 > Objects of class Dir are directory streams representing directories in the underlying file system.
 They provide a variety of ways to list directories and their contents.
 
-Follow by http://ruby-doc.org/core-2.3.0/Dir.html for more information.
+Follow by https://ruby-doc.org/core-2.7.2/Dir.html for more information.
 
 --
 
@@ -1443,6 +1446,9 @@ false && 99
 
 'cat' && 99
 # => 99
+
+99 && 'cat'
+# => "cat"
 ```
 
 --
@@ -1458,6 +1464,9 @@ false || 99
 
 'cat' || 99
 # => "cat"
+
+99 || 'cat'
+# => 99
 ```
 
 --
