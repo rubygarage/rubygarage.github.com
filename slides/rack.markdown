@@ -457,7 +457,7 @@ lib/views/index.html.erb <!-- .element: class="filename" -->
   <body>
     <div id="container">
       <h1>You said '<%= word %>'</h1>
-      <p>Say somthing new</p>
+      <p>Say something new</p>
       <form method="post" action="/update_word">
         <input name="word" type="text">
         <input type="submit" value="Say!">
