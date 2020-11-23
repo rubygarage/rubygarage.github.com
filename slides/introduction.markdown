@@ -95,6 +95,9 @@ Ruby унаследовал идеологию языка Perl
 Ruby 1.8 в 2003-м году и Ruby on Rails 2.0 в 2007-м году
 <!-- .element: class="fragment" -->
 
+На момент 2020 года среди команий единорогов наибольшее количество приложений написано именно на Ruby
+<!-- .element: class="fragment" -->
+
 --
 
 ## Что такое фреймворк Ruby on Rails?
@@ -118,7 +121,7 @@ Model-View-Controller для веб-приложений, а также обес
 <!-- .element: class="fragment" -->
 
 Ruby on Rails использовался при создании таких популярных сайтов, как Twitter, SoundCloud, Airbnb, Diaspora, Groupon,
-Basecamp, GitHub, Hulu, Scribd, Kickstarter, Change.org.
+Basecamp, GitHub, Hulu, Scribd, Kickstarter, Change.org
 <!-- .element: class="fragment" -->
 
 ---
@@ -161,7 +164,6 @@ Scrum
 ![](/assets/images/introduction/mongodb.png)
 ![](/assets/images/introduction/postgresql.png)
 ![](/assets/images/introduction/elastic.png)
-![](/assets/images/introduction/chef.png)
 ![](/assets/images/introduction/terraform.png)
 ![](/assets/images/introduction/docker.png)
 ![](/assets/images/introduction/amazon.png)
@@ -193,16 +195,16 @@ Scrum
 
 ### Ruby
 
-Ruby Basics, OOP in Ruby, Metaprogramming, Ruby gems, RSpec, Refactoring in Ruby, Rake, Rack
+Ruby Basics, Code Review Rules, OOP in Ruby, Metaprogramming, Ruby gems, RSpec, Refactoring in Ruby, Rake, Rack
 
 ### Ruby on Rails
 
 Rails, Models, Routes, Controllers, Refactoring in Rails controllers, Views,
-BDD in Rails, Devise, CanCanCan, Rails Engine, RESTApi (Application Programming Interface)
+BDD in Rails, Authentication, Authorization, Rails Engine, RESTApi (Application Programming Interface), API documentation, Trailblazer
 
 ### Utils
 
-Static code analysis, Chef, Capistrano
+Static code analysis, Gitflow, Docker, Introduction to AWS, Scrum
 
 --
 
@@ -210,7 +212,7 @@ Static code analysis, Chef, Capistrano
 
 <br />
 
-Лекции проводятся два раза в неделю с 18:30 до 20:00
+Лекции проводятся два раза в неделю с 18:30 до 19:30(+- 30 минут)
 <!-- .element: class="fragment" -->
 
 После каждой темы вы получаете домашнее задание
