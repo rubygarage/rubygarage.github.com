@@ -49,7 +49,7 @@ Resource routing allows you to quickly declare all of the common routes for a gi
 config/routes.rb <!-- .element: class="filename" -->
 
 ```ruby
-Community::Application.routes.draw do
+Rails.application.routes.draw do
   resources :posts
 end
 ```
@@ -186,7 +186,7 @@ resources :posts, path: '/admin/posts'
 app/models/user.rb <!-- .element: class="filename" -->
 
 ```ruby
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   has_many :posts
 end
 ```
@@ -194,7 +194,7 @@ end
 app/models/post.rb <!-- .element: class="filename" -->
 
 ```ruby
-class Post < ActiveRecord::Base
+class Post < ApplicationRecord
   belongs_to :user
 end
 ```
@@ -468,13 +468,13 @@ class BlacklistConstraint
   end
 end
 
-Community::Application.routes.draw do
+Rails.application.routes.draw do
   get '*path', to: 'blacklist#index', constraints: BlacklistConstraint.new
 end
 ```
 
 ```ruby
-Community::Application.routes.draw do
+Rails.application.routes.draw do
   get '*path', to: 'blacklist#index', constraints: lambda { |request| Blacklist.retrieve_ips.include?(request.remote_ip) }
 end
 ```
