@@ -216,10 +216,11 @@ config.ru <!-- .element: class="filename" -->
 
 ```ruby
 require './middlewares/racker'
-run Racker.new
+
+run Middlewares::Racker.new
 ```
 
-lib/racker.rb <!-- .element: class="filename" -->
+middlewares/racker.rb <!-- .element: class="filename" -->
 
 ```ruby
 require 'erb'
@@ -227,13 +228,13 @@ require 'erb'
 module Middlewares
   class Racker
     def call(env)
-      Rack::Response.new(render('index.html.erb'))
+      Rack::Response.new(render('index.html.erb')).finish
     end
 
     private
 
     def render(template)
-      path = File.expand_path("../views/#{template}", __FILE__)
+      path = File.expand_path("../lib/views/#{template}", __FILE__)
       ERB.new(File.read(path)).result(binding)
     end
   end
@@ -345,6 +346,7 @@ config.ru <!-- .element: class="filename" -->
 
 ```ruby
 require './middlewares/racker'
+
 run Middlewares::Racker
 ```
 
@@ -378,7 +380,7 @@ module Middlewares
     end
 
     def render(template)
-      path = File.expand_path("../views/#{template}", __FILE__)
+      path = File.expand_path("../lib/views/#{template}", __FILE__)
       ERB.new(File.read(path)).result(binding)
     end
 
@@ -455,7 +457,7 @@ lib/views/index.html.erb <!-- .element: class="filename" -->
   <body>
     <div id="container">
       <h1>You said '<%= word %>'</h1>
-      <p>Say somthing new</p>
+      <p>Say something new</p>
       <form method="post" action="/update_word">
         <input name="word" type="text">
         <input type="submit" value="Say!">
@@ -523,7 +525,7 @@ Url to Rack::Static - https://github.com/rack/rack/blob/master/lib/rack/static.r
 
 ## Rack::Reloader
 
-When you change some code in your application or in `config.ru` you need to 'rackup' your application one more time.
+When you change some code in your application (except `config.ru`) you need to 'rackup' your application one more time.
 The reason is that `Rack` is not able to reload the code of application.
 
 For such reason, it's recommended to use `Rack::Reloader` middleware
