@@ -494,7 +494,7 @@ describe UsersController do
         expect(response).to redirect_to root_url
       end
 
-      it 'assings a success flash message' do
+      it 'assigns a success flash message' do
         expect(flash[:notice]).not_to be_nil
       end
 

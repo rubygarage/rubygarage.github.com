@@ -22,12 +22,12 @@ Refactoring is a systematic process of improving the quality of code without cha
 
 ---
 
-## Refactoring vs Optimisation vs Bugfixing
+## Refactoring vs Optimization vs Bugfixing
 
-| | Refactoring | Optimisation | Bugfixing |
+| | Refactoring | Optimization | Bugfixing |
 |-------------|-------------|-------------|-------------|
 | Making code clean | `true` | false | false |
-| Optimising performance | false | `true` | false |
+| Optimizing performance | false | `true` | false |
 | Changing code functionality | false | false | `true` |
 
 ---
@@ -67,7 +67,7 @@ When the development team has:
 
 1. Find code smells and document them
 2. Prioritize according to the following standards:
-  * importancy for business
+  * importance for business
   * frequency of usage of that piece of code
   * size of a code smell
   * coverage of specs and tests quality

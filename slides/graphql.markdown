@@ -189,7 +189,7 @@ This architecture will be the most common for new projects. In the setup, you ha
 
 --
 
-### 2. GraphQL server that is a ** thin layer in front of a number of third party or legacy systems** 
+### 2. GraphQL server that is a ** thin layer in front of a number of third party or legacy systems**
 
 GraphQL is used to **unify** these existing systems and hide their complexity. This way, new client applications can be developed that simply talk to the GraphQL server to fetch the data they need.
 
@@ -391,7 +391,7 @@ And response:
 
 ### Types
 
-#### Types describs data units in the system. There are such types as:
+#### Types describes data units in the system. There are such types as:
 
 - Default scalar types
 - Object types
@@ -1114,7 +1114,7 @@ GraphQL uses JSON format, which represents as text format, not as binary.
 You can send a file as base64 string or send a download link.
 
 ### - Incoming Webhooks
-You will need to add the REST endpoints to listen for events from services like Stripe. 
+You will need to add the REST endpoints to listen for events from services like Stripe.
 
 ---
 
@@ -1614,7 +1614,7 @@ query {
 
 --
 
-#### and we will recieve
+#### and we will receive
 
 ```json
 {
@@ -1657,7 +1657,7 @@ query {
 #### Expose **node** and **cursor** fields
 
 ### Node
-#### Nodes are items in a list. A node is usually an object in your schema. 
+#### Nodes are items in a list. A node is usually an object in your schema.
 
 --
 
@@ -2104,7 +2104,7 @@ https://github.com/rubygarage/graphql_meetup
 
 ---
 
-## Usefull links
+## Useful links
 
 https://www.howtographql.com/ - good graphql guides - different languages, frontend/backend
 

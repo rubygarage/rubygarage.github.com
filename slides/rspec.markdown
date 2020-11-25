@@ -175,7 +175,7 @@ create   spec/spec_helper.rb
 
 ---
 
-# Running specs and formating output
+# Running specs and formatting output
 
 --
 
@@ -207,7 +207,7 @@ $ rspec spec/arrays/push_spec.rb:5
 
 --
 
-# Formating
+# Formatting
 
 Colorization
 
@@ -395,7 +395,7 @@ end
 The `context()` method is an alias for `describe()`.
 
 ```ruby
-RSpec.describe User
+RSpec.describe User do
   context 'with no roles assigned' do
     it 'is not allowed to view protected content' do
     end
@@ -478,7 +478,7 @@ Finished in 0.00212 seconds
 
 ## Specify
 
-Alias for `it`. Can be used when decsription can be leaved
+Alias for `it`. Can be used when description can be leaved
 
 ```ruby
 specify { expect(product).not_to be_featured }
@@ -1245,8 +1245,7 @@ is only realized in the context of another example group, which provides any con
 
 --
 
-You can use any of these methods to use shared examples. Filewith share examples should be loaded before the files that
-use them
+You can use any of these methods to use shared examples. File with shared examples should be loaded before the files which use them
 
 ```ruby
 require 'set'
@@ -2284,10 +2283,10 @@ end
 RSpec.describe 'stubs method chain' do
   it 'returns admin' do
     admin = double('Admin')
-    allow(User).to receive_message_chain(:where, :order).and_return([admin])
-    // allow(User).to receive_message_chain("where.order") { [admin] }
-    // allow(User).to receive_message_chain(:where, order:  [admin])
-    // allow(User).to receive_message_chain(:where, :order) { [admin] }
+    allow(User).to receive_message_chain(:where, :order).and_return([admin]) # preferred way
+    # allow(User).to receive_message_chain(:where, :order) { [admin] }
+    # allow(User).to receive_message_chain("where.order") { [admin] }
+    # allow(User).to receive_message_chain(:where, order: [admin])
     expect(User.admins).to include(admin)
   end
 end

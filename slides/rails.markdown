@@ -18,7 +18,7 @@ do it, rather than requiring you to specify every little thing through endless c
 
 ---
 
-## Instaling Rails
+## Installing Rails
 
 ### Preparing environment
 
