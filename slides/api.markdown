@@ -45,7 +45,7 @@ Let's take a look at some of the things that Rails provides out of the box that 
 
 # Versioning
 
-If you are writing a consistent API which will be consumed by multiple clients then it is the best practise to separate out the API under a namespace.
+If you are writing a consistent API which will be consumed by multiple clients then it is the best practice to separate out the API under a namespace.
 
 API versioning lets your API to be backwards compatible.
 
@@ -167,7 +167,7 @@ end
 
 Serialization is the process of translating data structures or object state into a format that can be stored
 
-Rails serializes the object passed into the required format. What if you want to customise the JSON output? Like Remove the root element, Add custom attributes or Adding `has_many` relations? How do you acheive this?
+Rails serializes the object passed into the required format. What if you want to customize the JSON output? Like Remove the root element, Add custom attributes or Adding `has_many` relations? How do you achieve this?
 
 --
 
@@ -255,7 +255,7 @@ rails g resource comment content:text user:references post:references
 
 When we try to render out a model in a JSON format active model serializers automatically look for a serializer with the same name which is used to fetch data.
 
-So render `ruby json: Post.find(params[:id])` will automatically look for a serialzer named `PostSerializer`
+So render `ruby json: Post.find(params[:id])` will automatically look for a serializer named `PostSerializer`
 
 ```ruby
 class PostSerializer < ActiveModel::Serializer
@@ -273,7 +273,7 @@ render json: @post, serializer: MyAwesomeSerializer
 
 ## Customizing the format
 
-Since Active Model Serailizers follow an object oriented approach customising the output is a piece of cake!
+Since Active Model Serailizers follow an object oriented approach customizing the output is a piece of cake!
 
 ```ruby
 class PostSerializer < ActiveModel::Serializer

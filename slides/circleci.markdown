@@ -126,9 +126,9 @@ The list of buil-in variables you can see [here](https://circleci.com/docs/2.0/e
 
 --
 
-## **Remember!** 
+## **Remember!**
 
-Do not add secrets or keys inside the `.circleci/config.yml` file. 
+Do not add secrets or keys inside the `.circleci/config.yml` file.
 
 The full text of `config.yml` is visible to developers with access to your project on CircleCI.
 
@@ -145,7 +145,7 @@ Store secrets or keys in [project](https://github.com/rubygarage/circledge/blob/
 
 **Caching** is one of the most effective ways to make jobs faster on CircleCI by reusing the data from expensive fetch operations from previous jobs.
 
-A good example is package dependency managers such as Yarn, Bundler, or Pip. With dependencies restored from a cache, commands like yarn install will only need to download new dependencies, if any, and not redownload everything on every build.
+A good example is package dependency managers such as Yarn, Bundler, or Pip. With dependencies restored from a cache, commands like yarn install will only need to download new dependencies, if any, and not re-download everything on every build.
 
 
 --
@@ -174,7 +174,7 @@ A good example is package dependency managers such as Yarn, Bundler, or Pip. Wit
 
 In order to clear the cache, you need to change the name of the key under which it is stored for example:
 ```yml
-  - v1-npm-deps-{{ checksum "package-lock.json" }} 
+  - v1-npm-deps-{{ checksum "package-lock.json" }}
 ```
 change to
 ```yml
@@ -192,7 +192,7 @@ change to
 - Use `cache` key for define names of you cache. example:
 
 ```yml
-caches: 
+caches:
   - &bundle_cache v1-repo-{{ checksum "Gemfile.lock"  }}
 
 commands:
@@ -211,7 +211,7 @@ commands:
 
 ![](/assets/images/circleci/steps.png)
 
-`Steps` are a collection of executable commands which are run during a job/command. 
+`Steps` are a collection of executable commands which are run during a job/command.
 
 If one step exit with code 1(failed), then the next ones will not be executed.
 
@@ -366,10 +366,10 @@ Currently, `store_artifacts` has two keys:
 .circleci/config.yml<!-- .element: class="filename" -->
 ```yml
 steps:
-  - run: 
+  - run:
       name: run specs
       command: |
-        bundle exec rspec 
+        bundle exec rspec
   - store_artifacts:
       path: ~/repo/coverage
       destination: coverage
@@ -389,7 +389,7 @@ After the completion of the job, you can see the artifacts in the tab 'Artifacts
 
 ## Overview
 
-To support the open source community, projects that are public on GitHub or Bitbucket receive three free build containers, for a total of four containers. 
+To support the open source community, projects that are public on GitHub or Bitbucket receive three free build containers, for a total of four containers.
 
 Only one container is available for private repositories
 
@@ -397,9 +397,9 @@ Only one container is available for private repositories
 
 ## Only Build Pull Requests
 
-By default, CircleCI builds every commit from every branch. 
+By default, CircleCI builds every commit from every branch.
 
-This behavior may be too aggressive for open source projects, which often have significantly more commits than private projects. 
+This behavior may be too aggressive for open source projects, which often have significantly more commits than private projects.
 
 To change this setting, go to the Advanced Settings of your project and set the Only build pull requests option to On.
 
@@ -437,9 +437,9 @@ Often the best way to troubleshoot problems is to SSH into a job and inspect thi
 
 --
 
-If your project has a large number of tests, it will need more time to run them on one machine. 
+If your project has a large number of tests, it will need more time to run them on one machine.
 
-To reduce this time, you can run tests in parallel by spreading them across multiple machines. 
+To reduce this time, you can run tests in parallel by spreading them across multiple machines.
 
 ![](/assets/images/circleci/test_splitting.png)
 
@@ -468,9 +468,9 @@ jobs:
 
 --
 
-**CircleCI Orbs** are shareable packages of configuration elements, including jobs, commands, and executors. 
+**CircleCI Orbs** are shareable packages of configuration elements, including jobs, commands, and executors.
 
-CircleCI provides certified orbs, along with 3rd-party orbs authored by CircleCI partners. 
+CircleCI provides certified orbs, along with 3rd-party orbs authored by CircleCI partners.
 
 It is best practice to first evaluate whether any of these existing orbs will help you in your configuration workflow.
 
@@ -494,7 +494,7 @@ You can read about each of this features [here](https://github.com/rubygarage/ci
 
 Before using the orb, you need to read the documentation for use which can be found on the main page of the orb
 
-example of usage: 
+example of usage:
 
 .circleci/config.yml<!-- .element: class="filename" -->
 ```yml
@@ -566,29 +566,29 @@ executors:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
 
-caches: 
+caches:
   - &bundle_cache v1-repo-{{ checksum "Gemfile.lock" }}
 
 commands:
   run_linters:
     description: command to start linters
     steps:
-      - run: 
+      - run:
           name: rubocop
           command: bundle exec rubocop
-      - run: 
+      - run:
           name: brakeman
           command: bundle exec brakeman -q
-      - run: 
+      - run:
           name: lol_dba
           command: bundle exec lol_dba db:find_indexes
-      - run: 
-          name: rails best prctices
+      - run:
+          name: rails best practices
           command: bundle exec rails_best_practices .
 
   run_specs:
     steps:
-      - run: 
+      - run:
           name: run specs
           command: |
             mkdir /tmp/test-results

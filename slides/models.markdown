@@ -1594,7 +1594,7 @@ end
 
 ---
 
-## Validates Assosiated
+## Validates Associated
 
 ```ruby
 class User < ApplicationRecord

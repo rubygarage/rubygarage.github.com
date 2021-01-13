@@ -560,7 +560,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to @user, notice: 'Signup successfull.' }
+        format.html { redirect_to @user, notice: 'Signup successful.' }
       else
         format.html { render new_signup_path }
       end
@@ -605,7 +605,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @signup.save
-        format.html { redirect_to @signup.user, notice: 'Signup successfull.' }
+        format.html { redirect_to @signup.user, notice: 'Signup successful.' }
       else
         format.html { render new_signup_path }
       end

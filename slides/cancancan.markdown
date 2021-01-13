@@ -271,7 +271,7 @@ spec/models/ability_spec.rb <!-- .element: class="filename" -->
 require 'cancan/matchers'
 
 describe Ability do
-  describe "abilities of loggined user" do
+  describe "abilities of logged in user" do
     subject { ability }
 
     let(:ability){ Ability.new(user) }
@@ -318,7 +318,7 @@ describe PostsController do
   end
 
   context '#new' do
-    context 'cancan doesnt allow :new' do
+    context 'cancan does not allow :new' do
       before do
         @ability.cannot :create, Post
         get :new
@@ -328,7 +328,7 @@ describe PostsController do
   end
 
   context '#show' do
-    context 'cancan doesnt allow :show' do
+    context 'cancan does not allow :show' do
       before do
         @ability.cannot :show, Post
         get :show, {id: @post.id}
@@ -338,7 +338,7 @@ describe PostsController do
   end
 
   context '#create' do
-    context 'cancan doesnt allow :create' do
+    context 'cancan does not allow :create' do
       before do
         @ability.cannot :create, Post
         post :create, {post: @post_attributes}
@@ -348,7 +348,7 @@ describe PostsController do
   end
 
   context '#update' do
-    context 'cancan doesnt allow :update' do
+    context 'cancan does not allow :update' do
       before do
         @ability.cannot :update, @post
         put :update, @post_attributes.merge(id: @post.id)
@@ -358,7 +358,7 @@ describe PostsController do
   end
 
   context '#destroy' do
-    context 'cancan doesnt allow :destroy' do
+    context 'cancan does not allow :destroy' do
       before do
         @ability.cannot :destroy, @post
         delete :destroy, id: @post.id

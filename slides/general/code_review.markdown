@@ -67,7 +67,7 @@ Code review ...
 
 ## Initiating
 
-- `Developer A` right after finishing his task pushes his code to VCS provider(Github, Github, e.t.c)
+- `Developer A` right after finishing his task pushes his code to VCS provider(Github, Gitlab, e.t.c)
 - `Developer A` knows all the GitFlow standards of his project/company and know how to name the branch and commits well
 - `Developer A` prepare the PR (correct title, description, milestones, labels, e.t.c, assignee)
 - `Developer A` check all the source code before setting reviewers

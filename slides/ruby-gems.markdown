@@ -103,7 +103,7 @@ end
 
 group :test, :development do
   gem 'capybara'
-  gem 'shoulda_matchers'
+  gem 'shoulda-matchers'
 end
 ```
 
