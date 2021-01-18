@@ -1050,7 +1050,7 @@ $ rspec spec/array_spec.rb --format documentation
 Array with some elements
   should not be empty
   should not be empty
-  should have the prescribed elements
+  has the prescribed elements
 
 Finished in 0.00495 seconds
 3 examples, 0 failures
