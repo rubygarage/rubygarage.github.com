@@ -152,11 +152,11 @@ Initialize Gemfile with rspec
 $ bundle init
 Writing new Gemfile to /home/User/ty/hello-rspec/Gemfile
 
-$ bundle inject rspec 3.7
+$ bundle inject rspec 3.10
 Fetching gem metadata from https://rubygems.org/..........
 Resolving dependencies...
 Added to Gemfile:
-gem 'rspec', '~> 3.7.0'
+gem 'rspec', '~> 3.10.0'
 ```
 
 Run bundle Install
