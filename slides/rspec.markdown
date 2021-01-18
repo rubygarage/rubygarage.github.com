@@ -2218,6 +2218,7 @@ module Calculation
       expect(Statistic::LEVEL).to eq(15)
     end
   end
+end
 ```
 
 ---
