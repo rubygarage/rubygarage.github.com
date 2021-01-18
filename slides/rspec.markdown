@@ -1080,6 +1080,7 @@ RSpec.describe User, 'with some elements' do
 
   describe 'with another name' do
     let(:params) { { name: 'Mark', position: 'PM' } }
+
     it { expect(user.name).to eql('Mark') }
   end
 end
@@ -1698,7 +1699,7 @@ end
 
 ```ruby
 it 'removes the last element' do
-  expect { @array.pop }.to change{ @array.size }.by(1)
+  expect { @array.pop }.to change{ @array.size }.by(-1)
 end
 
 it 'removes the last element' do
@@ -1710,11 +1711,11 @@ it 'removes the last element' do
 end
 
 it 'changes size by at least 1' do
-  expect { 2.times { @array.pop } }.to change{ @array.size }.by_at_least(1)
+  expect { 2.times { @array.pop } }.to change{ @array.size }.by_at_least(-1)
 end
 
 it 'changes size by at most 2' do
-  expect { 2.times { @array.pop } }.to change{ @array.size }.by_at_most(2)
+  expect { 2.times { @array.pop } }.to change{ @array.size }.by_at_most(-2)
 end
 ```
 
