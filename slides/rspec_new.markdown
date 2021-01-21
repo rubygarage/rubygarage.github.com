@@ -120,16 +120,16 @@ is exactly what TDD is about.
 Install ruby
 
 ```bash
-$ rvm install ruby-2.4.2
+$ rvm install ruby-2.7.2
 ```
 
 Create isolated gemset
 
 ```bash
-$ rvm use 2.4.2@hello-rspec --create
-ruby-2.4.2 - #gemset created /Users/ty/.rvm/gems/ruby-2.4.2@hello-rspec
-ruby-2.4.2 - #generating hello-rspec wrappers - please wait
-Using /Users/ty/.rvm/gems/ruby-2.4.2 with gemset hello-rspec
+$ rvm use 2.7.2@hello-rspec --create
+ruby-2.7.2 - #gemset created /Users/ty/.rvm/gems/ruby-2.7.2@hello-rspec
+ruby-2.7.2 - #generating hello-rspec wrappers - please wait
+Using /Users/ty/.rvm/gems/ruby-2.7.2 with gemset hello-rspec
 ```
 
 Prepare project directory
@@ -152,11 +152,11 @@ Initialize Gemfile with rspec
 $ bundle init
 Writing new Gemfile to /home/User/ty/hello-rspec/Gemfile
 
-$ bundle inject rspec 3.8
+$ bundle inject rspec 3.10
 Fetching gem metadata from https://rubygems.org/..........
 Resolving dependencies...
 Added to Gemfile:
-gem 'rspec', '~> 3.8.0'
+gem 'rspec', '~> 3.10.0'
 ```
 
 Run bundle Install
@@ -950,7 +950,7 @@ $ rspec spec/array_spec.rb --format documentation
 Array with some elements
   should not be empty
   should not be empty
-  should have the prescribed elements
+  has the prescribed elements
 
 Finished in 0.00495 seconds
 3 examples, 0 failures
@@ -3388,6 +3388,7 @@ module Calculation
       expect(Statistic::LEVEL).to eq(15)
     end
   end
+end
 ```
 
 ---
@@ -4089,10 +4090,10 @@ Task details are [here](https://docs.google.com/document/d/1VW3Mk1W-pGkq0FadPih6
 --
 
 ```bash
-$ rvm use 2.3.0@codebreaker --create
-ruby-2.3.0 - #gemset created /Users/ty/.rvm/gems/ruby-2.3.0@codebreaker
-ruby-2.3.0 - #generating codebreaker wrappers - please wait
-Using /Users/ty/.rvm/gems/ruby-2.3.0 with gemset codebreaker
+$ rvm use 2.7.2@codebreaker --create
+ruby-2.7.2 - #gemset created /Users/ty/.rvm/gems/ruby-2.7.2@codebreaker
+ruby-2.7.2 - #generating codebreaker wrappers - please wait
+Using /Users/ty/.rvm/gems/ruby-2.7.2 with gemset codebreaker
 ```
 
 ```bash
