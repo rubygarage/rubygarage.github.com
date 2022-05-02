@@ -11,6 +11,8 @@ title:  RSpec
 
 RSpec is a unit test framework for the Ruby programming language. Tests written in RSpec focus on the "behavior" of an application being tested. RSpec does not put emphasis on, how the application works but instead on how it behaves, in other words, what the application actually does.
 
+Link to course [video](https://drive.google.com/file/d/1vnGkfeGMWVhZ3Kf8davCwpt5loSz-AUc/view?usp=sharing)
+
 ---
 
 # RSpec Test Types
