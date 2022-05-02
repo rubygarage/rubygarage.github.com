@@ -43,18 +43,18 @@ title:  Rails
 
 --
 
-## Setup Ruby 2.6.5 via RVM
+## Setup Ruby 2.7.2 via RVM
 
-Install a version of Ruby (eg 2.6.5)
+Install a version of Ruby (eg 2.7.2)
 
 ```bash
-$ rvm install 2.6.5
+$ rvm install 2.7.2
 ```
 
-Make Ruby 2.6.5 default
+Make Ruby 2.7.2 default
 
 ```bash
-$ rvm --default use 2.6.5
+$ rvm --default use 2.7.2
 ```
 
 Show list of all installed Ruby version on your machine
@@ -171,23 +171,9 @@ $ nvm list
 ## Clone the repository
 
 ```bash
-$ git clone https://github.com/WoLkErSs/training_store
+$ git clone https://github.com/dobrinindima/Bookstore.git
 
-$ cd training_store
-```
-
-### Add secrets after clone
-
-To run this application in the future we need create the file `.sekrets.key` which contains the key.
-
-```bash
-$ echo "c9ca193febdae77d0d7317715bdd167e" >> .sekrets.key
-```
-
-Run Rake task which will decrypt **.sekrets.key**
-
-```bash
-$ rake sekrets:decrypt\[development\]
+$ cd Bookstore
 ```
 
 ---
@@ -431,7 +417,7 @@ You can use the `ruby` keyword in your app’s Gemfile to specify a specific ver
 Gemfile <!-- .element class="filename" -->
 
 ```ruby
-ruby '2.6.5'
+ruby '2.7.2'
 ```
 
 --

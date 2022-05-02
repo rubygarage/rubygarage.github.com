@@ -1198,6 +1198,63 @@ describe "something", type: :feature do
 end
 ```
 
+--
+
+### If your tests are time dependent you can use travel_to
+Add the following to the `spec_helper.rb` file
+
+```ruby
+RSpec.configure do |config|
+  config.include ActiveSupport::Testing::TimeHelpers
+end
+```
+
+Then in the test you can use
+
+```ruby
+before(:all) do
+  ENV['TZ'] = 'UTC'
+  travel_to Time.zone.local(2021, 03, 18, 12, 00, 00)
+end
+```
+
+For more practices go
+[here](http://lucasnogueira.me/en/How-to-time-travel-safely-but-only-on-your-tests)
+
+--
+
+### If you need to find a specific row in a table or something similar
+You can create a method on the page object like the example below
+
+```ruby
+def get_needed_data_with_index(index)
+  within(:xpath, "//table/tbody/tr[#{index}]") do
+    block_given? ? yield : raise('data not provided')
+  end
+end
+```
+
+Where `index` it's needed line in the table. `xpath` needs to be changed according to your DOM
+
+--
+
+### If you need to sort list of elements
+```ruby
+it 'sorts by ...' do
+  expect(page.element_ids.map(&:text)).to eq([element3, element2, element1].map(&:id).map(&:to_s))
+
+  page.sort_list_by(name: 'Name')
+
+  expect(page.element_ids.map(&:text)).to eq([element1, element2, element3].map(&:id).map(&:to_s))
+end
+```
+`element_ids` this is elements in your page object
+```ruby
+elements :element_ids, 'some css'
+```
+
+--
+
 ---
 
 # The End
