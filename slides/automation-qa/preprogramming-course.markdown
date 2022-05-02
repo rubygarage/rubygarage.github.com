@@ -120,6 +120,8 @@ title:  Pre Programming Course
 
 - Interaction with elements
 
+Link to course [video](https://drive.google.com/file/d/1o0VbIrVPjhlHYg0jvLQXKXzY87GxzRDV/view?usp=sharing)
+
 ---
 
 # Git
@@ -165,6 +167,8 @@ title:  Pre Programming Course
 - [Gitflow](https://danielkummer.github.io/git-flow-cheatsheet/index.ru_RU.html)
 
 - Best practices for [commits](https://www.git-tower.com/learn/git/ebook/en/command-line/appendix/best-practices), [pull request](https://github.community/t5/Support-Protips/Best-practices-for-pull-requests/ba-p/4104), [branches](https://nvie.com/posts/a-successful-git-branching-model/), [etc](https://git-scm.com/book/ru/v2)
+
+Link to course [video](https://drive.google.com/file/d/1ZwRju6syDDfcxx4m8YBBGyi-aExkJgQs/view?usp=sharing)
 
 ---
 

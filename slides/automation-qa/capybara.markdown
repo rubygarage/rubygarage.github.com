@@ -10,6 +10,8 @@ DSL extensions for testing web-based UIs
 - CSS classes
 - Javascript calls
 
+Link to course [video](https://drive.google.com/file/d/1Vu_wQGHRt2zvJIrf-2ZfnMR8sOWyk2PX/view?usp=sharing)
+
 ---
 
 # Why Capybara Gem?

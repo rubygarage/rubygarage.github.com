@@ -49,3 +49,7 @@ title: QA Automation
 - [CircleCI](../circleci)
   <br>
   <small>CircleCI is Continuous Integration, for testing apps, which is fast, functional and flexible. </small>
+
+- [Link to course videos](course-videos)
+  <br>
+  <small>Course videos</small>
