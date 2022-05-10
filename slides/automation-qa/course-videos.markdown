@@ -16,7 +16,7 @@ title: Course videos
 
 - [Lecture 1. Variables+Operators+Functions+Number+Strings+Methods](https://drive.google.com/file/d/10XIpMBs6h2bMSkTMxi2M6golSAG21bt1/view?usp=sharing)
 
-- [Lecture 2.Array+Objects and Methods+Cypress Framework](https://drive.google.com/file/d/14gD_Dp3idEDKYYO5iS0mdYNK9oEnbdSc/view?usp=sharing)
+- [Lecture 2. Array+Objects and Methods+Cypress Framework](https://drive.google.com/file/d/14gD_Dp3idEDKYYO5iS0mdYNK9oEnbdSc/view?usp=sharing)
 
 - [Lecture 3. Cypress Framework part 2](https://drive.google.com/file/d/1J0XlwDwGQ7GxFsKLS9y1dU2PY6y5Iw1n/view?usp=sharing)
 
