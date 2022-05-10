@@ -102,6 +102,8 @@ title:  Pre Programming Course
  - Display
  - Visibility
 
+Link to course [video](https://drive.google.com/file/d/1aDOjcmwmMrdsecV2Eos3bVWKvoaDkyHB/view?usp=sharing)
+
 ---
 
 # Javascript
@@ -198,7 +200,7 @@ Link to course [video](https://drive.google.com/file/d/1ZwRju6syDDfcxx4m8YBBGyi-
 
 --
 
-- [RVM](https://rvm.io/) - [Ruby Basics](rubygarage.github.io)
+- [RVM](https://rvm.io/) - [Ruby Basics](https://rubygarage.github.io/slides/ruby-basics)
 
 - [Ruby console(IRB)](https://ru.wikipedia.org/wiki/Interactive_Ruby_Shell)
 

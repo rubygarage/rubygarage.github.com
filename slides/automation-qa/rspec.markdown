@@ -1255,8 +1255,6 @@ end
 elements :element_ids, 'some css'
 ```
 
---
-
 ---
 
 # The End
